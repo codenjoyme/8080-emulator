@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+" 
-      href="spec1987.jnlp">
+      href="spec.jnlp">
     <information>
         <title>Spec1987</title>
         <vendor>Spec1987</vendor>
@@ -9,7 +9,7 @@
         <!-- Application Resources -->
         <j2se version="1.7+"
               href="http://java.sun.com/products/autodl/j2se"/>
-        <jar href="Spec1987.jar" main="false" />
+        <jar href="spec-1.0.jar" main="false" />
 
     </resources>
     <applet-desc
