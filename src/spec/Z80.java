@@ -1,4 +1,6 @@
-package spec;/*
+package spec;
+
+/*
  * @(#)Z80.java 1.1 27/04/97 Adam Davidson & Andrew Pollard
  */
 

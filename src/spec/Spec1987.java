@@ -1,4 +1,6 @@
-package spec;/*
+package spec;
+
+/*
  * @(#)Spec1987.java V1.0 alpha, © 21/05/2011 Sam_Computers LTD
  * Special thanks to Adam Davidson & Andrew Pollard for Jasper sources.
  */
@@ -8,13 +10,16 @@ package spec;/*
 //     В качестве параметра оператору import передается имя подключаемого класса из
 //     библиотеки классов. Если же необходимо подключить все классы данной библиотеки,
 //      вместо имени класса указывается символ "*".
-
-import java.applet.Applet;
+import java.applet.*;
+//     java.applet.Applet содержит классы, необходимые для создания аплетов, то есть
+//     разновидности приложений Java, встраиваемых в документы HTML и работающих под
+//     управлением браузера Internet.
 import java.awt.*;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-
+//     java.awt. С ее помощью аплет может выполнять в своем окне рисование различных
+//     изображений или текста.
+import java.net.*;
+import java.io.*;
+import java.awt.AWTEvent;
 /**
  * <p>The <a href="http://www.odie.demon.co.uk/spectrum">Spec1987</a> class wraps up
  * the Spechard class into an Applet which emulates a ZX Spechard in a Web Page.</p>
@@ -138,8 +143,7 @@ public void run() {
           }
            catch ( Exception e )
           {
-              e.printStackTrace();
-              showStatus("Caught IO Error: " + e);
+           showStatus( "Caught IO Error: " + e.toString() );
           }
      }
      if ( spechard != null )

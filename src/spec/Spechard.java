@@ -1,4 +1,6 @@
-package spec;// Надо обозначить все константы "Специалист" в портах ОЗУ ПЗУ и экране
+package spec;
+
+// Надо обозначить все константы "Специалист" в портах ОЗУ ПЗУ и экране
 // Заменены константами все характерные адреса типа 0xffe0 чтобы читалось
 // удобнее и легче было переходить к внедрению нового экрана.
 // Всё фактически готово! (Может ещё проверю подпрограммы).
@@ -21,17 +23,11 @@ package spec;// Надо обозначить все константы "Спе�
  * Вариант с заменой: next[], last[] на nextAddr[], lastByte[].
  * @(#)Spechard.java 1.1 27/04/97 Adam Davidson & Andrew Pollard.
  */
-
 import javax.swing.*;
-import java.awt.*;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Arrays;
-import java.util.Hashtable;
+import java.awt.*; //---(инструментарий для работы с абстрактными окнами).
+import java.util.*;//---
+import java.io.*;  //---
+import java.net.*; //---
 
 /**
  * The Spechard class extends the Z80 class implementing the supporting
