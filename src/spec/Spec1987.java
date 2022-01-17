@@ -51,7 +51,14 @@ public class Spec1987 extends Applet implements Runnable {
     Thread thread   = null;
 
     public static void main(String [] args) {
-        System.out.println("Hello world!");
+        Spec1987 applet = new Spec1987();
+        applet.init();
+        applet.start();
+    }
+
+    @Override
+    public void showStatus(String msg) {
+        System.out.println(msg);
     }
 
   // Version and author information.
@@ -142,7 +149,8 @@ public void run() {
           }
            catch ( Exception e )
           {
-           showStatus( "Caught IO Error: " + e.toString() );
+              e.printStackTrace();
+              showStatus("Caught IO Error: " + e);
           }
      }
      if ( spechard != null )
