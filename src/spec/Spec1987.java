@@ -50,17 +50,6 @@ public class Spec1987 extends Applet implements Runnable {
   Spechard spechard = null; //--- класс Spechard.class
     Thread thread   = null;
 
-    public static void main(String [] args) {
-        Spec1987 applet = new Spec1987();
-        applet.init();
-        applet.start();
-    }
-
-    @Override
-    public void showStatus(String msg) {
-        System.out.println(msg);
-    }
-
   // Version and author information.
   // мы переопределили метод getAppletInfo из базового класса так, что getAppletInfo
   // возвращает текстовую информацию об аплете в виде объекта класса String.
