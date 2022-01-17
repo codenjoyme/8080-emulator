@@ -2,8 +2,13 @@
 <project name="Spec1987" default="default" basedir=".">
     <import file="nbproject/build-impl.xml"/>
         <target name="-post-jar">        
-            <copy file="${src.dir}/index.html" todir="${dist.jar.dir}"/>
-            <copy file="${src.dir}/spec1987.jnlp" todir="${dist.jar.dir}"/>
+            <copy file="${resources.dir}/index.html" todir="${dist.jar.dir}"/>
+            <copy file="${resources.dir}/spec1987.jnlp" todir="${dist.jar.dir}"/>
+            <copy file="${resources.dir}/BABNIK.RKS" todir="${dist.jar.dir}"/>
+            <copy file="${resources.dir}/BLOBCOP.RKS" todir="${dist.jar.dir}"/>
+            <copy file="${resources.dir}/monitor0.rom" todir="${dist.jar.dir}"/>
+            <copy file="${resources.dir}/monitor1.rom" todir="${dist.jar.dir}"/>
+            <copy file="${resources.dir}/applet.html" todir="${dist.jar.dir}"/>
         </target>
     <target name="-do-jar-with-libraries-without-manifest"/>
 
