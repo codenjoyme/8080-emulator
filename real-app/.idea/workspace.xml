@@ -2,22 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1675a04f-5f49-4200-a229-0762123bcfe2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AMDProgressBar.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BABNIK.RKS" beforeDir="false" afterPath="$PROJECT_DIR$/resources/BABNIK.RKS" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BLOBCOP.RKS" beforeDir="false" afterPath="$PROJECT_DIR$/resources/BLOBCOP.RKS" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spec1987.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spec1987.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Spec1987.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spechard.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spectrum.htm" beforeDir="false" afterPath="$PROJECT_DIR$/resources/Spectrum.htm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Z80.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor0.rom" beforeDir="false" afterPath="$PROJECT_DIR$/resources/monitor0.rom" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor1.rom" beforeDir="false" afterPath="$PROJECT_DIR$/resources/monitor1.rom" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Spec1987/AMDProgressBar.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Spec1987/Spec1987.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Spec1987/Spechard.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Spec1987/Z80.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Spec1987.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spec1987.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Spechard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spechard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Z80.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Z80.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +33,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../webstart_ComponentArch_DynamicTreeDemo" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -66,6 +55,7 @@
       <workItem from="1642378129190" duration="306000" />
       <workItem from="1642378571185" duration="917000" />
       <workItem from="1642379691539" duration="284000" />
+      <workItem from="1642379995671" duration="4412000" />
     </task>
     <servers />
   </component>
