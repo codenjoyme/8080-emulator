@@ -2223,19 +2223,13 @@ public void loadROMZ( String name, InputStream is ) throws Exception {
   }
 
 //--- для ПК "Специалист" ---------------------------------------------------------------
-//------------ чтение ПЗУ 0 - 0C000h ---------------------------------------------
-public void loadROM0( String name, InputStream is ) throws Exception {
+//------------ чтение ПЗУ ---------------------------------------------
+public void loadROM( String name, InputStream is, int offset ) throws Exception {
     startProgress( "Loading " + name, 2048 );
 
-    readBytes( is, mem, 49152, 2048 ); //--- 0C000h = 49152
+    readBytes( is, mem, offset, 2048 );
   }
 
-//------------ чтение ПЗУ 1 - 0C800h ---------------------------------------------
-public void loadROM1( String name, InputStream is ) throws Exception {
-    startProgress( "Loading " + name, 2048 );
-
-    readBytes( is, mem, 51200, 2048 ); //--- 0C800h = 51200
-  }
 //--- для ПК "Специалист" ---------------------------------------------------------------
 //--- ADN: ML_B, ST_B
 //--- ADK: ML_B, ST_B
