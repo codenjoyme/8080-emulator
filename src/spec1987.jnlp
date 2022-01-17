@@ -9,12 +9,12 @@
         <!-- Application Resources -->
         <j2se version="1.7+"
               href="http://java.sun.com/products/autodl/j2se"/>
-        <jar href="Spec1987.jar" main="true" />
+        <jar href="Spec1987.jar" main="false" />
 
     </resources>
-    <application-desc
-         name="Spec1987 application"
-         main-class="spec.Spec1987">
-     </application-desc>
-     <update check="background"/>
+    <applet-desc
+            main-class="spec.Spec1987"
+            name="SwingSet"
+            width="625" height="595">
+     </applet-desc>
 </jnlp>
