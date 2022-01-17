@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-X-COMMENT: Main-Class will be added automatically by build
-Codebase: *.oracle.com
-Permissions: sandbox
-Application-Name: ComponentArch: Dynamic Tree Demo
-Entry-Point: spec.Spec1987
