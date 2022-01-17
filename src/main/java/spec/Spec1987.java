@@ -194,16 +194,37 @@ public void readParameters() throws Exception {
 //---***    URL romZURL = new URL( baseURL, rom ); // "ramfos.rom"
 //---***    spechard.loadROMZ( romZURL.toString(), romZURL.openStream() );
 
+//--- для ПК "ЛИК" ---------------------------------------------------------------
+    boolean lik = true; // ЛИК или Специалист
+    if (lik) {
+        URL likRom1URL = new URL(baseURL, "lik/01_zagr.BIN");
+        spechard.loadROM0(likRom1URL.toString(), likRom1URL.openStream());
+
+        URL likRom2URL = new URL(baseURL, "lik/02_mon-1m.BIN");
+        spechard.loadROM1(likRom2URL.toString(), likRom2URL.openStream());
+
+        URL likRom3URL = new URL(baseURL, "lik/03_mon-1m_basicLik.BIN");
+        spechard.loadROM1(likRom3URL.toString(), likRom3URL.openStream());
+
+        URL likRom4URL = new URL(baseURL, "lik/04_basicLik.BIN");
+        spechard.loadROM1(likRom4URL.toString(), likRom4URL.openStream());
+
+        URL likRom5URL = new URL(baseURL, "lik/05_basicLik.BIN");
+        spechard.loadROM1(likRom5URL.toString(), likRom5URL.openStream());
+
+        URL likRom6URL = new URL(baseURL, "lik/06_basicLik.BIN");
+        spechard.loadROM1(likRom6URL.toString(), likRom6URL.openStream());
+    } else {
 //--- для ПК "Специалист" ---------------------------------------------------------------
-    URL rom0URL = new URL( baseURL, "monitor0.rom" ); // "monitor0.rom"
-    spechard.loadROM0( rom0URL.toString(), rom0URL.openStream() );
+        URL specRom0URL = new URL(baseURL, "specialist/monitor0.rom");
+        spechard.loadROM0(specRom0URL.toString(), specRom0URL.openStream());
 
-    URL rom1URL = new URL( baseURL, "monitor1.rom" ); // "monitor1.rom"
-    spechard.loadROM1( rom1URL.toString(), rom1URL.openStream() );
-
+        URL specRom1URL = new URL(baseURL, "specialist/monitor1.rom");
+        spechard.loadROM1(specRom1URL.toString(), specRom1URL.openStream());
+    }
 //--- для ПК "Специалист" ---------------------------------------------------------------
 
-          String snapshot = getParameter( "snapshot" );
+    String snapshot = getParameter( "snapshot" );
     snapshot = ((snapshot == null) ? getParameter( "sna" ) : snapshot);
     snapshot = ((snapshot == null) ? getParameter( "z80" ) : snapshot);
 
