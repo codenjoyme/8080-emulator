@@ -3,4 +3,4 @@ X-COMMENT: Main-Class will be added automatically by build
 Codebase: *.oracle.com
 Permissions: sandbox
 Application-Name: ComponentArch: Dynamic Tree Demo
-Entry-Point: webstartComponentArch.DynamicTreeApplication
+Entry-Point: spec.Spec1987

@@ -34,7 +34,7 @@
 
 <jnlp spec="1.0+" 
         codebase="https://docs.oracle.com/javase/tutorialJWS/samples/deployment/webstart_ComponentArch_DynamicTreeDemo"
-        href="dynamictree_webstart.jnlp">
+        href="spec1987_webstart.jnlp">
     <information>
         <title>Dynamic Tree Demo</title>
         <vendor>Dynamic Team</vendor>
@@ -43,12 +43,12 @@
         <!-- Application Resources -->
         <j2se version="1.7+"
               href="http://java.sun.com/products/autodl/j2se"/>
-        <jar href="DynamicTreeDemo.jar" main="true" />
+        <jar href="Spec1987.jar" main="true" />
 
     </resources>
     <application-desc
          name="Dynamic Tree Demo Application"
-         main-class="webstartComponentArch.DynamicTreeApplication">
+         main-class="spec.DynamicTreeApplication">
      </application-desc>
      <update check="background"/>
 </jnlp>

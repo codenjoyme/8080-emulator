@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 
 /*
  * Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
@@ -31,32 +32,22 @@
  */ 
 -->
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html lang="en-US">
-  <head>
-    <title>Dynamic Tree Java Web Start Application - Deployed Without Codebase</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-  </head>
-  <body>
-    <h1>Dynamic Tree Java Web Start Application Demo - Deployed Without Codebase </h1>
-         
-    <script src="https://www.java.com/js/deployJava.js"></script>    
-    
-    <h2>Java Web Start application deployed by using the <code>launchWebStartApplication</code> function</h2>
-    
-    <p><a href="javascript:deployJava.launchWebStartApplication('spec1987_webstart_no_codebase.jnlp');">Launch Dynamic Tree Demo application</a></p>
+<jnlp spec="1.0+" 
+      href="spec1987_webstart_no_codebase.jnlp">
+    <information>
+        <title>Dynamic Tree Demo No Codebase</title>
+        <vendor>Dynamic Team</vendor>
+    </information>
+    <resources>
+        <!-- Application Resources -->
+        <j2se version="1.7+"
+              href="http://java.sun.com/products/autodl/j2se"/>
+        <jar href="Spec1987.jar" main="true" />
 
-    <br/>
-    <hr/>
-    <br/>
-    
-    <h2>Java Web Start application deployed by using the <code>createWebStartLaunchButtonEx</code> function</h2>    
-    
-    <script>        
-        var jnlpFile = "spec1987_webstart_no_codebase.jnlp";
-        deployJava.createWebStartLaunchButtonEx(jnlpFile);
-    </script>
-    <noscript>JavaScript is required for this page.</noscript>
-    
-  </body>
-</html>
+    </resources>
+    <application-desc
+         name="Dynamic Tree Demo Application"
+         main-class="spec.DynamicTreeApplication">
+     </application-desc>
+     <update check="background"/>
+</jnlp>
