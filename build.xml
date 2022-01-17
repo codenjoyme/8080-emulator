@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="webstart_ComponentArch_DynamicTreeDemo" default="default" basedir=".">
+<project name="Spec1987" default="default" basedir=".">
     <import file="nbproject/build-impl.xml"/>
         <target name="-post-jar">        
             <copy file="${src.dir}/JavaWebStartAppPage.html" todir="${dist.jar.dir}"/>

@@ -35,8 +35,8 @@
 <jnlp spec="1.0+" 
       href="spec1987_webstart_no_codebase.jnlp">
     <information>
-        <title>Dynamic Tree Demo No Codebase</title>
-        <vendor>Dynamic Team</vendor>
+        <title>Spec1987</title>
+        <vendor>Spec1987</vendor>
     </information>
     <resources>
         <!-- Application Resources -->
@@ -46,8 +46,8 @@
 
     </resources>
     <application-desc
-         name="Dynamic Tree Demo Application"
-         main-class="spec.DynamicTreeApplication">
+         name="Spec1987 application"
+         main-class="spec.Spec1987">
      </application-desc>
      <update check="background"/>
 </jnlp>
