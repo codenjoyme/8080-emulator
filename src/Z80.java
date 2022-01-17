@@ -15,15 +15,15 @@
 public class Z80 extends Object {
 
   public Z80( double clockFrequencyInMHz )
-  { //--- число тактов на 1 прерывание, которое происходит 50 раз в секунду.
+  { //--- С‡РёСЃР»Рѕ С‚Р°РєС‚РѕРІ РЅР° 1 РїСЂРµСЂС‹РІР°РЅРёРµ, РєРѕС‚РѕСЂРѕРµ РїСЂРѕРёСЃС…РѕРґРёС‚ 50 СЂР°Р· РІ СЃРµРєСѓРЅРґСѓ.
     tstatesPerInterrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);
-                                           //        1000000/50 раз в секунду
-   // сюда clockFrequencyInMHz передаётся из Spectrum.class: super( 3.5 );
+                                           //        1000000/50 СЂР°Р· РІ СЃРµРєСѓРЅРґСѓ
+   // СЃСЋРґР° clockFrequencyInMHz РїРµСЂРµРґР°С‘С‚СЃСЏ РёР· Spectrum.class: super( 3.5 );
   }
 
   protected int tstatesPerInterrupt = 0;
-// Пользуясь ключевыми словами static и final, можно определять внутри классов
-// глобальные константы.
+// РџРѕР»СЊР·СѓСЏСЃСЊ РєР»СЋС‡РµРІС‹РјРё СЃР»РѕРІР°РјРё static Рё final, РјРѕР¶РЅРѕ РѕРїСЂРµРґРµР»СЏС‚СЊ РІРЅСѓС‚СЂРё РєР»Р°СЃСЃРѕРІ
+// РіР»РѕР±Р°Р»СЊРЅС‹Рµ РєРѕРЅСЃС‚Р°РЅС‚С‹.
   public static final int IM0 = 0;
   public static final int IM1 = 1;
   public static final int IM2 = 2;
@@ -65,7 +65,7 @@ public class Z80 extends Object {
   protected int        _IX = 0, _IY = 0, _ID = 0;
 
   /** Stack Pointer and Program Counter */
-  protected int        _SP = 0, _PC = 0xc000; //---*** программный счётчик = 0000h
+  protected int        _SP = 0, _PC = 0xc000; //---*** РїСЂРѕРіСЂР°РјРјРЅС‹Р№ СЃС‡С‘С‚С‡РёРє = 0000h
 
   /** Interrupt and Refresh registers */
   protected int        _I = 0, _R = 0, _R7 = 0;
@@ -75,7 +75,7 @@ public class Z80 extends Object {
   protected int        _IM = 2;
 
   /** Memory */
-  public final int  mem[] = new int[ 65536 ]; // массив байт памяти
+  public final int  mem[] = new int[ 65536 ]; // РјР°СЃСЃРёРІ Р±Р°Р№С‚ РїР°РјСЏС‚Рё
 
   /** 16 bit register access */
   public final int  AF() { return (A() << 8) | F(); }
@@ -246,11 +246,11 @@ public class Z80 extends Object {
 
   /** Byte access */
 // private final int peekb( int addr ) {
-//--- для ПК "Специалист" переопределим ---------------------------------
+//--- РґР»СЏ РџРљ "РЎРїРµС†РёР°Р»РёСЃС‚" РїРµСЂРµРѕРїСЂРµРґРµР»РёРј ---------------------------------
   public int peekb( int addr ) {
-    return mem[ addr ]; //--- ОЗУ читаем -----
+    return mem[ addr ]; //--- РћР—РЈ С‡РёС‚Р°РµРј -----
   }
-//--- для ПК "Специалист" переопределим ---------------------------------
+//--- РґР»СЏ РџРљ "РЎРїРµС†РёР°Р»РёСЃС‚" РїРµСЂРµРѕРїСЂРµРґРµР»РёРј ---------------------------------
 
   public void pokeb( int addr, int newByte ) {
     mem[ addr ] = newByte;
@@ -273,7 +273,7 @@ public class Z80 extends Object {
 
   /** Index register access */
   private final int ID_d() {
-    return ((ID()+(byte)nxtpcb()) & 0xffff);  //---- байт из памяти по адресу п-счетчика PC()
+    return ((ID()+(byte)nxtpcb()) & 0xffff);  //---- Р±Р°Р№С‚ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
   }
 
 
@@ -303,16 +303,16 @@ public class Z80 extends Object {
 
 
 /**----------------------------- Program access ------------------------------------------*/
-  private final int nxtpcb() //---- байт из памяти по адресу п-счетчика PC()
-  {                          //---- и увеличение PC()
+  private final int nxtpcb() //---- Р±Р°Р№С‚ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
+  {                          //---- Рё СѓРІРµР»РёС‡РµРЅРёРµ PC()
     int pc = PC();
     int t = peekb( pc );
     PC( ++pc & 0xffff );
     return t;
   }
 
-  private final int nxtpcw() //---- слово из памяти по адресу п-счетчика PC()
-  {                          //---- и увеличение PC()
+  private final int nxtpcw() //---- СЃР»РѕРІРѕ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
+  {                          //---- Рё СѓРІРµР»РёС‡РµРЅРёРµ PC()
     int pc = PC();
     int t = peekb( pc );
     t |= ( peekb( ++pc & 0xffff ) << 8 );
@@ -363,14 +363,14 @@ public class Z80 extends Object {
   /** Interrupt handlers */
   private static final boolean interruptTriggered( int tstates )
     {                       //--- tstates = local_tstates
-    return (tstates >= 0);  //--- >= если tstates  больше или равно = 0 -> true иначе false
+    return (tstates >= 0);  //--- >= РµСЃР»Рё tstates  Р±РѕР»СЊС€Рµ РёР»Рё СЂР°РІРЅРѕ = 0 -> true РёРЅР°С‡Рµ false
     }
 
   /** Interrupts */
   public int interrupt()
     {                            //--- If not a non-maskable interrupt
 //    System.out.println(" ii->");
-    return 0; //---*** у "СПЕЦИАЛИСТ-а" нет этого прерывания...
+    return 0; //---*** Сѓ "РЎРџР•Р¦РРђР›РРЎРў-Р°" РЅРµС‚ СЌС‚РѕРіРѕ РїСЂРµСЂС‹РІР°РЅРёСЏ...
 /**    if( !IFF1() )
       {
        return 0;
@@ -396,28 +396,28 @@ public class Z80 extends Object {
     return 0; */
   }
 
-/**---------------------- Z80 fetch/execute loop (цикл выборки/выполнения) --------------*/
-//--- основной цикл выполнения кода -----
+/**---------------------- Z80 fetch/execute loop (С†РёРєР» РІС‹Р±РѕСЂРєРё/РІС‹РїРѕР»РЅРµРЅРёСЏ) --------------*/
+//--- РѕСЃРЅРѕРІРЅРѕР№ С†РёРєР» РІС‹РїРѕР»РЅРµРЅРёСЏ РєРѕРґР° -----
 public final void execute() {
-//--- showStatus(" Z80_.execute >"); //-- вызывается из Jasper.class: spectrum.execute();
+//--- showStatus(" Z80_.execute >"); //-- РІС‹Р·С‹РІР°РµС‚СЃСЏ РёР· Jasper.class: spectrum.execute();
     int local_tstates = -tstatesPerInterrupt;
-        //--- в начале local_tstates = числу тактов на прерывание.
-  while ( true )  //---- цикл выборки/выполнения
+        //--- РІ РЅР°С‡Р°Р»Рµ local_tstates = С‡РёСЃР»Сѓ С‚Р°РєС‚РѕРІ РЅР° РїСЂРµСЂС‹РІР°РЅРёРµ.
+  while ( true )  //---- С†РёРєР» РІС‹Р±РѕСЂРєРё/РІС‹РїРѕР»РЅРµРЅРёСЏ
   {
 
     if ( interruptTriggered( local_tstates ) ) //--- local_tstates >= 0 ? true
-       {  //--- число тактов на прерывание исчерпано - вызываем прерывание.
+       {  //--- С‡РёСЃР»Рѕ С‚Р°РєС‚РѕРІ РЅР° РїСЂРµСЂС‹РІР°РЅРёРµ РёСЃС‡РµСЂРїР°РЅРѕ - РІС‹Р·С‹РІР°РµРј РїСЂРµСЂС‹РІР°РЅРёРµ.
        local_tstates -= tstatesPerInterrupt - interrupt();
-       }  //--- local_tstates = числу тактов на прерывание + время прерывания.
+       }  //--- local_tstates = С‡РёСЃР»Сѓ С‚Р°РєС‚РѕРІ РЅР° РїСЂРµСЂС‹РІР°РЅРёРµ + РІСЂРµРјСЏ РїСЂРµСЂС‹РІР°РЅРёСЏ.
 
     REFRESH( 1 );
 
- switch ( nxtpcb() ) //---- байт из памяти по адресу п-счетчика PC()
-    {                   //---- и разбор этого байта как кода
+ switch ( nxtpcb() ) //---- Р±Р°Р№С‚ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
+    {                   //---- Рё СЂР°Р·Р±РѕСЂ СЌС‚РѕРіРѕ Р±Р°Р№С‚Р° РєР°Рє РєРѕРґР°
     case 0:    /* NOP */
     {
-      local_tstates += ( 4 );  //---- каждая операция уменьшает число тактов на прерывание
-      break;                   //---- на свою длительность в тактах
+      local_tstates += ( 4 );  //---- РєР°Р¶РґР°СЏ РѕРїРµСЂР°С†РёСЏ СѓРјРµРЅСЊС€Р°РµС‚ С‡РёСЃР»Рѕ С‚Р°РєС‚РѕРІ РЅР° РїСЂРµСЂС‹РІР°РЅРёРµ
+      break;                   //---- РЅР° СЃРІРѕСЋ РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ РІ С‚Р°РєС‚Р°С…
     }
     case 8:    /* EX AF,AF' */
     {
@@ -431,7 +431,7 @@ public final void execute() {
 
       B( b = qdec8( B() ) );
       if (b != 0) {
-        byte d = (byte) nxtpcb(); //---- байт из памяти по адресу п-счетчика PC()
+        byte d = (byte) nxtpcb(); //---- Р±Р°Р№С‚ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
         PC( (PC()+d)&0xffff );
         local_tstates += ( 13 );
       }
@@ -443,7 +443,7 @@ public final void execute() {
     }
     case 24: /* JR dis */
     {
-      byte d = (byte)nxtpcb();  //---- байт из памяти по адресу п-счетчика PC()
+      byte d = (byte)nxtpcb();  //---- Р±Р°Р№С‚ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
       PC( (PC()+d)&0xffff );
       local_tstates += ( 12 );
       break;
@@ -452,7 +452,7 @@ public final void execute() {
     case 32:    /* JR NZ,dis */
     {
       if (!Zset()) {
-        byte d = (byte)nxtpcb(); //---- байт из памяти по адресу п-счетчика PC()
+        byte d = (byte)nxtpcb(); //---- Р±Р°Р№С‚ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
         PC( (PC()+d)&0xffff );
         local_tstates += ( 12 );
       }
@@ -465,7 +465,7 @@ public final void execute() {
     case 40:    /* JR Z,dis */
     {
       if ( Zset()) {
-        byte d = (byte)nxtpcb(); //---- байт из памяти по адресу п-счетчика PC()
+        byte d = (byte)nxtpcb(); //---- Р±Р°Р№С‚ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
         PC( (PC()+d)&0xffff );
         local_tstates += ( 12 );
       }
@@ -478,7 +478,7 @@ public final void execute() {
     case 48:    /* JR NC,dis */
     {
       if (!Cset()) {
-        byte d = (byte)nxtpcb(); //---- байт из памяти по адресу п-счетчика PC()
+        byte d = (byte)nxtpcb(); //---- Р±Р°Р№С‚ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
         PC( (PC()+d)&0xffff );
         local_tstates += ( 12 );
       }
@@ -491,7 +491,7 @@ public final void execute() {
     case 56:    /* JR C,dis */
     {
       if ( Cset()) {
-        byte d = (byte)nxtpcb();  //---- байт из памяти по адресу п-счетчика PC()
+        byte d = (byte)nxtpcb();  //---- Р±Р°Р№С‚ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
         PC( (PC()+d)&0xffff );
         local_tstates += ( 12 );
       }
@@ -505,7 +505,7 @@ public final void execute() {
     /* LD rr,nn / ADD HL,rr */
     case 1:    /* LD BC(),nn */
     {
-      BC( nxtpcw() );            //---- слово из памяти по адресу п-счетчика PC()
+      BC( nxtpcw() );            //---- СЃР»РѕРІРѕ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
       local_tstates += ( 10 );
       break;
     }
@@ -517,7 +517,7 @@ public final void execute() {
     }
     case 17:    /* LD DE,nn */
     {
-      DE( nxtpcw() );           //---- слово из памяти по адресу п-счетчика PC()
+      DE( nxtpcw() );           //---- СЃР»РѕРІРѕ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
       local_tstates += ( 10 );
       break;
     }
@@ -529,7 +529,7 @@ public final void execute() {
     }
     case 33:    /* LD HL,nn */
     {
-      HL( nxtpcw() );           //---- слово из памяти по адресу п-счетчика PC()
+      HL( nxtpcw() );           //---- СЃР»РѕРІРѕ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
       local_tstates += ( 10 );
       break;
     }
@@ -542,7 +542,7 @@ public final void execute() {
     }
     case 49:    /* LD SP,nn */
     {
-      SP( nxtpcw() );           //---- слово из памяти по адресу п-счетчика PC()
+      SP( nxtpcw() );           //---- СЃР»РѕРІРѕ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ Рї-СЃС‡РµС‚С‡РёРєР° PC()
       local_tstates += ( 10 );
       break;
     }
@@ -1407,7 +1407,7 @@ public final void execute() {
 
     }
 
-    } // end while <----  конец цикла выборки/выполнения
+    } // end while <----  РєРѕРЅРµС† С†РёРєР»Р° РІС‹Р±РѕСЂРєРё/РІС‹РїРѕР»РЅРµРЅРёСЏ
   }
 
 //------------------------------------------------------------------------------------------
