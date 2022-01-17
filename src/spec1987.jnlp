@@ -14,7 +14,7 @@
     </resources>
     <applet-desc
             main-class="spec.Spec1987"
-            name="SwingSet"
-            width="625" height="595">
+            name="Spec1987"
+            width="460" height="320">
      </applet-desc>
 </jnlp>
