@@ -36,7 +36,7 @@ public abstract class VM80 {
 
     private static final int HiMem = 0x10000;// запредел памяти.
 
-    private int tstatesPerInterrupt = 0;
+    private int tstatesPerInterrupt;
 
     private static final int IM0 = 0;
     private static final int IM1 = 1;
@@ -104,97 +104,97 @@ public abstract class VM80 {
     /**
      * Memory
      */
-    public final int[] mem = new int[65536]; // массив байт памяти
+    public int[] mem = new int[65536]; // массив байт памяти
 
     /**
      * 16 bit register access
      */
-    private final int AF() {
+    private int AF() {
         return (A() << 8) | F();
     }
 
-    private final void AF(int word) {
+    private void AF(int word) {
         A(word >> 8);
         F(word & 0xff);
     }
 
-    private final int BC() {
+    private int BC() {
         return (B() << 8) | C();
     }
 
-    private final void BC(int word) {
+    private void BC(int word) {
         B(word >> 8);
         C(word & 0xff);
     }
 
-    private final int DE() {
+    private int DE() {
         return _DE;
     }
 
-    private final void DE(int word) {
+    private void DE(int word) {
         _DE = word;
     }
 
-    private final int HL() {
+    private int HL() {
         return _HL;
     }
 
-    private final void HL(int word) {
+    private void HL(int word) {
         _HL = word;
     }
 
-    private final int PC() {
+    private int PC() {
         return _PC;
     }
 
-    public final void PC(int word) {
+    public void PC(int word) {
         _PC = word;
     }
 
-    private final int SP() {
+    private int SP() {
         return _SP;
     }
 
-    private final void SP(int word) {
+    private void SP(int word) {
         _SP = word;
     }
 
-    private final int ID() {
+    private int ID() {
         return _ID;
     }
 
-    private final void ID(int word) {
+    private void ID(int word) {
         _ID = word;
     }
 
-    private final int IX() {
+    private int IX() {
         return _IX;
     }
 
-    private final void IX(int word) {
+    private void IX(int word) {
         _IX = word;
     }
 
-    private final int IY() {
+    private int IY() {
         return _IY;
     }
 
-    private final void IY(int word) {
+    private void IY(int word) {
         _IY = word;
     }
 
     /**
      * 8 bit register access
      */
-    private final int A() {
+    private int A() {
         return _A;
     }
 
-    private final void A(int bite) {
+    private void A(int bite) {
         _A = bite;
     }
 
-    private final int F() {
+    private int F() {
         return (Sset() ? F_S : 0) |
                 (Zset() ? F_Z : 0) |
                 (f5 ? F_5 : 0) |
@@ -205,7 +205,7 @@ public abstract class VM80 {
                 (Cset() ? F_C : 0);
     }
 
-    private final void F(int bite) {
+    private void F(int bite) {
         fS = (bite & F_S) != 0;
         fZ = (bite & F_Z) != 0;
         f5 = (bite & F_5) != 0;
@@ -216,181 +216,181 @@ public abstract class VM80 {
         fC = (bite & F_C) != 0;
     }
 
-    private final int B() {
+    private int B() {
         return _B;
     }
 
-    private final void B(int bite) {
+    private void B(int bite) {
         _B = bite;
     }
 
-    private final int C() {
+    private int C() {
         return _C;
     }
 
-    private final void C(int bite) {
+    private void C(int bite) {
         _C = bite;
     }
 
-    private final int D() {
+    private int D() {
         return (_DE >> 8);
     }
 
-    private final void D(int bite) {
+    private void D(int bite) {
         _DE = (bite << 8) | (_DE & 0x00ff);
     }
 
-    private final int E() {
+    private int E() {
         return (_DE & 0xff);
     }
 
-    private final void E(int bite) {
+    private void E(int bite) {
         _DE = (_DE & 0xff00) | bite;
     }
 
-    private final int H() {
+    private int H() {
         return (_HL >> 8);
     }
 
-    private final void H(int bite) {
+    private void H(int bite) {
         _HL = (bite << 8) | (_HL & 0x00ff);
     }
 
-    private final int L() {
+    private int L() {
         return (_HL & 0xff);
     }
 
-    private final void L(int bite) {
+    private void L(int bite) {
         _HL = (_HL & 0xff00) | bite;
     }
 
-    private final int IDH() {
+    private int IDH() {
         return (_ID >> 8);
     }
 
-    private final void IDH(int bite) {
+    private void IDH(int bite) {
         _ID = (bite << 8) | (_ID & 0x00ff);
     }
 
-    private final int IDL() {
+    private int IDL() {
         return (_ID & 0xff);
     }
 
-    private final void IDL(int bite) {
+    private void IDL(int bite) {
         _ID = (_ID & 0xff00) | bite;
     }
 
     /**
      * Memory refresh register
      */
-    private final int R7() {
+    private int R7() {
         return _R7;
     }
 
-    private final int R() {
+    private int R() {
         return (_R & 0x7f) | _R7;
     }
 
-    private final void R(int bite) {
+    private void R(int bite) {
         _R = bite;
         _R7 = bite & 0x80;
     }
 
-    private final void REFRESH(int t) {
+    private void REFRESH(int t) {
         _R += t;
     }
 
     /**
      * Interrupt modes/register
      */
-    private final int I() {
+    private int I() {
         return _I;
     }
 
-    private final void I(int bite) {
+    private void I(int bite) {
         _I = bite;
     }
 
-    private final boolean IFF1() {
+    private boolean IFF1() {
         return _IFF1;
     }
 
-    private final void IFF1(boolean iff1) {
+    private void IFF1(boolean iff1) {
         _IFF1 = iff1;
     }
 
-    private final boolean IFF2() {
+    private boolean IFF2() {
         return _IFF2;
     }
 
-    private final void IFF2(boolean iff2) {
+    private void IFF2(boolean iff2) {
         _IFF2 = iff2;
     }
 
-    private final int IM() {
+    private int IM() {
         return _IM;
     }
 
-    private final void IM(int im) {
+    private void IM(int im) {
         _IM = im;
     }
 
     /**
      * Flag access
      */
-    private final void setZ(boolean f) {
+    private void setZ(boolean f) {
         fZ = f;
     }
 
-    private final void setC(boolean f) {
+    private void setC(boolean f) {
         fC = f;
     }
 
-    private final void setS(boolean f) {
+    private void setS(boolean f) {
         fS = f;
     }
 
-    private final void setH(boolean f) {
+    private void setH(boolean f) {
         fH = f;
     }
 
-    private final void setN(boolean f) {
+    private void setN(boolean f) {
         fN = f;
     }
 
-    private final void setPV(boolean f) {
+    private void setPV(boolean f) {
         fPV = f;
     }
 
-    private final void set3(boolean f) {
+    private void set3(boolean f) {
         f3 = f;
     }
 
-    private final void set5(boolean f) {
+    private void set5(boolean f) {
         f5 = f;
     }
 
-    private final boolean Zset() {
+    private boolean Zset() {
         return fZ;
     }
 
-    private final boolean Cset() {
+    private boolean Cset() {
         return fC;
     }
 
-    private final boolean Sset() {
+    private boolean Sset() {
         return fS;
     }
 
-    private final boolean Hset() {
+    private boolean Hset() {
         return fH;
     }
 
-    private final boolean Nset() {
+    private boolean Nset() {
         return fN;
     }
 
-    private final boolean PVset() {
+    private boolean PVset() {
         return fPV;
     }
 
@@ -436,7 +436,7 @@ public abstract class VM80 {
             mem[addr] = newByte;    // в Видео-ОЗУ пишем как в ОЗУ чтобы читать
         }
     }
-    
+
     /**
      * Word access
      */
@@ -503,7 +503,7 @@ public abstract class VM80 {
         }
     }
 
-    private final int peekw(int addr) {
+    private int peekw(int addr) {
         int t = peekb(addr);
         addr++;
         return t | (peekb(addr & 0xffff) << 8);
@@ -512,20 +512,20 @@ public abstract class VM80 {
     /**
      * Index register access
      */
-    private final int ID_d() {
+    private int ID_d() {
         return ((ID() + (byte) nxtpcb()) & 0xffff);  // байт из памяти по адресу п-счетчика PC()
     }
 
     /**
      * Stack access
      */
-    private final void pushw(int word) {
+    private void pushw(int word) {
         int sp = ((SP() - 2) & 0xffff);
         SP(sp);
         pokew(sp, word);
     }
 
-    private final int popw() {
+    private int popw() {
         int sp = SP();
         int t = peekb(sp);
         sp++;
@@ -537,18 +537,18 @@ public abstract class VM80 {
     /**
      * Call stack
      */
-    private final void pushpc() {
+    private void pushpc() {
         pushw(PC());
     }
 
-    private final void poppc() {
+    private void poppc() {
         PC(popw());
     }
 
     /**
      *  Program access
      */
-    private final int nxtpcb() // байт из памяти по адресу п-счетчика PC()
+    private int nxtpcb() // байт из памяти по адресу п-счетчика PC()
     {                          // и увеличение PC()
         int pc = PC();
         int t = peekb(pc);
@@ -556,7 +556,7 @@ public abstract class VM80 {
         return t;
     }
 
-    private final int nxtpcw() // слово из памяти по адресу п-счетчика PC()
+    private int nxtpcw() // слово из памяти по адресу п-счетчика PC()
     {                          // и увеличение PC()
         int pc = PC();
         int t = peekb(pc);
@@ -619,23 +619,15 @@ public abstract class VM80 {
     /**
      * Interrupt handlers
      */
-    private static final boolean interruptTriggered(int tstates) {                       // tstates = local_tstates
+    private static boolean interruptTriggered(int tstates) {                       // tstates = local_tstates
         return (tstates >= 0);  // >= если tstates  больше или равно = 0 -> true иначе false
-    }
-
-    /**
-     * Interrupts
-     */
-    public int interrupt() {
-        // If not a non-maskable interrupt
-        return 0; //*** у "СПЕЦИАЛИСТ-а" нет этого прерывания...
     }
 
     /**
      *  Z80 fetch/execute loop (цикл выборки/выполнения)
      */
     // основной цикл выполнения кода
-    public final void execute() {
+    public void execute() {
     // showStatus(" Z80_.execute >"); // вызывается из Jasper.class: spectrum.execute();
         int local_tstates = -tstatesPerInterrupt;
         // в начале local_tstates = числу тактов на прерывание.
@@ -644,7 +636,8 @@ public abstract class VM80 {
 
             if (interruptTriggered(local_tstates)) // local_tstates >= 0 ? true
             {  // число тактов на прерывание исчерпано - вызываем прерывание.
-                local_tstates -= tstatesPerInterrupt - interrupt();
+                interrupt();
+                local_tstates -= tstatesPerInterrupt;
             }  // local_tstates = числу тактов на прерывание + время прерывания.
 
             REFRESH(1);
@@ -2166,7 +2159,7 @@ public abstract class VM80 {
         }
     }
 
-    private final int execute_ed(int local_tstates) {
+    private int execute_ed(int local_tstates) {
         REFRESH(1);
 
         switch (nxtpcb()) {
@@ -2769,7 +2762,7 @@ public abstract class VM80 {
         return (8);
     }
 
-    private final int execute_cb() {
+    private int execute_cb() {
         REFRESH(1);
 
         switch (nxtpcb()) {
@@ -3857,7 +3850,7 @@ public abstract class VM80 {
         return 0;
     }
 
-    private final int execute_id() {
+    private int execute_id() {
         REFRESH(1);
         switch (nxtpcb()) {
             case 0: /* NOP */
@@ -4435,7 +4428,7 @@ public abstract class VM80 {
         return 0;
     }
 
-    private final void execute_id_cb(int op, int z) {
+    private void execute_id_cb(int op, int z) {
 
         switch (op) {
 
@@ -5497,7 +5490,7 @@ public abstract class VM80 {
         }
     }
 
-    private final int in_bc() {
+    private int in_bc() {
         int ans = inb(BC());
 
         setZ(ans == 0);
@@ -5514,8 +5507,7 @@ public abstract class VM80 {
     /**
      * Add with carry - alters all flags (CHECKED)
      */
-    private final void
-    adc_a(int b) {
+    private void adc_a(int b) {
         int a = A();
         int c = Cset() ? 1 : 0;
         int wans = a + b + c;
@@ -5536,8 +5528,7 @@ public abstract class VM80 {
     /**
      * Add - alters all flags (CHECKED)
      */
-    private final void
-    add_a(int b) {
+    private void add_a(int b) {
         int a = A();
         int wans = a + b;
         int ans = wans & 0xff;
@@ -5557,8 +5548,7 @@ public abstract class VM80 {
     /**
      * Subtract with carry - alters all flags (CHECKED)
      */
-    private final void
-    sbc_a(int b) {
+    private void sbc_a(int b) {
         int a = A();
         int c = Cset() ? 1 : 0;
         int wans = a - b - c;
@@ -5579,8 +5569,7 @@ public abstract class VM80 {
     /**
      * Subtract - alters all flags (CHECKED)
      */
-    private final void
-    sub_a(int b) {
+    private void sub_a(int b) {
         int a = A();
         int wans = a - b;
         int ans = wans & 0xff;
@@ -5600,8 +5589,7 @@ public abstract class VM80 {
     /**
      * Rotate Left - alters H N C 3 5 flags (CHECKED)
      */
-    private final void
-    rlc_a() {
+    private void rlc_a() {
         int ans = A();
         boolean c = (ans & 0x80) != 0;
 
@@ -5624,8 +5612,7 @@ public abstract class VM80 {
     /**
      * Rotate Right - alters H N C 3 5 flags (CHECKED)
      */
-    private final void
-    rrc_a() {
+    private void rrc_a() {
         int ans = A();
         boolean c = (ans & 0x01) != 0;
 
@@ -5647,8 +5634,7 @@ public abstract class VM80 {
     /**
      * Rotate Left through Carry - alters H N C 3 5 flags (CHECKED)
      */
-    private final void
-    rl_a() {
+    private void rl_a() {
         int ans = A();
         boolean c = (ans & 0x80) != 0;
 
@@ -5672,8 +5658,7 @@ public abstract class VM80 {
     /**
      * Rotate Right through Carry - alters H N C 3 5 flags (CHECKED)
      */
-    private final void
-    rr_a() {
+    private void rr_a() {
         int ans = A();
         boolean c = (ans & 0x01) != 0;
 
@@ -5695,8 +5680,7 @@ public abstract class VM80 {
     /**
      * Compare - alters all flags (CHECKED)
      */
-    private final void
-    cp_a(int b) {
+    private void cp_a(int b) {
         int a = A();
         int wans = a - b;
         int ans = wans & 0xff;
@@ -5714,8 +5698,7 @@ public abstract class VM80 {
     /**
      * Bitwise and - alters all flags (CHECKED)
      */
-    private final void
-    and_a(int b) {
+    private void and_a(int b) {
         int ans = A() & b;
 
         setS((ans & F_S) != 0);
@@ -5733,8 +5716,7 @@ public abstract class VM80 {
     /**
      * Bitwise or - alters all flags (CHECKED)
      */
-    private final void
-    or_a(int b) {
+    private void or_a(int b) {
         int ans = A() | b;
 
         setS((ans & F_S) != 0);
@@ -5752,8 +5734,7 @@ public abstract class VM80 {
     /**
      * Bitwise exclusive or - alters all flags (CHECKED)
      */
-    private final void
-    xor_a(int b) {
+    private void xor_a(int b) {
         int ans = (A() ^ b) & 0xff;
 
         setS((ans & F_S) != 0);
@@ -5771,8 +5752,7 @@ public abstract class VM80 {
     /**
      * Negate (Two's complement) - alters all flags (CHECKED)
      */
-    private final void
-    neg_a() {
+    private void neg_a() {
         int t = A();
 
         A(0);
@@ -5782,8 +5762,7 @@ public abstract class VM80 {
     /**
      * One's complement - alters N H 3 5 flags (CHECKED)
      */
-    private final void
-    cpl_a() {
+    private void cpl_a() {
         int ans = A() ^ 0xff;
 
         set3((ans & F_3) != 0);
@@ -5797,8 +5776,7 @@ public abstract class VM80 {
     /**
      * Decimal Adjust Accumulator - alters all flags (CHECKED)
      */
-    private final void
-    daa_a() {
+    private void daa_a() {
         int ans = A();
         int incr = 0;
         boolean carry = Cset();
@@ -5827,8 +5805,7 @@ public abstract class VM80 {
     /**
      * Load a with i - (NOT CHECKED)
      */
-    private final void
-    ld_a_i() {
+    private void ld_a_i() {
         int ans = I();
 
         setS((ans & F_S) != 0);
@@ -5845,8 +5822,7 @@ public abstract class VM80 {
     /**
      * Load a with r - (NOT CHECKED)
      */
-    private final void
-    ld_a_r() {
+    private void ld_a_r() {
         int ans = R();
 
         setS((ans & F_S) != 0);
@@ -5863,8 +5839,7 @@ public abstract class VM80 {
     /**
      * Rotate right through a and (hl) - (NOT CHECKED)
      */
-    private final void
-    rrd_a() {
+    private void rrd_a() {
         int ans = A();
         int t = peekb(HL());
         int q = t;
@@ -5887,8 +5862,7 @@ public abstract class VM80 {
     /**
      * Rotate left through a and (hl) - (NOT CHECKED)
      */
-    private final void
-    rld_a() {
+    private void rld_a() {
         int ans = A();
         int t = peekb(HL());
         int q = t;
@@ -5911,8 +5885,7 @@ public abstract class VM80 {
     /**
      * Test bit - alters all but C flag (CHECKED)
      */
-    private final void
-    bit(int b, int r) {
+    private void bit(int b, int r) {
         boolean bitSet = ((r & b) != 0);
 
         setN(false);
@@ -5927,8 +5900,7 @@ public abstract class VM80 {
     /**
      * Set carry flag - alters N H 3 5 C flags (CHECKED)
      */
-    private final void
-    scf() {
+    private void scf() {
         int ans = A();
 
         set3((ans & F_3) != 0);
@@ -5941,8 +5913,7 @@ public abstract class VM80 {
     /**
      * Complement carry flag - alters N 3 5 C flags (CHECKED)
      */
-    private final void
-    ccf() {
+    private void ccf() {
         int ans = A();
 
         set3((ans & F_3) != 0);
@@ -5954,8 +5925,7 @@ public abstract class VM80 {
     /**
      * Rotate left - alters all flags (CHECKED)
      */
-    private final int
-    rlc(int ans) {
+    private int rlc(int ans) {
         boolean c = (ans & 0x80) != 0;
 
         if (c) {
@@ -5980,8 +5950,7 @@ public abstract class VM80 {
     /**
      * Rotate right - alters all flags (CHECKED)
      */
-    private final int
-    rrc(int ans) {
+    private int rrc(int ans) {
         boolean c = (ans & 0x01) != 0;
 
         if (c) {
@@ -6005,8 +5974,7 @@ public abstract class VM80 {
     /**
      * Rotate left through carry - alters all flags (CHECKED)
      */
-    private final int
-    rl(int ans) {
+    private int rl(int ans) {
         boolean c = (ans & 0x80) != 0;
 
         if (Cset()) {
@@ -6031,8 +5999,7 @@ public abstract class VM80 {
     /**
      * Rotate right through carry - alters all flags (CHECKED)
      */
-    private final int
-    rr(int ans) {
+    private int rr(int ans) {
         boolean c = (ans & 0x01) != 0;
 
         if (Cset()) {
@@ -6056,8 +6023,7 @@ public abstract class VM80 {
     /**
      * Shift Left Arithmetically - alters all flags (CHECKED)
      */
-    private final int
-    sla(int ans) {
+    private int sla(int ans) {
         boolean c = (ans & 0x80) != 0;
         ans = (ans << 1) & 0xff;
 
@@ -6076,8 +6042,7 @@ public abstract class VM80 {
     /**
      * Shift Left and Set - alters all flags (CHECKED)
      */
-    private final int
-    sls(int ans) {
+    private int sls(int ans) {
         boolean c = (ans & 0x80) != 0;
         ans = ((ans << 1) | 0x01) & 0xff;
 
@@ -6096,8 +6061,7 @@ public abstract class VM80 {
     /**
      * Shift Right Arithmetically - alters all flags (CHECKED)
      */
-    private final int
-    sra(int ans) {
+    private int sra(int ans) {
         boolean c = (ans & 0x01) != 0;
         ans = (ans >> 1) | (ans & 0x80);
 
@@ -6116,7 +6080,7 @@ public abstract class VM80 {
     /**
      * Shift Right Logically - alters all flags (CHECKED)
      */
-    private final int srl(int ans) {
+    private int srl(int ans) {
         boolean c = (ans & 0x01) != 0;
         ans = ans >> 1;
 
@@ -6135,7 +6099,7 @@ public abstract class VM80 {
     /**
      * Decrement - alters all but C flag (CHECKED)
      */
-    private final int dec8(int ans) {
+    private int dec8(int ans) {
         boolean pv = (ans == 0x80);
         boolean h = (((ans & 0x0f) - 1) & F_H) != 0;
         ans = (ans - 1) & 0xff;
@@ -6154,7 +6118,7 @@ public abstract class VM80 {
     /**
      * Increment - alters all but C flag (CHECKED)
      */
-    private final int inc8(int ans) {
+    private int inc8(int ans) {
         boolean pv = (ans == 0x7f);
         boolean h = (((ans & 0x0f) + 1) & F_H) != 0;
         ans = (ans + 1) & 0xff;
@@ -6173,7 +6137,7 @@ public abstract class VM80 {
     /**
      * Add with carry - (NOT CHECKED)
      */
-    private final int adc16(int a, int b) {
+    private int adc16(int a, int b) {
         int c = Cset() ? 1 : 0;
         int lans = a + b + c;
         int ans = lans & 0xffff;
@@ -6193,7 +6157,7 @@ public abstract class VM80 {
     /**
      * Add - (NOT CHECKED)
      */
-    private final int add16(int a, int b) {
+    private int add16(int a, int b) {
         int lans = a + b;
         int ans = lans & 0xffff;
 
@@ -6209,7 +6173,7 @@ public abstract class VM80 {
     /**
      * Add with carry - (NOT CHECKED)
      */
-    private final int sbc16(int a, int b) {
+    private int sbc16(int a, int b) {
         int c = Cset() ? 1 : 0;
         int lans = a - b - c;
         int ans = lans & 0xffff;
@@ -6229,7 +6193,7 @@ public abstract class VM80 {
     /**
      * EXX
      */
-    private final void exx() {
+    private void exx() {
         int t;
 
         t = HL();
@@ -6248,7 +6212,7 @@ public abstract class VM80 {
     /**
      * EX AF,AF'
      */
-    private final void ex_af_af() {
+    private void ex_af_af() {
         int t;
         t = AF();
         AF(_AF_);
@@ -6258,32 +6222,32 @@ public abstract class VM80 {
     /**
      * Quick Increment : no flags
      */
-    private static final int inc16(int a) {
+    private static int inc16(int a) {
         return (a + 1) & 0xffff;
     }
 
-    private static final int qinc8(int a) {
+    private static int qinc8(int a) {
         return (a + 1) & 0xff;
     }
 
     /**
      * Quick Decrement : no flags
      */
-    private static final int dec16(int a) {
+    private static int dec16(int a) {
         return (a - 1) & 0xffff;
     }
 
-    private static final int qdec8(int a) {
+    private static int qdec8(int a) {
         return (a - 1) & 0xff;
     }
     /**
      * Bit toggling
      */
-    private static final int res(int bit, int val) {
+    private static int res(int bit, int val) {
         return val & ~bit;
     }
 
-    private static final int set(int bit, int val) {
+    private static int set(int bit, int val) {
         return val | bit;
     }
 
@@ -6292,5 +6256,7 @@ public abstract class VM80 {
     protected abstract void outPort(int addr, int newByte);
 
     protected abstract int inport(int addr);
+
+    protected abstract void interrupt();
 
 }

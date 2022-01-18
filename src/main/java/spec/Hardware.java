@@ -287,7 +287,7 @@ public class Hardware extends VM80 {
 
     // массив матрицы клавш "Специалиста" ( true - нажата, false - отпущена)
     // 12 x 6 + Shift + Reset
-    private final boolean[][] speci_matr = new boolean[12][6];
+    private boolean[][] speci_matr = new boolean[12][6];
 
     /**
      * Матрица клавиш 12х6. True = замкнуто, False = разомкнуто
@@ -546,9 +546,9 @@ public class Hardware extends VM80 {
         }
     }
 
-    // прерывание -
+    // прерывание
     @Override
-    public final int interrupt() {
+    protected void interrupt() {
 
         if (pauseAtNextInterrupt) {
             // поле ввода url
@@ -659,8 +659,6 @@ public class Hardware extends VM80 {
             } catch (Exception ignored) {
             }
         }
-
-        return super.interrupt(); // вернули что-то int
     }
 
     public void pauseOrResume() {
@@ -774,9 +772,7 @@ public class Hardware extends VM80 {
 
     private static final String cancelMessage = "Click here at any time to cancel sleep";
 
-    private final boolean flashInvert = false;
-
-    public final void refreshSpeed() {
+    public void refreshSpeed() {
         long newTime = timeOfLastInterrupt;
 
         if (oldTime != 0) {
@@ -793,7 +789,7 @@ public class Hardware extends VM80 {
     }
 
     // стартовый refresh экрана
-    public final void refreshWholeScreen() {//   первый раз вызывается из Main.class после вызова reset();
+    public void refreshWholeScreen() {//   первый раз вызывается из Main.class после вызова reset();
         // от  0  до  5800Н
         for (int i = 0; i < firstAttr; i++) {//  [ 0 ] = -1, 0, 1 ...  firstAttr - 1
             nextAddr[i] = i - 1; // ВСЕ смещения в области экрана: -1, 0, 1 ...  firstAttr - 1
@@ -817,7 +813,7 @@ public class Hardware extends VM80 {
 
     // запись в видео-ОЗУ
     @Override
-    protected final void plot(int addr, int newByte)   // график ?
+    protected void plot(int addr, int newByte)   // график ?
     {//        addr в видео-ОЗУ;      newByte - байт ОЗУ, он здесь не используется...
         int offset = addr - ScrBeg;  // смещение в видео-ОЗУ: (адрес в ОЗУ) - 4000h
 
@@ -836,7 +832,7 @@ public class Hardware extends VM80 {
         }
     }
 
-    public final void borderPaint()// может понадобиться в Специалист для фокуса экрана
+    public void borderPaint()// может понадобиться в Специалист для фокуса экрана
     {
         if (oldBorder == newBorder)// если признак равен цвету Border - ничего не делать!
         {
@@ -875,7 +871,7 @@ public class Hardware extends VM80 {
     public boolean runAtFullSpeed = true;
 
     //
-    private final void toggleSpeed() {
+    private void toggleSpeed() {
         runAtFullSpeed = !runAtFullSpeed;
         showMessage(statsMessage); //
     }
@@ -888,7 +884,7 @@ public class Hardware extends VM80 {
     }
 
     //
-    public final void statsPaint() {
+    public void statsPaint() {
         if (oldSpeed == newSpeed) {
             return;
         }
@@ -993,7 +989,7 @@ public class Hardware extends VM80 {
     // Отрисовка экрана в буфере
     // Основная идея - как можно меньше РИСОВАТЬ, для этого отслеживаются изменения и
     // ОТРИСОВЫВАЮТСЯ только они.
-    public final void screenPaint() // вызывается из interrupt()
+    public void screenPaint() // вызывается из interrupt()
     {
         int addr = FIRST; // часто = -1 -> не обновляем...
         // в первый заход FIRST = -1 => цикл  while( addr >= 0 ) пропускаем.
@@ -1292,7 +1288,7 @@ public class Hardware extends VM80 {
     // пересчет клавиатуры
     // по коду клавиши и модификаторам определяем в каких переменных  _B_SPC..._CAPS_V изменять
     // отдельные биты, вызывая функции из списка выше...
-    public final boolean doKey(boolean down, int ascii, int mods) { // вызывается  handleEvent      ascii - код
+    public boolean doKey(boolean down, int ascii, int mods) { // вызывается  handleEvent      ascii - код
 
         // находим индекс Ascii-кода нажатой или отпущенной клавиши.
         int index = Arrays.binarySearch(ascii_keys, ascii);
