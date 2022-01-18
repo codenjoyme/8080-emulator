@@ -156,8 +156,8 @@ public class CPU {
 
     private int peekw(int addr) {
         int t = peekb(addr);
-        addr++;
-        return t | (peekb(WORD(addr)) << 8);
+        addr = inc(addr);
+        return t | (peekb(addr) << 8);
     }
 
     private int peekb(int addr) {
@@ -184,9 +184,9 @@ public class CPU {
 
     private int popw() {
         int t = peekb(SP);
-        SP = WORD(++SP);
+        SP = inc(SP);
         t |= (peekb(SP) << 8);
-        SP = WORD(++SP);
+        SP = inc(SP);
         return t;
     }
 
@@ -207,7 +207,7 @@ public class CPU {
      */
     private int nxtpcb() {
         int t = peekb(PC);
-        PC = WORD(++PC);
+        PC = inc(PC);
         return t;
     }
 
@@ -216,9 +216,9 @@ public class CPU {
      */
     private int nxtpcw() {
         int t = peekb(PC);
-        PC = WORD(++PC);
+        PC = inc(PC);
         t |= (peekb(PC) << 8);
-        PC = WORD(++PC);
+        PC = inc(PC);
         return t;
     }
 

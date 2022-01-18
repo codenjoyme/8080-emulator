@@ -29,4 +29,9 @@ public class WordMath {
     public static int WORD(int word) {
         return word & WORD;
     }
+
+    public static int inc(int word) {
+        return WORD(++word);
+    }
+
 }

@@ -1568,7 +1568,7 @@ public class Hardware {
     private void pokew(int addr, int word) {
         pokeb(addr, LO(word));
         // увеличиваем адресс на 1 и если он превысил 0xFFFF, то делаем его равным 0x0000
-        addr = WORD(++addr);
+        addr = inc(addr);
         pokeb(addr, HI(word));
     }
 
