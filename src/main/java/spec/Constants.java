@@ -65,13 +65,9 @@ public class Constants {
     public static final int x10000 = 0x10000;
     
     public static final int START_POINT = 0xC000;  // старт процессора после ристарта
-    public static final int SCREEN_BEGIN = 0x9000; // начало области экрана
-    public static final int SCREEN_END = 0xBFFF; // конец области экрана
-    public static final int ROM_BEGIN = 0xC000; // начало ПЗУ
-    public static final int ROM_END = 0xF7FF; // конец ПЗУ
-    public static final int PORT_BEGIN = 0xF800; // начало портов
-    public static final int PORT_END = 0xFFFE; // конец портов
+    public static final Range SCREEN = new Range(0x9000, 0xBFFF); // область экрана
+    public static final Range ROM = new Range(0xC000, 0xF7FF); // ПЗУ
+    public static final Range PORTS = new Range(0xF800, 0xFFFE); // порты
+
     public static final int OUT_OF_MEMORY = x10000; // запредел памяти
-
-
 }

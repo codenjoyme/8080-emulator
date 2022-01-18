@@ -348,7 +348,7 @@ public class Hardware {
         }
 
         int res = 0x00ff; // предварительно ни одна кнопка не нажата
-        if ((addr > ROM_END) && (addr < RgRYS)) { // port 580BB55
+        if ((addr > ROM.end()) && (addr < RgRYS)) { // port 580BB55
             switch (addr) {// разбираем по каналам...
                 case PortA: {// Порт А
                     if (PrtAIN) {// если порт A - на ввод
@@ -821,7 +821,7 @@ public class Hardware {
         // от  0  до  5800Н
         for (int i = 0; i < firstAttr; i++) {//  [ 0 ] = -1, 0, 1 ...  firstAttr - 1
             nextAddr[i] = i - 1; // ВСЕ смещения в области экрана: -1, 0, 1 ...  firstAttr - 1
-            lastByte[i] = (~mem[i + SCREEN_BEGIN]) & 0xff; // ВСЕ инвертированные байты из видео-ОЗУ.
+            lastByte[i] = (~mem[i + SCREEN.begin()]) & 0xff; // ВСЕ инвертированные байты из видео-ОЗУ.
             //lastByte[ i ] = (mem[ i + 16384 ]) & 0xff;
         }
         first = firstAttr - 1; // последнее смещение байта буфера экрана = 57FFH  != -1 !!!
@@ -842,7 +842,7 @@ public class Hardware {
     // запись в видео-ОЗУ
     private void plot(int addr, int newByte)   // график ?
     {//        addr в видео-ОЗУ;      newByte - байт ОЗУ, он здесь не используется...
-        int offset = addr - SCREEN_BEGIN;  // смещение в видео-ОЗУ: (адрес в ОЗУ) - 4000h
+        int offset = addr - SCREEN.begin();  // смещение в видео-ОЗУ: (адрес в ОЗУ) - 4000h
 
         if (nextAddr[offset] == -1) // если по ЭТОМУ адресу в видео-ОЗУ есть признак ОБНОВИТЬ,
         {
@@ -1122,7 +1122,7 @@ public class Hardware {
         while (addr >= 0) // !=-1
         {
             int oldPixels = lastByte[addr];   // байт из буфера байтов по смещению "first"
-            int newPixels = mem[addr + SCREEN_BEGIN]; // байт из видео-ОЗУ по смещению "first"
+            int newPixels = mem[addr + SCREEN.begin()]; // байт из видео-ОЗУ по смещению "first"
             int changes = oldPixels ^ newPixels; // changes = 0, если они одинаковы...
             //                   ^-XOR
 
@@ -1568,7 +1568,7 @@ public class Hardware {
      * Byte access
      */
     private int peekb(int addr) {
-        if (addr < PORT_BEGIN)     // ПЗУ и ОЗУ Пользователя
+        if (addr < PORTS.begin())     // ПЗУ и ОЗУ Пользователя
         {
             return mem[addr];   // читаем байт
         }
@@ -1576,10 +1576,10 @@ public class Hardware {
     }
 
     private void pokeb(int addr, int newByte) {
-        if (addr > SCREEN_END) {       // > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
+        if (addr > SCREEN.end()) {       // > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
             // для ПК "Специалист" - ПОРТЫ
             if (addr < OUT_OF_MEMORY) {      // <=0FFFFh - ПОРТЫ И ПЗУ
-                if (addr > ROM_END) {   // > 0FFDFh - ПОРТЫ
+                if (addr > ROM.end()) {   // > 0FFDFh - ПОРТЫ
                     outPort(addr, newByte);// в ПОРТЫ пишем   0C000h < ПОРТЫ < 0FFFFh
                     return;
                 } else {
@@ -1590,7 +1590,7 @@ public class Hardware {
             }
         }// далее - ОЗУ + Видео-ОЗУ ниже ПЗУ И ПОРТОВ.
 
-        if (addr < SCREEN_BEGIN) {          // ОЗУ < 9000h
+        if (addr < SCREEN.begin()) {          // ОЗУ < 9000h
             mem[addr] = newByte;    // в ОЗУ пишем   0000h < ОЗУ < 9000h
             return;                   // в ОЗУ пользователя пишем
         }// далее - только Видео-ОЗУ!
@@ -1606,11 +1606,11 @@ public class Hardware {
      */
     private void pokew(int addr, int word) {
         // выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
-        if (addr > SCREEN_END) {
+        if (addr > SCREEN.end()) {
                     // ПОРТЫ И ПЗУ
             if (addr < OUT_OF_MEMORY) {
                 // ПОРТЫ
-                if (addr > ROM_END){
+                if (addr > ROM.end()){
                     outPort(addr, LO(word));
                     if (++addr != OUT_OF_MEMORY) { // != 65536
                         outPort(addr, word >> 8); // старший байт - пишем в ПОРТ
@@ -1627,10 +1627,10 @@ public class Hardware {
             }
         }
         // далее - ОЗУ + Видео-ОЗУ ниже ПЗУ И ПОРТОВ.
-        if (addr < SCREEN_BEGIN) {
+        if (addr < SCREEN.begin()) {
             // ОЗУ
             mem[addr] = LO(word);
-            if (++addr != SCREEN_BEGIN) {
+            if (++addr != SCREEN.begin()) {
                 // если старший байт не попал в видео-ОЗУ.
                 mem[addr] = HI(word);
                 return;
@@ -1654,7 +1654,7 @@ public class Hardware {
         }
 
         int newByte1 = word >> 8;// второй байт слова word
-        if (++addr < ROM_BEGIN) { // ScrBeg < ++addr < ROMBeg;
+        if (++addr < ROM.begin()) { // ScrBeg < ++addr < ROMBeg;
             if (mem[addr] != newByte1) {
                 plot(addr, xFFFF); // в Видео-ОЗУ рисуем
                 mem[addr] = newByte1;
