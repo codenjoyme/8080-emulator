@@ -46,6 +46,9 @@ import java.net.*; //---
 
 //---- class Spechard наследует все методы Z80.class
 public class Spechard extends Z80 {
+
+  public static final int WORD = 0xFFFF;
+
   public Graphics parentGraphics = null;
   public Graphics canvasGraphics = null;
   public Graphics bufferGraphics = null;
@@ -2222,15 +2225,23 @@ public void loadROMZ( String name, InputStream is ) throws Exception {
     readBytes( is, mem, 0, 16384 );
   }
 
-//--- для ПК "Специалист" ---------------------------------------------------------------
-//------------ чтение ПЗУ ---------------------------------------------
-public void loadROM( String name, InputStream is, int offset ) throws Exception {
-    startProgress( "Loading " + name, 2048 );
-
-    readBytes( is, mem, offset, 2048 );
+private void logLoading(String name, int offset, int length) {
+    System.out.printf("Loading '%s' into [%04X:%04X]\n",
+        name,
+        offset & WORD,
+        (offset + length) & WORD);
   }
 
 //--- для ПК "Специалист" ---------------------------------------------------------------
+//------------ чтение ПЗУ ---------------------------------------------
+public void loadROM( String name, InputStream is, int offset ) throws Exception {
+    int length = 2048;
+    startProgress( "Loading " + name, length);
+    logLoading(name, offset, length);
+    readBytes( is, mem, offset, length);
+  }
+
+    //--- для ПК "Специалист" ---------------------------------------------------------------
 //--- ADN: ML_B, ST_B
 //--- ADK: ML_B, ST_B
 //--- Bytes...
@@ -2242,10 +2253,7 @@ int header[] = new int[6];
 int ABeg = header[1] * 256 + header[0];
 int AEnd = header[3] * 256 + header[2];
 int ALen = AEnd - ABeg;
-    System.out.printf("Loading '%s' into [%04X:%04X]\n",
-            name,
-            ABeg & 0xFFFF,
-            AEnd & 0xFFFF);
+    logLoading(name, ABeg, ALen);
     readBytes( is, mem, ABeg, ALen );
     readBytes( is, header, 4, 2 );
 
