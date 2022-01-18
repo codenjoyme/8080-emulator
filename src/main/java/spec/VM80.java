@@ -11,9 +11,9 @@ package spec;
  * @version 1.1 27 Apr 1997
  */
 
-public abstract class Z80 {
+public abstract class VM80 {
 
-    public Z80(double clockFrequencyInMHz) {
+    public VM80(double clockFrequencyInMHz) {
         // число тактов на 1 прерывание, которое происходит 50 раз в секунду.
         // 1000000/50 раз в секунду
         tstatesPerInterrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);

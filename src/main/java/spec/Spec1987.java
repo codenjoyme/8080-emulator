@@ -54,7 +54,7 @@ import java.net.URLConnection;
  */
 public class Spec1987 extends Applet implements Runnable {
 
-    private Spechard spechard = null;
+    private Hardware spechard = null;
     private Thread thread = null;
 
     /**
@@ -150,7 +150,7 @@ public class Spec1987 extends Applet implements Runnable {
                 // Конструктору класса  Spechard()передается ссылка на компонент,
                 // для которого необходимо отслеживать загрузку изображений (или что-то?).
                 // В данном случае это наш аплет,
-                spechard = new Spechard(this);
+                spechard = new Hardware(this);
                 readParameters();
             } catch (Exception e) {
                 showStatus("Caught IO Error: " + e);
@@ -171,7 +171,7 @@ public class Spec1987 extends Applet implements Runnable {
         String rom = getParameter("rom");
 
         spechard.setBorderWidth(getIntParameter("borderWidth",
-                spechard.borderWidth * Spechard.pixelScale, 0, 100));
+                spechard.borderWidth * Hardware.pixelScale, 0, 100));
 
         spechard.refreshRate = getIntParameter("refreshRate",
                 spechard.refreshRate, 1, 100);
@@ -328,12 +328,12 @@ public class Spec1987 extends Applet implements Runnable {
      */
     @Override
     public Dimension minimumSize() {
-        int scale = Spechard.pixelScale;
+        int scale = Hardware.pixelScale;
         int border = (spechard == null) ? 20 : spechard.borderWidth;
 
         return new Dimension(
-                Spechard.nPixelsWide * scale + border * 2,
-                Spechard.nPixelsHigh * scale + border * 2);
+                Hardware.nPixelsWide * scale + border * 2,
+                Hardware.nPixelsHigh * scale + border * 2);
     }
 
     @Override

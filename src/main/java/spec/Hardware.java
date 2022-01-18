@@ -44,10 +44,10 @@ import java.util.Hashtable;
  * @author <A HREF="http://www.odie.demon.co.uk/spectrum">Adam Davidson & Andrew Pollard</A>
  * @version 1.1 27 Apr 1997
  * @see Spec1987
- * @see Z80
+ * @see VM80
  */
 
-public class Spechard extends Z80 {
+public class Hardware extends VM80 {
 
     public static final int WORD = 0xFFFF;
 
@@ -78,7 +78,7 @@ public class Spechard extends Z80 {
      * иерархической системы визуальных объектов. Container отвечает за расположение содержащихся
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
-    public Spechard(Container _parent) throws Exception {
+    public Hardware(Container _parent) throws Exception {
         // Specialist runs at 3.5Mhz;
         super(1.6);
 
