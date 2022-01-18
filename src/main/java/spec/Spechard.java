@@ -47,7 +47,7 @@ import java.util.Hashtable;
  * @see Z80
  */
 
-public class Spechard extends VM80 {
+public class Spechard extends Z80 {
 
     public static final int WORD = 0xFFFF;
 
@@ -308,7 +308,8 @@ public class Spechard extends VM80 {
 
 
     // ввод из порта памяти 580ВВ55
-    public int inport(int addr) {
+    @Override
+    protected int inport(int addr) {
         // все порты ППА перенесём в область 0xffe0 - 0xffe3 ;
         if (addr <= RgRYS) {
             int tma = (addr & 0x0003) | 0xffe0;
