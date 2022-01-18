@@ -111,7 +111,7 @@ public class VM80 {
      * 16 bit register access
      */
     private int AF() {
-        return (A() << 8) | F();
+        return MERGE(A(), F());
     }
 
     private void AF(int word) {
@@ -238,7 +238,7 @@ public class VM80 {
     }
 
     private void D(int bite) {
-        _DE = LO_MERGE(_DE, bite);
+        _DE = LO_MERGE(bite, _DE);
     }
 
     private int E() {
@@ -254,7 +254,7 @@ public class VM80 {
     }
 
     private void H(int bite) {
-        _HL = LO_MERGE(_HL, bite);
+        _HL = LO_MERGE(bite, _HL);
     }
 
     private int L() {
@@ -270,7 +270,7 @@ public class VM80 {
     }
 
     private void IDH(int bite) {
-        _ID = LO_MERGE(_ID, bite);
+        _ID = LO_MERGE(bite, _ID);
     }
 
     private int IDL() {

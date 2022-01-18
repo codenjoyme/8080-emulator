@@ -18,8 +18,12 @@ public class WordMath {
         return (word & HI_BYTE) | bite;
     }
 
-    public static int LO_MERGE(int word, int bite) {
-        return (bite << 8) | LO(word);
+    public static int MERGE(int bite1, int bite2) {
+        return (bite1 << 8) | bite2;
+    }
+
+    public static int LO_MERGE(int bite, int word) {
+        return MERGE(bite, LO(word));
     }
 
     public static int WORD(int word) {
