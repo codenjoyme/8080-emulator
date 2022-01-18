@@ -2,8 +2,8 @@
 <jnlp spec="1.0+" 
       href="application.jnlp">
     <information>
-        <title>Spec1987</title>
-        <vendor>Spec1987</vendor>
+        <title>Specialist emulator</title>
+        <vendor>Commulity</vendor>
     </information>
     <resources>
         <!-- Application Resources -->
@@ -13,8 +13,8 @@
 
     </resources>
     <applet-desc
-            main-class="spec.Spec1987"
-            name="Spec1987"
+            main-class="spec.Main"
+            name="SpecialistEmulator"
             width="460" height="320">
      </applet-desc>
 </jnlp>

@@ -1,7 +1,7 @@
 package spec;
 
 /**
- * @(#)Spec1987.java V1.0 alpha, © 21/05/2011 Sam_Computers LTD
+ * @(#)Main.java V1.0 alpha, © 21/05/2011 Sam_Computers LTD
  * Special thanks to Adam Davidson & Andrew Pollard for Jasper sources.
  */
 
@@ -21,11 +21,11 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
- * <p>The <a href="http://www.odie.demon.co.uk/spectrum">Spec1987</a> class wraps up
+ * <p>The <a href="http://www.odie.demon.co.uk/spectrum">Main</a> class wraps up
  * the Spechard class into an Applet which emulates a ZX Spechard in a Web Page.</p>
  *
  * <p><center>
- * <applet code=Spec1987.class width=296 height=232>
+ * <applet code=Main.class width=296 height=232>
  * <param name=sleepHack value=5>
  * </applet>
  * </center></p>
@@ -47,12 +47,12 @@ import java.net.URLConnection;
  */
 
 /**
- * Класс 'Spec1987' с помощью ключевого слова {extends} наследуется от класса Applet.
- * При этом методам класса 'Spec1987' становятся доступными все методы и данные класса,
+ * Класс 'Main' с помощью ключевого слова {extends} наследуется от класса Applet.
+ * При этом методам класса 'Main' становятся доступными все методы и данные класса,
  * за исключением определенных как private. Класс 'Applet' определен в библиотеке
  * классов java.applet.Applet, которую мы подключили оператором 'import'.
  */
-public class Spec1987 extends Applet implements Runnable {
+public class Main extends Applet implements Runnable {
 
     private Hardware spechard = null;
     private Thread thread = null;
@@ -107,7 +107,7 @@ public class Spec1987 extends Applet implements Runnable {
     @Override
     public void start() {
         if (thread == null) {
-            thread = new Thread(this, "Spec1987");
+            thread = new Thread(this, "Main");
             thread.start();
         }
     }

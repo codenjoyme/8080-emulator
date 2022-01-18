@@ -43,7 +43,7 @@ import java.util.Hashtable;
  *
  * @author <A HREF="http://www.odie.demon.co.uk/spectrum">Adam Davidson & Andrew Pollard</A>
  * @version 1.1 27 Apr 1997
- * @see Spec1987
+ * @see Main
  * @see VM80
  */
 
@@ -82,7 +82,7 @@ public class Hardware extends VM80 {
         // Specialist runs at 3.5Mhz;
         super(1.6);
 
-        // Конструктору класса Spechard() из Spec1987.class передается ссылка на компонент,
+        // Конструктору класса Spechard() из Main.class передается ссылка на компонент,
         // для которого необходимо отслеживать загрузку изображений (или что-то?).
         // В данном случае это наш аплет, > мы передаем конструктору значение (this)!!!
         parent = _parent;
@@ -671,7 +671,7 @@ public class Hardware extends VM80 {
 
     // Метод repaint используется для принудительного перерисовывания апплета.
     // Этот метод, в свою очередь, вызывает метод   update
-    // вызывается из класса "Spec1987" методом  paint( Graphics g ).
+    // вызывается из класса "Main" методом  paint( Graphics g ).
     public void repaint() {
         refreshNextInterrupt = true; // установили флаг - разрешить обновление экрана
     }
@@ -793,7 +793,7 @@ public class Hardware extends VM80 {
     }
 
     // стартовый refresh экрана
-    public final void refreshWholeScreen() {//   первый раз вызывается из Spec1987.class после вызова reset();
+    public final void refreshWholeScreen() {//   первый раз вызывается из Main.class после вызова reset();
         // от  0  до  5800Н
         for (int i = 0; i < firstAttr; i++) {//  [ 0 ] = -1, 0, 1 ...  firstAttr - 1
             nextAddr[i] = i - 1; // ВСЕ смещения в области экрана: -1, 0, 1 ...  firstAttr - 1
@@ -1205,7 +1205,7 @@ public class Hardware extends VM80 {
 
     // Process events from UI - обработка событий
 
-    // вызывается  Spec1987.handleEvent-ом.-
+    // вызывается  Main.handleEvent-ом.-
     public boolean handleEvent(Event e) {  // По сути это переопределённый handleEvent();
         if (e.target == progressBar) { // progressBar Event
             if (e.id == Event.MOUSE_DOWN) {
