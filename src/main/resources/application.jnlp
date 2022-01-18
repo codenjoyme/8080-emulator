@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+" 
-      href="spec.jnlp">
+      href="application.jnlp">
     <information>
         <title>Spec1987</title>
         <vendor>Spec1987</vendor>
