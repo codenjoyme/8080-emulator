@@ -59,8 +59,7 @@ public class CPU {
      */
     private int A = 0;
     private int HL = 0;
-    private int B = 0;
-    private int C = 0;
+    private int BC = 0;
     private int DE = 0;
 
     private boolean fS = false;
@@ -218,23 +217,23 @@ public class CPU {
     }
 
     private int B() {
-        return B;
+        return HI(BC);
     }
 
     private void B(int bite) {
-        B = bite;
+        BC = LO_MERGE(bite, BC);
     }
 
     private int C() {
-        return C;
+        return LO(BC);
     }
 
     private void C(int bite) {
-        C = bite;
+        BC = HI_MERGE(BC, bite);
     }
 
     private int D() {
-        return DE >> 8;
+        return HI(DE);
     }
 
     private void D(int bite) {
@@ -250,7 +249,7 @@ public class CPU {
     }
 
     private int H() {
-        return HL >> 8;
+        return HI(HL);
     }
 
     private void H(int bite) {
