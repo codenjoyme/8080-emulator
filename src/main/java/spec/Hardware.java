@@ -340,15 +340,14 @@ public class Hardware {
 
 
     // ввод из порта памяти 580ВВ55
-    private int inport(int addr) {
+    private int inPort(int addr) {
         // все порты ППА перенесём в область 0xFFE0 - 0xFFE3 ;
         if (addr <= RgRYS) {
-            int tma = (addr & 0x0003) | 0xFFE0;
-            addr = tma;
+            addr = shiftPortAddress(addr);
         }
 
         int res = 0x00FF; // предварительно ни одна кнопка не нажата
-        if ((addr > ROM.end()) && (addr < RgRYS)) { // port 580BB55
+        if (addr > ROM.end() && addr < RgRYS) { // port 580BB55
             switch (addr) {// разбираем по каналам...
                 case PortA: {// Порт А
                     if (PrtAIN) {// если порт A - на ввод
@@ -357,7 +356,7 @@ public class Hardware {
                             {
                                 for (int j = 0; j < 8; j++)  // по битам порта A от 0 до 7
                                 {// если такая нажата  и  такой бит порта B = 0, ставим бит A = 0
-                                    if ((speci_matr[j][i]) && ((mem(PortB) & msk[i + 2]) == 0)) {
+                                    if (speci_matr[j][i] && (mem(PortB) & msk[i + 2]) == 0) {
                                         res &= bit[j];
                                     }
                                 }//  for( int j)
@@ -377,7 +376,7 @@ public class Hardware {
                             {
                                 for (int j = 0; j < 6; j++)  // по битам порта В от 2 до 7
                                 {// если такая нажата  и  такой бит порта A = 0, ставим бит В = 0
-                                    if ((speci_matr[i][j]) && ((mem(PortA) & msk[i]) == 0)) {
+                                    if (speci_matr[i][j] && (mem(PortA) & msk[i]) == 0) {
                                         res &= bit[j + 2];
                                     }
                                 }//  for( int j)
@@ -390,7 +389,7 @@ public class Hardware {
                                 // по битам порта В от 2 до 7
                                 for (int j = 0; j < 6; j++) {
                                     // если такая нажата  и  такой бит порта C = 0, ставим бит В = 0
-                                    if ((speci_matr[i + 8][j]) && ((mem(PortC) & msk[i]) == 0)) {
+                                    if (speci_matr[i + 8][j] && (mem(PortC) & msk[i]) == 0) {
                                         res &= bit[j + 2];
                                     }
                                 }
@@ -427,7 +426,7 @@ public class Hardware {
                             {
                                 for (int j = 0; j < 4; j++)  // по битам порта CLow от 0 до 3
                                 {// если такая нажата  и  такой бит порта В = 0, ставим бит C = 0
-                                    if ((speci_matr[j + 8][i]) && ((mem(PortB) & msk[i + 2]) == 0)) {
+                                    if (speci_matr[j + 8][i] && (mem(PortB) & msk[i + 2]) == 0) {
                                         res = res & bit[j];
                                     }
                                 }// for( int j)
@@ -437,7 +436,7 @@ public class Hardware {
                         // если порт B - на ввод то и делать нечего
                     }// если порта CLow - на ввод   закончился
                     else {// если порта CLow - на вывод
-                        return ((mem(PortC) & 0x000F) | 0x00F0);
+                        return mem(PortC) & 0x000F | 0x00F0;
                     }
                 }// Порт С  закончился
 //ЗДЕСЬ - ПОДУМАТЬ И ПРОВЕРИТЬ!!!
@@ -463,15 +462,15 @@ public class Hardware {
         }
     }
 
-    public void outPort(int port, int outByte) {
+    public void outPort(int addr, int outByte) {
         // все порты ППА перенесём в область 0xFFE0 - 0xFFE3
-        if (port <= RgRYS) {
-            port = (port & 0x0003) | 0xFFE0;
+        if (addr <= RgRYS) {
+            addr = shiftPortAddress(addr);
         }
 
         int tmpByte;
         // Разбор  управляющего слова ППА 580ВВ55
-        if (port == RgRYS) { // РУС
+        if (addr == RgRYS) { // РУС
             if ((outByte & 0x0080) != 0) { // управляющие слова 1-старший бит
                 if ((outByte & 0x0001) != 0) { // КАНАЛ_С(МЛ.)(РС0-РС3)
                     PrC0IN = true; // порт C0- на ввод
@@ -499,7 +498,7 @@ public class Hardware {
                     PrtAIN = false; // порт A - на вывод
                     mem(PortA, 0); // порт A = 0
                 }
-                mem(port, outByte); // в ПОРТ RYC запишем YC   ПОРТЫ 0xFFE3
+                mem(addr, outByte); // в ПОРТ RYC запишем YC   ПОРТЫ 0xFFE3
                 return;
             } else { // побитное управление портом 0xFFE3 .
                 if (!PrC0IN) { // если порт C0- на вывод
@@ -530,7 +529,11 @@ public class Hardware {
                 } // порт C1- на вывод кончился
             }// побитное управление портом 0xFFE3 кончилось
         } // остальные ПОРТЫ: в том числе и 0xFFF8- цвет.
-        mem(port, outByte); // в остальные ПОРТЫ пишем в память: 0xC000 < ПОРТЫ < 0xFFFF
+        mem(addr, outByte); // в остальные ПОРТЫ пишем в память: 0xC000 < ПОРТЫ < 0xFFFF
+    }
+
+    private int shiftPortAddress(int addr) {
+        return (addr & 0x0003) | 0xFFE0;
     }
 
     // Поскольку исполнение проходит как плотный цикл, некоторые реализации виртуальной машины
@@ -1555,15 +1558,11 @@ public class Hardware {
         processor.execute();
     }
 
-    /**
-     * Byte access
-     */
     private int peekb(int addr) {
-        if (addr < PORTS.begin())     // ПЗУ и ОЗУ Пользователя
-        {
-            return mem(addr);   // читаем байт
+        if (PORTS.includes(addr)) {
+            return inPort(addr);
         }
-        return inport(addr);     // возвращаем порт
+        return mem(addr);
     }
 
     private void pokew(int addr, int word) {
