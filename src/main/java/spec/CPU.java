@@ -106,7 +106,7 @@ public class CPU {
     }
 
     private void B(int bite) {
-        BC = loMerge(bite, BC);
+        BC = merge(bite, C());
     }
 
     private int C() {
@@ -114,7 +114,7 @@ public class CPU {
     }
 
     private void C(int bite) {
-        BC = hiMerge(BC, bite);
+        BC = merge(B(), bite);
     }
 
     private int D() {
@@ -122,7 +122,7 @@ public class CPU {
     }
 
     private void D(int bite) {
-        DE = loMerge(bite, DE);
+        DE = merge(bite, E());
     }
 
     private int E() {
@@ -130,7 +130,7 @@ public class CPU {
     }
 
     private void E(int bite) {
-        DE = hiMerge(DE, bite);
+        DE = merge(D(), bite);
     }
 
     private int H() {
@@ -138,7 +138,7 @@ public class CPU {
     }
 
     private void H(int bite) {
-        HL = loMerge(bite, HL);
+        HL = merge(bite, L());
     }
 
     private int L() {
@@ -146,7 +146,7 @@ public class CPU {
     }
 
     private void L(int bite) {
-        HL = hiMerge(HL, bite);
+        HL = merge(H(), bite);
     }
 
     // его часто суммируют, а потому тут этот метод
