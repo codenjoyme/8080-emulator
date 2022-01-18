@@ -20,12 +20,12 @@ public class Z80 {
    // сюда clockFrequencyInMHz передаётся из Spectrum.class: super( 3.5 );
   }
 
-  protected int tstatesPerInterrupt = 0;
+  private int tstatesPerInterrupt = 0;
 // Пользуясь ключевыми словами static и final, можно определять внутри классов
 // глобальные константы.
-  public static final int IM0 = 0;
-  public static final int IM1 = 1;
-  public static final int IM2 = 2;
+  private static final int IM0 = 0;
+  private static final int IM1 = 1;
+  private static final int IM2 = 2;
 
   private static final int F_C  = 0x01;
   private static final int F_N  = 0x02;
@@ -53,85 +53,85 @@ public class Z80 {
   }
 
   /** Main registers */
-  protected int        _A = 0, _HL = 0, _B = 0, _C = 0, _DE = 0;
-  protected boolean    fS = false, fZ  = false, f5 = false, fH = false;
-  protected boolean    f3 = false, fPV = false, fN = false, fC = false;
+  private int        _A = 0, _HL = 0, _B = 0, _C = 0, _DE = 0;
+  private boolean    fS = false, fZ  = false, f5 = false, fH = false;
+  private boolean    f3 = false, fPV = false, fN = false, fC = false;
 
   /** Alternate registers */
-  protected int        _AF_ = 0, _HL_ = 0, _BC_ = 0, _DE_ = 0;
+  private int        _AF_ = 0, _HL_ = 0, _BC_ = 0, _DE_ = 0;
 
   /** Index registers - ID used as temporary for ix/iy */
-  protected int        _IX = 0, _IY = 0, _ID = 0;
+  private int        _IX = 0, _IY = 0, _ID = 0;
 
   /** Stack Pointer and Program Counter */
-  protected int        _SP = 0, _PC = 0xc000; //---*** программный счётчик = 0000h
+  private int        _SP = 0, _PC = 0xc000; //---*** программный счётчик = 0000h
 
   /** Interrupt and Refresh registers */
-  protected int        _I = 0, _R = 0, _R7 = 0;
+  private int        _I = 0, _R = 0, _R7 = 0;
 
   /** Interrupt flip-flops */
-  protected boolean    _IFF1 = true, _IFF2 = true;
-  protected int        _IM = 2;
+  private boolean    _IFF1 = true, _IFF2 = true;
+  private int        _IM = 2;
 
   /** Memory */
   public final int  mem[] = new int[ 65536 ]; // массив байт памяти
 
   /** 16 bit register access */
-  public final int  AF() { return (A() << 8) | F(); }
-  public final void AF( int word ) {
+  private final int  AF() { return (A() << 8) | F(); }
+  private final void AF( int word ) {
     A( word >> 8 );
     F( word & 0xff );
   }
 
-  public final int  BC() { return (B() << 8) | C(); }
-  public final void BC( int word ) {
+  private final int  BC() { return (B() << 8) | C(); }
+  private final void BC( int word ) {
     B( word >> 8 );
     C( word & 0xff );
   }
 
-  public final int  DE() { return _DE; }
-  public final void DE( int word ) {
+  private final int  DE() { return _DE; }
+  private final void DE( int word ) {
     _DE = word;
   }
 
-  public final int  HL() { return _HL; }
-  public final void HL( int word ) {
+  private final int  HL() { return _HL; }
+  private final void HL( int word ) {
     _HL = word;
   }
 
-  public final int  PC() { return _PC; }
-  public final void PC( int word ) {
+  private final int  PC() { return _PC; }
+  public final void PC(int word) {
     _PC = word;
   }
 
-  public final int  SP() { return _SP; }
-  public final void SP( int word ) {
+  private final int  SP() { return _SP; }
+  private final void SP( int word ) {
     _SP = word;
   }
 
-  public final int  ID() { return _ID; }
-  public final void ID( int word ) {
+  private final int  ID() { return _ID; }
+  private final void ID( int word ) {
     _ID = word;
   }
 
-  public final int  IX() { return _IX; }
-  public final void IX( int word ) {
+  private final int  IX() { return _IX; }
+  private final void IX( int word ) {
     _IX = word;
   }
 
-  public final int  IY() { return _IY; }
-  public final void IY( int word ) {
+  private final int  IY() { return _IY; }
+  private final void IY( int word ) {
     _IY = word;
   }
 
 
   /** 8 bit register access */
-  public final int  A() { return _A; }
-  public final void A( int bite ) {
+  private final int  A() { return _A; }
+  private final void A( int bite ) {
     _A = bite;
   }
 
-  public final int F() {
+  private final int F() {
     return  (Sset()  ? F_S  : 0)  |
       (Zset()  ? F_Z  : 0)  |
       (f5      ? F_5  : 0)  |
@@ -141,7 +141,7 @@ public class Z80 {
       (Nset()  ? F_N  : 0)  |
       (Cset()  ? F_C  : 0);
   }
-  public final void F( int bite ) {
+  private final void F( int bite ) {
     fS  = (bite & F_S)  != 0;
     fZ  = (bite & F_Z)  != 0;
     f5  = (bite & F_5)  != 0;
@@ -153,111 +153,111 @@ public class Z80 {
   }
 
 
-  public final int  B() { return _B; }
-  public final void B( int bite ) {
+  private final int  B() { return _B; }
+  private final void B( int bite ) {
     _B = bite;
   }
-  public final int  C() { return _C; }
-  public final void C( int bite ) {
+  private final int  C() { return _C; }
+  private final void C( int bite ) {
     _C = bite;
   }
 
-  public final int  D() { return (_DE >> 8); }
-  public final void D( int bite ) {
+  private final int  D() { return (_DE >> 8); }
+  private final void D( int bite ) {
     _DE = (bite << 8) | (_DE & 0x00ff);
   }
-  public final int  E() { return (_DE & 0xff); }
-  public final void E( int bite ) {
+  private final int  E() { return (_DE & 0xff); }
+  private final void E( int bite ) {
     _DE = (_DE & 0xff00) | bite;
   }
 
-  public final int  H() { return (_HL >> 8); }
-  public final void H( int bite ) {
+  private final int  H() { return (_HL >> 8); }
+  private final void H( int bite ) {
     _HL = (bite << 8) | (_HL & 0x00ff);
   }
-  public final int  L() { return (_HL & 0xff); }
-  public final void L( int bite ) {
+  private final int  L() { return (_HL & 0xff); }
+  private final void L( int bite ) {
     _HL = (_HL & 0xff00) | bite;
   }
 
-  public final int  IDH() { return (_ID >> 8); }
-  public final void IDH( int bite ) {
+  private final int  IDH() { return (_ID >> 8); }
+  private final void IDH( int bite ) {
     _ID = (bite << 8) | (_ID & 0x00ff);
   }
-  public final int  IDL() { return (_ID & 0xff); }
-  public final void IDL( int bite ) {
+  private final int  IDL() { return (_ID & 0xff); }
+  private final void IDL( int bite ) {
     _ID = (_ID & 0xff00) | bite;
   }
 
 
   /** Memory refresh register */
-  public final int  R7() { return _R7; }
-  public final int  R() { return (_R & 0x7f) | _R7; }
-  public final void R( int bite ) {
+  private final int  R7() { return _R7; }
+  private final int  R() { return (_R & 0x7f) | _R7; }
+  private final void R( int bite ) {
     _R  = bite;
     _R7 = bite & 0x80;
   }
 
-  public final void REFRESH( int t ) {
+  private final void REFRESH( int t ) {
     _R += t;
   }
 
 
   /** Interrupt modes/register */
-  public final int  I() { return _I; }
-  public final void I( int bite ) {
+  private final int  I() { return _I; }
+  private final void I( int bite ) {
     _I = bite;
   }
 
-  public final boolean IFF1() { return _IFF1; }
-  public final void IFF1( boolean iff1 ) {
+  private final boolean IFF1() { return _IFF1; }
+  private final void IFF1( boolean iff1 ) {
     _IFF1 = iff1;
   }
 
-  public final boolean IFF2() { return _IFF2; }
-  public final void IFF2( boolean iff2 ) {
+  private final boolean IFF2() { return _IFF2; }
+  private final void IFF2( boolean iff2 ) {
     _IFF2 = iff2;
   }
 
-  public final int IM() { return _IM; }
-  public final void IM( int im ) {
+  private final int IM() { return _IM; }
+  private final void IM( int im ) {
     _IM = im;
   }
 
 
   /** Flag access */
-  public final void setZ( boolean f ) { fZ = f; }
-  public final void setC( boolean f ) { fC = f; }
-  public final void setS( boolean f ) { fS = f; }
-  public final void setH( boolean f ) { fH = f; }
-  public final void setN( boolean f ) { fN = f; }
-  public final void setPV( boolean f ) {fPV = f;}
-  public final void set3( boolean f ) { f3 = f; }
-  public final void set5( boolean f ) { f5 = f; }
+  private final void setZ( boolean f ) { fZ = f; }
+  private final void setC( boolean f ) { fC = f; }
+  private final void setS( boolean f ) { fS = f; }
+  private final void setH( boolean f ) { fH = f; }
+  private final void setN( boolean f ) { fN = f; }
+  private final void setPV( boolean f ) {fPV = f;}
+  private final void set3( boolean f ) { f3 = f; }
+  private final void set5( boolean f ) { f5 = f; }
 
-  public final boolean Zset()  { return fZ; }
-  public final boolean Cset()  { return fC; }
-  public final boolean Sset()  { return fS; }
-  public final boolean Hset()  { return fH; }
-  public final boolean Nset()  { return fN; }
-  public final boolean PVset() { return fPV; }
+  private final boolean Zset()  { return fZ; }
+  private final boolean Cset()  { return fC; }
+  private final boolean Sset()  { return fS; }
+  private final boolean Hset()  { return fH; }
+  private final boolean Nset()  { return fN; }
+  private final boolean PVset() { return fPV; }
 
 
   /** Byte access */
 // private final int peekb( int addr ) {
 //--- для ПК "Специалист" переопределим ---------------------------------
-  public int peekb( int addr ) {
+  protected int peekb( int addr ) {
     return mem[ addr ]; //--- ОЗУ читаем -----
   }
 //--- для ПК "Специалист" переопределим ---------------------------------
 
-  public void pokeb( int addr, int newByte ) {
+  protected void pokeb( int addr, int newByte ) {
     mem[ addr ] = newByte;
   }
 
 
   /** Word access */
-  public void pokew( int addr, int word ) {
+  protected void pokew( int addr, int word ) {
     pokeb( addr, word & 0xff );
     addr++;
     pokeb( addr & 0xffff, word >> 8 );
@@ -277,12 +277,12 @@ public class Z80 {
 
 
   /** Stack access */
-  public final void pushw( int word ) {
+  private final void pushw( int word ) {
     int        sp = ((SP()-2) & 0xffff);
     SP( sp );
     pokew( sp, word );
   }
-  public final int popw() {
+  private final int popw() {
     int  sp = SP();
     int  t  = peekb( sp );
       sp++;
@@ -293,10 +293,10 @@ public class Z80 {
 
 
   /** Call stack */
-  public final void pushpc() {
+  private final void pushpc() {
                              pushw( PC() );
                              }
-  public final void poppc()  {
+  private final void poppc()  {
                              PC( popw() );
                              }
 
@@ -353,9 +353,10 @@ public class Z80 {
 
 
   /** IO ports */
-  public void outb( int port, int bite, int tstates ) {
+  protected void outb( int port, int bite, int tstates ) {
   }
-  public int inb( int port ) {
+
+  protected int inb( int port ) {
     return 0xff;
   }
 
@@ -4222,7 +4223,7 @@ public final void execute() {
   }
 //------------------------------------------------------------------------------------------
   /** EXX */
-  public final void exx() {
+  private final void exx() {
     int t;
 
     t = HL();
@@ -4239,7 +4240,7 @@ public final void execute() {
   }
 //------------------------------------------------------------------------------------------
   /** EX AF,AF' */
-  public final void ex_af_af() {
+  private final void ex_af_af() {
     int   t;
     t = AF(); AF( _AF_ ); _AF_ = t;
   }
