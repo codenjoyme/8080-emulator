@@ -4,6 +4,8 @@ package spec;
  * @(#)Z80.java 1.1 27/04/97 Adam Davidson & Andrew Pollard
  */
 
+import static spec.Constants.*;
+
 /**
  * <p>The Z80 class emulates the Zilog Z80 microprocessor.</p>
  *
@@ -12,70 +14,6 @@ package spec;
  */
 
 public class VM80 {
-
-    private static final int      b11111011 = -5; // TODO перегнать в bits, я тут не уверен
-    private static final int   i1_b00000001 = 1;
-    private static final int   i2_b00000010 = 2;
-    private static final int   i3_b00000011 = 3;
-    private static final int   i4_b00000100 = 4;
-    private static final int   i5_b00000101 = 5;
-    private static final int   i6_b00000110 = 6;
-    private static final int   i7_b00000111 = 7;
-    private static final int   i8_b00001000 = 8;
-    private static final int   i9_b00001001 = 9;
-    private static final int  i10_b00001010 = 10;
-    private static final int  i11_b00001011 = 11;
-    private static final int  i12_b00001100 = 12;
-    private static final int  i13_b00001101 = 13;
-    private static final int  i14_b00001110 = 14;
-    private static final int  i15_b00001111 = 15;
-    private static final int  i16_b00010000 = 16;
-    private static final int  i17_b00010001 = 17;
-    private static final int  i18_b00010010 = 18;
-    private static final int  i19_b00010011 = 19;
-    private static final int  i20_b00010100 = 20;
-    private static final int  i21_b00010101 = 21;
-    private static final int  i22_b00010110 = 22;
-    private static final int  i23_b00010111 = 23;
-    private static final int  i32_b00100000 = 32;
-    private static final int  i64_b01000000 = 64;
-    private static final int  i96_b01100000 = 96;
-    private static final int i127_b01111111 = 127;
-    private static final int i128_b10000000 = 128;
-    private static final int i143_b10001111 = 143;
-    private static final int i153_b10011001 = 153;
-    private static final int i159_b10011111 = 159;
-    private static final int i192_b11000000 = 192;
-    private static final int i240_b11110000 = 0xF0;
-    private static final int i255_b11111111 = 0xFF;
-
-    private static final int x01 =   i1_b00000001;
-    private static final int x02 =   i2_b00000010;
-    private static final int x04 =   i4_b00000100;
-    private static final int x06 =   i6_b00000110;
-    private static final int x08 =   i8_b00001000;
-    private static final int x09 =   i9_b00001001;
-    private static final int x0F =  i15_b00001111;
-    private static final int x10 =  i16_b00010000;
-    private static final int x20 =  i32_b00100000;
-    private static final int x40 =  i64_b01000000;
-    private static final int x60 =  i96_b01100000;
-    private static final int x7F = i127_b01111111;
-    private static final int x80 = i128_b10000000;
-    private static final int x8F = i143_b10001111;
-    private static final int x99 = i153_b10011001;
-    private static final int x9F = i159_b10011111;
-    private static final int xC0 = i192_b11000000;
-    private static final int xF0 = i240_b11110000;
-    private static final int xFF = i255_b11111111;
-    private static final int x100 = 0x100;
-    private static final int x0FFF = 0x0FFF;
-    private static final int x1000 = 0x1000;
-    private static final int x8000 = 0x8000;
-    private static final int xFF00 = 0xFF00;
-    private static final int xFFFF = 0xFFFF;
-    private static final int x10000 = 0x10000;
-
 
     private final Accessor accessor;
 
@@ -86,24 +24,6 @@ public class VM80 {
         this.accessor = accessor;
     }
 
-    private static final int StartPoint = 0xC000;
-
-    private static final int BASEnd = 0x4000; // ROM BASIC END.
-
-    private static final int ATRBeg = 0x5800; // начало области аттрибутов
-    private static final int ATREnd = 0x5aff; // конец области аттрибутов
-
-
-    protected static final int ScrBeg = 0x9000; // 0x9000; начало области экрана 0x4000;
-    private static final int ScrEnd = 0xbfff; // 0xbfff; конец области экрана  0x57ff;
-
-    private static final int ROMBeg = 0xc000; // 0C000H; начало ПЗУ.
-    protected static final int ROMEnd = 0xf7ff; // 0FFDFH; конец  ПЗУ. 0xffdf
-
-    private static final int PortBeg = 0xf800;// начало портов: 0xffe0
-    private static final int PortEnd = 0xfffe;// конец портов: 0xffff - память
-
-    private static final int HiMem = x10000;// запредел памяти.
 
     private int tstatesPerInterrupt;
 
@@ -458,118 +378,22 @@ public class VM80 {
         return fPV;
     }
 
-    /**
-     * Byte access
-     */
-    protected int peekb(int addr) {
-        if (addr < PortBeg)     // ПЗУ и ОЗУ Пользователя
-        {
-            return accessor.mem(addr);   // читаем байт
-        }
-        return accessor.inport(addr);     // возвращаем порт
-    }
-
-    private void pokeb(int addr, int newByte) {
-        if (addr > ScrEnd)       // > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
-        {
-            // для ПК "Специалист" - ПОРТЫ
-            if (addr < HiMem)      // <=0FFFFh - ПОРТЫ И ПЗУ
-            {
-                if (addr > ROMEnd)   // > 0FFDFh - ПОРТЫ
-                {
-                    accessor.outPort(addr, newByte);// в ПОРТЫ пишем   0C000h < ПОРТЫ < 0FFFFh
-                    return;
-                } // ПОРТЫ кончились.
-                else {
-                    return; // в ПЗУ 0C000h-ROMEnd не пишем
-                }
-            } else {// addr вдруг больше 65536 (не может быть!) - укоротим его и продолжим.
-                addr &= xFFFF;
-            }
-        }// далее - ОЗУ + Видео-ОЗУ ниже ПЗУ И ПОРТОВ.
-
-        if (addr < ScrBeg)          // ОЗУ < 9000h
-        {
-            accessor.mem(addr, newByte);    // в ОЗУ пишем   0000h < ОЗУ < 9000h
-            return;                   // в ОЗУ пользователя пишем
-        }// далее - только Видео-ОЗУ!
-
-        if (accessor.mem(addr) != newByte) // правильно! повторно в Видео-ОЗУ записывать глупо!
-        {//       newByte
-            accessor.plot(addr, xFFFF);     // в Видео-ОЗУ рисуем  newByte не используется в plot()
-            accessor.mem(addr, newByte);    // в Видео-ОЗУ пишем как в ОЗУ чтобы читать
-        }
-    }
-
-    /**
-     * Word access
-     */
-    private void pokew(int addr, int word) {
-        if (addr > ScrEnd)       // > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
-        {
-            // для ПК "Специалист" - ПОРТЫ
-            if (addr < HiMem)        // <=0FFFFh - ПОРТЫ И ПЗУ
-            {
-                if (addr > ROMEnd)   // > 0FFDFh - ПОРТЫ
-                {
-                    accessor.outPort(addr, word & xFF);// младший байт - пишем в ПОРТ
-                    if (++addr != HiMem) { // != 65536
-                        accessor.outPort(addr, word >> 8); // старший байт - пишем в ПОРТ
-                        return; // старший байт обслужили - уходим!
-                    } else { // старший байт вышел за HiMem -> addr=0000h;
-                        addr &= xFFFF;
-                        accessor.mem(addr, word >> 8); // старший байт - пишем в ОЗУ
-                        return; // старший байт обслужили - уходим!
-                    }
-                }// ( addr > ROMEnd )
-            }// ( addr < HiMem )
-            else {// addr вдруг больше 65536 (не может быть!) - укоротим его.
-                addr &= xFFFF; // продолжим с новым адресом
-            }
-        }// далее - ОЗУ + Видео-ОЗУ ниже ПЗУ И ПОРТОВ.
-
-
-        if (addr < ScrBeg)            // ОЗУ < 9000h -
-        {
-            accessor.mem(addr, word & xFF); // младший байт - пишем в ОЗУ
-            if (++addr != ScrBeg) {    // если старший байт не попал в видео-ОЗУ.
-                accessor.mem(addr, (word >> 8) & xFF); // старший байт - пишем в ОЗУ.
-                return;
-            } else {// старший байт попал в видео-ОЗУ.
-                int newByte1 = (word >> 8) & xFF; // второй байт слова word
-                if (accessor.mem(addr) != newByte1) // правильно! повторно в Видео-ОЗУ записывать глупо!
-                {
-                    accessor.plot(addr, xFFFF);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
-                    accessor.mem(addr, newByte1);// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
-                }
-                return;// старший байт обслужили - уходим!
-            }
-        }
-        // далее - только Видео-ОЗУ!
-
-        int newByte0 = word & xFF;   // второй байт слова word
-        if (accessor.mem(addr) != newByte0) // правильно! повторно в Видео-ОЗУ записывать глупо!
-        {
-            accessor.plot(addr, xFFFF);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
-            accessor.mem(addr, newByte0);// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
-        }
-
-        int newByte1 = word >> 8;// второй байт слова word
-        if (++addr < ROMBeg) // ScrBeg < ++addr < ROMBeg;
-        {
-            if (accessor.mem(addr) != newByte1) {
-                accessor.plot(addr, xFFFF); // в Видео-ОЗУ рисуем   newByte1
-                accessor.mem(addr, newByte1);
-            }
-        } else { // второй байт слова попал на ROM
-            // в ROM не пишем
-        }
-    }
-
     private int peekw(int addr) {
         int t = peekb(addr);
         addr++;
         return t | (peekb(addr & xFFFF) << 8);
+    }
+
+    private int peekb(int addr) {
+        return accessor.peekb(addr);
+    }
+
+    private void pokew(int addr, int word) {
+        accessor.pokew(addr, word);
+    }
+
+    private void pokeb(int addr, int newByte) {
+        accessor.pokeb(addr, newByte);
     }
 
     /**
@@ -587,6 +411,7 @@ public class VM80 {
         SP(sp);
         pokew(sp, word);
     }
+
 
     private int popw() {
         int sp = SP();

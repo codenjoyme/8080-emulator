@@ -34,8 +34,7 @@ import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.Hashtable;
 
-import static spec.VM80.ROMEnd;
-import static spec.VM80.ScrBeg;
+import static spec.Constants.*;
 
 /**
  * The Spechard class extends the Z80 class implementing the supporting
@@ -51,8 +50,6 @@ import static spec.VM80.ScrBeg;
  */
 
 public class Hardware {
-
-    public static final int WORD = 0xFFFF;
 
     public Graphics parentGraphics = null;
     public Graphics canvasGraphics = null;
@@ -89,20 +86,6 @@ public class Hardware {
     public Hardware(Container _parent) {
         // Specialist runs at 3.5Mhz;
         processor = new VM80(1.6, new Accessor() {
-            @Override
-            public void plot(int addr, int newByte) {
-                Hardware.this.plot(addr, newByte);
-            }
-
-            @Override
-            public void outPort(int addr, int newByte) {
-                Hardware.this.outPort(addr, newByte);
-            }
-
-            @Override
-            public int inport(int addr) {
-                return Hardware.this.inport(addr);
-            }
 
             @Override
             public void interrupt() {
@@ -110,18 +93,23 @@ public class Hardware {
             }
 
             @Override
-            public void mem(int addr, int data) {
-                mem[addr] = data;
-            }
-
-            @Override
-            public int mem(int addr) {
-                return mem[addr];
-            }
-
-            @Override
             public void outb(int port, int outByte, int tstates) {
                 Hardware.this.outb(port, outByte, tstates);
+            }
+
+            @Override
+            public int peekb(int addr) {
+                return Hardware.this.peekb(addr);
+            }
+
+            @Override
+            public void pokeb(int addr, int newByte) {
+                Hardware.this.pokeb(addr, newByte);
+            }
+
+            @Override
+            public void pokew(int addr, int word) {
+                Hardware.this.pokew(addr, word);
             }
         });
 
@@ -1573,5 +1561,113 @@ public class Hardware {
 
     public void execute() {
         processor.execute();
+    }
+
+    /**
+     * Byte access
+     */
+    private int peekb(int addr) {
+        if (addr < PortBeg)     // ПЗУ и ОЗУ Пользователя
+        {
+            return mem[addr];   // читаем байт
+        }
+        return inport(addr);     // возвращаем порт
+    }
+
+    private void pokeb(int addr, int newByte) {
+        if (addr > ScrEnd)       // > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
+        {
+            // для ПК "Специалист" - ПОРТЫ
+            if (addr < HiMem)      // <=0FFFFh - ПОРТЫ И ПЗУ
+            {
+                if (addr > ROMEnd)   // > 0FFDFh - ПОРТЫ
+                {
+                    outPort(addr, newByte);// в ПОРТЫ пишем   0C000h < ПОРТЫ < 0FFFFh
+                    return;
+                } // ПОРТЫ кончились.
+                else {
+                    return; // в ПЗУ 0C000h-ROMEnd не пишем
+                }
+            } else {// addr вдруг больше 65536 (не может быть!) - укоротим его и продолжим.
+                addr &= xFFFF;
+            }
+        }// далее - ОЗУ + Видео-ОЗУ ниже ПЗУ И ПОРТОВ.
+
+        if (addr < ScrBeg)          // ОЗУ < 9000h
+        {
+            mem[addr] = newByte;    // в ОЗУ пишем   0000h < ОЗУ < 9000h
+            return;                   // в ОЗУ пользователя пишем
+        }// далее - только Видео-ОЗУ!
+
+        if (mem[addr] != newByte) // правильно! повторно в Видео-ОЗУ записывать глупо!
+        {//       newByte
+            plot(addr, xFFFF);     // в Видео-ОЗУ рисуем  newByte не используется в plot()
+            mem[addr] = newByte;    // в Видео-ОЗУ пишем как в ОЗУ чтобы читать
+        }
+    }
+
+    /**
+     * Word access
+     */
+    private void pokew(int addr, int word) {
+        if (addr > ScrEnd)       // > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
+        {
+            // для ПК "Специалист" - ПОРТЫ
+            if (addr < HiMem)        // <=0FFFFh - ПОРТЫ И ПЗУ
+            {
+                if (addr > ROMEnd)   // > 0FFDFh - ПОРТЫ
+                {
+                    outPort(addr, word & xFF);// младший байт - пишем в ПОРТ
+                    if (++addr != HiMem) { // != 65536
+                        outPort(addr, word >> 8); // старший байт - пишем в ПОРТ
+                        return; // старший байт обслужили - уходим!
+                    } else { // старший байт вышел за HiMem -> addr=0000h;
+                        addr &= xFFFF;
+                        mem[addr] = word >> 8; // старший байт - пишем в ОЗУ
+                        return; // старший байт обслужили - уходим!
+                    }
+                }// ( addr > ROMEnd )
+            }// ( addr < HiMem )
+            else {// addr вдруг больше 65536 (не может быть!) - укоротим его.
+                addr &= xFFFF; // продолжим с новым адресом
+            }
+        }// далее - ОЗУ + Видео-ОЗУ ниже ПЗУ И ПОРТОВ.
+
+
+        if (addr < ScrBeg)            // ОЗУ < 9000h -
+        {
+            mem[addr] = word & xFF; // младший байт - пишем в ОЗУ
+            if (++addr != ScrBeg) {    // если старший байт не попал в видео-ОЗУ.
+                mem[addr] = (word >> 8) & xFF; // старший байт - пишем в ОЗУ.
+                return;
+            } else {// старший байт попал в видео-ОЗУ.
+                int newByte1 = (word >> 8) & xFF; // второй байт слова word
+                if (mem[addr] != newByte1) // правильно! повторно в Видео-ОЗУ записывать глупо!
+                {
+                    plot(addr, xFFFF);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
+                    mem[addr] = newByte1;// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
+                }
+                return;// старший байт обслужили - уходим!
+            }
+        }
+        // далее - только Видео-ОЗУ!
+
+        int newByte0 = word & xFF;   // второй байт слова word
+        if (mem[addr] != newByte0) // правильно! повторно в Видео-ОЗУ записывать глупо!
+        {
+            plot(addr, xFFFF);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
+            mem[addr] = newByte0;// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
+        }
+
+        int newByte1 = word >> 8;// второй байт слова word
+        if (++addr < ROMBeg) // ScrBeg < ++addr < ROMBeg;
+        {
+            if (mem[addr] != newByte1) {
+                plot(addr, xFFFF); // в Видео-ОЗУ рисуем   newByte1
+                mem[addr] = newByte1;
+            }
+        } else { // второй байт слова попал на ROM
+            // в ROM не пишем
+        }
     }
 }
