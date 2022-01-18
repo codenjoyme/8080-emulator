@@ -230,7 +230,7 @@ public class VM80 {
     }
 
     private void E(int bite) {
-        _DE = (_DE & HI_BYTE) | bite;
+        _DE = HI_MERGE(_DE, bite);
     }
 
     private int H() {
@@ -246,7 +246,7 @@ public class VM80 {
     }
 
     private void L(int bite) {
-        _HL = (_HL & HI_BYTE) | bite;
+        _HL = HI_MERGE(_HL, bite);
     }
 
     private int IDH() {
@@ -262,7 +262,7 @@ public class VM80 {
     }
 
     private void IDL(int bite) {
-        _ID = (_ID & HI_BYTE) | bite;
+        _ID = HI_MERGE(_ID, bite);
     }
 
     /**
