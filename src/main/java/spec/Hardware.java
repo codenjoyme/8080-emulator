@@ -71,6 +71,9 @@ public class Hardware extends VM80 {
     // массив байт цвета контроллера цвета 0C000h-9000h
     public int[] rgb = new int[12288];
 
+    // массив байт памяти
+    public int[] mem = new int[65536];
+
 
     /**
      * Container — это абстрактный подкласс класса Component, определяющий дополнительные методы,
@@ -1531,5 +1534,15 @@ public class Hardware extends VM80 {
             stopProgress();
             throw e;
         }
+    }
+
+    @Override
+    protected void mem(int address, int data) {
+        mem[address] = data;
+    }
+
+    @Override
+    protected int mem(int address) {
+        return mem[address];
     }
 }

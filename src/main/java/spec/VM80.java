@@ -102,11 +102,6 @@ public abstract class VM80 {
     private int _IM = 2;
 
     /**
-     * Memory
-     */
-    public int[] mem = new int[65536]; // массив байт памяти
-
-    /**
      * 16 bit register access
      */
     private int AF() {
@@ -400,7 +395,7 @@ public abstract class VM80 {
     protected int peekb(int addr) {
         if (addr < (PortBeg))     // ПЗУ и ОЗУ Пользователя
         {
-            return mem[addr];   // читаем байт
+            return mem(addr);   // читаем байт
         }
         return inport(addr);     // возвращаем порт
     }
@@ -426,14 +421,14 @@ public abstract class VM80 {
 
         if (addr < ScrBeg)          // ОЗУ < 9000h
         {
-            mem[addr] = newByte;    // в ОЗУ пишем   0000h < ОЗУ < 9000h
+            mem(addr, newByte);    // в ОЗУ пишем   0000h < ОЗУ < 9000h
             return;                   // в ОЗУ пользователя пишем
         }// далее - только Видео-ОЗУ!
 
-        if (mem[addr] != newByte) // правильно! повторно в Видео-ОЗУ записывать глупо!
+        if (mem(addr) != newByte) // правильно! повторно в Видео-ОЗУ записывать глупо!
         {//       newByte
             plot(addr, 0xffff);     // в Видео-ОЗУ рисуем  newByte не используется в plot()
-            mem[addr] = newByte;    // в Видео-ОЗУ пишем как в ОЗУ чтобы читать
+            mem(addr, newByte);    // в Видео-ОЗУ пишем как в ОЗУ чтобы читать
         }
     }
 
@@ -441,7 +436,6 @@ public abstract class VM80 {
      * Word access
      */
     private void pokew(int addr, int word) {
-        int[] _mem = mem;
         if (addr > ScrEnd)       // > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
         {
             // для ПК "Специалист" - ПОРТЫ
@@ -455,7 +449,7 @@ public abstract class VM80 {
                         return; // старший байт обслужили - уходим!
                     } else { // старший байт вышел за HiMem -> addr=0000h;
                         addr &= 0xffff;
-                        _mem[addr] = word >> 8; // старший байт - пишем в ОЗУ
+                        mem(addr, word >> 8); // старший байт - пишем в ОЗУ
                         return; // старший байт обслужили - уходим!
                     }
                 }// ( addr > ROMEnd )
@@ -468,16 +462,16 @@ public abstract class VM80 {
 
         if (addr < ScrBeg)            // ОЗУ < 9000h -
         {
-            _mem[addr] = word & 0xff; // младший байт - пишем в ОЗУ
+            mem(addr, word & 0xff); // младший байт - пишем в ОЗУ
             if (++addr != ScrBeg) {    // если старший байт не попал в видео-ОЗУ.
-                _mem[addr] = (word >> 8) & 0xff; // старший байт - пишем в ОЗУ.
+                mem(addr, (word >> 8) & 0xff); // старший байт - пишем в ОЗУ.
                 return;
             } else {// старший байт попал в видео-ОЗУ.
                 int newByte1 = (word >> 8) & 0xff; // второй байт слова word
-                if (_mem[addr] != newByte1) // правильно! повторно в Видео-ОЗУ записывать глупо!
+                if (mem(addr) != newByte1) // правильно! повторно в Видео-ОЗУ записывать глупо!
                 {
                     plot(addr, 0xffff);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
-                    _mem[addr] = newByte1;// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
+                    mem(addr, newByte1);// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
                 }
                 return;// старший байт обслужили - уходим!
             }
@@ -485,18 +479,18 @@ public abstract class VM80 {
         // далее - только Видео-ОЗУ!
 
         int newByte0 = word & 0xff;   // второй байт слова word
-        if (_mem[addr] != newByte0) // правильно! повторно в Видео-ОЗУ записывать глупо!
+        if (mem(addr) != newByte0) // правильно! повторно в Видео-ОЗУ записывать глупо!
         {
             plot(addr, 0xffff);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
-            _mem[addr] = newByte0;// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
+            mem(addr, newByte0);// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
         }
 
         int newByte1 = word >> 8;// второй байт слова word
         if (++addr < (ROMBeg)) // ScrBeg < ++addr < ROMBeg;
         {
-            if (_mem[addr] != newByte1) {
+            if (mem(addr) != newByte1) {
                 plot(addr, 0xffff); // в Видео-ОЗУ рисуем   newByte1
-                _mem[addr] = newByte1;
+                mem(addr, newByte1);
             }
         } else { // второй байт слова попал на ROM
             return; // в ROM не пишем
@@ -6258,5 +6252,9 @@ public abstract class VM80 {
     protected abstract int inport(int addr);
 
     protected abstract void interrupt();
+
+    protected abstract void mem(int address, int data);
+
+    protected abstract int mem(int address);
 
 }
