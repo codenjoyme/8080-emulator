@@ -64,14 +64,14 @@ public class Constants {
     public static final int xFFFF = 0xFFFF;
     public static final int x10000 = 0x10000;
     
-    public static final int StartPoint = 0xC000;
-    public static final int ScrBeg = 0x9000; // начало области экрана 
-    public static final int ScrEnd = 0xBFFF; // конец области экрана  
-    public static final int ROMBeg = 0xC000; // начало ПЗУ
-    public static final int ROMEnd = 0xF7FF; // конец ПЗУ 
-    public static final int PortBeg = 0xF800; // начало портов
-    public static final int PortEnd = 0xFFFE; // конец портов 
-    public static final int HiMem = x10000; // запредел памяти
+    public static final int START_POINT = 0xC000;  // старт процессора после ристарта
+    public static final int SCREEN_BEGIN = 0x9000; // начало области экрана
+    public static final int SCREEN_END = 0xBFFF; // конец области экрана
+    public static final int ROM_BEGIN = 0xC000; // начало ПЗУ
+    public static final int ROM_END = 0xF7FF; // конец ПЗУ
+    public static final int PORT_BEGIN = 0xF800; // начало портов
+    public static final int PORT_END = 0xFFFE; // конец портов
+    public static final int OUT_OF_MEMORY = x10000; // запредел памяти
 
 
 }

@@ -91,7 +91,7 @@ public class VM80 {
      * Stack Pointer and Program Counter
      */
     private int SP = 0;
-    private int PC = StartPoint;
+    private int PC = START_POINT;
 
     /**
      * Interrupt and Refresh registers
@@ -474,7 +474,7 @@ public class VM80 {
      * Reset all registers to power on state
      */
     public void reset() {
-        PC(StartPoint);
+        PC(START_POINT);
         SP(0);
 
         A(0);
