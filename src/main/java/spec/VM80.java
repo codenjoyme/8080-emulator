@@ -5,6 +5,7 @@ package spec;
  */
 
 import static spec.Constants.*;
+import static spec.WordMath.*;
 
 /**
  * <p>The Z80 class emulates the Zilog Z80 microprocessor.</p>
@@ -99,7 +100,7 @@ public class VM80 {
 
     private void AF(int word) {
         A(word >> 8);
-        F(word & xFF);
+        F(LO(word));
     }
 
     private int BC() {
@@ -108,7 +109,7 @@ public class VM80 {
 
     private void BC(int word) {
         B(word >> 8);
-        C(word & xFF);
+        C(LO(word));
     }
 
     private int DE() {
@@ -217,51 +218,51 @@ public class VM80 {
     }
 
     private int D() {
-        return (_DE >> 8);
+        return _DE >> 8;
     }
 
     private void D(int bite) {
-        _DE = (bite << 8) | (_DE & xFF);
+        _DE = (bite << 8) | LO(_DE);
     }
 
     private int E() {
-        return (_DE & xFF);
+        return LO(_DE);
     }
 
     private void E(int bite) {
-        _DE = (_DE & xFF00) | bite;
+        _DE = (_DE & HI_BYTE) | bite;
     }
 
     private int H() {
-        return (_HL >> 8);
+        return _HL >> 8;
     }
 
     private void H(int bite) {
-        _HL = (bite << 8) | (_HL & xFF);
+        _HL = (bite << 8) | LO(_HL);
     }
 
     private int L() {
-        return (_HL & xFF);
+        return LO(_HL);
     }
 
     private void L(int bite) {
-        _HL = (_HL & xFF00) | bite;
+        _HL = (_HL & HI_BYTE) | bite;
     }
 
     private int IDH() {
-        return (_ID >> 8);
+        return _ID >> 8;
     }
 
     private void IDH(int bite) {
-        _ID = (bite << 8) | (_ID & xFF);
+        _ID = (bite << 8) | LO(_ID);
     }
 
     private int IDL() {
-        return (_ID & xFF);
+        return LO(_ID);
     }
 
     private void IDL(int bite) {
-        _ID = (_ID & xFF00) | bite;
+        _ID = (_ID & HI_BYTE) | bite;
     }
 
     /**
@@ -381,7 +382,7 @@ public class VM80 {
     private int peekw(int addr) {
         int t = peekb(addr);
         addr++;
-        return t | (peekb(addr & xFFFF) << 8);
+        return t | (peekb(WORD(addr)) << 8);
     }
 
     private int peekb(int addr) {
@@ -400,14 +401,14 @@ public class VM80 {
      * Index register access
      */
     private int ID_d() {
-        return ((ID() + (byte) nxtpcb()) & xFFFF);  // байт из памяти по адресу п-счетчика PC()
+        return WORD(ID() + (byte) nxtpcb());  // байт из памяти по адресу п-счетчика PC()
     }
 
     /**
      * Stack access
      */
     private void pushw(int word) {
-        int sp = ((SP() - 2) & xFFFF);
+        int sp = WORD(SP() - 2);
         SP(sp);
         pokew(sp, word);
     }
@@ -417,8 +418,8 @@ public class VM80 {
         int sp = SP();
         int t = peekb(sp);
         sp++;
-        t |= (peekb(sp & xFFFF) << 8);
-        SP(++sp & xFFFF);
+        t |= (peekb(WORD(sp)) << 8);
+        SP(WORD(++sp));
         return t;
     }
 
@@ -440,7 +441,7 @@ public class VM80 {
     {                          // и увеличение PC()
         int pc = PC();
         int t = peekb(pc);
-        PC(++pc & xFFFF);
+        PC(WORD(++pc));
         return t;
     }
 
@@ -448,8 +449,8 @@ public class VM80 {
     {                          // и увеличение PC()
         int pc = PC();
         int t = peekb(pc);
-        t |= (peekb(++pc & xFFFF) << 8);
-        PC(++pc & xFFFF);
+        t |= (peekb(WORD(++pc)) << 8);
+        PC(WORD(++pc));
         return t;
     }
 
@@ -541,7 +542,7 @@ public class VM80 {
                     B(b = qdec8(B()));
                     if (b != 0) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
-                        PC((PC() + d) & xFFFF);
+                        PC(WORD(PC() + d));
                         local_tstates += i13_b00001101;
                     } else {
                         PC(inc16(PC()));
@@ -551,7 +552,7 @@ public class VM80 {
                 }
                 case 24: /* JR dis */ {
                     byte d = (byte) nxtpcb();  // байт из памяти по адресу п-счетчика PC()
-                    PC((PC() + d) & xFFFF);
+                    PC(WORD(PC() + d));
                     local_tstates += i12_b00001100;
                     break;
                 }
@@ -559,7 +560,7 @@ public class VM80 {
                 case 32:    /* JR NZ,dis */ {
                     if (!Zset()) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
-                        PC((PC() + d) & xFFFF);
+                        PC(WORD(PC() + d));
                         local_tstates += i12_b00001100;
                     } else {
                         PC(inc16(PC()));
@@ -570,7 +571,7 @@ public class VM80 {
                 case 40:    /* JR Z,dis */ {
                     if (Zset()) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
-                        PC((PC() + d) & xFFFF);
+                        PC(WORD(PC() + d));
                         local_tstates += i12_b00001100;
                     } else {
                         PC(inc16(PC()));
@@ -581,7 +582,7 @@ public class VM80 {
                 case 48:    /* JR NC,dis */ {
                     if (!Cset()) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
-                        PC((PC() + d) & xFFFF);
+                        PC(WORD(PC() + d));
                         local_tstates += i12_b00001100;
                     } else {
                         PC(inc16(PC()));
@@ -592,7 +593,7 @@ public class VM80 {
                 case 56:    /* JR C,dis */ {
                     if (Cset()) {
                         byte d = (byte) nxtpcb();  // байт из памяти по адресу п-счетчика PC()
-                        PC((PC() + d) & xFFFF);
+                        PC(WORD(PC() + d));
                         local_tstates += i12_b00001100;
                     } else {
                         PC(inc16(PC()));
@@ -1685,7 +1686,7 @@ public class VM80 {
                     if (!Zset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1694,7 +1695,7 @@ public class VM80 {
                     if (Zset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1703,7 +1704,7 @@ public class VM80 {
                     if (!Cset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1712,7 +1713,7 @@ public class VM80 {
                     if (Cset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1721,7 +1722,7 @@ public class VM80 {
                     if (!PVset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1730,7 +1731,7 @@ public class VM80 {
                     if (PVset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1739,7 +1740,7 @@ public class VM80 {
                     if (!Sset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1748,7 +1749,7 @@ public class VM80 {
                     if (Sset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1811,7 +1812,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -1823,7 +1824,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -1835,7 +1836,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -1847,7 +1848,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -1859,7 +1860,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -1871,7 +1872,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -1883,7 +1884,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -1895,7 +1896,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & xFFFF);
+                        PC(WORD(PC() + 2));
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -2492,7 +2493,7 @@ public class VM80 {
                     }
                 } while (count != 0);
                 if (count != 0) {
-                    PC((PC() - 2) & xFFFF);
+                    PC(WORD(PC() - 2));
                     setH(false);
                     setN(false);
                     setPV(true);
@@ -2520,7 +2521,7 @@ public class VM80 {
                 setPV(pv);
                 setC(c);
                 if (pv && !Zset()) {
-                    PC((PC() - 2) & xFFFF);
+                    PC(WORD(PC() - 2));
                     return i21_b00010101;
                 }
                 return i16_b00010000;
@@ -2534,7 +2535,7 @@ public class VM80 {
                 setZ(true);
                 setN(true);
                 if (b != 0) {
-                    PC((PC() - 2) & xFFFF);
+                    PC(WORD(PC() - 2));
                     return i21_b00010101;
                 }
                 return i16_b00010000;
@@ -2548,7 +2549,7 @@ public class VM80 {
                 setZ(true);
                 setN(true);
                 if (b != 0) {
-                    PC((PC() - 2) & xFFFF);
+                    PC(WORD(PC() - 2));
                     return i21_b00010101;
                 }
                 return i16_b00010000;
@@ -2576,7 +2577,7 @@ public class VM80 {
                     }
                 } while (count != 0);
                 if (count != 0) {
-                    PC((PC() - 2) & xFFFF);
+                    PC(WORD(PC() - 2));
                     setH(false);
                     setN(false);
                     setPV(true);
@@ -2604,7 +2605,7 @@ public class VM80 {
                 setPV(pv);
                 setC(c);
                 if (pv && !Zset()) {
-                    PC((PC() - 2) & xFFFF);
+                    PC(WORD(PC() - 2));
                     return i21_b00010101;
                 }
                 return i16_b00010000;
@@ -2618,7 +2619,7 @@ public class VM80 {
                 setZ(true);
                 setN(true);
                 if (b != 0) {
-                    PC((PC() - 2) & xFFFF);
+                    PC(WORD(PC() - 2));
                     return i21_b00010101;
                 }
                 return i16_b00010000;
@@ -2632,7 +2633,7 @@ public class VM80 {
                 setZ(true);
                 setN(true);
                 if (b != 0) {
-                    PC((PC() - 2) & xFFFF);
+                    PC(WORD(PC() - 2));
                     return i21_b00010101;
                 }
                 return i16_b00010000;
@@ -5395,7 +5396,7 @@ public class VM80 {
         int a = A();
         int c = Cset() ? 1 : 0;
         int wans = a + b + c;
-        int ans = wans & xFF;
+        int ans = LO(wans);
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -5415,7 +5416,7 @@ public class VM80 {
     private void add_a(int b) {
         int a = A();
         int wans = a + b;
-        int ans = wans & xFF;
+        int ans = LO(wans);
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -5436,7 +5437,7 @@ public class VM80 {
         int a = A();
         int c = Cset() ? 1 : 0;
         int wans = a - b - c;
-        int ans = wans & xFF;
+        int ans = LO(wans);
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -5456,7 +5457,7 @@ public class VM80 {
     private void sub_a(int b) {
         int a = A();
         int wans = a - b;
-        int ans = wans & xFF;
+        int ans = LO(wans);
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -5482,7 +5483,7 @@ public class VM80 {
         } else {
             ans <<= 1;
         }
-        ans &= xFF;
+        ans = LO(ans);
 
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
@@ -5528,7 +5529,7 @@ public class VM80 {
             ans <<= 1;
         }
 
-        ans &= xFF;
+        ans = LO(ans);
 
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
@@ -5567,7 +5568,7 @@ public class VM80 {
     private void cp_a(int b) {
         int a = A();
         int wans = a - b;
-        int ans = wans & xFF;
+        int ans = LO(wans);
 
         setS((ans & F_S) != 0);
         set3((b & F_3) != 0);
@@ -5619,7 +5620,7 @@ public class VM80 {
      * Bitwise exclusive or - alters all flags (CHECKED)
      */
     private void xor_a(int b) {
-        int ans = (A() ^ b) & xFF;
+        int ans = LO(A() ^ b);
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -5753,7 +5754,7 @@ public class VM80 {
 
         t = (t << 4) | (ans & x0F);
         ans = (ans & xF0) | (q >> 4);
-        pokeb(HL(), (t & xFF));
+        pokeb(HL(), LO(t));
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -5817,7 +5818,7 @@ public class VM80 {
         } else {
             ans <<= 1;
         }
-        ans &= xFF;
+        ans = LO(ans);
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -5866,7 +5867,7 @@ public class VM80 {
         } else {
             ans <<= 1;
         }
-        ans &= xFF;
+        ans = LO(ans);
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -5909,7 +5910,7 @@ public class VM80 {
      */
     private int sla(int ans) {
         boolean c = (ans & x80) != 0;
-        ans = (ans << 1) & xFF;
+        ans = LO(ans << 1);
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -5928,7 +5929,7 @@ public class VM80 {
      */
     private int sls(int ans) {
         boolean c = (ans & x80) != 0;
-        ans = ((ans << 1) | x01) & xFF;
+        ans = LO((ans << 1) | x01);
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -5986,7 +5987,7 @@ public class VM80 {
     private int dec8(int ans) {
         boolean pv = (ans == x80);
         boolean h = (((ans & x0F) - 1) & F_H) != 0;
-        ans = (ans - 1) & xFF;
+        ans = LO(ans - 1);
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -6005,7 +6006,7 @@ public class VM80 {
     private int inc8(int ans) {
         boolean pv = (ans == x7F);
         boolean h = (((ans & x0F) + 1) & F_H) != 0;
-        ans = (ans + 1) & xFF;
+        ans = LO(ans + 1);
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -6024,7 +6025,7 @@ public class VM80 {
     private int adc16(int a, int b) {
         int c = Cset() ? 1 : 0;
         int lans = a + b + c;
-        int ans = lans & xFFFF;
+        int ans = WORD(lans);
 
         setS((ans & (F_S << 8)) != 0);
         set3((ans & (F_3 << 8)) != 0);
@@ -6043,7 +6044,7 @@ public class VM80 {
      */
     private int add16(int a, int b) {
         int lans = a + b;
-        int ans = lans & xFFFF;
+        int ans = WORD(lans);
 
         set3((ans & (F_3 << 8)) != 0);
         set5((ans & (F_5 << 8)) != 0);
@@ -6060,7 +6061,7 @@ public class VM80 {
     private int sbc16(int a, int b) {
         int c = Cset() ? 1 : 0;
         int lans = a - b - c;
-        int ans = lans & xFFFF;
+        int ans = WORD(lans);
 
         setS((ans & (F_S << 8)) != 0);
         set3((ans & (F_3 << 8)) != 0);
@@ -6107,22 +6108,22 @@ public class VM80 {
      * Quick Increment : no flags
      */
     private static int inc16(int a) {
-        return (a + 1) & xFFFF;
+        return WORD(a + 1);
     }
 
     private static int qinc8(int a) {
-        return (a + 1) & xFF;
+        return LO(a + 1);
     }
 
     /**
      * Quick Decrement : no flags
      */
     private static int dec16(int a) {
-        return (a - 1) & xFFFF;
+        return WORD(a - 1);
     }
 
     private static int qdec8(int a) {
-        return (a - 1) & xFF;
+        return LO(a - 1);
     }
     /**
      * Bit toggling

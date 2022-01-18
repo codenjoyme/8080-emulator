@@ -2,10 +2,6 @@ package spec;
 
 public class Constants {
 
-    public static final int WORD = 0xFFFF;
-    public static final int HI_BYTE = 0xFF00;
-    public static final int LO_BYTE = 0x00FF;
-
     public static final int      b11111011 = -5; // TODO перегнать в bits, я тут не уверен
     public static final int   i1_b00000001 = 1;
     public static final int   i2_b00000010 = 2;
@@ -60,13 +56,12 @@ public class Constants {
     public static final int x9F = i159_b10011111;
     public static final int xC0 = i192_b11000000;
     public static final int xF0 = i240_b11110000;
-    public static final int xFF = LO_BYTE;
+    public static final int xFF = 0xFF;
     public static final int x100 = 0x100;
     public static final int x0FFF = 0x0FFF;
     public static final int x1000 = 0x1000;
     public static final int x8000 = 0x8000;
-    public static final int xFF00 = HI_BYTE;
-    public static final int xFFFF = WORD;
+    public static final int xFFFF = 0xFFFF;
     public static final int x10000 = 0x10000;
     
     public static final int StartPoint = 0xC000;
