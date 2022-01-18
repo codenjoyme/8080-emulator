@@ -17,4 +17,8 @@ public class Range {
     public int end() {
         return end;
     }
+
+    public boolean includes(int addr) {
+        return begin <= addr && addr <= end;
+    }
 }

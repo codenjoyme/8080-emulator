@@ -471,7 +471,7 @@ public class Hardware {
 
         int tmpByte;
         // Разбор  управляющего слова ППА 580ВВ55
-        if (port == (RgRYS)) { // РУС
+        if (port == RgRYS) { // РУС
             if ((outByte & 0x0080) != 0) { // управляющие слова 1-старший бит
                 if ((outByte & 0x0001) != 0) { // КАНАЛ_С(МЛ.)(РС0-РС3)
                     PrC0IN = true; // порт C0- на ввод
@@ -714,8 +714,8 @@ public class Hardware {
         PrC1IN = true; // порт C1- на ввод
         Arrays.sort(ascii_keys); // сортируем массив ascii-массив кодов клавиш для поиска
         resetKeyboard();// все кнопки ненажаты
-        mem(RgRYS, 0x009b);// порт RYC[0xFFE3] = 9Bh (все на ввод)
-        mem(RgRGB, 0x0020);// порт цвета - зелёный на черном.
+        pokew(RgRYS, 0x009b);// порт RYC[0xFFE3] = 9Bh (все на ввод)
+        pokew(RgRGB, 0x0020);// порт цвета - зелёный на черном.
     }
 
     //
@@ -836,19 +836,15 @@ public class Hardware {
     }
 
     // запись в видео-ОЗУ
-    private void plot(int addr, int bite)   // график ?
-    {//        addr в видео-ОЗУ;      bite - байт ОЗУ, он здесь не используется...
+    private void plot(int addr) {
         int offset = addr - SCREEN.begin();  // смещение в видео-ОЗУ: (адрес в ОЗУ) - 4000h
 
-        if (nextAddr[offset] == -1) // если по ЭТОМУ адресу в видео-ОЗУ есть признак ОБНОВИТЬ,
-        {
+        if (nextAddr[offset] == -1) { // если по ЭТОМУ адресу в видео-ОЗУ есть признак ОБНОВИТЬ,
             rgb[offset] = mem(RgRGB); // по смещению видео-ОЗУ пишем код в ОЗУ цвета
-            if (offset < firstAttr)  // если ЭТОТ адрес в видео-ОЗУ, а не в аттрибутах,
-            {
+            if (offset < firstAttr) {  // если ЭТОТ адрес в видео-ОЗУ, а не в аттрибутах,
                 nextAddr[offset] = first;// указали в буфере смещений по ЭТОМУ адресу: first
                 first = offset;        // first присвоили значение ЭТОГО адреса смещения в экране
-            } else                   // адрес в ОЗУ аттрибутов:
-            {
+            } else {                   // адрес в ОЗУ аттрибутов:
                 nextAddr[offset] = FIRST;
                 FIRST = offset; // значит обработается в screenPaint()
             }
@@ -1570,93 +1566,30 @@ public class Hardware {
         return inport(addr);     // возвращаем порт
     }
 
-    private void pokeb(int addr, int bite) {
-        if (addr > SCREEN.end()) {       // > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
-            // для ПК "Специалист" - ПОРТЫ
-            if (addr < OUT_OF_MEMORY) {      // <=0xFFFF - ПОРТЫ И ПЗУ
-                if (addr > ROM.end()) {   // > 0xFFDF - ПОРТЫ
-                    outPort(addr, bite);// в ПОРТЫ пишем   0xC000 < ПОРТЫ < 0xFFFF
-                    return;
-                } else {
-                    return; // в ПЗУ 0xC000-ROMEnd не пишем
-                }
-            } else {// addr вдруг больше 65536 (не может быть!) - укоротим его и продолжим.
-                addr = WORD(addr);
-            }
-        }// далее - ОЗУ + Видео-ОЗУ ниже ПЗУ И ПОРТОВ.
-
-        if (addr < SCREEN.begin()) {          // ОЗУ < 0x9000
-            mem(addr, bite);    // в ОЗУ пишем   0x0000 < ОЗУ < 0x9000
-            return;                   // в ОЗУ пользователя пишем
-        }// далее - только Видео-ОЗУ!
-
-        if (mem(addr) != bite) { // правильно! повторно в Видео-ОЗУ записывать глупо!
-            plot(addr, xFFFF);     // в Видео-ОЗУ рисуем  bite не используется в plot()
-            mem(addr, bite);    // в Видео-ОЗУ пишем как в ОЗУ чтобы читать
-        }
+    private void pokew(int addr, int word) {
+        pokeb(addr, LO(word));
+        // увеличиваем адресс на 1 и если он превысил 0xFFFF, то делаем его равным 0x0000
+        addr = WORD(++addr);
+        pokeb(addr, HI(word));
     }
 
-    /**
-     * Word access
-     */
-    private void pokew(int addr, int word) {
-        // выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
-        if (addr > SCREEN.end()) {
-            // ПОРТЫ И ПЗУ
-            if (addr < OUT_OF_MEMORY) {
-                // ПОРТЫ
-                if (addr > ROM.end()){
-                    outPort(addr, LO(word));
-                    if (++addr != OUT_OF_MEMORY) {
-                        outPort(addr, word >> 8); // старший байт - пишем в ПОРТ
-                        return; // старший байт обслужили - уходим!
-                    } else { // старший байт вышел за HiMem -> addr=0x0000;
-                        addr = WORD(addr);
-                        mem(addr, word >> 8); // старший байт - пишем в ОЗУ
-                        return; // старший байт обслужили - уходим!
-                    }
-                }
-            } else {
-                // addr вдруг больше 0xFFFF (не может быть!) - укоротим его.
-                addr = WORD(addr); // продолжим с новым адресом
-            }
-        }
-        // далее - ОЗУ + Видео-ОЗУ ниже ПЗУ И ПОРТОВ.
-        if (addr < SCREEN.begin()) {
-            // ОЗУ
-            mem(addr, LO(word));
-            if (++addr != SCREEN.begin()) {
-                // если старший байт не попал в видео-ОЗУ.
-                mem(addr, HI(word));
-                return;
-            } else {
-                // старший байт попал в видео-ОЗУ.
-                int bite = HI(word); // второй байт слова word
-                if (mem(addr) != bite) { // правильно! повторно в Видео-ОЗУ записывать глупо!
-                    plot(addr, xFFFF);   // в Видео-ОЗУ рисуем
-                    mem(addr, bite);// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
-                }
-                // старший байт обслужили - уходим!
-                return;
-            }
+    private void pokeb(int addr, int bite) {
+        if (ROM.includes(addr)) {
+            // в ПЗУ не пишем
+            return;
         }
 
-        // далее - только Видео-ОЗУ!
-        int bite = LO(word);
-        if (mem(addr) != bite) { // правильно! повторно в Видео-ОЗУ записывать глупо!
-            plot(addr, xFFFF);   // в Видео-ОЗУ рисуем
-            mem(addr, bite);// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
-        }
-
-        bite = HI(word);
-        if (++addr < ROM.begin()) {
+        if (SCREEN.includes(addr)) {
             if (mem(addr) != bite) {
-                plot(addr, xFFFF); // в Видео-ОЗУ рисуем
-                mem(addr, bite);
+                plot(addr); // было изменение ячейки видеопамяти
             }
-        } else { // второй байт слова попал на ROM
-            // в ROM не пишем
         }
+
+        if (PORTS.includes(addr)) {
+            outPort(addr, bite);
+        }
+
+        mem(addr, bite);
     }
 
     private int mem(int addr) {
