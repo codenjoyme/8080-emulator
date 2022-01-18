@@ -153,4 +153,24 @@ Loading 'http://localhost:8080/lik/apps/klad.rks' into [0000:4430]
 cache: MemoryCache: removed entry http://localhost:8080/spec.jnlp
 ```
 
+От Авторов
+--------------
+
+BASIC [http://www.nvg.unit.no/sinclair/planet/faq.htm](Online Manuals)
+
+If you click on the progress bar at the foot of the screen, it will speed
+up the emulator although on some systems you may find that this locks up
+your browser. If it works, subsequent clicks on the progress bar will toggle
+between Fast and Slow modes. In Fast mode the Spectrum will try to consume
+as much CPU time as it can, making the Spectrum run as fast as possible. In
+Slow mode if the Spectrum is running over 100% (faster than the
+original Spectrum) it will try to slow itself down to be closer to 100%.
+
+The source code is available online from 
+[http://www.spectrum.lovely.net/jasp1_1j.zip](here). 
+The AMDProgressBar class was written by [http://www.cs.brown.edu/people/amd/](Adam Doppelt).
+
+Comments: [mailto:spectrum@odie.demon.co.uk](spectrum@odie.demon.co.uk).
+
+
 Enjoy!
