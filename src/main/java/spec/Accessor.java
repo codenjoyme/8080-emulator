@@ -4,7 +4,7 @@ public interface Accessor {
 
     void interrupt();
 
-    void outb(int port, int bite, int tstates);
+    void outb(int port, int bite);
 
     int peekb(int addr);
 

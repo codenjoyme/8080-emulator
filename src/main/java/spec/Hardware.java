@@ -94,8 +94,8 @@ public class Hardware {
             }
 
             @Override
-            public void outb(int port, int bite, int tstates) {
-                Hardware.this.outb(port, bite, tstates);
+            public void outb(int port, int bite) {
+                Hardware.this.outb(port, bite);
             }
 
             @Override
@@ -457,21 +457,19 @@ public class Hardware {
         return (res);
     }
 
-    // вывод в порт Spectrum
-    private void outb(int port, int outByte, int tstates) {
+    private void outb(int port, int outByte) {
         if ((port & 0x0001) == 0) {   // port xx.FEh
             newBorder = (outByte & 0x000F); // 0000.0111 бордюр & 0x07
         }
     }
 
     public void outPort(int port, int outByte) {
-        // все порты ППА перенесём в область 0xFFE0 - 0xFFE3 ;
+        // все порты ППА перенесём в область 0xFFE0 - 0xFFE3
         if (port <= RgRYS) {
-            int tmp = (port & 0x0003) | 0xFFE0;
-            port = tmp;
+            port = (port & 0x0003) | 0xFFE0;
         }
 
-        int tmpByte = 0x00FF;
+        int tmpByte;
         // Разбор  управляющего слова ППА 580ВВ55
         if (port == (RgRYS)) { // РУС
             if ((outByte & 0x0080) != 0) { // управляющие слова 1-старший бит
@@ -640,9 +638,9 @@ public class Hardware {
             {  // Этот оператор возвращает остаток от деления первого операнда на второй.
                 invfoc = !invfoc;
                 if (invfoc) { // обновить мигающий бордюр
-                    outb(254, 0x06, 0); //
+                    outb(254, 0x06);
                 } else {
-                    outb(254, 0x04, 0); //
+                    outb(254, 0x04);
                 }
             }
         }
@@ -705,9 +703,9 @@ public class Hardware {
     public void reset() {
         processor.reset(); // reset() class Z80
         if (wfocus) {
-            outb(254, 0x02, 0); //
+            outb(254, 0x02);
         } else {
-            outb(254, 0x06, 0); // White border on startup: port 0FEh ff
+            outb(254, 0x06); // White border on startup: port 0FEh ff
         }
         Shiftk = false; // Shift не нажат
         PrtAIN = true; // порт A - на ввод
@@ -1274,14 +1272,14 @@ public class Hardware {
 
             case Event.GOT_FOCUS:
                 showMessage("'SPECIALIST' GOT FOCUS");
-                outb(254, 0x02, 0); //
+                outb(254, 0x02);
                 wfocus = true;
                 resetKeyboard();
                 return true;
 
             case Event.LOST_FOCUS:
                 showMessage("'SPECIALIST' LOST FOCUS");
-                outb(254, 0x06, 0); //
+                outb(254, 0x06);
                 wfocus = false;
                 resetKeyboard();
                 return true;

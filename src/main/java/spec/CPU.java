@@ -1783,7 +1783,7 @@ public class CPU {
                     break;
                 }
                 case 211:    /* OUT (n),A */ {
-                    accessor.outb(nxtpcb(), A(), local_tstates);
+                    accessor.outb(nxtpcb(), A());
                     local_tstates += i11_b00001011;
                     break;
                 }
@@ -2214,35 +2214,35 @@ public class CPU {
 
             /* OUT (c),r */
             case 65:  /* OUT (c),B */ {
-                accessor.outb(BC(), B(), local_tstates);
+                accessor.outb(BC(), B());
                 return i12_b00001100;
             }
             case 73:  /* OUT (c),C */ {
-                accessor.outb(BC(), C(), local_tstates);
+                accessor.outb(BC(), C());
                 return i12_b00001100;
             }
             case 81:  /* OUT (c),D */ {
-                accessor.outb(BC(), D(), local_tstates);
+                accessor.outb(BC(), D());
                 return i12_b00001100;
             }
             case 89:  /* OUT (c),E */ {
-                accessor.outb(BC(), E(), local_tstates);
+                accessor.outb(BC(), E());
                 return i12_b00001100;
             }
             case 97:  /* OUT (c),H */ {
-                accessor.outb(BC(), H(), local_tstates);
+                accessor.outb(BC(), H());
                 return i12_b00001100;
             }
             case 105:  /* OUT (c),L */ {
-                accessor.outb(BC(), L(), local_tstates);
+                accessor.outb(BC(), L());
                 return i12_b00001100;
             }
             case 113:  /* OUT (c),0 */ {
-                accessor.outb(BC(), 0, local_tstates);
+                accessor.outb(BC(), 0);
                 return i12_b00001100;
             }
             case 121:  /* OUT (c),A */ {
-                accessor.outb(BC(), A(), local_tstates);
+                accessor.outb(BC(), A());
                 return i12_b00001100;
             }
 
@@ -2430,7 +2430,7 @@ public class CPU {
             case 163:  /* OUTI */ {
                 int b;
                 B(b = qdec8(B()));
-                accessor.outb(BC(), peekb(HL()), local_tstates);
+                accessor.outb(BC(), peekb(HL()));
                 HL(inc16(HL()));
 
                 setZ(b == 0);
@@ -2478,7 +2478,7 @@ public class CPU {
             case 171:  /* OUTD */ {
                 int b;
                 B(b = qdec8(B()));
-                accessor.outb(BC(), peekb(HL()), local_tstates);
+                accessor.outb(BC(), peekb(HL()));
                 HL(dec16(HL()));
 
                 setZ(b == 0);
@@ -2559,7 +2559,7 @@ public class CPU {
             case 179:  /* OTIR */ {
                 int b;
                 B(b = qdec8(B()));
-                accessor.outb(BC(), peekb(HL()), local_tstates);
+                accessor.outb(BC(), peekb(HL()));
                 HL(inc16(HL()));
 
                 setZ(true);
@@ -2643,7 +2643,7 @@ public class CPU {
             case 187:  /* OTDR */ {
                 int b;
                 B(b = qdec8(B()));
-                accessor.outb(BC(), peekb(HL()), local_tstates);
+                accessor.outb(BC(), peekb(HL()));
                 HL(dec16(HL()));
 
                 setZ(true);
