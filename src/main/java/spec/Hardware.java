@@ -1566,10 +1566,10 @@ public class Hardware {
     }
 
     private void pokew(int addr, int word) {
-        pokeb(addr, LO(word));
+        pokeb(addr, lo(word));
         // увеличиваем адресс на 1 и если он превысил 0xFFFF, то делаем его равным 0x0000
         addr = inc(addr);
-        pokeb(addr, HI(word));
+        pokeb(addr, hi(word));
     }
 
     private void pokeb(int addr, int bite) {

@@ -74,12 +74,12 @@ public class CPU {
      * 16 bit register access
      */
     private int AF() {
-        return MERGE(A, F());
+        return merge(A, F());
     }
 
     private void AF(int word) {
         A = word >> 8;
-        F(LO(word));
+        F(lo(word));
     }
 
     private int F() {
@@ -102,51 +102,51 @@ public class CPU {
     }
 
     private int B() {
-        return HI(BC);
+        return hi(BC);
     }
 
     private void B(int bite) {
-        BC = LO_MERGE(bite, BC);
+        BC = loMerge(bite, BC);
     }
 
     private int C() {
-        return LO(BC);
+        return lo(BC);
     }
 
     private void C(int bite) {
-        BC = HI_MERGE(BC, bite);
+        BC = hiMerge(BC, bite);
     }
 
     private int D() {
-        return HI(DE);
+        return hi(DE);
     }
 
     private void D(int bite) {
-        DE = LO_MERGE(bite, DE);
+        DE = loMerge(bite, DE);
     }
 
     private int E() {
-        return LO(DE);
+        return lo(DE);
     }
 
     private void E(int bite) {
-        DE = HI_MERGE(DE, bite);
+        DE = hiMerge(DE, bite);
     }
 
     private int H() {
-        return HI(HL);
+        return hi(HL);
     }
 
     private void H(int bite) {
-        HL = LO_MERGE(bite, HL);
+        HL = loMerge(bite, HL);
     }
 
     private int L() {
-        return LO(HL);
+        return lo(HL);
     }
 
     private void L(int bite) {
-        HL = HI_MERGE(HL, bite);
+        HL = hiMerge(HL, bite);
     }
 
     // его часто суммируют, а потому тут этот метод
@@ -177,7 +177,7 @@ public class CPU {
      * Stack access
      */
     private void pushw(int word) {
-        SP = WORD(SP - 2);
+        SP = word(SP - 2);
         pokew(SP, word);
     }
 
@@ -283,7 +283,7 @@ public class CPU {
                     B(b = qdec8(B()));
                     if (b != 0) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
-                        PC = WORD(PC + d);
+                        PC = word(PC + d);
                         ticks += 13;
                     } else {
                         PC = inc16(PC);
@@ -293,7 +293,7 @@ public class CPU {
                 }
                 case 24: /* JR dis */ {
                     byte d = (byte) nxtpcb();  // байт из памяти по адресу п-счетчика PC()
-                    PC = WORD(PC + d);
+                    PC = word(PC + d);
                     ticks += 12;
                     break;
                 }
@@ -301,7 +301,7 @@ public class CPU {
                 case 32:    /* JR NZ,dis */ {
                     if (!tz) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
-                        PC = WORD(PC + d);
+                        PC = word(PC + d);
                         ticks += 12;
                     } else {
                         PC = inc16(PC);
@@ -312,7 +312,7 @@ public class CPU {
                 case 40:    /* JR Z,dis */ {
                     if (tz) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
-                        PC = WORD(PC + d);
+                        PC = word(PC + d);
                         ticks += 12;
                     } else {
                         PC = inc16(PC);
@@ -323,7 +323,7 @@ public class CPU {
                 case 48:    /* JR NC,dis */ {
                     if (!tc) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
-                        PC = WORD(PC + d);
+                        PC = word(PC + d);
                         ticks += 12;
                     } else {
                         PC = inc16(PC);
@@ -334,7 +334,7 @@ public class CPU {
                 case 56:    /* JR C,dis */ {
                     if (tc) {
                         byte d = (byte) nxtpcb();  // байт из памяти по адресу п-счетчика PC()
-                        PC = WORD(PC + d);
+                        PC = word(PC + d);
                         ticks += 12;
                     } else {
                         PC = inc16(PC);
@@ -1428,7 +1428,7 @@ public class CPU {
                     if (!tz) {
                         PC = nxtpcw();
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                     }
                     ticks += 10;
                     break;
@@ -1437,7 +1437,7 @@ public class CPU {
                     if (tz) {
                         PC = nxtpcw();
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                     }
                     ticks += 10;
                     break;
@@ -1446,7 +1446,7 @@ public class CPU {
                     if (!tc) {
                         PC = nxtpcw();
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                     }
                     ticks += 10;
                     break;
@@ -1455,7 +1455,7 @@ public class CPU {
                     if (tc) {
                         PC = nxtpcw();
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                     }
                     ticks += 10;
                     break;
@@ -1464,7 +1464,7 @@ public class CPU {
                     if (!tp) {
                         PC = nxtpcw();
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                     }
                     ticks += 10;
                     break;
@@ -1473,7 +1473,7 @@ public class CPU {
                     if (tp) {
                         PC = nxtpcw();
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                     }
                     ticks += 10;
                     break;
@@ -1482,7 +1482,7 @@ public class CPU {
                     if (!ts) {
                         PC = nxtpcw();
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                     }
                     ticks += 10;
                     break;
@@ -1491,7 +1491,7 @@ public class CPU {
                     if (ts) {
                         PC = nxtpcw();
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                     }
                     ticks += 10;
                     break;
@@ -1549,7 +1549,7 @@ public class CPU {
                         PC = t;
                         ticks += 17;
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                         ticks += 10;
                     }
                     break;
@@ -1561,7 +1561,7 @@ public class CPU {
                         PC = t;
                         ticks += 17;
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                         ticks += 10;
                     }
                     break;
@@ -1573,7 +1573,7 @@ public class CPU {
                         PC = t;
                         ticks += 17;
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                         ticks += 10;
                     }
                     break;
@@ -1585,7 +1585,7 @@ public class CPU {
                         PC = t;
                         ticks += 17;
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                         ticks += 10;
                     }
                     break;
@@ -1597,7 +1597,7 @@ public class CPU {
                         PC = t;
                         ticks += 17;
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                         ticks += 10;
                     }
                     break;
@@ -1609,7 +1609,7 @@ public class CPU {
                         PC = t;
                         ticks += 17;
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                         ticks += 10;
                     }
                     break;
@@ -1621,7 +1621,7 @@ public class CPU {
                         PC = t;
                         ticks += 17;
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                         ticks += 10;
                     }
                     break;
@@ -1633,7 +1633,7 @@ public class CPU {
                         PC = t;
                         ticks += 17;
                     } else {
-                        PC = WORD(PC + 2);
+                        PC = word(PC + 2);
                         ticks += 10;
                     }
                     break;
@@ -1779,7 +1779,7 @@ public class CPU {
         int a = A;
         int c = Tci();
         int wans = a + b + c;
-        int ans = LO(wans);
+        int ans = lo(wans);
 
         ts = (ans & T7s) != 0;
         tz = ans == 0;
@@ -1797,7 +1797,7 @@ public class CPU {
     private void add_a(int b) {
         int a = A;
         int wans = a + b;
-        int ans = LO(wans);
+        int ans = lo(wans);
 
         ts = (ans & T7s) != 0;
         tz = ans == 0;
@@ -1816,7 +1816,7 @@ public class CPU {
         int a = A;
         int c = Tci();
         int wans = a - b - c;
-        int ans = LO(wans);
+        int ans = lo(wans);
 
         ts = (ans & T7s) != 0;
         tz = ans == 0;
@@ -1833,7 +1833,7 @@ public class CPU {
     private void sub_a(int b) {
         int a = A;
         int wans = a - b;
-        int ans = LO(wans);
+        int ans = lo(wans);
 
         ts = (ans & T7s) != 0;
         tz = ans == 0;
@@ -1856,7 +1856,7 @@ public class CPU {
         } else {
             ans <<= 1;
         }
-        ans = LO(ans);
+        ans = lo(ans);
 
         th = false;
         tc = c;
@@ -1896,7 +1896,7 @@ public class CPU {
             ans <<= 1;
         }
 
-        ans = LO(ans);
+        ans = lo(ans);
 
         th = false;
         tc = c;
@@ -1929,7 +1929,7 @@ public class CPU {
     private void cp_a(int b) {
         int a = A;
         int wans = a - b;
-        int ans = LO(wans);
+        int ans = lo(wans);
 
         ts = (ans & T7s) != 0;
         tz = ans == 0;
@@ -1972,7 +1972,7 @@ public class CPU {
      * Bitwise exclusive or - alters all flags (CHECKED)
      */
     private void xor_a(int b) {
-        int ans = LO(A ^ b);
+        int ans = lo(A ^ b);
 
         ts = (ans & T7s) != 0;
         th = false;
@@ -2042,7 +2042,7 @@ public class CPU {
     private int dec8(int ans) {
         boolean pv = (ans == x80);
         boolean h = (((ans & x0F) - 1) & T4h) != 0;
-        ans = LO(ans - 1);
+        ans = lo(ans - 1);
 
         ts = (ans & T7s) != 0;
         tz = ans == 0;
@@ -2058,7 +2058,7 @@ public class CPU {
     private int inc8(int ans) {
         boolean pv = (ans == x7F);
         boolean h = (((ans & x0F) + 1) & T4h) != 0;
-        ans = LO(ans + 1);
+        ans = lo(ans + 1);
 
         ts = (ans & T7s) != 0;
         tz = ans == 0;
@@ -2073,7 +2073,7 @@ public class CPU {
      */
     private int add16(int a, int b) {
         int lans = a + b;
-        int ans = WORD(lans);
+        int ans = word(lans);
 
         tc = (lans & x10000) != 0;
         th = (((a & x0FFF) + (b & x0FFF)) & x1000) != 0;
@@ -2086,7 +2086,7 @@ public class CPU {
      * Quick Increment : no flags
      */
     private static int inc16(int a) {
-        return WORD(a + 1);
+        return word(a + 1);
     }
 
 
@@ -2094,11 +2094,11 @@ public class CPU {
      * Quick Decrement : no flags
      */
     private static int dec16(int a) {
-        return WORD(a - 1);
+        return word(a - 1);
     }
 
     private static int qdec8(int a) {
-        return LO(a - 1);
+        return lo(a - 1);
     }
 
     public void runAt(int addr) {
