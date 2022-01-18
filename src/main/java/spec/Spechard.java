@@ -44,8 +44,7 @@ import java.net.*; //---
  * @see Z80
  */
 
-//---- class Spechard наследует все методы Z80.class
-public class Spechard extends Z80 {
+public class Spechard extends VM80 {
 
   public static final int WORD = 0xFFFF;
 
