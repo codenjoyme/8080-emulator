@@ -424,7 +424,7 @@ public class VM80 {
      * Byte access
      */
     protected int peekb(int addr) {
-        if (addr < (PortBeg))     // ПЗУ и ОЗУ Пользователя
+        if (addr < PortBeg)     // ПЗУ и ОЗУ Пользователя
         {
             return accessor.mem(addr);   // читаем байт
         }
@@ -432,12 +432,12 @@ public class VM80 {
     }
 
     private void pokeb(int addr, int newByte) {
-        if (addr > (ScrEnd))       // > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
+        if (addr > ScrEnd)       // > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
         {
             // для ПК "Специалист" - ПОРТЫ
-            if (addr < (HiMem))      // <=0FFFFh - ПОРТЫ И ПЗУ
+            if (addr < HiMem)      // <=0FFFFh - ПОРТЫ И ПЗУ
             {
-                if (addr > (ROMEnd))   // > 0FFDFh - ПОРТЫ
+                if (addr > ROMEnd)   // > 0FFDFh - ПОРТЫ
                 {
                     accessor.outPort(addr, newByte);// в ПОРТЫ пишем   0C000h < ПОРТЫ < 0FFFFh
                     return;
@@ -517,14 +517,14 @@ public class VM80 {
         }
 
         int newByte1 = word >> 8;// второй байт слова word
-        if (++addr < (ROMBeg)) // ScrBeg < ++addr < ROMBeg;
+        if (++addr < ROMBeg) // ScrBeg < ++addr < ROMBeg;
         {
             if (accessor.mem(addr) != newByte1) {
                 accessor.plot(addr, 0xffff); // в Видео-ОЗУ рисуем   newByte1
                 accessor.mem(addr, newByte1);
             }
         } else { // второй байт слова попал на ROM
-            return; // в ROM не пишем
+            // в ROM не пишем
         }
     }
 
@@ -639,7 +639,7 @@ public class VM80 {
      * Interrupt handlers
      */
     private static boolean interruptTriggered(int tstates) {                       // tstates = local_tstates
-        return (tstates >= 0);  // >= если tstates  больше или равно = 0 -> true иначе false
+        return tstates >= 0;  // >= если tstates  больше или равно = 0 -> true иначе false
     }
 
     /**
@@ -1313,8 +1313,8 @@ public class VM80 {
                     break;
                 }
                 case 118:    /* HALT */ {
-                    int haltsToInterrupt = (((-local_tstates - 1) / 4) + 1);
-                    local_tstates += (haltsToInterrupt * 4);
+                    int haltsToInterrupt = (-local_tstates - 1) / 4 + 1;
+                    local_tstates += haltsToInterrupt * 4;
                     REFRESH(haltsToInterrupt - 1);
                     break;
                 }
@@ -2643,7 +2643,7 @@ public class VM80 {
                 HL(from);
                 BC(count);
 
-                return (_local_tstates);
+                return _local_tstates;
             }
             case 177:  /* CPIR */ {
                 boolean c = Cset();
@@ -2652,7 +2652,7 @@ public class VM80 {
                 HL(inc16(HL()));
                 BC(dec16(BC()));
 
-                boolean pv = (BC() != 0);
+                boolean pv = BC() != 0;
 
                 setPV(pv);
                 setC(c);
@@ -2727,7 +2727,7 @@ public class VM80 {
                 HL(from);
                 BC(count);
 
-                return (_local_tstates);
+                return _local_tstates;
             }
             case 185:  /* CPDR */ {
                 boolean c = Cset();
@@ -2736,7 +2736,7 @@ public class VM80 {
                 HL(dec16(HL()));
                 BC(dec16(BC()));
 
-                boolean pv = (BC() != 0);
+                boolean pv = BC() != 0;
 
                 setPV(pv);
                 setC(c);
@@ -4428,7 +4428,9 @@ public class VM80 {
                 int op = nxtpcb();
                 execute_id_cb(op, z);
                 // Bit instructions take 20 T states, rest 23
-                return (((op & 0xc0) == 0x40) ? 20 : 23);
+                return (op & 0xc0) == 0x40 
+                        ? 20 
+                        : 23;
             }
 
             case 227: /* EX (SP),ID */ {
@@ -5535,7 +5537,7 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setC((wans & 0x100) != 0);
         setPV(((a ^ ~b) & (a ^ ans) & 0x80) != 0);
         setH((((a & 0x0f) + (b & 0x0f) + c) & F_H) != 0);
@@ -5555,7 +5557,7 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setC((wans & 0x100) != 0);
         setPV(((a ^ ~b) & (a ^ ans) & 0x80) != 0);
         setH((((a & 0x0f) + (b & 0x0f)) & F_H) != 0);
@@ -5576,7 +5578,7 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setC((wans & 0x100) != 0);
         setPV(((a ^ b) & (a ^ ans) & 0x80) != 0);
         setH((((a & 0x0f) - (b & 0x0f) - c) & F_H) != 0);
@@ -5596,7 +5598,7 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setC((wans & 0x100) != 0);
         setPV(((a ^ b) & (a ^ ans) & 0x80) != 0);
         setH((((a & 0x0f) - (b & 0x0f)) & F_H) != 0);
@@ -5800,7 +5802,7 @@ public class VM80 {
         int incr = 0;
         boolean carry = Cset();
 
-        if ((Hset()) || ((ans & 0x0f) > 0x09)) {
+        if (Hset() || (ans & 0x0f) > 0x09) {
             incr |= 0x06;
         }
         if (carry || (ans > 0x9f) || ((ans > 0x8f) && ((ans & 0x0f) > 0x09))) {
@@ -5957,13 +5959,13 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setPV(parity[ans]);
         setH(false);
         setN(false);
         setC(c);
 
-        return (ans);
+        return ans;
     }
 
     /**
@@ -5981,13 +5983,13 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setPV(parity[ans]);
         setH(false);
         setN(false);
         setC(c);
 
-        return (ans);
+        return ans;
     }
 
     /**
@@ -6006,13 +6008,13 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setPV(parity[ans]);
         setH(false);
         setN(false);
         setC(c);
 
-        return (ans);
+        return ans;
     }
 
     /**
@@ -6030,13 +6032,13 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setPV(parity[ans]);
         setH(false);
         setN(false);
         setC(c);
 
-        return (ans);
+        return ans;
     }
 
     /**
@@ -6049,13 +6051,13 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setPV(parity[ans]);
         setH(false);
         setN(false);
         setC(c);
 
-        return (ans);
+        return ans;
     }
 
     /**
@@ -6068,13 +6070,13 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setPV(parity[ans]);
         setH(false);
         setN(false);
         setC(c);
 
-        return (ans);
+        return ans;
     }
 
     /**
@@ -6087,13 +6089,13 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setPV(parity[ans]);
         setH(false);
         setN(false);
         setC(c);
 
-        return (ans);
+        return ans;
     }
 
     /**
@@ -6106,13 +6108,13 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setPV(parity[ans]);
         setH(false);
         setN(false);
         setC(c);
 
-        return (ans);
+        return ans;
     }
 
     /**
@@ -6126,12 +6128,12 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setPV(pv);
         setH(h);
         setN(true);
 
-        return (ans);
+        return ans;
     }
 
     /**
@@ -6145,12 +6147,12 @@ public class VM80 {
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setPV(pv);
         setH(h);
         setN(false);
 
-        return (ans);
+        return ans;
     }
 
     /**
@@ -6164,13 +6166,13 @@ public class VM80 {
         setS((ans & (F_S << 8)) != 0);
         set3((ans & (F_3 << 8)) != 0);
         set5((ans & (F_5 << 8)) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setC((lans & 0x10000) != 0);
         setPV(((a ^ ~b) & (a ^ ans) & 0x8000) != 0);
         setH((((a & 0x0fff) + (b & 0x0fff) + c) & 0x1000) != 0);
         setN(false);
 
-        return (ans);
+        return ans;
     }
 
     /**
@@ -6186,7 +6188,7 @@ public class VM80 {
         setH((((a & 0x0fff) + (b & 0x0fff)) & 0x1000) != 0);
         setN(false);
 
-        return (ans);
+        return ans;
     }
 
     /**
@@ -6200,13 +6202,13 @@ public class VM80 {
         setS((ans & (F_S << 8)) != 0);
         set3((ans & (F_3 << 8)) != 0);
         set5((ans & (F_5 << 8)) != 0);
-        setZ((ans) == 0);
+        setZ(ans == 0);
         setC((lans & 0x10000) != 0);
         setPV(((a ^ b) & (a ^ ans) & 0x8000) != 0);
         setH((((a & 0x0fff) - (b & 0x0fff) - c) & 0x1000) != 0);
         setN(true);
 
-        return (ans);
+        return ans;
     }
 
     /**
