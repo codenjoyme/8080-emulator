@@ -197,32 +197,32 @@ public void readParameters() throws Exception {
 //--- для ПК "ЛИК" ---------------------------------------------------------------
     boolean lik = true; // ЛИК или Специалист
     if (lik) {
-        URL likRom1URL = new URL(baseURL, "lik/01_zagr.BIN");
+        URL likRom1URL = new URL(baseURL, "lik/roms/01_zagr.bin");
         spechard.loadROM(likRom1URL.toString(), likRom1URL.openStream(), 0xC000);
 
-        URL likRom2URL = new URL(baseURL, "lik/02_mon-1m.BIN");
+        URL likRom2URL = new URL(baseURL, "lik/roms/02_mon-1m.bin");
         spechard.loadROM(likRom2URL.toString(), likRom2URL.openStream(), 0xC800);
 
-        URL likRom3URL = new URL(baseURL, "lik/03_mon-1m_basicLik.BIN");
+        URL likRom3URL = new URL(baseURL, "lik/roms/03_mon-1m_basicLik.bin");
         spechard.loadROM(likRom3URL.toString(), likRom3URL.openStream(), 0xD000);
 
-        URL likRom4URL = new URL(baseURL, "lik/04_basicLik.BIN");
+        URL likRom4URL = new URL(baseURL, "lik/roms/04_basicLik.bin");
         spechard.loadROM(likRom4URL.toString(), likRom4URL.openStream(), 0xD800);
 
-        URL likRom5URL = new URL(baseURL, "lik/05_basicLik.BIN");
+        URL likRom5URL = new URL(baseURL, "lik/roms/05_basicLik.bin");
         spechard.loadROM(likRom5URL.toString(), likRom5URL.openStream(), 0xE000);
 
-        URL likRom6URL = new URL(baseURL, "lik/06_basicLik.BIN");
+        URL likRom6URL = new URL(baseURL, "lik/roms/06_basicLik.bin");
         spechard.loadROM(likRom6URL.toString(), likRom6URL.openStream(), 0xE800);
 
         URL kladURL = new URL(baseURL, "lik/apps/klad.rks");
         spechard.loadRKS(kladURL.toString(), kladURL.openStream());
     } else {
 //--- для ПК "Специалист" ---------------------------------------------------------------
-        URL specRom0URL = new URL(baseURL, "specialist/monitor0.rom");
+        URL specRom0URL = new URL(baseURL, "specialist/roms/monitor0.rom");
         spechard.loadROM(specRom0URL.toString(), specRom0URL.openStream(), 0xC000);
 
-        URL specRom1URL = new URL(baseURL, "specialist/monitor1.rom");
+        URL specRom1URL = new URL(baseURL, "specialist/roms/monitor1.rom");
         spechard.loadROM(specRom1URL.toString(), specRom1URL.openStream(), 0xC800);
     }
 //--- для ПК "Специалист" ---------------------------------------------------------------
