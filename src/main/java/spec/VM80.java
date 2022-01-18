@@ -13,6 +13,34 @@ package spec;
 
 public abstract class VM80 {
 
+    private static final int     b11111011 = -5; // TODO перегнать в bits, я тут не уверен
+    private static final int  i1_b00000001 = 1;
+    private static final int  i2_b00000010 = 2;
+    private static final int  i3_b00000011 = 3;
+    private static final int  i4_b00000100 = 4;
+    private static final int  i5_b00000101 = 5;
+    private static final int  i6_b00000110 = 6;
+    private static final int  i7_b00000111 = 7;
+    private static final int  i8_b00001000 = 8;
+    private static final int  i9_b00001001 = 9;
+    private static final int i10_b00001010 = 10;
+    private static final int i11_b00001011 = 11;
+    private static final int i12_b00001100 = 12;
+    private static final int i13_b00001101 = 13;
+    private static final int i14_b00001110 = 14;
+    private static final int i15_b00001111 = 15;
+    private static final int i16_b00010000 = 16;
+    private static final int i17_b00010001 = 17;
+    private static final int i18_b00010010 = 18;
+    private static final int i19_b00010011 = 19;
+    private static final int i20_b00010100 = 20;
+    private static final int i21_b00010101 = 21;
+    private static final int i22_b00010110 = 22;
+    private static final int i23_b00010111 = 23;
+    private static final int i32_b00100000 = 32;
+    private static final int i64_b01000000 = 64;
+    private static final int i128_b10000000 = 128;
+
     public VM80(double clockFrequencyInMHz) {
         // число тактов на 1 прерывание, которое происходит 50 раз в секунду.
         // 1000000/50 раз в секунду
@@ -639,12 +667,12 @@ public abstract class VM80 {
             switch (nxtpcb()) // байт из памяти по адресу п-счетчика PC()
             {                   // и разбор этого байта как кода
                 case 0:    /* NOP */ {
-                    local_tstates += (4);  // каждая операция уменьшает число тактов на прерывание
+                    local_tstates += i4_b00000100;  // каждая операция уменьшает число тактов на прерывание
                     break;                   // на свою длительность в тактах
                 }
                 case 8:    /* EX AF,AF' */ {
                     ex_af_af();
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 16:    /* DJNZ dis */ {
@@ -654,17 +682,17 @@ public abstract class VM80 {
                     if (b != 0) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
                         PC((PC() + d) & 0xffff);
-                        local_tstates += (13);
+                        local_tstates += i13_b00001101;
                     } else {
                         PC(inc16(PC()));
-                        local_tstates += (8);
+                        local_tstates += i8_b00001000;
                     }
                     break;
                 }
                 case 24: /* JR dis */ {
                     byte d = (byte) nxtpcb();  // байт из памяти по адресу п-счетчика PC()
                     PC((PC() + d) & 0xffff);
-                    local_tstates += (12);
+                    local_tstates += i12_b00001100;
                     break;
                 }
                 /* JR cc,dis */
@@ -672,10 +700,10 @@ public abstract class VM80 {
                     if (!Zset()) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
                         PC((PC() + d) & 0xffff);
-                        local_tstates += (12);
+                        local_tstates += i12_b00001100;
                     } else {
                         PC(inc16(PC()));
-                        local_tstates += (7);
+                        local_tstates += i7_b00000111;
                     }
                     break;
                 }
@@ -683,10 +711,10 @@ public abstract class VM80 {
                     if (Zset()) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
                         PC((PC() + d) & 0xffff);
-                        local_tstates += (12);
+                        local_tstates += i12_b00001100;
                     } else {
                         PC(inc16(PC()));
-                        local_tstates += (7);
+                        local_tstates += i7_b00000111;
                     }
                     break;
                 }
@@ -694,10 +722,10 @@ public abstract class VM80 {
                     if (!Cset()) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
                         PC((PC() + d) & 0xffff);
-                        local_tstates += (12);
+                        local_tstates += i12_b00001100;
                     } else {
                         PC(inc16(PC()));
-                        local_tstates += (7);
+                        local_tstates += i7_b00000111;
                     }
                     break;
                 }
@@ -705,10 +733,10 @@ public abstract class VM80 {
                     if (Cset()) {
                         byte d = (byte) nxtpcb();  // байт из памяти по адресу п-счетчика PC()
                         PC((PC() + d) & 0xffff);
-                        local_tstates += (12);
+                        local_tstates += i12_b00001100;
                     } else {
                         PC(inc16(PC()));
-                        local_tstates += (7);
+                        local_tstates += i7_b00000111;
                     }
                     break;
                 }
@@ -716,575 +744,575 @@ public abstract class VM80 {
                 /* LD rr,nn / ADD HL,rr */
                 case 1:    /* LD BC(),nn */ {
                     BC(nxtpcw());            // слово из памяти по адресу п-счетчика PC()
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 9:    /* ADD HL,BC */ {
                     HL(add16(HL(), BC()));
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 17:    /* LD DE,nn */ {
                     DE(nxtpcw());           // слово из памяти по адресу п-счетчика PC()
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 25:    /* ADD HL,DE */ {
                     HL(add16(HL(), DE()));
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 33:    /* LD HL,nn */ {
                     HL(nxtpcw());           // слово из памяти по адресу п-счетчика PC()
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 41:    /* ADD HL,HL */ {
                     int hl = HL();
                     HL(add16(hl, hl));
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 49:    /* LD SP,nn */ {
                     SP(nxtpcw());           // слово из памяти по адресу п-счетчика PC()
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 57:    /* ADD HL,SP */ {
                     HL(add16(HL(), SP()));
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
 
                 /* LD (**),A/A,(**) */
                 case 2:    /* LD (BC),A */ {
                     pokeb(BC(), A());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 10:    /* LD A,(BC) */ {
                     A(peekb(BC()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 18:    /* LD (DE),A */ {
                     pokeb(DE(), A());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 26:    /* LD A,(DE) */ {
                     A(peekb(DE()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 34:    /* LD (nn),HL */ {
                     pokew(nxtpcw(), HL());
-                    local_tstates += (16);
+                    local_tstates += i16_b00010000;
                     break;
                 }
                 case 42:    /* LD HL,(nn) */ {
                     HL(peekw(nxtpcw()));
-                    local_tstates += (16);
+                    local_tstates += i16_b00010000;
                     break;
                 }
                 case 50:    /* LD (nn),A */ {
                     pokeb(nxtpcw(), A());
-                    local_tstates += (13);
+                    local_tstates += i13_b00001101;
                     break;
                 }
                 case 58:    /* LD A,(nn) */ {
                     A(peekb(nxtpcw()));
-                    local_tstates += (13);
+                    local_tstates += i13_b00001101;
                     break;
                 }
 
                 /* INC/DEC * */
                 case 3:    /* INC BC */ {
                     BC(inc16(BC()));
-                    local_tstates += (6);
+                    local_tstates += i6_b00000110;
                     break;
                 }
                 case 11:    /* DEC BC */ {
                     BC(dec16(BC()));
-                    local_tstates += (6);
+                    local_tstates += i6_b00000110;
                     break;
                 }
                 case 19:    /* INC DE */ {
                     DE(inc16(DE()));
-                    local_tstates += (6);
+                    local_tstates += i6_b00000110;
                     break;
                 }
                 case 27:    /* DEC DE */ {
                     DE(dec16(DE()));
-                    local_tstates += (6);
+                    local_tstates += i6_b00000110;
                     break;
                 }
                 case 35:    /* INC HL */ {
                     HL(inc16(HL()));
-                    local_tstates += (6);
+                    local_tstates += i6_b00000110;
                     break;
                 }
                 case 43:    /* DEC HL */ {
                     HL(dec16(HL()));
-                    local_tstates += (6);
+                    local_tstates += i6_b00000110;
                     break;
                 }
                 case 51:    /* INC SP */ {
                     SP(inc16(SP()));
-                    local_tstates += (6);
+                    local_tstates += i6_b00000110;
                     break;
                 }
                 case 59:    /* DEC SP */ {
                     SP(dec16(SP()));
-                    local_tstates += (6);
+                    local_tstates += i6_b00000110;
                     break;
                 }
 
                 /* INC * */
                 case 4:    /* INC B */ {
                     B(inc8(B()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 12:    /* INC C */ {
                     C(inc8(C()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 20:    /* INC D */ {
                     D(inc8(D()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 28:    /* INC E */ {
                     E(inc8(E()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 36:    /* INC H */ {
                     H(inc8(H()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 44:    /* INC L */ {
                     L(inc8(L()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 52:    /* INC (HL) */ {
                     int hl = HL();
                     pokeb(hl, inc8(peekb(hl)));
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 60:    /* INC A() */ {
                     A(inc8(A()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* DEC * */
                 case 5:    /* DEC B */ {
                     B(dec8(B()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 13:    /* DEC C */ {
                     C(dec8(C()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 21:    /* DEC D */ {
                     D(dec8(D()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 29:    /* DEC E */ {
                     E(dec8(E()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 37:    /* DEC H */ {
                     H(dec8(H()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 45:    /* DEC L */ {
                     L(dec8(L()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 53:    /* DEC (HL) */ {
                     int hl = HL();
                     pokeb(hl, dec8(peekb(hl)));
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 61:    /* DEC A() */ {
                     A(dec8(A()));
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* LD *,N */
                 case 6:    /* LD B,n */ {
                     B(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 14:    /* LD C,n */ {
                     C(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 22:    /* LD D,n */ {
                     D(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 30:    /* LD E,n */ {
                     E(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 38:    /* LD H,n */ {
                     H(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 46:    /* LD L,n */ {
                     L(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 54:    /* LD (HL),n */ {
                     pokeb(HL(), nxtpcb());
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 62:    /* LD A,n */ {
                     A(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
 
                 /* R**A */
                 case 7: /* RLCA */ {
                     rlc_a();
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 15: /* RRCA */ {
                     rrc_a();
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 23: /* RLA */ {
                     rl_a();
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 31: /* RRA */ {
                     rr_a();
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 39: /* DAA */ {
                     daa_a();
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 47: /* CPL */ {
                     cpl_a();
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 55: /* SCF */ {
                     scf();
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 63: /* CCF */ {
                     ccf();
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* LD B,* */
                 case 64:    /* LD B,B */ {
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 65:    /* LD B,C */ {
                     B(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 66:    /* LD B,D */ {
                     B(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 67:    /* LD B,E */ {
                     B(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 68:    /* LD B,H */ {
                     B(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 69:    /* LD B,L */ {
                     B(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 70:    /* LD B,(HL) */ {
                     B(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 71:    /* LD B,A */ {
                     B(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* LD C,* */
                 case 72:    /* LD C,B */ {
                     C(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 73:    /* LD C,C */ {
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 74:    /* LD C,D */ {
                     C(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 75:    /* LD C,E */ {
                     C(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 76:    /* LD C,H */ {
                     C(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 77:    /* LD C,L */ {
                     C(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 78:    /* LD C,(HL) */ {
                     C(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 79:    /* LD C,A */ {
                     C(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* LD D,* */
                 case 80:    /* LD D,B */ {
                     D(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 81:    /* LD D,C */ {
                     D(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 82:    /* LD D,D */ {
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 83:    /* LD D,E */ {
                     D(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 84:    /* LD D,H */ {
                     D(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 85:    /* LD D,L */ {
                     D(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 86:    /* LD D,(HL) */ {
                     D(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 87:    /* LD D,A */ {
                     D(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* LD E,* */
                 case 88:    /* LD E,B */ {
                     E(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 89:    /* LD E,C */ {
                     E(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 90:    /* LD E,D */ {
                     E(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 91:    /* LD E,E */ {
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 92:    /* LD E,H */ {
                     E(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 93:    /* LD E,L */ {
                     E(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 94:    /* LD E,(HL) */ {
                     E(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 95:    /* LD E,A */ {
                     E(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* LD H,* */
                 case 96:    /* LD H,B */ {
                     H(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 97:    /* LD H,C */ {
                     H(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 98:    /* LD H,D */ {
                     H(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 99:    /* LD H,E */ {
                     H(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 100: /* LD H,H */ {
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 101:    /* LD H,L */ {
                     H(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 102:    /* LD H,(HL) */ {
                     H(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 103:    /* LD H,A */ {
                     H(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* LD L,* */
                 case 104:    /* LD L,B */ {
                     L(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 105:    /* LD L,C */ {
                     L(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 106:    /* LD L,D */ {
                     L(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 107:    /* LD L,E */ {
                     L(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 108:    /* LD L,H */ {
                     L(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 109:    /* LD L,L */ {
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 110:    /* LD L,(HL) */ {
                     L(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 111:    /* LD L,A */ {
                     L(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* LD (HL),* */
                 case 112:    /* LD (HL),B */ {
                     pokeb(HL(), B());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 113:    /* LD (HL),C */ {
                     pokeb(HL(), C());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 114:    /* LD (HL),D */ {
                     pokeb(HL(), D());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 115:    /* LD (HL),E */ {
                     pokeb(HL(), E());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 116:    /* LD (HL),H */ {
                     pokeb(HL(), H());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 117:    /* LD (HL),L */ {
                     pokeb(HL(), L());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 118:    /* HALT */ {
@@ -1295,384 +1323,384 @@ public abstract class VM80 {
                 }
                 case 119:    /* LD (HL),A */ {
                     pokeb(HL(), A());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
 
                 /* LD A,* */
                 case 120:    /* LD A,B */ {
                     A(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 121:    /* LD A,C */ {
                     A(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 122:    /* LD A,D */ {
                     A(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 123:    /* LD A,E */ {
                     A(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 124:    /* LD A,H */ {
                     A(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 125:    /* LD A,L */ {
                     A(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 126:    /* LD A,(HL) */ {
                     A(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 127:    /* LD A,A */ {
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* ADD A,* */
                 case 128:    /* ADD A,B */ {
                     add_a(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 129:    /* ADD A,C */ {
                     add_a(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 130:    /* ADD A,D */ {
                     add_a(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 131:    /* ADD A,E */ {
                     add_a(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 132:    /* ADD A,H */ {
                     add_a(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 133:    /* ADD A,L */ {
                     add_a(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 134:    /* ADD A,(HL) */ {
                     add_a(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 135:    /* ADD A,A */ {
                     add_a(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* ADC A,* */
                 case 136:    /* ADC A,B */ {
                     adc_a(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 137:    /* ADC A,C */ {
                     adc_a(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 138:    /* ADC A,D */ {
                     adc_a(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 139:    /* ADC A,E */ {
                     adc_a(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 140:    /* ADC A,H */ {
                     adc_a(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 141:    /* ADC A,L */ {
                     adc_a(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 142:    /* ADC A,(HL) */ {
                     adc_a(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 143:    /* ADC A,A */ {
                     adc_a(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* SUB * */
                 case 144:    /* SUB B */ {
                     sub_a(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 145:    /* SUB C */ {
                     sub_a(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 146:    /* SUB D */ {
                     sub_a(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 147:    /* SUB E */ {
                     sub_a(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 148:    /* SUB H */ {
                     sub_a(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 149:    /* SUB L */ {
                     sub_a(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 150:    /* SUB (HL) */ {
                     sub_a(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 151:    /* SUB A() */ {
                     sub_a(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* SBC A,* */
                 case 152:    /* SBC A,B */ {
                     sbc_a(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 153:    /* SBC A,C */ {
                     sbc_a(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 154:    /* SBC A,D */ {
                     sbc_a(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 155:    /* SBC A,E */ {
                     sbc_a(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 156:    /* SBC A,H */ {
                     sbc_a(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 157:    /* SBC A,L */ {
                     sbc_a(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 158:    /* SBC A,(HL) */ {
                     sbc_a(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 159:    /* SBC A,A */ {
                     sbc_a(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* AND * */
                 case 160:    /* AND B */ {
                     and_a(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 161:    /* AND C */ {
                     and_a(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 162:    /* AND D */ {
                     and_a(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 163:    /* AND E */ {
                     and_a(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 164:    /* AND H */ {
                     and_a(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 165:    /* AND L */ {
                     and_a(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 166:    /* AND (HL) */ {
                     and_a(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 167:    /* AND A() */ {
                     and_a(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* XOR * */
                 case 168:    /* XOR B */ {
                     xor_a(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 169:    /* XOR C */ {
                     xor_a(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 170:    /* XOR D */ {
                     xor_a(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 171:    /* XOR E */ {
                     xor_a(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 172:    /* XOR H */ {
                     xor_a(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 173:    /* XOR L */ {
                     xor_a(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 174:    /* XOR (HL) */ {
                     xor_a(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 175:    /* XOR A() */ {
                     xor_a(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* OR * */
                 case 176:    /* OR B */ {
                     or_a(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 177:    /* OR C */ {
                     or_a(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 178:    /* OR D */ {
                     or_a(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 179:    /* OR E */ {
                     or_a(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 180:    /* OR H */ {
                     or_a(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 181:    /* OR L */ {
                     or_a(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 182:    /* OR (HL) */ {
                     or_a(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 183:    /* OR A() */ {
                     or_a(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
                 /* CP * */
                 case 184:    /* CP B */ {
                     cp_a(B());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 185:    /* CP C */ {
                     cp_a(C());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 186:    /* CP D */ {
                     cp_a(D());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 187:    /* CP E */ {
                     cp_a(E());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 188:    /* CP H */ {
                     cp_a(H());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 189:    /* CP L */ {
                     cp_a(L());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 190:    /* CP (HL) */ {
                     cp_a(peekb(HL()));
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 191:    /* CP A() */ {
                     cp_a(A());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
@@ -1680,72 +1708,72 @@ public abstract class VM80 {
                 case 192:    /* RET NZ */ {
                     if (!Zset()) {
                         poppc();
-                        local_tstates += (11);
+                        local_tstates += i11_b00001011;
                     } else {
-                        local_tstates += (5);
+                        local_tstates += i5_b00000101;
                     }
                     break;
                 }
                 case 200:    /* RET Z */ {
                     if (Zset()) {
                         poppc();
-                        local_tstates += (11);
+                        local_tstates += i11_b00001011;
                     } else {
-                        local_tstates += (5);
+                        local_tstates += i5_b00000101;
                     }
                     break;
                 }
                 case 208:    /* RET NC */ {
                     if (!Cset()) {
                         poppc();
-                        local_tstates += (11);
+                        local_tstates += i11_b00001011;
                     } else {
-                        local_tstates += (5);
+                        local_tstates += i5_b00000101;
                     }
                     break;
                 }
                 case 216:    /* RET C */ {
                     if (Cset()) {
                         poppc();
-                        local_tstates += (11);
+                        local_tstates += i11_b00001011;
                     } else {
-                        local_tstates += (5);
+                        local_tstates += i5_b00000101;
                     }
                     break;
                 }
                 case 224:    /* RET PO */ {
                     if (!PVset()) {
                         poppc();
-                        local_tstates += (11);
+                        local_tstates += i11_b00001011;
                     } else {
-                        local_tstates += (5);
+                        local_tstates += i5_b00000101;
                     }
                     break;
                 }
                 case 232:    /* RET PE */ {
                     if (PVset()) {
                         poppc();
-                        local_tstates += (11);
+                        local_tstates += i11_b00001011;
                     } else {
-                        local_tstates += (5);
+                        local_tstates += i5_b00000101;
                     }
                     break;
                 }
                 case 240:    /* RET P */ {
                     if (!Sset()) {
                         poppc();
-                        local_tstates += (11);
+                        local_tstates += i11_b00001011;
                     } else {
-                        local_tstates += (5);
+                        local_tstates += i5_b00000101;
                     }
                     break;
                 }
                 case 248:    /* RET M */ {
                     if (Sset()) {
                         poppc();
-                        local_tstates += (11);
+                        local_tstates += i11_b00001011;
                     } else {
-                        local_tstates += (5);
+                        local_tstates += i5_b00000101;
                     }
                     break;
                 }
@@ -1753,42 +1781,42 @@ public abstract class VM80 {
                 /* POP,Various */
                 case 193:    /* POP BC */ {
                     BC(popw());
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 201: /* RET */ {
                     poppc();
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 209:    /* POP DE */ {
                     DE(popw());
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 217:    /* EXX */ {
                     exx();
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 225:    /* POP HL */ {
                     HL(popw());
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 233: /* JP (HL) */ {
                     PC(HL());
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 241:    /* POP AF */ {
                     AF(popw());
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 249:    /* LD SP,HL */ {
                     SP(HL());
-                    local_tstates += (6);
+                    local_tstates += i6_b00000110;
                     break;
                 }
 
@@ -1799,7 +1827,7 @@ public abstract class VM80 {
                     } else {
                         PC((PC() + 2) & 0xffff);
                     }
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 202:    /* JP Z,nn */ {
@@ -1808,7 +1836,7 @@ public abstract class VM80 {
                     } else {
                         PC((PC() + 2) & 0xffff);
                     }
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 210:    /* JP NC,nn */ {
@@ -1817,7 +1845,7 @@ public abstract class VM80 {
                     } else {
                         PC((PC() + 2) & 0xffff);
                     }
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 218:    /* JP C,nn */ {
@@ -1826,7 +1854,7 @@ public abstract class VM80 {
                     } else {
                         PC((PC() + 2) & 0xffff);
                     }
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 226:    /* JP PO,nn */ {
@@ -1835,7 +1863,7 @@ public abstract class VM80 {
                     } else {
                         PC((PC() + 2) & 0xffff);
                     }
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 234:    /* JP PE,nn */ {
@@ -1844,7 +1872,7 @@ public abstract class VM80 {
                     } else {
                         PC((PC() + 2) & 0xffff);
                     }
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 242:    /* JP P,nn */ {
@@ -1853,7 +1881,7 @@ public abstract class VM80 {
                     } else {
                         PC((PC() + 2) & 0xffff);
                     }
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 250:    /* JP M,nn */ {
@@ -1862,7 +1890,7 @@ public abstract class VM80 {
                     } else {
                         PC((PC() + 2) & 0xffff);
                     }
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
 
@@ -1870,7 +1898,7 @@ public abstract class VM80 {
                 /* Various */
                 case 195:    /* JP nn */ {
                     PC(peekw(PC()));
-                    local_tstates += (10);
+                    local_tstates += i10_b00001010;
                     break;
                 }
                 case 203:    /* prefix CB */ {
@@ -1879,12 +1907,12 @@ public abstract class VM80 {
                 }
                 case 211:    /* OUT (n),A */ {
                     outb(nxtpcb(), A(), local_tstates);
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 219:    /* IN A,(n) */ {
                     A(inb((A() << 8) | nxtpcb()));
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 227:    /* EX (SP),HL */ {
@@ -1892,26 +1920,26 @@ public abstract class VM80 {
                     int sp = SP();
                     HL(peekw(sp));
                     pokew(sp, t);
-                    local_tstates += (19);
+                    local_tstates += i19_b00010011;
                     break;
                 }
                 case 235:    /* EX DE,HL */ {
                     int t = HL();
                     HL(DE());
                     DE(t);
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 243:    /* DI */ {
                     IFF1(false);
                     IFF2(false);
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
                 case 251:    /* EI */ {
                     IFF1(true);
                     IFF2(true);
-                    local_tstates += (4);
+                    local_tstates += i4_b00000100;
                     break;
                 }
 
@@ -1921,10 +1949,10 @@ public abstract class VM80 {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
-                        local_tstates += (17);
+                        local_tstates += i17_b00010001;
                     } else {
                         PC((PC() + 2) & 0xffff);
-                        local_tstates += (10);
+                        local_tstates += i10_b00001010;
                     }
                     break;
                 }
@@ -1933,10 +1961,10 @@ public abstract class VM80 {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
-                        local_tstates += (17);
+                        local_tstates += i17_b00010001;
                     } else {
                         PC((PC() + 2) & 0xffff);
-                        local_tstates += (10);
+                        local_tstates += i10_b00001010;
                     }
                     break;
                 }
@@ -1945,10 +1973,10 @@ public abstract class VM80 {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
-                        local_tstates += (17);
+                        local_tstates += i17_b00010001;
                     } else {
                         PC((PC() + 2) & 0xffff);
-                        local_tstates += (10);
+                        local_tstates += i10_b00001010;
                     }
                     break;
                 }
@@ -1957,10 +1985,10 @@ public abstract class VM80 {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
-                        local_tstates += (17);
+                        local_tstates += i17_b00010001;
                     } else {
                         PC((PC() + 2) & 0xffff);
-                        local_tstates += (10);
+                        local_tstates += i10_b00001010;
                     }
                     break;
                 }
@@ -1969,10 +1997,10 @@ public abstract class VM80 {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
-                        local_tstates += (17);
+                        local_tstates += i17_b00010001;
                     } else {
                         PC((PC() + 2) & 0xffff);
-                        local_tstates += (10);
+                        local_tstates += i10_b00001010;
                     }
                     break;
                 }
@@ -1981,10 +2009,10 @@ public abstract class VM80 {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
-                        local_tstates += (17);
+                        local_tstates += i17_b00010001;
                     } else {
                         PC((PC() + 2) & 0xffff);
-                        local_tstates += (10);
+                        local_tstates += i10_b00001010;
                     }
                     break;
                 }
@@ -1993,10 +2021,10 @@ public abstract class VM80 {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
-                        local_tstates += (17);
+                        local_tstates += i17_b00010001;
                     } else {
                         PC((PC() + 2) & 0xffff);
-                        local_tstates += (10);
+                        local_tstates += i10_b00001010;
                     }
                     break;
                 }
@@ -2005,10 +2033,10 @@ public abstract class VM80 {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
-                        local_tstates += (17);
+                        local_tstates += i17_b00010001;
                     } else {
                         PC((PC() + 2) & 0xffff);
-                        local_tstates += (10);
+                        local_tstates += i10_b00001010;
                     }
                     break;
                 }
@@ -2016,19 +2044,19 @@ public abstract class VM80 {
                 /* PUSH,Various */
                 case 197:    /* PUSH BC */ {
                     pushw(BC());
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 205:    /* CALL nn */ {
                     int t = nxtpcw();
                     pushpc();
                     PC(t);
-                    local_tstates += (17);
+                    local_tstates += i17_b00010001;
                     break;
                 }
                 case 213:    /* PUSH DE */ {
                     pushw(DE());
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 221:    /* prefix IX */ {
@@ -2039,7 +2067,7 @@ public abstract class VM80 {
                 }
                 case 229:    /* PUSH HL */ {
                     pushw(HL());
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 237:    /* prefix ED */ {
@@ -2048,7 +2076,7 @@ public abstract class VM80 {
                 }
                 case 245:    /* PUSH AF */ {
                     pushw(AF());
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 253:    /* prefix IY */ {
@@ -2061,42 +2089,42 @@ public abstract class VM80 {
                 /* op A,N */
                 case 198: /* ADD A,N */ {
                     add_a(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 206: /* ADC A,N */ {
                     adc_a(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 214: /* SUB N */ {
                     sub_a(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 222: /* SBC A,N */ {
                     sbc_a(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 230: /* AND N */ {
                     and_a(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 238: /* XOR N */ {
                     xor_a(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 246: /* OR N */ {
                     or_a(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
                 case 254: /* CP N */ {
                     cp_a(nxtpcb());
-                    local_tstates += (7);
+                    local_tstates += i7_b00000111;
                     break;
                 }
 
@@ -2104,49 +2132,49 @@ public abstract class VM80 {
                 case 199:    /* RST 0 */ {
                     pushpc();
                     PC(0);
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 207:    /* RST 8 */ {
                     pushpc();
                     PC(8);
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 215:    /* RST 16 */ {
                     pushpc();
                     PC(16);
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 223:    /* RST 24 */ {
                     pushpc();
                     PC(24);
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 231:    /* RST 32 */ {
                     pushpc();
                     PC(32);
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 239:    /* RST 40 */ {
                     pushpc();
                     PC(40);
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 247:    /* RST 48 */ {
                     pushpc();
                     PC(48);
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
                 case 255:    /* RST 56 */ {
                     pushpc();
                     PC(56);
-                    local_tstates += (11);
+                    local_tstates += i11_b00001011;
                     break;
                 }
             }
@@ -2270,145 +2298,145 @@ public abstract class VM80 {
             case 181:
             case 182:
             case 183: {
-                return (8);
+                return i8_b00001000;
             }
 
             /* IN r,(c) */
             case 64:  /* IN B,(c) */ {
                 B(in_bc());
-                return (12);
+                return i12_b00001100;
             }
             case 72:  /* IN C,(c) */ {
                 C(in_bc());
-                return (12);
+                return i12_b00001100;
             }
             case 80:  /* IN D,(c) */ {
                 D(in_bc());
-                return (12);
+                return i12_b00001100;
             }
             case 88:  /* IN E,(c) */ {
                 E(in_bc());
-                return (12);
+                return i12_b00001100;
             }
             case 96:  /* IN H,(c) */ {
                 H(in_bc());
-                return (12);
+                return i12_b00001100;
             }
             case 104:  /* IN L,(c) */ {
                 L(in_bc());
-                return (12);
+                return i12_b00001100;
             }
             case 112:  /* IN (c) */ {
                 in_bc();
-                return (12);
+                return i12_b00001100;
             }
             case 120:  /* IN A,(c) */ {
                 A(in_bc());
-                return (12);
+                return i12_b00001100;
             }
 
             /* OUT (c),r */
             case 65:  /* OUT (c),B */ {
                 outb(BC(), B(), local_tstates);
-                return (12);
+                return i12_b00001100;
             }
             case 73:  /* OUT (c),C */ {
                 outb(BC(), C(), local_tstates);
-                return (12);
+                return i12_b00001100;
             }
             case 81:  /* OUT (c),D */ {
                 outb(BC(), D(), local_tstates);
-                return (12);
+                return i12_b00001100;
             }
             case 89:  /* OUT (c),E */ {
                 outb(BC(), E(), local_tstates);
-                return (12);
+                return i12_b00001100;
             }
             case 97:  /* OUT (c),H */ {
                 outb(BC(), H(), local_tstates);
-                return (12);
+                return i12_b00001100;
             }
             case 105:  /* OUT (c),L */ {
                 outb(BC(), L(), local_tstates);
-                return (12);
+                return i12_b00001100;
             }
             case 113:  /* OUT (c),0 */ {
                 outb(BC(), 0, local_tstates);
-                return (12);
+                return i12_b00001100;
             }
             case 121:  /* OUT (c),A */ {
                 outb(BC(), A(), local_tstates);
-                return (12);
+                return i12_b00001100;
             }
 
             /* SBC/ADC HL,ss */
             case 66:  /* SBC HL,BC */ {
                 HL(sbc16(HL(), BC()));
-                return (15);
+                return i15_b00001111;
             }
             case 74:  /* ADC HL,BC */ {
                 HL(adc16(HL(), BC()));
-                return (15);
+                return i15_b00001111;
             }
             case 82:  /* SBC HL,DE */ {
                 HL(sbc16(HL(), DE()));
-                return (15);
+                return i15_b00001111;
             }
             case 90:  /* ADC HL,DE */ {
                 HL(adc16(HL(), DE()));
-                return (15);
+                return i15_b00001111;
             }
             case 98:  /* SBC HL,HL */ {
                 int hl = HL();
                 HL(sbc16(hl, hl));
-                return (15);
+                return i15_b00001111;
             }
             case 106:  /* ADC HL,HL */ {
                 int hl = HL();
                 HL(adc16(hl, hl));
-                return (15);
+                return i15_b00001111;
             }
             case 114:  /* SBC HL,SP */ {
                 HL(sbc16(HL(), SP()));
-                return (15);
+                return i15_b00001111;
             }
             case 122:  /* ADC HL,SP */ {
                 HL(adc16(HL(), SP()));
-                return (15);
+                return i15_b00001111;
             }
 
             /* LD (nn),ss, LD ss,(nn) */
             case 67:  /* LD (nn),BC */ {
                 pokew(nxtpcw(), BC());
-                return (20);
+                return i20_b00010100;
             }
             case 75:  /* LD BC(),(nn) */ {
                 BC(peekw(nxtpcw()));
-                return (20);
+                return i20_b00010100;
             }
             case 83:  /* LD (nn),DE */ {
                 pokew(nxtpcw(), DE());
-                return (20);
+                return i20_b00010100;
             }
             case 91:  /* LD DE,(nn) */ {
                 DE(peekw(nxtpcw()));
-                return (20);
+                return i20_b00010100;
             }
             case 99:  /* LD (nn),HL */ {
                 pokew(nxtpcw(), HL());
-                return (20);
+                return i20_b00010100;
             }
             case 107:  /* LD HL,(nn) */ {
                 HL(peekw(nxtpcw()));
-                return (20);
+                return i20_b00010100;
             }
             case 115:  /* LD (nn),SP */ {
                 pokew(nxtpcw(), SP());
-                return (20);
+                return i20_b00010100;
             }
             case 123:  /* LD SP,(nn) */ {
                 SP(peekw(nxtpcw()));
-                return (20);
+                return i20_b00010100;
             }
 
             /* NEG */
@@ -2421,7 +2449,7 @@ public abstract class VM80 {
             case 116:  /* NEG */
             case 124:  /* NEG */ {
                 neg_a();
-                return (8);
+                return i8_b00001000;
             }
 
             /* RETn */
@@ -2431,14 +2459,14 @@ public abstract class VM80 {
             case 117:  /* RETN */ {
                 IFF1(IFF2());
                 poppc();
-                return (14);
+                return i14_b00001110;
             }
             case 77:  /* RETI */
             case 93:  /* RETI */
             case 109:  /* RETI */
             case 125:  /* RETI */ {
                 poppc();
-                return (14);
+                return i14_b00001110;
             }
 
             /* IM x */
@@ -2447,43 +2475,43 @@ public abstract class VM80 {
             case 102:  /* IM 0 */
             case 110:  /* IM 0 */ {
                 IM(IM0);
-                return (8);
+                return i8_b00001000;
             }
             case 86:  /* IM 1 */
             case 118:  /* IM 1 */ {
                 IM(IM1);
-                return (8);
+                return i8_b00001000;
             }
             case 94:  /* IM 2 */
             case 126:  /* IM 2 */ {
                 IM(IM2);
-                return (8);
+                return i8_b00001000;
             }
 
             /* LD A,s / LD s,A / RxD */
             case 71:  /* LD I,A */ {
                 I(A());
-                return (9);
+                return i9_b00001001;
             }
             case 79:  /* LD R,A */ {
                 R(A());
-                return (9);
+                return i9_b00001001;
             }
             case 87:  /* LD A,I */ {
                 ld_a_i();
-                return (9);
+                return i9_b00001001;
             }
             case 95:  /* LD A,R */ {
                 ld_a_r();
-                return (9);
+                return i9_b00001001;
             }
             case 103:  /* RRD */ {
                 rrd_a();
-                return (18);
+                return i18_b00010010;
             }
             case 111:  /* RLD */ {
                 rld_a();
-                return (18);
+                return i18_b00010010;
             }
 
             /* xxI */
@@ -2497,7 +2525,7 @@ public abstract class VM80 {
                 setH(false);
                 setN(false);
 
-                return (16);
+                return i16_b00010000;
             }
             case 161:  /* CPI */ {
                 boolean c = Cset();
@@ -2509,7 +2537,7 @@ public abstract class VM80 {
                 setPV(BC() != 0);
                 setC(c);
 
-                return (16);
+                return i16_b00010000;
             }
             case 162:  /* INI */ {
                 int b;
@@ -2520,7 +2548,7 @@ public abstract class VM80 {
                 setZ(b == 0);
                 setN(true);
 
-                return (16);
+                return i16_b00010000;
             }
             case 163:  /* OUTI */ {
                 int b;
@@ -2531,7 +2559,7 @@ public abstract class VM80 {
                 setZ(b == 0);
                 setN(true);
 
-                return (16);
+                return i16_b00010000;
             }
 
             /* xxD */
@@ -2545,7 +2573,7 @@ public abstract class VM80 {
                 setH(false);
                 setN(false);
 
-                return (16);
+                return i16_b00010000;
             }
             case 169:  /* CPD */ {
                 boolean c = Cset();
@@ -2557,7 +2585,7 @@ public abstract class VM80 {
                 setPV(BC() != 0);
                 setC(c);
 
-                return (16);
+                return i16_b00010000;
             }
             case 170:  /* IND */ {
                 int b;
@@ -2568,7 +2596,7 @@ public abstract class VM80 {
                 setZ(b == 0);
                 setN(true);
 
-                return (16);
+                return i16_b00010000;
             }
             case 171:  /* OUTD */ {
                 int b;
@@ -2579,7 +2607,7 @@ public abstract class VM80 {
                 setZ(b == 0);
                 setN(true);
 
-                return (16);
+                return i16_b00010000;
             }
 
             /* xxIR */
@@ -2597,7 +2625,7 @@ public abstract class VM80 {
                     dest = inc16(dest);
                     count = dec16(count);
 
-                    _local_tstates += (21);
+                    _local_tstates += i21_b00010101;
                     REFRESH(2);
                     if (interruptTriggered(_local_tstates)) {
                         break;
@@ -2609,7 +2637,7 @@ public abstract class VM80 {
                     setN(false);
                     setPV(true);
                 } else {
-                    _local_tstates += (-5);
+                    _local_tstates += b11111011; 
                     setH(false);
                     setN(false);
                     setPV(false);
@@ -2633,9 +2661,9 @@ public abstract class VM80 {
                 setC(c);
                 if (pv && !Zset()) {
                     PC((PC() - 2) & 0xffff);
-                    return (21);
+                    return i21_b00010101;
                 }
-                return (16);
+                return i16_b00010000;
             }
             case 178:  /* INIR */ {
                 int b;
@@ -2647,9 +2675,9 @@ public abstract class VM80 {
                 setN(true);
                 if (b != 0) {
                     PC((PC() - 2) & 0xffff);
-                    return (21);
+                    return i21_b00010101;
                 }
-                return (16);
+                return i16_b00010000;
             }
             case 179:  /* OTIR */ {
                 int b;
@@ -2661,9 +2689,9 @@ public abstract class VM80 {
                 setN(true);
                 if (b != 0) {
                     PC((PC() - 2) & 0xffff);
-                    return (21);
+                    return i21_b00010101;
                 }
-                return (16);
+                return i16_b00010000;
             }
 
             /* xxDR */
@@ -2681,7 +2709,7 @@ public abstract class VM80 {
                     dest = dec16(dest);
                     count = dec16(count);
 
-                    _local_tstates += (21);
+                    _local_tstates += i21_b00010101;
                     REFRESH(2);
                     if (interruptTriggered(_local_tstates)) {
                         break;
@@ -2693,7 +2721,7 @@ public abstract class VM80 {
                     setN(false);
                     setPV(true);
                 } else {
-                    _local_tstates += (-5);
+                    _local_tstates += b11111011;
                     setH(false);
                     setN(false);
                     setPV(false);
@@ -2717,9 +2745,9 @@ public abstract class VM80 {
                 setC(c);
                 if (pv && !Zset()) {
                     PC((PC() - 2) & 0xffff);
-                    return (21);
+                    return i21_b00010101;
                 }
-                return (16);
+                return i16_b00010000;
             }
             case 186:  /* INDR */ {
                 int b;
@@ -2731,9 +2759,9 @@ public abstract class VM80 {
                 setN(true);
                 if (b != 0) {
                     PC((PC() - 2) & 0xffff);
-                    return (21);
+                    return i21_b00010101;
                 }
-                return (16);
+                return i16_b00010000;
             }
             case 187:  /* OTDR */ {
                 int b;
@@ -2745,15 +2773,15 @@ public abstract class VM80 {
                 setN(true);
                 if (b != 0) {
                     PC((PC() - 2) & 0xffff);
-                    return (21);
+                    return i21_b00010101;
                 }
-                return (16);
+                return i16_b00010000;
             }
 
         } // end switch
 
         // NOP
-        return (8);
+        return i8_b00001000;
     }
 
     private int execute_cb() {
@@ -2763,1082 +2791,1082 @@ public abstract class VM80 {
 
             case 0:  /* RLC B */ {
                 B(rlc(B()));
-                return (8);
+                return i8_b00001000;
             }
             case 1:  /* RLC C */ {
                 C(rlc(C()));
-                return (8);
+                return i8_b00001000;
             }
             case 2:  /* RLC D */ {
                 D(rlc(D()));
-                return (8);
+                return i8_b00001000;
             }
             case 3:  /* RLC E */ {
                 E(rlc(E()));
-                return (8);
+                return i8_b00001000;
             }
             case 4:  /* RLC H */ {
                 H(rlc(H()));
-                return (8);
+                return i8_b00001000;
             }
             case 5:  /* RLC L */ {
                 L(rlc(L()));
-                return (8);
+                return i8_b00001000;
             }
             case 6:  /* RLC (HL) */ {
                 int hl = HL();
                 pokeb(hl, rlc(peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 7:  /* RLC A */ {
                 A(rlc(A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 8:  /* RRC B */ {
                 B(rrc(B()));
-                return (8);
+                return i8_b00001000;
             }
             case 9:  /* RRC C */ {
                 C(rrc(C()));
-                return (8);
+                return i8_b00001000;
             }
             case 10:  /* RRC D */ {
                 D(rrc(D()));
-                return (8);
+                return i8_b00001000;
             }
             case 11:  /* RRC E */ {
                 E(rrc(E()));
-                return (8);
+                return i8_b00001000;
             }
             case 12:  /* RRC H */ {
                 H(rrc(H()));
-                return (8);
+                return i8_b00001000;
             }
             case 13:  /* RRC L */ {
                 L(rrc(L()));
-                return (8);
+                return i8_b00001000;
             }
             case 14:  /* RRC (HL) */ {
                 int hl = HL();
                 pokeb(hl, rrc(peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 15:  /* RRC A */ {
                 A(rrc(A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 16:  /* RL B */ {
                 B(rl(B()));
-                return (8);
+                return i8_b00001000;
             }
             case 17:  /* RL C */ {
                 C(rl(C()));
-                return (8);
+                return i8_b00001000;
             }
             case 18:  /* RL D */ {
                 D(rl(D()));
-                return (8);
+                return i8_b00001000;
             }
             case 19:  /* RL E */ {
                 E(rl(E()));
-                return (8);
+                return i8_b00001000;
             }
             case 20:  /* RL H */ {
                 H(rl(H()));
-                return (8);
+                return i8_b00001000;
             }
             case 21:  /* RL L */ {
                 L(rl(L()));
-                return (8);
+                return i8_b00001000;
             }
             case 22:  /* RL (HL) */ {
                 int hl = HL();
                 pokeb(hl, rl(peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 23:  /* RL A */ {
                 A(rl(A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 24:  /* RR B */ {
                 B(rr(B()));
-                return (8);
+                return i8_b00001000;
             }
             case 25:  /* RR C */ {
                 C(rr(C()));
-                return (8);
+                return i8_b00001000;
             }
             case 26:  /* RR D */ {
                 D(rr(D()));
-                return (8);
+                return i8_b00001000;
             }
             case 27:  /* RR E */ {
                 E(rr(E()));
-                return (8);
+                return i8_b00001000;
             }
             case 28:  /* RR H */ {
                 H(rr(H()));
-                return (8);
+                return i8_b00001000;
             }
             case 29:  /* RR L */ {
                 L(rr(L()));
-                return (8);
+                return i8_b00001000;
             }
             case 30:  /* RR (HL) */ {
                 int hl = HL();
                 pokeb(hl, rr(peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 31:  /* RR A */ {
                 A(rr(A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 32:  /* SLA B */ {
                 B(sla(B()));
-                return (8);
+                return i8_b00001000;
             }
             case 33:  /* SLA C */ {
                 C(sla(C()));
-                return (8);
+                return i8_b00001000;
             }
             case 34:  /* SLA D */ {
                 D(sla(D()));
-                return (8);
+                return i8_b00001000;
             }
             case 35:  /* SLA E */ {
                 E(sla(E()));
-                return (8);
+                return i8_b00001000;
             }
             case 36:  /* SLA H */ {
                 H(sla(H()));
-                return (8);
+                return i8_b00001000;
             }
             case 37:  /* SLA L */ {
                 L(sla(L()));
-                return (8);
+                return i8_b00001000;
             }
             case 38:  /* SLA (HL) */ {
                 int hl = HL();
                 pokeb(hl, sla(peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 39:  /* SLA A */ {
                 A(sla(A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 40:  /* SRA B */ {
                 B(sra(B()));
-                return (8);
+                return i8_b00001000;
             }
             case 41:  /* SRA C */ {
                 C(sra(C()));
-                return (8);
+                return i8_b00001000;
             }
             case 42:  /* SRA D */ {
                 D(sra(D()));
-                return (8);
+                return i8_b00001000;
             }
             case 43:  /* SRA E */ {
                 E(sra(E()));
-                return (8);
+                return i8_b00001000;
             }
             case 44:  /* SRA H */ {
                 H(sra(H()));
-                return (8);
+                return i8_b00001000;
             }
             case 45:  /* SRA L */ {
                 L(sra(L()));
-                return (8);
+                return i8_b00001000;
             }
             case 46:  /* SRA (HL) */ {
                 int hl = HL();
                 pokeb(hl, sra(peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 47:  /* SRA A */ {
                 A(sra(A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 48:  /* SLS B */ {
                 B(sls(B()));
-                return (8);
+                return i8_b00001000;
             }
             case 49:  /* SLS C */ {
                 C(sls(C()));
-                return (8);
+                return i8_b00001000;
             }
             case 50:  /* SLS D */ {
                 D(sls(D()));
-                return (8);
+                return i8_b00001000;
             }
             case 51:  /* SLS E */ {
                 E(sls(E()));
-                return (8);
+                return i8_b00001000;
             }
             case 52:  /* SLS H */ {
                 H(sls(H()));
-                return (8);
+                return i8_b00001000;
             }
             case 53:  /* SLS L */ {
                 L(sls(L()));
-                return (8);
+                return i8_b00001000;
             }
             case 54:  /* SLS (HL) */ {
                 int hl = HL();
                 pokeb(hl, sls(peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 55:  /* SLS A */ {
                 A(sls(A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 56:  /* SRL B */ {
                 B(srl(B()));
-                return (8);
+                return i8_b00001000;
             }
             case 57:  /* SRL C */ {
                 C(srl(C()));
-                return (8);
+                return i8_b00001000;
             }
             case 58:  /* SRL D */ {
                 D(srl(D()));
-                return (8);
+                return i8_b00001000;
             }
             case 59:  /* SRL E */ {
                 E(srl(E()));
-                return (8);
+                return i8_b00001000;
             }
             case 60:  /* SRL H */ {
                 H(srl(H()));
-                return (8);
+                return i8_b00001000;
             }
             case 61:  /* SRL L */ {
                 L(srl(L()));
-                return (8);
+                return i8_b00001000;
             }
             case 62:  /* SRL (HL) */ {
                 int hl = HL();
                 pokeb(hl, srl(peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 63:  /* SRL A */ {
                 A(srl(A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 64:  /* BIT 0,B */ {
                 bit(0x01, B());
-                return (8);
+                return i8_b00001000;
             }
             case 65:  /* BIT 0,C */ {
                 bit(0x01, C());
-                return (8);
+                return i8_b00001000;
             }
             case 66:  /* BIT 0,D */ {
                 bit(0x01, D());
-                return (8);
+                return i8_b00001000;
             }
             case 67:  /* BIT 0,E */ {
                 bit(0x01, E());
-                return (8);
+                return i8_b00001000;
             }
             case 68:  /* BIT 0,H */ {
                 bit(0x01, H());
-                return (8);
+                return i8_b00001000;
             }
             case 69:  /* BIT 0,L */ {
                 bit(0x01, L());
-                return (8);
+                return i8_b00001000;
             }
             case 70:  /* BIT 0,(HL) */ {
                 bit(0x01, peekb(HL()));
-                return (12);
+                return i12_b00001100;
             }
             case 71:  /* BIT 0,A */ {
                 bit(0x01, A());
-                return (8);
+                return i8_b00001000;
             }
 
             case 72:  /* BIT 1,B */ {
                 bit(0x02, B());
-                return (8);
+                return i8_b00001000;
             }
             case 73:  /* BIT 1,C */ {
                 bit(0x02, C());
-                return (8);
+                return i8_b00001000;
             }
             case 74:  /* BIT 1,D */ {
                 bit(0x02, D());
-                return (8);
+                return i8_b00001000;
             }
             case 75:  /* BIT 1,E */ {
                 bit(0x02, E());
-                return (8);
+                return i8_b00001000;
             }
             case 76:  /* BIT 1,H */ {
                 bit(0x02, H());
-                return (8);
+                return i8_b00001000;
             }
             case 77:  /* BIT 1,L */ {
                 bit(0x02, L());
-                return (8);
+                return i8_b00001000;
             }
             case 78:  /* BIT 1,(HL) */ {
                 bit(0x02, peekb(HL()));
-                return (12);
+                return i12_b00001100;
             }
             case 79:  /* BIT 1,A */ {
                 bit(0x02, A());
-                return (8);
+                return i8_b00001000;
             }
 
             case 80:  /* BIT 2,B */ {
                 bit(0x04, B());
-                return (8);
+                return i8_b00001000;
             }
             case 81:  /* BIT 2,C */ {
                 bit(0x04, C());
-                return (8);
+                return i8_b00001000;
             }
             case 82:  /* BIT 2,D */ {
                 bit(0x04, D());
-                return (8);
+                return i8_b00001000;
             }
             case 83:  /* BIT 2,E */ {
                 bit(0x04, E());
-                return (8);
+                return i8_b00001000;
             }
             case 84:  /* BIT 2,H */ {
                 bit(0x04, H());
-                return (8);
+                return i8_b00001000;
             }
             case 85:  /* BIT 2,L */ {
                 bit(0x04, L());
-                return (8);
+                return i8_b00001000;
             }
             case 86:  /* BIT 2,(HL) */ {
                 bit(0x04, peekb(HL()));
-                return (12);
+                return i12_b00001100;
             }
             case 87:  /* BIT 2,A */ {
                 bit(0x04, A());
-                return (8);
+                return i8_b00001000;
             }
 
             case 88:  /* BIT 3,B */ {
                 bit(0x08, B());
-                return (8);
+                return i8_b00001000;
             }
             case 89:  /* BIT 3,C */ {
                 bit(0x08, C());
-                return (8);
+                return i8_b00001000;
             }
             case 90:  /* BIT 3,D */ {
                 bit(0x08, D());
-                return (8);
+                return i8_b00001000;
             }
             case 91:  /* BIT 3,E */ {
                 bit(0x08, E());
-                return (8);
+                return i8_b00001000;
             }
             case 92:  /* BIT 3,H */ {
                 bit(0x08, H());
-                return (8);
+                return i8_b00001000;
             }
             case 93:  /* BIT 3,L */ {
                 bit(0x08, L());
-                return (8);
+                return i8_b00001000;
             }
             case 94:  /* BIT 3,(HL) */ {
                 bit(0x08, peekb(HL()));
-                return (12);
+                return i12_b00001100;
             }
             case 95:  /* BIT 3,A */ {
                 bit(0x08, A());
-                return (8);
+                return i8_b00001000;
             }
 
             case 96:  /* BIT 4,B */ {
                 bit(0x10, B());
-                return (8);
+                return i8_b00001000;
             }
             case 97:  /* BIT 4,C */ {
                 bit(0x10, C());
-                return (8);
+                return i8_b00001000;
             }
             case 98:  /* BIT 4,D */ {
                 bit(0x10, D());
-                return (8);
+                return i8_b00001000;
             }
             case 99:  /* BIT 4,E */ {
                 bit(0x10, E());
-                return (8);
+                return i8_b00001000;
             }
             case 100:  /* BIT 4,H */ {
                 bit(0x10, H());
-                return (8);
+                return i8_b00001000;
             }
             case 101:  /* BIT 4,L */ {
                 bit(0x10, L());
-                return (8);
+                return i8_b00001000;
             }
             case 102:  /* BIT 4,(HL) */ {
                 bit(0x10, peekb(HL()));
-                return (12);
+                return i12_b00001100;
             }
             case 103:  /* BIT 4,A */ {
                 bit(0x10, A());
-                return (8);
+                return i8_b00001000;
             }
 
             case 104:  /* BIT 5,B */ {
                 bit(0x20, B());
-                return (8);
+                return i8_b00001000;
             }
             case 105:  /* BIT 5,C */ {
                 bit(0x20, C());
-                return (8);
+                return i8_b00001000;
             }
             case 106:  /* BIT 5,D */ {
                 bit(0x20, D());
-                return (8);
+                return i8_b00001000;
             }
             case 107:  /* BIT 5,E */ {
                 bit(0x20, E());
-                return (8);
+                return i8_b00001000;
             }
             case 108:  /* BIT 5,H */ {
                 bit(0x20, H());
-                return (8);
+                return i8_b00001000;
             }
             case 109:  /* BIT 5,L */ {
                 bit(0x20, L());
-                return (8);
+                return i8_b00001000;
             }
             case 110:  /* BIT 5,(HL) */ {
                 bit(0x20, peekb(HL()));
-                return (12);
+                return i12_b00001100;
             }
             case 111:  /* BIT 5,A */ {
                 bit(0x20, A());
-                return (8);
+                return i8_b00001000;
             }
 
             case 112:  /* BIT 6,B */ {
                 bit(0x40, B());
-                return (8);
+                return i8_b00001000;
             }
             case 113:  /* BIT 6,C */ {
                 bit(0x40, C());
-                return (8);
+                return i8_b00001000;
             }
             case 114:  /* BIT 6,D */ {
                 bit(0x40, D());
-                return (8);
+                return i8_b00001000;
             }
             case 115:  /* BIT 6,E */ {
                 bit(0x40, E());
-                return (8);
+                return i8_b00001000;
             }
             case 116:  /* BIT 6,H */ {
                 bit(0x40, H());
-                return (8);
+                return i8_b00001000;
             }
             case 117:  /* BIT 6,L */ {
                 bit(0x40, L());
-                return (8);
+                return i8_b00001000;
             }
             case 118:  /* BIT 6,(HL) */ {
                 bit(0x40, peekb(HL()));
-                return (12);
+                return i12_b00001100;
             }
             case 119:  /* BIT 6,A */ {
                 bit(0x40, A());
-                return (8);
+                return i8_b00001000;
             }
 
             case 120:  /* BIT 7,B */ {
                 bit(0x80, B());
-                return (8);
+                return i8_b00001000;
             }
             case 121:  /* BIT 7,C */ {
                 bit(0x80, C());
-                return (8);
+                return i8_b00001000;
             }
             case 122:  /* BIT 7,D */ {
                 bit(0x80, D());
-                return (8);
+                return i8_b00001000;
             }
             case 123:  /* BIT 7,E */ {
                 bit(0x80, E());
-                return (8);
+                return i8_b00001000;
             }
             case 124:  /* BIT 7,H */ {
                 bit(0x80, H());
-                return (8);
+                return i8_b00001000;
             }
             case 125:  /* BIT 7,L */ {
                 bit(0x80, L());
-                return (8);
+                return i8_b00001000;
             }
             case 126:  /* BIT 7,(HL) */ {
                 bit(0x80, peekb(HL()));
-                return (12);
+                return i12_b00001100;
             }
             case 127:  /* BIT 7,A */ {
                 bit(0x80, A());
-                return (8);
+                return i8_b00001000;
             }
 
             case 128:  /* RES 0,B */ {
                 B(res(0x01, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 129:  /* RES 0,C */ {
                 C(res(0x01, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 130:  /* RES 0,D */ {
                 D(res(0x01, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 131:  /* RES 0,E */ {
                 E(res(0x01, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 132:  /* RES 0,H */ {
                 H(res(0x01, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 133:  /* RES 0,L */ {
                 L(res(0x01, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 134:  /* RES 0,(HL) */ {
                 int hl = HL();
                 pokeb(hl, res(0x01, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 135:  /* RES 0,A */ {
                 A(res(0x01, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 136:  /* RES 1,B */ {
                 B(res(0x02, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 137:  /* RES 1,C */ {
                 C(res(0x02, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 138:  /* RES 1,D */ {
                 D(res(0x02, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 139:  /* RES 1,E */ {
                 E(res(0x02, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 140:  /* RES 1,H */ {
                 H(res(0x02, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 141:  /* RES 1,L */ {
                 L(res(0x02, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 142:  /* RES 1,(HL) */ {
                 int hl = HL();
                 pokeb(hl, res(0x02, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 143:  /* RES 1,A */ {
                 A(res(0x02, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 144:  /* RES 2,B */ {
                 B(res(0x04, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 145:  /* RES 2,C */ {
                 C(res(0x04, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 146:  /* RES 2,D */ {
                 D(res(0x04, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 147:  /* RES 2,E */ {
                 E(res(0x04, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 148:  /* RES 2,H */ {
                 H(res(0x04, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 149:  /* RES 2,L */ {
                 L(res(0x04, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 150:  /* RES 2,(HL) */ {
                 int hl = HL();
                 pokeb(hl, res(0x04, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 151:  /* RES 2,A */ {
                 A(res(0x04, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 152:  /* RES 3,B */ {
                 B(res(0x08, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 153:  /* RES 3,C */ {
                 C(res(0x08, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 154:  /* RES 3,D */ {
                 D(res(0x08, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 155:  /* RES 3,E */ {
                 E(res(0x08, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 156:  /* RES 3,H */ {
                 H(res(0x08, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 157:  /* RES 3,L */ {
                 L(res(0x08, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 158:  /* RES 3,(HL) */ {
                 int hl = HL();
                 pokeb(hl, res(0x08, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 159:  /* RES 3,A */ {
                 A(res(0x08, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 160:  /* RES 4,B */ {
                 B(res(0x10, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 161:  /* RES 4,C */ {
                 C(res(0x10, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 162:  /* RES 4,D */ {
                 D(res(0x10, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 163:  /* RES 4,E */ {
                 E(res(0x10, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 164:  /* RES 4,H */ {
                 H(res(0x10, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 165:  /* RES 4,L */ {
                 L(res(0x10, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 166:  /* RES 4,(HL) */ {
                 int hl = HL();
                 pokeb(hl, res(0x10, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 167:  /* RES 4,A */ {
                 A(res(0x10, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 168:  /* RES 5,B */ {
                 B(res(0x20, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 169:  /* RES 5,C */ {
                 C(res(0x20, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 170:  /* RES 5,D */ {
                 D(res(0x20, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 171:  /* RES 5,E */ {
                 E(res(0x20, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 172:  /* RES 5,H */ {
                 H(res(0x20, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 173:  /* RES 5,L */ {
                 L(res(0x20, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 174:  /* RES 5,(HL) */ {
                 int hl = HL();
                 pokeb(hl, res(0x20, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 175:  /* RES 5,A */ {
                 A(res(0x20, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 176:  /* RES 6,B */ {
                 B(res(0x40, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 177:  /* RES 6,C */ {
                 C(res(0x40, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 178:  /* RES 6,D */ {
                 D(res(0x40, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 179:  /* RES 6,E */ {
                 E(res(0x40, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 180:  /* RES 6,H */ {
                 H(res(0x40, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 181:  /* RES 6,L */ {
                 L(res(0x40, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 182:  /* RES 6,(HL) */ {
                 int hl = HL();
                 pokeb(hl, res(0x40, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 183:  /* RES 6,A */ {
                 A(res(0x40, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 184:  /* RES 7,B */ {
                 B(res(0x80, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 185:  /* RES 7,C */ {
                 C(res(0x80, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 186:  /* RES 7,D */ {
                 D(res(0x80, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 187:  /* RES 7,E */ {
                 E(res(0x80, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 188:  /* RES 7,H */ {
                 H(res(0x80, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 189:  /* RES 7,L */ {
                 L(res(0x80, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 190:  /* RES 7,(HL) */ {
                 int hl = HL();
                 pokeb(hl, res(0x80, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 191:  /* RES 7,A */ {
                 A(res(0x80, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 192:  /* SET 0,B */ {
                 B(set(0x01, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 193:  /* SET 0,C */ {
                 C(set(0x01, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 194:  /* SET 0,D */ {
                 D(set(0x01, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 195:  /* SET 0,E */ {
                 E(set(0x01, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 196:  /* SET 0,H */ {
                 H(set(0x01, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 197:  /* SET 0,L */ {
                 L(set(0x01, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 198:  /* SET 0,(HL) */ {
                 int hl = HL();
                 pokeb(hl, set(0x01, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 199:  /* SET 0,A */ {
                 A(set(0x01, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 200:  /* SET 1,B */ {
                 B(set(0x02, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 201:  /* SET 1,C */ {
                 C(set(0x02, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 202:  /* SET 1,D */ {
                 D(set(0x02, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 203:  /* SET 1,E */ {
                 E(set(0x02, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 204:  /* SET 1,H */ {
                 H(set(0x02, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 205:  /* SET 1,L */ {
                 L(set(0x02, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 206:  /* SET 1,(HL) */ {
                 int hl = HL();
                 pokeb(hl, set(0x02, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 207:  /* SET 1,A */ {
                 A(set(0x02, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 208:  /* SET 2,B */ {
                 B(set(0x04, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 209:  /* SET 2,C */ {
                 C(set(0x04, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 210:  /* SET 2,D */ {
                 D(set(0x04, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 211:  /* SET 2,E */ {
                 E(set(0x04, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 212:  /* SET 2,H */ {
                 H(set(0x04, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 213:  /* SET 2,L */ {
                 L(set(0x04, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 214:  /* SET 2,(HL) */ {
                 int hl = HL();
                 pokeb(hl, set(0x04, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 215:  /* SET 2,A */ {
                 A(set(0x04, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 216:  /* SET 3,B */ {
                 B(set(0x08, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 217:  /* SET 3,C */ {
                 C(set(0x08, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 218:  /* SET 3,D */ {
                 D(set(0x08, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 219:  /* SET 3,E */ {
                 E(set(0x08, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 220:  /* SET 3,H */ {
                 H(set(0x08, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 221:  /* SET 3,L */ {
                 L(set(0x08, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 222:  /* SET 3,(HL) */ {
                 int hl = HL();
                 pokeb(hl, set(0x08, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 223:  /* SET 3,A */ {
                 A(set(0x08, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 224:  /* SET 4,B */ {
                 B(set(0x10, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 225:  /* SET 4,C */ {
                 C(set(0x10, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 226:  /* SET 4,D */ {
                 D(set(0x10, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 227:  /* SET 4,E */ {
                 E(set(0x10, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 228:  /* SET 4,H */ {
                 H(set(0x10, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 229:  /* SET 4,L */ {
                 L(set(0x10, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 230:  /* SET 4,(HL) */ {
                 int hl = HL();
                 pokeb(hl, set(0x10, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 231:  /* SET 4,A */ {
                 A(set(0x10, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 232:  /* SET 5,B */ {
                 B(set(0x20, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 233:  /* SET 5,C */ {
                 C(set(0x20, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 234:  /* SET 5,D */ {
                 D(set(0x20, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 235:  /* SET 5,E */ {
                 E(set(0x20, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 236:  /* SET 5,H */ {
                 H(set(0x20, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 237:  /* SET 5,L */ {
                 L(set(0x20, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 238:  /* SET 5,(HL) */ {
                 int hl = HL();
                 pokeb(hl, set(0x20, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 239:  /* SET 5,A */ {
                 A(set(0x20, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 240:  /* SET 6,B */ {
                 B(set(0x40, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 241:  /* SET 6,C */ {
                 C(set(0x40, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 242:  /* SET 6,D */ {
                 D(set(0x40, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 243:  /* SET 6,E */ {
                 E(set(0x40, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 244:  /* SET 6,H */ {
                 H(set(0x40, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 245:  /* SET 6,L */ {
                 L(set(0x40, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 246:  /* SET 6,(HL) */ {
                 int hl = HL();
                 pokeb(hl, set(0x40, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 247:  /* SET 6,A */ {
                 A(set(0x40, A()));
-                return (8);
+                return i8_b00001000;
             }
 
             case 248:  /* SET 7,B */ {
                 B(set(0x80, B()));
-                return (8);
+                return i8_b00001000;
             }
             case 249:  /* SET 7,C */ {
                 C(set(0x80, C()));
-                return (8);
+                return i8_b00001000;
             }
             case 250:  /* SET 7,D */ {
                 D(set(0x80, D()));
-                return (8);
+                return i8_b00001000;
             }
             case 251:  /* SET 7,E */ {
                 E(set(0x80, E()));
-                return (8);
+                return i8_b00001000;
             }
             case 252:  /* SET 7,H */ {
                 H(set(0x80, H()));
-                return (8);
+                return i8_b00001000;
             }
             case 253:  /* SET 7,L */ {
                 L(set(0x80, L()));
-                return (8);
+                return i8_b00001000;
             }
             case 254:  /* SET 7,(HL) */ {
                 int hl = HL();
                 pokeb(hl, set(0x80, peekb(hl)));
-                return (15);
+                return i15_b00001111;
             }
             case 255:  /* SET 7,A */ {
                 A(set(0x80, A()));
-                return (8);
+                return i8_b00001000;
             }
         }
         return 0;
@@ -4037,363 +4065,363 @@ public abstract class VM80 {
             case 248: {
                 PC(dec16(PC()));
                 REFRESH(-1);
-                return (4);
+                return i4_b00000100;
             }
 
             case 9: /* ADD ID,BC */ {
                 ID(add16(ID(), BC()));
-                return (15);
+                return i15_b00001111;
             }
             case 25: /* ADD ID,DE */ {
                 ID(add16(ID(), DE()));
-                return (15);
+                return i15_b00001111;
             }
             case 41: /* ADD ID,ID */ {
                 int id = ID();
                 ID(add16(id, id));
-                return (15);
+                return i15_b00001111;
             }
             case 57: /* ADD ID,SP */ {
                 ID(add16(ID(), SP()));
-                return (15);
+                return i15_b00001111;
             }
 
             case 33: /* LD ID,nn */ {
                 ID(nxtpcw());
-                return (14);
+                return i14_b00001110;
             }
             case 34: /* LD (nn),ID */ {
                 pokew(nxtpcw(), ID());
-                return (20);
+                return i20_b00010100;
             }
             case 42: /* LD ID,(nn) */ {
                 ID(peekw(nxtpcw()));
-                return (20);
+                return i20_b00010100;
             }
             case 35:/* INC ID */ {
                 ID(inc16(ID()));
-                return (10);
+                return i10_b00001010;
             }
             case 43:/* DEC ID */ {
                 ID(dec16(ID()));
-                return (10);
+                return i10_b00001010;
             }
             case 36:/* INC IDH */ {
                 IDH(inc8(IDH()));
-                return (8);
+                return i8_b00001000;
             }
             case 44:/* INC IDL */ {
                 IDL(inc8(IDL()));
-                return (8);
+                return i8_b00001000;
             }
             case 52:/* INC (ID+d) */ {
                 int z = ID_d();
                 pokeb(z, inc8(peekb(z)));
-                return (23);
+                return i23_b00010111;
             }
             case 37:/* DEC IDH */ {
                 IDH(dec8(IDH()));
-                return (8);
+                return i8_b00001000;
             }
             case 45:/* DEC IDL */ {
                 IDL(dec8(IDL()));
-                return (8);
+                return i8_b00001000;
             }
             case 53:/* DEC (ID+d) */ {
                 int z = ID_d();
                 pokeb(z, dec8(peekb(z)));
-                return (23);
+                return i23_b00010111;
             }
 
             case 38: /* LD IDH,n */ {
                 IDH(nxtpcb());
-                return (11);
+                return i11_b00001011;
             }
             case 46: /* LD IDL,n */ {
                 IDL(nxtpcb());
-                return (11);
+                return i11_b00001011;
             }
             case 54: /* LD (ID+d),n */ {
                 int z = ID_d();
                 pokeb(z, nxtpcb());
-                return (19);
+                return i19_b00010011;
             }
 
             case 68: /* LD B,IDH */ {
                 B(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 69: /* LD B,IDL */ {
                 B(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 70: /* LD B,(ID+d) */ {
                 B(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
 
             case 76: /* LD C,IDH */ {
                 C(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 77: /* LD C,IDL */ {
                 C(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 78: /* LD C,(ID+d) */ {
                 C(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
 
             case 84: /* LD D,IDH */ {
                 D(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 85: /* LD D,IDL */ {
                 D(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 86: /* LD D,(ID+d) */ {
                 D(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
 
             case 92: /* LD E,IDH */ {
                 E(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 93: /* LD E,IDL */ {
                 E(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 94: /* LD E,(ID+d) */ {
                 E(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
 
             case 96: /* LD IDH,B */ {
                 IDH(B());
-                return (8);
+                return i8_b00001000;
             }
             case 97: /* LD IDH,C */ {
                 IDH(C());
-                return (8);
+                return i8_b00001000;
             }
             case 98: /* LD IDH,D */ {
                 IDH(D());
-                return (8);
+                return i8_b00001000;
             }
             case 99: /* LD IDH,E */ {
                 IDH(E());
-                return (8);
+                return i8_b00001000;
             }
             case 100: /* LD IDH,IDH */ {
-                return (8);
+                return i8_b00001000;
             }
             case 101: /* LD IDH,IDL */ {
                 IDH(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 102: /* LD H,(ID+d) */ {
                 H(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
             case 103: /* LD IDH,A */ {
                 IDH(A());
-                return (8);
+                return i8_b00001000;
             }
 
             case 104: /* LD IDL,B */ {
                 IDL(B());
-                return (8);
+                return i8_b00001000;
             }
             case 105: /* LD IDL,C */ {
                 IDL(C());
-                return (8);
+                return i8_b00001000;
             }
             case 106: /* LD IDL,D */ {
                 IDL(D());
-                return (8);
+                return i8_b00001000;
             }
             case 107: /* LD IDL,E */ {
                 IDL(E());
-                return (8);
+                return i8_b00001000;
             }
             case 108: /* LD IDL,IDH */ {
                 IDL(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 109: /* LD IDL,IDL */ {
-                return (8);
+                return i8_b00001000;
             }
             case 110: /* LD L,(ID+d) */ {
                 L(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
             case 111: /* LD IDL,A */ {
                 IDL(A());
-                return (8);
+                return i8_b00001000;
             }
 
             case 112: /* LD (ID+d),B */ {
                 pokeb(ID_d(), B());
-                return (19);
+                return i19_b00010011;
             }
             case 113: /* LD (ID+d),C */ {
                 pokeb(ID_d(), C());
-                return (19);
+                return i19_b00010011;
             }
             case 114: /* LD (ID+d),D */ {
                 pokeb(ID_d(), D());
-                return (19);
+                return i19_b00010011;
             }
             case 115: /* LD (ID+d),E */ {
                 pokeb(ID_d(), E());
-                return (19);
+                return i19_b00010011;
             }
             case 116: /* LD (ID+d),H */ {
                 pokeb(ID_d(), H());
-                return (19);
+                return i19_b00010011;
             }
             case 117: /* LD (ID+d),L */ {
                 pokeb(ID_d(), L());
-                return (19);
+                return i19_b00010011;
             }
             case 119: /* LD (ID+d),A */ {
                 pokeb(ID_d(), A());
-                return (19);
+                return i19_b00010011;
             }
 
             case 124: /* LD A,IDH */ {
                 A(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 125: /* LD A,IDL */ {
                 A(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 126: /* LD A,(ID+d) */ {
                 A(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
 
             case 132: /* ADD A,IDH */ {
                 add_a(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 133: /* ADD A,IDL */ {
                 add_a(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 134: /* ADD A,(ID+d) */ {
                 add_a(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
 
             case 140: /* ADC A,IDH */ {
                 adc_a(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 141: /* ADC A,IDL */ {
                 adc_a(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 142: /* ADC A,(ID+d) */ {
                 adc_a(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
 
             case 148: /* SUB IDH */ {
                 sub_a(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 149: /* SUB IDL */ {
                 sub_a(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 150: /* SUB (ID+d) */ {
                 sub_a(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
 
             case 156: /* SBC A,IDH */ {
                 sbc_a(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 157: /* SBC A,IDL */ {
                 sbc_a(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 158: /* SBC A,(ID+d) */ {
                 sbc_a(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
 
             case 164: /* AND IDH */ {
                 and_a(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 165: /* AND IDL */ {
                 and_a(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 166: /* AND (ID+d) */ {
                 and_a(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
 
             case 172: /* XOR IDH */ {
                 xor_a(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 173: /* XOR IDL */ {
                 xor_a(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 174: /* XOR (ID+d) */ {
                 xor_a(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
 
             case 180: /* OR IDH */ {
                 or_a(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 181: /* OR IDL */ {
                 or_a(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 182: /* OR (ID+d) */ {
                 or_a(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
 
             case 188: /* CP IDH */ {
                 cp_a(IDH());
-                return (8);
+                return i8_b00001000;
             }
             case 189: /* CP IDL */ {
                 cp_a(IDL());
-                return (8);
+                return i8_b00001000;
             }
             case 190: /* CP (ID+d) */ {
                 cp_a(peekb(ID_d()));
-                return (19);
+                return i19_b00010011;
             }
 
             case 225: /* POP ID */ {
                 ID(popw());
-                return (14);
+                return i14_b00001110;
             }
 
             case 233: /* JP (ID) */ {
                 PC(ID());
-                return (8);
+                return i8_b00001000;
             }
 
             case 249: /* LD SP,ID */ {
                 SP(ID());
-                return (10);
+                return i10_b00001010;
             }
 
             case 203: /* prefix CB */ {
@@ -4411,12 +4439,12 @@ public abstract class VM80 {
                 int sp = SP();
                 ID(peekw(sp));
                 pokew(sp, t);
-                return (23);
+                return i23_b00010111;
             }
 
             case 229:    /* PUSH ID */ {
                 pushw(ID());
-                return (15);
+                return i15_b00001111;
             }
         }
         return 0;
