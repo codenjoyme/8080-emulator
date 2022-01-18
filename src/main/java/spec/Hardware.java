@@ -34,6 +34,9 @@ import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.Hashtable;
 
+import static spec.VM80.ROMEnd;
+import static spec.VM80.ScrBeg;
+
 /**
  * The Spechard class extends the Z80 class implementing the supporting
  * hardware emulation which was specific to the 'Specialist' computer.
@@ -47,7 +50,7 @@ import java.util.Hashtable;
  * @see VM80
  */
 
-public class Hardware extends VM80 {
+public class Hardware {
 
     public static final int WORD = 0xFFFF;
 
@@ -74,6 +77,8 @@ public class Hardware extends VM80 {
     // массив байт памяти
     public int[] mem = new int[65536];
 
+    public VM80 processor;
+
 
     /**
      * Container — это абстрактный подкласс класса Component, определяющий дополнительные методы,
@@ -81,9 +86,44 @@ public class Hardware extends VM80 {
      * иерархической системы визуальных объектов. Container отвечает за расположение содержащихся
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
-    public Hardware(Container _parent) throws Exception {
+    public Hardware(Container _parent) {
         // Specialist runs at 3.5Mhz;
-        super(1.6);
+        processor = new VM80(1.6, new Accessor() {
+            @Override
+            public void plot(int addr, int newByte) {
+                Hardware.this.plot(addr, newByte);
+            }
+
+            @Override
+            public void outPort(int addr, int newByte) {
+                Hardware.this.outPort(addr, newByte);
+            }
+
+            @Override
+            public int inport(int addr) {
+                return Hardware.this.inport(addr);
+            }
+
+            @Override
+            public void interrupt() {
+                Hardware.this.interrupt();
+            }
+
+            @Override
+            public void mem(int addr, int data) {
+                mem[addr] = data;
+            }
+
+            @Override
+            public int mem(int addr) {
+                return mem[addr];
+            }
+
+            @Override
+            public void outb(int port, int outByte, int tstates) {
+                Hardware.this.outb(port, outByte, tstates);
+            }
+        });
 
         // Конструктору класса Spechard() из Main.class передается ссылка на компонент,
         // для которого необходимо отслеживать загрузку изображений (или что-то?).
@@ -311,8 +351,7 @@ public class Hardware extends VM80 {
 
 
     // ввод из порта памяти 580ВВ55
-    @Override
-    protected int inport(int addr) {
+    private int inport(int addr) {
         // все порты ППА перенесём в область 0xffe0 - 0xffe3 ;
         if (addr <= RgRYS) {
             int tma = (addr & 0x0003) | 0xffe0;
@@ -430,8 +469,7 @@ public class Hardware extends VM80 {
     }
 
     // вывод в порт Spectrum
-    @Override
-    public void outb(int port, int outByte, int tstates) {
+    private void outb(int port, int outByte, int tstates) {
 //     return;    // для ПК "Специалист"  а можно и оставить ему бордюр. :)
         if ((port & 0x0001) == 0) {   // port xx.FEh
             newBorder = (outByte & 0x000f); // 0000.0111 бордюр & 0x07
@@ -550,8 +588,7 @@ public class Hardware extends VM80 {
     }
 
     // прерывание
-    @Override
-    protected void interrupt() {
+    private void interrupt() {
 
         if (pauseAtNextInterrupt) {
             // поле ввода url
@@ -678,9 +715,8 @@ public class Hardware extends VM80 {
     }
 
     //================================== сброс =================================================
-    @Override
     public void reset() {
-        super.reset(); // reset() class Z80
+        processor.reset(); // reset() class Z80
         if (wfocus) {
             outb(254, 0x02, 0); //
         } else {
@@ -815,8 +851,7 @@ public class Hardware extends VM80 {
     }
 
     // запись в видео-ОЗУ
-    @Override
-    protected void plot(int addr, int newByte)   // график ?
+    private void plot(int addr, int newByte)   // график ?
     {//        addr в видео-ОЗУ;      newByte - байт ОЗУ, он здесь не используется...
         int offset = addr - ScrBeg;  // смещение в видео-ОЗУ: (адрес в ОЗУ) - 4000h
 
@@ -1454,7 +1489,7 @@ public class Hardware extends VM80 {
         readBytes(is, mem, ABeg, ALen);
         readBytes(is, header, 4, 2);
 
-        PC(ABeg);
+        processor.PC(ABeg);
 
         if (urlField != null) {
             urlField.setText(name);
@@ -1536,13 +1571,7 @@ public class Hardware extends VM80 {
         }
     }
 
-    @Override
-    protected void mem(int address, int data) {
-        mem[address] = data;
-    }
-
-    @Override
-    protected int mem(int address) {
-        return mem[address];
+    public void execute() {
+        processor.execute();
     }
 }

@@ -11,7 +11,7 @@ package spec;
  * @version 1.1 27 Apr 1997
  */
 
-public abstract class VM80 {
+public class VM80 {
 
     private static final int     b11111011 = -5; // TODO перегнать в bits, я тут не уверен
     private static final int  i1_b00000001 = 1;
@@ -41,10 +41,13 @@ public abstract class VM80 {
     private static final int i64_b01000000 = 64;
     private static final int i128_b10000000 = 128;
 
-    public VM80(double clockFrequencyInMHz) {
+    private final Accessor accessor;
+
+    public VM80(double clockFrequencyInMHz, Accessor accessor) {
         // число тактов на 1 прерывание, которое происходит 50 раз в секунду.
         // 1000000/50 раз в секунду
         tstatesPerInterrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);
+        this.accessor = accessor;
     }
 
     private static final int BASEnd = 0x4000; // ROM BASIC END.
@@ -423,9 +426,9 @@ public abstract class VM80 {
     protected int peekb(int addr) {
         if (addr < (PortBeg))     // ПЗУ и ОЗУ Пользователя
         {
-            return mem(addr);   // читаем байт
+            return accessor.mem(addr);   // читаем байт
         }
-        return inport(addr);     // возвращаем порт
+        return accessor.inport(addr);     // возвращаем порт
     }
 
     private void pokeb(int addr, int newByte) {
@@ -436,7 +439,7 @@ public abstract class VM80 {
             {
                 if (addr > (ROMEnd))   // > 0FFDFh - ПОРТЫ
                 {
-                    outPort(addr, newByte);// в ПОРТЫ пишем   0C000h < ПОРТЫ < 0FFFFh
+                    accessor.outPort(addr, newByte);// в ПОРТЫ пишем   0C000h < ПОРТЫ < 0FFFFh
                     return;
                 } // ПОРТЫ кончились.
                 else {
@@ -449,14 +452,14 @@ public abstract class VM80 {
 
         if (addr < ScrBeg)          // ОЗУ < 9000h
         {
-            mem(addr, newByte);    // в ОЗУ пишем   0000h < ОЗУ < 9000h
+            accessor.mem(addr, newByte);    // в ОЗУ пишем   0000h < ОЗУ < 9000h
             return;                   // в ОЗУ пользователя пишем
         }// далее - только Видео-ОЗУ!
 
-        if (mem(addr) != newByte) // правильно! повторно в Видео-ОЗУ записывать глупо!
+        if (accessor.mem(addr) != newByte) // правильно! повторно в Видео-ОЗУ записывать глупо!
         {//       newByte
-            plot(addr, 0xffff);     // в Видео-ОЗУ рисуем  newByte не используется в plot()
-            mem(addr, newByte);    // в Видео-ОЗУ пишем как в ОЗУ чтобы читать
+            accessor.plot(addr, 0xffff);     // в Видео-ОЗУ рисуем  newByte не используется в plot()
+            accessor.mem(addr, newByte);    // в Видео-ОЗУ пишем как в ОЗУ чтобы читать
         }
     }
 
@@ -471,13 +474,13 @@ public abstract class VM80 {
             {
                 if (addr > ROMEnd)   // > 0FFDFh - ПОРТЫ
                 {
-                    outPort(addr, word & 0xff);// младший байт - пишем в ПОРТ
+                    accessor.outPort(addr, word & 0xff);// младший байт - пишем в ПОРТ
                     if (++addr != HiMem) { // != 65536
-                        outPort(addr, word >> 8); // старший байт - пишем в ПОРТ
+                        accessor.outPort(addr, word >> 8); // старший байт - пишем в ПОРТ
                         return; // старший байт обслужили - уходим!
                     } else { // старший байт вышел за HiMem -> addr=0000h;
                         addr &= 0xffff;
-                        mem(addr, word >> 8); // старший байт - пишем в ОЗУ
+                        accessor.mem(addr, word >> 8); // старший байт - пишем в ОЗУ
                         return; // старший байт обслужили - уходим!
                     }
                 }// ( addr > ROMEnd )
@@ -490,16 +493,16 @@ public abstract class VM80 {
 
         if (addr < ScrBeg)            // ОЗУ < 9000h -
         {
-            mem(addr, word & 0xff); // младший байт - пишем в ОЗУ
+            accessor.mem(addr, word & 0xff); // младший байт - пишем в ОЗУ
             if (++addr != ScrBeg) {    // если старший байт не попал в видео-ОЗУ.
-                mem(addr, (word >> 8) & 0xff); // старший байт - пишем в ОЗУ.
+                accessor.mem(addr, (word >> 8) & 0xff); // старший байт - пишем в ОЗУ.
                 return;
             } else {// старший байт попал в видео-ОЗУ.
                 int newByte1 = (word >> 8) & 0xff; // второй байт слова word
-                if (mem(addr) != newByte1) // правильно! повторно в Видео-ОЗУ записывать глупо!
+                if (accessor.mem(addr) != newByte1) // правильно! повторно в Видео-ОЗУ записывать глупо!
                 {
-                    plot(addr, 0xffff);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
-                    mem(addr, newByte1);// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
+                    accessor.plot(addr, 0xffff);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
+                    accessor.mem(addr, newByte1);// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
                 }
                 return;// старший байт обслужили - уходим!
             }
@@ -507,18 +510,18 @@ public abstract class VM80 {
         // далее - только Видео-ОЗУ!
 
         int newByte0 = word & 0xff;   // второй байт слова word
-        if (mem(addr) != newByte0) // правильно! повторно в Видео-ОЗУ записывать глупо!
+        if (accessor.mem(addr) != newByte0) // правильно! повторно в Видео-ОЗУ записывать глупо!
         {
-            plot(addr, 0xffff);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
-            mem(addr, newByte0);// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
+            accessor.plot(addr, 0xffff);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
+            accessor.mem(addr, newByte0);// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
         }
 
         int newByte1 = word >> 8;// второй байт слова word
         if (++addr < (ROMBeg)) // ScrBeg < ++addr < ROMBeg;
         {
-            if (mem(addr) != newByte1) {
-                plot(addr, 0xffff); // в Видео-ОЗУ рисуем   newByte1
-                mem(addr, newByte1);
+            if (accessor.mem(addr) != newByte1) {
+                accessor.plot(addr, 0xffff); // в Видео-ОЗУ рисуем   newByte1
+                accessor.mem(addr, newByte1);
             }
         } else { // второй байт слова попал на ROM
             return; // в ROM не пишем
@@ -620,12 +623,6 @@ public abstract class VM80 {
         IM(IM0);
     }
 
-    /**
-     * IO ports
-     */
-    protected void outb(int port, int bite, int tstates) {
-    }
-
     // ввод из порта
     // при вводе из порта клавиатуры записываем в ответ состояние переменных _B_SPC..._CAPS_V.
     // в зависимости от выбраной "0" линии адреса порта 7F.FE ... FE.FE.
@@ -658,7 +655,7 @@ public abstract class VM80 {
 
             if (interruptTriggered(local_tstates)) // local_tstates >= 0 ? true
             {  // число тактов на прерывание исчерпано - вызываем прерывание.
-                interrupt();
+                accessor.interrupt();
                 local_tstates -= tstatesPerInterrupt;
             }  // local_tstates = числу тактов на прерывание + время прерывания.
 
@@ -1906,7 +1903,7 @@ public abstract class VM80 {
                     break;
                 }
                 case 211:    /* OUT (n),A */ {
-                    outb(nxtpcb(), A(), local_tstates);
+                    accessor.outb(nxtpcb(), A(), local_tstates);
                     local_tstates += i11_b00001011;
                     break;
                 }
@@ -2337,35 +2334,35 @@ public abstract class VM80 {
 
             /* OUT (c),r */
             case 65:  /* OUT (c),B */ {
-                outb(BC(), B(), local_tstates);
+                accessor.outb(BC(), B(), local_tstates);
                 return i12_b00001100;
             }
             case 73:  /* OUT (c),C */ {
-                outb(BC(), C(), local_tstates);
+                accessor.outb(BC(), C(), local_tstates);
                 return i12_b00001100;
             }
             case 81:  /* OUT (c),D */ {
-                outb(BC(), D(), local_tstates);
+                accessor.outb(BC(), D(), local_tstates);
                 return i12_b00001100;
             }
             case 89:  /* OUT (c),E */ {
-                outb(BC(), E(), local_tstates);
+                accessor.outb(BC(), E(), local_tstates);
                 return i12_b00001100;
             }
             case 97:  /* OUT (c),H */ {
-                outb(BC(), H(), local_tstates);
+                accessor.outb(BC(), H(), local_tstates);
                 return i12_b00001100;
             }
             case 105:  /* OUT (c),L */ {
-                outb(BC(), L(), local_tstates);
+                accessor.outb(BC(), L(), local_tstates);
                 return i12_b00001100;
             }
             case 113:  /* OUT (c),0 */ {
-                outb(BC(), 0, local_tstates);
+                accessor.outb(BC(), 0, local_tstates);
                 return i12_b00001100;
             }
             case 121:  /* OUT (c),A */ {
-                outb(BC(), A(), local_tstates);
+                accessor.outb(BC(), A(), local_tstates);
                 return i12_b00001100;
             }
 
@@ -2553,7 +2550,7 @@ public abstract class VM80 {
             case 163:  /* OUTI */ {
                 int b;
                 B(b = qdec8(B()));
-                outb(BC(), peekb(HL()), local_tstates);
+                accessor.outb(BC(), peekb(HL()), local_tstates);
                 HL(inc16(HL()));
 
                 setZ(b == 0);
@@ -2601,7 +2598,7 @@ public abstract class VM80 {
             case 171:  /* OUTD */ {
                 int b;
                 B(b = qdec8(B()));
-                outb(BC(), peekb(HL()), local_tstates);
+                accessor.outb(BC(), peekb(HL()), local_tstates);
                 HL(dec16(HL()));
 
                 setZ(b == 0);
@@ -2682,7 +2679,7 @@ public abstract class VM80 {
             case 179:  /* OTIR */ {
                 int b;
                 B(b = qdec8(B()));
-                outb(BC(), peekb(HL()), local_tstates);
+                accessor.outb(BC(), peekb(HL()), local_tstates);
                 HL(inc16(HL()));
 
                 setZ(true);
@@ -2766,7 +2763,7 @@ public abstract class VM80 {
             case 187:  /* OTDR */ {
                 int b;
                 B(b = qdec8(B()));
-                outb(BC(), peekb(HL()), local_tstates);
+                accessor.outb(BC(), peekb(HL()), local_tstates);
                 HL(dec16(HL()));
 
                 setZ(true);
@@ -6272,17 +6269,5 @@ public abstract class VM80 {
     private static int set(int bit, int val) {
         return val | bit;
     }
-
-    protected abstract void plot(int addr, int newByte);
-
-    protected abstract void outPort(int addr, int newByte);
-
-    protected abstract int inport(int addr);
-
-    protected abstract void interrupt();
-
-    protected abstract void mem(int address, int data);
-
-    protected abstract int mem(int address);
 
 }
