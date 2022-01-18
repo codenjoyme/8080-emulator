@@ -31,14 +31,14 @@ public class CPU {
     private static final int IM1 = 1;
     private static final int IM2 = 2;
 
-    private static final int F_C = x01;
-    private static final int F_N = x02;
-    private static final int F_PV = x04;
-    private static final int F_3 = x08;
-    private static final int F_H = x10;
-    private static final int F_5 = x20;
-    private static final int F_Z = x40;
-    private static final int F_S = x80;
+    private static final int T0c = x01; // Разряд Tc =1, если был перенос или заем
+    private static final int T11 = x02; // Всегда 1
+    private static final int T2p = x04; // Разряд Tp = 1, если число единиц в результате четно
+    private static final int T30 = x08; // Всегда 0
+    private static final int T4h = x10; // Разряд Th = 1, если был перенос из старшей тетрады в младшую
+    private static final int T50 = x20; // Всегда 0
+    private static final int T6z = x40; // Разряд tZ = 1, если результат = 0
+    private static final int T7s = x80; // Разряд Ts = 1, если результат отрицательный (первый бит результата = 1)
 
     private static final boolean[] parity = new boolean[256];
 
@@ -62,19 +62,15 @@ public class CPU {
     private int BC = 0;
     private int DE = 0;
 
-    private boolean fS = false;
-    private boolean fZ = false;
-    private boolean f5 = false;
-    private boolean fH = false;
-    private boolean f3 = false;
-    private boolean fPV = false;
-    private boolean fN = false;
-    private boolean fC = false;
+    private boolean ts = false;
+    private boolean tz = false;
+    private boolean th = false;
+    private boolean tp = false;
+    private boolean tc = false;
 
     /**
      * Alternate registers
      */
-    private int _AF_ = 0;
     private int _HL_ = 0;
     private int _BC_ = 0;
     private int _DE_ = 0;
@@ -194,25 +190,22 @@ public class CPU {
     }
 
     private int F() {
-        return (Sset() ? F_S : 0) |
-                (Zset() ? F_Z : 0) |
-                (f5 ? F_5 : 0) |
-                (Hset() ? F_H : 0) |
-                (f3 ? F_3 : 0) |
-                (PVset() ? F_PV : 0) |
-                (Nset() ? F_N : 0) |
-                (Cset() ? F_C : 0);
+        return (Ts() ? T7s : 0) |
+                (Tz() ? T6z : 0) |
+                (false ? T50 : 0) |
+                (Th() ? T4h : 0) |
+                (false ? T30 : 0) |
+                (Tp() ? T2p : 0) |
+                (true ? T11 : 0) |
+                (Tc() ? T0c : 0);
     }
 
     private void F(int bite) {
-        fS = (bite & F_S) != 0;
-        fZ = (bite & F_Z) != 0;
-        f5 = (bite & F_5) != 0;
-        fH = (bite & F_H) != 0;
-        f3 = (bite & F_3) != 0;
-        fPV = (bite & F_PV) != 0;
-        fN = (bite & F_N) != 0;
-        fC = (bite & F_C) != 0;
+        ts = (bite & T7s) != 0;
+        tz = (bite & T6z) != 0;
+        th = (bite & T4h) != 0;
+        tp = (bite & T2p) != 0;
+        tc = (bite & T0c) != 0;
     }
 
     private int B() {
@@ -337,60 +330,50 @@ public class CPU {
     /**
      * Flag access
      */
-    private void setZ(boolean f) {
-        fZ = f;
+    private void Tz(boolean f) {
+        tz = f;
     }
 
-    private void setC(boolean f) {
-        fC = f;
+    private void Tc(boolean f) {
+        tc = f;
     }
 
-    private void setS(boolean f) {
-        fS = f;
+    private void Ts(boolean f) {
+        ts = f;
     }
 
-    private void setH(boolean f) {
-        fH = f;
+    private void Th(boolean f) {
+        th = f;
     }
 
-    private void setN(boolean f) {
-        fN = f;
+    private void Tp(boolean f) {
+        tp = f;
     }
 
-    private void setPV(boolean f) {
-        fPV = f;
+    private boolean Tz() {
+        return tz;
     }
 
-    private void set3(boolean f) {
-        f3 = f;
+    private boolean Tc() {
+        return tc;
     }
 
-    private void set5(boolean f) {
-        f5 = f;
+    // его часто суммируют, а потому тут этот метод
+    private int Tci() {
+        return Tc() ? 1 : 0;
     }
 
-    private boolean Zset() {
-        return fZ;
+
+    private boolean Ts() {
+        return ts;
     }
 
-    private boolean Cset() {
-        return fC;
+    private boolean Th() {
+        return th;
     }
 
-    private boolean Sset() {
-        return fS;
-    }
-
-    private boolean Hset() {
-        return fH;
-    }
-
-    private boolean Nset() {
-        return fN;
-    }
-
-    private boolean PVset() {
-        return fPV;
+    private boolean Tp() {
+        return tp;
     }
 
     private int peekw(int addr) {
@@ -481,9 +464,6 @@ public class CPU {
         DE(0);
         HL(0);
 
-        exx();
-        ex_af_af();
-
         A(0);
         F(0);
         BC(0);
@@ -545,11 +525,6 @@ public class CPU {
                     local_tstates += i4_b00000100;  // каждая операция уменьшает число тактов на прерывание
                     break;                   // на свою длительность в тактах
                 }
-                case 8:    /* EX AF,AF' */ {
-                    ex_af_af();
-                    local_tstates += i4_b00000100;
-                    break;
-                }
                 case 16:    /* DJNZ dis */ {
                     int b;
 
@@ -572,7 +547,7 @@ public class CPU {
                 }
                 /* JR cc,dis */
                 case 32:    /* JR NZ,dis */ {
-                    if (!Zset()) {
+                    if (!Tz()) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
                         PC(WORD(PC() + d));
                         local_tstates += i12_b00001100;
@@ -583,7 +558,7 @@ public class CPU {
                     break;
                 }
                 case 40:    /* JR Z,dis */ {
-                    if (Zset()) {
+                    if (Tz()) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
                         PC(WORD(PC() + d));
                         local_tstates += i12_b00001100;
@@ -594,7 +569,7 @@ public class CPU {
                     break;
                 }
                 case 48:    /* JR NC,dis */ {
-                    if (!Cset()) {
+                    if (!Tc()) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
                         PC(WORD(PC() + d));
                         local_tstates += i12_b00001100;
@@ -605,7 +580,7 @@ public class CPU {
                     break;
                 }
                 case 56:    /* JR C,dis */ {
-                    if (Cset()) {
+                    if (Tc()) {
                         byte d = (byte) nxtpcb();  // байт из памяти по адресу п-счетчика PC()
                         PC(WORD(PC() + d));
                         local_tstates += i12_b00001100;
@@ -1581,7 +1556,7 @@ public class CPU {
 
                 /* RET cc */
                 case 192:    /* RET NZ */ {
-                    if (!Zset()) {
+                    if (!Tz()) {
                         poppc();
                         local_tstates += i11_b00001011;
                     } else {
@@ -1590,7 +1565,7 @@ public class CPU {
                     break;
                 }
                 case 200:    /* RET Z */ {
-                    if (Zset()) {
+                    if (Tz()) {
                         poppc();
                         local_tstates += i11_b00001011;
                     } else {
@@ -1599,7 +1574,7 @@ public class CPU {
                     break;
                 }
                 case 208:    /* RET NC */ {
-                    if (!Cset()) {
+                    if (!Tc()) {
                         poppc();
                         local_tstates += i11_b00001011;
                     } else {
@@ -1608,7 +1583,7 @@ public class CPU {
                     break;
                 }
                 case 216:    /* RET C */ {
-                    if (Cset()) {
+                    if (Tc()) {
                         poppc();
                         local_tstates += i11_b00001011;
                     } else {
@@ -1617,7 +1592,7 @@ public class CPU {
                     break;
                 }
                 case 224:    /* RET PO */ {
-                    if (!PVset()) {
+                    if (!Tp()) {
                         poppc();
                         local_tstates += i11_b00001011;
                     } else {
@@ -1626,7 +1601,7 @@ public class CPU {
                     break;
                 }
                 case 232:    /* RET PE */ {
-                    if (PVset()) {
+                    if (Tp()) {
                         poppc();
                         local_tstates += i11_b00001011;
                     } else {
@@ -1635,7 +1610,7 @@ public class CPU {
                     break;
                 }
                 case 240:    /* RET P */ {
-                    if (!Sset()) {
+                    if (!Ts()) {
                         poppc();
                         local_tstates += i11_b00001011;
                     } else {
@@ -1644,7 +1619,7 @@ public class CPU {
                     break;
                 }
                 case 248:    /* RET M */ {
-                    if (Sset()) {
+                    if (Ts()) {
                         poppc();
                         local_tstates += i11_b00001011;
                     } else {
@@ -1669,9 +1644,7 @@ public class CPU {
                     local_tstates += i10_b00001010;
                     break;
                 }
-                case 217:    /* EXX */ {
-                    exx();
-                    local_tstates += i4_b00000100;
+                case 0xD9: { //+ ???
                     break;
                 }
                 case 225:    /* POP HL */ {
@@ -1697,7 +1670,7 @@ public class CPU {
 
                 /* JP cc,nn */
                 case 194:    /* JP NZ,nn */ {
-                    if (!Zset()) {
+                    if (!Tz()) {
                         PC(nxtpcw());
                     } else {
                         PC(WORD(PC() + 2));
@@ -1706,7 +1679,7 @@ public class CPU {
                     break;
                 }
                 case 202:    /* JP Z,nn */ {
-                    if (Zset()) {
+                    if (Tz()) {
                         PC(nxtpcw());
                     } else {
                         PC(WORD(PC() + 2));
@@ -1715,7 +1688,7 @@ public class CPU {
                     break;
                 }
                 case 210:    /* JP NC,nn */ {
-                    if (!Cset()) {
+                    if (!Tc()) {
                         PC(nxtpcw());
                     } else {
                         PC(WORD(PC() + 2));
@@ -1724,7 +1697,7 @@ public class CPU {
                     break;
                 }
                 case 218:    /* JP C,nn */ {
-                    if (Cset()) {
+                    if (Tc()) {
                         PC(nxtpcw());
                     } else {
                         PC(WORD(PC() + 2));
@@ -1733,7 +1706,7 @@ public class CPU {
                     break;
                 }
                 case 226:    /* JP PO,nn */ {
-                    if (!PVset()) {
+                    if (!Tp()) {
                         PC(nxtpcw());
                     } else {
                         PC(WORD(PC() + 2));
@@ -1742,7 +1715,7 @@ public class CPU {
                     break;
                 }
                 case 234:    /* JP PE,nn */ {
-                    if (PVset()) {
+                    if (Tp()) {
                         PC(nxtpcw());
                     } else {
                         PC(WORD(PC() + 2));
@@ -1751,7 +1724,7 @@ public class CPU {
                     break;
                 }
                 case 242:    /* JP P,nn */ {
-                    if (!Sset()) {
+                    if (!Ts()) {
                         PC(nxtpcw());
                     } else {
                         PC(WORD(PC() + 2));
@@ -1760,7 +1733,7 @@ public class CPU {
                     break;
                 }
                 case 250:    /* JP M,nn */ {
-                    if (Sset()) {
+                    if (Ts()) {
                         PC(nxtpcw());
                     } else {
                         PC(WORD(PC() + 2));
@@ -1820,7 +1793,7 @@ public class CPU {
 
                 /* CALL cc,nn */
                 case 196: /* CALL NZ,nn */ {
-                    if (!Zset()) {
+                    if (!Tz()) {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
@@ -1832,7 +1805,7 @@ public class CPU {
                     break;
                 }
                 case 204: /* CALL Z,nn */ {
-                    if (Zset()) {
+                    if (Tz()) {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
@@ -1844,7 +1817,7 @@ public class CPU {
                     break;
                 }
                 case 212: /* CALL NC,nn */ {
-                    if (!Cset()) {
+                    if (!Tc()) {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
@@ -1856,7 +1829,7 @@ public class CPU {
                     break;
                 }
                 case 220: /* CALL C,nn */ {
-                    if (Cset()) {
+                    if (Tc()) {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
@@ -1868,7 +1841,7 @@ public class CPU {
                     break;
                 }
                 case 228: /* CALL PO,nn */ {
-                    if (!PVset()) {
+                    if (!Tp()) {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
@@ -1880,7 +1853,7 @@ public class CPU {
                     break;
                 }
                 case 236: /* CALL PE,nn */ {
-                    if (PVset()) {
+                    if (Tp()) {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
@@ -1892,7 +1865,7 @@ public class CPU {
                     break;
                 }
                 case 244: /* CALL P,nn */ {
-                    if (!Sset()) {
+                    if (!Ts()) {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
@@ -1904,7 +1877,7 @@ public class CPU {
                     break;
                 }
                 case 252: /* CALL M,nn */ {
-                    if (Sset()) {
+                    if (Ts()) {
                         int t = nxtpcw();
                         pushpc();
                         PC(t);
@@ -2396,21 +2369,20 @@ public class CPU {
                 HL(inc16(HL()));
                 BC(dec16(BC()));
 
-                setPV(BC() != 0);
-                setH(false);
-                setN(false);
+                Tp(BC() != 0);
+                Th(false);
 
                 return i16_b00010000;
             }
             case 161:  /* CPI */ {
-                boolean c = Cset();
+                boolean c = Tc();
 
                 cp_a(peekb(HL()));
                 HL(inc16(HL()));
                 BC(dec16(BC()));
 
-                setPV(BC() != 0);
-                setC(c);
+                Tp(BC() != 0);
+                Tc(c);
 
                 return i16_b00010000;
             }
@@ -2420,8 +2392,7 @@ public class CPU {
                 B(b = qdec8(B()));
                 HL(inc16(HL()));
 
-                setZ(b == 0);
-                setN(true);
+                Tz(b == 0);
 
                 return i16_b00010000;
             }
@@ -2431,8 +2402,7 @@ public class CPU {
                 accessor.outb(BC(), peekb(HL()));
                 HL(inc16(HL()));
 
-                setZ(b == 0);
-                setN(true);
+                Tz(b == 0);
 
                 return i16_b00010000;
             }
@@ -2444,21 +2414,20 @@ public class CPU {
                 HL(dec16(HL()));
                 BC(dec16(BC()));
 
-                setPV(BC() != 0);
-                setH(false);
-                setN(false);
+                Tp(BC() != 0);
+                Th(false);
 
                 return i16_b00010000;
             }
             case 169:  /* CPD */ {
-                boolean c = Cset();
+                boolean c = Tc();
 
                 cp_a(peekb(HL()));
                 HL(dec16(HL()));
                 BC(dec16(BC()));
 
-                setPV(BC() != 0);
-                setC(c);
+                Tp(BC() != 0);
+                Tc(c);
 
                 return i16_b00010000;
             }
@@ -2468,8 +2437,7 @@ public class CPU {
                 B(b = qdec8(B()));
                 HL(dec16(HL()));
 
-                setZ(b == 0);
-                setN(true);
+                Tz(b == 0);
 
                 return i16_b00010000;
             }
@@ -2479,8 +2447,7 @@ public class CPU {
                 accessor.outb(BC(), peekb(HL()));
                 HL(dec16(HL()));
 
-                setZ(b == 0);
-                setN(true);
+                Tz(b == 0);
 
                 return i16_b00010000;
             }
@@ -2508,14 +2475,12 @@ public class CPU {
                 } while (count != 0);
                 if (count != 0) {
                     PC(WORD(PC() - 2));
-                    setH(false);
-                    setN(false);
-                    setPV(true);
+                    Th(false);
+                    Tp(true);
                 } else {
                     _local_tstates += b11111011; 
-                    setH(false);
-                    setN(false);
-                    setPV(false);
+                    Th(false);
+                    Tp(false);
                 }
                 DE(dest);
                 HL(from);
@@ -2524,7 +2489,7 @@ public class CPU {
                 return _local_tstates;
             }
             case 177:  /* CPIR */ {
-                boolean c = Cset();
+                boolean c = Tc();
 
                 cp_a(peekb(HL()));
                 HL(inc16(HL()));
@@ -2532,9 +2497,9 @@ public class CPU {
 
                 boolean pv = BC() != 0;
 
-                setPV(pv);
-                setC(c);
-                if (pv && !Zset()) {
+                Tp(pv);
+                Tc(c);
+                if (pv && !Tz()) {
                     PC(WORD(PC() - 2));
                     return i21_b00010101;
                 }
@@ -2546,8 +2511,7 @@ public class CPU {
                 B(b = qdec8(B()));
                 HL(inc16(HL()));
 
-                setZ(true);
-                setN(true);
+                Tz(true);
                 if (b != 0) {
                     PC(WORD(PC() - 2));
                     return i21_b00010101;
@@ -2560,8 +2524,7 @@ public class CPU {
                 accessor.outb(BC(), peekb(HL()));
                 HL(inc16(HL()));
 
-                setZ(true);
-                setN(true);
+                Tz(true);
                 if (b != 0) {
                     PC(WORD(PC() - 2));
                     return i21_b00010101;
@@ -2592,14 +2555,12 @@ public class CPU {
                 } while (count != 0);
                 if (count != 0) {
                     PC(WORD(PC() - 2));
-                    setH(false);
-                    setN(false);
-                    setPV(true);
+                    Th(false);
+                    Tp(true);
                 } else {
                     _local_tstates += b11111011;
-                    setH(false);
-                    setN(false);
-                    setPV(false);
+                    Th(false);
+                    Tp(false);
                 }
                 DE(dest);
                 HL(from);
@@ -2608,7 +2569,7 @@ public class CPU {
                 return _local_tstates;
             }
             case 185:  /* CPDR */ {
-                boolean c = Cset();
+                boolean c = Tc();
 
                 cp_a(peekb(HL()));
                 HL(dec16(HL()));
@@ -2616,9 +2577,9 @@ public class CPU {
 
                 boolean pv = BC() != 0;
 
-                setPV(pv);
-                setC(c);
-                if (pv && !Zset()) {
+                Tp(pv);
+                Tc(c);
+                if (pv && !Tz()) {
                     PC(WORD(PC() - 2));
                     return i21_b00010101;
                 }
@@ -2630,8 +2591,7 @@ public class CPU {
                 B(b = qdec8(B()));
                 HL(dec16(HL()));
 
-                setZ(true);
-                setN(true);
+                Tz(true);
                 if (b != 0) {
                     PC(WORD(PC() - 2));
                     return i21_b00010101;
@@ -2644,8 +2604,7 @@ public class CPU {
                 accessor.outb(BC(), peekb(HL()));
                 HL(dec16(HL()));
 
-                setZ(true);
-                setN(true);
+                Tz(true);
                 if (b != 0) {
                     PC(WORD(PC() - 2));
                     return i21_b00010101;
@@ -5392,13 +5351,10 @@ public class CPU {
     private int in_bc() {
         int ans = inb(BC());
 
-        setZ(ans == 0);
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setPV(parity[ans]);
-        setN(false);
-        setH(false);
+        Tz(ans == 0);
+        Ts((ans & T7s) != 0);
+        Tp(parity[ans]);
+        Th(false);
 
         return ans;
     }
@@ -5408,18 +5364,15 @@ public class CPU {
      */
     private void adc_a(int b) {
         int a = A();
-        int c = Cset() ? 1 : 0;
+        int c = Tci();
         int wans = a + b + c;
         int ans = LO(wans);
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setC((wans & x100) != 0);
-        setPV(((a ^ ~b) & (a ^ ans) & x80) != 0);
-        setH((((a & x0F) + (b & x0F) + c) & F_H) != 0);
-        setN(false);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tc((wans & x100) != 0);
+        Tp(((a ^ ~b) & (a ^ ans) & x80) != 0);
+        Th((((a & x0F) + (b & x0F) + c) & T4h) != 0);
 
         A(ans);
     }
@@ -5432,14 +5385,11 @@ public class CPU {
         int wans = a + b;
         int ans = LO(wans);
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setC((wans & x100) != 0);
-        setPV(((a ^ ~b) & (a ^ ans) & x80) != 0);
-        setH((((a & x0F) + (b & x0F)) & F_H) != 0);
-        setN(false);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tc((wans & x100) != 0);
+        Tp(((a ^ ~b) & (a ^ ans) & x80) != 0);
+        Th((((a & x0F) + (b & x0F)) & T4h) != 0);
 
         A(ans);
     }
@@ -5449,18 +5399,15 @@ public class CPU {
      */
     private void sbc_a(int b) {
         int a = A();
-        int c = Cset() ? 1 : 0;
+        int c = Tci();
         int wans = a - b - c;
         int ans = LO(wans);
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setC((wans & x100) != 0);
-        setPV(((a ^ b) & (a ^ ans) & x80) != 0);
-        setH((((a & x0F) - (b & x0F) - c) & F_H) != 0);
-        setN(true);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tc((wans & x100) != 0);
+        Tp(((a ^ b) & (a ^ ans) & x80) != 0);
+        Th((((a & x0F) - (b & x0F) - c) & T4h) != 0);
 
         A(ans);
     }
@@ -5473,14 +5420,11 @@ public class CPU {
         int wans = a - b;
         int ans = LO(wans);
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setC((wans & x100) != 0);
-        setPV(((a ^ b) & (a ^ ans) & x80) != 0);
-        setH((((a & x0F) - (b & x0F)) & F_H) != 0);
-        setN(true);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tc((wans & x100) != 0);
+        Tp(((a ^ b) & (a ^ ans) & x80) != 0);
+        Th((((a & x0F) - (b & x0F)) & T4h) != 0);
 
         A(ans);
     }
@@ -5499,11 +5443,8 @@ public class CPU {
         }
         ans = LO(ans);
 
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setN(false);
-        setH(false);
-        setC(c);
+        Th(false);
+        Tc(c);
 
         A(ans);
     }
@@ -5521,11 +5462,8 @@ public class CPU {
             ans >>= 1;
         }
 
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setN(false);
-        setH(false);
-        setC(c);
+        Th(false);
+        Tc(c);
 
         A(ans);
     }
@@ -5537,7 +5475,7 @@ public class CPU {
         int ans = A();
         boolean c = (ans & x80) != 0;
 
-        if (Cset()) {
+        if (Tc()) {
             ans = (ans << 1) | x01;
         } else {
             ans <<= 1;
@@ -5545,11 +5483,8 @@ public class CPU {
 
         ans = LO(ans);
 
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setN(false);
-        setH(false);
-        setC(c);
+        Th(false);
+        Tc(c);
 
         A(ans);
     }
@@ -5561,17 +5496,14 @@ public class CPU {
         int ans = A();
         boolean c = (ans & x01) != 0;
 
-        if (Cset()) {
+        if (Tc()) {
             ans = (ans >> 1) | x80;
         } else {
             ans >>= 1;
         }
 
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setN(false);
-        setH(false);
-        setC(c);
+        Th(false);
+        Tc(c);
 
         A(ans);
     }
@@ -5584,14 +5516,11 @@ public class CPU {
         int wans = a - b;
         int ans = LO(wans);
 
-        setS((ans & F_S) != 0);
-        set3((b & F_3) != 0);
-        set5((b & F_5) != 0);
-        setN(true);
-        setZ(ans == 0);
-        setC((wans & x100) != 0);
-        setH((((a & x0F) - (b & x0F)) & F_H) != 0);
-        setPV(((a ^ b) & (a ^ ans) & x80) != 0);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tc((wans & x100) != 0);
+        Th((((a & x0F) - (b & x0F)) & T4h) != 0);
+        Tp(((a ^ b) & (a ^ ans) & x80) != 0);
     }
 
     /**
@@ -5600,14 +5529,11 @@ public class CPU {
     private void and_a(int b) {
         int ans = A() & b;
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setH(true);
-        setPV(parity[ans]);
-        setZ(ans == 0);
-        setN(false);
-        setC(false);
+        Ts((ans & T7s) != 0);
+        Th(true);
+        Tp(parity[ans]);
+        Tz(ans == 0);
+        Tc(false);
 
         A(ans);
     }
@@ -5618,14 +5544,11 @@ public class CPU {
     private void or_a(int b) {
         int ans = A() | b;
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setH(false);
-        setPV(parity[ans]);
-        setZ(ans == 0);
-        setN(false);
-        setC(false);
+        Ts((ans & T7s) != 0);
+        Th(false);
+        Tp(parity[ans]);
+        Tz(ans == 0);
+        Tc(false);
 
         A(ans);
     }
@@ -5636,14 +5559,11 @@ public class CPU {
     private void xor_a(int b) {
         int ans = LO(A() ^ b);
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setH(false);
-        setPV(parity[ans]);
-        setZ(ans == 0);
-        setN(false);
-        setC(false);
+        Ts((ans & T7s) != 0);
+        Th(false);
+        Tp(parity[ans]);
+        Tz(ans == 0);
+        Tc(false);
 
         A(ans);
     }
@@ -5664,10 +5584,7 @@ public class CPU {
     private void cpl_a() {
         int ans = A() ^ xFF;
 
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setH(true);
-        setN(true);
+        Th(true);
 
         A(ans);
     }
@@ -5678,9 +5595,9 @@ public class CPU {
     private void daa_a() {
         int ans = A();
         int incr = 0;
-        boolean carry = Cset();
+        boolean carry = Tc();
 
-        if (Hset() || (ans & x0F) > x09) {
+        if (Th() || (ans & x0F) > x09) {
             incr |= x06;
         }
         if (carry || (ans > x9F) || ((ans > x8F) && ((ans & x0F) > x09))) {
@@ -5689,16 +5606,12 @@ public class CPU {
         if (ans > x99) {
             carry = true;
         }
-        if (Nset()) {
-            sub_a(incr);
-        } else {
-            add_a(incr);
-        }
+        sub_a(incr);
 
         ans = A();
 
-        setC(carry);
-        setPV(parity[ans]);
+        Tc(carry);
+        Tp(parity[ans]);
     }
 
     /**
@@ -5707,13 +5620,10 @@ public class CPU {
     private void ld_a_i() {
         int ans = I();
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(IFF2());
-        setH(false);
-        setN(false);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(IFF2());
+        Th(false);
 
         A(ans);
     }
@@ -5724,13 +5634,10 @@ public class CPU {
     private void ld_a_r() {
         int ans = R();
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(IFF2());
-        setH(false);
-        setN(false);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(IFF2());
+        Th(false);
 
         A(ans);
     }
@@ -5747,13 +5654,10 @@ public class CPU {
         ans = (ans & xF0) | (q & x0F);
         pokeb(HL(), t);
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(IFF2());
-        setH(false);
-        setN(false);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(IFF2());
+        Th(false);
 
         A(ans);
     }
@@ -5770,13 +5674,10 @@ public class CPU {
         ans = (ans & xF0) | (q >> 4);
         pokeb(HL(), LO(t));
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(IFF2());
-        setH(false);
-        setN(false);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(IFF2());
+        Th(false);
 
         A(ans);
     }
@@ -5787,38 +5688,25 @@ public class CPU {
     private void bit(int b, int r) {
         boolean bitSet = ((r & b) != 0);
 
-        setN(false);
-        setH(true);
-        set3((r & F_3) != 0);
-        set5((r & F_5) != 0);
-        setS(b == F_S && bitSet);
-        setZ(!bitSet);
-        setPV(!bitSet);
+        Th(true);
+        Ts(b == T7s && bitSet);
+        Tz(!bitSet);
+        Tp(!bitSet);
     }
 
     /**
      * Set carry flag - alters N H 3 5 C flags (CHECKED)
      */
     private void scf() {
-        int ans = A();
-
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setN(false);
-        setH(false);
-        setC(true);
+        Th(false);
+        Tc(true);
     }
 
     /**
      * Complement carry flag - alters N 3 5 C flags (CHECKED)
      */
     private void ccf() {
-        int ans = A();
-
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setN(false);
-        setC(!Cset());
+        Tc(!Tc());
     }
 
     /**
@@ -5834,14 +5722,11 @@ public class CPU {
         }
         ans = LO(ans);
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(parity[ans]);
-        setH(false);
-        setN(false);
-        setC(c);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(parity[ans]);
+        Th(false);
+        Tc(c);
 
         return ans;
     }
@@ -5858,14 +5743,11 @@ public class CPU {
             ans >>= 1;
         }
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(parity[ans]);
-        setH(false);
-        setN(false);
-        setC(c);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(parity[ans]);
+        Th(false);
+        Tc(c);
 
         return ans;
     }
@@ -5876,21 +5758,18 @@ public class CPU {
     private int rl(int ans) {
         boolean c = (ans & x80) != 0;
 
-        if (Cset()) {
+        if (Tc()) {
             ans = (ans << 1) | x01;
         } else {
             ans <<= 1;
         }
         ans = LO(ans);
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(parity[ans]);
-        setH(false);
-        setN(false);
-        setC(c);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(parity[ans]);
+        Th(false);
+        Tc(c);
 
         return ans;
     }
@@ -5901,20 +5780,17 @@ public class CPU {
     private int rr(int ans) {
         boolean c = (ans & x01) != 0;
 
-        if (Cset()) {
+        if (Tc()) {
             ans = (ans >> 1) | x80;
         } else {
             ans >>= 1;
         }
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(parity[ans]);
-        setH(false);
-        setN(false);
-        setC(c);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(parity[ans]);
+        Th(false);
+        Tc(c);
 
         return ans;
     }
@@ -5926,14 +5802,11 @@ public class CPU {
         boolean c = (ans & x80) != 0;
         ans = LO(ans << 1);
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(parity[ans]);
-        setH(false);
-        setN(false);
-        setC(c);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(parity[ans]);
+        Th(false);
+        Tc(c);
 
         return ans;
     }
@@ -5945,14 +5818,11 @@ public class CPU {
         boolean c = (ans & x80) != 0;
         ans = LO((ans << 1) | x01);
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(parity[ans]);
-        setH(false);
-        setN(false);
-        setC(c);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(parity[ans]);
+        Th(false);
+        Tc(c);
 
         return ans;
     }
@@ -5964,14 +5834,11 @@ public class CPU {
         boolean c = (ans & x01) != 0;
         ans = (ans >> 1) | (ans & x80);
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(parity[ans]);
-        setH(false);
-        setN(false);
-        setC(c);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(parity[ans]);
+        Th(false);
+        Tc(c);
 
         return ans;
     }
@@ -5983,14 +5850,11 @@ public class CPU {
         boolean c = (ans & x01) != 0;
         ans = ans >> 1;
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(parity[ans]);
-        setH(false);
-        setN(false);
-        setC(c);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(parity[ans]);
+        Th(false);
+        Tc(c);
 
         return ans;
     }
@@ -6000,16 +5864,13 @@ public class CPU {
      */
     private int dec8(int ans) {
         boolean pv = (ans == x80);
-        boolean h = (((ans & x0F) - 1) & F_H) != 0;
+        boolean h = (((ans & x0F) - 1) & T4h) != 0;
         ans = LO(ans - 1);
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(pv);
-        setH(h);
-        setN(true);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(pv);
+        Th(h);
 
         return ans;
     }
@@ -6019,16 +5880,13 @@ public class CPU {
      */
     private int inc8(int ans) {
         boolean pv = (ans == x7F);
-        boolean h = (((ans & x0F) + 1) & F_H) != 0;
+        boolean h = (((ans & x0F) + 1) & T4h) != 0;
         ans = LO(ans + 1);
 
-        setS((ans & F_S) != 0);
-        set3((ans & F_3) != 0);
-        set5((ans & F_5) != 0);
-        setZ(ans == 0);
-        setPV(pv);
-        setH(h);
-        setN(false);
+        Ts((ans & T7s) != 0);
+        Tz(ans == 0);
+        Tp(pv);
+        Th(h);
 
         return ans;
     }
@@ -6037,18 +5895,15 @@ public class CPU {
      * Add with carry - (NOT CHECKED)
      */
     private int adc16(int a, int b) {
-        int c = Cset() ? 1 : 0;
+        int c = Tci();
         int lans = a + b + c;
         int ans = WORD(lans);
 
-        setS((ans & (F_S << 8)) != 0);
-        set3((ans & (F_3 << 8)) != 0);
-        set5((ans & (F_5 << 8)) != 0);
-        setZ(ans == 0);
-        setC((lans & x10000) != 0);
-        setPV(((a ^ ~b) & (a ^ ans) & x8000) != 0);
-        setH((((a & x0FFF) + (b & x0FFF) + c) & x1000) != 0);
-        setN(false);
+        Ts((ans & (T7s << 8)) != 0);
+        Tz(ans == 0);
+        Tc((lans & x10000) != 0);
+        Tp(((a ^ ~b) & (a ^ ans) & x8000) != 0);
+        Th((((a & x0FFF) + (b & x0FFF) + c) & x1000) != 0);
 
         return ans;
     }
@@ -6060,11 +5915,8 @@ public class CPU {
         int lans = a + b;
         int ans = WORD(lans);
 
-        set3((ans & (F_3 << 8)) != 0);
-        set5((ans & (F_5 << 8)) != 0);
-        setC((lans & x10000) != 0);
-        setH((((a & x0FFF) + (b & x0FFF)) & x1000) != 0);
-        setN(false);
+        Tc((lans & x10000) != 0);
+        Th((((a & x0FFF) + (b & x0FFF)) & x1000) != 0);
 
         return ans;
     }
@@ -6073,49 +5925,17 @@ public class CPU {
      * Add with carry - (NOT CHECKED)
      */
     private int sbc16(int a, int b) {
-        int c = Cset() ? 1 : 0;
+        int c = Tci();
         int lans = a - b - c;
         int ans = WORD(lans);
 
-        setS((ans & (F_S << 8)) != 0);
-        set3((ans & (F_3 << 8)) != 0);
-        set5((ans & (F_5 << 8)) != 0);
-        setZ(ans == 0);
-        setC((lans & x10000) != 0);
-        setPV(((a ^ b) & (a ^ ans) & x8000) != 0);
-        setH((((a & x0FFF) - (b & x0FFF) - c) & x1000) != 0);
-        setN(true);
+        Ts((ans & (T7s << 8)) != 0);
+        Tz(ans == 0);
+        Tc((lans & x10000) != 0);
+        Tp(((a ^ b) & (a ^ ans) & x8000) != 0);
+        Th((((a & x0FFF) - (b & x0FFF) - c) & x1000) != 0);
 
         return ans;
-    }
-
-    /**
-     * EXX
-     */
-    private void exx() {
-        int t;
-
-        t = HL();
-        HL(_HL_);
-        _HL_ = t;
-
-        t = DE();
-        DE(_DE_);
-        _DE_ = t;
-
-        t = BC();
-        BC(_BC_);
-        _BC_ = t;
-    }
-
-    /**
-     * EX AF,AF'
-     */
-    private void ex_af_af() {
-        int t;
-        t = AF();
-        AF(_AF_);
-        _AF_ = t;
     }
 
     /**
