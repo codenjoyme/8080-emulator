@@ -2242,6 +2242,10 @@ int header[] = new int[6];
 int ABeg = header[1] * 256 + header[0];
 int AEnd = header[3] * 256 + header[2];
 int ALen = AEnd - ABeg;
+    System.out.printf("Loading '%s' into [%04X:%04X]\n",
+            name,
+            ABeg & 0xFFFF,
+            AEnd & 0xFFFF);
     readBytes( is, mem, ABeg, ALen );
     readBytes( is, header, 4, 2 );
 
