@@ -90,8 +90,8 @@ public class VM80 {
     /**
      * Stack Pointer and Program Counter
      */
-    private int _SP = 0;
-    private int _PC = StartPoint;
+    private int SP = 0;
+    private int PC = StartPoint;
 
     /**
      * Interrupt and Refresh registers
@@ -145,19 +145,19 @@ public class VM80 {
     }
 
     private int PC() {
-        return _PC;
+        return PC;
     }
 
     public void PC(int word) {
-        _PC = word;
+        PC = word;
     }
 
     private int SP() {
-        return _SP;
+        return SP;
     }
 
     private void SP(int word) {
-        _SP = word;
+        SP = word;
     }
 
     private int ID() {
