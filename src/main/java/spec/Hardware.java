@@ -2,7 +2,7 @@ package spec;
 
 /**
  * Надо обозначить все константы "Специалист" в портах ОЗУ ПЗУ и экране
- *  Заменены константами все характерные адреса типа 0xffe0 чтобы читалось
+ *  Заменены константами все характерные адреса типа 0xFFE0 чтобы читалось
  *  удобнее и легче было переходить к внедрению нового экрана.
  *  Всё фактически готово! (Может ещё проверю подпрограммы).
  *
@@ -69,7 +69,7 @@ public class Hardware {
     // How much loaded/how fast?
     public AMDProgressBar progressBar = null;
 
-    // массив байт цвета контроллера цвета 0C000h-9000h
+    // массив байт цвета контроллера цвета 0xC000-9000h
     public int[] rgb = new int[12288];
 
     // массив байт памяти
@@ -177,14 +177,14 @@ public class Hardware {
     // Пользуясь ключевыми словами static и final, можно определять внутри классов
     // глобальные константы.
 
-    private static final int PortA = 0xffe0; // Порт А ППА
-    private static final int PortB = 0xffe1; // Порт В ППА
-    private static final int PortC = 0xffe2; // Порт С ППА
-    private static final int RgRYS = 0xffe3; // рег. Упр.Слова ППА
-    private static final int RgRGB = 0xfff8; // порт контроллера цвета
+    private static final int PortA = 0xFFE0; // Порт А ППА
+    private static final int PortB = 0xFFE1; // Порт В ППА
+    private static final int PortC = 0xFFE2; // Порт С ППА
+    private static final int RgRYS = 0xFFE3; // рег. Упр.Слова ППА
+    private static final int RgRGB = 0xFFF8; // порт контроллера цвета
 
     // маски битов
-    private final int[] bit = {0x00fe, 0x00fd, 0x00fb, 0x00f7, 0x00ef, 0x00df, 0x00bf, 0x007f};
+    private final int[] bit = {0x00FE, 0x00FD, 0x00FB, 0x00F7, 0x00EF, 0x00DF, 0x00BF, 0x007F};
 
     // биты установки
     private final int[] msk = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080};
@@ -199,61 +199,61 @@ public class Hardware {
             0x000F, 0x0005, 0x0018, 0x0053, 0x0074, 0x003B, 0x0065, 0x004B, 0x0025, 0x0005,
             0x000C, 0x004D, 0x0064, 0x0025, 0x0017, 0x001F, 0x000D, 0x0017, 0x001C, 0x0001,
             0x004E, 0x0006, 0x0006, 0x0061, 0x002F, 0x000A, 0x0016, 0x0017, 0x0012, 0x0057,
-            0x0070, 0x003F, 0x0003, 0x0000, 0x000D, 0x0013, 0x0016, 0x009B, 0x00ff
+            0x0070, 0x003F, 0x0003, 0x0000, 0x000D, 0x0013, 0x0016, 0x009B, 0x00FF
     };
 
 //  массив возможных ascii-кодов нажатых клавиш...
 //  23 строки по 8 = 184 + 4 + 2 + 2 = 192 клавиши.
 //                                   <BckSpc> <Tab>   <Enter> <Esc>
-    private final int[] ascii_keys = {0x0008, 0x0009, 0x000a, 0x001b,
+    private final int[] ascii_keys = {0x0008, 0x0009, 0x000A, 0x001B,
 //          <Space>  | ! |   | " |   | # |   | $ |   | % |   | & |   | ' |
             0x0020, 0x0021, 0x0022, 0x0023, 0x0024, 0x0025, 0x0026, 0x0027,
 //           | ( |   | ) |   | * |   | + |   | , |   | - |   | . |   | / |
-            0x0028, 0x0029, 0x002a, 0x002b, 0x002c, 0x002d, 0x002e, 0x002f,
+            0x0028, 0x0029, 0x002A, 0x002B, 0x002C, 0x002D, 0x002E, 0x002F,
 //           | 0 |   | 1 |   | 2 |   | 3 |   | 4 |   | 5 |   | 6 |   | 7 |
             0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037,
 //           | 8 |   | 9 |   | : |   | ; |   | < |   | = |   | > |   | ? |
-            0x0038, 0x0039, 0x003a, 0x003b, 0x003c, 0x003d, 0x003e, 0x003f,
+            0x0038, 0x0039, 0x003A, 0x003B, 0x003C, 0x003D, 0x003E, 0x003F,
 //           | @ |   | A |   | B |   | C |   | D |   | E |   | F |   | G |
             0x0040, 0x0041, 0x0042, 0x0043, 0x0044, 0x0045, 0x0046, 0x0047,
 //           | H |   | I |   | J |   | K |   | L |   | M |   | N |   | O |
-            0x0048, 0x0049, 0x004a, 0x004b, 0x004c, 0x004d, 0x004e, 0x004f,
+            0x0048, 0x0049, 0x004A, 0x004B, 0x004C, 0x004D, 0x004E, 0x004F,
 //           | P |   | Q |   | R |   | S |   | T |   | U |   | V |   | W |
             0x0050, 0x0051, 0x0052, 0x0053, 0x0054, 0x0055, 0x0056, 0x0057,
 //           | X |   | Y |   | Z |   | [ |   | \ |   | ] |   | ^ |   | _ |
-            0x0058, 0x0059, 0x005a, 0x005b, 0x005c, 0x005d, 0x005e, 0x005f,
+            0x0058, 0x0059, 0x005A, 0x005B, 0x005C, 0x005D, 0x005E, 0x005F,
 //           | ` |   | a |   | b |   | c |   | d |   | e |   | f |   | g |
             0x0060, 0x0061, 0x0062, 0x0063, 0x0064, 0x0065, 0x0066, 0x0067,
 //           | h |   | i |   | j |   | k |   | l |   | m |   | n |   | o |
-            0x0068, 0x0069, 0x006a, 0x006b, 0x006c, 0x006d, 0x006e, 0x006f,
+            0x0068, 0x0069, 0x006A, 0x006B, 0x006C, 0x006D, 0x006E, 0x006F,
 //           | p |   | q |   | r |   | s |   | t |   | u |   | v |   | w |
             0x0070, 0x0071, 0x0072, 0x0073, 0x0074, 0x0075, 0x0076, 0x0077,
 //           | x |   | y |   | z |   | { |   | | |   | } |   | ~ |   <Del>
-            0x0078, 0x0079, 0x007a, 0x007b, 0x007c, 0x007d, 0x007e, 0x007f,
+            0x0078, 0x0079, 0x007A, 0x007B, 0x007C, 0x007D, 0x007E, 0x007F,
 //           <Home>  <End>   <PgUp>  <PgDn>  < Up >  <Down>  <Left> <Right>
-            0x03e8, 0x03e9, 0x03ea, 0x03eb, 0x03ec, 0x03ed, 0x03ee, 0x03ef,
+            0x03E8, 0x03E9, 0x03EA, 0x03EB, 0x03EC, 0x03ED, 0x03EE, 0x03EF,
 //           <F1>    <F2>    <F3>    <F4>    <F5>    <F6>    <F7>    <F8>
-            0x03f0, 0x03f1, 0x03f2, 0x03f3, 0x03f4, 0x03f5, 0x03f6, 0x03f7,
+            0x03F0, 0x03F1, 0x03F2, 0x03F3, 0x03F4, 0x03F5, 0x03F6, 0x03F7,
 //           <F9>    <F10>   <F11>   <F12>  <CpsLk>
-            0x03f8, 0x03f9, 0x03fa, 0x03fb, 0x03fe,
+            0x03F8, 0x03F9, 0x03FA, 0x03FB, 0x03FE,
 //         <Insert> = ПВ [ Ё ]!;
             0x0401,
 //           | А |   | Б |   | В |   | Г |   | Д |   | Е |   | Ж |   | З |
             0x0410, 0x0411, 0x0412, 0x0413, 0x0414, 0x0415, 0x0416, 0x0417,
 //           | И |   | Й |   | К |   | Л |   | М |   | Н |   | О |   | П |
-            0x0418, 0x0419, 0x041a, 0x041b, 0x041c, 0x041d, 0x041e, 0x041f,
+            0x0418, 0x0419, 0x041A, 0x041B, 0x041C, 0x041D, 0x041E, 0x041F,
 //           | Р |   | С |   | Т |   | У |   | Ф |   | Х |   | Ц |   | Ч |
             0x0420, 0x0421, 0x0422, 0x0423, 0x0424, 0x0425, 0x0426, 0x0427,
 //           | Ш |   | Щ |   | Ъ |   | Ы |   | Ь |   | Э |   | Ю |   | Я |
-            0x0428, 0x0429, 0x042a, 0x042b, 0x042c, 0x042d, 0x042e, 0x042f,
+            0x0428, 0x0429, 0x042A, 0x042B, 0x042C, 0x042D, 0x042E, 0x042F,
 //           | а |   | б |   | в |   | г |   | д |   | е |   | ж |   | з |
             0x0430, 0x0431, 0x0432, 0x0433, 0x0434, 0x0435, 0x0436, 0x0437,
 //           | и |   | й |   | к |   | л |   | м |   | н |   | о |   | п |
-            0x0438, 0x0439, 0x043a, 0x043b, 0x043c, 0x043d, 0x043e, 0x043f,
+            0x0438, 0x0439, 0x043A, 0x043B, 0x043C, 0x043D, 0x043E, 0x043F,
 //           | р |   | с |   | т |   | у |   | ф |   | х |   | ц |   | ч |
             0x0440, 0x0441, 0x0442, 0x0443, 0x0444, 0x0445, 0x0446, 0x0447,
 //           | ш |   | щ |   | ъ |   | ы |   | ь |   | э |   | ю |   | я |
-            0x0448, 0x0449, 0x044a, 0x044b, 0x044c, 0x044d, 0x044e, 0x044f,
+            0x0448, 0x0449, 0x044A, 0x044B, 0x044C, 0x044D, 0x044E, 0x044F,
 //           | ё |   | № |
             0x0451, 0x2116
     };
@@ -280,19 +280,19 @@ public class Hardware {
 //           | P |   | Q |   | R |   | S |   | T |   | U |   | V |   | W |
             0x0702, 0x0b01, 0x0602, 0x0901, 0x0601, 0x0903, 0x0202, 0x0902,
 //           | X |   | Y |   | Z |   | [ |   | \ |   | ] |   | ^ |   | _ |
-            0x0501, 0x0a02, 0x0203, 0x0403, 0x0102, 0x0303, 0x0a01, 0x0001,
+            0x0501, 0x0a02, 0x0203, 0x0403, 0x0102, 0x0303, 0x0A01, 0x0001,
 //           | ` |   | a |   | b |   | c |   | d |   | e |   | f |   | g |
-            0x0b04, 0x7802, 0x7401, 0x7a03, 0x7302, 0x7703, 0x7b02, 0x7503,
+            0x0b04, 0x7802, 0x7401, 0x7a03, 0x7302, 0x7703, 0x7B02, 0x7503,
 //           | h |   | i |   | j |   | k |   | l |   | m |   | n |   | o |
-            0x7103, 0x7701, 0x7b03, 0x7803, 0x7402, 0x7801, 0x7603, 0x7502,
+            0x7103, 0x7701, 0x7B03, 0x7803, 0x7402, 0x7801, 0x7603, 0x7502,
 //           | p |   | q |   | r |   | s |   | t |   | u |   | v |   | w |
-            0x7702, 0x7b01, 0x7602, 0x7901, 0x7601, 0x7903, 0x7202, 0x7902,
+            0x7702, 0x7B01, 0x7602, 0x7901, 0x7601, 0x7903, 0x7202, 0x7902,
 //           | x |   | y |   | z |   | { |   | | |   | } |   | ~ | <Del>
-            0x7501, 0x7a02, 0x7203, 0x7403, 0x7102, 0x7303, 0x7b04, 0x0005,
+            0x7501, 0x7A02, 0x7203, 0x7403, 0x7102, 0x7303, 0x7B04, 0x0005,
 //          <Home>  <End>   <PgUp>  <PgDn>  < Up >  <Down> <Left> <Right>*/
-            0x0b05, 0x0a05, 0x0a00, 0x0100, 0x0900, 0x0800, 0x0400, 0x0200,
+            0x0B05, 0x0A05, 0x0A00, 0x0100, 0x0900, 0x0800, 0x0400, 0x0200,
 //           <F1>    <F2>    <F3>    <F4>    <F5>    <F6>   <F7>   <F8>
-            0x0b05, 0x0a05, 0x0905, 0x0805, 0x0705, 0x0605, 0x0505, 0x0405,
+            0x0B05, 0x0A05, 0x0905, 0x0805, 0x0705, 0x0605, 0x0505, 0x0405,
 //           <F9>    <F10>   <F11>   <F12>  <CpsLk> = Р/Л
             0x0305, 0x0205, 0x0105, 0x0005, 0x0700,
 //          <Insert> = ПВ [ Ё ]!;
@@ -300,19 +300,19 @@ public class Hardware {
 //           | А |   | Б |   | В |   | Г |   | Д |   | Е |   | Ж |   | З |
             0x0802, 0x0401, 0x0902, 0x0503, 0x0302, 0x0703, 0x0202, 0x0203,
 //           | И |   | Й |   | К |   | Л |   | М |   | Н |   | О |   | П |
-            0x0701, 0x0b03, 0x0803, 0x0402, 0x0801, 0x0603, 0x0502, 0x0702,
+            0x0701, 0x0B03, 0x0803, 0x0402, 0x0801, 0x0603, 0x0502, 0x0702,
 //           | Р |   | С |   | Т |   | У |   | Ф |   | Х |   | Ц |   | Ч |
-            0x0602, 0x0901, 0x0601, 0x0903, 0x0b02, 0x0103, 0x0a03, 0x0a01,
+            0x0602, 0x0901, 0x0601, 0x0903, 0x0B02, 0x0103, 0x0A03, 0x0A01,
 //           | Ш |   | Щ |   | Ъ |   | Ы |   | Ь |   | Э |   | Ю |   | Я |
-            0x0403, 0x0303, 0x0001, 0x0a02, 0x0501, 0x0102, 0x0301, 0x0b01,
+            0x0403, 0x0303, 0x0001, 0x0A02, 0x0501, 0x0102, 0x0301, 0x0B01,
 //           | а |   | б |   | в |   | г |   | д |   | е |   | ж |   | з |
             0x7802, 0x7401, 0x7902, 0x7503, 0x7302, 0x7703, 0x7202, 0x7203,
 //           | и |   | й |   | к |   | л |   | м |   | н |   | о |   | п |
-            0x7701, 0x7b03, 0x7803, 0x7402, 0x7801, 0x7603, 0x7502, 0x7702,
+            0x7701, 0x7B03, 0x7803, 0x7402, 0x7801, 0x7603, 0x7502, 0x7702,
 //           | р |   | с |   | т |   | у |   | ф |   | х |   | ц |   | ч |
-            0x7602, 0x7901, 0x7601, 0x7903, 0x7b02, 0x7103, 0x7a03, 0x7a01,
+            0x7602, 0x7901, 0x7601, 0x7903, 0x7B02, 0x7103, 0x7A03, 0x7A01,
 //           | ш |   | щ |   | ъ |   | ы |   | ь |   | э |   | ю |   | я |
-            0x7403, 0x7303, 0x7001, 0x7a02, 0x7501, 0x7102, 0x7301, 0x7b01,
+            0x7403, 0x7303, 0x7001, 0x7A02, 0x7501, 0x7102, 0x7301, 0x7B01,
 //           | ё |   | № |
             0x7b04, 0x7804
     };
@@ -341,13 +341,13 @@ public class Hardware {
 
     // ввод из порта памяти 580ВВ55
     private int inport(int addr) {
-        // все порты ППА перенесём в область 0xffe0 - 0xffe3 ;
+        // все порты ППА перенесём в область 0xFFE0 - 0xFFE3 ;
         if (addr <= RgRYS) {
-            int tma = (addr & 0x0003) | 0xffe0;
+            int tma = (addr & 0x0003) | 0xFFE0;
             addr = tma;
         }
 
-        int res = 0x00ff; // предварительно ни одна кнопка не нажата
+        int res = 0x00FF; // предварительно ни одна кнопка не нажата
         if ((addr > ROM.end()) && (addr < RgRYS)) { // port 580BB55
             switch (addr) {// разбираем по каналам...
                 case PortA: {// Порт А
@@ -405,7 +405,7 @@ public class Hardware {
                         // в Мониторе "Shift" не влияет на клавишу. Влияет РУС/ЛАТ (НР.ФИКС) !!!
                         if (Shiftk) {//  ПОРТ РАБОТАЕТ ПРАВИЛЬНО
                             //  showMessage( "Shiftk TRUE!!! = SMALL !!!" );
-                            //  res &= 0xfffd; // выставим состояние Shift: B1 = 0
+                            //  res &= 0xFFFD; // выставим состояние Shift: B1 = 0
                         } else {
                             res |= 0x0002; // выставим состояние Shift: B1 = 1
                         }
@@ -437,7 +437,7 @@ public class Hardware {
                         // если порт B - на ввод то и делать нечего
                     }// если порта CLow - на ввод   закончился
                     else {// если порта CLow - на вывод
-                        return ((mem[PortC] & 0x000f) | 0x00f0);
+                        return ((mem[PortC] & 0x000F) | 0x00F0);
                     }
                 }// Порт С  закончился
 //ЗДЕСЬ - ПОДУМАТЬ И ПРОВЕРИТЬ!!!
@@ -449,7 +449,7 @@ public class Hardware {
 // Тест обращения к порту 580ВВ55 -
 //      String raddr = Integer.toHexString(addr);
 //      String rByte = Integer.toHexString(res);
-// if( addr == (0xffe0) ){ //
+// if( addr == (0xFFE0) ){ //
 //         showMessage( "Port inpByte: " + raddr.toUpperCase() + "h = " + rByte.toUpperCase() +"h");  // showStatus
 //         showMessage( "Port inpByte: " + Integer.toHexString(addr).toUpperCase() +"h");
 //     }
@@ -459,21 +459,19 @@ public class Hardware {
 
     // вывод в порт Spectrum
     private void outb(int port, int outByte, int tstates) {
-//     return;    // для ПК "Специалист"  а можно и оставить ему бордюр. :)
         if ((port & 0x0001) == 0) {   // port xx.FEh
-            newBorder = (outByte & 0x000f); // 0000.0111 бордюр & 0x07
+            newBorder = (outByte & 0x000F); // 0000.0111 бордюр & 0x07
         }
     }
 
-    // для ПК "Специалист" 580ВВ55
     public void outPort(int port, int outByte) {
-        // все порты ППА перенесём в область 0xffe0 - 0xffe3 ;
+        // все порты ППА перенесём в область 0xFFE0 - 0xFFE3 ;
         if (port <= RgRYS) {
-            int tmp = (port & 0x0003) | 0xffe0;
+            int tmp = (port & 0x0003) | 0xFFE0;
             port = tmp;
         }
 
-        int tmpByte = 0x00ff;
+        int tmpByte = 0x00FF;
         // Разбор  управляющего слова ППА 580ВВ55
         if (port == (RgRYS)) { // РУС
             if ((outByte & 0x0080) != 0) { // управляющие слова 1-старший бит
@@ -482,7 +480,7 @@ public class Hardware {
                 } else {
                     PrC0IN = false; // порт C0- на вывод
                     tmpByte = mem[PortC];
-                    mem[PortC] = tmpByte & 0x00f0;// порт C0 = 0
+                    mem[PortC] = tmpByte & 0x00F0;// порт C0 = 0
                 }
                 if ((outByte & 0x0002) != 0) { // КАНАЛ_В(РВ0-РВ7)
                     PrtBIN = true; // порт B - на ввод
@@ -495,7 +493,7 @@ public class Hardware {
                 } else {
                     PrC1IN = false; // порт C1- на вывод
                     tmpByte = mem[PortC];
-                    mem[PortC] = tmpByte & 0x000f;// порт C1 = 0
+                    mem[PortC] = tmpByte & 0x000F;// порт C1 = 0
                 }
                 if ((outByte & 0x0010) != 0) { // КАНАЛ_A(РА0-РА7)
                     PrtAIN = true;   // порт A - на ввод
@@ -503,38 +501,38 @@ public class Hardware {
                     PrtAIN = false; // порт A - на вывод
                     mem[PortA] = 0; // порт A = 0
                 }
-                mem[port] = outByte; // в ПОРТ RYC запишем YC   ПОРТЫ 0FFE3h
+                mem[port] = outByte; // в ПОРТ RYC запишем YC   ПОРТЫ 0xFFE3
                 return;
-            } else { // побитное управление портом 0xffe3 .
+            } else { // побитное управление портом 0xFFE3 .
                 if (!PrC0IN) { // если порт C0- на вывод
                     if ((outByte & 0x0001) == 1) {// уст. в 1
-                        if (((outByte & 0x000e) >> 1) < 4) {// биты 0-3
+                        if (((outByte & 0x000E) >> 1) < 4) {// биты 0-3
                             tmpByte = mem[PortC];
-                            mem[PortC] = tmpByte | msk[((outByte & 0x000e) >> 1)]; // уст. в 1
+                            mem[PortC] = tmpByte | msk[((outByte & 0x000E) >> 1)]; // уст. в 1
                         }
                     } else {// уст. в 0
                         if (((outByte & 0x000e) >> 1) < 4) {// биты 0-3
                             tmpByte = mem[PortC];
-                            mem[PortC] = tmpByte & bit[((outByte & 0x000e) >> 1)]; // уст. в 0
+                            mem[PortC] = tmpByte & bit[((outByte & 0x000E) >> 1)]; // уст. в 0
                         }
                     }// уст. в X кончилися
                 } // порт C0- на вывод кончился
                 if (!PrC1IN) { // если порт C1- на вывод
                     if ((outByte & 0x0001) == 1) {// уст. в 1
-                        if (((outByte & 0x000e) >> 1) > 3) {// биты 4-7
+                        if (((outByte & 0x000E) >> 1) > 3) {// биты 4-7
                             tmpByte = mem[PortC];
-                            mem[PortC] = tmpByte | msk[((outByte & 0x000e) >> 1)]; // уст. в 1
+                            mem[PortC] = tmpByte | msk[((outByte & 0x000E) >> 1)]; // уст. в 1
                         }
                     } else {// уст. в 0
-                        if (((outByte & 0x000e) >> 1) > 3) {// биты 4-7
+                        if (((outByte & 0x000E) >> 1) > 3) {// биты 4-7
                             tmpByte = mem[PortC];
-                            mem[PortC] = tmpByte & bit[((outByte & 0x000e) >> 1)]; // уст. в 0
+                            mem[PortC] = tmpByte & bit[((outByte & 0x000E) >> 1)]; // уст. в 0
                         }
                     }
                 } // порт C1- на вывод кончился
-            }// побитное управление портом 0xffe3 кончилось
-        } // остальные ПОРТЫ: в том числе и 0xfff8- цвет.
-        mem[port] = outByte; // в остальные ПОРТЫ пишем в память: 0C000h < ПОРТЫ < 0FFFFh
+            }// побитное управление портом 0xFFE3 кончилось
+        } // остальные ПОРТЫ: в том числе и 0xFFF8- цвет.
+        mem[port] = outByte; // в остальные ПОРТЫ пишем в память: 0xC000 < ПОРТЫ < 0xFFFF
     }
 
     // Поскольку исполнение проходит как плотный цикл, некоторые реализации виртуальной машины
@@ -718,7 +716,7 @@ public class Hardware {
         PrC1IN = true; // порт C1- на ввод
         Arrays.sort(ascii_keys); // сортируем массив ascii-массив кодов клавиш для поиска
         resetKeyboard();// все кнопки ненажаты
-        mem[RgRYS] = 0x009b;// порт RYC[0FFE3h] = 9Bh (все на ввод)
+        mem[RgRYS] = 0x009b;// порт RYC[0xFFE3] = 9Bh (все на ввод)
         mem[RgRGB] = 0x0020;// порт цвета - зелёный на черном.
     }
 
@@ -821,8 +819,8 @@ public class Hardware {
         // от  0  до  5800Н
         for (int i = 0; i < firstAttr; i++) {//  [ 0 ] = -1, 0, 1 ...  firstAttr - 1
             nextAddr[i] = i - 1; // ВСЕ смещения в области экрана: -1, 0, 1 ...  firstAttr - 1
-            lastByte[i] = (~mem[i + SCREEN.begin()]) & 0xff; // ВСЕ инвертированные байты из видео-ОЗУ.
-            //lastByte[ i ] = (mem[ i + 16384 ]) & 0xff;
+            lastByte[i] = (~mem[i + SCREEN.begin()]) & 0xFF; // ВСЕ инвертированные байты из видео-ОЗУ.
+            //lastByte[ i ] = (mem[ i + 16384 ]) & 0xFF;
         }
         first = firstAttr - 1; // последнее смещение байта буфера экрана = 57FFH  != -1 !!!
 
@@ -853,7 +851,7 @@ public class Hardware {
                 first = offset;        // first присвоили значение ЭТОГО адреса смещения в экране
             } else                   // адрес в ОЗУ аттрибутов:
             {
-                nextAddr[offset] = FIRST;//
+                nextAddr[offset] = FIRST;
                 FIRST = offset; // значит обработается в screenPaint()
             }
         }
@@ -1035,14 +1033,14 @@ public class Hardware {
             //                              1000.0000b Бит 7 - признак мерцания.
             //   boolean flashChange  = ((oldAttr & 0x80) != (newAttr & 0x80));
             //
-            boolean inkChange = ((oldAttr & 0x00f0) != (newAttr & 0x00f0)); // цвет чернил
-            boolean papChange = ((oldAttr & 0x000f) != (newAttr & 0x000f)); // цвет фона
+            boolean inkChange = ((oldAttr & 0x00F0) != (newAttr & 0x00F0)); // цвет чернил
+            boolean papChange = ((oldAttr & 0x000F) != (newAttr & 0x000F)); // цвет фона
 
             // отличие ПК "Специалист" в том, что аттрибут = код цвета нельзя изменить отдельно от
-            // байта графики. Они всегда пишутся синхронно. Код цвета выставляется в порт 0xfff8h и
+            // байта графики. Они всегда пишутся синхронно. Код цвета выставляется в порт 0xFFF8 и
             // запись байта по адресу в ОЗУ экрана запишет цвет по этому же адресу в ОЗУ цвета.
             // Код цвета единожды выставленный красит все байты экрана. Так что изменений ink и
-            // paper может при записи и не быть. (Вероятно надо следить за изменением 0xfff8h.)
+            // paper может при записи и не быть. (Вероятно надо следить за изменением 0xFFF8.)
             //
             if (inkChange || papChange) { // если случились изменения:   || flashChange
                 //     boolean allChange = ((inkChange && papChange) || flashChange); //
@@ -1074,7 +1072,7 @@ public class Hardware {
                 // X и Y не используются.
                 //  это адрес аттрибута, а надо попасть в первую строку его знакоместа.
                 // ***
-                //int scrAddr   = ((addr & 0x0300) << 3) | (addr & 0xff);
+                //int scrAddr   = ((addr & 0x0300) << 3) | (addr & 0xFF);
                 int scrAddr = (addr);
 
                 //                  54321098.76543210    .765_43210
@@ -1091,7 +1089,7 @@ public class Hardware {
                     changes |= newPixels;
                 } else // если не менялись чернила?
                 {
-                    changes |= ((~newPixels) & 0xff);
+                    changes |= ((~newPixels) & 0xFF);
                 }//inkChange
 
                 if (changes != 0)  // если изменений нет - просто продолжаем...
@@ -1143,7 +1141,7 @@ public class Hardware {
             //
             //    int x = ((addr & 0x1f) << 3); // сдвиг на 3 = * 8 (т.к. x2...x0 - адрес бита в байте)
             //
-            int x = ((addr & 0x3f00) >> 5); // сдвиг на 5 (т.к. x2...x0 - адрес бита в байте)
+            int x = ((addr & 0x3F00) >> 5); // сдвиг на 5 (т.к. x2...x0 - адрес бита в байте)
             //                    0011.1111.0000.0000
             //                    0000.0001.1111.1000
 
@@ -1154,7 +1152,7 @@ public class Hardware {
             //                0000.0111.0000.0000 >>8 = 0000.0000.0000.0111 = 0000.0000.0000.0210
             //                0001.1000.0000.0000 >>5 = 0000.0000.1100.0000 = 0000.0000.7600.0000
             // полный экранный адрес по координате Y: = 0000.0000.7654.3210
-            int y = addr & 0x00ff;
+            int y = addr & 0x00FF;
 
             int X = (x * pixelScale); // Учтём_
             int Y = (y * pixelScale); // масштаб.
@@ -1168,11 +1166,11 @@ public class Hardware {
 //
             // Swap colors around if doing flash
             // Redraw left nibble if necessary
-            if ((changes & 0xf0) != 0) // если есть изменения в старшем ниббле:
+            if ((changes & 0xF0) != 0) // если есть изменения в старшем ниббле:
             {// старший ниббл байта сдвинули в младший - 0000.0000bbbb
-                int newPixels1 = (newPixels & 0xf0) >> 4;
+                int newPixels1 = (newPixels & 0xF0) >> 4;
                 // аттрибуты кроме мерц. сдвинули выше младшего ниббла 0aaa.aaaa.0000
-                int imageMapEntry1 = (((attr & 0x7f) << 4) | newPixels1);
+                int imageMapEntry1 = (((attr & 0x7F) << 4) | newPixels1);
                 // получили хитрый индекс: 0aaa.aaaabbbb
                 Image image1 = imageMap[imageMapEntry1]; // по индексу ищем image1
 
@@ -1191,11 +1189,11 @@ public class Hardware {
             }
 
             // Redraw right nibble if necessary
-            if ((changes & 0x0f) != 0) // если есть изменения в младшем ниббле:
+            if ((changes & 0x0F) != 0) // если есть изменения в младшем ниббле:
             {// выделили младший ниббл байта - 0000.0000bbbb
-                int newPixels2 = (newPixels & 0x0f);
+                int newPixels2 = (newPixels & 0x0F);
                 // аттрибуты кроме мерц. сдвинули выше младшего ниббла 0aaa.aaaa.0000
-                int imageMapEntry2 = (((attr & 0x7f) << 4) | newPixels2);
+                int imageMapEntry2 = (((attr & 0x7F) << 4) | newPixels2);
                 // получили хитрый индекс: 0aaa.aaaabbbb
                 Image image2 = imageMap[imageMapEntry2]; //  по индексу ищем image2
 
@@ -1322,8 +1320,8 @@ public class Hardware {
         if (index >= 0) { // если она есть в таблице:
 
             short XYmatr = keybd_matr[index]; // по индексу находим "координату" в матрице X_Y
-            int Xcoord = (XYmatr & 0x0f00) >> 8;
-            int Ycoord = XYmatr & 0x00ff;
+            int Xcoord = (XYmatr & 0x0F00) >> 8;
+            int Ycoord = XYmatr & 0x00FF;
 
             // по координате установим "нажатие" В таблице матрицы Специалиста.
             speci_matr[Xcoord][Ycoord] = down; // нажата(отпущена)
@@ -1494,8 +1492,8 @@ public class Hardware {
         int xxx = ptr[lng];
 
         for (int i = lng; i != 0; i--) {
-            mes = (char) ((ptr[i - 1] ^ xxx) & 0x00ff) + mes;
-            xxx = (ptr[i - 1] ^ xxx) & 0x00ff;
+            mes = (char) ((ptr[i - 1] ^ xxx) & 0x00FF) + mes;
+            xxx = (ptr[i - 1] ^ xxx) & 0x00FF;
         }
         return mes;
     }
@@ -1547,12 +1545,11 @@ public class Hardware {
                 updateProgress(nRead);
             }
 
-            for (int i = 0; i < n; i++) {//буффер "byte" превращаем в буффер "int"
-                a[i + off] = (buff[i] + 256) & 0xff;
-            }// mem[] "int"
+            for (int i = 0; i < n; i++) { // буффер "byte" превращаем в буффер "int"
+                a[i + off] = (buff[i] + 256) & xFF;
+            }
             return n;
-        }//  try
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();
             stopProgress();
@@ -1578,20 +1575,20 @@ public class Hardware {
     private void pokeb(int addr, int bite) {
         if (addr > SCREEN.end()) {       // > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
             // для ПК "Специалист" - ПОРТЫ
-            if (addr < OUT_OF_MEMORY) {      // <=0FFFFh - ПОРТЫ И ПЗУ
-                if (addr > ROM.end()) {   // > 0FFDFh - ПОРТЫ
-                    outPort(addr, bite);// в ПОРТЫ пишем   0C000h < ПОРТЫ < 0FFFFh
+            if (addr < OUT_OF_MEMORY) {      // <=0xFFFF - ПОРТЫ И ПЗУ
+                if (addr > ROM.end()) {   // > 0xFFDF - ПОРТЫ
+                    outPort(addr, bite);// в ПОРТЫ пишем   0xC000 < ПОРТЫ < 0xFFFF
                     return;
                 } else {
-                    return; // в ПЗУ 0C000h-ROMEnd не пишем
+                    return; // в ПЗУ 0xC000-ROMEnd не пишем
                 }
             } else {// addr вдруг больше 65536 (не может быть!) - укоротим его и продолжим.
                 addr = WORD(addr);
             }
         }// далее - ОЗУ + Видео-ОЗУ ниже ПЗУ И ПОРТОВ.
 
-        if (addr < SCREEN.begin()) {          // ОЗУ < 9000h
-            mem[addr] = bite;    // в ОЗУ пишем   0000h < ОЗУ < 9000h
+        if (addr < SCREEN.begin()) {          // ОЗУ < 0x9000
+            mem[addr] = bite;    // в ОЗУ пишем   0x0000 < ОЗУ < 0x9000
             return;                   // в ОЗУ пользователя пишем
         }// далее - только Видео-ОЗУ!
 
@@ -1615,14 +1612,14 @@ public class Hardware {
                     if (++addr != OUT_OF_MEMORY) { // != 65536
                         outPort(addr, word >> 8); // старший байт - пишем в ПОРТ
                         return; // старший байт обслужили - уходим!
-                    } else { // старший байт вышел за HiMem -> addr=0000h;
+                    } else { // старший байт вышел за HiMem -> addr=0x0000;
                         addr = WORD(addr);
                         mem[addr] = word >> 8; // старший байт - пишем в ОЗУ
                         return; // старший байт обслужили - уходим!
                     }
                 }
             } else {
-                // addr вдруг больше 65536 (не может быть!) - укоротим его.
+                // addr вдруг больше 0xFFFF (не может быть!) - укоротим его.
                 addr = WORD(addr); // продолжим с новым адресом
             }
         }
