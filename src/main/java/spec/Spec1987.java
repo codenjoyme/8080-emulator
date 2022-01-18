@@ -195,7 +195,7 @@ public void readParameters() throws Exception {
 //---***    spechard.loadROMZ( romZURL.toString(), romZURL.openStream() );
 
 //--- для ПК "ЛИК" ---------------------------------------------------------------
-    boolean lik = false; // ЛИК или Специалист
+    boolean lik = true; // ЛИК или Специалист
     if (lik) {
         URL likRom1URL = new URL(baseURL, "lik/01_zagr.BIN");
         spechard.loadROM(likRom1URL.toString(), likRom1URL.openStream(), 0xC000);
@@ -214,6 +214,9 @@ public void readParameters() throws Exception {
 
         URL likRom6URL = new URL(baseURL, "lik/06_basicLik.BIN");
         spechard.loadROM(likRom6URL.toString(), likRom6URL.openStream(), 0xE800);
+
+        URL kladURL = new URL(baseURL, "lik/apps/klad.rks");
+        spechard.loadRKS(kladURL.toString(), kladURL.openStream());
     } else {
 //--- для ПК "Специалист" ---------------------------------------------------------------
         URL specRom0URL = new URL(baseURL, "specialist/monitor0.rom");
