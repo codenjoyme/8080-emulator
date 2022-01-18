@@ -47,7 +47,7 @@ import static spec.WordMath.*;
  * @author <A HREF="http://www.odie.demon.co.uk/spectrum">Adam Davidson & Andrew Pollard</A>
  * @version 1.1 27 Apr 1997
  * @see Main
- * @see VM80
+ * @see CPU
  */
 
 public class Hardware {
@@ -75,7 +75,7 @@ public class Hardware {
     // массив байт памяти
     public int[] mem = new int[65536];
 
-    public VM80 processor;
+    public CPU processor;
 
 
     /**
@@ -86,7 +86,7 @@ public class Hardware {
      */
     public Hardware(Container _parent) {
         // Specialist runs at 3.5Mhz;
-        processor = new VM80(1.6, new Accessor() {
+        processor = new CPU(1.6, new Accessor() {
 
             @Override
             public void interrupt() {

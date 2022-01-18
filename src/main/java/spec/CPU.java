@@ -14,11 +14,11 @@ import static spec.WordMath.*;
  * @version 1.1 27 Apr 1997
  */
 
-public class VM80 {
+public class CPU {
 
     private final Accessor accessor;
 
-    public VM80(double clockFrequencyInMHz, Accessor accessor) {
+    public CPU(double clockFrequencyInMHz, Accessor accessor) {
         // Количество тактов на 1 прерывание, которое происходит 50 раз в секунду.
         // 1000000/50 раз в секунду
         tstatesPerInterrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);
