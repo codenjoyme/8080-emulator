@@ -222,7 +222,7 @@ public class VM80 {
     }
 
     private void D(int bite) {
-        _DE = (bite << 8) | LO(_DE);
+        _DE = LO_MERGE(_DE, bite);
     }
 
     private int E() {
@@ -238,7 +238,7 @@ public class VM80 {
     }
 
     private void H(int bite) {
-        _HL = (bite << 8) | LO(_HL);
+        _HL = LO_MERGE(_HL, bite);
     }
 
     private int L() {
@@ -254,7 +254,7 @@ public class VM80 {
     }
 
     private void IDH(int bite) {
-        _ID = (bite << 8) | LO(_ID);
+        _ID = LO_MERGE(_ID, bite);
     }
 
     private int IDL() {
