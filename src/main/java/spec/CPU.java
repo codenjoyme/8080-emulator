@@ -119,12 +119,11 @@ public class CPU {
     }
 
     private int BC() {
-        return MERGE(B(), C());
+        return BC;
     }
 
     private void BC(int word) {
-        B(word >> 8);
-        C(LO(word));
+        BC = word;
     }
 
     private int DE() {
