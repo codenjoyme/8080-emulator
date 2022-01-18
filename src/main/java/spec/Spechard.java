@@ -316,6 +316,7 @@ Y0 | Р/Л |HOME |  Up |Down | ESC | TAB | SPС |  <= |  ПВ |  => |  ПС |  �
   private String tmpstring = "";  //--- ВВЕЛИ ДЛЯ ОТЛАДКИ ---
 
 //--- переопределим чтение памяти -------------------------
+@Override
   public int peekb( int addr ) {
      if( addr < (PortBeg) )     //--- ПЗУ и ОЗУ Пользователя
        {
@@ -454,6 +455,7 @@ public int inport( int addr ) {
 //--- _B_SPC..._CAPS_V.
 
 //-------- ввод из порта -----------------------------------------------------------------
+@Override
 public int inb( int port ) {
        int res = 0xff; //-- начальное состояние порта - "все не нажаты"
        return(res);    //---*** для ПК "Специалист" ---
@@ -474,6 +476,7 @@ public int inb( int port ) {
   }
 
 //---------- вывод в порт Spectrum --------------------------------------------------------
+@Override
 public void outb( int port, int outByte, int tstates ) {
 //     return;    //---*** для ПК "Специалист" --- а можно и оставить ему бордюр. :)
     if( (port & 0x0001) == 0 ) {   //-- port xx.FEh
@@ -566,6 +569,7 @@ public void outPort( int port, int outByte ) {
   }
 
 //---*** --- pokeb для ПК "Специалист" ---------------------------------------------
+@Override
 public void pokeb( int addr, int newByte ) {
    if( addr > (ScrEnd) )       //--- > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
      {
@@ -699,6 +703,7 @@ public void pokeb( int addr, int newByte ) {
   }  */
 
 //---*** --- pokew для ПК "Специалист" ---------------------------------------------
+@Override
 public void pokew( int addr, int word ) {
   int _mem[] = mem;
    if( addr > ScrEnd )       //--- > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
@@ -809,6 +814,7 @@ private void loadFromURLField() {
   }
 
 //-------------- прерывание ----------------------------------------------------------------
+@Override
 public final int interrupt() {
 
     if( pauseAtNextInterrupt )
@@ -976,6 +982,7 @@ public void repaint() {
   }
 
 //================================== сброс =================================================
+@Override
 public void reset() {
       super.reset(); //--- reset() class Z80
 //---***

@@ -58,12 +58,14 @@ public class Spec1987 extends Applet implements Runnable {
   // Version and author information.
   // мы переопределили метод getAppletInfo из базового класса так, что getAppletInfo
   // возвращает текстовую информацию об аплете в виде объекта класса String.
+@Override
 public String getAppletInfo() {
     return "Specialist V1.0 alpha, © 2011 Sam_Computers LTD";
   }
 
 //--------------------------------------------------------------------------------------------
-  // Applet parameters and their descriptions.
+// Applet parameters and their descriptions.
+@Override
 public String[][] getParameterInfo() {
     String [][] info = {
       { "snapshot",    "filename", "name of SNA or Z80 snapshot to load" },
@@ -83,6 +85,7 @@ public String[][] getParameterInfo() {
   // Метод init вызывается тогда, когда браузер загружает в свое окно документ HTML с
   // оператором <APPLET>, ссылающимся на данный аплет. В этот момент аплет может выполнять
   // инициализацию, или, например, создавать потоки, если он работает в многопоточном режиме.
+@Override
 public void init() {
 // System.out.println(" Happenned INIT !");
     setLayout( null ); // вызов метода использован для выключения механизма режима размещения
@@ -94,6 +97,7 @@ public void init() {
   // просматривать документ HTML с встроенным в него аплетом.
   // Он также используется в качестве стартовой точки для возобновления работы после того,
   //  как апплет был остановлен.
+@Override
 public void start() {
 // System.out.println(" Happenned START !");
    if(thread == null ) {
@@ -106,6 +110,7 @@ public void start() {
   // Stop the applet.
   // метод stop. Он получает управление, когда пользователь покидает страницу с аплетом
   // и загружает в окно браузера другую страницу, stop вызывается перед методом destroy.
+@Override
 public void stop() {
 // System.out.println(" Happenned STOP !");
    if(thread != null ) {
@@ -121,8 +126,10 @@ public void stop() {
   * If the applet is active it is stopped.
   *
   */
+@Override
 public void destroy() {
-  }
+    // do nothing
+}
 
 //--------------------------------------------------------------------------------------------
 // метод run не вызывается напрямую никакими другими методами. Он получает управление
@@ -273,6 +280,7 @@ public int getIntParameter( String name, int ifUndef, int min, int max ) {
   // то есть, всякий раз, когда вы перерисовываете апплет. Чтобы избежать этого, нужно
   // заместить метод update. В общем случае нужно выполнять операции рисования в методе
   // update, а в методе paint, к которому будет обращаться AWT, просто вызвать update.
+@Override
 public void update( Graphics g ) {
 // showStatus(" Happenned UPDATE !");
     paint( g );
@@ -293,6 +301,7 @@ public void update( Graphics g ) {
   // Метод paint вызывается каждый раз при повреждении апплета. В таких случаях, как,
   // например, перекрытие окна апплета другим окном. В таких случаях, после того, как апплет
   // снова оказывается видимым, для восстановления его изображения вызывается метод paint.
+@Override
 public void paint( Graphics g ) {
 // showStatus(" Happenned PAINT !");
     if ( spechard != null ) {
@@ -312,6 +321,7 @@ public void paint( Graphics g ) {
 
   // приложение может переопределить метод handleEvent и обрабатывать события самостоятельно
 //-- boolean handleEvent(Event)   replaced by void processEvent(AWTEvent e).
+@Override
 public boolean handleEvent(Event e) {
 // showStatus(" Happenned Event !" + e );
   if( spechard != null )
@@ -322,6 +332,7 @@ public boolean handleEvent(Event e) {
   }
 //--------------------------------------------------------------------------------------------
   // Applet size.
+@Override
 public Dimension minimumSize() {
     int scale  = spechard.pixelScale;
     int border = (spechard == null) ? 20 : spechard.borderWidth;
@@ -333,6 +344,7 @@ public Dimension minimumSize() {
   }
 //--------------------------------------------------------------------------------------------
   // Returns Spec1987.minimumSize().
+@Override
 public Dimension preferredSize() {
     return minimumSize();
   }
