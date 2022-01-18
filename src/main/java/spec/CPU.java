@@ -61,7 +61,7 @@ public class CPU {
     private int _HL = 0;
     private int _B = 0;
     private int _C = 0;
-    private int _DE = 0;
+    private int DE = 0;
 
     private boolean fS = false;
     private boolean fZ = false;
@@ -120,7 +120,7 @@ public class CPU {
     }
 
     private int BC() {
-        return (B() << 8) | C();
+        return MERGE(B(), C());
     }
 
     private void BC(int word) {
@@ -129,11 +129,11 @@ public class CPU {
     }
 
     private int DE() {
-        return _DE;
+        return DE;
     }
 
     private void DE(int word) {
-        _DE = word;
+        DE = word;
     }
 
     private int HL() {
@@ -234,19 +234,19 @@ public class CPU {
     }
 
     private int D() {
-        return _DE >> 8;
+        return DE >> 8;
     }
 
     private void D(int bite) {
-        _DE = LO_MERGE(bite, _DE);
+        DE = LO_MERGE(bite, DE);
     }
 
     private int E() {
-        return LO(_DE);
+        return LO(DE);
     }
 
     private void E(int bite) {
-        _DE = HI_MERGE(_DE, bite);
+        DE = HI_MERGE(DE, bite);
     }
 
     private int H() {
@@ -409,8 +409,8 @@ public class CPU {
         accessor.pokew(addr, word);
     }
 
-    private void pokeb(int addr, int newByte) {
-        accessor.pokeb(addr, newByte);
+    private void pokeb(int addr, int bite) {
+        accessor.pokeb(addr, bite);
     }
 
     /**

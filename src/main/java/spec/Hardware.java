@@ -94,8 +94,8 @@ public class Hardware {
             }
 
             @Override
-            public void outb(int port, int outByte, int tstates) {
-                Hardware.this.outb(port, outByte, tstates);
+            public void outb(int port, int bite, int tstates) {
+                Hardware.this.outb(port, bite, tstates);
             }
 
             @Override
@@ -104,8 +104,8 @@ public class Hardware {
             }
 
             @Override
-            public void pokeb(int addr, int newByte) {
-                Hardware.this.pokeb(addr, newByte);
+            public void pokeb(int addr, int bite) {
+                Hardware.this.pokeb(addr, bite);
             }
 
             @Override
@@ -840,8 +840,8 @@ public class Hardware {
     }
 
     // запись в видео-ОЗУ
-    private void plot(int addr, int newByte)   // график ?
-    {//        addr в видео-ОЗУ;      newByte - байт ОЗУ, он здесь не используется...
+    private void plot(int addr, int bite)   // график ?
+    {//        addr в видео-ОЗУ;      bite - байт ОЗУ, он здесь не используется...
         int offset = addr - SCREEN.begin();  // смещение в видео-ОЗУ: (адрес в ОЗУ) - 4000h
 
         if (nextAddr[offset] == -1) // если по ЭТОМУ адресу в видео-ОЗУ есть признак ОБНОВИТЬ,
@@ -1575,12 +1575,12 @@ public class Hardware {
         return inport(addr);     // возвращаем порт
     }
 
-    private void pokeb(int addr, int newByte) {
+    private void pokeb(int addr, int bite) {
         if (addr > SCREEN.end()) {       // > 0xbfffh - выше Видео-ОЗУ = ПЗУ И ПОРТЫ.
             // для ПК "Специалист" - ПОРТЫ
             if (addr < OUT_OF_MEMORY) {      // <=0FFFFh - ПОРТЫ И ПЗУ
                 if (addr > ROM.end()) {   // > 0FFDFh - ПОРТЫ
-                    outPort(addr, newByte);// в ПОРТЫ пишем   0C000h < ПОРТЫ < 0FFFFh
+                    outPort(addr, bite);// в ПОРТЫ пишем   0C000h < ПОРТЫ < 0FFFFh
                     return;
                 } else {
                     return; // в ПЗУ 0C000h-ROMEnd не пишем
@@ -1591,13 +1591,13 @@ public class Hardware {
         }// далее - ОЗУ + Видео-ОЗУ ниже ПЗУ И ПОРТОВ.
 
         if (addr < SCREEN.begin()) {          // ОЗУ < 9000h
-            mem[addr] = newByte;    // в ОЗУ пишем   0000h < ОЗУ < 9000h
+            mem[addr] = bite;    // в ОЗУ пишем   0000h < ОЗУ < 9000h
             return;                   // в ОЗУ пользователя пишем
         }// далее - только Видео-ОЗУ!
 
-        if (mem[addr] != newByte) { // правильно! повторно в Видео-ОЗУ записывать глупо!
-            plot(addr, xFFFF);     // в Видео-ОЗУ рисуем  newByte не используется в plot()
-            mem[addr] = newByte;    // в Видео-ОЗУ пишем как в ОЗУ чтобы читать
+        if (mem[addr] != bite) { // правильно! повторно в Видео-ОЗУ записывать глупо!
+            plot(addr, xFFFF);     // в Видео-ОЗУ рисуем  bite не используется в plot()
+            mem[addr] = bite;    // в Видео-ОЗУ пишем как в ОЗУ чтобы читать
         }
     }
 
@@ -1636,10 +1636,10 @@ public class Hardware {
                 return;
             } else {
                 // старший байт попал в видео-ОЗУ.
-                int newByte1 = HI(word); // второй байт слова word
-                if (mem[addr] != newByte1) { // правильно! повторно в Видео-ОЗУ записывать глупо!
-                    plot(addr, xFFFF);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
-                    mem[addr] = newByte1;// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
+                int bite = HI(word); // второй байт слова word
+                if (mem[addr] != bite) { // правильно! повторно в Видео-ОЗУ записывать глупо!
+                    plot(addr, xFFFF);   // в Видео-ОЗУ рисуем
+                    mem[addr] = bite;// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
                 }
                 // старший байт обслужили - уходим!
                 return;
@@ -1647,17 +1647,17 @@ public class Hardware {
         }
 
         // далее - только Видео-ОЗУ!
-        int newByte0 = LO(word);   // второй байт слова word
-        if (mem[addr] != newByte0) { // правильно! повторно в Видео-ОЗУ записывать глупо!
-            plot(addr, xFFFF);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
-            mem[addr] = newByte0;// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
+        int bite = LO(word);
+        if (mem[addr] != bite) { // правильно! повторно в Видео-ОЗУ записывать глупо!
+            plot(addr, xFFFF);   // в Видео-ОЗУ рисуем
+            mem[addr] = bite;// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
         }
 
-        int newByte1 = word >> 8;// второй байт слова word
-        if (++addr < ROM.begin()) { // ScrBeg < ++addr < ROMBeg;
-            if (mem[addr] != newByte1) {
+        bite = HI(word);
+        if (++addr < ROM.begin()) {
+            if (mem[addr] != bite) {
                 plot(addr, xFFFF); // в Видео-ОЗУ рисуем
-                mem[addr] = newByte1;
+                mem[addr] = bite;
             }
         } else { // второй байт слова попал на ROM
             // в ROM не пишем
