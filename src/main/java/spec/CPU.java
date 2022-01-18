@@ -57,10 +57,10 @@ public class CPU {
     /**
      * Main registers
      */
-    private int _A = 0;
-    private int _HL = 0;
-    private int _B = 0;
-    private int _C = 0;
+    private int A = 0;
+    private int HL = 0;
+    private int B = 0;
+    private int C = 0;
     private int DE = 0;
 
     private boolean fS = false;
@@ -137,11 +137,11 @@ public class CPU {
     }
 
     private int HL() {
-        return _HL;
+        return HL;
     }
 
     private void HL(int word) {
-        _HL = word;
+        HL = word;
     }
 
     private int PC() {
@@ -188,11 +188,11 @@ public class CPU {
      * 8 bit register access
      */
     private int A() {
-        return _A;
+        return A;
     }
 
     private void A(int bite) {
-        _A = bite;
+        A = bite;
     }
 
     private int F() {
@@ -218,19 +218,19 @@ public class CPU {
     }
 
     private int B() {
-        return _B;
+        return B;
     }
 
     private void B(int bite) {
-        _B = bite;
+        B = bite;
     }
 
     private int C() {
-        return _C;
+        return C;
     }
 
     private void C(int bite) {
-        _C = bite;
+        C = bite;
     }
 
     private int D() {
@@ -250,19 +250,19 @@ public class CPU {
     }
 
     private int H() {
-        return _HL >> 8;
+        return HL >> 8;
     }
 
     private void H(int bite) {
-        _HL = LO_MERGE(bite, _HL);
+        HL = LO_MERGE(bite, HL);
     }
 
     private int L() {
-        return LO(_HL);
+        return LO(HL);
     }
 
     private void L(int bite) {
-        _HL = HI_MERGE(_HL, bite);
+        HL = HI_MERGE(HL, bite);
     }
 
     private int IDH() {
