@@ -13,33 +13,69 @@ package spec;
 
 public class VM80 {
 
-    private static final int     b11111011 = -5; // TODO перегнать в bits, я тут не уверен
-    private static final int  i1_b00000001 = 1;
-    private static final int  i2_b00000010 = 2;
-    private static final int  i3_b00000011 = 3;
-    private static final int  i4_b00000100 = 4;
-    private static final int  i5_b00000101 = 5;
-    private static final int  i6_b00000110 = 6;
-    private static final int  i7_b00000111 = 7;
-    private static final int  i8_b00001000 = 8;
-    private static final int  i9_b00001001 = 9;
-    private static final int i10_b00001010 = 10;
-    private static final int i11_b00001011 = 11;
-    private static final int i12_b00001100 = 12;
-    private static final int i13_b00001101 = 13;
-    private static final int i14_b00001110 = 14;
-    private static final int i15_b00001111 = 15;
-    private static final int i16_b00010000 = 16;
-    private static final int i17_b00010001 = 17;
-    private static final int i18_b00010010 = 18;
-    private static final int i19_b00010011 = 19;
-    private static final int i20_b00010100 = 20;
-    private static final int i21_b00010101 = 21;
-    private static final int i22_b00010110 = 22;
-    private static final int i23_b00010111 = 23;
-    private static final int i32_b00100000 = 32;
-    private static final int i64_b01000000 = 64;
+    private static final int      b11111011 = -5; // TODO перегнать в bits, я тут не уверен
+    private static final int   i1_b00000001 = 1;
+    private static final int   i2_b00000010 = 2;
+    private static final int   i3_b00000011 = 3;
+    private static final int   i4_b00000100 = 4;
+    private static final int   i5_b00000101 = 5;
+    private static final int   i6_b00000110 = 6;
+    private static final int   i7_b00000111 = 7;
+    private static final int   i8_b00001000 = 8;
+    private static final int   i9_b00001001 = 9;
+    private static final int  i10_b00001010 = 10;
+    private static final int  i11_b00001011 = 11;
+    private static final int  i12_b00001100 = 12;
+    private static final int  i13_b00001101 = 13;
+    private static final int  i14_b00001110 = 14;
+    private static final int  i15_b00001111 = 15;
+    private static final int  i16_b00010000 = 16;
+    private static final int  i17_b00010001 = 17;
+    private static final int  i18_b00010010 = 18;
+    private static final int  i19_b00010011 = 19;
+    private static final int  i20_b00010100 = 20;
+    private static final int  i21_b00010101 = 21;
+    private static final int  i22_b00010110 = 22;
+    private static final int  i23_b00010111 = 23;
+    private static final int  i32_b00100000 = 32;
+    private static final int  i64_b01000000 = 64;
+    private static final int  i96_b01100000 = 96;
+    private static final int i127_b01111111 = 127;
     private static final int i128_b10000000 = 128;
+    private static final int i143_b10001111 = 143;
+    private static final int i153_b10011001 = 153;
+    private static final int i159_b10011111 = 159;
+    private static final int i192_b11000000 = 192;
+    private static final int i240_b11110000 = 0xF0;
+    private static final int i255_b11111111 = 0xFF;
+
+    private static final int x01 =   i1_b00000001;
+    private static final int x02 =   i2_b00000010;
+    private static final int x04 =   i4_b00000100;
+    private static final int x06 =   i6_b00000110;
+    private static final int x08 =   i8_b00001000;
+    private static final int x09 =   i9_b00001001;
+    private static final int x0F =  i15_b00001111;
+    private static final int x10 =  i16_b00010000;
+    private static final int x20 =  i32_b00100000;
+    private static final int x40 =  i64_b01000000;
+    private static final int x60 =  i96_b01100000;
+    private static final int x7F = i127_b01111111;
+    private static final int x80 = i128_b10000000;
+    private static final int x8F = i143_b10001111;
+    private static final int x99 = i153_b10011001;
+    private static final int x9F = i159_b10011111;
+    private static final int xC0 = i192_b11000000;
+    private static final int xF0 = i240_b11110000;
+    private static final int xFF = i255_b11111111;
+    private static final int x100 = 0x100;
+    private static final int x0FFF = 0x0FFF;
+    private static final int x1000 = 0x1000;
+    private static final int x8000 = 0x8000;
+    private static final int xFF00 = 0xFF00;
+    private static final int xFFFF = 0xFFFF;
+    private static final int x10000 = 0x10000;
+
 
     private final Accessor accessor;
 
@@ -49,6 +85,8 @@ public class VM80 {
         tstatesPerInterrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);
         this.accessor = accessor;
     }
+
+    private static final int StartPoint = 0xC000;
 
     private static final int BASEnd = 0x4000; // ROM BASIC END.
 
@@ -65,7 +103,7 @@ public class VM80 {
     private static final int PortBeg = 0xf800;// начало портов: 0xffe0
     private static final int PortEnd = 0xfffe;// конец портов: 0xffff - память
 
-    private static final int HiMem = 0x10000;// запредел памяти.
+    private static final int HiMem = x10000;// запредел памяти.
 
     private int tstatesPerInterrupt;
 
@@ -73,14 +111,14 @@ public class VM80 {
     private static final int IM1 = 1;
     private static final int IM2 = 2;
 
-    private static final int F_C = 0x01;
-    private static final int F_N = 0x02;
-    private static final int F_PV = 0x04;
-    private static final int F_3 = 0x08;
-    private static final int F_H = 0x10;
-    private static final int F_5 = 0x20;
-    private static final int F_Z = 0x40;
-    private static final int F_S = 0x80;
+    private static final int F_C = x01;
+    private static final int F_N = x02;
+    private static final int F_PV = x04;
+    private static final int F_3 = x08;
+    private static final int F_H = x10;
+    private static final int F_5 = x20;
+    private static final int F_Z = x40;
+    private static final int F_S = x80;
 
     private static final int PF = F_PV;
     private static final int p_ = 0;
@@ -119,7 +157,7 @@ public class VM80 {
     /**
      * Stack Pointer and Program Counter
      */
-    private int _SP = 0, _PC = 0xc000; //*** программный счётчик = 0000h
+    private int _SP = 0, _PC = StartPoint;
 
     /**
      * Interrupt and Refresh registers
@@ -141,7 +179,7 @@ public class VM80 {
 
     private void AF(int word) {
         A(word >> 8);
-        F(word & 0xff);
+        F(word & xFF);
     }
 
     private int BC() {
@@ -150,7 +188,7 @@ public class VM80 {
 
     private void BC(int word) {
         B(word >> 8);
-        C(word & 0xff);
+        C(word & xFF);
     }
 
     private int DE() {
@@ -263,15 +301,15 @@ public class VM80 {
     }
 
     private void D(int bite) {
-        _DE = (bite << 8) | (_DE & 0x00ff);
+        _DE = (bite << 8) | (_DE & xFF);
     }
 
     private int E() {
-        return (_DE & 0xff);
+        return (_DE & xFF);
     }
 
     private void E(int bite) {
-        _DE = (_DE & 0xff00) | bite;
+        _DE = (_DE & xFF00) | bite;
     }
 
     private int H() {
@@ -279,15 +317,15 @@ public class VM80 {
     }
 
     private void H(int bite) {
-        _HL = (bite << 8) | (_HL & 0x00ff);
+        _HL = (bite << 8) | (_HL & xFF);
     }
 
     private int L() {
-        return (_HL & 0xff);
+        return (_HL & xFF);
     }
 
     private void L(int bite) {
-        _HL = (_HL & 0xff00) | bite;
+        _HL = (_HL & xFF00) | bite;
     }
 
     private int IDH() {
@@ -295,15 +333,15 @@ public class VM80 {
     }
 
     private void IDH(int bite) {
-        _ID = (bite << 8) | (_ID & 0x00ff);
+        _ID = (bite << 8) | (_ID & xFF);
     }
 
     private int IDL() {
-        return (_ID & 0xff);
+        return (_ID & xFF);
     }
 
     private void IDL(int bite) {
-        _ID = (_ID & 0xff00) | bite;
+        _ID = (_ID & xFF00) | bite;
     }
 
     /**
@@ -314,12 +352,12 @@ public class VM80 {
     }
 
     private int R() {
-        return (_R & 0x7f) | _R7;
+        return (_R & x7F) | _R7;
     }
 
     private void R(int bite) {
         _R = bite;
-        _R7 = bite & 0x80;
+        _R7 = bite & x80;
     }
 
     private void REFRESH(int t) {
@@ -446,7 +484,7 @@ public class VM80 {
                     return; // в ПЗУ 0C000h-ROMEnd не пишем
                 }
             } else {// addr вдруг больше 65536 (не может быть!) - укоротим его и продолжим.
-                addr &= 0xffff;
+                addr &= xFFFF;
             }
         }// далее - ОЗУ + Видео-ОЗУ ниже ПЗУ И ПОРТОВ.
 
@@ -458,7 +496,7 @@ public class VM80 {
 
         if (accessor.mem(addr) != newByte) // правильно! повторно в Видео-ОЗУ записывать глупо!
         {//       newByte
-            accessor.plot(addr, 0xffff);     // в Видео-ОЗУ рисуем  newByte не используется в plot()
+            accessor.plot(addr, xFFFF);     // в Видео-ОЗУ рисуем  newByte не используется в plot()
             accessor.mem(addr, newByte);    // в Видео-ОЗУ пишем как в ОЗУ чтобы читать
         }
     }
@@ -474,34 +512,34 @@ public class VM80 {
             {
                 if (addr > ROMEnd)   // > 0FFDFh - ПОРТЫ
                 {
-                    accessor.outPort(addr, word & 0xff);// младший байт - пишем в ПОРТ
+                    accessor.outPort(addr, word & xFF);// младший байт - пишем в ПОРТ
                     if (++addr != HiMem) { // != 65536
                         accessor.outPort(addr, word >> 8); // старший байт - пишем в ПОРТ
                         return; // старший байт обслужили - уходим!
                     } else { // старший байт вышел за HiMem -> addr=0000h;
-                        addr &= 0xffff;
+                        addr &= xFFFF;
                         accessor.mem(addr, word >> 8); // старший байт - пишем в ОЗУ
                         return; // старший байт обслужили - уходим!
                     }
                 }// ( addr > ROMEnd )
             }// ( addr < HiMem )
             else {// addr вдруг больше 65536 (не может быть!) - укоротим его.
-                addr &= 0xffff; // продолжим с новым адресом
+                addr &= xFFFF; // продолжим с новым адресом
             }
         }// далее - ОЗУ + Видео-ОЗУ ниже ПЗУ И ПОРТОВ.
 
 
         if (addr < ScrBeg)            // ОЗУ < 9000h -
         {
-            accessor.mem(addr, word & 0xff); // младший байт - пишем в ОЗУ
+            accessor.mem(addr, word & xFF); // младший байт - пишем в ОЗУ
             if (++addr != ScrBeg) {    // если старший байт не попал в видео-ОЗУ.
-                accessor.mem(addr, (word >> 8) & 0xff); // старший байт - пишем в ОЗУ.
+                accessor.mem(addr, (word >> 8) & xFF); // старший байт - пишем в ОЗУ.
                 return;
             } else {// старший байт попал в видео-ОЗУ.
-                int newByte1 = (word >> 8) & 0xff; // второй байт слова word
+                int newByte1 = (word >> 8) & xFF; // второй байт слова word
                 if (accessor.mem(addr) != newByte1) // правильно! повторно в Видео-ОЗУ записывать глупо!
                 {
-                    accessor.plot(addr, 0xffff);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
+                    accessor.plot(addr, xFFFF);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
                     accessor.mem(addr, newByte1);// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
                 }
                 return;// старший байт обслужили - уходим!
@@ -509,10 +547,10 @@ public class VM80 {
         }
         // далее - только Видео-ОЗУ!
 
-        int newByte0 = word & 0xff;   // второй байт слова word
+        int newByte0 = word & xFF;   // второй байт слова word
         if (accessor.mem(addr) != newByte0) // правильно! повторно в Видео-ОЗУ записывать глупо!
         {
-            accessor.plot(addr, 0xffff);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
+            accessor.plot(addr, xFFFF);   // в Видео-ОЗУ рисуем  newByte не используется в plot()
             accessor.mem(addr, newByte0);// в Видео-ОЗУ пишем как в ОЗУ чтобы читать
         }
 
@@ -520,7 +558,7 @@ public class VM80 {
         if (++addr < ROMBeg) // ScrBeg < ++addr < ROMBeg;
         {
             if (accessor.mem(addr) != newByte1) {
-                accessor.plot(addr, 0xffff); // в Видео-ОЗУ рисуем   newByte1
+                accessor.plot(addr, xFFFF); // в Видео-ОЗУ рисуем   newByte1
                 accessor.mem(addr, newByte1);
             }
         } else { // второй байт слова попал на ROM
@@ -531,21 +569,21 @@ public class VM80 {
     private int peekw(int addr) {
         int t = peekb(addr);
         addr++;
-        return t | (peekb(addr & 0xffff) << 8);
+        return t | (peekb(addr & xFFFF) << 8);
     }
 
     /**
      * Index register access
      */
     private int ID_d() {
-        return ((ID() + (byte) nxtpcb()) & 0xffff);  // байт из памяти по адресу п-счетчика PC()
+        return ((ID() + (byte) nxtpcb()) & xFFFF);  // байт из памяти по адресу п-счетчика PC()
     }
 
     /**
      * Stack access
      */
     private void pushw(int word) {
-        int sp = ((SP() - 2) & 0xffff);
+        int sp = ((SP() - 2) & xFFFF);
         SP(sp);
         pokew(sp, word);
     }
@@ -554,8 +592,8 @@ public class VM80 {
         int sp = SP();
         int t = peekb(sp);
         sp++;
-        t |= (peekb(sp & 0xffff) << 8);
-        SP(++sp & 0xffff);
+        t |= (peekb(sp & xFFFF) << 8);
+        SP(++sp & xFFFF);
         return t;
     }
 
@@ -577,7 +615,7 @@ public class VM80 {
     {                          // и увеличение PC()
         int pc = PC();
         int t = peekb(pc);
-        PC(++pc & 0xffff);
+        PC(++pc & xFFFF);
         return t;
     }
 
@@ -585,8 +623,8 @@ public class VM80 {
     {                          // и увеличение PC()
         int pc = PC();
         int t = peekb(pc);
-        t |= (peekb(++pc & 0xffff) << 8);
-        PC(++pc & 0xffff);
+        t |= (peekb(++pc & xFFFF) << 8);
+        PC(++pc & xFFFF);
         return t;
     }
 
@@ -594,7 +632,7 @@ public class VM80 {
      * Reset all registers to power on state
      */
     public void reset() {
-        PC(0xc000); // 0;
+        PC(StartPoint);
         SP(0);
 
         A(0);
@@ -632,7 +670,7 @@ public class VM80 {
     // код клавиши (e.key) и служебные клавиши (e.modifiers) превращаются в значения переменных
     // _B_SPC..._CAPS_V.
     private int inb(int port) {
-        return 0xff;
+        return xFF;
     }
 
     /**
@@ -678,7 +716,7 @@ public class VM80 {
                     B(b = qdec8(B()));
                     if (b != 0) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
-                        PC((PC() + d) & 0xffff);
+                        PC((PC() + d) & xFFFF);
                         local_tstates += i13_b00001101;
                     } else {
                         PC(inc16(PC()));
@@ -688,7 +726,7 @@ public class VM80 {
                 }
                 case 24: /* JR dis */ {
                     byte d = (byte) nxtpcb();  // байт из памяти по адресу п-счетчика PC()
-                    PC((PC() + d) & 0xffff);
+                    PC((PC() + d) & xFFFF);
                     local_tstates += i12_b00001100;
                     break;
                 }
@@ -696,7 +734,7 @@ public class VM80 {
                 case 32:    /* JR NZ,dis */ {
                     if (!Zset()) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
-                        PC((PC() + d) & 0xffff);
+                        PC((PC() + d) & xFFFF);
                         local_tstates += i12_b00001100;
                     } else {
                         PC(inc16(PC()));
@@ -707,7 +745,7 @@ public class VM80 {
                 case 40:    /* JR Z,dis */ {
                     if (Zset()) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
-                        PC((PC() + d) & 0xffff);
+                        PC((PC() + d) & xFFFF);
                         local_tstates += i12_b00001100;
                     } else {
                         PC(inc16(PC()));
@@ -718,7 +756,7 @@ public class VM80 {
                 case 48:    /* JR NC,dis */ {
                     if (!Cset()) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
-                        PC((PC() + d) & 0xffff);
+                        PC((PC() + d) & xFFFF);
                         local_tstates += i12_b00001100;
                     } else {
                         PC(inc16(PC()));
@@ -729,7 +767,7 @@ public class VM80 {
                 case 56:    /* JR C,dis */ {
                     if (Cset()) {
                         byte d = (byte) nxtpcb();  // байт из памяти по адресу п-счетчика PC()
-                        PC((PC() + d) & 0xffff);
+                        PC((PC() + d) & xFFFF);
                         local_tstates += i12_b00001100;
                     } else {
                         PC(inc16(PC()));
@@ -1822,7 +1860,7 @@ public class VM80 {
                     if (!Zset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1831,7 +1869,7 @@ public class VM80 {
                     if (Zset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1840,7 +1878,7 @@ public class VM80 {
                     if (!Cset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1849,7 +1887,7 @@ public class VM80 {
                     if (Cset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1858,7 +1896,7 @@ public class VM80 {
                     if (!PVset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1867,7 +1905,7 @@ public class VM80 {
                     if (PVset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1876,7 +1914,7 @@ public class VM80 {
                     if (!Sset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1885,7 +1923,7 @@ public class VM80 {
                     if (Sset()) {
                         PC(nxtpcw());
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                     }
                     local_tstates += i10_b00001010;
                     break;
@@ -1948,7 +1986,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -1960,7 +1998,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -1972,7 +2010,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -1984,7 +2022,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -1996,7 +2034,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -2008,7 +2046,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -2020,7 +2058,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -2032,7 +2070,7 @@ public class VM80 {
                         PC(t);
                         local_tstates += i17_b00010001;
                     } else {
-                        PC((PC() + 2) & 0xffff);
+                        PC((PC() + 2) & xFFFF);
                         local_tstates += i10_b00001010;
                     }
                     break;
@@ -2629,7 +2667,7 @@ public class VM80 {
                     }
                 } while (count != 0);
                 if (count != 0) {
-                    PC((PC() - 2) & 0xffff);
+                    PC((PC() - 2) & xFFFF);
                     setH(false);
                     setN(false);
                     setPV(true);
@@ -2657,7 +2695,7 @@ public class VM80 {
                 setPV(pv);
                 setC(c);
                 if (pv && !Zset()) {
-                    PC((PC() - 2) & 0xffff);
+                    PC((PC() - 2) & xFFFF);
                     return i21_b00010101;
                 }
                 return i16_b00010000;
@@ -2671,7 +2709,7 @@ public class VM80 {
                 setZ(true);
                 setN(true);
                 if (b != 0) {
-                    PC((PC() - 2) & 0xffff);
+                    PC((PC() - 2) & xFFFF);
                     return i21_b00010101;
                 }
                 return i16_b00010000;
@@ -2685,7 +2723,7 @@ public class VM80 {
                 setZ(true);
                 setN(true);
                 if (b != 0) {
-                    PC((PC() - 2) & 0xffff);
+                    PC((PC() - 2) & xFFFF);
                     return i21_b00010101;
                 }
                 return i16_b00010000;
@@ -2713,7 +2751,7 @@ public class VM80 {
                     }
                 } while (count != 0);
                 if (count != 0) {
-                    PC((PC() - 2) & 0xffff);
+                    PC((PC() - 2) & xFFFF);
                     setH(false);
                     setN(false);
                     setPV(true);
@@ -2741,7 +2779,7 @@ public class VM80 {
                 setPV(pv);
                 setC(c);
                 if (pv && !Zset()) {
-                    PC((PC() - 2) & 0xffff);
+                    PC((PC() - 2) & xFFFF);
                     return i21_b00010101;
                 }
                 return i16_b00010000;
@@ -2755,7 +2793,7 @@ public class VM80 {
                 setZ(true);
                 setN(true);
                 if (b != 0) {
-                    PC((PC() - 2) & 0xffff);
+                    PC((PC() - 2) & xFFFF);
                     return i21_b00010101;
                 }
                 return i16_b00010000;
@@ -2769,7 +2807,7 @@ public class VM80 {
                 setZ(true);
                 setN(true);
                 if (b != 0) {
-                    PC((PC() - 2) & 0xffff);
+                    PC((PC() - 2) & xFFFF);
                     return i21_b00010101;
                 }
                 return i16_b00010000;
@@ -3059,810 +3097,810 @@ public class VM80 {
             }
 
             case 64:  /* BIT 0,B */ {
-                bit(0x01, B());
+                bit(x01, B());
                 return i8_b00001000;
             }
             case 65:  /* BIT 0,C */ {
-                bit(0x01, C());
+                bit(x01, C());
                 return i8_b00001000;
             }
             case 66:  /* BIT 0,D */ {
-                bit(0x01, D());
+                bit(x01, D());
                 return i8_b00001000;
             }
             case 67:  /* BIT 0,E */ {
-                bit(0x01, E());
+                bit(x01, E());
                 return i8_b00001000;
             }
             case 68:  /* BIT 0,H */ {
-                bit(0x01, H());
+                bit(x01, H());
                 return i8_b00001000;
             }
             case 69:  /* BIT 0,L */ {
-                bit(0x01, L());
+                bit(x01, L());
                 return i8_b00001000;
             }
             case 70:  /* BIT 0,(HL) */ {
-                bit(0x01, peekb(HL()));
+                bit(x01, peekb(HL()));
                 return i12_b00001100;
             }
             case 71:  /* BIT 0,A */ {
-                bit(0x01, A());
+                bit(x01, A());
                 return i8_b00001000;
             }
 
             case 72:  /* BIT 1,B */ {
-                bit(0x02, B());
+                bit(x02, B());
                 return i8_b00001000;
             }
             case 73:  /* BIT 1,C */ {
-                bit(0x02, C());
+                bit(x02, C());
                 return i8_b00001000;
             }
             case 74:  /* BIT 1,D */ {
-                bit(0x02, D());
+                bit(x02, D());
                 return i8_b00001000;
             }
             case 75:  /* BIT 1,E */ {
-                bit(0x02, E());
+                bit(x02, E());
                 return i8_b00001000;
             }
             case 76:  /* BIT 1,H */ {
-                bit(0x02, H());
+                bit(x02, H());
                 return i8_b00001000;
             }
             case 77:  /* BIT 1,L */ {
-                bit(0x02, L());
+                bit(x02, L());
                 return i8_b00001000;
             }
             case 78:  /* BIT 1,(HL) */ {
-                bit(0x02, peekb(HL()));
+                bit(x02, peekb(HL()));
                 return i12_b00001100;
             }
             case 79:  /* BIT 1,A */ {
-                bit(0x02, A());
+                bit(x02, A());
                 return i8_b00001000;
             }
 
             case 80:  /* BIT 2,B */ {
-                bit(0x04, B());
+                bit(x04, B());
                 return i8_b00001000;
             }
             case 81:  /* BIT 2,C */ {
-                bit(0x04, C());
+                bit(x04, C());
                 return i8_b00001000;
             }
             case 82:  /* BIT 2,D */ {
-                bit(0x04, D());
+                bit(x04, D());
                 return i8_b00001000;
             }
             case 83:  /* BIT 2,E */ {
-                bit(0x04, E());
+                bit(x04, E());
                 return i8_b00001000;
             }
             case 84:  /* BIT 2,H */ {
-                bit(0x04, H());
+                bit(x04, H());
                 return i8_b00001000;
             }
             case 85:  /* BIT 2,L */ {
-                bit(0x04, L());
+                bit(x04, L());
                 return i8_b00001000;
             }
             case 86:  /* BIT 2,(HL) */ {
-                bit(0x04, peekb(HL()));
+                bit(x04, peekb(HL()));
                 return i12_b00001100;
             }
             case 87:  /* BIT 2,A */ {
-                bit(0x04, A());
+                bit(x04, A());
                 return i8_b00001000;
             }
 
             case 88:  /* BIT 3,B */ {
-                bit(0x08, B());
+                bit(x08, B());
                 return i8_b00001000;
             }
             case 89:  /* BIT 3,C */ {
-                bit(0x08, C());
+                bit(x08, C());
                 return i8_b00001000;
             }
             case 90:  /* BIT 3,D */ {
-                bit(0x08, D());
+                bit(x08, D());
                 return i8_b00001000;
             }
             case 91:  /* BIT 3,E */ {
-                bit(0x08, E());
+                bit(x08, E());
                 return i8_b00001000;
             }
             case 92:  /* BIT 3,H */ {
-                bit(0x08, H());
+                bit(x08, H());
                 return i8_b00001000;
             }
             case 93:  /* BIT 3,L */ {
-                bit(0x08, L());
+                bit(x08, L());
                 return i8_b00001000;
             }
             case 94:  /* BIT 3,(HL) */ {
-                bit(0x08, peekb(HL()));
+                bit(x08, peekb(HL()));
                 return i12_b00001100;
             }
             case 95:  /* BIT 3,A */ {
-                bit(0x08, A());
+                bit(x08, A());
                 return i8_b00001000;
             }
 
             case 96:  /* BIT 4,B */ {
-                bit(0x10, B());
+                bit(x10, B());
                 return i8_b00001000;
             }
             case 97:  /* BIT 4,C */ {
-                bit(0x10, C());
+                bit(x10, C());
                 return i8_b00001000;
             }
             case 98:  /* BIT 4,D */ {
-                bit(0x10, D());
+                bit(x10, D());
                 return i8_b00001000;
             }
             case 99:  /* BIT 4,E */ {
-                bit(0x10, E());
+                bit(x10, E());
                 return i8_b00001000;
             }
             case 100:  /* BIT 4,H */ {
-                bit(0x10, H());
+                bit(x10, H());
                 return i8_b00001000;
             }
             case 101:  /* BIT 4,L */ {
-                bit(0x10, L());
+                bit(x10, L());
                 return i8_b00001000;
             }
             case 102:  /* BIT 4,(HL) */ {
-                bit(0x10, peekb(HL()));
+                bit(x10, peekb(HL()));
                 return i12_b00001100;
             }
             case 103:  /* BIT 4,A */ {
-                bit(0x10, A());
+                bit(x10, A());
                 return i8_b00001000;
             }
 
             case 104:  /* BIT 5,B */ {
-                bit(0x20, B());
+                bit(x20, B());
                 return i8_b00001000;
             }
             case 105:  /* BIT 5,C */ {
-                bit(0x20, C());
+                bit(x20, C());
                 return i8_b00001000;
             }
             case 106:  /* BIT 5,D */ {
-                bit(0x20, D());
+                bit(x20, D());
                 return i8_b00001000;
             }
             case 107:  /* BIT 5,E */ {
-                bit(0x20, E());
+                bit(x20, E());
                 return i8_b00001000;
             }
             case 108:  /* BIT 5,H */ {
-                bit(0x20, H());
+                bit(x20, H());
                 return i8_b00001000;
             }
             case 109:  /* BIT 5,L */ {
-                bit(0x20, L());
+                bit(x20, L());
                 return i8_b00001000;
             }
             case 110:  /* BIT 5,(HL) */ {
-                bit(0x20, peekb(HL()));
+                bit(x20, peekb(HL()));
                 return i12_b00001100;
             }
             case 111:  /* BIT 5,A */ {
-                bit(0x20, A());
+                bit(x20, A());
                 return i8_b00001000;
             }
 
             case 112:  /* BIT 6,B */ {
-                bit(0x40, B());
+                bit(x40, B());
                 return i8_b00001000;
             }
             case 113:  /* BIT 6,C */ {
-                bit(0x40, C());
+                bit(x40, C());
                 return i8_b00001000;
             }
             case 114:  /* BIT 6,D */ {
-                bit(0x40, D());
+                bit(x40, D());
                 return i8_b00001000;
             }
             case 115:  /* BIT 6,E */ {
-                bit(0x40, E());
+                bit(x40, E());
                 return i8_b00001000;
             }
             case 116:  /* BIT 6,H */ {
-                bit(0x40, H());
+                bit(x40, H());
                 return i8_b00001000;
             }
             case 117:  /* BIT 6,L */ {
-                bit(0x40, L());
+                bit(x40, L());
                 return i8_b00001000;
             }
             case 118:  /* BIT 6,(HL) */ {
-                bit(0x40, peekb(HL()));
+                bit(x40, peekb(HL()));
                 return i12_b00001100;
             }
             case 119:  /* BIT 6,A */ {
-                bit(0x40, A());
+                bit(x40, A());
                 return i8_b00001000;
             }
 
             case 120:  /* BIT 7,B */ {
-                bit(0x80, B());
+                bit(x80, B());
                 return i8_b00001000;
             }
             case 121:  /* BIT 7,C */ {
-                bit(0x80, C());
+                bit(x80, C());
                 return i8_b00001000;
             }
             case 122:  /* BIT 7,D */ {
-                bit(0x80, D());
+                bit(x80, D());
                 return i8_b00001000;
             }
             case 123:  /* BIT 7,E */ {
-                bit(0x80, E());
+                bit(x80, E());
                 return i8_b00001000;
             }
             case 124:  /* BIT 7,H */ {
-                bit(0x80, H());
+                bit(x80, H());
                 return i8_b00001000;
             }
             case 125:  /* BIT 7,L */ {
-                bit(0x80, L());
+                bit(x80, L());
                 return i8_b00001000;
             }
             case 126:  /* BIT 7,(HL) */ {
-                bit(0x80, peekb(HL()));
+                bit(x80, peekb(HL()));
                 return i12_b00001100;
             }
             case 127:  /* BIT 7,A */ {
-                bit(0x80, A());
+                bit(x80, A());
                 return i8_b00001000;
             }
 
             case 128:  /* RES 0,B */ {
-                B(res(0x01, B()));
+                B(res(x01, B()));
                 return i8_b00001000;
             }
             case 129:  /* RES 0,C */ {
-                C(res(0x01, C()));
+                C(res(x01, C()));
                 return i8_b00001000;
             }
             case 130:  /* RES 0,D */ {
-                D(res(0x01, D()));
+                D(res(x01, D()));
                 return i8_b00001000;
             }
             case 131:  /* RES 0,E */ {
-                E(res(0x01, E()));
+                E(res(x01, E()));
                 return i8_b00001000;
             }
             case 132:  /* RES 0,H */ {
-                H(res(0x01, H()));
+                H(res(x01, H()));
                 return i8_b00001000;
             }
             case 133:  /* RES 0,L */ {
-                L(res(0x01, L()));
+                L(res(x01, L()));
                 return i8_b00001000;
             }
             case 134:  /* RES 0,(HL) */ {
                 int hl = HL();
-                pokeb(hl, res(0x01, peekb(hl)));
+                pokeb(hl, res(x01, peekb(hl)));
                 return i15_b00001111;
             }
             case 135:  /* RES 0,A */ {
-                A(res(0x01, A()));
+                A(res(x01, A()));
                 return i8_b00001000;
             }
 
             case 136:  /* RES 1,B */ {
-                B(res(0x02, B()));
+                B(res(x02, B()));
                 return i8_b00001000;
             }
             case 137:  /* RES 1,C */ {
-                C(res(0x02, C()));
+                C(res(x02, C()));
                 return i8_b00001000;
             }
             case 138:  /* RES 1,D */ {
-                D(res(0x02, D()));
+                D(res(x02, D()));
                 return i8_b00001000;
             }
             case 139:  /* RES 1,E */ {
-                E(res(0x02, E()));
+                E(res(x02, E()));
                 return i8_b00001000;
             }
             case 140:  /* RES 1,H */ {
-                H(res(0x02, H()));
+                H(res(x02, H()));
                 return i8_b00001000;
             }
             case 141:  /* RES 1,L */ {
-                L(res(0x02, L()));
+                L(res(x02, L()));
                 return i8_b00001000;
             }
             case 142:  /* RES 1,(HL) */ {
                 int hl = HL();
-                pokeb(hl, res(0x02, peekb(hl)));
+                pokeb(hl, res(x02, peekb(hl)));
                 return i15_b00001111;
             }
             case 143:  /* RES 1,A */ {
-                A(res(0x02, A()));
+                A(res(x02, A()));
                 return i8_b00001000;
             }
 
             case 144:  /* RES 2,B */ {
-                B(res(0x04, B()));
+                B(res(x04, B()));
                 return i8_b00001000;
             }
             case 145:  /* RES 2,C */ {
-                C(res(0x04, C()));
+                C(res(x04, C()));
                 return i8_b00001000;
             }
             case 146:  /* RES 2,D */ {
-                D(res(0x04, D()));
+                D(res(x04, D()));
                 return i8_b00001000;
             }
             case 147:  /* RES 2,E */ {
-                E(res(0x04, E()));
+                E(res(x04, E()));
                 return i8_b00001000;
             }
             case 148:  /* RES 2,H */ {
-                H(res(0x04, H()));
+                H(res(x04, H()));
                 return i8_b00001000;
             }
             case 149:  /* RES 2,L */ {
-                L(res(0x04, L()));
+                L(res(x04, L()));
                 return i8_b00001000;
             }
             case 150:  /* RES 2,(HL) */ {
                 int hl = HL();
-                pokeb(hl, res(0x04, peekb(hl)));
+                pokeb(hl, res(x04, peekb(hl)));
                 return i15_b00001111;
             }
             case 151:  /* RES 2,A */ {
-                A(res(0x04, A()));
+                A(res(x04, A()));
                 return i8_b00001000;
             }
 
             case 152:  /* RES 3,B */ {
-                B(res(0x08, B()));
+                B(res(x08, B()));
                 return i8_b00001000;
             }
             case 153:  /* RES 3,C */ {
-                C(res(0x08, C()));
+                C(res(x08, C()));
                 return i8_b00001000;
             }
             case 154:  /* RES 3,D */ {
-                D(res(0x08, D()));
+                D(res(x08, D()));
                 return i8_b00001000;
             }
             case 155:  /* RES 3,E */ {
-                E(res(0x08, E()));
+                E(res(x08, E()));
                 return i8_b00001000;
             }
             case 156:  /* RES 3,H */ {
-                H(res(0x08, H()));
+                H(res(x08, H()));
                 return i8_b00001000;
             }
             case 157:  /* RES 3,L */ {
-                L(res(0x08, L()));
+                L(res(x08, L()));
                 return i8_b00001000;
             }
             case 158:  /* RES 3,(HL) */ {
                 int hl = HL();
-                pokeb(hl, res(0x08, peekb(hl)));
+                pokeb(hl, res(x08, peekb(hl)));
                 return i15_b00001111;
             }
             case 159:  /* RES 3,A */ {
-                A(res(0x08, A()));
+                A(res(x08, A()));
                 return i8_b00001000;
             }
 
             case 160:  /* RES 4,B */ {
-                B(res(0x10, B()));
+                B(res(x10, B()));
                 return i8_b00001000;
             }
             case 161:  /* RES 4,C */ {
-                C(res(0x10, C()));
+                C(res(x10, C()));
                 return i8_b00001000;
             }
             case 162:  /* RES 4,D */ {
-                D(res(0x10, D()));
+                D(res(x10, D()));
                 return i8_b00001000;
             }
             case 163:  /* RES 4,E */ {
-                E(res(0x10, E()));
+                E(res(x10, E()));
                 return i8_b00001000;
             }
             case 164:  /* RES 4,H */ {
-                H(res(0x10, H()));
+                H(res(x10, H()));
                 return i8_b00001000;
             }
             case 165:  /* RES 4,L */ {
-                L(res(0x10, L()));
+                L(res(x10, L()));
                 return i8_b00001000;
             }
             case 166:  /* RES 4,(HL) */ {
                 int hl = HL();
-                pokeb(hl, res(0x10, peekb(hl)));
+                pokeb(hl, res(x10, peekb(hl)));
                 return i15_b00001111;
             }
             case 167:  /* RES 4,A */ {
-                A(res(0x10, A()));
+                A(res(x10, A()));
                 return i8_b00001000;
             }
 
             case 168:  /* RES 5,B */ {
-                B(res(0x20, B()));
+                B(res(x20, B()));
                 return i8_b00001000;
             }
             case 169:  /* RES 5,C */ {
-                C(res(0x20, C()));
+                C(res(x20, C()));
                 return i8_b00001000;
             }
             case 170:  /* RES 5,D */ {
-                D(res(0x20, D()));
+                D(res(x20, D()));
                 return i8_b00001000;
             }
             case 171:  /* RES 5,E */ {
-                E(res(0x20, E()));
+                E(res(x20, E()));
                 return i8_b00001000;
             }
             case 172:  /* RES 5,H */ {
-                H(res(0x20, H()));
+                H(res(x20, H()));
                 return i8_b00001000;
             }
             case 173:  /* RES 5,L */ {
-                L(res(0x20, L()));
+                L(res(x20, L()));
                 return i8_b00001000;
             }
             case 174:  /* RES 5,(HL) */ {
                 int hl = HL();
-                pokeb(hl, res(0x20, peekb(hl)));
+                pokeb(hl, res(x20, peekb(hl)));
                 return i15_b00001111;
             }
             case 175:  /* RES 5,A */ {
-                A(res(0x20, A()));
+                A(res(x20, A()));
                 return i8_b00001000;
             }
 
             case 176:  /* RES 6,B */ {
-                B(res(0x40, B()));
+                B(res(x40, B()));
                 return i8_b00001000;
             }
             case 177:  /* RES 6,C */ {
-                C(res(0x40, C()));
+                C(res(x40, C()));
                 return i8_b00001000;
             }
             case 178:  /* RES 6,D */ {
-                D(res(0x40, D()));
+                D(res(x40, D()));
                 return i8_b00001000;
             }
             case 179:  /* RES 6,E */ {
-                E(res(0x40, E()));
+                E(res(x40, E()));
                 return i8_b00001000;
             }
             case 180:  /* RES 6,H */ {
-                H(res(0x40, H()));
+                H(res(x40, H()));
                 return i8_b00001000;
             }
             case 181:  /* RES 6,L */ {
-                L(res(0x40, L()));
+                L(res(x40, L()));
                 return i8_b00001000;
             }
             case 182:  /* RES 6,(HL) */ {
                 int hl = HL();
-                pokeb(hl, res(0x40, peekb(hl)));
+                pokeb(hl, res(x40, peekb(hl)));
                 return i15_b00001111;
             }
             case 183:  /* RES 6,A */ {
-                A(res(0x40, A()));
+                A(res(x40, A()));
                 return i8_b00001000;
             }
 
             case 184:  /* RES 7,B */ {
-                B(res(0x80, B()));
+                B(res(x80, B()));
                 return i8_b00001000;
             }
             case 185:  /* RES 7,C */ {
-                C(res(0x80, C()));
+                C(res(x80, C()));
                 return i8_b00001000;
             }
             case 186:  /* RES 7,D */ {
-                D(res(0x80, D()));
+                D(res(x80, D()));
                 return i8_b00001000;
             }
             case 187:  /* RES 7,E */ {
-                E(res(0x80, E()));
+                E(res(x80, E()));
                 return i8_b00001000;
             }
             case 188:  /* RES 7,H */ {
-                H(res(0x80, H()));
+                H(res(x80, H()));
                 return i8_b00001000;
             }
             case 189:  /* RES 7,L */ {
-                L(res(0x80, L()));
+                L(res(x80, L()));
                 return i8_b00001000;
             }
             case 190:  /* RES 7,(HL) */ {
                 int hl = HL();
-                pokeb(hl, res(0x80, peekb(hl)));
+                pokeb(hl, res(x80, peekb(hl)));
                 return i15_b00001111;
             }
             case 191:  /* RES 7,A */ {
-                A(res(0x80, A()));
+                A(res(x80, A()));
                 return i8_b00001000;
             }
 
             case 192:  /* SET 0,B */ {
-                B(set(0x01, B()));
+                B(set(x01, B()));
                 return i8_b00001000;
             }
             case 193:  /* SET 0,C */ {
-                C(set(0x01, C()));
+                C(set(x01, C()));
                 return i8_b00001000;
             }
             case 194:  /* SET 0,D */ {
-                D(set(0x01, D()));
+                D(set(x01, D()));
                 return i8_b00001000;
             }
             case 195:  /* SET 0,E */ {
-                E(set(0x01, E()));
+                E(set(x01, E()));
                 return i8_b00001000;
             }
             case 196:  /* SET 0,H */ {
-                H(set(0x01, H()));
+                H(set(x01, H()));
                 return i8_b00001000;
             }
             case 197:  /* SET 0,L */ {
-                L(set(0x01, L()));
+                L(set(x01, L()));
                 return i8_b00001000;
             }
             case 198:  /* SET 0,(HL) */ {
                 int hl = HL();
-                pokeb(hl, set(0x01, peekb(hl)));
+                pokeb(hl, set(x01, peekb(hl)));
                 return i15_b00001111;
             }
             case 199:  /* SET 0,A */ {
-                A(set(0x01, A()));
+                A(set(x01, A()));
                 return i8_b00001000;
             }
 
             case 200:  /* SET 1,B */ {
-                B(set(0x02, B()));
+                B(set(x02, B()));
                 return i8_b00001000;
             }
             case 201:  /* SET 1,C */ {
-                C(set(0x02, C()));
+                C(set(x02, C()));
                 return i8_b00001000;
             }
             case 202:  /* SET 1,D */ {
-                D(set(0x02, D()));
+                D(set(x02, D()));
                 return i8_b00001000;
             }
             case 203:  /* SET 1,E */ {
-                E(set(0x02, E()));
+                E(set(x02, E()));
                 return i8_b00001000;
             }
             case 204:  /* SET 1,H */ {
-                H(set(0x02, H()));
+                H(set(x02, H()));
                 return i8_b00001000;
             }
             case 205:  /* SET 1,L */ {
-                L(set(0x02, L()));
+                L(set(x02, L()));
                 return i8_b00001000;
             }
             case 206:  /* SET 1,(HL) */ {
                 int hl = HL();
-                pokeb(hl, set(0x02, peekb(hl)));
+                pokeb(hl, set(x02, peekb(hl)));
                 return i15_b00001111;
             }
             case 207:  /* SET 1,A */ {
-                A(set(0x02, A()));
+                A(set(x02, A()));
                 return i8_b00001000;
             }
 
             case 208:  /* SET 2,B */ {
-                B(set(0x04, B()));
+                B(set(x04, B()));
                 return i8_b00001000;
             }
             case 209:  /* SET 2,C */ {
-                C(set(0x04, C()));
+                C(set(x04, C()));
                 return i8_b00001000;
             }
             case 210:  /* SET 2,D */ {
-                D(set(0x04, D()));
+                D(set(x04, D()));
                 return i8_b00001000;
             }
             case 211:  /* SET 2,E */ {
-                E(set(0x04, E()));
+                E(set(x04, E()));
                 return i8_b00001000;
             }
             case 212:  /* SET 2,H */ {
-                H(set(0x04, H()));
+                H(set(x04, H()));
                 return i8_b00001000;
             }
             case 213:  /* SET 2,L */ {
-                L(set(0x04, L()));
+                L(set(x04, L()));
                 return i8_b00001000;
             }
             case 214:  /* SET 2,(HL) */ {
                 int hl = HL();
-                pokeb(hl, set(0x04, peekb(hl)));
+                pokeb(hl, set(x04, peekb(hl)));
                 return i15_b00001111;
             }
             case 215:  /* SET 2,A */ {
-                A(set(0x04, A()));
+                A(set(x04, A()));
                 return i8_b00001000;
             }
 
             case 216:  /* SET 3,B */ {
-                B(set(0x08, B()));
+                B(set(x08, B()));
                 return i8_b00001000;
             }
             case 217:  /* SET 3,C */ {
-                C(set(0x08, C()));
+                C(set(x08, C()));
                 return i8_b00001000;
             }
             case 218:  /* SET 3,D */ {
-                D(set(0x08, D()));
+                D(set(x08, D()));
                 return i8_b00001000;
             }
             case 219:  /* SET 3,E */ {
-                E(set(0x08, E()));
+                E(set(x08, E()));
                 return i8_b00001000;
             }
             case 220:  /* SET 3,H */ {
-                H(set(0x08, H()));
+                H(set(x08, H()));
                 return i8_b00001000;
             }
             case 221:  /* SET 3,L */ {
-                L(set(0x08, L()));
+                L(set(x08, L()));
                 return i8_b00001000;
             }
             case 222:  /* SET 3,(HL) */ {
                 int hl = HL();
-                pokeb(hl, set(0x08, peekb(hl)));
+                pokeb(hl, set(x08, peekb(hl)));
                 return i15_b00001111;
             }
             case 223:  /* SET 3,A */ {
-                A(set(0x08, A()));
+                A(set(x08, A()));
                 return i8_b00001000;
             }
 
             case 224:  /* SET 4,B */ {
-                B(set(0x10, B()));
+                B(set(x10, B()));
                 return i8_b00001000;
             }
             case 225:  /* SET 4,C */ {
-                C(set(0x10, C()));
+                C(set(x10, C()));
                 return i8_b00001000;
             }
             case 226:  /* SET 4,D */ {
-                D(set(0x10, D()));
+                D(set(x10, D()));
                 return i8_b00001000;
             }
             case 227:  /* SET 4,E */ {
-                E(set(0x10, E()));
+                E(set(x10, E()));
                 return i8_b00001000;
             }
             case 228:  /* SET 4,H */ {
-                H(set(0x10, H()));
+                H(set(x10, H()));
                 return i8_b00001000;
             }
             case 229:  /* SET 4,L */ {
-                L(set(0x10, L()));
+                L(set(x10, L()));
                 return i8_b00001000;
             }
             case 230:  /* SET 4,(HL) */ {
                 int hl = HL();
-                pokeb(hl, set(0x10, peekb(hl)));
+                pokeb(hl, set(x10, peekb(hl)));
                 return i15_b00001111;
             }
             case 231:  /* SET 4,A */ {
-                A(set(0x10, A()));
+                A(set(x10, A()));
                 return i8_b00001000;
             }
 
             case 232:  /* SET 5,B */ {
-                B(set(0x20, B()));
+                B(set(x20, B()));
                 return i8_b00001000;
             }
             case 233:  /* SET 5,C */ {
-                C(set(0x20, C()));
+                C(set(x20, C()));
                 return i8_b00001000;
             }
             case 234:  /* SET 5,D */ {
-                D(set(0x20, D()));
+                D(set(x20, D()));
                 return i8_b00001000;
             }
             case 235:  /* SET 5,E */ {
-                E(set(0x20, E()));
+                E(set(x20, E()));
                 return i8_b00001000;
             }
             case 236:  /* SET 5,H */ {
-                H(set(0x20, H()));
+                H(set(x20, H()));
                 return i8_b00001000;
             }
             case 237:  /* SET 5,L */ {
-                L(set(0x20, L()));
+                L(set(x20, L()));
                 return i8_b00001000;
             }
             case 238:  /* SET 5,(HL) */ {
                 int hl = HL();
-                pokeb(hl, set(0x20, peekb(hl)));
+                pokeb(hl, set(x20, peekb(hl)));
                 return i15_b00001111;
             }
             case 239:  /* SET 5,A */ {
-                A(set(0x20, A()));
+                A(set(x20, A()));
                 return i8_b00001000;
             }
 
             case 240:  /* SET 6,B */ {
-                B(set(0x40, B()));
+                B(set(x40, B()));
                 return i8_b00001000;
             }
             case 241:  /* SET 6,C */ {
-                C(set(0x40, C()));
+                C(set(x40, C()));
                 return i8_b00001000;
             }
             case 242:  /* SET 6,D */ {
-                D(set(0x40, D()));
+                D(set(x40, D()));
                 return i8_b00001000;
             }
             case 243:  /* SET 6,E */ {
-                E(set(0x40, E()));
+                E(set(x40, E()));
                 return i8_b00001000;
             }
             case 244:  /* SET 6,H */ {
-                H(set(0x40, H()));
+                H(set(x40, H()));
                 return i8_b00001000;
             }
             case 245:  /* SET 6,L */ {
-                L(set(0x40, L()));
+                L(set(x40, L()));
                 return i8_b00001000;
             }
             case 246:  /* SET 6,(HL) */ {
                 int hl = HL();
-                pokeb(hl, set(0x40, peekb(hl)));
+                pokeb(hl, set(x40, peekb(hl)));
                 return i15_b00001111;
             }
             case 247:  /* SET 6,A */ {
-                A(set(0x40, A()));
+                A(set(x40, A()));
                 return i8_b00001000;
             }
 
             case 248:  /* SET 7,B */ {
-                B(set(0x80, B()));
+                B(set(x80, B()));
                 return i8_b00001000;
             }
             case 249:  /* SET 7,C */ {
-                C(set(0x80, C()));
+                C(set(x80, C()));
                 return i8_b00001000;
             }
             case 250:  /* SET 7,D */ {
-                D(set(0x80, D()));
+                D(set(x80, D()));
                 return i8_b00001000;
             }
             case 251:  /* SET 7,E */ {
-                E(set(0x80, E()));
+                E(set(x80, E()));
                 return i8_b00001000;
             }
             case 252:  /* SET 7,H */ {
-                H(set(0x80, H()));
+                H(set(x80, H()));
                 return i8_b00001000;
             }
             case 253:  /* SET 7,L */ {
-                L(set(0x80, L()));
+                L(set(x80, L()));
                 return i8_b00001000;
             }
             case 254:  /* SET 7,(HL) */ {
                 int hl = HL();
-                pokeb(hl, set(0x80, peekb(hl)));
+                pokeb(hl, set(x80, peekb(hl)));
                 return i15_b00001111;
             }
             case 255:  /* SET 7,A */ {
-                A(set(0x80, A()));
+                A(set(x80, A()));
                 return i8_b00001000;
             }
         }
@@ -4428,7 +4466,7 @@ public class VM80 {
                 int op = nxtpcb();
                 execute_id_cb(op, z);
                 // Bit instructions take 20 T states, rest 23
-                return (op & 0xc0) == 0x40 
+                return (op & xC0) == x40
                         ? 20 
                         : 23;
             }
@@ -4781,7 +4819,7 @@ public class VM80 {
             case 69:  /* BIT 0,B */
             case 70:  /* BIT 0,B */
             case 71:  /* BIT 0,B */ {
-                bit(0x01, peekb(z));
+                bit(x01, peekb(z));
                 return;
             }
 
@@ -4793,7 +4831,7 @@ public class VM80 {
             case 77:  /* BIT 1,B */
             case 78:  /* BIT 1,B */
             case 79:  /* BIT 1,B */ {
-                bit(0x02, peekb(z));
+                bit(x02, peekb(z));
                 return;
             }
 
@@ -4805,7 +4843,7 @@ public class VM80 {
             case 85:  /* BIT 2,B */
             case 86:  /* BIT 2,B */
             case 87:  /* BIT 2,B */ {
-                bit(0x04, peekb(z));
+                bit(x04, peekb(z));
                 return;
             }
 
@@ -4817,7 +4855,7 @@ public class VM80 {
             case 93:  /* BIT 3,B */
             case 94:  /* BIT 3,B */
             case 95:  /* BIT 3,B */ {
-                bit(0x08, peekb(z));
+                bit(x08, peekb(z));
                 return;
             }
 
@@ -4829,7 +4867,7 @@ public class VM80 {
             case 101:  /* BIT 4,B */
             case 102:  /* BIT 4,B */
             case 103:  /* BIT 4,B */ {
-                bit(0x10, peekb(z));
+                bit(x10, peekb(z));
                 return;
             }
 
@@ -4841,7 +4879,7 @@ public class VM80 {
             case 109:  /* BIT 5,B */
             case 110:  /* BIT 5,B */
             case 111:  /* BIT 5,B */ {
-                bit(0x20, peekb(z));
+                bit(x20, peekb(z));
                 return;
             }
 
@@ -4853,7 +4891,7 @@ public class VM80 {
             case 117:  /* BIT 6,B */
             case 118:  /* BIT 6,B */
             case 119:  /* BIT 6,B */ {
-                bit(0x40, peekb(z));
+                bit(x40, peekb(z));
                 return;
             }
 
@@ -4865,646 +4903,646 @@ public class VM80 {
             case 125:  /* BIT 7,B */
             case 126:  /* BIT 7,B */
             case 127:  /* BIT 7,B */ {
-                bit(0x80, peekb(z));
+                bit(x80, peekb(z));
                 return;
             }
 
             case 128:  /* RES 0,B */ {
-                B(op = res(0x01, peekb(z)));
+                B(op = res(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 129:  /* RES 0,C */ {
-                C(op = res(0x01, peekb(z)));
+                C(op = res(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 130:  /* RES 0,D */ {
-                D(op = res(0x01, peekb(z)));
+                D(op = res(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 131:  /* RES 0,E */ {
-                E(op = res(0x01, peekb(z)));
+                E(op = res(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 132:  /* RES 0,H */ {
-                H(op = res(0x01, peekb(z)));
+                H(op = res(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 133:  /* RES 0,L */ {
-                L(op = res(0x01, peekb(z)));
+                L(op = res(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 134:  /* RES 0,(HL) */ {
-                pokeb(z, res(0x01, peekb(z)));
+                pokeb(z, res(x01, peekb(z)));
                 return;
             }
             case 135:  /* RES 0,A */ {
-                A(op = res(0x01, peekb(z)));
+                A(op = res(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 136:  /* RES 1,B */ {
-                B(op = res(0x02, peekb(z)));
+                B(op = res(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 137:  /* RES 1,C */ {
-                C(op = res(0x02, peekb(z)));
+                C(op = res(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 138:  /* RES 1,D */ {
-                D(op = res(0x02, peekb(z)));
+                D(op = res(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 139:  /* RES 1,E */ {
-                E(op = res(0x02, peekb(z)));
+                E(op = res(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 140:  /* RES 1,H */ {
-                H(op = res(0x02, peekb(z)));
+                H(op = res(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 141:  /* RES 1,L */ {
-                L(op = res(0x02, peekb(z)));
+                L(op = res(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 142:  /* RES 1,(HL) */ {
-                pokeb(z, res(0x02, peekb(z)));
+                pokeb(z, res(x02, peekb(z)));
                 return;
             }
             case 143:  /* RES 1,A */ {
-                A(op = res(0x02, peekb(z)));
+                A(op = res(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 144:  /* RES 2,B */ {
-                B(op = res(0x04, peekb(z)));
+                B(op = res(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 145:  /* RES 2,C */ {
-                C(op = res(0x04, peekb(z)));
+                C(op = res(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 146:  /* RES 2,D */ {
-                D(op = res(0x04, peekb(z)));
+                D(op = res(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 147:  /* RES 2,E */ {
-                E(op = res(0x04, peekb(z)));
+                E(op = res(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 148:  /* RES 2,H */ {
-                H(op = res(0x04, peekb(z)));
+                H(op = res(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 149:  /* RES 2,L */ {
-                L(op = res(0x04, peekb(z)));
+                L(op = res(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 150:  /* RES 2,(HL) */ {
-                pokeb(z, res(0x04, peekb(z)));
+                pokeb(z, res(x04, peekb(z)));
                 return;
             }
             case 151:  /* RES 2,A */ {
-                A(op = res(0x04, peekb(z)));
+                A(op = res(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 152:  /* RES 3,B */ {
-                B(op = res(0x08, peekb(z)));
+                B(op = res(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 153:  /* RES 3,C */ {
-                C(op = res(0x08, peekb(z)));
+                C(op = res(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 154:  /* RES 3,D */ {
-                D(op = res(0x08, peekb(z)));
+                D(op = res(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 155:  /* RES 3,E */ {
-                E(op = res(0x08, peekb(z)));
+                E(op = res(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 156:  /* RES 3,H */ {
-                H(op = res(0x08, peekb(z)));
+                H(op = res(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 157:  /* RES 3,L */ {
-                L(op = res(0x08, peekb(z)));
+                L(op = res(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 158:  /* RES 3,(HL) */ {
-                pokeb(z, res(0x08, peekb(z)));
+                pokeb(z, res(x08, peekb(z)));
                 return;
             }
             case 159:  /* RES 3,A */ {
-                A(op = res(0x08, peekb(z)));
+                A(op = res(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 160:  /* RES 4,B */ {
-                B(op = res(0x10, peekb(z)));
+                B(op = res(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 161:  /* RES 4,C */ {
-                C(op = res(0x10, peekb(z)));
+                C(op = res(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 162:  /* RES 4,D */ {
-                D(op = res(0x10, peekb(z)));
+                D(op = res(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 163:  /* RES 4,E */ {
-                E(op = res(0x10, peekb(z)));
+                E(op = res(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 164:  /* RES 4,H */ {
-                H(op = res(0x10, peekb(z)));
+                H(op = res(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 165:  /* RES 4,L */ {
-                L(op = res(0x10, peekb(z)));
+                L(op = res(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 166:  /* RES 4,(HL) */ {
-                pokeb(z, res(0x10, peekb(z)));
+                pokeb(z, res(x10, peekb(z)));
                 return;
             }
             case 167:  /* RES 4,A */ {
-                A(op = res(0x10, peekb(z)));
+                A(op = res(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 168:  /* RES 5,B */ {
-                B(op = res(0x20, peekb(z)));
+                B(op = res(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 169:  /* RES 5,C */ {
-                C(op = res(0x20, peekb(z)));
+                C(op = res(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 170:  /* RES 5,D */ {
-                D(op = res(0x20, peekb(z)));
+                D(op = res(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 171:  /* RES 5,E */ {
-                E(op = res(0x20, peekb(z)));
+                E(op = res(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 172:  /* RES 5,H */ {
-                H(op = res(0x20, peekb(z)));
+                H(op = res(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 173:  /* RES 5,L */ {
-                L(op = res(0x20, peekb(z)));
+                L(op = res(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 174:  /* RES 5,(HL) */ {
-                pokeb(z, res(0x20, peekb(z)));
+                pokeb(z, res(x20, peekb(z)));
                 return;
             }
             case 175:  /* RES 5,A */ {
-                A(op = res(0x20, peekb(z)));
+                A(op = res(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 176:  /* RES 6,B */ {
-                B(op = res(0x40, peekb(z)));
+                B(op = res(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 177:  /* RES 6,C */ {
-                C(op = res(0x40, peekb(z)));
+                C(op = res(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 178:  /* RES 6,D */ {
-                D(op = res(0x40, peekb(z)));
+                D(op = res(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 179:  /* RES 6,E */ {
-                E(op = res(0x40, peekb(z)));
+                E(op = res(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 180:  /* RES 6,H */ {
-                H(op = res(0x40, peekb(z)));
+                H(op = res(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 181:  /* RES 6,L */ {
-                L(op = res(0x40, peekb(z)));
+                L(op = res(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 182:  /* RES 6,(HL) */ {
-                pokeb(z, res(0x40, peekb(z)));
+                pokeb(z, res(x40, peekb(z)));
                 return;
             }
             case 183:  /* RES 6,A */ {
-                A(op = res(0x40, peekb(z)));
+                A(op = res(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 184:  /* RES 7,B */ {
-                B(op = res(0x80, peekb(z)));
+                B(op = res(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 185:  /* RES 7,C */ {
-                C(op = res(0x80, peekb(z)));
+                C(op = res(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 186:  /* RES 7,D */ {
-                D(op = res(0x80, peekb(z)));
+                D(op = res(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 187:  /* RES 7,E */ {
-                E(op = res(0x80, peekb(z)));
+                E(op = res(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 188:  /* RES 7,H */ {
-                H(op = res(0x80, peekb(z)));
+                H(op = res(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 189:  /* RES 7,L */ {
-                L(op = res(0x80, peekb(z)));
+                L(op = res(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 190:  /* RES 7,(HL) */ {
-                pokeb(z, res(0x80, peekb(z)));
+                pokeb(z, res(x80, peekb(z)));
                 return;
             }
             case 191:  /* RES 7,A */ {
-                A(op = res(0x80, peekb(z)));
+                A(op = res(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 192:  /* SET 0,B */ {
-                B(op = set(0x01, peekb(z)));
+                B(op = set(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 193:  /* SET 0,C */ {
-                C(op = set(0x01, peekb(z)));
+                C(op = set(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 194:  /* SET 0,D */ {
-                D(op = set(0x01, peekb(z)));
+                D(op = set(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 195:  /* SET 0,E */ {
-                E(op = set(0x01, peekb(z)));
+                E(op = set(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 196:  /* SET 0,H */ {
-                H(op = set(0x01, peekb(z)));
+                H(op = set(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 197:  /* SET 0,L */ {
-                L(op = set(0x01, peekb(z)));
+                L(op = set(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 198:  /* SET 0,(HL) */ {
-                pokeb(z, set(0x01, peekb(z)));
+                pokeb(z, set(x01, peekb(z)));
                 return;
             }
             case 199:  /* SET 0,A */ {
-                A(op = set(0x01, peekb(z)));
+                A(op = set(x01, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 200:  /* SET 1,B */ {
-                B(op = set(0x02, peekb(z)));
+                B(op = set(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 201:  /* SET 1,C */ {
-                C(op = set(0x02, peekb(z)));
+                C(op = set(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 202:  /* SET 1,D */ {
-                D(op = set(0x02, peekb(z)));
+                D(op = set(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 203:  /* SET 1,E */ {
-                E(op = set(0x02, peekb(z)));
+                E(op = set(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 204:  /* SET 1,H */ {
-                H(op = set(0x02, peekb(z)));
+                H(op = set(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 205:  /* SET 1,L */ {
-                L(op = set(0x02, peekb(z)));
+                L(op = set(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 206:  /* SET 1,(HL) */ {
-                pokeb(z, set(0x02, peekb(z)));
+                pokeb(z, set(x02, peekb(z)));
                 return;
             }
             case 207:  /* SET 1,A */ {
-                A(op = set(0x02, peekb(z)));
+                A(op = set(x02, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 208:  /* SET 2,B */ {
-                B(op = set(0x04, peekb(z)));
+                B(op = set(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 209:  /* SET 2,C */ {
-                C(op = set(0x04, peekb(z)));
+                C(op = set(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 210:  /* SET 2,D */ {
-                D(op = set(0x04, peekb(z)));
+                D(op = set(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 211:  /* SET 2,E */ {
-                E(op = set(0x04, peekb(z)));
+                E(op = set(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 212:  /* SET 2,H */ {
-                H(op = set(0x04, peekb(z)));
+                H(op = set(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 213:  /* SET 2,L */ {
-                L(op = set(0x04, peekb(z)));
+                L(op = set(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 214:  /* SET 2,(HL) */ {
-                pokeb(z, set(0x04, peekb(z)));
+                pokeb(z, set(x04, peekb(z)));
                 return;
             }
             case 215:  /* SET 2,A */ {
-                A(op = set(0x04, peekb(z)));
+                A(op = set(x04, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 216:  /* SET 3,B */ {
-                B(op = set(0x08, peekb(z)));
+                B(op = set(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 217:  /* SET 3,C */ {
-                C(op = set(0x08, peekb(z)));
+                C(op = set(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 218:  /* SET 3,D */ {
-                D(op = set(0x08, peekb(z)));
+                D(op = set(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 219:  /* SET 3,E */ {
-                E(op = set(0x08, peekb(z)));
+                E(op = set(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 220:  /* SET 3,H */ {
-                H(op = set(0x08, peekb(z)));
+                H(op = set(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 221:  /* SET 3,L */ {
-                L(op = set(0x08, peekb(z)));
+                L(op = set(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 222:  /* SET 3,(HL) */ {
-                pokeb(z, set(0x08, peekb(z)));
+                pokeb(z, set(x08, peekb(z)));
                 return;
             }
             case 223:  /* SET 3,A */ {
-                A(op = set(0x08, peekb(z)));
+                A(op = set(x08, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 224:  /* SET 4,B */ {
-                B(op = set(0x10, peekb(z)));
+                B(op = set(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 225:  /* SET 4,C */ {
-                C(op = set(0x10, peekb(z)));
+                C(op = set(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 226:  /* SET 4,D */ {
-                D(op = set(0x10, peekb(z)));
+                D(op = set(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 227:  /* SET 4,E */ {
-                E(op = set(0x10, peekb(z)));
+                E(op = set(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 228:  /* SET 4,H */ {
-                H(op = set(0x10, peekb(z)));
+                H(op = set(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 229:  /* SET 4,L */ {
-                L(op = set(0x10, peekb(z)));
+                L(op = set(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 230:  /* SET 4,(HL) */ {
-                pokeb(z, set(0x10, peekb(z)));
+                pokeb(z, set(x10, peekb(z)));
                 return;
             }
             case 231:  /* SET 4,A */ {
-                A(op = set(0x10, peekb(z)));
+                A(op = set(x10, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 232:  /* SET 5,B */ {
-                B(op = set(0x20, peekb(z)));
+                B(op = set(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 233:  /* SET 5,C */ {
-                C(op = set(0x20, peekb(z)));
+                C(op = set(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 234:  /* SET 5,D */ {
-                D(op = set(0x20, peekb(z)));
+                D(op = set(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 235:  /* SET 5,E */ {
-                E(op = set(0x20, peekb(z)));
+                E(op = set(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 236:  /* SET 5,H */ {
-                H(op = set(0x20, peekb(z)));
+                H(op = set(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 237:  /* SET 5,L */ {
-                L(op = set(0x20, peekb(z)));
+                L(op = set(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 238:  /* SET 5,(HL) */ {
-                pokeb(z, set(0x20, peekb(z)));
+                pokeb(z, set(x20, peekb(z)));
                 return;
             }
             case 239:  /* SET 5,A */ {
-                A(op = set(0x20, peekb(z)));
+                A(op = set(x20, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 240:  /* SET 6,B */ {
-                B(op = set(0x40, peekb(z)));
+                B(op = set(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 241:  /* SET 6,C */ {
-                C(op = set(0x40, peekb(z)));
+                C(op = set(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 242:  /* SET 6,D */ {
-                D(op = set(0x40, peekb(z)));
+                D(op = set(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 243:  /* SET 6,E */ {
-                E(op = set(0x40, peekb(z)));
+                E(op = set(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 244:  /* SET 6,H */ {
-                H(op = set(0x40, peekb(z)));
+                H(op = set(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 245:  /* SET 6,L */ {
-                L(op = set(0x40, peekb(z)));
+                L(op = set(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 246:  /* SET 6,(HL) */ {
-                pokeb(z, set(0x40, peekb(z)));
+                pokeb(z, set(x40, peekb(z)));
                 return;
             }
             case 247:  /* SET 6,A */ {
-                A(op = set(0x40, peekb(z)));
+                A(op = set(x40, peekb(z)));
                 pokeb(z, op);
                 return;
             }
 
             case 248:  /* SET 7,B */ {
-                B(op = set(0x80, peekb(z)));
+                B(op = set(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 249:  /* SET 7,C */ {
-                C(op = set(0x80, peekb(z)));
+                C(op = set(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 250:  /* SET 7,D */ {
-                D(op = set(0x80, peekb(z)));
+                D(op = set(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 251:  /* SET 7,E */ {
-                E(op = set(0x80, peekb(z)));
+                E(op = set(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 252:  /* SET 7,H */ {
-                H(op = set(0x80, peekb(z)));
+                H(op = set(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 253:  /* SET 7,L */ {
-                L(op = set(0x80, peekb(z)));
+                L(op = set(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
             case 254:  /* SET 7,(HL) */ {
-                pokeb(z, set(0x80, peekb(z)));
+                pokeb(z, set(x80, peekb(z)));
                 return;
             }
             case 255:  /* SET 7,A */ {
-                A(op = set(0x80, peekb(z)));
+                A(op = set(x80, peekb(z)));
                 pokeb(z, op);
                 return;
             }
@@ -5532,15 +5570,15 @@ public class VM80 {
         int a = A();
         int c = Cset() ? 1 : 0;
         int wans = a + b + c;
-        int ans = wans & 0xff;
+        int ans = wans & xFF;
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
         setZ(ans == 0);
-        setC((wans & 0x100) != 0);
-        setPV(((a ^ ~b) & (a ^ ans) & 0x80) != 0);
-        setH((((a & 0x0f) + (b & 0x0f) + c) & F_H) != 0);
+        setC((wans & x100) != 0);
+        setPV(((a ^ ~b) & (a ^ ans) & x80) != 0);
+        setH((((a & x0F) + (b & x0F) + c) & F_H) != 0);
         setN(false);
 
         A(ans);
@@ -5552,15 +5590,15 @@ public class VM80 {
     private void add_a(int b) {
         int a = A();
         int wans = a + b;
-        int ans = wans & 0xff;
+        int ans = wans & xFF;
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
         setZ(ans == 0);
-        setC((wans & 0x100) != 0);
-        setPV(((a ^ ~b) & (a ^ ans) & 0x80) != 0);
-        setH((((a & 0x0f) + (b & 0x0f)) & F_H) != 0);
+        setC((wans & x100) != 0);
+        setPV(((a ^ ~b) & (a ^ ans) & x80) != 0);
+        setH((((a & x0F) + (b & x0F)) & F_H) != 0);
         setN(false);
 
         A(ans);
@@ -5573,15 +5611,15 @@ public class VM80 {
         int a = A();
         int c = Cset() ? 1 : 0;
         int wans = a - b - c;
-        int ans = wans & 0xff;
+        int ans = wans & xFF;
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
         setZ(ans == 0);
-        setC((wans & 0x100) != 0);
-        setPV(((a ^ b) & (a ^ ans) & 0x80) != 0);
-        setH((((a & 0x0f) - (b & 0x0f) - c) & F_H) != 0);
+        setC((wans & x100) != 0);
+        setPV(((a ^ b) & (a ^ ans) & x80) != 0);
+        setH((((a & x0F) - (b & x0F) - c) & F_H) != 0);
         setN(true);
 
         A(ans);
@@ -5593,15 +5631,15 @@ public class VM80 {
     private void sub_a(int b) {
         int a = A();
         int wans = a - b;
-        int ans = wans & 0xff;
+        int ans = wans & xFF;
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
         setZ(ans == 0);
-        setC((wans & 0x100) != 0);
-        setPV(((a ^ b) & (a ^ ans) & 0x80) != 0);
-        setH((((a & 0x0f) - (b & 0x0f)) & F_H) != 0);
+        setC((wans & x100) != 0);
+        setPV(((a ^ b) & (a ^ ans) & x80) != 0);
+        setH((((a & x0F) - (b & x0F)) & F_H) != 0);
         setN(true);
 
         A(ans);
@@ -5612,14 +5650,14 @@ public class VM80 {
      */
     private void rlc_a() {
         int ans = A();
-        boolean c = (ans & 0x80) != 0;
+        boolean c = (ans & x80) != 0;
 
         if (c) {
-            ans = (ans << 1) | 0x01;
+            ans = (ans << 1) | x01;
         } else {
             ans <<= 1;
         }
-        ans &= 0xff;
+        ans &= xFF;
 
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
@@ -5635,10 +5673,10 @@ public class VM80 {
      */
     private void rrc_a() {
         int ans = A();
-        boolean c = (ans & 0x01) != 0;
+        boolean c = (ans & x01) != 0;
 
         if (c) {
-            ans = (ans >> 1) | 0x80;
+            ans = (ans >> 1) | x80;
         } else {
             ans >>= 1;
         }
@@ -5657,15 +5695,15 @@ public class VM80 {
      */
     private void rl_a() {
         int ans = A();
-        boolean c = (ans & 0x80) != 0;
+        boolean c = (ans & x80) != 0;
 
         if (Cset()) {
-            ans = (ans << 1) | 0x01;
+            ans = (ans << 1) | x01;
         } else {
             ans <<= 1;
         }
 
-        ans &= 0xff;
+        ans &= xFF;
 
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
@@ -5681,10 +5719,10 @@ public class VM80 {
      */
     private void rr_a() {
         int ans = A();
-        boolean c = (ans & 0x01) != 0;
+        boolean c = (ans & x01) != 0;
 
         if (Cset()) {
-            ans = (ans >> 1) | 0x80;
+            ans = (ans >> 1) | x80;
         } else {
             ans >>= 1;
         }
@@ -5704,16 +5742,16 @@ public class VM80 {
     private void cp_a(int b) {
         int a = A();
         int wans = a - b;
-        int ans = wans & 0xff;
+        int ans = wans & xFF;
 
         setS((ans & F_S) != 0);
         set3((b & F_3) != 0);
         set5((b & F_5) != 0);
         setN(true);
         setZ(ans == 0);
-        setC((wans & 0x100) != 0);
-        setH((((a & 0x0f) - (b & 0x0f)) & F_H) != 0);
-        setPV(((a ^ b) & (a ^ ans) & 0x80) != 0);
+        setC((wans & x100) != 0);
+        setH((((a & x0F) - (b & x0F)) & F_H) != 0);
+        setPV(((a ^ b) & (a ^ ans) & x80) != 0);
     }
 
     /**
@@ -5756,7 +5794,7 @@ public class VM80 {
      * Bitwise exclusive or - alters all flags (CHECKED)
      */
     private void xor_a(int b) {
-        int ans = (A() ^ b) & 0xff;
+        int ans = (A() ^ b) & xFF;
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -5784,7 +5822,7 @@ public class VM80 {
      * One's complement - alters N H 3 5 flags (CHECKED)
      */
     private void cpl_a() {
-        int ans = A() ^ 0xff;
+        int ans = A() ^ xFF;
 
         set3((ans & F_3) != 0);
         set5((ans & F_5) != 0);
@@ -5802,13 +5840,13 @@ public class VM80 {
         int incr = 0;
         boolean carry = Cset();
 
-        if (Hset() || (ans & 0x0f) > 0x09) {
-            incr |= 0x06;
+        if (Hset() || (ans & x0F) > x09) {
+            incr |= x06;
         }
-        if (carry || (ans > 0x9f) || ((ans > 0x8f) && ((ans & 0x0f) > 0x09))) {
-            incr |= 0x60;
+        if (carry || (ans > x9F) || ((ans > x8F) && ((ans & x0F) > x09))) {
+            incr |= x60;
         }
-        if (ans > 0x99) {
+        if (ans > x99) {
             carry = true;
         }
         if (Nset()) {
@@ -5866,7 +5904,7 @@ public class VM80 {
         int q = t;
 
         t = (t >> 4) | (ans << 4);
-        ans = (ans & 0xf0) | (q & 0x0f);
+        ans = (ans & xF0) | (q & x0F);
         pokeb(HL(), t);
 
         setS((ans & F_S) != 0);
@@ -5888,9 +5926,9 @@ public class VM80 {
         int t = peekb(HL());
         int q = t;
 
-        t = (t << 4) | (ans & 0x0f);
-        ans = (ans & 0xf0) | (q >> 4);
-        pokeb(HL(), (t & 0xff));
+        t = (t << 4) | (ans & x0F);
+        ans = (ans & xF0) | (q >> 4);
+        pokeb(HL(), (t & xFF));
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -5947,14 +5985,14 @@ public class VM80 {
      * Rotate left - alters all flags (CHECKED)
      */
     private int rlc(int ans) {
-        boolean c = (ans & 0x80) != 0;
+        boolean c = (ans & x80) != 0;
 
         if (c) {
-            ans = (ans << 1) | 0x01;
+            ans = (ans << 1) | x01;
         } else {
             ans <<= 1;
         }
-        ans &= 0xff;
+        ans &= xFF;
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -5972,10 +6010,10 @@ public class VM80 {
      * Rotate right - alters all flags (CHECKED)
      */
     private int rrc(int ans) {
-        boolean c = (ans & 0x01) != 0;
+        boolean c = (ans & x01) != 0;
 
         if (c) {
-            ans = (ans >> 1) | 0x80;
+            ans = (ans >> 1) | x80;
         } else {
             ans >>= 1;
         }
@@ -5996,14 +6034,14 @@ public class VM80 {
      * Rotate left through carry - alters all flags (CHECKED)
      */
     private int rl(int ans) {
-        boolean c = (ans & 0x80) != 0;
+        boolean c = (ans & x80) != 0;
 
         if (Cset()) {
-            ans = (ans << 1) | 0x01;
+            ans = (ans << 1) | x01;
         } else {
             ans <<= 1;
         }
-        ans &= 0xff;
+        ans &= xFF;
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -6021,10 +6059,10 @@ public class VM80 {
      * Rotate right through carry - alters all flags (CHECKED)
      */
     private int rr(int ans) {
-        boolean c = (ans & 0x01) != 0;
+        boolean c = (ans & x01) != 0;
 
         if (Cset()) {
-            ans = (ans >> 1) | 0x80;
+            ans = (ans >> 1) | x80;
         } else {
             ans >>= 1;
         }
@@ -6045,8 +6083,8 @@ public class VM80 {
      * Shift Left Arithmetically - alters all flags (CHECKED)
      */
     private int sla(int ans) {
-        boolean c = (ans & 0x80) != 0;
-        ans = (ans << 1) & 0xff;
+        boolean c = (ans & x80) != 0;
+        ans = (ans << 1) & xFF;
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -6064,8 +6102,8 @@ public class VM80 {
      * Shift Left and Set - alters all flags (CHECKED)
      */
     private int sls(int ans) {
-        boolean c = (ans & 0x80) != 0;
-        ans = ((ans << 1) | 0x01) & 0xff;
+        boolean c = (ans & x80) != 0;
+        ans = ((ans << 1) | x01) & xFF;
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -6083,8 +6121,8 @@ public class VM80 {
      * Shift Right Arithmetically - alters all flags (CHECKED)
      */
     private int sra(int ans) {
-        boolean c = (ans & 0x01) != 0;
-        ans = (ans >> 1) | (ans & 0x80);
+        boolean c = (ans & x01) != 0;
+        ans = (ans >> 1) | (ans & x80);
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -6102,7 +6140,7 @@ public class VM80 {
      * Shift Right Logically - alters all flags (CHECKED)
      */
     private int srl(int ans) {
-        boolean c = (ans & 0x01) != 0;
+        boolean c = (ans & x01) != 0;
         ans = ans >> 1;
 
         setS((ans & F_S) != 0);
@@ -6121,9 +6159,9 @@ public class VM80 {
      * Decrement - alters all but C flag (CHECKED)
      */
     private int dec8(int ans) {
-        boolean pv = (ans == 0x80);
-        boolean h = (((ans & 0x0f) - 1) & F_H) != 0;
-        ans = (ans - 1) & 0xff;
+        boolean pv = (ans == x80);
+        boolean h = (((ans & x0F) - 1) & F_H) != 0;
+        ans = (ans - 1) & xFF;
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -6140,9 +6178,9 @@ public class VM80 {
      * Increment - alters all but C flag (CHECKED)
      */
     private int inc8(int ans) {
-        boolean pv = (ans == 0x7f);
-        boolean h = (((ans & 0x0f) + 1) & F_H) != 0;
-        ans = (ans + 1) & 0xff;
+        boolean pv = (ans == x7F);
+        boolean h = (((ans & x0F) + 1) & F_H) != 0;
+        ans = (ans + 1) & xFF;
 
         setS((ans & F_S) != 0);
         set3((ans & F_3) != 0);
@@ -6161,15 +6199,15 @@ public class VM80 {
     private int adc16(int a, int b) {
         int c = Cset() ? 1 : 0;
         int lans = a + b + c;
-        int ans = lans & 0xffff;
+        int ans = lans & xFFFF;
 
         setS((ans & (F_S << 8)) != 0);
         set3((ans & (F_3 << 8)) != 0);
         set5((ans & (F_5 << 8)) != 0);
         setZ(ans == 0);
-        setC((lans & 0x10000) != 0);
-        setPV(((a ^ ~b) & (a ^ ans) & 0x8000) != 0);
-        setH((((a & 0x0fff) + (b & 0x0fff) + c) & 0x1000) != 0);
+        setC((lans & x10000) != 0);
+        setPV(((a ^ ~b) & (a ^ ans) & x8000) != 0);
+        setH((((a & x0FFF) + (b & x0FFF) + c) & x1000) != 0);
         setN(false);
 
         return ans;
@@ -6180,12 +6218,12 @@ public class VM80 {
      */
     private int add16(int a, int b) {
         int lans = a + b;
-        int ans = lans & 0xffff;
+        int ans = lans & xFFFF;
 
         set3((ans & (F_3 << 8)) != 0);
         set5((ans & (F_5 << 8)) != 0);
-        setC((lans & 0x10000) != 0);
-        setH((((a & 0x0fff) + (b & 0x0fff)) & 0x1000) != 0);
+        setC((lans & x10000) != 0);
+        setH((((a & x0FFF) + (b & x0FFF)) & x1000) != 0);
         setN(false);
 
         return ans;
@@ -6197,15 +6235,15 @@ public class VM80 {
     private int sbc16(int a, int b) {
         int c = Cset() ? 1 : 0;
         int lans = a - b - c;
-        int ans = lans & 0xffff;
+        int ans = lans & xFFFF;
 
         setS((ans & (F_S << 8)) != 0);
         set3((ans & (F_3 << 8)) != 0);
         set5((ans & (F_5 << 8)) != 0);
         setZ(ans == 0);
-        setC((lans & 0x10000) != 0);
-        setPV(((a ^ b) & (a ^ ans) & 0x8000) != 0);
-        setH((((a & 0x0fff) - (b & 0x0fff) - c) & 0x1000) != 0);
+        setC((lans & x10000) != 0);
+        setPV(((a ^ b) & (a ^ ans) & x8000) != 0);
+        setH((((a & x0FFF) - (b & x0FFF) - c) & x1000) != 0);
         setN(true);
 
         return ans;
@@ -6244,22 +6282,22 @@ public class VM80 {
      * Quick Increment : no flags
      */
     private static int inc16(int a) {
-        return (a + 1) & 0xffff;
+        return (a + 1) & xFFFF;
     }
 
     private static int qinc8(int a) {
-        return (a + 1) & 0xff;
+        return (a + 1) & xFF;
     }
 
     /**
      * Quick Decrement : no flags
      */
     private static int dec16(int a) {
-        return (a - 1) & 0xffff;
+        return (a - 1) & xFFFF;
     }
 
     private static int qdec8(int a) {
-        return (a - 1) & 0xff;
+        return (a - 1) & xFF;
     }
     /**
      * Bit toggling
