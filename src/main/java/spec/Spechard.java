@@ -1,4 +1,6 @@
-package spec;// Надо обозначить все константы "Специалист" в портах ОЗУ ПЗУ и экране
+package spec;
+
+// Надо обозначить все константы "Специалист" в портах ОЗУ ПЗУ и экране
 // Заменены константами все характерные адреса типа 0xffe0 чтобы читалось
 // удобнее и легче было переходить к внедрению нового экрана.
 // Всё фактически готово! (Может ещё проверю подпрограммы).
@@ -21,17 +23,11 @@ package spec;// Надо обозначить все константы "Спе�
  * Вариант с заменой: next[], last[] на nextAddr[], lastByte[].
  * @(#)Spechard.java 1.1 27/04/97 Adam Davidson & Andrew Pollard.
  */
-
 import javax.swing.*;
-import java.awt.*;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Arrays;
-import java.util.Hashtable;
+import java.awt.*; //---(инструментарий для работы с абстрактными окнами).
+import java.util.*;//---
+import java.io.*;  //---
+import java.net.*; //---
 
 /**
  * The Spechard class extends the Z80 class implementing the supporting
@@ -50,6 +46,9 @@ import java.util.Hashtable;
 
 //---- class Spechard наследует все методы Z80.class
 public class Spechard extends Z80 {
+
+  public static final int WORD = 0xFFFF;
+
   public Graphics parentGraphics = null;
   public Graphics canvasGraphics = null;
   public Graphics bufferGraphics = null;
@@ -2226,21 +2225,23 @@ public void loadROMZ( String name, InputStream is ) throws Exception {
     readBytes( is, mem, 0, 16384 );
   }
 
-//--- для ПК "Специалист" ---------------------------------------------------------------
-//------------ чтение ПЗУ 0 - 0C000h ---------------------------------------------
-public void loadROM0( String name, InputStream is ) throws Exception {
-    startProgress( "Loading " + name, 2048 );
-
-    readBytes( is, mem, 49152, 2048 ); //--- 0C000h = 49152
+private void logLoading(String name, int offset, int length) {
+    System.out.printf("Loading '%s' into [%04X:%04X]\n",
+        name,
+        offset & WORD,
+        (offset + length) & WORD);
   }
 
-//------------ чтение ПЗУ 1 - 0C800h ---------------------------------------------
-public void loadROM1( String name, InputStream is ) throws Exception {
-    startProgress( "Loading " + name, 2048 );
-
-    readBytes( is, mem, 51200, 2048 ); //--- 0C800h = 51200
-  }
 //--- для ПК "Специалист" ---------------------------------------------------------------
+//------------ чтение ПЗУ ---------------------------------------------
+public void loadROM( String name, InputStream is, int offset ) throws Exception {
+    int length = 2048;
+    startProgress( "Loading " + name, length);
+    logLoading(name, offset, length);
+    readBytes( is, mem, offset, length);
+  }
+
+    //--- для ПК "Специалист" ---------------------------------------------------------------
 //--- ADN: ML_B, ST_B
 //--- ADK: ML_B, ST_B
 //--- Bytes...
@@ -2252,6 +2253,7 @@ int header[] = new int[6];
 int ABeg = header[1] * 256 + header[0];
 int AEnd = header[3] * 256 + header[2];
 int ALen = AEnd - ABeg;
+    logLoading(name, ABeg, ALen);
     readBytes( is, mem, ABeg, ALen );
     readBytes( is, header, 4, 2 );
 

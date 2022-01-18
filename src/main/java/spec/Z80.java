@@ -1,4 +1,6 @@
-package spec;/*
+package spec;
+
+/*
  * @(#)Z80.java 1.1 27/04/97 Adam Davidson & Andrew Pollard
  */
 
@@ -7,9 +9,6 @@ package spec;/*
  *
  * @version 1.1 27 Apr 1997
  * @author <A HREF="http://www.odie.demon.co.uk/spectrum">Adam Davidson & Andrew Pollard</A>
- *
- * @see Jasper
- * @see Spectrum
  */
 
 public class Z80 extends Object {

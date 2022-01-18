@@ -1,4 +1,6 @@
-package spec;/*
+package spec;
+
+/*
  * @(#)Spec1987.java V1.0 alpha, © 21/05/2011 Sam_Computers LTD
  * Special thanks to Adam Davidson & Andrew Pollard for Jasper sources.
  */
@@ -8,13 +10,16 @@ package spec;/*
 //     В качестве параметра оператору import передается имя подключаемого класса из
 //     библиотеки классов. Если же необходимо подключить все классы данной библиотеки,
 //      вместо имени класса указывается символ "*".
-
-import java.applet.Applet;
+import java.applet.*;
+//     java.applet.Applet содержит классы, необходимые для создания аплетов, то есть
+//     разновидности приложений Java, встраиваемых в документы HTML и работающих под
+//     управлением браузера Internet.
 import java.awt.*;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-
+//     java.awt. С ее помощью аплет может выполнять в своем окне рисование различных
+//     изображений или текста.
+import java.net.*;
+import java.io.*;
+import java.awt.AWTEvent;
 /**
  * <p>The <a href="http://www.odie.demon.co.uk/spectrum">Spec1987</a> class wraps up
  * the Spechard class into an Applet which emulates a ZX Spechard in a Web Page.</p>
@@ -138,8 +143,7 @@ public void run() {
           }
            catch ( Exception e )
           {
-              e.printStackTrace();
-              showStatus("Caught IO Error: " + e);
+           showStatus( "Caught IO Error: " + e.toString() );
           }
      }
      if ( spechard != null )
@@ -190,16 +194,40 @@ public void readParameters() throws Exception {
 //---***    URL romZURL = new URL( baseURL, rom ); // "ramfos.rom"
 //---***    spechard.loadROMZ( romZURL.toString(), romZURL.openStream() );
 
+//--- для ПК "ЛИК" ---------------------------------------------------------------
+    boolean lik = true; // ЛИК или Специалист
+    if (lik) {
+        URL likRom1URL = new URL(baseURL, "lik/01_zagr.BIN");
+        spechard.loadROM(likRom1URL.toString(), likRom1URL.openStream(), 0xC000);
+
+        URL likRom2URL = new URL(baseURL, "lik/02_mon-1m.BIN");
+        spechard.loadROM(likRom2URL.toString(), likRom2URL.openStream(), 0xC800);
+
+        URL likRom3URL = new URL(baseURL, "lik/03_mon-1m_basicLik.BIN");
+        spechard.loadROM(likRom3URL.toString(), likRom3URL.openStream(), 0xD000);
+
+        URL likRom4URL = new URL(baseURL, "lik/04_basicLik.BIN");
+        spechard.loadROM(likRom4URL.toString(), likRom4URL.openStream(), 0xD800);
+
+        URL likRom5URL = new URL(baseURL, "lik/05_basicLik.BIN");
+        spechard.loadROM(likRom5URL.toString(), likRom5URL.openStream(), 0xE000);
+
+        URL likRom6URL = new URL(baseURL, "lik/06_basicLik.BIN");
+        spechard.loadROM(likRom6URL.toString(), likRom6URL.openStream(), 0xE800);
+
+        URL kladURL = new URL(baseURL, "lik/apps/klad.rks");
+        spechard.loadRKS(kladURL.toString(), kladURL.openStream());
+    } else {
 //--- для ПК "Специалист" ---------------------------------------------------------------
-    URL rom0URL = new URL( baseURL, "monitor0.rom" ); // "monitor0.rom"
-    spechard.loadROM0( rom0URL.toString(), rom0URL.openStream() );
+        URL specRom0URL = new URL(baseURL, "specialist/monitor0.rom");
+        spechard.loadROM(specRom0URL.toString(), specRom0URL.openStream(), 0xC000);
 
-    URL rom1URL = new URL( baseURL, "monitor1.rom" ); // "monitor1.rom"
-    spechard.loadROM1( rom1URL.toString(), rom1URL.openStream() );
-
+        URL specRom1URL = new URL(baseURL, "specialist/monitor1.rom");
+        spechard.loadROM(specRom1URL.toString(), specRom1URL.openStream(), 0xC800);
+    }
 //--- для ПК "Специалист" ---------------------------------------------------------------
 
-          String snapshot = getParameter( "snapshot" );
+    String snapshot = getParameter( "snapshot" );
     snapshot = ((snapshot == null) ? getParameter( "sna" ) : snapshot);
     snapshot = ((snapshot == null) ? getParameter( "z80" ) : snapshot);
 

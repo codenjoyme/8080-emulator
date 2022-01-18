@@ -1,4 +1,6 @@
-package spec;/*
+package spec;
+
+/*
  * @(#)AMDProgressBar.java    0.90 12/09/96 Adam Doppelt
  */
 import java.awt.*;
@@ -19,7 +21,7 @@ import java.awt.*;
  * <CENTER><IMG SRC="../Progress/bar.gif"></CENTER><P>
  * <B>Version:</B> 0.90 09 Dec 1996<BR>
  * <B>Author:</B> <A HREF="http://www.cs.brown.edu/people/amd/">Adam Doppelt</A><BR>
- * see AMDProgressBarEmbed */
+ **/
 
 public class AMDProgressBar extends Canvas {
     
