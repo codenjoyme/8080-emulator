@@ -1473,7 +1473,7 @@ public class Hardware {
         readBytes(is, mem, ABeg, ALen);
         readBytes(is, header, 4, 2);
 
-        processor.PC(ABeg);
+        processor.runAt(ABeg);
 
         if (urlField != null) {
             urlField.setText(name);
