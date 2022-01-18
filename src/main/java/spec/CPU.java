@@ -21,11 +21,11 @@ public class CPU {
     public CPU(double clockFrequencyInMHz, Accessor accessor) {
         // Количество тактов на 1 прерывание, которое происходит 50 раз в секунду.
         // 1000000/50 раз в секунду
-        tstatesPerInterrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);
+        interruptTimeout = (int) ((clockFrequencyInMHz * 1e6) / 50);
         this.accessor = accessor;
     }
 
-    private int tstatesPerInterrupt;
+    private int interruptTimeout;
 
     private static final int T0c = x01; // Разряд Tc =1, если был перенос или заем
     private static final int T11 = x02; // Всегда 1
@@ -256,26 +256,25 @@ public class CPU {
     }
 
     /**
-     *  Z80 fetch/execute loop (цикл выборки/выполнения)
+     * Основной цикл выполнения кода
      */
-    // основной цикл выполнения кода
     public void execute() {
-    // showStatus(" Z80_.execute >"); // вызывается из Jasper.class: spectrum.execute();
-        int local_tstates = -tstatesPerInterrupt;
         // в начале local_tstates = числу тактов на прерывание.
-        while (true)  // цикл выборки/выполнения
-        {
+        int ticks = -interruptTimeout;
 
-            if (interruptTriggered(local_tstates)) // local_tstates >= 0 ? true
-            {  // число тактов на прерывание исчерпано - вызываем прерывание.
+        // цикл выборки/выполнения
+        while (true) {
+            if (interruptTriggered(ticks)) {
+              // число тактов на прерывание исчерпано - вызываем прерывание.
                 accessor.interrupt();
-                local_tstates -= tstatesPerInterrupt;
-            }  // local_tstates = числу тактов на прерывание + время прерывания.
+                ticks -= interruptTimeout;
+            }
+            // local_tstates = числу тактов на прерывание + время прерывания.
 
-            switch (nxtpcb()) // байт из памяти по адресу п-счетчика PC()
-            {                   // и разбор этого байта как кода
+            switch (nxtpcb()) { // байт из памяти по адресу п-счетчика PC()
+                               // и разбор этого байта как кода
                 case 0:    /* NOP */ {
-                    local_tstates += i4_b00000100;  // каждая операция уменьшает число тактов на прерывание
+                    ticks += 4;  // каждая операция уменьшает число тактов на прерывание
                     break;                   // на свою длительность в тактах
                 }
                 case 16:    /* DJNZ dis */ {
@@ -285,17 +284,17 @@ public class CPU {
                     if (b != 0) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
                         PC = WORD(PC + d);
-                        local_tstates += i13_b00001101;
+                        ticks += 13;
                     } else {
                         PC = inc16(PC);
-                        local_tstates += i8_b00001000;
+                        ticks += 8;
                     }
                     break;
                 }
                 case 24: /* JR dis */ {
                     byte d = (byte) nxtpcb();  // байт из памяти по адресу п-счетчика PC()
                     PC = WORD(PC + d);
-                    local_tstates += i12_b00001100;
+                    ticks += 12;
                     break;
                 }
                 /* JR cc,dis */
@@ -303,10 +302,10 @@ public class CPU {
                     if (!tz) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
                         PC = WORD(PC + d);
-                        local_tstates += i12_b00001100;
+                        ticks += 12;
                     } else {
                         PC = inc16(PC);
-                        local_tstates += i7_b00000111;
+                        ticks += 7;
                     }
                     break;
                 }
@@ -314,10 +313,10 @@ public class CPU {
                     if (tz) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
                         PC = WORD(PC + d);
-                        local_tstates += i12_b00001100;
+                        ticks += 12;
                     } else {
                         PC = inc16(PC);
-                        local_tstates += i7_b00000111;
+                        ticks += 7;
                     }
                     break;
                 }
@@ -325,10 +324,10 @@ public class CPU {
                     if (!tc) {
                         byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
                         PC = WORD(PC + d);
-                        local_tstates += i12_b00001100;
+                        ticks += 12;
                     } else {
                         PC = inc16(PC);
-                        local_tstates += i7_b00000111;
+                        ticks += 7;
                     }
                     break;
                 }
@@ -336,10 +335,10 @@ public class CPU {
                     if (tc) {
                         byte d = (byte) nxtpcb();  // байт из памяти по адресу п-счетчика PC()
                         PC = WORD(PC + d);
-                        local_tstates += i12_b00001100;
+                        ticks += 12;
                     } else {
                         PC = inc16(PC);
-                        local_tstates += i7_b00000111;
+                        ticks += 7;
                     }
                     break;
                 }
@@ -348,965 +347,965 @@ public class CPU {
                 case 1:    /* LD BC(),nn */ {
                     // слово из памяти по адресу п-счетчика PC()
                     BC = nxtpcw();
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 9:    /* ADD HL,BC */ {
                     HL = add16(HL, BC);
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 17:    /* LD DE,nn */ {
                     // слово из памяти по адресу п-счетчика PC()
                     DE = nxtpcw();
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 25:    /* ADD HL,DE */ {
                     HL = add16(HL, DE);
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 33:    /* LD HL,nn */ {
                     // слово из памяти по адресу п-счетчика PC()
                     HL = nxtpcw();
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 41:    /* ADD HL,HL */ {
                     int hl = HL;
                     HL = add16(hl, hl);
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 49:    /* LD SP,nn */ {
                     // слово из памяти по адресу п-счетчика PC()
                     SP = nxtpcw();
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 57:    /* ADD HL,SP */ {
                     HL = add16(HL, SP);
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
 
                 /* LD (**),A/A,(**) */
                 case 2:    /* LD (BC),A */ {
                     pokeb(BC, A);
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 10:    /* LD A,(BC) */ {
                     A = peekb(BC);
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 18:    /* LD (DE),A */ {
                     pokeb(DE, A);
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 26:    /* LD A,(DE) */ {
                     A = peekb(DE);
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 34:    /* LD (nn),HL */ {
                     pokew(nxtpcw(), HL);
-                    local_tstates += i16_b00010000;
+                    ticks += 16;
                     break;
                 }
                 case 42:    /* LD HL,(nn) */ {
                     HL = peekw(nxtpcw());
-                    local_tstates += i16_b00010000;
+                    ticks += 16;
                     break;
                 }
                 case 50:    /* LD (nn),A */ {
                     pokeb(nxtpcw(), A);
-                    local_tstates += i13_b00001101;
+                    ticks += 13;
                     break;
                 }
                 case 58:    /* LD A,(nn) */ {
                     A = peekb(nxtpcw());
-                    local_tstates += i13_b00001101;
+                    ticks += 13;
                     break;
                 }
 
                 /* INC/DEC * */
                 case 3:    /* INC BC */ {
                     BC = inc16(BC);
-                    local_tstates += i6_b00000110;
+                    ticks += 6;
                     break;
                 }
                 case 11:    /* DEC BC */ {
                     BC = dec16(BC);
-                    local_tstates += i6_b00000110;
+                    ticks += 6;
                     break;
                 }
                 case 19:    /* INC DE */ {
                     DE = inc16(DE);
-                    local_tstates += i6_b00000110;
+                    ticks += 6;
                     break;
                 }
                 case 27:    /* DEC DE */ {
                     DE = dec16(DE);
-                    local_tstates += i6_b00000110;
+                    ticks += 6;
                     break;
                 }
                 case 35:    /* INC HL */ {
                     HL = inc16(HL);
-                    local_tstates += i6_b00000110;
+                    ticks += 6;
                     break;
                 }
                 case 43:    /* DEC HL */ {
                     HL = dec16(HL);
-                    local_tstates += i6_b00000110;
+                    ticks += 6;
                     break;
                 }
                 case 51:    /* INC SP */ {
                     SP = inc16(SP);
-                    local_tstates += i6_b00000110;
+                    ticks += 6;
                     break;
                 }
                 case 59:    /* DEC SP */ {
                     SP = dec16(SP);
-                    local_tstates += i6_b00000110;
+                    ticks += 6;
                     break;
                 }
 
                 /* INC * */
                 case 4:    /* INC B */ {
                     B(inc8(B()));
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 12:    /* INC C */ {
                     C(inc8(C()));
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 20:    /* INC D */ {
                     D(inc8(D()));
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 28:    /* INC E */ {
                     E(inc8(E()));
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 36:    /* INC H */ {
                     H(inc8(H()));
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 44:    /* INC L */ {
                     L(inc8(L()));
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 52:    /* INC (HL) */ {
                     int hl = HL;
                     pokeb(hl, inc8(peekb(hl)));
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 60:    /* INC A() */ {
                     A = inc8(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* DEC * */
                 case 5:    /* DEC B */ {
                     B(dec8(B()));
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 13:    /* DEC C */ {
                     C(dec8(C()));
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 21:    /* DEC D */ {
                     D(dec8(D()));
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 29:    /* DEC E */ {
                     E(dec8(E()));
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 37:    /* DEC H */ {
                     H(dec8(H()));
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 45:    /* DEC L */ {
                     L(dec8(L()));
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 53:    /* DEC (HL) */ {
                     int hl = HL;
                     pokeb(hl, dec8(peekb(hl)));
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 61:    /* DEC A() */ {
                     A = dec8(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* LD *,N */
                 case 6:    /* LD B,n */ {
                     B(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 14:    /* LD C,n */ {
                     C(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 22:    /* LD D,n */ {
                     D(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 30:    /* LD E,n */ {
                     E(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 38:    /* LD H,n */ {
                     H(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 46:    /* LD L,n */ {
                     L(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 54:    /* LD (HL),n */ {
                     pokeb(HL, nxtpcb());
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 62:    /* LD A,n */ {
                     A = nxtpcb();
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
 
                 /* R**A */
                 case 7: /* RLCA */ {
                     rlc_a();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 15: /* RRCA */ {
                     rrc_a();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 23: /* RLA */ {
                     rl_a();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 31: /* RRA */ {
                     rr_a();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 39: /* DAA */ {
                     daa_a();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 47: /* CPL */ {
                     cpl_a();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 55: /* SCF */ {
                     scf();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 63: /* CCF */ {
                     ccf();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* LD B,* */
                 case 64:    /* LD B,B */ {
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 65:    /* LD B,C */ {
                     B(C());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 66:    /* LD B,D */ {
                     B(D());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 67:    /* LD B,E */ {
                     B(E());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 68:    /* LD B,H */ {
                     B(H());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 69:    /* LD B,L */ {
                     B(L());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 70:    /* LD B,(HL) */ {
                     B(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 71:    /* LD B,A */ {
                     B(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* LD C,* */
                 case 72:    /* LD C,B */ {
                     C(B());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 73:    /* LD C,C */ {
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 74:    /* LD C,D */ {
                     C(D());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 75:    /* LD C,E */ {
                     C(E());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 76:    /* LD C,H */ {
                     C(H());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 77:    /* LD C,L */ {
                     C(L());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 78:    /* LD C,(HL) */ {
                     C(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 79:    /* LD C,A */ {
                     C(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* LD D,* */
                 case 80:    /* LD D,B */ {
                     D(B());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 81:    /* LD D,C */ {
                     D(C());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 82:    /* LD D,D */ {
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 83:    /* LD D,E */ {
                     D(E());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 84:    /* LD D,H */ {
                     D(H());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 85:    /* LD D,L */ {
                     D(L());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 86:    /* LD D,(HL) */ {
                     D(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 87:    /* LD D,A */ {
                     D(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* LD E,* */
                 case 88:    /* LD E,B */ {
                     E(B());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 89:    /* LD E,C */ {
                     E(C());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 90:    /* LD E,D */ {
                     E(D());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 91:    /* LD E,E */ {
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 92:    /* LD E,H */ {
                     E(H());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 93:    /* LD E,L */ {
                     E(L());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 94:    /* LD E,(HL) */ {
                     E(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 95:    /* LD E,A */ {
                     E(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* LD H,* */
                 case 96:    /* LD H,B */ {
                     H(B());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 97:    /* LD H,C */ {
                     H(C());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 98:    /* LD H,D */ {
                     H(D());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 99:    /* LD H,E */ {
                     H(E());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 100: /* LD H,H */ {
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 101:    /* LD H,L */ {
                     H(L());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 102:    /* LD H,(HL) */ {
                     H(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 103:    /* LD H,A */ {
                     H(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* LD L,* */
                 case 104:    /* LD L,B */ {
                     L(B());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 105:    /* LD L,C */ {
                     L(C());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 106:    /* LD L,D */ {
                     L(D());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 107:    /* LD L,E */ {
                     L(E());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 108:    /* LD L,H */ {
                     L(H());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 109:    /* LD L,L */ {
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 110:    /* LD L,(HL) */ {
                     L(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 111:    /* LD L,A */ {
                     L(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* LD (HL),* */
                 case 112:    /* LD (HL),B */ {
                     pokeb(HL, B());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 113:    /* LD (HL),C */ {
                     pokeb(HL, C());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 114:    /* LD (HL),D */ {
                     pokeb(HL, D());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 115:    /* LD (HL),E */ {
                     pokeb(HL, E());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 116:    /* LD (HL),H */ {
                     pokeb(HL, H());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 117:    /* LD (HL),L */ {
                     pokeb(HL, L());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 118:    /* HALT */ {
-                    int haltsToInterrupt = (-local_tstates - 1) / 4 + 1;
-                    local_tstates += haltsToInterrupt * 4;
+                    int haltsToInterrupt = (-ticks - 1) / 4 + 1;
+                    ticks += haltsToInterrupt * 4;
                     break;
                 }
                 case 119:    /* LD (HL),A */ {
                     pokeb(HL, A);
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
 
                 /* LD A,* */
                 case 120:    /* LD A,B */ {
                     A = B();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 121:    /* LD A,C */ {
                     A = C();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 122:    /* LD A,D */ {
                     A = D();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 123:    /* LD A,E */ {
                     A = E();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 124:    /* LD A,H */ {
                     A = H();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 125:    /* LD A,L */ {
                     A = L();
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 126:    /* LD A,(HL) */ {
                     A = peekb(HL);
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 127:    /* LD A,A */ {
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* ADD A,* */
                 case 128:    /* ADD A,B */ {
                     add_a(B());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 129:    /* ADD A,C */ {
                     add_a(C());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 130:    /* ADD A,D */ {
                     add_a(D());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 131:    /* ADD A,E */ {
                     add_a(E());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 132:    /* ADD A,H */ {
                     add_a(H());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 133:    /* ADD A,L */ {
                     add_a(L());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 134:    /* ADD A,(HL) */ {
                     add_a(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 135:    /* ADD A,A */ {
                     add_a(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* ADC A,* */
                 case 136:    /* ADC A,B */ {
                     adc_a(B());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 137:    /* ADC A,C */ {
                     adc_a(C());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 138:    /* ADC A,D */ {
                     adc_a(D());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 139:    /* ADC A,E */ {
                     adc_a(E());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 140:    /* ADC A,H */ {
                     adc_a(H());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 141:    /* ADC A,L */ {
                     adc_a(L());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 142:    /* ADC A,(HL) */ {
                     adc_a(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 143:    /* ADC A,A */ {
                     adc_a(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* SUB * */
                 case 144:    /* SUB B */ {
                     sub_a(B());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 145:    /* SUB C */ {
                     sub_a(C());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 146:    /* SUB D */ {
                     sub_a(D());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 147:    /* SUB E */ {
                     sub_a(E());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 148:    /* SUB H */ {
                     sub_a(H());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 149:    /* SUB L */ {
                     sub_a(L());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 150:    /* SUB (HL) */ {
                     sub_a(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 151:    /* SUB A() */ {
                     sub_a(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* SBC A,* */
                 case 152:    /* SBC A,B */ {
                     sbc_a(B());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 153:    /* SBC A,C */ {
                     sbc_a(C());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 154:    /* SBC A,D */ {
                     sbc_a(D());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 155:    /* SBC A,E */ {
                     sbc_a(E());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 156:    /* SBC A,H */ {
                     sbc_a(H());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 157:    /* SBC A,L */ {
                     sbc_a(L());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 158:    /* SBC A,(HL) */ {
                     sbc_a(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 159:    /* SBC A,A */ {
                     sbc_a(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* AND * */
                 case 160:    /* AND B */ {
                     and_a(B());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 161:    /* AND C */ {
                     and_a(C());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 162:    /* AND D */ {
                     and_a(D());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 163:    /* AND E */ {
                     and_a(E());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 164:    /* AND H */ {
                     and_a(H());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 165:    /* AND L */ {
                     and_a(L());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 166:    /* AND (HL) */ {
                     and_a(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 167:    /* AND A() */ {
                     and_a(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* XOR * */
                 case 168:    /* XOR B */ {
                     xor_a(B());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 169:    /* XOR C */ {
                     xor_a(C());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 170:    /* XOR D */ {
                     xor_a(D());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 171:    /* XOR E */ {
                     xor_a(E());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 172:    /* XOR H */ {
                     xor_a(H());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 173:    /* XOR L */ {
                     xor_a(L());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 174:    /* XOR (HL) */ {
                     xor_a(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 175:    /* XOR A() */ {
                     xor_a(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* OR * */
                 case 176:    /* OR B */ {
                     or_a(B());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 177:    /* OR C */ {
                     or_a(C());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 178:    /* OR D */ {
                     or_a(D());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 179:    /* OR E */ {
                     or_a(E());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 180:    /* OR H */ {
                     or_a(H());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 181:    /* OR L */ {
                     or_a(L());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 182:    /* OR (HL) */ {
                     or_a(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 183:    /* OR A() */ {
                     or_a(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
                 /* CP * */
                 case 184:    /* CP B */ {
                     cp_a(B());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 185:    /* CP C */ {
                     cp_a(C());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 186:    /* CP D */ {
                     cp_a(D());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 187:    /* CP E */ {
                     cp_a(E());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 188:    /* CP H */ {
                     cp_a(H());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 189:    /* CP L */ {
                     cp_a(L());
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 190:    /* CP (HL) */ {
                     cp_a(peekb(HL));
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 191:    /* CP A() */ {
                     cp_a(A);
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
@@ -1314,72 +1313,72 @@ public class CPU {
                 case 192:    /* RET NZ */ {
                     if (!tz) {
                         poppc();
-                        local_tstates += i11_b00001011;
+                        ticks += 11;
                     } else {
-                        local_tstates += i5_b00000101;
+                        ticks += 15;
                     }
                     break;
                 }
                 case 200:    /* RET Z */ {
                     if (tz) {
                         poppc();
-                        local_tstates += i11_b00001011;
+                        ticks += 11;
                     } else {
-                        local_tstates += i5_b00000101;
+                        ticks += 15;
                     }
                     break;
                 }
                 case 208:    /* RET NC */ {
                     if (!tc) {
                         poppc();
-                        local_tstates += i11_b00001011;
+                        ticks += 11;
                     } else {
-                        local_tstates += i5_b00000101;
+                        ticks += 15;
                     }
                     break;
                 }
                 case 216:    /* RET C */ {
                     if (tc) {
                         poppc();
-                        local_tstates += i11_b00001011;
+                        ticks += 11;
                     } else {
-                        local_tstates += i5_b00000101;
+                        ticks += 15;
                     }
                     break;
                 }
                 case 224:    /* RET PO */ {
                     if (!tp) {
                         poppc();
-                        local_tstates += i11_b00001011;
+                        ticks += 11;
                     } else {
-                        local_tstates += i5_b00000101;
+                        ticks += 15;
                     }
                     break;
                 }
                 case 232:    /* RET PE */ {
                     if (tp) {
                         poppc();
-                        local_tstates += i11_b00001011;
+                        ticks += 11;
                     } else {
-                        local_tstates += i5_b00000101;
+                        ticks += 15;
                     }
                     break;
                 }
                 case 240:    /* RET P */ {
                     if (!ts) {
                         poppc();
-                        local_tstates += i11_b00001011;
+                        ticks += 11;
                     } else {
-                        local_tstates += i5_b00000101;
+                        ticks += 15;
                     }
                     break;
                 }
                 case 248:    /* RET M */ {
                     if (ts) {
                         poppc();
-                        local_tstates += i11_b00001011;
+                        ticks += 11;
                     } else {
-                        local_tstates += i5_b00000101;
+                        ticks += 15;
                     }
                     break;
                 }
@@ -1387,17 +1386,17 @@ public class CPU {
                 /* POP,Various */
                 case 193:    /* POP BC */ {
                     BC = popw();
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 201: /* RET */ {
                     poppc();
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 209:    /* POP DE */ {
                     DE = popw();
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 0xD9: { //+ ???
@@ -1405,22 +1404,22 @@ public class CPU {
                 }
                 case 225:    /* POP HL */ {
                     HL = popw();
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 233: /* JP (HL) */ {
                     PC = HL;
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 241:    /* POP AF */ {
                     AF(popw());
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 249:    /* LD SP,HL */ {
                     SP = HL;
-                    local_tstates += i6_b00000110;
+                    ticks += 6;
                     break;
                 }
 
@@ -1431,7 +1430,7 @@ public class CPU {
                     } else {
                         PC = WORD(PC + 2);
                     }
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 202:    /* JP Z,nn */ {
@@ -1440,7 +1439,7 @@ public class CPU {
                     } else {
                         PC = WORD(PC + 2);
                     }
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 210:    /* JP NC,nn */ {
@@ -1449,7 +1448,7 @@ public class CPU {
                     } else {
                         PC = WORD(PC + 2);
                     }
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 218:    /* JP C,nn */ {
@@ -1458,7 +1457,7 @@ public class CPU {
                     } else {
                         PC = WORD(PC + 2);
                     }
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 226:    /* JP PO,nn */ {
@@ -1467,7 +1466,7 @@ public class CPU {
                     } else {
                         PC = WORD(PC + 2);
                     }
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 234:    /* JP PE,nn */ {
@@ -1476,7 +1475,7 @@ public class CPU {
                     } else {
                         PC = WORD(PC + 2);
                     }
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 242:    /* JP P,nn */ {
@@ -1485,7 +1484,7 @@ public class CPU {
                     } else {
                         PC = WORD(PC + 2);
                     }
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 250:    /* JP M,nn */ {
@@ -1494,7 +1493,7 @@ public class CPU {
                     } else {
                         PC = WORD(PC + 2);
                     }
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
 
@@ -1502,7 +1501,7 @@ public class CPU {
                 /* Various */
                 case 195:    /* JP nn */ {
                     PC = peekw(PC);
-                    local_tstates += i10_b00001010;
+                    ticks += 10;
                     break;
                 }
                 case 0xCB: {  //+ ???
@@ -1510,12 +1509,12 @@ public class CPU {
                 }
                 case 211:    /* OUT (n),A */ {
                     accessor.outb(nxtpcb(), A);
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 219:    /* IN A,(n) */ {
                     A = inb((A << 8) | nxtpcb());
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 227:    /* EX (SP),HL */ {
@@ -1523,22 +1522,22 @@ public class CPU {
                     int sp = SP;
                     HL = peekw(sp);
                     pokew(sp, t);
-                    local_tstates += i19_b00010011;
+                    ticks += 19;
                     break;
                 }
                 case 235:    /* EX DE,HL */ {
                     int t = HL;
                     HL = DE;
                     DE = t;
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 243:    /* DI */ {
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
                 case 251:    /* EI */ {
-                    local_tstates += i4_b00000100;
+                    ticks += 4;
                     break;
                 }
 
@@ -1548,10 +1547,10 @@ public class CPU {
                         int t = nxtpcw();
                         pushpc();
                         PC = t;
-                        local_tstates += i17_b00010001;
+                        ticks += 17;
                     } else {
                         PC = WORD(PC + 2);
-                        local_tstates += i10_b00001010;
+                        ticks += 10;
                     }
                     break;
                 }
@@ -1560,10 +1559,10 @@ public class CPU {
                         int t = nxtpcw();
                         pushpc();
                         PC = t;
-                        local_tstates += i17_b00010001;
+                        ticks += 17;
                     } else {
                         PC = WORD(PC + 2);
-                        local_tstates += i10_b00001010;
+                        ticks += 10;
                     }
                     break;
                 }
@@ -1572,10 +1571,10 @@ public class CPU {
                         int t = nxtpcw();
                         pushpc();
                         PC = t;
-                        local_tstates += i17_b00010001;
+                        ticks += 17;
                     } else {
                         PC = WORD(PC + 2);
-                        local_tstates += i10_b00001010;
+                        ticks += 10;
                     }
                     break;
                 }
@@ -1584,10 +1583,10 @@ public class CPU {
                         int t = nxtpcw();
                         pushpc();
                         PC = t;
-                        local_tstates += i17_b00010001;
+                        ticks += 17;
                     } else {
                         PC = WORD(PC + 2);
-                        local_tstates += i10_b00001010;
+                        ticks += 10;
                     }
                     break;
                 }
@@ -1596,10 +1595,10 @@ public class CPU {
                         int t = nxtpcw();
                         pushpc();
                         PC = t;
-                        local_tstates += i17_b00010001;
+                        ticks += 17;
                     } else {
                         PC = WORD(PC + 2);
-                        local_tstates += i10_b00001010;
+                        ticks += 10;
                     }
                     break;
                 }
@@ -1608,10 +1607,10 @@ public class CPU {
                         int t = nxtpcw();
                         pushpc();
                         PC = t;
-                        local_tstates += i17_b00010001;
+                        ticks += 17;
                     } else {
                         PC = WORD(PC + 2);
-                        local_tstates += i10_b00001010;
+                        ticks += 10;
                     }
                     break;
                 }
@@ -1620,10 +1619,10 @@ public class CPU {
                         int t = nxtpcw();
                         pushpc();
                         PC = t;
-                        local_tstates += i17_b00010001;
+                        ticks += 17;
                     } else {
                         PC = WORD(PC + 2);
-                        local_tstates += i10_b00001010;
+                        ticks += 10;
                     }
                     break;
                 }
@@ -1632,10 +1631,10 @@ public class CPU {
                         int t = nxtpcw();
                         pushpc();
                         PC = t;
-                        local_tstates += i17_b00010001;
+                        ticks += 17;
                     } else {
                         PC = WORD(PC + 2);
-                        local_tstates += i10_b00001010;
+                        ticks += 10;
                     }
                     break;
                 }
@@ -1643,19 +1642,19 @@ public class CPU {
                 /* PUSH,Various */
                 case 197:    /* PUSH BC */ {
                     pushw(BC);
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 205:    /* CALL nn */ {
                     int t = nxtpcw();
                     pushpc();
                     PC = t;
-                    local_tstates += i17_b00010001;
+                    ticks += 17;
                     break;
                 }
                 case 213:    /* PUSH DE */ {
                     pushw(DE);
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 0xDD: { //+ ???
@@ -1663,7 +1662,7 @@ public class CPU {
                 }
                 case 229:    /* PUSH HL */ {
                     pushw(HL);
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 0xED: { //+ ???
@@ -1671,7 +1670,7 @@ public class CPU {
                 }
                 case 245:    /* PUSH AF */ {
                     pushw(AF());
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 0xFD: { //+ ???
@@ -1681,42 +1680,42 @@ public class CPU {
                 /* op A,N */
                 case 198: /* ADD A,N */ {
                     add_a(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 206: /* ADC A,N */ {
                     adc_a(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 214: /* SUB N */ {
                     sub_a(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 222: /* SBC A,N */ {
                     sbc_a(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 230: /* AND N */ {
                     and_a(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 238: /* XOR N */ {
                     xor_a(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 246: /* OR N */ {
                     or_a(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
                 case 254: /* CP N */ {
                     cp_a(nxtpcb());
-                    local_tstates += i7_b00000111;
+                    ticks += 7;
                     break;
                 }
 
@@ -1724,49 +1723,49 @@ public class CPU {
                 case 199:    /* RST 0 */ {
                     pushpc();
                     PC = 0;
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 207:    /* RST 8 */ {
                     pushpc();
                     PC = 8;
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 215:    /* RST 16 */ {
                     pushpc();
                     PC = 16;
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 223:    /* RST 24 */ {
                     pushpc();
                     PC = 24;
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 231:    /* RST 32 */ {
                     pushpc();
                     PC = 32;
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 239:    /* RST 40 */ {
                     pushpc();
                     PC = 40;
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 247:    /* RST 48 */ {
                     pushpc();
                     PC = 48;
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
                 case 255:    /* RST 56 */ {
                     pushpc();
                     PC = 56;
-                    local_tstates += i11_b00001011;
+                    ticks += 11;
                     break;
                 }
             }
