@@ -1,25 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="en-US">
-  <head>
-    <title>Spec1987 Application - Deployed Without Codebase</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-  </head>
-  <body>
-    <script src="https://www.java.com/js/deployJava.js"></script>
-    <h2>Java Web Start application deployed by using the <code>launchWebStartApplication</code> function</h2>
-    <p><a href="javascript:deployJava.launchWebStartApplication('spec.jnlp');">Launch</a></p>
-
-    <br/>
-    <hr/>
-    <br/>
-    
-    <h2>Java Web Start application deployed by using the <code>createWebStartLaunchButtonEx</code> function</h2>    
-    
-    <script>        
-        var jnlpFile = "spec.jnlp";
-        deployJava.createWebStartLaunchButtonEx(jnlpFile);
-    </script>
-    <noscript>JavaScript is required for this page.</noscript>
-    
-  </body>
+    <head>
+        <title>Spec1987 Application</title>
+        <script src="deployJava.js"></script>
+        <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    </head>
+    <body>
+        <script>
+            deployJava.launchWebStartApplication("spec.jnlp");
+        </script>
+        <noscript>
+            JavaScript is required for this page.
+        </noscript>
+    </body>
 </html>
