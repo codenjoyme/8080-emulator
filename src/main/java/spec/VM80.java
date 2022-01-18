@@ -19,12 +19,11 @@ public class VM80 {
     private final Accessor accessor;
 
     public VM80(double clockFrequencyInMHz, Accessor accessor) {
-        // число тактов на 1 прерывание, которое происходит 50 раз в секунду.
+        // Количество тактов на 1 прерывание, которое происходит 50 раз в секунду.
         // 1000000/50 раз в секунду
         tstatesPerInterrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);
         this.accessor = accessor;
     }
-
 
     private int tstatesPerInterrupt;
 
@@ -40,9 +39,6 @@ public class VM80 {
     private static final int F_5 = x20;
     private static final int F_Z = x40;
     private static final int F_S = x80;
-
-    private static final int PF = F_PV;
-    private static final int p_ = 0;
 
     private static final boolean[] parity = new boolean[256];
 
@@ -61,34 +57,54 @@ public class VM80 {
     /**
      * Main registers
      */
-    private int _A = 0, _HL = 0, _B = 0, _C = 0, _DE = 0;
-    private boolean fS = false, fZ = false, f5 = false, fH = false;
-    private boolean f3 = false, fPV = false, fN = false, fC = false;
+    private int _A = 0;
+    private int _HL = 0;
+    private int _B = 0;
+    private int _C = 0;
+    private int _DE = 0;
+
+    private boolean fS = false;
+    private boolean fZ = false;
+    private boolean f5 = false;
+    private boolean fH = false;
+    private boolean f3 = false;
+    private boolean fPV = false;
+    private boolean fN = false;
+    private boolean fC = false;
 
     /**
      * Alternate registers
      */
-    private int _AF_ = 0, _HL_ = 0, _BC_ = 0, _DE_ = 0;
+    private int _AF_ = 0;
+    private int _HL_ = 0;
+    private int _BC_ = 0;
+    private int _DE_ = 0;
 
     /**
      * Index registers - ID used as temporary for ix/iy
      */
-    private int _IX = 0, _IY = 0, _ID = 0;
+    private int _IX = 0;
+    private int _IY = 0;
+    private int _ID = 0;
 
     /**
      * Stack Pointer and Program Counter
      */
-    private int _SP = 0, _PC = StartPoint;
+    private int _SP = 0;
+    private int _PC = StartPoint;
 
     /**
      * Interrupt and Refresh registers
      */
-    private int _I = 0, _R = 0, _R7 = 0;
+    private int _I = 0;
+    private int _R = 0;
+    private int _R7 = 0;
 
     /**
      * Interrupt flip-flops
      */
-    private boolean _IFF1 = true, _IFF2 = true;
+    private boolean _IFF1 = true;
+    private boolean _IFF2 = true;
     private int _IM = 2;
 
     /**
