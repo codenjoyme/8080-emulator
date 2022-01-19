@@ -2,12 +2,14 @@ package spec;
 
 public class TestAccessor implements Accessor {
 
-    private Memory memory = new Memory(65536);
-    private boolean working = true;
+    private TestMemory memory;
+    private boolean working;
     private Runnable onInterrupt;
 
     public TestAccessor(Runnable onInterrupt) {
         this.onInterrupt = onInterrupt;
+        working = true;
+        memory = new TestMemory(65536);
     }
 
     @Override
@@ -37,5 +39,9 @@ public class TestAccessor implements Accessor {
 
     public void stopCpu() {
         working = false;
+    }
+
+    public String updatedMemory() {
+        return memory.changes();
     }
 }

@@ -21,4 +21,20 @@ public class Range {
     public boolean includes(int addr) {
         return begin <= addr && addr <= end;
     }
+
+    public void begin(int addr) {
+        begin = addr;
+    }
+
+    public void end(int addr) {
+        end = addr;
+    }
+
+    public int size() {
+        return end - begin + 1;
+    }
+
+    public int offset(int offset) {
+        return begin + offset;
+    }
 }

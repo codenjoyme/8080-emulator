@@ -356,6 +356,7 @@ public class CPU {
                 case 0x38:
                     break;
 
+
                 case 0x01: {             // LXI B,XXYY    B=XX, C=YY, []
                     BC = LXI();
                     ticks += 10;
@@ -377,7 +378,8 @@ public class CPU {
                     break;
                 }
 
-                case 9: {                // DAD B         HL=HL+BC, [c]
+
+                case 0x09: {             // DAD B         HL=HL+BC, [c]
                     HL = DAD(HL, BC);
                     ticks += 11;
                     break;
@@ -419,6 +421,8 @@ public class CPU {
                     ticks += 7;
                     break;
                 }
+
+
                 case 0x22: {             // SHLD XXYY     (XX,YY)=HL, []
                     pokew(LXI(), HL);
                     ticks += 16;
@@ -429,6 +433,8 @@ public class CPU {
                     ticks += 16;
                     break;
                 }
+
+
                 case 50: {
                     pokeb(LXI(), A);
                     ticks += 13;

@@ -4,7 +4,7 @@ import static spec.CPU.inc16;
 
 public class Memory {
 
-    public int[] mem;
+    protected int[] mem;
 
     public Memory(int size) {
         mem = new int[size];
@@ -39,5 +39,29 @@ public class Memory {
         }
 
         write(addr, array);
+    }
+
+    public int[] get(Range range) {
+        int length = range.size();
+        if (length < 0) {
+            return new int[0];
+        }
+        int[] array = new int[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = get(range.offset(i));
+        }
+        return array;
+    }
+
+    public String asString(Range range) {
+        int[] bites = get(range);
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < bites.length; i++) {
+            if (i != 0) {
+                result.append(' ');
+            }
+            result.append(String.format("%02x", bites[i]));
+        }
+        return result.toString();
     }
 }
