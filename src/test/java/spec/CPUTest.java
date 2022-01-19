@@ -283,13 +283,13 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_B__0x09() {
+    public void test__DAD_B__0x09__caseC0() {
         // when
         givenPr("LXI B,1234\n" +  // operand 1
                 "LXI D,1111\n" +  // ignored
                 "LXI SP,2222\n" + // ignored
                 "LXI H,4321\n" +  // operand 2 & result
-                "DAD B\n" +       // sum HL=HL+BC, [c]
+                "DAD B\n" +       // sum HL=HL+BC, [c=0]
                 "NOP\n");
 
         asrtMem("01 34 12 " +
@@ -336,13 +336,66 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_D__0x09() {
+    public void test__DAD_B__0x09__caseC1() {
+        // when
+        givenPr("LXI B,789A\n" +  // operand 1
+                "LXI D,1111\n" +  // ignored
+                "LXI SP,2222\n" + // ignored
+                "LXI H,A987\n" +  // operand 2 & result
+                "DAD B\n" +       // sum HL=HL+BC, [c=1]
+                "NOP\n");
+
+        asrtMem("01 9A 78 " +
+                "11 11 11 " +
+                "31 22 22 " +
+                "21 87 A9 " +
+                "09 " +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x789a\n" +
+                "DE:   0x1111\n" +
+                "HL:   0x2221\n" +
+                "AF:   0x0003\n" +
+                "SP:   0x2222\n" +
+                "PC:   0x000e\n" +
+                "B,C:  0x78 0x9a\n" +
+                "D,E:  0x11 0x11\n" +
+                "H,L:  0x22 0x21\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x03\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00100010 0b00100010\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b01111000\n" +
+                "C:    0b10011010\n" +
+                "D:    0b00010001\n" +
+                "E:    0b00010001\n" +
+                "H:    0b00100010\n" +
+                "L:    0b00100001\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000011\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   true\n");
+    }
+
+    @Test
+    public void test__DAD_D__0x09__caseC0() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,1234\n" +  // operand 1
                 "LXI SP,2222\n" + // ignored
                 "LXI H,4321\n" +  // operand 2 & result
-                "DAD D\n" +       // sum HL=HL+DE, [c]
+                "DAD D\n" +       // sum HL=HL+DE, [c=0]
                 "NOP\n");
 
         asrtMem("01 11 11 " +
@@ -389,13 +442,66 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_H__0x09() {
+    public void test__DAD_D__0x09__caseC1() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,789A\n" +  // operand 1
+                "LXI SP,2222\n" + // ignored
+                "LXI H,A987\n" +  // operand 2 & result
+                "DAD D\n" +       // sum HL=HL+DE, [c=1]
+                "NOP\n");
+
+        asrtMem("01 11 11 " +
+                "11 9A 78 " +
+                "31 22 22 " +
+                "21 87 A9 " +
+                "19 " +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x789a\n" +
+                "HL:   0x2221\n" +
+                "AF:   0x0003\n" +
+                "SP:   0x2222\n" +
+                "PC:   0x000e\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x78 0x9a\n" +
+                "H,L:  0x22 0x21\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x03\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00100010 0b00100010\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b01111000\n" +
+                "E:    0b10011010\n" +
+                "H:    0b00100010\n" +
+                "L:    0b00100001\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000011\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   true\n");
+    }
+
+    @Test
+    public void test__DAD_H__0x09__caseC0() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
                 "LXI H,1234\n" +  // operand 1 & 2 & result
-                "DAD H\n" +       // sum HL=HL+HL, [c]
+                "DAD H\n" +       // sum HL=HL+HL, [c=0]
                 "NOP\n");
 
         asrtMem("01 11 11 " +
@@ -442,7 +548,60 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_SP__0x09() {
+    public void test__DAD_H__0x09__caseC1() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,2222\n" +  // ignored
+                "LXI SP,3333\n" + // ignored
+                "LXI H,89AB\n" +  // operand 1 & 2 & result
+                "DAD H\n" +       // sum HL=HL+HL, [c=1]
+                "NOP\n");
+
+        asrtMem("01 11 11 " +
+                "11 22 22 " +
+                "31 33 33 " +
+                "21 AB 89 " +
+                "29 " +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x2222\n" +
+                "HL:   0x1356\n" +
+                "AF:   0x0003\n" +
+                "SP:   0x3333\n" +
+                "PC:   0x000e\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x22 0x22\n" +
+                "H,L:  0x13 0x56\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x03\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00110011 0b00110011\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00100010\n" +
+                "E:    0b00100010\n" +
+                "H:    0b00010011\n" +
+                "L:    0b01010110\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000011\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   true\n");
+    }
+
+    @Test
+    public void test__DAD_SP__0x09__caseC0() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
@@ -492,5 +651,58 @@ public class CPUTest {
                 "th:   false\n" +
                 "tp:   false\n" +
                 "tc:   false\n");
+    }
+
+    @Test
+    public void test__DAD_SP__0x09__caseC1() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,2222\n" +  // ignored
+                "LXI SP,789A\n" + // operand 1
+                "LXI H,A987\n" +  // operand 2 & result
+                "DAD SP\n" +      // sum HL=HL+SP, [1]
+                "NOP\n");
+
+        asrtMem("01 11 11 " +
+                "11 22 22 " +
+                "31 9A 78 " +
+                "21 87 A9 " +
+                "39 " +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x2222\n" +
+                "HL:   0x2221\n" +
+                "AF:   0x0003\n" +
+                "SP:   0x789a\n" +
+                "PC:   0x000e\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x22 0x22\n" +
+                "H,L:  0x22 0x21\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x03\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b01111000 0b10011010\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00100010\n" +
+                "E:    0b00100010\n" +
+                "H:    0b00100010\n" +
+                "L:    0b00100001\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000011\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   true\n");
     }
 }

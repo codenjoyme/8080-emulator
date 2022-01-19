@@ -27,7 +27,7 @@ public class WordMath {
     }
 
     public static String hex(int bite) {
-        return String.format("%02x", bite);
+        return String.format("%02X", bite);
     }
 
     public static List<Integer> hex(String bites) {
