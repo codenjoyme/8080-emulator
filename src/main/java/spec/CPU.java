@@ -52,12 +52,12 @@ public class CPU {
 
     public String toString() {
         return String.format(
-                "BC: 0x%04x\n" +
-                "DE: 0x%04x\n" +
-                "HL: 0x%04x\n" +
-                "AF: 0x%04x\n" +
-                "SP: 0x%04x\n" +
-                "PC: 0x%04x\n",
+                "BC: 0x%04X\n" +
+                "DE: 0x%04X\n" +
+                "HL: 0x%04X\n" +
+                "AF: 0x%04X\n" +
+                "SP: 0x%04X\n" +
+                "PC: 0x%04X\n",
                 BC,
                 DE,
                 HL,
@@ -68,17 +68,17 @@ public class CPU {
 
     public String toStringDetails() {
         return String.format(
-                "BC:   0x%04x\n" +
-                "DE:   0x%04x\n" +
-                "HL:   0x%04x\n" +
-                "AF:   0x%04x\n" +
-                "SP:   0x%04x\n" +
-                "PC:   0x%04x\n" +
-                "B,C:  0x%02x 0x%02x\n" +
-                "D,E:  0x%02x 0x%02x\n" +
-                "H,L:  0x%02x 0x%02x\n" +
-                "M:    0x%02x\n" +
-                "A,F:  0x%02x 0x%02x\n" +
+                "BC:   0x%04X\n" +
+                "DE:   0x%04X\n" +
+                "HL:   0x%04X\n" +
+                "AF:   0x%04X\n" +
+                "SP:   0x%04X\n" +
+                "PC:   0x%04X\n" +
+                "B,C:  0x%02X 0x%02X\n" +
+                "D,E:  0x%02X 0x%02X\n" +
+                "H,L:  0x%02X 0x%02X\n" +
+                "M:    0x%02X\n" +
+                "A,F:  0x%02X 0x%02X\n" +
                 "        76543210   76543210\n" +
                 "SP:   0b%s 0b%s\n" +
                 "PC:   0b%s 0b%s\n" +

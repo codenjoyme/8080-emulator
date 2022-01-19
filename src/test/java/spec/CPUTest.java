@@ -308,7 +308,7 @@ public class CPUTest {
                 "HL:   0x5555\n" +
                 "AF:   0x0002\n" +
                 "SP:   0x2222\n" +
-                "PC:   0x000e\n" +
+                "PC:   0x000E\n" +
                 "B,C:  0x12 0x34\n" +
                 "D,E:  0x11 0x11\n" +
                 "H,L:  0x55 0x55\n" +
@@ -356,13 +356,13 @@ public class CPUTest {
         cpu.execute();
 
         // then
-        asrtCpu("BC:   0x789a\n" +
+        asrtCpu("BC:   0x789A\n" +
                 "DE:   0x1111\n" +
                 "HL:   0x2221\n" +
                 "AF:   0x0003\n" +
                 "SP:   0x2222\n" +
-                "PC:   0x000e\n" +
-                "B,C:  0x78 0x9a\n" +
+                "PC:   0x000E\n" +
+                "B,C:  0x78 0x9A\n" +
                 "D,E:  0x11 0x11\n" +
                 "H,L:  0x22 0x21\n" +
                 "M:    0x00\n" +
@@ -414,7 +414,7 @@ public class CPUTest {
                 "HL:   0x5555\n" +
                 "AF:   0x0002\n" +
                 "SP:   0x2222\n" +
-                "PC:   0x000e\n" +
+                "PC:   0x000E\n" +
                 "B,C:  0x11 0x11\n" +
                 "D,E:  0x12 0x34\n" +
                 "H,L:  0x55 0x55\n" +
@@ -463,13 +463,13 @@ public class CPUTest {
 
         // then
         asrtCpu("BC:   0x1111\n" +
-                "DE:   0x789a\n" +
+                "DE:   0x789A\n" +
                 "HL:   0x2221\n" +
                 "AF:   0x0003\n" +
                 "SP:   0x2222\n" +
-                "PC:   0x000e\n" +
+                "PC:   0x000E\n" +
                 "B,C:  0x11 0x11\n" +
-                "D,E:  0x78 0x9a\n" +
+                "D,E:  0x78 0x9A\n" +
                 "H,L:  0x22 0x21\n" +
                 "M:    0x00\n" +
                 "A,F:  0x00 0x03\n" +
@@ -520,7 +520,7 @@ public class CPUTest {
                 "HL:   0x2468\n" +
                 "AF:   0x0002\n" +
                 "SP:   0x3333\n" +
-                "PC:   0x000e\n" +
+                "PC:   0x000E\n" +
                 "B,C:  0x11 0x11\n" +
                 "D,E:  0x22 0x22\n" +
                 "H,L:  0x24 0x68\n" +
@@ -573,7 +573,7 @@ public class CPUTest {
                 "HL:   0x1356\n" +
                 "AF:   0x0003\n" +
                 "SP:   0x3333\n" +
-                "PC:   0x000e\n" +
+                "PC:   0x000E\n" +
                 "B,C:  0x11 0x11\n" +
                 "D,E:  0x22 0x22\n" +
                 "H,L:  0x13 0x56\n" +
@@ -626,7 +626,7 @@ public class CPUTest {
                 "HL:   0x5555\n" +
                 "AF:   0x0002\n" +
                 "SP:   0x1234\n" +
-                "PC:   0x000e\n" +
+                "PC:   0x000E\n" +
                 "B,C:  0x11 0x11\n" +
                 "D,E:  0x22 0x22\n" +
                 "H,L:  0x55 0x55\n" +
@@ -678,8 +678,8 @@ public class CPUTest {
                 "DE:   0x2222\n" +
                 "HL:   0x2221\n" +
                 "AF:   0x0003\n" +
-                "SP:   0x789a\n" +
-                "PC:   0x000e\n" +
+                "SP:   0x789A\n" +
+                "PC:   0x000E\n" +
                 "B,C:  0x11 0x11\n" +
                 "D,E:  0x22 0x22\n" +
                 "H,L:  0x22 0x21\n" +
