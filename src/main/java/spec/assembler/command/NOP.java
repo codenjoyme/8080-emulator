@@ -10,7 +10,7 @@ public class NOP implements Command {
     }
 
     @Override
-    public String name() {
+    public String pattern() {
         return "NOP";
     }
 }
