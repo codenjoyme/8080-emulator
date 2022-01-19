@@ -2,6 +2,7 @@ package spec.assembler;
 
 import spec.Registry;
 import spec.WordMath;
+import spec.assembler.command.NONE;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -27,7 +28,8 @@ public abstract class Command {
     }
 
     private void validate(int codes, int registers) {
-        if (codes == 1
+        if (this instanceof NONE
+            || codes == 1
             || codes == registers) {
             return;
         }

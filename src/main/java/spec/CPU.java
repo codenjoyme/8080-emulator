@@ -136,15 +136,6 @@ public class CPU extends Registry {
             }
             
             switch (bite) {
-                case 0x08: // нет таких команд
-                case 0x10:
-                case 0x18:
-                case 0x20:
-                case 0x28:
-                case 0x30:
-                case 0x38:
-                    break;
-
                 case 0x02: {             // STAX B        (BC)=A, []
                     pokeb(BC(), A());
                     ticks += 7;
@@ -1157,9 +1148,6 @@ public class CPU extends Registry {
                     ticks += 10;
                     break;
                 }
-                case 0xD9: { //+ ???
-                    break;
-                }
                 case 225:    /* POP HL */ {
                     HL(popw());
                     ticks += 10;
@@ -1259,9 +1247,6 @@ public class CPU extends Registry {
                 case 195:    /* JP nn */ {
                     PC(peekw(PC()));
                     ticks += 10;
-                    break;
-                }
-                case 0xCB: {  //+ ???
                     break;
                 }
                 case 211:    /* OUT (n),A */ {
@@ -1414,15 +1399,9 @@ public class CPU extends Registry {
                     ticks += 11;
                     break;
                 }
-                case 0xDD: { //+ ???
-                    break;
-                }
                 case 229:    /* PUSH HL */ {
                     pushw(HL());
                     ticks += 11;
-                    break;
-                }
-                case 0xED: { //+ ???
                     break;
                 }
                 case 245:    /* PUSH AF */ {
@@ -1430,10 +1409,6 @@ public class CPU extends Registry {
                     ticks += 11;
                     break;
                 }
-                case 0xFD: { //+ ???
-                    break;
-                }
-
                 /* op A,N */
                 case 198: /* ADD A,N */ {
                     add_a(nextCommand());

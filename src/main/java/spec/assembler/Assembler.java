@@ -3,6 +3,7 @@ package spec.assembler;
 import spec.WordMath;
 import spec.assembler.command.DAD_R;
 import spec.assembler.command.LXI_R_XXYY;
+import spec.assembler.command.NONE;
 import spec.assembler.command.NOP;
 
 import java.util.Arrays;
@@ -19,6 +20,7 @@ public class Assembler {
 
     static {
         COMMANDS = new Command[0x100];
+        add(new NONE());
         add(new NOP());
         add(new LXI_R_XXYY());
         add(new DAD_R());

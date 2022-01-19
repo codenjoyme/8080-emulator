@@ -98,13 +98,53 @@ public class CPUTest {
                 "PC: 0x0005\n");
     }
 
+    @Test
+    public void test__NONE__() {
+        // when
+        memory("08 10 18 20 28 30 38 D9 CB DD ED FD");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x0000\n" +
+                "DE:   0x0000\n" +
+                "HL:   0x0000\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x0000\n" +
+                "PC:   0x000C\n" +
+                "B,C:  0x00 0x00\n" +
+                "D,E:  0x00 0x00\n" +
+                "H,L:  0x00 0x00\n" +
+                "M:    0x08\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00000000 0b00000000\n" +
+                "PC:   0b00000000 0b00001100\n" +
+                "        76543210\n" +
+                "B:    0b00000000\n" +
+                "C:    0b00000000\n" +
+                "D:    0b00000000\n" +
+                "E:    0b00000000\n" +
+                "H:    0b00000000\n" +
+                "L:    0b00000000\n" +
+                "M:    0b00001000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
     private void asrtMem(String bites) {
         assertEquals(bites, asm.split(accessor.updatedMemory()));
     }
 
     private void givenPr(String program) {
-        String bites = asm.parse(program);
-        memory(bites);
+        memory(asm.parse(program));
     }
 
     @Test
@@ -713,7 +753,7 @@ public class CPUTest {
 
     @Test
     public void performance() {
-        // about 2.6 sec (vs 1.4)
+        // about 3.6 sec (vs 1.4)
         // when
         givenPr("LXI B,1111\n" + 
                 "LXI SP,789A\n" +
