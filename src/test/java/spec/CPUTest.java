@@ -29,7 +29,7 @@ public class CPUTest {
         accessor.memory().write(START, bites);
     }
 
-    private void cpu(String expected) {
+    private void asrtCpu(String expected) {
         assertEquals(expected, cpu.toStringDetails());
     }
 
@@ -44,31 +44,31 @@ public class CPUTest {
         cpu.execute();
 
         // then
-        cpu("BC:   0x0000\n" +
-            "DE:   0x0000\n" +
-            "HL:   0x0000\n" +
-            "AF:   0x0002\n" +
-            "SP:   0x0000\n" +
-            "PC:   0x0005\n" +
-            "B,C:  0x00 0x00\n" +
-            "D,E:  0x00 0x00\n" +
-            "H,L:  0x00 0x00\n" +
-            "A,F:  0x00 0x02\n" +
-            "        76543210\n" +
-            "B:    0b00000000\n" +
-            "C:    0b00000000\n" +
-            "D:    0b00000000\n" +
-            "E:    0b00000000\n" +
-            "H:    0b00000000\n" +
-            "L:    0b00000000\n" +
-            "A:    0b00000000\n" +
-            "        sz0h0p1c\n" +
-            "F:    0b00000010\n" +
-            "ts:   false\n" +
-            "tz:   false\n" +
-            "th:   false\n" +
-            "tp:   false\n" +
-            "tc:   false\n");
+        asrtCpu("BC:   0x0000\n" +
+                "DE:   0x0000\n" +
+                "HL:   0x0000\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x0000\n" +
+                "PC:   0x0005\n" +
+                "B,C:  0x00 0x00\n" +
+                "D,E:  0x00 0x00\n" +
+                "H,L:  0x00 0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210\n" +
+                "B:    0b00000000\n" +
+                "C:    0b00000000\n" +
+                "D:    0b00000000\n" +
+                "E:    0b00000000\n" +
+                "H:    0b00000000\n" +
+                "L:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
 
         cpuShort("BC: 0x0000\n" +
                 "DE: 0x0000\n" +
@@ -85,30 +85,132 @@ public class CPUTest {
         cpu.execute();
 
         // then
-        cpu("BC:   0x3412\n" +
-            "DE:   0x0000\n" +
-            "HL:   0x0000\n" +
-            "AF:   0x0002\n" +
-            "SP:   0x0000\n" +
-            "PC:   0x0004\n" +
-            "B,C:  0x34 0x12\n" +
-            "D,E:  0x00 0x00\n" +
-            "H,L:  0x00 0x00\n" +
-            "A,F:  0x00 0x02\n" +
-            "        76543210\n" +
-            "B:    0b00110100\n" +
-            "C:    0b00010010\n" +
-            "D:    0b00000000\n" +
-            "E:    0b00000000\n" +
-            "H:    0b00000000\n" +
-            "L:    0b00000000\n" +
-            "A:    0b00000000\n" +
-            "        sz0h0p1c\n" +
-            "F:    0b00000010\n" +
-            "ts:   false\n" +
-            "tz:   false\n" +
-            "th:   false\n" +
-            "tp:   false\n" +
-            "tc:   false\n");
+        asrtCpu("BC:   0x3412\n" +
+                "DE:   0x0000\n" +
+                "HL:   0x0000\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x0000\n" +
+                "PC:   0x0004\n" +
+                "B,C:  0x34 0x12\n" +
+                "D,E:  0x00 0x00\n" +
+                "H,L:  0x00 0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210\n" +
+                "B:    0b00110100\n" +
+                "C:    0b00010010\n" +
+                "D:    0b00000000\n" +
+                "E:    0b00000000\n" +
+                "H:    0b00000000\n" +
+                "L:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void test__LXI_C_XXYY__0x01() {
+        // when
+        memory("11 12 34 00");
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x0000\n" +
+                "DE:   0x3412\n" +
+                "HL:   0x0000\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x0000\n" +
+                "PC:   0x0004\n" +
+                "B,C:  0x00 0x00\n" +
+                "D,E:  0x34 0x12\n" +
+                "H,L:  0x00 0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210\n" +
+                "B:    0b00000000\n" +
+                "C:    0b00000000\n" +
+                "D:    0b00110100\n" +
+                "E:    0b00010010\n" +
+                "H:    0b00000000\n" +
+                "L:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void test__LXI_H_XXYY__0x21() {
+        // when
+        memory("21 12 34 00");
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x0000\n" +
+                "DE:   0x0000\n" +
+                "HL:   0x3412\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x0000\n" +
+                "PC:   0x0004\n" +
+                "B,C:  0x00 0x00\n" +
+                "D,E:  0x00 0x00\n" +
+                "H,L:  0x34 0x12\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210\n" +
+                "B:    0b00000000\n" +
+                "C:    0b00000000\n" +
+                "D:    0b00000000\n" +
+                "E:    0b00000000\n" +
+                "H:    0b00110100\n" +
+                "L:    0b00010010\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void test__LXI_SP_XXYY__0x31() {
+        // when
+        memory("31 12 34 00");
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x0000\n" +
+                "DE:   0x0000\n" +
+                "HL:   0x0000\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x3412\n" +
+                "PC:   0x0004\n" +
+                "B,C:  0x00 0x00\n" +
+                "D,E:  0x00 0x00\n" +
+                "H,L:  0x00 0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210\n" +
+                "B:    0b00000000\n" +
+                "C:    0b00000000\n" +
+                "D:    0b00000000\n" +
+                "E:    0b00000000\n" +
+                "H:    0b00000000\n" +
+                "L:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
     }
 }
