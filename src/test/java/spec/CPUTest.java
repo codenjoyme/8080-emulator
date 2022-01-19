@@ -38,7 +38,7 @@ public class CPUTest {
     }
 
     @Test
-    public void testNop() {
+    public void test__NOP__0x00() {
         // when
         memory("00 00 00 00 00");
         cpu.execute();
@@ -74,5 +74,37 @@ public class CPUTest {
                 "AF: 0x0002\n" +
                 "SP: 0x0000\n" +
                 "PC: 0x0005\n");
+    }
+
+    @Test
+    public void test__LXI_B_XXYY__0x01() {
+        // when
+        memory("01 12 34 00");
+        cpu.execute();
+
+        // then
+        cpu("BC:   0x3412\n" +
+            "DE:   0x0000\n" +
+            "HL:   0x0000\n" +
+            "AF:   0x0002\n" +
+            "SP:   0x0000\n" +
+            "PC:   0x0004\n" +
+            "B,C:  0x34 0x12\n" +
+            "D,E:  0x00 0x00\n" +
+            "H,L:  0x00 0x00\n" +
+            "A,F:  0x00 0x02\n" +
+            "B:    0b00110100\n" +
+            "C:    0b00010010\n" +
+            "D:    0b00000000\n" +
+            "E:    0b00000000\n" +
+            "H:    0b00000000\n" +
+            "L:    0b00000000\n" +
+            "A:    0b00000000\n" +
+            "F:    0b00000010\n" +
+            "ts:   false\n" +
+            "tz:   false\n" +
+            "th:   false\n" +
+            "tp:   false\n" +
+            "tc:   false\n");
     }
 }

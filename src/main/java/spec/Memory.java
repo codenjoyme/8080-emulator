@@ -25,7 +25,7 @@ public class Memory {
     public void write(int addr, int... bites) {
         for (int bite : bites) {
             set(addr, bite);
-            inc16(addr);
+            addr = inc16(addr);
         }
     }
 

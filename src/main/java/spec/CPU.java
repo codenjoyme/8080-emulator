@@ -262,10 +262,6 @@ public class CPU {
         PC = popw();
     }
 
-    /**
-     *  Program access
-     *  байт из памяти по адресу п-счетчика PC() и увеличение PC()
-     */
     private int nextCommand() {
         int result = peekb(PC);
         PC = inc16(PC);
