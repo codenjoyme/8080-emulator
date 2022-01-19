@@ -4,12 +4,11 @@ import spec.assembler.Command;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
 
 public class NOP extends Command {
 
     @Override
-    public List<Integer> code(Matcher matcher) {
+    public List<Integer> codes() {
         return Arrays.asList(0x00);
     }
 

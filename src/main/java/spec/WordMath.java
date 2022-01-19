@@ -38,8 +38,8 @@ public class WordMath {
         }};
     }
 
-    public static List<Integer> reverse(List<Integer> bits) {
-        Collections.reverse(bits);
-        return bits;
+    public static List<Integer> reverse(List<Integer> bites) {
+        Collections.reverse(bites);
+        return bites;
     }
 }

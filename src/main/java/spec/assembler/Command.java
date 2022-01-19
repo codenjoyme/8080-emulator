@@ -2,6 +2,7 @@ package spec.assembler;
 
 import spec.WordMath;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -22,11 +23,31 @@ public abstract class Command {
                 .collect(joining(" ")));
     }
 
-    protected abstract List<Integer> code(Matcher matcher);
+    protected List<Integer> code(Matcher matcher) {
+        return codes();
+    }
+
+    public abstract List<Integer> codes();
 
     protected abstract String pattern();
 
     protected int size() {
         return 1;
+    }
+
+    public List<Integer> take(List<Integer> bites) {
+        return new LinkedList<Integer>(){{
+            if (!bites.isEmpty()) {
+                int bite = bites.get(0);
+                for (int code : codes()) {
+                    if (bite == code) {
+                        for (int i = 0; i < Command.this.size(); i++) {
+                            add(bites.remove(0));
+                        }
+                        break;
+                    }
+                }
+            }
+        }};
     }
 }
