@@ -106,7 +106,12 @@ public class CPUTest {
     @Test
     public void test__LXI_B_XXYY__0x01() {
         // when
-        memory("01 12 34 00");
+        givenPr("LXI B,1234\n" +
+                "NOP\n");
+
+        assertMemory("01 12 34 00");
+
+        // when
         cpu.execute();
 
         // then

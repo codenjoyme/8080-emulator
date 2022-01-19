@@ -60,8 +60,12 @@ public class Memory {
             if (i != 0) {
                 result.append(' ');
             }
-            result.append(String.format("%02x", bites[i]));
+            result.append(hex(bites[i]));
         }
         return result.toString();
+    }
+
+    public static String hex(int bite) {
+        return String.format("%02x", bite);
     }
 }
