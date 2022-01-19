@@ -65,6 +65,6 @@ public class Assembler {
                 break;
             }
         }
-        return String.join(" \n", result);
+        return String.join("\n", result);
     }
 }

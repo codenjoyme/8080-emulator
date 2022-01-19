@@ -49,10 +49,10 @@ public class CPUTest {
                 "NOP\n" +
                 "NOP\n");
 
-        asrtMem("00 \n" +
-                "00 \n" +
-                "00 \n" +
-                "00 \n" +
+        asrtMem("00\n" +
+                "00\n" +
+                "00\n" +
+                "00\n" +
                 "00");
 
         // when
@@ -113,7 +113,7 @@ public class CPUTest {
         givenPr("LXI B,1234\n" +
                 "NOP\n");
 
-        asrtMem("01 34 12 \n" +
+        asrtMem("01 34 12\n" +
                 "00");
 
         // when
@@ -158,7 +158,7 @@ public class CPUTest {
         givenPr("LXI D,1234\n" +
                 "NOP\n");
 
-        asrtMem("11 34 12 \n" +
+        asrtMem("11 34 12\n" +
                 "00");
 
         // when
@@ -203,7 +203,7 @@ public class CPUTest {
         givenPr("LXI H,1234\n" +
                 "NOP\n");
 
-        asrtMem("21 34 12 \n" +
+        asrtMem("21 34 12\n" +
                 "00");
 
         // when
@@ -248,7 +248,7 @@ public class CPUTest {
         givenPr("LXI SP,1234\n" +
                 "NOP\n");
 
-        asrtMem("31 34 12 \n" +
+        asrtMem("31 34 12\n" +
                 "00");
 
         // when
@@ -297,11 +297,11 @@ public class CPUTest {
                 "DAD B\n" +       // sum HL=HL+BC, [c=0]
                 "NOP\n");
 
-        asrtMem("01 34 12 \n" +
-                "11 11 11 \n" +
-                "31 22 22 \n" +
-                "21 21 43 \n" +
-                "09 \n" +
+        asrtMem("01 34 12\n" +
+                "11 11 11\n" +
+                "31 22 22\n" +
+                "21 21 43\n" +
+                "09\n" +
                 "00");
 
         // when
@@ -350,11 +350,11 @@ public class CPUTest {
                 "DAD B\n" +       // sum HL=HL+BC, [c=1]
                 "NOP\n");
 
-        asrtMem("01 9A 78 \n" +
-                "11 11 11 \n" +
-                "31 22 22 \n" +
-                "21 87 A9 \n" +
-                "09 \n" +
+        asrtMem("01 9A 78\n" +
+                "11 11 11\n" +
+                "31 22 22\n" +
+                "21 87 A9\n" +
+                "09\n" +
                 "00");
 
         // when
@@ -403,11 +403,11 @@ public class CPUTest {
                 "DAD D\n" +       // sum HL=HL+DE, [c=0]
                 "NOP\n");
 
-        asrtMem("01 11 11 \n" +
-                "11 34 12 \n" +
-                "31 22 22 \n" +
-                "21 21 43 \n" +
-                "19 \n" +
+        asrtMem("01 11 11\n" +
+                "11 34 12\n" +
+                "31 22 22\n" +
+                "21 21 43\n" +
+                "19\n" +
                 "00");
 
         // when
@@ -456,11 +456,11 @@ public class CPUTest {
                 "DAD D\n" +       // sum HL=HL+DE, [c=1]
                 "NOP\n");
 
-        asrtMem("01 11 11 \n" +
-                "11 9A 78 \n" +
-                "31 22 22 \n" +
-                "21 87 A9 \n" +
-                "19 \n" +
+        asrtMem("01 11 11\n" +
+                "11 9A 78\n" +
+                "31 22 22\n" +
+                "21 87 A9\n" +
+                "19\n" +
                 "00");
 
         // when
@@ -509,11 +509,11 @@ public class CPUTest {
                 "DAD H\n" +       // sum HL=HL+HL, [c=0]
                 "NOP\n");
 
-        asrtMem("01 11 11 \n" +
-                "11 22 22 \n" +
-                "31 33 33 \n" +
-                "21 34 12 \n" +
-                "29 \n" +
+        asrtMem("01 11 11\n" +
+                "11 22 22\n" +
+                "31 33 33\n" +
+                "21 34 12\n" +
+                "29\n" +
                 "00");
 
         // when
@@ -562,11 +562,11 @@ public class CPUTest {
                 "DAD H\n" +       // sum HL=HL+HL, [c=1]
                 "NOP\n");
 
-        asrtMem("01 11 11 \n" +
-                "11 22 22 \n" +
-                "31 33 33 \n" +
-                "21 AB 89 \n" +
-                "29 \n" +
+        asrtMem("01 11 11\n" +
+                "11 22 22\n" +
+                "31 33 33\n" +
+                "21 AB 89\n" +
+                "29\n" +
                 "00");
 
         // when
@@ -615,11 +615,11 @@ public class CPUTest {
                 "DAD SP\n" +      // sum HL=HL+SP, [c]
                 "NOP\n");
 
-        asrtMem("01 11 11 \n" +
-                "11 22 22 \n" +
-                "31 34 12 \n" +
-                "21 21 43 \n" +
-                "39 \n" +
+        asrtMem("01 11 11\n" +
+                "11 22 22\n" +
+                "31 34 12\n" +
+                "21 21 43\n" +
+                "39\n" +
                 "00");
 
         // when
@@ -668,11 +668,11 @@ public class CPUTest {
                 "DAD SP\n" +      // sum HL=HL+SP, [1]
                 "NOP\n");
 
-        asrtMem("01 11 11 \n" +
-                "11 22 22 \n" +
-                "31 9A 78 \n" +
-                "21 87 A9 \n" +
-                "39 \n" +
+        asrtMem("01 11 11\n" +
+                "11 22 22\n" +
+                "31 9A 78\n" +
+                "21 87 A9\n" +
+                "39\n" +
                 "00");
 
         // when
