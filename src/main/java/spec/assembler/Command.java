@@ -19,15 +19,22 @@ public abstract class Command {
     public Command() {
         List<Integer> codes = codes();
         List<String> registers = registers();
-        if (codes.size() != 1 && codes.size() != registers.size()) {
-            throw new IllegalArgumentException(
-                    String.format("Command codes (%s) != registers (%s)",
-                            codes.size(), registers.size()));
-        }
+        validate(codes.size(), registers.size());
 
         for (int i = 0; i < codes.size(); i++) {
             mapper[codes.get(i)] = i;
         }
+    }
+
+    private void validate(int codes, int registers) {
+        if (codes == 1
+            || codes == registers) {
+            return;
+        }
+
+        throw new IllegalArgumentException(
+                String.format("Command codes (%s) != registers (%s)",
+                        codes, registers));
     }
 
     public Optional<String> parse(String command) {
