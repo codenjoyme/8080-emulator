@@ -183,11 +183,11 @@ public class CPU {
 
 
     private int popw() {
-        int t = peekb(SP);
+        int result = peekb(SP);
         SP = inc(SP);
-        t |= (peekb(SP) << 8);
+        result |= (peekb(SP) << 8);
         SP = inc(SP);
-        return t;
+        return result;
     }
 
     /**
@@ -205,21 +205,21 @@ public class CPU {
      *  Program access
      *  байт из памяти по адресу п-счетчика PC() и увеличение PC()
      */
-    private int nxtpcb() {
-        int t = peekb(PC);
+    private int nextCommand() {
+        int result = peekb(PC);
         PC = inc(PC);
-        return t;
+        return result;
     }
 
     /**
      * слово из памяти по адресу п-счетчика PC()  и увеличение PC()
      */
     private int nxtpcw() {
-        int t = peekb(PC);
+        int result = peekb(PC);
         PC = inc(PC);
-        t |= (peekb(PC) << 8);
+        result |= (peekb(PC) << 8);
         PC = inc(PC);
-        return t;
+        return result;
     }
 
     /**
@@ -228,7 +228,6 @@ public class CPU {
     public void reset() {
         PC = START_POINT;
         SP = 0;
-
         A = 0;
         F(0);
         BC = 0;
@@ -251,93 +250,92 @@ public class CPU {
     /**
      * Interrupt handlers
      */
-    private static boolean interruptTriggered(int tstates) {                       // tstates = local_tstates
-        return tstates >= 0;  // >= если tstates  больше или равно = 0 -> true иначе false
+    private static boolean interruptNeeded(int tick) {
+        return tick >= 0;  
     }
 
     /**
      * Основной цикл выполнения кода
      */
     public void execute() {
-        // в начале local_tstates = числу тактов на прерывание.
+        // закладываем время до прерывания
         int ticks = -interruptTimeout;
 
         // цикл выборки/выполнения
         while (true) {
-            if (interruptTriggered(ticks)) {
-              // число тактов на прерывание исчерпано - вызываем прерывание.
+            if (interruptNeeded(ticks)) {
                 accessor.interrupt();
                 ticks -= interruptTimeout;
             }
-            // local_tstates = числу тактов на прерывание + время прерывания.
 
-            switch (nxtpcb()) { // байт из памяти по адресу п-счетчика PC()
-                               // и разбор этого байта как кода
+            switch (nextCommand()) { 
                 case 0:    /* NOP */ {
-                    ticks += 4;  // каждая операция уменьшает число тактов на прерывание
-                    break;                   // на свою длительность в тактах
+                    // каждая операция уменьшает число тактов на
+                    // прерывание на свою длительность в тактах
+                    ticks += 4;  
+                    break;                    
                 }
                 case 16:    /* DJNZ dis */ {
                     int b;
 
                     B(b = qdec8(B()));
                     if (b != 0) {
-                        byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
+                        byte d = (byte) nextCommand(); // байт из памяти по адресу п-счетчика PC()
                         PC = word(PC + d);
                         ticks += 13;
                     } else {
-                        PC = inc16(PC);
+                        PC = inc(PC);
                         ticks += 8;
                     }
                     break;
                 }
                 case 24: /* JR dis */ {
-                    byte d = (byte) nxtpcb();  // байт из памяти по адресу п-счетчика PC()
+                    byte d = (byte) nextCommand();  // байт из памяти по адресу п-счетчика PC()
                     PC = word(PC + d);
                     ticks += 12;
                     break;
                 }
-                /* JR cc,dis */
+   
                 case 32:    /* JR NZ,dis */ {
                     if (!tz) {
-                        byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
+                        byte d = (byte) nextCommand(); // байт из памяти по адресу п-счетчика PC()
                         PC = word(PC + d);
                         ticks += 12;
                     } else {
-                        PC = inc16(PC);
+                        PC = inc(PC);
                         ticks += 7;
                     }
                     break;
                 }
                 case 40:    /* JR Z,dis */ {
                     if (tz) {
-                        byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
+                        byte d = (byte) nextCommand(); // байт из памяти по адресу п-счетчика PC()
                         PC = word(PC + d);
                         ticks += 12;
                     } else {
-                        PC = inc16(PC);
+                        PC = inc(PC);
                         ticks += 7;
                     }
                     break;
                 }
                 case 48:    /* JR NC,dis */ {
                     if (!tc) {
-                        byte d = (byte) nxtpcb(); // байт из памяти по адресу п-счетчика PC()
+                        byte d = (byte) nextCommand(); // байт из памяти по адресу п-счетчика PC()
                         PC = word(PC + d);
                         ticks += 12;
                     } else {
-                        PC = inc16(PC);
+                        PC = inc(PC);
                         ticks += 7;
                     }
                     break;
                 }
                 case 56:    /* JR C,dis */ {
                     if (tc) {
-                        byte d = (byte) nxtpcb();  // байт из памяти по адресу п-счетчика PC()
+                        byte d = (byte) nextCommand();  // байт из памяти по адресу п-счетчика PC()
                         PC = word(PC + d);
                         ticks += 12;
                     } else {
-                        PC = inc16(PC);
+                        PC = inc(PC);
                         ticks += 7;
                     }
                     break;
@@ -434,42 +432,42 @@ public class CPU {
 
                 /* INC/DEC * */
                 case 3:    /* INC BC */ {
-                    BC = inc16(BC);
+                    BC = inc(BC);
                     ticks += 6;
                     break;
                 }
                 case 11:    /* DEC BC */ {
-                    BC = dec16(BC);
+                    BC = dec(BC);
                     ticks += 6;
                     break;
                 }
                 case 19:    /* INC DE */ {
-                    DE = inc16(DE);
+                    DE = inc(DE);
                     ticks += 6;
                     break;
                 }
                 case 27:    /* DEC DE */ {
-                    DE = dec16(DE);
+                    DE = dec(DE);
                     ticks += 6;
                     break;
                 }
                 case 35:    /* INC HL */ {
-                    HL = inc16(HL);
+                    HL = inc(HL);
                     ticks += 6;
                     break;
                 }
                 case 43:    /* DEC HL */ {
-                    HL = dec16(HL);
+                    HL = dec(HL);
                     ticks += 6;
                     break;
                 }
                 case 51:    /* INC SP */ {
-                    SP = inc16(SP);
+                    SP = inc(SP);
                     ticks += 6;
                     break;
                 }
                 case 59:    /* DEC SP */ {
-                    SP = dec16(SP);
+                    SP = dec(SP);
                     ticks += 6;
                     break;
                 }
@@ -562,42 +560,42 @@ public class CPU {
 
                 /* LD *,N */
                 case 6:    /* LD B,n */ {
-                    B(nxtpcb());
+                    B(nextCommand());
                     ticks += 7;
                     break;
                 }
                 case 14:    /* LD C,n */ {
-                    C(nxtpcb());
+                    C(nextCommand());
                     ticks += 7;
                     break;
                 }
                 case 22:    /* LD D,n */ {
-                    D(nxtpcb());
+                    D(nextCommand());
                     ticks += 7;
                     break;
                 }
                 case 30:    /* LD E,n */ {
-                    E(nxtpcb());
+                    E(nextCommand());
                     ticks += 7;
                     break;
                 }
                 case 38:    /* LD H,n */ {
-                    H(nxtpcb());
+                    H(nextCommand());
                     ticks += 7;
                     break;
                 }
                 case 46:    /* LD L,n */ {
-                    L(nxtpcb());
+                    L(nextCommand());
                     ticks += 7;
                     break;
                 }
                 case 54:    /* LD (HL),n */ {
-                    pokeb(HL, nxtpcb());
+                    pokeb(HL, nextCommand());
                     ticks += 10;
                     break;
                 }
                 case 62:    /* LD A,n */ {
-                    A = nxtpcb();
+                    A = nextCommand();
                     ticks += 7;
                     break;
                 }
@@ -1496,8 +1494,7 @@ public class CPU {
                     ticks += 10;
                     break;
                 }
-
-
+                
                 /* Various */
                 case 195:    /* JP nn */ {
                     PC = peekw(PC);
@@ -1508,12 +1505,12 @@ public class CPU {
                     break;
                 }
                 case 211:    /* OUT (n),A */ {
-                    accessor.outb(nxtpcb(), A);
+                    accessor.outb(nextCommand(), A);
                     ticks += 11;
                     break;
                 }
                 case 219:    /* IN A,(n) */ {
-                    A = inb((A << 8) | nxtpcb());
+                    A = inb((A << 8) | nextCommand());
                     ticks += 11;
                     break;
                 }
@@ -1679,42 +1676,42 @@ public class CPU {
 
                 /* op A,N */
                 case 198: /* ADD A,N */ {
-                    add_a(nxtpcb());
+                    add_a(nextCommand());
                     ticks += 7;
                     break;
                 }
                 case 206: /* ADC A,N */ {
-                    adc_a(nxtpcb());
+                    adc_a(nextCommand());
                     ticks += 7;
                     break;
                 }
                 case 214: /* SUB N */ {
-                    sub_a(nxtpcb());
+                    sub_a(nextCommand());
                     ticks += 7;
                     break;
                 }
                 case 222: /* SBC A,N */ {
-                    sbc_a(nxtpcb());
+                    sbc_a(nextCommand());
                     ticks += 7;
                     break;
                 }
                 case 230: /* AND N */ {
-                    and_a(nxtpcb());
+                    and_a(nextCommand());
                     ticks += 7;
                     break;
                 }
                 case 238: /* XOR N */ {
-                    xor_a(nxtpcb());
+                    xor_a(nextCommand());
                     ticks += 7;
                     break;
                 }
                 case 246: /* OR N */ {
-                    or_a(nxtpcb());
+                    or_a(nextCommand());
                     ticks += 7;
                     break;
                 }
                 case 254: /* CP N */ {
-                    cp_a(nxtpcb());
+                    cp_a(nextCommand());
                     ticks += 7;
                     break;
                 }
@@ -2080,23 +2077,7 @@ public class CPU {
 
         return ans;
     }
-
-
-    /**
-     * Quick Increment : no flags
-     */
-    private static int inc16(int a) {
-        return word(a + 1);
-    }
-
-
-    /**
-     * Quick Decrement : no flags
-     */
-    private static int dec16(int a) {
-        return word(a - 1);
-    }
-
+    
     private static int qdec8(int a) {
         return lo(a - 1);
     }
