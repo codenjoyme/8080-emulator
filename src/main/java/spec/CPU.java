@@ -2040,13 +2040,13 @@ public class CPU {
      * Decrement - alters all but C flag (CHECKED)
      */
     private int dec8(int ans) {
-        boolean pv = (ans == x80);
+        boolean p = (ans == x80);
         boolean h = (((ans & x0F) - 1) & T4h) != 0;
         ans = lo(ans - 1);
 
         ts = (ans & T7s) != 0;
         tz = ans == 0;
-        tp = pv;
+        tp = p;
         th = h;
 
         return ans;
@@ -2056,13 +2056,13 @@ public class CPU {
      * Increment - alters all but C flag (CHECKED)
      */
     private int inc8(int ans) {
-        boolean pv = (ans == x7F);
+        boolean p = (ans == x7F);
         boolean h = (((ans & x0F) + 1) & T4h) != 0;
         ans = lo(ans + 1);
 
         ts = (ans & T7s) != 0;
         tz = ans == 0;
-        tp = pv;
+        tp = p;
         th = h;
 
         return ans;
