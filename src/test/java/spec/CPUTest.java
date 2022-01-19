@@ -5,6 +5,7 @@ import org.junit.Test;
 import spec.assembler.Assembler;
 
 import static junit.framework.TestCase.assertEquals;
+import static spec.WordMath.hex;
 
 public class CPUTest {
 
@@ -15,6 +16,21 @@ public class CPUTest {
     private int stopWhen;
     private Assembler asm;
 
+    /**
+     * Инициализация возможна двумя путями:
+     * - либо используя метод givenPr передавая ему комманду на ассемблере,
+     *   тогда метод givenMm будет валидировать измененную область памяти
+     * - либо игнорируя метод givenPr,
+     *   тогда метод givenMm запишет данные в память без валидации.
+     *
+     * Зачем так сложно? При миграции из старой реализации на новую для меня
+     * важно было проверять отрабатывет ли на тесте старая версия так же как новая
+     * для этого приходилось комментировать строчку добавления команды в Assembler,
+     * а раз так, то она и не сможет попариться через givenPr.
+     */
+    private boolean skipProgram = false;
+    private boolean init;
+
     @Before
     public void setup() {
         accessor = new TestAccessor(() -> {
@@ -22,14 +38,26 @@ public class CPUTest {
                 accessor.stopCpu();
             }
         });
+        init = false;
         cpu = new CPU(50.1 * 1e-6, accessor);
         cpu.PC(START);
         asm = new Assembler();
     }
 
-    private void memory(String bites) {
-        stopWhen = bites.split(" ").length;
-        accessor.memory().write(START, bites);
+    private void givenPr(String program) {
+        if (skipProgram) return;
+        givenMm(asm.parse(program));
+    }
+
+    private void givenMm(String bites) {
+        if (!init) {
+            init = true;
+            bites = bites.replace("\n", " ");
+            stopWhen = bites.split(" ").length;
+            accessor.memory().write(START, bites);
+        } else {
+            assertEquals(bites, asm.split(accessor.updatedMemory()));
+        }
     }
 
     private void asrtCpu(String expected) {
@@ -49,7 +77,7 @@ public class CPUTest {
                 "NOP\n" +
                 "NOP\n");
 
-        asrtMem("00\n" +
+        givenMm("00\n" +
                 "00\n" +
                 "00\n" +
                 "00\n" +
@@ -101,7 +129,7 @@ public class CPUTest {
     @Test
     public void test__NONE__() {
         // when
-        memory("08 10 18 20 28 30 38 D9 CB DD ED FD");
+        givenMm("08 10 18 20 28 30 38 D9 CB DD ED FD");
 
         // when
         cpu.execute();
@@ -139,21 +167,13 @@ public class CPUTest {
                 "tc:   false\n");
     }
 
-    private void asrtMem(String bites) {
-        assertEquals(bites, asm.split(accessor.updatedMemory()));
-    }
-
-    private void givenPr(String program) {
-        memory(asm.parse(program));
-    }
-
     @Test
     public void test__LXI_B_XXYY__0x01() {
         // when
         givenPr("LXI B,1234\n" +
                 "NOP\n");
 
-        asrtMem("01 34 12\n" +
+        givenMm("01 34 12\n" +
                 "00");
 
         // when
@@ -193,12 +213,12 @@ public class CPUTest {
     }
 
     @Test
-    public void test__LXI_D_XXYY__0x01() {
+    public void test__LXI_D_XXYY__0x11() {
         // when
         givenPr("LXI D,1234\n" +
                 "NOP\n");
 
-        asrtMem("11 34 12\n" +
+        givenMm("11 34 12\n" +
                 "00");
 
         // when
@@ -243,7 +263,7 @@ public class CPUTest {
         givenPr("LXI H,1234\n" +
                 "NOP\n");
 
-        asrtMem("21 34 12\n" +
+        givenMm("21 34 12\n" +
                 "00");
 
         // when
@@ -288,7 +308,7 @@ public class CPUTest {
         givenPr("LXI SP,1234\n" +
                 "NOP\n");
 
-        asrtMem("31 34 12\n" +
+        givenMm("31 34 12\n" +
                 "00");
 
         // when
@@ -337,7 +357,7 @@ public class CPUTest {
                 "DAD B\n" +       // sum HL=HL+BC, [c=0]
                 "NOP\n");
 
-        asrtMem("01 34 12\n" +
+        givenMm("01 34 12\n" +
                 "11 11 11\n" +
                 "31 22 22\n" +
                 "21 21 43\n" +
@@ -390,7 +410,7 @@ public class CPUTest {
                 "DAD B\n" +       // sum HL=HL+BC, [c=1]
                 "NOP\n");
 
-        asrtMem("01 9A 78\n" +
+        givenMm("01 9A 78\n" +
                 "11 11 11\n" +
                 "31 22 22\n" +
                 "21 87 A9\n" +
@@ -434,7 +454,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_D__0x09__caseC0() {
+    public void test__DAD_D__0x19__caseC0() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,1234\n" +  // operand 1
@@ -443,7 +463,7 @@ public class CPUTest {
                 "DAD D\n" +       // sum HL=HL+DE, [c=0]
                 "NOP\n");
 
-        asrtMem("01 11 11\n" +
+        givenMm("01 11 11\n" +
                 "11 34 12\n" +
                 "31 22 22\n" +
                 "21 21 43\n" +
@@ -487,7 +507,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_D__0x09__caseC1() {
+    public void test__DAD_D__0x19__caseC1() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,789A\n" +  // operand 1
@@ -496,7 +516,7 @@ public class CPUTest {
                 "DAD D\n" +       // sum HL=HL+DE, [c=1]
                 "NOP\n");
 
-        asrtMem("01 11 11\n" +
+        givenMm("01 11 11\n" +
                 "11 9A 78\n" +
                 "31 22 22\n" +
                 "21 87 A9\n" +
@@ -540,7 +560,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_H__0x09__caseC0() {
+    public void test__DAD_H__0x29__caseC0() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
@@ -549,7 +569,7 @@ public class CPUTest {
                 "DAD H\n" +       // sum HL=HL+HL, [c=0]
                 "NOP\n");
 
-        asrtMem("01 11 11\n" +
+        givenMm("01 11 11\n" +
                 "11 22 22\n" +
                 "31 33 33\n" +
                 "21 34 12\n" +
@@ -593,7 +613,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_H__0x09__caseC1() {
+    public void test__DAD_H__0x29__caseC1() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
@@ -602,7 +622,7 @@ public class CPUTest {
                 "DAD H\n" +       // sum HL=HL+HL, [c=1]
                 "NOP\n");
 
-        asrtMem("01 11 11\n" +
+        givenMm("01 11 11\n" +
                 "11 22 22\n" +
                 "31 33 33\n" +
                 "21 AB 89\n" +
@@ -652,10 +672,11 @@ public class CPUTest {
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,1234\n" + // operand 1
                 "LXI H,4321\n" +  // operand 2 & result
-                "DAD SP\n" +      // sum HL=HL+SP, [c]
+                "DAD SP\n" +      // sum HL=HL+SP, [c=0]
+                //
                 "NOP\n");
 
-        asrtMem("01 11 11\n" +
+        givenMm("01 11 11\n" +
                 "11 22 22\n" +
                 "31 34 12\n" +
                 "21 21 43\n" +
@@ -699,16 +720,16 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_SP__0x09__caseC1() {
+    public void test__DAD_SP__0x39__caseC1() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,789A\n" + // operand 1
                 "LXI H,A987\n" +  // operand 2 & result
-                "DAD SP\n" +      // sum HL=HL+SP, [1]
+                "DAD SP\n" +      // sum HL=HL+SP, [c=1]
                 "NOP\n");
 
-        asrtMem("01 11 11\n" +
+        givenMm("01 11 11\n" +
                 "11 22 22\n" +
                 "31 9A 78\n" +
                 "21 87 A9\n" +
@@ -779,5 +800,245 @@ public class CPUTest {
             cpu.execute();
             accessor.clear();
         }
+    }
+
+    @Test
+    public void test__STAX_B__0x02() {
+        // when
+        givenPr("LXI B,0003\n" +  // working with memory 0x0003
+                "LXI D,1111\n" +  // ignored
+                "LXI SP,2222\n" + // ignored
+                "LXI H,0003\n" +  // M=(HL)=(0x0003)
+                "STAX B\n" +      // copy (BC)=A
+                "NOP\n");
+
+        cpu.A(0x24);
+
+        givenMm("01 03 00\n" +
+                "11 11 11\n" +
+                "31 22 22\n" +
+                "21 03 00\n" +
+                "02\n" +
+                "00");
+
+        assertMemAt(0x0003, "11");
+
+        // when
+        cpu.execute();
+
+        // then
+        assertMemAt(0x0003, "24");
+
+        asrtCpu("BC:   0x0003\n" +
+                "DE:   0x1111\n" +
+                "HL:   0x0003\n" +
+                "AF:   0x2402\n" +
+                "SP:   0x2222\n" +
+                "PC:   0x000E\n" +
+                "B,C:  0x00 0x03\n" +
+                "D,E:  0x11 0x11\n" +
+                "H,L:  0x00 0x03\n" +
+                "M:    0x24\n" +
+                "A,F:  0x24 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00100010 0b00100010\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00000000\n" +
+                "C:    0b00000011\n" +
+                "D:    0b00010001\n" +
+                "E:    0b00010001\n" +
+                "H:    0b00000000\n" +
+                "L:    0b00000011\n" +
+                "M:    0b00100100\n" +
+                "A:    0b00100100\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void test__STAX_D__0x12() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,0003\n" +  // working with memory 0x0003
+                "LXI SP,2222\n" + // ignored
+                "LXI H,0003\n" +  // M=(HL)=(0x0003)
+                "STAX D\n" +      // copy (DE)=A
+                "NOP\n");
+
+        cpu.A(0x24);
+
+        givenMm("01 11 11\n" +
+                "11 03 00\n" +
+                "31 22 22\n" +
+                "21 03 00\n" +
+                "12\n" +
+                "00");
+
+        assertMemAt(0x0003, "11");
+
+        // when
+        cpu.execute();
+
+        // then
+        assertMemAt(0x0003, "24");
+
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x0003\n" +
+                "HL:   0x0003\n" +
+                "AF:   0x2402\n" +
+                "SP:   0x2222\n" +
+                "PC:   0x000E\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x00 0x03\n" +
+                "H,L:  0x00 0x03\n" +
+                "M:    0x24\n" +
+                "A,F:  0x24 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00100010 0b00100010\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00000000\n" +
+                "E:    0b00000011\n" +
+                "H:    0b00000000\n" +
+                "L:    0b00000011\n" +
+                "M:    0b00100100\n" +
+                "A:    0b00100100\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void test__LDAX_B__0x0A() {
+        // when
+        givenPr("LXI B,0003\n" +  // working with memory 0x0003
+                "LXI D,1111\n" +  // ignored
+                "LXI SP,2222\n" + // ignored
+                "LXI H,0003\n" +  // M=(HL)=(0x0003)
+                "LDAX B\n" +      // copy A=(BC)
+                "NOP\n");
+
+        cpu.A(0x24);
+
+        givenMm("01 03 00\n" +
+                "11 11 11\n" +
+                "31 22 22\n" +
+                "21 03 00\n" +
+                "0A\n" +
+                "00");
+
+        assertMemAt(0x0003, "11");
+
+        // when
+        cpu.execute();
+
+        // then
+        assertMemAt(0x0003, "11");
+
+        asrtCpu("BC:   0x0003\n" +
+                "DE:   0x1111\n" +
+                "HL:   0x0003\n" +
+                "AF:   0x1102\n" +
+                "SP:   0x2222\n" +
+                "PC:   0x000E\n" +
+                "B,C:  0x00 0x03\n" +
+                "D,E:  0x11 0x11\n" +
+                "H,L:  0x00 0x03\n" +
+                "M:    0x11\n" +
+                "A,F:  0x11 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00100010 0b00100010\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00000000\n" +
+                "C:    0b00000011\n" +
+                "D:    0b00010001\n" +
+                "E:    0b00010001\n" +
+                "H:    0b00000000\n" +
+                "L:    0b00000011\n" +
+                "M:    0b00010001\n" +
+                "A:    0b00010001\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void test__LDAX_D__0x1A() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,0003\n" +  // working with memory 0x0003
+                "LXI SP,2222\n" + // ignored
+                "LXI H,0003\n" +  // M=(HL)=(0x0003)
+                "LDAX D\n" +      // copy A=(DE)
+                "NOP\n");
+
+        cpu.A(0x24);
+
+        givenMm("01 11 11\n" +
+                "11 03 00\n" +
+                "31 22 22\n" +
+                "21 03 00\n" +
+                "1A\n" +
+                "00");
+
+        assertMemAt(0x0003, "11");
+
+        // when
+        cpu.execute();
+
+        // then
+        assertMemAt(0x0003, "11");
+
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x0003\n" +
+                "HL:   0x0003\n" +
+                "AF:   0x1102\n" +
+                "SP:   0x2222\n" +
+                "PC:   0x000E\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x00 0x03\n" +
+                "H,L:  0x00 0x03\n" +
+                "M:    0x11\n" +
+                "A,F:  0x11 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00100010 0b00100010\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00000000\n" +
+                "E:    0b00000011\n" +
+                "H:    0b00000000\n" +
+                "L:    0b00000011\n" +
+                "M:    0b00010001\n" +
+                "A:    0b00010001\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    private void assertMemAt(int addr, String expected) {
+        assertEquals(expected, hex(cpu.accessor.peekb(addr)));
     }
 }

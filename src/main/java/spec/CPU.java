@@ -136,27 +136,6 @@ public class CPU extends Registry {
             }
             
             switch (bite) {
-                case 0x02: {             // STAX B        (BC)=A, []
-                    pokeb(BC(), A());
-                    ticks += 7;
-                    break;
-                }
-                case 0x0A: {             // LDAX B        A=(BC), []
-                    A(peekb(BC()));
-                    ticks += 7;
-                    break;
-                }
-                case 0x12: {             // STAX D        (DE)=A, []
-                    pokeb(DE(), A());
-                    ticks += 7;
-                    break;
-                }
-                case 0x1A: {             // LDAX D        A=(DE), []
-                    A(peekb(DE()));
-                    ticks += 7;
-                    break;
-                }
-
 
                 case 0x22: {             // SHLD XXYY     (XX,YY)=HL, []
                     pokew(lxi(), HL());

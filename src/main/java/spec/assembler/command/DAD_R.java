@@ -49,7 +49,7 @@ public class DAD_R extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int op2 = r.reg(index(command)).get();
+        int op2 = r.reg(rindex(command)).get();
         int value = calc(r, r.HL(), op2);
         r.HL(value);
     }

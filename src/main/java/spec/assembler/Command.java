@@ -86,7 +86,7 @@ public abstract class Command {
 
     public abstract void apply(int command, Registry r);
 
-    public int index(int command) {
+    public int rindex(int command) {
         return mapper[command];
     }
 }

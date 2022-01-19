@@ -1,10 +1,7 @@
 package spec.assembler;
 
 import spec.WordMath;
-import spec.assembler.command.DAD_R;
-import spec.assembler.command.LXI_R_XXYY;
-import spec.assembler.command.NONE;
-import spec.assembler.command.NOP;
+import spec.assembler.command.*;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -16,14 +13,14 @@ import static java.util.stream.Collectors.toList;
 
 public class Assembler {
 
-    private static final Command[] COMMANDS;
-
-    static {
+    private static final Command[] COMMANDS; static {
         COMMANDS = new Command[0x100];
         add(new NONE());
         add(new NOP());
         add(new LXI_R_XXYY());
         add(new DAD_R());
+        add(new STAX_R());
+        add(new LDAX_R());
     }
 
     private static void add(Command command) {

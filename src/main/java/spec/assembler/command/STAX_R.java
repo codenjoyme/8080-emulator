@@ -8,18 +8,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import static spec.WordMath.hex;
-import static spec.WordMath.reverse;
+public class STAX_R extends Command {
 
-public class LXI_R_XXYY extends Command {
-
-    private static final List<Integer> CODES = Arrays.asList(0x01, 0x11, 0x21, 0x31);
+    private static final List<Integer> CODES = Arrays.asList(0x02, 0x12);
 
     @Override
     public List<Integer> code(Matcher matcher) {
         return new LinkedList<Integer>(){{
             add(codes().get(registers().indexOf(matcher.group(1))));
-            addAll(reverse(hex(matcher.group(2))));
         }};
     }
 
@@ -30,27 +26,27 @@ public class LXI_R_XXYY extends Command {
 
     @Override
     public List<String> registers() {
-        return Arrays.asList("B", "D", "H", "SP");
+        return Arrays.asList("B", "D");
     }
 
     @Override
     public String pattern() {
-        return "LXI (B|D|H|SP),(....)";
+        return "STAX (B|D)";
     }
 
     @Override
     public int size() {
-        return 3;
+        return 1;
     }
 
     @Override
     public int ticks() {
-        return 10;
+        return 7;
     }
 
     @Override
     public void apply(int command, Registry r) {
-        int bite = r.accessor().peekwi(r.rPC);
-        r.reg(rindex(command)).set(bite);
+        int op1 = r.reg(rindex(command)).get();
+        r.accessor().pokeb(op1, r.A());
     }
 }
