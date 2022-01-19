@@ -35,11 +35,6 @@ public class STAX_R extends Command {
     }
 
     @Override
-    public int size() {
-        return 1;
-    }
-
-    @Override
     public int ticks() {
         return 7;
     }
