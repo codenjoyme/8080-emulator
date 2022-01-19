@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import static spec.WordMath.hex;
+import static spec.WordMath.reverse;
 
 public class LXI_R_XXYY extends Command {
 
@@ -14,7 +15,7 @@ public class LXI_R_XXYY extends Command {
     public List<Integer> code(Matcher matcher) {
         return new LinkedList<Integer>(){{
             add(code(matcher.group(1)));
-            addAll(hex(matcher.group(2)));
+            addAll(reverse(hex(matcher.group(2))));
         }};
     }
 

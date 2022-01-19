@@ -1,5 +1,6 @@
 package spec;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,5 +36,10 @@ public class WordMath {
                 add(Integer.parseInt(bites.substring(i * 2, (i + 1) * 2), 16));
             }
         }};
+    }
+
+    public static List<Integer> reverse(List<Integer> bits) {
+        Collections.reverse(bits);
+        return bits;
     }
 }
