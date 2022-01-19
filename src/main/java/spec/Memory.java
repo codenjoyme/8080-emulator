@@ -1,6 +1,7 @@
 package spec;
 
 import static spec.CPU.inc16;
+import static spec.WordMath.hex;
 
 public class Memory {
 
@@ -63,9 +64,5 @@ public class Memory {
             result.append(hex(bites[i]));
         }
         return result.toString();
-    }
-
-    public static String hex(int bite) {
-        return String.format("%02x", bite);
     }
 }

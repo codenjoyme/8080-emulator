@@ -1,5 +1,8 @@
 package spec;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class WordMath {
 
     public static final int WORD = 0xFFFF;
@@ -20,5 +23,17 @@ public class WordMath {
 
     public static int word(int word) {
         return word & WORD;
+    }
+
+    public static String hex(int bite) {
+        return String.format("%02x", bite);
+    }
+
+    public static List<Integer> hex(String bites) {
+        return new LinkedList<Integer>(){{
+            for (int i = 0; i < bites.length() / 2; i++) {
+                add(Integer.parseInt(bites.substring(i * 2, (i + 1) * 2), 16));
+            }
+        }};
     }
 }

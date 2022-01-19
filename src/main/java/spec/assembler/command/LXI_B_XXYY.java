@@ -2,19 +2,20 @@ package spec.assembler.command;
 
 import spec.assembler.Command;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
+
+import static spec.WordMath.hex;
 
 public class LXI_B_XXYY extends Command {
 
     @Override
-    public int[] code(Matcher matcher) {
-        String value = matcher.group(1);
-        int[] result = new int[1 + value.length() / 2];
-        result[0] = 0x01;
-        for (int i = 0; i < result.length - 1; i++) {
-            result[i + 1] = Integer.parseInt(value.substring(i * 2, (i + 1) * 2), 16);
-        }
-        return result;
+    public List<Integer> code(Matcher matcher) {
+        return new LinkedList<Integer>(){{
+            add(0x01);
+            addAll(hex(matcher.group(1)));
+        }};
     }
 
     @Override
