@@ -148,9 +148,9 @@ public class CPUTest {
     }
 
     @Test
-    public void test__LXI_C_XXYY__0x01() {
+    public void test__LXI_D_XXYY__0x01() {
         // when
-        givenPr("LXI C,1234\n" +
+        givenPr("LXI D,1234\n" +
                 "NOP\n");
 
         assertMemory("11 12 34 00");

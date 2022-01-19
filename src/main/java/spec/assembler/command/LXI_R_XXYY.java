@@ -21,7 +21,7 @@ public class LXI_R_XXYY extends Command {
     private Integer code(String reg) {
         switch (reg) {
             case "B": return 0x01;
-            case "C": return 0x11;
+            case "D": return 0x11;
             case "H": return 0x21;
             case "SP": return 0x31;
         }
@@ -30,7 +30,7 @@ public class LXI_R_XXYY extends Command {
 
     @Override
     public String pattern() {
-        return "LXI (B|C|H|SP),(....)";
+        return "LXI (B|D|H|SP),(....)";
     }
 
     @Override
