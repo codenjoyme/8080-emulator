@@ -1829,12 +1829,4 @@ public class CPU extends Registry {
 
         return ans;
     }
-
-    public void startAt(int addr) {
-        PC(addr);
-    }
-
-    public int pc() {
-        return PC();
-    }
 }

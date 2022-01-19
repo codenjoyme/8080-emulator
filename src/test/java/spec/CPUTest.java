@@ -18,12 +18,12 @@ public class CPUTest {
     @Before
     public void setup() {
         accessor = new TestAccessor(() -> {
-            if (cpu.pc() >= stopWhen) {
+            if (cpu.PC() >= stopWhen) {
                 accessor.stopCpu();
             }
         });
         cpu = new CPU(50.1 * 1e-6, accessor);
-        cpu.startAt(START);
+        cpu.PC(START);
         asm = new Assembler();
     }
 
@@ -735,7 +735,7 @@ public class CPUTest {
 
         // when then
         for (int tick = 0; tick < ticks; tick++) {
-            cpu.startAt(0x0000);
+            cpu.PC(0x0000);
             cpu.execute();
             accessor.clear();
         }
