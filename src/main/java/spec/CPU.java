@@ -78,6 +78,9 @@ public class CPU {
                 "D,E:  0x%02x 0x%02x\n" +
                 "H,L:  0x%02x 0x%02x\n" +
                 "A,F:  0x%02x 0x%02x\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b%s 0b%s\n" +
+                "PC:   0b%s 0b%s\n" +
                 "        76543210\n" +
                 "B:    0b%s\n" +
                 "C:    0b%s\n" +
@@ -103,6 +106,8 @@ public class CPU {
                 D(), E(),
                 H(), L(),
                 A, F(),
+                bits(hi(SP)), bits(lo(SP)),
+                bits(hi(PC)), bits(lo(PC)),
                 bits(B()),
                 bits(C()),
                 bits(D()),
