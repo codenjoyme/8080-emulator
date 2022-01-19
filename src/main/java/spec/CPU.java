@@ -156,7 +156,7 @@ public class CPU {
 
     private int peekw(int addr) {
         int t = peekb(addr);
-        addr = inc(addr);
+        addr = inc16(addr);
         return t | (peekb(addr) << 8);
     }
 
@@ -184,9 +184,9 @@ public class CPU {
 
     private int popw() {
         int result = peekb(SP);
-        SP = inc(SP);
+        SP = inc16(SP);
         result |= (peekb(SP) << 8);
-        SP = inc(SP);
+        SP = inc16(SP);
         return result;
     }
 
@@ -207,7 +207,7 @@ public class CPU {
      */
     private int nextCommand() {
         int result = peekb(PC);
-        PC = inc(PC);
+        PC = inc16(PC);
         return result;
     }
 
@@ -216,9 +216,9 @@ public class CPU {
      */
     private int nxtpcw() {
         int result = peekb(PC);
-        PC = inc(PC);
+        PC = inc16(PC);
         result |= (peekb(PC) << 8);
-        PC = inc(PC);
+        PC = inc16(PC);
         return result;
     }
 
@@ -283,7 +283,7 @@ public class CPU {
                         PC = word(PC + d);
                         ticks += 13;
                     } else {
-                        PC = inc(PC);
+                        PC = inc16(PC);
                         ticks += 8;
                     }
                     break;
@@ -301,7 +301,7 @@ public class CPU {
                         PC = word(PC + d);
                         ticks += 12;
                     } else {
-                        PC = inc(PC);
+                        PC = inc16(PC);
                         ticks += 7;
                     }
                     break;
@@ -312,7 +312,7 @@ public class CPU {
                         PC = word(PC + d);
                         ticks += 12;
                     } else {
-                        PC = inc(PC);
+                        PC = inc16(PC);
                         ticks += 7;
                     }
                     break;
@@ -323,7 +323,7 @@ public class CPU {
                         PC = word(PC + d);
                         ticks += 12;
                     } else {
-                        PC = inc(PC);
+                        PC = inc16(PC);
                         ticks += 7;
                     }
                     break;
@@ -334,7 +334,7 @@ public class CPU {
                         PC = word(PC + d);
                         ticks += 12;
                     } else {
-                        PC = inc(PC);
+                        PC = inc16(PC);
                         ticks += 7;
                     }
                     break;
@@ -431,42 +431,42 @@ public class CPU {
 
                 /* INC/DEC * */
                 case 3:    /* INC BC */ {
-                    BC = inc(BC);
+                    BC = inc16(BC);
                     ticks += 6;
                     break;
                 }
                 case 11:    /* DEC BC */ {
-                    BC = dec(BC);
+                    BC = dec16(BC);
                     ticks += 6;
                     break;
                 }
                 case 19:    /* INC DE */ {
-                    DE = inc(DE);
+                    DE = inc16(DE);
                     ticks += 6;
                     break;
                 }
                 case 27:    /* DEC DE */ {
-                    DE = dec(DE);
+                    DE = dec16(DE);
                     ticks += 6;
                     break;
                 }
                 case 35:    /* INC HL */ {
-                    HL = inc(HL);
+                    HL = inc16(HL);
                     ticks += 6;
                     break;
                 }
                 case 43:    /* DEC HL */ {
-                    HL = dec(HL);
+                    HL = dec16(HL);
                     ticks += 6;
                     break;
                 }
                 case 51:    /* INC SP */ {
-                    SP = inc(SP);
+                    SP = inc16(SP);
                     ticks += 6;
                     break;
                 }
                 case 59:    /* DEC SP */ {
-                    SP = dec(SP);
+                    SP = dec16(SP);
                     ticks += 6;
                     break;
                 }
@@ -2026,6 +2026,14 @@ public class CPU {
      */
     private void ccf() {
         tc = !tc;
+    }
+
+    public static int inc16(int word) {
+        return word(++word);
+    }
+
+    public static int dec16(int word) {
+        return word(--word);
     }
 
     /**

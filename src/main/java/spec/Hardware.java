@@ -34,6 +34,7 @@ import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.Hashtable;
 
+import static spec.CPU.inc16;
 import static spec.Constants.*;
 import static spec.WordMath.*;
 
@@ -1568,7 +1569,7 @@ public class Hardware {
     private void pokew(int addr, int word) {
         pokeb(addr, lo(word));
         // увеличиваем адресс на 1 и если он превысил 0xFFFF, то делаем его равным 0x0000
-        addr = inc(addr);
+        addr = inc16(addr);
         pokeb(addr, hi(word));
     }
 

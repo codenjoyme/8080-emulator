@@ -21,12 +21,4 @@ public class WordMath {
     public static int word(int word) {
         return word & WORD;
     }
-
-    public static int inc(int word) {
-        return word(++word);
-    }
-
-    public static int dec(int word) {
-        return word(--word);
-    }
 }
