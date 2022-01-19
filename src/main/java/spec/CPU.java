@@ -211,10 +211,7 @@ public class CPU {
         return result;
     }
 
-    /**
-     * слово из памяти по адресу п-счетчика PC()  и увеличение PC()
-     */
-    private int nxtpcw() {
+    private int LXI() {
         int result = peekb(PC);
         PC = inc16(PC);
         result |= (peekb(PC) << 8);
@@ -269,123 +266,64 @@ public class CPU {
             }
 
             switch (nextCommand()) { 
-                case 0:    /* NOP */ {
+                case 0x00: {               // NOP
                     // каждая операция уменьшает число тактов на
                     // прерывание на свою длительность в тактах
                     ticks += 4;  
                     break;                    
                 }
-                case 16:    /* DJNZ dis */ {
-                    int b = lo(B() - 1);
-                    B(b);
-                    if (b != 0) {
-                        byte d = (byte) nextCommand(); // байт из памяти по адресу п-счетчика PC()
-                        PC = word(PC + d);
-                        ticks += 13;
-                    } else {
-                        PC = inc16(PC);
-                        ticks += 8;
-                    }
+
+                case 0x08: // нет таких команд
+                case 0x10:
+                case 0x18:
+                case 0x20:
+                case 0x28:
+                case 0x30:
+                case 0x38:
+                    break;
+
+                case 0x01: {             // LXI B,XXXX
+                    BC = LXI();
+                    ticks += 10;
                     break;
                 }
-                case 24: /* JR dis */ {
-                    byte d = (byte) nextCommand();  // байт из памяти по адресу п-счетчика PC()
-                    PC = word(PC + d);
-                    ticks += 12;
+                case 0x11: {             // LXI D,XXXX
+                    DE = LXI();
+                    ticks += 10;
                     break;
                 }
-   
-                case 32:    /* JR NZ,dis */ {
-                    if (!tz) {
-                        byte d = (byte) nextCommand(); // байт из памяти по адресу п-счетчика PC()
-                        PC = word(PC + d);
-                        ticks += 12;
-                    } else {
-                        PC = inc16(PC);
-                        ticks += 7;
-                    }
+                case 0x21: {             // LXI H,XXXX
+                    HL = LXI();
+                    ticks += 10;
                     break;
                 }
-                case 40:    /* JR Z,dis */ {
-                    if (tz) {
-                        byte d = (byte) nextCommand(); // байт из памяти по адресу п-счетчика PC()
-                        PC = word(PC + d);
-                        ticks += 12;
-                    } else {
-                        PC = inc16(PC);
-                        ticks += 7;
-                    }
-                    break;
-                }
-                case 48:    /* JR NC,dis */ {
-                    if (!tc) {
-                        byte d = (byte) nextCommand(); // байт из памяти по адресу п-счетчика PC()
-                        PC = word(PC + d);
-                        ticks += 12;
-                    } else {
-                        PC = inc16(PC);
-                        ticks += 7;
-                    }
-                    break;
-                }
-                case 56:    /* JR C,dis */ {
-                    if (tc) {
-                        byte d = (byte) nextCommand();  // байт из памяти по адресу п-счетчика PC()
-                        PC = word(PC + d);
-                        ticks += 12;
-                    } else {
-                        PC = inc16(PC);
-                        ticks += 7;
-                    }
+                case 0x31: {             // LXI SP,XXXX
+                    SP = LXI();
+                    ticks += 10;
                     break;
                 }
 
-                /* LD rr,nn / ADD HL,rr */
-                case 1:    /* LD BC(),nn */ {
-                    // слово из памяти по адресу п-счетчика PC()
-                    BC = nxtpcw();
-                    ticks += 10;
-                    break;
-                }
-                case 9:    /* ADD HL,BC */ {
-                    HL = add16(HL, BC);
+                case 9: {                // DAD B
+                    HL = DAD(HL, BC);
                     ticks += 11;
                     break;
                 }
-                case 17:    /* LD DE,nn */ {
-                    // слово из памяти по адресу п-счетчика PC()
-                    DE = nxtpcw();
-                    ticks += 10;
-                    break;
-                }
-                case 25:    /* ADD HL,DE */ {
-                    HL = add16(HL, DE);
+                case 0x19: {             // DAD D
+                    HL = DAD(HL, DE);
                     ticks += 11;
                     break;
                 }
-                case 33:    /* LD HL,nn */ {
-                    // слово из памяти по адресу п-счетчика PC()
-                    HL = nxtpcw();
-                    ticks += 10;
-                    break;
-                }
-                case 41:    /* ADD HL,HL */ {
-                    int hl = HL;
-                    HL = add16(hl, hl);
+                case 0x29: {             // DAD H
+                    HL = DAD(HL, HL);
                     ticks += 11;
                     break;
                 }
-                case 49:    /* LD SP,nn */ {
-                    // слово из памяти по адресу п-счетчика PC()
-                    SP = nxtpcw();
-                    ticks += 10;
-                    break;
-                }
-                case 57:    /* ADD HL,SP */ {
-                    HL = add16(HL, SP);
+                case 0x39: {             // DAD SP
+                    HL = DAD(HL, SP);
                     ticks += 11;
                     break;
                 }
+
 
                 /* LD (**),A/A,(**) */
                 case 2:    /* LD (BC),A */ {
@@ -409,22 +347,22 @@ public class CPU {
                     break;
                 }
                 case 34:    /* LD (nn),HL */ {
-                    pokew(nxtpcw(), HL);
+                    pokew(LXI(), HL);
                     ticks += 16;
                     break;
                 }
                 case 42:    /* LD HL,(nn) */ {
-                    HL = peekw(nxtpcw());
+                    HL = peekw(LXI());
                     ticks += 16;
                     break;
                 }
                 case 50:    /* LD (nn),A */ {
-                    pokeb(nxtpcw(), A);
+                    pokeb(LXI(), A);
                     ticks += 13;
                     break;
                 }
                 case 58:    /* LD A,(nn) */ {
-                    A = peekb(nxtpcw());
+                    A = peekb(LXI());
                     ticks += 13;
                     break;
                 }
@@ -1422,7 +1360,7 @@ public class CPU {
                 /* JP cc,nn */
                 case 194:    /* JP NZ,nn */ {
                     if (!tz) {
-                        PC = nxtpcw();
+                        PC = LXI();
                     } else {
                         PC = word(PC + 2);
                     }
@@ -1431,7 +1369,7 @@ public class CPU {
                 }
                 case 202:    /* JP Z,nn */ {
                     if (tz) {
-                        PC = nxtpcw();
+                        PC = LXI();
                     } else {
                         PC = word(PC + 2);
                     }
@@ -1440,7 +1378,7 @@ public class CPU {
                 }
                 case 210:    /* JP NC,nn */ {
                     if (!tc) {
-                        PC = nxtpcw();
+                        PC = LXI();
                     } else {
                         PC = word(PC + 2);
                     }
@@ -1449,7 +1387,7 @@ public class CPU {
                 }
                 case 218:    /* JP C,nn */ {
                     if (tc) {
-                        PC = nxtpcw();
+                        PC = LXI();
                     } else {
                         PC = word(PC + 2);
                     }
@@ -1458,7 +1396,7 @@ public class CPU {
                 }
                 case 226:    /* JP PO,nn */ {
                     if (!tp) {
-                        PC = nxtpcw();
+                        PC = LXI();
                     } else {
                         PC = word(PC + 2);
                     }
@@ -1467,7 +1405,7 @@ public class CPU {
                 }
                 case 234:    /* JP PE,nn */ {
                     if (tp) {
-                        PC = nxtpcw();
+                        PC = LXI();
                     } else {
                         PC = word(PC + 2);
                     }
@@ -1476,7 +1414,7 @@ public class CPU {
                 }
                 case 242:    /* JP P,nn */ {
                     if (!ts) {
-                        PC = nxtpcw();
+                        PC = LXI();
                     } else {
                         PC = word(PC + 2);
                     }
@@ -1485,7 +1423,7 @@ public class CPU {
                 }
                 case 250:    /* JP M,nn */ {
                     if (ts) {
-                        PC = nxtpcw();
+                        PC = LXI();
                     } else {
                         PC = word(PC + 2);
                     }
@@ -1539,7 +1477,7 @@ public class CPU {
                 /* CALL cc,nn */
                 case 196: /* CALL NZ,nn */ {
                     if (!tz) {
-                        int t = nxtpcw();
+                        int t = LXI();
                         pushpc();
                         PC = t;
                         ticks += 17;
@@ -1551,7 +1489,7 @@ public class CPU {
                 }
                 case 204: /* CALL Z,nn */ {
                     if (tz) {
-                        int t = nxtpcw();
+                        int t = LXI();
                         pushpc();
                         PC = t;
                         ticks += 17;
@@ -1563,7 +1501,7 @@ public class CPU {
                 }
                 case 212: /* CALL NC,nn */ {
                     if (!tc) {
-                        int t = nxtpcw();
+                        int t = LXI();
                         pushpc();
                         PC = t;
                         ticks += 17;
@@ -1575,7 +1513,7 @@ public class CPU {
                 }
                 case 220: /* CALL C,nn */ {
                     if (tc) {
-                        int t = nxtpcw();
+                        int t = LXI();
                         pushpc();
                         PC = t;
                         ticks += 17;
@@ -1587,7 +1525,7 @@ public class CPU {
                 }
                 case 228: /* CALL PO,nn */ {
                     if (!tp) {
-                        int t = nxtpcw();
+                        int t = LXI();
                         pushpc();
                         PC = t;
                         ticks += 17;
@@ -1599,7 +1537,7 @@ public class CPU {
                 }
                 case 236: /* CALL PE,nn */ {
                     if (tp) {
-                        int t = nxtpcw();
+                        int t = LXI();
                         pushpc();
                         PC = t;
                         ticks += 17;
@@ -1611,7 +1549,7 @@ public class CPU {
                 }
                 case 244: /* CALL P,nn */ {
                     if (!ts) {
-                        int t = nxtpcw();
+                        int t = LXI();
                         pushpc();
                         PC = t;
                         ticks += 17;
@@ -1623,7 +1561,7 @@ public class CPU {
                 }
                 case 252: /* CALL M,nn */ {
                     if (ts) {
-                        int t = nxtpcw();
+                        int t = LXI();
                         pushpc();
                         PC = t;
                         ticks += 17;
@@ -1641,7 +1579,7 @@ public class CPU {
                     break;
                 }
                 case 205:    /* CALL nn */ {
-                    int t = nxtpcw();
+                    int t = LXI();
                     pushpc();
                     PC = t;
                     ticks += 17;
@@ -2068,15 +2006,11 @@ public class CPU {
         return ans;
     }
 
-    /**
-     * Add - (NOT CHECKED)
-     */
-    private int add16(int a, int b) {
+    private int DAD(int a, int b) {
         int lans = a + b;
         int ans = word(lans);
 
         tc = (lans & x10000) != 0;
-        th = (((a & x0FFF) + (b & x0FFF)) & x1000) != 0;
 
         return ans;
     }
