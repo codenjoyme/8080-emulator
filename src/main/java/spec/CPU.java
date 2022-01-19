@@ -266,7 +266,7 @@ public class CPU {
             }
 
             switch (nextCommand()) { 
-                case 0x00: {               // NOP
+                case 0x00: {             // NOP
                     // каждая операция уменьшает число тактов на
                     // прерывание на свою длительность в тактах
                     ticks += 4;  
@@ -282,90 +282,90 @@ public class CPU {
                 case 0x38:
                     break;
 
-                case 0x01: {             // LXI B,XXXX
+                case 0x01: {             // LXI B,XXYY    B=XX, C=YY, []
                     BC = LXI();
                     ticks += 10;
                     break;
                 }
-                case 0x11: {             // LXI D,XXXX
+                case 0x11: {             // LXI D,XXYY    D=XX, E=YY, []
                     DE = LXI();
                     ticks += 10;
                     break;
                 }
-                case 0x21: {             // LXI H,XXXX
+                case 0x21: {             // LXI H,XXYY    H=XX, L=YY, []
                     HL = LXI();
                     ticks += 10;
                     break;
                 }
-                case 0x31: {             // LXI SP,XXXX
+                case 0x31: {             // LXI SP,XXYY   SP=XXYY, []
                     SP = LXI();
                     ticks += 10;
                     break;
                 }
 
-                case 9: {                // DAD B
+                case 9: {                // DAD B         HL=HL+BC, [c]
                     HL = DAD(HL, BC);
                     ticks += 11;
                     break;
                 }
-                case 0x19: {             // DAD D
+                case 0x19: {             // DAD D         HL=HL+DE, [c]
                     HL = DAD(HL, DE);
                     ticks += 11;
                     break;
                 }
-                case 0x29: {             // DAD H
+                case 0x29: {             // DAD H         HL=HL+HL, [c]
                     HL = DAD(HL, HL);
                     ticks += 11;
                     break;
                 }
-                case 0x39: {             // DAD SP
+                case 0x39: {             // DAD SP        HL=HL+SP, [c]
                     HL = DAD(HL, SP);
                     ticks += 11;
                     break;
                 }
 
 
-                /* LD (**),A/A,(**) */
-                case 2:    /* LD (BC),A */ {
+                case 0x02: {             // STAX B        (BC)=A, []
                     pokeb(BC, A);
                     ticks += 7;
                     break;
                 }
-                case 10:    /* LD A,(BC) */ {
+                case 0x0A: {             // LDAX B        A=(BC), []
                     A = peekb(BC);
                     ticks += 7;
                     break;
                 }
-                case 18:    /* LD (DE),A */ {
+                case 0x12: {             // STAX D        (DE)=A, []
                     pokeb(DE, A);
                     ticks += 7;
                     break;
                 }
-                case 26:    /* LD A,(DE) */ {
+                case 0x1A: {             // LDAX D        A=(DE), []
                     A = peekb(DE);
                     ticks += 7;
                     break;
                 }
-                case 34:    /* LD (nn),HL */ {
+                case 0x22: {             // SHLD XXYY     (XX,YY)=HL, []
                     pokew(LXI(), HL);
                     ticks += 16;
                     break;
                 }
-                case 42:    /* LD HL,(nn) */ {
+                case 0x2A: {             // LHLD XXYY     HL=(XX,YY), []
                     HL = peekw(LXI());
                     ticks += 16;
                     break;
                 }
-                case 50:    /* LD (nn),A */ {
+                case 50: {
                     pokeb(LXI(), A);
                     ticks += 13;
                     break;
                 }
-                case 58:    /* LD A,(nn) */ {
+                case 58: {
                     A = peekb(LXI());
                     ticks += 13;
                     break;
                 }
+
 
                 /* INC/DEC * */
                 case 3:    /* INC BC */ {
