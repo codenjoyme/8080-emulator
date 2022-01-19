@@ -8,8 +8,12 @@ public class TestAccessor implements Accessor {
 
     public TestAccessor(Runnable onInterrupt) {
         this.onInterrupt = onInterrupt;
-        working = true;
+        clear();
         memory = new TestMemory(65536);
+    }
+
+    public void clear() {
+        working = true;
     }
 
     @Override

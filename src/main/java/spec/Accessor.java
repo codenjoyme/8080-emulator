@@ -20,4 +20,19 @@ public interface Accessor {
         addr = inc16(addr);
         pokeb(addr, hi(word));
     }
+
+    default int peekw(int addr) {
+        int lo = peekb(addr);
+        addr = inc16(addr);
+        int hi = peekb(addr) << 8;
+        return lo | hi;
+    }
+
+    default int peekwi(Reg r) {
+        int result = peekb(r.get());
+        r.set(inc16(r.get()));
+        result |= peekb(r.get()) << 8;
+        r.set(inc16(r.get()));
+        return result;
+    }
 }

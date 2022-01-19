@@ -4,8 +4,12 @@ package spec;
  * @(#)Z80.java 1.1 27/04/97 Adam Davidson & Andrew Pollard
  */
 
+import spec.assembler.Assembler;
+import spec.assembler.Command;
+
 import static spec.Constants.*;
-import static spec.WordMath.*;
+import static spec.WordMath.lo;
+import static spec.WordMath.word;
 
 /**
  * <p>The Z80 class emulates the Zilog Z80 microprocessor.</p>
@@ -14,31 +18,9 @@ import static spec.WordMath.*;
  * @version 1.1 27 Apr 1997
  */
 
-public class CPU {
+public class CPU extends Registry {
 
-    private final Accessor accessor;
-
-    public CPU(double clockFrequencyInMHz, Accessor accessor) {
-        // Количество тактов на 1 прерывание, которое происходит 50 раз в секунду.
-        // 1000000/50 раз в секунду
-        interrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);
-        this.accessor = accessor;
-    }
-
-    private int interrupt;
-
-    private static final int T0c = x01; // Разряд Tc = 1, если был перенос или заем
-    private static final int T11 = x02; // Всегда 1
-    private static final int T2p = x04; // Разряд Tp = 1, если число единиц в результате четно
-    private static final int T30 = x08; // Всегда 0
-    private static final int T4h = x10; // Разряд Th = 1, если был перенос из старшей тетрады в младшую
-    private static final int T50 = x20; // Всегда 0
-    private static final int T6z = x40; // Разряд Tz = 1, если результат = 0
-    private static final int T7s = x80; // Разряд Ts = 1, если результат отрицательный (первый бит результата = 1)
-
-    private static final boolean[] parity = new boolean[256];
-
-    static {
+    private static final boolean[] parity = new boolean[256]; static {
         for (int i = 0; i < 256; i++) {
             boolean p = true;
             for (int j = 0; j < 8; j++) {
@@ -49,195 +31,24 @@ public class CPU {
             parity[i] = p;
         }
     }
+    
+    private int interrupt;
+    private Assembler asm;
 
-    public String toString() {
-        return String.format(
-                "BC: 0x%04X\n" +
-                "DE: 0x%04X\n" +
-                "HL: 0x%04X\n" +
-                "AF: 0x%04X\n" +
-                "SP: 0x%04X\n" +
-                "PC: 0x%04X\n",
-                BC,
-                DE,
-                HL,
-                AF(),
-                SP,
-                PC);
+    public CPU(double clockFrequencyInMHz, Accessor accessor) {
+        super(accessor);
+        // Количество тактов на 1 прерывание, которое происходит 50 раз в секунду.
+        // 1000000/50 раз в секунду
+        interrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);
+        asm = new Assembler();
     }
-
-    public String toStringDetails() {
-        return String.format(
-                "BC:   0x%04X\n" +
-                "DE:   0x%04X\n" +
-                "HL:   0x%04X\n" +
-                "AF:   0x%04X\n" +
-                "SP:   0x%04X\n" +
-                "PC:   0x%04X\n" +
-                "B,C:  0x%02X 0x%02X\n" +
-                "D,E:  0x%02X 0x%02X\n" +
-                "H,L:  0x%02X 0x%02X\n" +
-                "M:    0x%02X\n" +
-                "A,F:  0x%02X 0x%02X\n" +
-                "        76543210   76543210\n" +
-                "SP:   0b%s 0b%s\n" +
-                "PC:   0b%s 0b%s\n" +
-                "        76543210\n" +
-                "B:    0b%s\n" +
-                "C:    0b%s\n" +
-                "D:    0b%s\n" +
-                "E:    0b%s\n" +
-                "H:    0b%s\n" +
-                "L:    0b%s\n" +
-                "M:    0b%s\n" +
-                "A:    0b%s\n" +
-                "        sz0h0p1c\n" +
-                "F:    0b%s\n" +
-                "ts:   %s\n" +
-                "tz:   %s\n" +
-                "th:   %s\n" +
-                "tp:   %s\n" +
-                "tc:   %s\n",
-                BC,
-                DE,
-                HL,
-                AF(),
-                SP,
-                PC,
-                B(), C(),
-                D(), E(),
-                H(), L(),
-                M(),
-                A, F(),
-                bits(hi(SP)), bits(lo(SP)),
-                bits(hi(PC)), bits(lo(PC)),
-                bits(B()),
-                bits(C()),
-                bits(D()),
-                bits(E()),
-                bits(H()),
-                bits(L()),
-                bits(M()),
-                bits(A),
-                bits(F()),
-                ts,
-                tz,
-                th,
-                tp,
-                tc);
-    }
-
-    private String bits(int f) {
-        return String.format("%8s", Integer.toBinaryString(f)).replaceAll(" ", "0");
-    }
-
-    private int A = 0;
-    private int HL = 0;
-    private int BC = 0;
-    private int DE = 0;
-
-    private boolean ts = false;
-    private boolean tz = false;
-    private boolean th = false;
-    private boolean tp = false;
-    private boolean tc = false;
-
-    private int SP = 0;
-    private int PC = START_POINT;
-
-    private int AF() {
-        return merge(A, F());
-    }
-
-    private void AF(int word) {
-        A = word >> 8;
-        F(lo(word));
-    }
-
-    private int F() {
-        return (ts ? T7s : 0) |
-                (tz ? T6z : 0) |
-                (false ? T50 : 0) |
-                (th ? T4h : 0) |
-                (false ? T30 : 0) |
-                (tp ? T2p : 0) |
-                (true ? T11 : 0) |
-                (tc ? T0c : 0);
-    }
-
-    private void F(int bite) {
-        ts = (bite & T7s) != 0;
-        tz = (bite & T6z) != 0;
-        th = (bite & T4h) != 0;
-        tp = (bite & T2p) != 0;
-        tc = (bite & T0c) != 0;
-    }
-
-    private int B() {
-        return hi(BC);
-    }
-
-    private int M() {
-        return accessor.peekb(HL);
-    }
-
-    private void B(int bite) {
-        BC = merge(bite, C());
-    }
-
-    private int C() {
-        return lo(BC);
-    }
-
-    private void C(int bite) {
-        BC = merge(B(), bite);
-    }
-
-    private int D() {
-        return hi(DE);
-    }
-
-    private void D(int bite) {
-        DE = merge(bite, E());
-    }
-
-    private int E() {
-        return lo(DE);
-    }
-
-    private void E(int bite) {
-        DE = merge(D(), bite);
-    }
-
-    private int H() {
-        return hi(HL);
-    }
-
-    private void H(int bite) {
-        HL = merge(bite, L());
-    }
-
-    private int L() {
-        return lo(HL);
-    }
-
-    private void L(int bite) {
-        HL = merge(H(), bite);
-    }
-
-    // его часто суммируют, а потому тут этот метод
-    private int tc() {
-        return tc ? 1 : 0;
+    
+    private int peekb(int addr) {
+        return accessor.peekb(addr);
     }
 
     private int peekw(int addr) {
-        int t = peekb(addr);
-        addr = inc16(addr);
-        return t | (peekb(addr) << 8);
-    }
-
-    private int peekb(int addr) {
-        return accessor.peekb(addr);
+        return accessor.peekw(addr);
     }
 
     private void pokew(int addr, int word) {
@@ -248,60 +59,35 @@ public class CPU {
         accessor.pokeb(addr, bite);
     }
 
-
-    /**
-     * Stack access
-     */
     private void pushw(int word) {
-        SP = word(SP - 2);
-        pokew(SP, word);
+        SP(word(SP() - 2));
+        pokew(SP(), word);
     }
 
+    private int peekwi(Reg r) {
+        return accessor.peekwi(r);
+    }
 
     private int popw() {
-        int result = peekb(SP);
-        SP = inc16(SP);
-        result |= (peekb(SP) << 8);
-        SP = inc16(SP);
-        return result;
+        return peekwi(rSP);
     }
 
-    /**
-     * Call stack
-     */
     private void pushpc() {
-        pushw(PC);
+        pushw(PC());
     }
 
     private void poppc() {
-        PC = popw();
+        PC(popw());
     }
 
     private int nextCommand() {
-        int result = peekb(PC);
-        PC = inc16(PC);
+        int result = peekb(PC());
+        PC(inc16(PC()));
         return result;
     }
 
-    private int LXI() {
-        int result = peekb(PC);
-        PC = inc16(PC);
-        result |= (peekb(PC) << 8);
-        PC = inc16(PC);
-        return result;
-    }
-
-    /**
-     * Reset all registers to power on state
-     */
-    public void reset() {
-        PC = START_POINT;
-        SP = 0;
-        A = 0;
-        F(0);
-        BC = 0;
-        DE = 0;
-        HL = 0;
+    private int lxi() {
+        return peekwi(rPC);
     }
 
     // ввод из порта
@@ -339,14 +125,17 @@ public class CPU {
                 ticks -= interrupt;
             }
 
-            switch (nextCommand()) { 
-                case 0x00: {             // NOP
-                    // каждая операция уменьшает число тактов на
-                    // прерывание на свою длительность в тактах
-                    ticks += 4;  
-                    break;                    
-                }
-
+            int bite = nextCommand();
+            Command command = asm.find(bite);
+            if (command != null) {
+                command.apply(bite, this);
+                // каждая операция уменьшает число тактов на
+                // прерывание на свою длительность в тактах
+                ticks += command.ticks();
+                continue;
+            }
+            
+            switch (bite) {
                 case 0x08: // нет таких команд
                 case 0x10:
                 case 0x18:
@@ -356,92 +145,47 @@ public class CPU {
                 case 0x38:
                     break;
 
-
-                case 0x01: {             // LXI B,XXYY    B=XX, C=YY, []
-                    BC = LXI();
-                    ticks += 10;
-                    break;
-                }
-                case 0x11: {             // LXI D,XXYY    D=XX, E=YY, []
-                    DE = LXI();
-                    ticks += 10;
-                    break;
-                }
-                case 0x21: {             // LXI H,XXYY    H=XX, L=YY, []
-                    HL = LXI();
-                    ticks += 10;
-                    break;
-                }
-                case 0x31: {             // LXI SP,XXYY   SP=XXYY, []
-                    SP = LXI();
-                    ticks += 10;
-                    break;
-                }
-
-
-                case 0x09: {             // DAD B         HL=HL+BC, [c]
-                    HL = DAD(HL, BC);
-                    ticks += 11;
-                    break;
-                }
-                case 0x19: {             // DAD D         HL=HL+DE, [c]
-                    HL = DAD(HL, DE);
-                    ticks += 11;
-                    break;
-                }
-                case 0x29: {             // DAD H         HL=HL+HL, [c]
-                    HL = DAD(HL, HL);
-                    ticks += 11;
-                    break;
-                }
-                case 0x39: {             // DAD SP        HL=HL+SP, [c]
-                    HL = DAD(HL, SP);
-                    ticks += 11;
-                    break;
-                }
-
-
                 case 0x02: {             // STAX B        (BC)=A, []
-                    pokeb(BC, A);
+                    pokeb(BC(), A());
                     ticks += 7;
                     break;
                 }
                 case 0x0A: {             // LDAX B        A=(BC), []
-                    A = peekb(BC);
+                    A(peekb(BC()));
                     ticks += 7;
                     break;
                 }
                 case 0x12: {             // STAX D        (DE)=A, []
-                    pokeb(DE, A);
+                    pokeb(DE(), A());
                     ticks += 7;
                     break;
                 }
                 case 0x1A: {             // LDAX D        A=(DE), []
-                    A = peekb(DE);
+                    A(peekb(DE()));
                     ticks += 7;
                     break;
                 }
 
 
                 case 0x22: {             // SHLD XXYY     (XX,YY)=HL, []
-                    pokew(LXI(), HL);
+                    pokew(lxi(), HL());
                     ticks += 16;
                     break;
                 }
                 case 0x2A: {             // LHLD XXYY     HL=(XX,YY), []
-                    HL = peekw(LXI());
+                    HL(peekw(lxi()));
                     ticks += 16;
                     break;
                 }
 
 
                 case 50: {
-                    pokeb(LXI(), A);
+                    pokeb(lxi(), A());
                     ticks += 13;
                     break;
                 }
                 case 58: {
-                    A = peekb(LXI());
+                    A(peekb(lxi()));
                     ticks += 13;
                     break;
                 }
@@ -449,42 +193,42 @@ public class CPU {
 
                 /* INC/DEC * */
                 case 3:    /* INC BC */ {
-                    BC = inc16(BC);
+                    BC(inc16(BC()));
                     ticks += 6;
                     break;
                 }
                 case 11:    /* DEC BC */ {
-                    BC = dec16(BC);
+                    BC(dec16(BC()));
                     ticks += 6;
                     break;
                 }
                 case 19:    /* INC DE */ {
-                    DE = inc16(DE);
+                    DE(inc16(DE()));
                     ticks += 6;
                     break;
                 }
                 case 27:    /* DEC DE */ {
-                    DE = dec16(DE);
+                    DE(dec16(DE()));
                     ticks += 6;
                     break;
                 }
                 case 35:    /* INC HL */ {
-                    HL = inc16(HL);
+                    HL(inc16(HL()));
                     ticks += 6;
                     break;
                 }
                 case 43:    /* DEC HL */ {
-                    HL = dec16(HL);
+                    HL(dec16(HL()));
                     ticks += 6;
                     break;
                 }
                 case 51:    /* INC SP */ {
-                    SP = inc16(SP);
+                    SP(inc16(SP()));
                     ticks += 6;
                     break;
                 }
                 case 59:    /* DEC SP */ {
-                    SP = dec16(SP);
+                    SP(dec16(SP()));
                     ticks += 6;
                     break;
                 }
@@ -521,12 +265,12 @@ public class CPU {
                     break;
                 }
                 case 52:    /* INC (HL) */ {
-                    pokeb(HL, inc8(peekb(HL)));
+                    pokeb(HL(), inc8(peekb(HL())));
                     ticks += 11;
                     break;
                 }
                 case 60:    /* INC A() */ {
-                    A = inc8(A);
+                    A(inc8(A()));
                     ticks += 4;
                     break;
                 }
@@ -563,13 +307,13 @@ public class CPU {
                     break;
                 }
                 case 53:    /* DEC (HL) */ {
-                    int hl = HL;
+                    int hl = HL();
                     pokeb(hl, dec8(peekb(hl)));
                     ticks += 11;
                     break;
                 }
                 case 61:    /* DEC A() */ {
-                    A = dec8(A);
+                    A(dec8(A()));
                     ticks += 4;
                     break;
                 }
@@ -606,12 +350,12 @@ public class CPU {
                     break;
                 }
                 case 54:    /* LD (HL),n */ {
-                    pokeb(HL, nextCommand());
+                    pokeb(HL(), nextCommand());
                     ticks += 10;
                     break;
                 }
                 case 62:    /* LD A,n */ {
-                    A = nextCommand();
+                    A(nextCommand());
                     ticks += 7;
                     break;
                 }
@@ -689,12 +433,12 @@ public class CPU {
                     break;
                 }
                 case 70:    /* LD B,(HL) */ {
-                    B(peekb(HL));
+                    B(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 71:    /* LD B,A */ {
-                    B(A);
+                    B(A());
                     ticks += 4;
                     break;
                 }
@@ -730,12 +474,12 @@ public class CPU {
                     break;
                 }
                 case 78:    /* LD C,(HL) */ {
-                    C(peekb(HL));
+                    C(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 79:    /* LD C,A */ {
-                    C(A);
+                    C(A());
                     ticks += 4;
                     break;
                 }
@@ -771,12 +515,12 @@ public class CPU {
                     break;
                 }
                 case 86:    /* LD D,(HL) */ {
-                    D(peekb(HL));
+                    D(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 87:    /* LD D,A */ {
-                    D(A);
+                    D(A());
                     ticks += 4;
                     break;
                 }
@@ -812,12 +556,12 @@ public class CPU {
                     break;
                 }
                 case 94:    /* LD E,(HL) */ {
-                    E(peekb(HL));
+                    E(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 95:    /* LD E,A */ {
-                    E(A);
+                    E(A());
                     ticks += 4;
                     break;
                 }
@@ -853,12 +597,12 @@ public class CPU {
                     break;
                 }
                 case 102:    /* LD H,(HL) */ {
-                    H(peekb(HL));
+                    H(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 103:    /* LD H,A */ {
-                    H(A);
+                    H(A());
                     ticks += 4;
                     break;
                 }
@@ -894,44 +638,44 @@ public class CPU {
                     break;
                 }
                 case 110:    /* LD L,(HL) */ {
-                    L(peekb(HL));
+                    L(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 111:    /* LD L,A */ {
-                    L(A);
+                    L(A());
                     ticks += 4;
                     break;
                 }
 
                 /* LD (HL),* */
                 case 112:    /* LD (HL),B */ {
-                    pokeb(HL, B());
+                    pokeb(HL(), B());
                     ticks += 7;
                     break;
                 }
                 case 113:    /* LD (HL),C */ {
-                    pokeb(HL, C());
+                    pokeb(HL(), C());
                     ticks += 7;
                     break;
                 }
                 case 114:    /* LD (HL),D */ {
-                    pokeb(HL, D());
+                    pokeb(HL(), D());
                     ticks += 7;
                     break;
                 }
                 case 115:    /* LD (HL),E */ {
-                    pokeb(HL, E());
+                    pokeb(HL(), E());
                     ticks += 7;
                     break;
                 }
                 case 116:    /* LD (HL),H */ {
-                    pokeb(HL, H());
+                    pokeb(HL(), H());
                     ticks += 7;
                     break;
                 }
                 case 117:    /* LD (HL),L */ {
-                    pokeb(HL, L());
+                    pokeb(HL(), L());
                     ticks += 7;
                     break;
                 }
@@ -941,44 +685,44 @@ public class CPU {
                     break;
                 }
                 case 119:    /* LD (HL),A */ {
-                    pokeb(HL, A);
+                    pokeb(HL(), A());
                     ticks += 7;
                     break;
                 }
 
                 /* LD A,* */
                 case 120:    /* LD A,B */ {
-                    A = B();
+                    A(B());
                     ticks += 4;
                     break;
                 }
                 case 121:    /* LD A,C */ {
-                    A = C();
+                    A(C());
                     ticks += 4;
                     break;
                 }
                 case 122:    /* LD A,D */ {
-                    A = D();
+                    A(D());
                     ticks += 4;
                     break;
                 }
                 case 123:    /* LD A,E */ {
-                    A = E();
+                    A(E());
                     ticks += 4;
                     break;
                 }
                 case 124:    /* LD A,H */ {
-                    A = H();
+                    A(H());
                     ticks += 4;
                     break;
                 }
                 case 125:    /* LD A,L */ {
-                    A = L();
+                    A(L());
                     ticks += 4;
                     break;
                 }
                 case 126:    /* LD A,(HL) */ {
-                    A = peekb(HL);
+                    A(peekb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -1019,12 +763,12 @@ public class CPU {
                     break;
                 }
                 case 134:    /* ADD A,(HL) */ {
-                    add_a(peekb(HL));
+                    add_a(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 135:    /* ADD A,A */ {
-                    add_a(A);
+                    add_a(A());
                     ticks += 4;
                     break;
                 }
@@ -1061,12 +805,12 @@ public class CPU {
                     break;
                 }
                 case 142:    /* ADC A,(HL) */ {
-                    adc_a(peekb(HL));
+                    adc_a(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 143:    /* ADC A,A */ {
-                    adc_a(A);
+                    adc_a(A());
                     ticks += 4;
                     break;
                 }
@@ -1103,12 +847,12 @@ public class CPU {
                     break;
                 }
                 case 150:    /* SUB (HL) */ {
-                    sub_a(peekb(HL));
+                    sub_a(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 151:    /* SUB A() */ {
-                    sub_a(A);
+                    sub_a(A());
                     ticks += 4;
                     break;
                 }
@@ -1145,12 +889,12 @@ public class CPU {
                     break;
                 }
                 case 158:    /* SBC A,(HL) */ {
-                    sbc_a(peekb(HL));
+                    sbc_a(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 159:    /* SBC A,A */ {
-                    sbc_a(A);
+                    sbc_a(A());
                     ticks += 4;
                     break;
                 }
@@ -1187,12 +931,12 @@ public class CPU {
                     break;
                 }
                 case 166:    /* AND (HL) */ {
-                    and_a(peekb(HL));
+                    and_a(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 167:    /* AND A() */ {
-                    and_a(A);
+                    and_a(A());
                     ticks += 4;
                     break;
                 }
@@ -1229,12 +973,12 @@ public class CPU {
                     break;
                 }
                 case 174:    /* XOR (HL) */ {
-                    xor_a(peekb(HL));
+                    xor_a(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 175:    /* XOR A() */ {
-                    xor_a(A);
+                    xor_a(A());
                     ticks += 4;
                     break;
                 }
@@ -1271,12 +1015,12 @@ public class CPU {
                     break;
                 }
                 case 182:    /* OR (HL) */ {
-                    or_a(peekb(HL));
+                    or_a(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 183:    /* OR A() */ {
-                    or_a(A);
+                    or_a(A());
                     ticks += 4;
                     break;
                 }
@@ -1313,19 +1057,19 @@ public class CPU {
                     break;
                 }
                 case 190:    /* CP (HL) */ {
-                    cp_a(peekb(HL));
+                    cp_a(peekb(HL()));
                     ticks += 7;
                     break;
                 }
                 case 191:    /* CP A() */ {
-                    cp_a(A);
+                    cp_a(A());
                     ticks += 4;
                     break;
                 }
 
                 /* RET cc */
                 case 192:    /* RET NZ */ {
-                    if (!tz) {
+                    if (!tz()) {
                         poppc();
                         ticks += 11;
                     } else {
@@ -1334,7 +1078,7 @@ public class CPU {
                     break;
                 }
                 case 200:    /* RET Z */ {
-                    if (tz) {
+                    if (tz()) {
                         poppc();
                         ticks += 11;
                     } else {
@@ -1343,7 +1087,7 @@ public class CPU {
                     break;
                 }
                 case 208:    /* RET NC */ {
-                    if (!tc) {
+                    if (!tc()) {
                         poppc();
                         ticks += 11;
                     } else {
@@ -1352,7 +1096,7 @@ public class CPU {
                     break;
                 }
                 case 216:    /* RET C */ {
-                    if (tc) {
+                    if (tc()) {
                         poppc();
                         ticks += 11;
                     } else {
@@ -1361,7 +1105,7 @@ public class CPU {
                     break;
                 }
                 case 224:    /* RET PO */ {
-                    if (!tp) {
+                    if (!tp()) {
                         poppc();
                         ticks += 11;
                     } else {
@@ -1370,7 +1114,7 @@ public class CPU {
                     break;
                 }
                 case 232:    /* RET PE */ {
-                    if (tp) {
+                    if (tp()) {
                         poppc();
                         ticks += 11;
                     } else {
@@ -1379,7 +1123,7 @@ public class CPU {
                     break;
                 }
                 case 240:    /* RET P */ {
-                    if (!ts) {
+                    if (!ts()) {
                         poppc();
                         ticks += 11;
                     } else {
@@ -1388,7 +1132,7 @@ public class CPU {
                     break;
                 }
                 case 248:    /* RET M */ {
-                    if (ts) {
+                    if (ts()) {
                         poppc();
                         ticks += 11;
                     } else {
@@ -1399,7 +1143,7 @@ public class CPU {
 
                 /* POP,Various */
                 case 193:    /* POP BC */ {
-                    BC = popw();
+                    BC(popw());
                     ticks += 10;
                     break;
                 }
@@ -1409,7 +1153,7 @@ public class CPU {
                     break;
                 }
                 case 209:    /* POP DE */ {
-                    DE = popw();
+                    DE(popw());
                     ticks += 10;
                     break;
                 }
@@ -1417,12 +1161,12 @@ public class CPU {
                     break;
                 }
                 case 225:    /* POP HL */ {
-                    HL = popw();
+                    HL(popw());
                     ticks += 10;
                     break;
                 }
                 case 233: /* JP (HL) */ {
-                    PC = HL;
+                    PC(HL());
                     ticks += 4;
                     break;
                 }
@@ -1432,80 +1176,80 @@ public class CPU {
                     break;
                 }
                 case 249:    /* LD SP,HL */ {
-                    SP = HL;
+                    SP(HL());
                     ticks += 6;
                     break;
                 }
 
                 /* JP cc,nn */
                 case 194:    /* JP NZ,nn */ {
-                    if (!tz) {
-                        PC = LXI();
+                    if (!tz()) {
+                        PC(lxi());
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                     }
                     ticks += 10;
                     break;
                 }
                 case 202:    /* JP Z,nn */ {
-                    if (tz) {
-                        PC = LXI();
+                    if (tz()) {
+                        PC(lxi());
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                     }
                     ticks += 10;
                     break;
                 }
                 case 210:    /* JP NC,nn */ {
-                    if (!tc) {
-                        PC = LXI();
+                    if (!tc()) {
+                        PC(lxi());
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                     }
                     ticks += 10;
                     break;
                 }
                 case 218:    /* JP C,nn */ {
-                    if (tc) {
-                        PC = LXI();
+                    if (tc()) {
+                        PC(lxi());
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                     }
                     ticks += 10;
                     break;
                 }
                 case 226:    /* JP PO,nn */ {
-                    if (!tp) {
-                        PC = LXI();
+                    if (!tp()) {
+                        PC(lxi());
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                     }
                     ticks += 10;
                     break;
                 }
                 case 234:    /* JP PE,nn */ {
-                    if (tp) {
-                        PC = LXI();
+                    if (tp()) {
+                        PC(lxi());
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                     }
                     ticks += 10;
                     break;
                 }
                 case 242:    /* JP P,nn */ {
-                    if (!ts) {
-                        PC = LXI();
+                    if (!ts()) {
+                        PC(lxi());
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                     }
                     ticks += 10;
                     break;
                 }
                 case 250:    /* JP M,nn */ {
-                    if (ts) {
-                        PC = LXI();
+                    if (ts()) {
+                        PC(lxi());
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                     }
                     ticks += 10;
                     break;
@@ -1513,7 +1257,7 @@ public class CPU {
                 
                 /* Various */
                 case 195:    /* JP nn */ {
-                    PC = peekw(PC);
+                    PC(peekw(PC()));
                     ticks += 10;
                     break;
                 }
@@ -1521,27 +1265,27 @@ public class CPU {
                     break;
                 }
                 case 211:    /* OUT (n),A */ {
-                    accessor.outb(nextCommand(), A);
+                    accessor.outb(nextCommand(), A());
                     ticks += 11;
                     break;
                 }
                 case 219:    /* IN A,(n) */ {
-                    A = inb((A << 8) | nextCommand());
+                    A(inb((A() << 8) | nextCommand()));
                     ticks += 11;
                     break;
                 }
                 case 227:    /* EX (SP),HL */ {
-                    int t = HL;
-                    int sp = SP;
-                    HL = peekw(sp);
+                    int t = HL();
+                    int sp = SP();
+                    HL(peekw(sp));
                     pokew(sp, t);
                     ticks += 19;
                     break;
                 }
                 case 235:    /* EX DE,HL */ {
-                    int t = HL;
-                    HL = DE;
-                    DE = t;
+                    int t = HL();
+                    HL(DE());
+                    DE(t);
                     ticks += 4;
                     break;
                 }
@@ -1556,97 +1300,97 @@ public class CPU {
 
                 /* CALL cc,nn */
                 case 196: /* CALL NZ,nn */ {
-                    if (!tz) {
-                        int t = LXI();
+                    if (!tz()) {
+                        int t = lxi();
                         pushpc();
-                        PC = t;
+                        PC(t);
                         ticks += 17;
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                         ticks += 10;
                     }
                     break;
                 }
                 case 204: /* CALL Z,nn */ {
-                    if (tz) {
-                        int t = LXI();
+                    if (tz()) {
+                        int t = lxi();
                         pushpc();
-                        PC = t;
+                        PC(t);
                         ticks += 17;
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                         ticks += 10;
                     }
                     break;
                 }
                 case 212: /* CALL NC,nn */ {
-                    if (!tc) {
-                        int t = LXI();
+                    if (!tc()) {
+                        int t = lxi();
                         pushpc();
-                        PC = t;
+                        PC(t);
                         ticks += 17;
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                         ticks += 10;
                     }
                     break;
                 }
                 case 220: /* CALL C,nn */ {
-                    if (tc) {
-                        int t = LXI();
+                    if (tc()) {
+                        int t = lxi();
                         pushpc();
-                        PC = t;
+                        PC(t);
                         ticks += 17;
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                         ticks += 10;
                     }
                     break;
                 }
                 case 228: /* CALL PO,nn */ {
-                    if (!tp) {
-                        int t = LXI();
+                    if (!tp()) {
+                        int t = lxi();
                         pushpc();
-                        PC = t;
+                        PC(t);
                         ticks += 17;
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                         ticks += 10;
                     }
                     break;
                 }
                 case 236: /* CALL PE,nn */ {
-                    if (tp) {
-                        int t = LXI();
+                    if (tp()) {
+                        int t = lxi();
                         pushpc();
-                        PC = t;
+                        PC(t);
                         ticks += 17;
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                         ticks += 10;
                     }
                     break;
                 }
                 case 244: /* CALL P,nn */ {
-                    if (!ts) {
-                        int t = LXI();
+                    if (!ts()) {
+                        int t = lxi();
                         pushpc();
-                        PC = t;
+                        PC(t);
                         ticks += 17;
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                         ticks += 10;
                     }
                     break;
                 }
                 case 252: /* CALL M,nn */ {
-                    if (ts) {
-                        int t = LXI();
+                    if (ts()) {
+                        int t = lxi();
                         pushpc();
-                        PC = t;
+                        PC(t);
                         ticks += 17;
                     } else {
-                        PC = word(PC + 2);
+                        PC(word(PC() + 2));
                         ticks += 10;
                     }
                     break;
@@ -1654,19 +1398,19 @@ public class CPU {
 
                 /* PUSH,Various */
                 case 197:    /* PUSH BC */ {
-                    pushw(BC);
+                    pushw(BC());
                     ticks += 11;
                     break;
                 }
                 case 205:    /* CALL nn */ {
-                    int t = LXI();
+                    int t = lxi();
                     pushpc();
-                    PC = t;
+                    PC(t);
                     ticks += 17;
                     break;
                 }
                 case 213:    /* PUSH DE */ {
-                    pushw(DE);
+                    pushw(DE());
                     ticks += 11;
                     break;
                 }
@@ -1674,7 +1418,7 @@ public class CPU {
                     break;
                 }
                 case 229:    /* PUSH HL */ {
-                    pushw(HL);
+                    pushw(HL());
                     ticks += 11;
                     break;
                 }
@@ -1735,49 +1479,49 @@ public class CPU {
                 /* RST n */
                 case 199:    /* RST 0 */ {
                     pushpc();
-                    PC = 0;
+                    PC(0);
                     ticks += 11;
                     break;
                 }
                 case 207:    /* RST 8 */ {
                     pushpc();
-                    PC = 8;
+                    PC(8);
                     ticks += 11;
                     break;
                 }
                 case 215:    /* RST 16 */ {
                     pushpc();
-                    PC = 16;
+                    PC(16);
                     ticks += 11;
                     break;
                 }
                 case 223:    /* RST 24 */ {
                     pushpc();
-                    PC = 24;
+                    PC(24);
                     ticks += 11;
                     break;
                 }
                 case 231:    /* RST 32 */ {
                     pushpc();
-                    PC = 32;
+                    PC(32);
                     ticks += 11;
                     break;
                 }
                 case 239:    /* RST 40 */ {
                     pushpc();
-                    PC = 40;
+                    PC(40);
                     ticks += 11;
                     break;
                 }
                 case 247:    /* RST 48 */ {
                     pushpc();
-                    PC = 48;
+                    PC(48);
                     ticks += 11;
                     break;
                 }
                 case 255:    /* RST 56 */ {
                     pushpc();
-                    PC = 56;
+                    PC(56);
                     ticks += 11;
                     break;
                 }
@@ -1789,77 +1533,77 @@ public class CPU {
      * Add with carry - alters all flags (CHECKED)
      */
     private void adc_a(int b) {
-        int a = A;
-        int c = tc();
+        int a = A();
+        int c = tci();
         int wans = a + b + c;
         int ans = lo(wans);
 
-        ts = (ans & T7s) != 0;
-        tz = ans == 0;
-        tc = (wans & x100) != 0;
-        tp = ((a ^ ~b) & (a ^ ans) & x80) != 0;
-        th = (((a & x0F) + (b & x0F) + c) & T4h) != 0;
+        ts((ans & T7s) != 0);
+        tz(ans == 0);
+        tc((wans & x100) != 0);
+        tp(((a ^ ~b) & (a ^ ans) & x80) != 0);
+        th((((a & x0F) + (b & x0F) + c) & T4h) != 0);
 
-        A = ans;
+        A(ans);
     }
 
     /**
      * Add - alters all flags (CHECKED)
      */
     private void add_a(int b) {
-        int a = A;
+        int a = A();
         int wans = a + b;
         int ans = lo(wans);
 
-        ts = (ans & T7s) != 0;
-        tz = ans == 0;
-        tc = (wans & x100) != 0;
-        tp = ((a ^ ~b) & (a ^ ans) & x80) != 0;
-        th = (((a & x0F) + (b & x0F)) & T4h) != 0;
+        ts((ans & T7s) != 0);
+        tz(ans == 0);
+        tc((wans & x100) != 0);
+        tp(((a ^ ~b) & (a ^ ans) & x80) != 0);
+        th((((a & x0F) + (b & x0F)) & T4h) != 0);
 
-        A = ans;
+        A(ans);
     }
 
     /**
      * Subtract with carry - alters all flags (CHECKED)
      */
     private void sbc_a(int b) {
-        int a = A;
-        int c = tc();
+        int a = A();
+        int c = tci();
         int wans = a - b - c;
         int ans = lo(wans);
 
-        ts = (ans & T7s) != 0;
-        tz = ans == 0;
-        tc = (wans & x100) != 0;
-        tp = ((a ^ b) & (a ^ ans) & x80) != 0;
-        th = (((a & x0F) - (b & x0F) - c) & T4h) != 0;
+        ts((ans & T7s) != 0);
+        tz(ans == 0);
+        tc((wans & x100) != 0);
+        tp(((a ^ b) & (a ^ ans) & x80) != 0);
+        th((((a & x0F) - (b & x0F) - c) & T4h) != 0);
 
-        A = ans;
+        A(ans);
     }
 
     /**
      * Subtract - alters all flags (CHECKED)
      */
     private void sub_a(int b) {
-        int a = A;
+        int a = A();
         int wans = a - b;
         int ans = lo(wans);
 
-        ts = (ans & T7s) != 0;
-        tz = ans == 0;
-        tc = (wans & x100) != 0;
-        tp = ((a ^ b) & (a ^ ans) & x80) != 0;
-        th = (((a & x0F) - (b & x0F)) & T4h) != 0;
+        ts((ans & T7s) != 0);
+        tz(ans == 0);
+        tc((wans & x100) != 0);
+        tp(((a ^ b) & (a ^ ans) & x80) != 0);
+        th((((a & x0F) - (b & x0F)) & T4h) != 0);
 
-        A = ans;
+        A(ans);
     }
 
     /**
      * Rotate Left - alters H N C 3 5 flags (CHECKED)
      */
     private void rlc_a() {
-        int ans = A;
+        int ans = A();
         boolean c = (ans & x80) != 0;
 
         if (c) {
@@ -1869,17 +1613,17 @@ public class CPU {
         }
         ans = lo(ans);
 
-        th = false;
-        tc = c;
+        th(false);
+        tc(c);
 
-        A = ans;
+        A(ans);
     }
 
     /**
      * Rotate Right - alters H N C 3 5 flags (CHECKED)
      */
     private void rrc_a() {
-        int ans = A;
+        int ans = A();
         boolean c = (ans & x01) != 0;
 
         if (c) {
@@ -1888,20 +1632,20 @@ public class CPU {
             ans >>= 1;
         }
 
-        th = false;
-        tc = c;
+        th(false);
+        tc(c);
 
-        A = ans;
+        A(ans);
     }
 
     /**
      * Rotate Left through Carry - alters H N C 3 5 flags (CHECKED)
      */
     private void rl_a() {
-        int ans = A;
+        int ans = A();
         boolean c = (ans & x80) != 0;
 
-        if (tc) {
+        if (tc()) {
             ans = (ans << 1) | x01;
         } else {
             ans <<= 1;
@@ -1909,89 +1653,89 @@ public class CPU {
 
         ans = lo(ans);
 
-        th = false;
-        tc = c;
+        th(false);
+        tc(c);
 
-        A = ans;
+        A(ans);
     }
 
     /**
      * Rotate Right through Carry - alters H N C 3 5 flags (CHECKED)
      */
     private void rr_a() {
-        int ans = A;
+        int ans = A();
         boolean c = (ans & x01) != 0;
 
-        if (tc) {
+        if (tc()) {
             ans = (ans >> 1) | x80;
         } else {
             ans >>= 1;
         }
 
-        th = false;
-        tc = c;
+        th(false);
+        tc(c);
 
-        A = ans;
+        A(ans);
     }
 
     /**
      * Compare - alters all flags (CHECKED)
      */
     private void cp_a(int b) {
-        int a = A;
+        int a = A();
         int wans = a - b;
         int ans = lo(wans);
 
-        ts = (ans & T7s) != 0;
-        tz = ans == 0;
-        tc = (wans & x100) != 0;
-        th = (((a & x0F) - (b & x0F)) & T4h) != 0;
-        tp = ((a ^ b) & (a ^ ans) & x80) != 0;
+        ts((ans & T7s) != 0);
+        tz(ans == 0);
+        tc((wans & x100) != 0);
+        th((((a & x0F) - (b & x0F)) & T4h) != 0);
+        tp(((a ^ b) & (a ^ ans) & x80) != 0);
     }
 
     /**
      * Bitwise and - alters all flags (CHECKED)
      */
     private void and_a(int b) {
-        int ans = A & b;
+        int ans = A() & b;
 
-        ts = (ans & T7s) != 0;
-        th = true;
-        tp = parity[ans];
-        tz = ans == 0;
-        tc = false;
+        ts((ans & T7s) != 0);
+        th(true);
+        tp(parity[ans]);
+        tz(ans == 0);
+        tc(false);
 
-        A = ans;
+        A(ans);
     }
 
     /**
      * Bitwise or - alters all flags (CHECKED)
      */
     private void or_a(int b) {
-        int ans = A | b;
+        int ans = A() | b;
 
-        ts = (ans & T7s) != 0;
-        th = false;
-        tp = parity[ans];
-        tz = ans == 0;
-        tc = false;
+        ts((ans & T7s) != 0);
+        th(false);
+        tp(parity[ans]);
+        tz(ans == 0);
+        tc(false);
 
-        A = ans;
+        A(ans);
     }
 
     /**
      * Bitwise exclusive or - alters all flags (CHECKED)
      */
     private void xor_a(int b) {
-        int ans = lo(A ^ b);
+        int ans = lo(A() ^ b);
 
-        ts = (ans & T7s) != 0;
-        th = false;
-        tp = parity[ans];
-        tz = ans == 0;
-        tc = false;
+        ts((ans & T7s) != 0);
+        th(false);
+        tp(parity[ans]);
+        tz(ans == 0);
+        tc(false);
 
-        A = ans;
+        A(ans);
     }
 
 
@@ -1999,22 +1743,22 @@ public class CPU {
      * One's complement - alters N H 3 5 flags (CHECKED)
      */
     private void cpl_a() {
-        int ans = A ^ xFF;
+        int ans = A() ^ xFF;
 
-        th = true;
+        th(true);
 
-        A = ans;
+        A(ans);
     }
 
     /**
      * Decimal Adjust Accumulator - alters all flags (CHECKED)
      */
     private void daa_a() {
-        int ans = A;
+        int ans = A();
         int incr = 0;
-        boolean carry = tc;
+        boolean carry = tc();
 
-        if (th || (ans & x0F) > x09) {
+        if (th() || (ans & x0F) > x09) {
             incr |= x06;
         }
         if (carry || (ans > x9F) || ((ans > x8F) && ((ans & x0F) > x09))) {
@@ -2025,25 +1769,25 @@ public class CPU {
         }
         sub_a(incr);
 
-        ans = A;
+        ans = A();
 
-        tc = carry;
-        tp = parity[ans];
+        tc(carry);
+        tp(parity[ans]);
     }
 
     /**
      * Set carry flag - alters N H 3 5 C flags (CHECKED)
      */
     private void scf() {
-        th = false;
-        tc = true;
+        th(false);
+        tc(true);
     }
 
     /**
      * Complement carry flag - alters N 3 5 C flags (CHECKED)
      */
     private void ccf() {
-        tc = !tc;
+        tc(!tc());
     }
 
     public static int inc16(int word) {
@@ -2062,10 +1806,10 @@ public class CPU {
         boolean h = (((ans & x0F) - 1) & T4h) != 0;
         ans = lo(ans - 1);
 
-        ts = (ans & T7s) != 0;
-        tz = ans == 0;
-        tp = p;
-        th = h;
+        ts((ans & T7s) != 0);
+        tz(ans == 0);
+        tp(p);
+        th(h);
 
         return ans;
     }
@@ -2078,28 +1822,19 @@ public class CPU {
         boolean h = (((ans & x0F) + 1) & T4h) != 0;
         ans = lo(ans + 1);
 
-        ts = (ans & T7s) != 0;
-        tz = ans == 0;
-        tp = p;
-        th = h;
-
-        return ans;
-    }
-
-    private int DAD(int a, int b) {
-        int lans = a + b;
-        int ans = word(lans);
-
-        tc = (lans & x10000) != 0;
+        ts((ans & T7s) != 0);
+        tz(ans == 0);
+        tp(p);
+        th(h);
 
         return ans;
     }
 
     public void startAt(int addr) {
-        PC = addr;
+        PC(addr);
     }
 
     public int pc() {
-        return PC;
+        return PC();
     }
 }

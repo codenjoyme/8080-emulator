@@ -15,11 +15,20 @@ import static java.util.stream.Collectors.toList;
 
 public class Assembler {
 
-    private List<Command> commands = Arrays.asList(
-            new NOP(),
-            new LXI_R_XXYY(),
-            new DAD_R()
-    );
+    private static final Command[] COMMANDS;
+
+    static {
+        COMMANDS = new Command[0x100];
+        add(new NOP());
+        add(new LXI_R_XXYY());
+        add(new DAD_R());
+    }
+
+    private static void add(Command command) {
+        for (int code : command.codes()) {
+            COMMANDS[code] = command;
+        }
+    }
 
     public String parse(String program) {
         StringBuilder result = new StringBuilder();
@@ -37,7 +46,9 @@ public class Assembler {
     }
 
     private String parseCommand(String input) {
-        for (Command command : commands) {
+        for (Command command : COMMANDS) {
+            if (command == null) continue;
+
             Optional<String> result = command.parse(input);
             if (result.isPresent()) {
                 return result.get();
@@ -53,7 +64,9 @@ public class Assembler {
 
         List<String> result = new LinkedList<>();
         while (!bites.isEmpty()) {
-            for (Command command : commands) {
+            for (Command command : COMMANDS) {
+                if (command == null) continue;
+
                 List<Integer> commandBits = command.take(bites);
                 if (commandBits.isEmpty()) {
                     continue;
@@ -66,5 +79,9 @@ public class Assembler {
             }
         }
         return String.join("\n", result);
+    }
+
+    public Command find(int bite) {
+        return COMMANDS[bite];
     }
 }

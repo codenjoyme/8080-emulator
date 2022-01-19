@@ -1,7 +1,9 @@
 package spec.assembler;
 
+import spec.Registry;
 import spec.WordMath;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +13,22 @@ import java.util.regex.Pattern;
 import static java.util.stream.Collectors.joining;
 
 public abstract class Command {
+
+    private int[] mapper = new int[0x100];
+
+    public Command() {
+        List<Integer> codes = codes();
+        List<String> registers = registers();
+        if (codes.size() != 1 && codes.size() != registers.size()) {
+            throw new IllegalArgumentException(
+                    String.format("Command codes (%s) != registers (%s)",
+                            codes.size(), registers.size()));
+        }
+
+        for (int i = 0; i < codes.size(); i++) {
+            mapper[codes.get(i)] = i;
+        }
+    }
 
     public Optional<String> parse(String command) {
         Pattern pattern = Pattern.compile(pattern());
@@ -23,17 +41,23 @@ public abstract class Command {
                 .collect(joining(" ")));
     }
 
-    protected List<Integer> code(Matcher matcher) {
+    public List<Integer> code(Matcher matcher) {
         return codes();
+    }
+
+    public List<String> registers() {
+        return Arrays.asList();
     }
 
     public abstract List<Integer> codes();
 
-    protected abstract String pattern();
+    public abstract String pattern();
 
-    protected int size() {
+    public int size() {
         return 1;
     }
+
+    public abstract int ticks();
 
     public List<Integer> take(List<Integer> bites) {
         return new LinkedList<Integer>(){{
@@ -49,5 +73,11 @@ public abstract class Command {
                 }
             }
         }};
+    }
+
+    public abstract void apply(int command, Registry r);
+
+    public int index(int command) {
+        return mapper[command];
     }
 }

@@ -1,5 +1,6 @@
 package spec.assembler.command;
 
+import spec.Registry;
 import spec.assembler.Command;
 
 import java.util.Arrays;
@@ -12,6 +13,8 @@ import static spec.WordMath.reverse;
 
 public class LXI_R_XXYY extends Command {
 
+    private static final List<Integer> CODES = Arrays.asList(0x01, 0x11, 0x21, 0x31);
+
     @Override
     public List<Integer> code(Matcher matcher) {
         return new LinkedList<Integer>(){{
@@ -22,10 +25,11 @@ public class LXI_R_XXYY extends Command {
 
     @Override
     public List<Integer> codes() {
-        return Arrays.asList(0x01, 0x11, 0x21, 0x31);
+        return CODES;
     }
 
-    private List<String> registers() {
+    @Override
+    public List<String> registers() {
         return Arrays.asList("B", "D", "H", "SP");
     }
 
@@ -37,5 +41,16 @@ public class LXI_R_XXYY extends Command {
     @Override
     public int size() {
         return 3;
+    }
+
+    @Override
+    public int ticks() {
+        return 10;
+    }
+
+    @Override
+    public void apply(int command, Registry r) {
+        int bite = r.accessor().peekwi(r.rPC);
+        r.reg(index(command)).set(bite);
     }
 }

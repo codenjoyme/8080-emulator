@@ -1,5 +1,6 @@
 package spec.assembler.command;
 
+import spec.Registry;
 import spec.assembler.Command;
 
 import java.util.Arrays;
@@ -7,7 +8,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import static spec.Constants.x10000;
+import static spec.WordMath.word;
+
 public class DAD_R extends Command {
+
+    private static final List<Integer> CODES = Arrays.asList(0x09, 0x19, 0x29, 0x39);
 
     @Override
     public List<Integer> code(Matcher matcher) {
@@ -16,13 +22,14 @@ public class DAD_R extends Command {
         }};
     }
 
-    private List<String> registers() {
+    @Override
+    public List<String> registers() {
         return Arrays.asList("B", "D", "H", "SP");
     }
 
     @Override
     public List<Integer> codes() {
-        return Arrays.asList(0x09, 0x19, 0x29, 0x39);
+        return CODES;
     }
 
     @Override
@@ -33,5 +40,26 @@ public class DAD_R extends Command {
     @Override
     public int size() {
         return 1;
+    }
+
+    @Override
+    public int ticks() {
+        return 11;
+    }
+
+    @Override
+    public void apply(int command, Registry r) {
+        int op2 = r.reg(index(command)).get();
+        int value = calc(r, r.HL(), op2);
+        r.HL(value);
+    }
+
+    private int calc(Registry r, int a, int b) {
+        int lans = a + b;
+        int ans = word(lans);
+
+        r.tc((lans & x10000) != 0);
+
+        return ans;
     }
 }

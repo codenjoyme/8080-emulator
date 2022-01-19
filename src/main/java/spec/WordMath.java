@@ -42,4 +42,8 @@ public class WordMath {
         Collections.reverse(bites);
         return bites;
     }
+
+    public static String bits(int f) {
+        return String.format("%8s", Integer.toBinaryString(f)).replaceAll(" ", "0");
+    }
 }

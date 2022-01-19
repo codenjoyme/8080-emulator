@@ -710,4 +710,34 @@ public class CPUTest {
                 "tp:   false\n" +
                 "tc:   true\n");
     }
+
+    @Test
+    public void performance() {
+        // about 2.6 sec (vs 1.4)
+        // when
+        givenPr("LXI B,1111\n" + 
+                "LXI SP,789A\n" +
+                "DAD D\n" +     
+                "NOP\n" +
+                "DAD D\n" +
+                "LXI H,A987\n" +
+                "NOP\n" +
+                "DAD SP\n" +
+                "LXI D,2222\n" + 
+                "NOP\n" + 
+                "DAD B\n" +     
+                "LXI H,A987\n" + 
+                "NOP\n" + 
+                "DAD H\n" +     
+                "NOP\n");
+
+        int ticks = 10_000_000;
+
+        // when then
+        for (int tick = 0; tick < ticks; tick++) {
+            cpu.startAt(0x0000);
+            cpu.execute();
+            accessor.clear();
+        }
+    }
 }
