@@ -1,8 +1,12 @@
 package spec;
 
+import static spec.CPU.inc16;
+import static spec.WordMath.hi;
+import static spec.WordMath.lo;
+
 public interface Accessor {
 
-    void interrupt();
+    boolean interrupt();
 
     void outb(int port, int bite);
 
@@ -10,5 +14,10 @@ public interface Accessor {
 
     void pokeb(int addr, int bite);
 
-    void pokew(int addr, int word);
+    default void pokew(int addr, int word) {
+        pokeb(addr, lo(word));
+        // увеличиваем адресс на 1 и если он превысил 0xFFFF, то делаем его равным 0x0000
+        addr = inc16(addr);
+        pokeb(addr, hi(word));
+    }
 }

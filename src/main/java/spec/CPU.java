@@ -21,11 +21,11 @@ public class CPU {
     public CPU(double clockFrequencyInMHz, Accessor accessor) {
         // Количество тактов на 1 прерывание, которое происходит 50 раз в секунду.
         // 1000000/50 раз в секунду
-        interruptTimeout = (int) ((clockFrequencyInMHz * 1e6) / 50);
+        interrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);
         this.accessor = accessor;
     }
 
-    private int interruptTimeout;
+    private int interrupt;
 
     private static final int T0c = x01; // Разряд Tc =1, если был перенос или заем
     private static final int T11 = x02; // Всегда 1
@@ -50,9 +50,76 @@ public class CPU {
         }
     }
 
-    /**
-     * Main registers
-     */
+    public String toString() {
+        return String.format(
+                "BC:   0x%04x\n" +
+                "DE:   0x%04x\n" +
+                "HL:   0x%04x\n" +
+                "AF:   0x%04x\n" +
+                "SP:   0x%04x\n" +
+                "PC:   0x%04x\n",
+                BC,
+                DE,
+                HL,
+                AF(),
+                SP,
+                PC);
+    }
+
+    public String toStringDetails() {
+        return String.format(
+                "BC:   0x%04x\n" +
+                "DE:   0x%04x\n" +
+                "HL:   0x%04x\n" +
+                "AF:   0x%04x\n" +
+                "SP:   0x%04x\n" +
+                "PC:   0x%04x\n" +
+                "B,C:  0x%02x 0x%02x\n" +
+                "D,E:  0x%02x 0x%02x\n" +
+                "H,L:  0x%02x 0x%02x\n" +
+                "A,F:  0x%02x 0x%02x\n" +
+                "B:    0b%s\n" +
+                "C:    0b%s\n" +
+                "D:    0b%s\n" +
+                "E:    0b%s\n" +
+                "H:    0b%s\n" +
+                "L:    0b%s\n" +
+                "A:    0b%s\n" +
+                "F:    0b%s\n" +
+                "ts:   %s\n" +
+                "tz:   %s\n" +
+                "th:   %s\n" +
+                "tp:   %s\n" +
+                "tc:   %s\n",
+                BC,
+                DE,
+                HL,
+                AF(),
+                SP,
+                PC,
+                B(), C(),
+                D(), E(),
+                H(), L(),
+                A, F(),
+                bits(B()),
+                bits(C()),
+                bits(D()),
+                bits(E()),
+                bits(H()),
+                bits(L()),
+                bits(A),
+                bits(F()),
+                ts,
+                tz,
+                th,
+                tp,
+                tc);
+    }
+
+    private String bits(int f) {
+        return String.format("%8s", Integer.toBinaryString(f)).replaceAll(" ", "0");
+    }
+
     private int A = 0;
     private int HL = 0;
     private int BC = 0;
@@ -64,15 +131,9 @@ public class CPU {
     private boolean tp = false;
     private boolean tc = false;
 
-    /**
-     * Stack Pointer and Program Counter
-     */
     private int SP = 0;
     private int PC = START_POINT;
 
-    /**
-     * 16 bit register access
-     */
     private int AF() {
         return merge(A, F());
     }
@@ -256,13 +317,15 @@ public class CPU {
      */
     public void execute() {
         // закладываем время до прерывания
-        int ticks = -interruptTimeout;
+        int ticks = -interrupt;
 
         // цикл выборки/выполнения
         while (true) {
             if (interruptNeeded(ticks)) {
-                accessor.interrupt();
-                ticks -= interruptTimeout;
+                if (!accessor.interrupt()) {
+                    break;
+                }
+                ticks -= interrupt;
             }
 
             switch (nextCommand()) { 
@@ -2015,7 +2078,11 @@ public class CPU {
         return ans;
     }
 
-    public void runAt(int addr) {
+    public void startAt(int addr) {
         PC = addr;
+    }
+
+    public int pc() {
+        return PC;
     }
 }
