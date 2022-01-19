@@ -77,6 +77,7 @@ public class CPU {
                 "B,C:  0x%02x 0x%02x\n" +
                 "D,E:  0x%02x 0x%02x\n" +
                 "H,L:  0x%02x 0x%02x\n" +
+                "M:    0x%02x\n" +
                 "A,F:  0x%02x 0x%02x\n" +
                 "        76543210   76543210\n" +
                 "SP:   0b%s 0b%s\n" +
@@ -88,6 +89,7 @@ public class CPU {
                 "E:    0b%s\n" +
                 "H:    0b%s\n" +
                 "L:    0b%s\n" +
+                "M:    0b%s\n" +
                 "A:    0b%s\n" +
                 "        sz0h0p1c\n" +
                 "F:    0b%s\n" +
@@ -105,6 +107,7 @@ public class CPU {
                 B(), C(),
                 D(), E(),
                 H(), L(),
+                M(),
                 A, F(),
                 bits(hi(SP)), bits(lo(SP)),
                 bits(hi(PC)), bits(lo(PC)),
@@ -114,6 +117,7 @@ public class CPU {
                 bits(E()),
                 bits(H()),
                 bits(L()),
+                bits(M()),
                 bits(A),
                 bits(F()),
                 ts,
@@ -171,6 +175,10 @@ public class CPU {
 
     private int B() {
         return hi(BC);
+    }
+
+    private int M() {
+        return accessor.peekb(HL);
     }
 
     private void B(int bite) {
