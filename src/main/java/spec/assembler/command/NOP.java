@@ -2,10 +2,12 @@ package spec.assembler.command;
 
 import spec.assembler.Command;
 
-public class NOP implements Command {
+import java.util.regex.Matcher;
+
+public class NOP extends Command {
 
     @Override
-    public int[] code(int[] data) {
+    public int[] code(Matcher matcher) {
         return new int[]{ 0x00 };
     }
 
