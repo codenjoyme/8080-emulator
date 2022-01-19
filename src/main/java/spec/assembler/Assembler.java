@@ -1,5 +1,6 @@
 package spec.assembler;
 
+import spec.assembler.command.DAD_R;
 import spec.assembler.command.LXI_R_XXYY;
 import spec.assembler.command.NOP;
 
@@ -11,7 +12,8 @@ public class Assembler {
 
     private List<Command> commands = Arrays.asList(
             new NOP(),
-            new LXI_R_XXYY()
+            new LXI_R_XXYY(),
+            new DAD_R()
     );
 
     public String parse(String program) {

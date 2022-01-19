@@ -282,9 +282,17 @@ public class CPUTest {
     @Test
     public void test__DAD_B__0x09() {
         // when
-        memory("01 12 34 " +  // LXI X,1234
-                "21 23 45 " + // LXI H,2345
-                "09");        // DAD B
+        givenPr("LXI B,1234\n" +
+                "LXI H,2345\n" +
+                "DAD B\n" +
+                "NOP\n");
+
+        assertMemory("01 12 34 " +
+                "21 23 45 " +
+                "09 " +
+                "00");
+
+        // when
         cpu.execute();
 
         // then
@@ -293,7 +301,7 @@ public class CPUTest {
                 "HL:   0x7935\n" +
                 "AF:   0x0002\n" +
                 "SP:   0x0000\n" +
-                "PC:   0x0007\n" +
+                "PC:   0x0008\n" +
                 "B,C:  0x34 0x12\n" +
                 "D,E:  0x00 0x00\n" +
                 "H,L:  0x79 0x35\n" +
@@ -301,7 +309,7 @@ public class CPUTest {
                 "A,F:  0x00 0x02\n" +
                 "        76543210   76543210\n" +
                 "SP:   0b00000000 0b00000000\n" +
-                "PC:   0b00000000 0b00000111\n" +
+                "PC:   0b00000000 0b00001000\n" +
                 "        76543210\n" +
                 "B:    0b00110100\n" +
                 "C:    0b00010010\n" +
