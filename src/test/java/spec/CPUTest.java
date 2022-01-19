@@ -49,7 +49,7 @@ public class CPUTest {
                 "NOP\n" +
                 "NOP\n");
 
-        assertMemory("00 00 00 00 00");
+        asrtMem("00 00 00 00 00");
 
         // when
         cpu.execute();
@@ -94,7 +94,7 @@ public class CPUTest {
                 "PC: 0x0005\n");
     }
 
-    private void assertMemory(String bits) {
+    private void asrtMem(String bits) {
         assertEquals(bits, accessor.updatedMemory());
     }
 
@@ -109,7 +109,7 @@ public class CPUTest {
         givenPr("LXI B,1234\n" +
                 "NOP\n");
 
-        assertMemory("01 12 34 00");
+        asrtMem("01 12 34 00");
 
         // when
         cpu.execute();
@@ -153,7 +153,7 @@ public class CPUTest {
         givenPr("LXI D,1234\n" +
                 "NOP\n");
 
-        assertMemory("11 12 34 00");
+        asrtMem("11 12 34 00");
 
         // when
         cpu.execute();
@@ -197,7 +197,7 @@ public class CPUTest {
         givenPr("LXI H,1234\n" +
                 "NOP\n");
 
-        assertMemory("21 12 34 00");
+        asrtMem("21 12 34 00");
 
         // when
         cpu.execute();
@@ -241,7 +241,7 @@ public class CPUTest {
         givenPr("LXI SP,1234\n" +
                 "NOP\n");
 
-        assertMemory("31 12 34 00");
+        asrtMem("31 12 34 00");
 
         // when
         cpu.execute();
@@ -282,12 +282,16 @@ public class CPUTest {
     @Test
     public void test__DAD_B__0x09() {
         // when
-        givenPr("LXI B,1234\n" +
-                "LXI H,2345\n" +
-                "DAD B\n" +
+        givenPr("LXI B,1234\n" +  // operand 1
+                "LXI D,1111\n" +  // ignored
+                "LXI SP,2222\n" + // ignored
+                "LXI H,2345\n" +  // operand 2 & result
+                "DAD B\n" +       // sum HL=HL+BC, [c]
                 "NOP\n");
 
-        assertMemory("01 12 34 " +
+        asrtMem("01 12 34 " +
+                "11 11 11 " +
+                "31 22 22 " +
                 "21 23 45 " +
                 "09 " +
                 "00");
@@ -297,24 +301,183 @@ public class CPUTest {
 
         // then
         asrtCpu("BC:   0x3412\n" +
-                "DE:   0x0000\n" +
+                "DE:   0x1111\n" +
                 "HL:   0x7935\n" +
                 "AF:   0x0002\n" +
-                "SP:   0x0000\n" +
-                "PC:   0x0008\n" +
+                "SP:   0x2222\n" +
+                "PC:   0x000e\n" +
                 "B,C:  0x34 0x12\n" +
-                "D,E:  0x00 0x00\n" +
+                "D,E:  0x11 0x11\n" +
                 "H,L:  0x79 0x35\n" +
                 "M:    0x00\n" +
                 "A,F:  0x00 0x02\n" +
                 "        76543210   76543210\n" +
-                "SP:   0b00000000 0b00000000\n" +
-                "PC:   0b00000000 0b00001000\n" +
+                "SP:   0b00100010 0b00100010\n" +
+                "PC:   0b00000000 0b00001110\n" +
                 "        76543210\n" +
                 "B:    0b00110100\n" +
                 "C:    0b00010010\n" +
-                "D:    0b00000000\n" +
-                "E:    0b00000000\n" +
+                "D:    0b00010001\n" +
+                "E:    0b00010001\n" +
+                "H:    0b01111001\n" +
+                "L:    0b00110101\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void test__DAD_D__0x09() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,1234\n" +  // operand 1
+                "LXI SP,2222\n" + // ignored
+                "LXI H,2345\n" +  // operand 2 & result
+                "DAD D\n" +       // sum HL=HL+DE, [c]
+                "NOP\n");
+
+        asrtMem("01 11 11 " +
+                "11 12 34 " +
+                "31 22 22 " +
+                "21 23 45 " +
+                "19 " +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x3412\n" +
+                "HL:   0x7935\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x2222\n" +
+                "PC:   0x000e\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x34 0x12\n" +
+                "H,L:  0x79 0x35\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00100010 0b00100010\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00110100\n" +
+                "E:    0b00010010\n" +
+                "H:    0b01111001\n" +
+                "L:    0b00110101\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void test__DAD_H__0x09() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,2222\n" +  // ignored
+                "LXI SP,3333\n" + // ignored
+                "LXI H,1234\n" +  // operand 1 & 2 & result
+                "DAD H\n" +       // sum HL=HL+HL, [c]
+                "NOP\n");
+
+        asrtMem("01 11 11 " +
+                "11 22 22 " +
+                "31 33 33 " +
+                "21 12 34 " +
+                "29 " +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x2222\n" +
+                "HL:   0x6824\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x3333\n" +
+                "PC:   0x000e\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x22 0x22\n" +
+                "H,L:  0x68 0x24\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00110011 0b00110011\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00100010\n" +
+                "E:    0b00100010\n" +
+                "H:    0b01101000\n" +
+                "L:    0b00100100\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void test__DAD_SP__0x09() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,2222\n" +  // ignored
+                "LXI SP,1234\n" + // operand 1
+                "LXI H,2345\n" +  // operand 2 & result
+                "DAD SP\n" +      // sum HL=HL+SP, [c]
+                "NOP\n");
+
+        asrtMem("01 11 11 " +
+                "11 22 22 " +
+                "31 12 34 " +
+                "21 23 45 " +
+                "39 " +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x2222\n" +
+                "HL:   0x7935\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x3412\n" +
+                "PC:   0x000e\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x22 0x22\n" +
+                "H,L:  0x79 0x35\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00110100 0b00010010\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00100010\n" +
+                "E:    0b00100010\n" +
                 "H:    0b01111001\n" +
                 "L:    0b00110101\n" +
                 "M:    0b00000000\n" +
