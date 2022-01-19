@@ -150,7 +150,12 @@ public class CPUTest {
     @Test
     public void test__LXI_C_XXYY__0x01() {
         // when
-        memory("11 12 34 00");
+        givenPr("LXI C,1234\n" +
+                "NOP\n");
+
+        assertMemory("11 12 34 00");
+
+        // when
         cpu.execute();
 
         // then
@@ -189,7 +194,12 @@ public class CPUTest {
     @Test
     public void test__LXI_H_XXYY__0x21() {
         // when
-        memory("21 12 34 00");
+        givenPr("LXI H,1234\n" +
+                "NOP\n");
+
+        assertMemory("21 12 34 00");
+
+        // when
         cpu.execute();
 
         // then
@@ -228,7 +238,12 @@ public class CPUTest {
     @Test
     public void test__LXI_SP_XXYY__0x31() {
         // when
-        memory("31 12 34 00");
+        givenPr("LXI SP,1234\n" +
+                "NOP\n");
+
+        assertMemory("31 12 34 00");
+
+        // when
         cpu.execute();
 
         // then

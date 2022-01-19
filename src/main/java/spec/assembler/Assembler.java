@@ -1,6 +1,6 @@
 package spec.assembler;
 
-import spec.assembler.command.LXI_B_XXYY;
+import spec.assembler.command.LXI_R_XXYY;
 import spec.assembler.command.NOP;
 
 import java.util.Arrays;
@@ -11,14 +11,13 @@ public class Assembler {
 
     private List<Command> commands = Arrays.asList(
             new NOP(),
-            new LXI_B_XXYY()
+            new LXI_R_XXYY()
     );
 
     public String parse(String program) {
-        String[] commands = program.split("\n");
         StringBuilder result = new StringBuilder();
         boolean first = true;
-        for (String command : commands) {
+        for (String command : program.split("\n")) {
             String bites = parseCommand(command);
             if (first) {
                 first = false;
@@ -30,13 +29,13 @@ public class Assembler {
         return result.toString();
     }
 
-    private String parseCommand(String inputCommand) {
+    private String parseCommand(String input) {
         for (Command command : commands) {
-            Optional<String> result = command.parse(inputCommand);
+            Optional<String> result = command.parse(input);
             if (result.isPresent()) {
                 return result.get();
             }
         }
-        throw new UnsupportedOperationException("Unknown command: " + inputCommand);
+        throw new UnsupportedOperationException("Unsupported command: " + input);
     }
 }
