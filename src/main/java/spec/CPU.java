@@ -150,7 +150,7 @@ public class CPU {
     }
 
     // его часто суммируют, а потому тут этот метод
-    private int Tci() {
+    private int tc() {
         return tc ? 1 : 0;
     }
 
@@ -276,9 +276,8 @@ public class CPU {
                     break;                    
                 }
                 case 16:    /* DJNZ dis */ {
-                    int b;
-
-                    B(b = qdec8(B()));
+                    int b = lo(B() - 1);
+                    B(b);
                     if (b != 0) {
                         byte d = (byte) nextCommand(); // байт из памяти по адресу п-счетчика PC()
                         PC = word(PC + d);
@@ -504,8 +503,7 @@ public class CPU {
                     break;
                 }
                 case 52:    /* INC (HL) */ {
-                    int hl = HL;
-                    pokeb(hl, inc8(peekb(hl)));
+                    pokeb(HL, inc8(peekb(HL)));
                     ticks += 11;
                     break;
                 }
@@ -1774,15 +1772,14 @@ public class CPU {
      */
     private void adc_a(int b) {
         int a = A;
-        int c = Tci();
+        int c = tc();
         int wans = a + b + c;
         int ans = lo(wans);
 
         ts = (ans & T7s) != 0;
         tz = ans == 0;
         tc = (wans & x100) != 0;
-        boolean f = ((a ^ ~b) & (a ^ ans) & x80) != 0;
-        tp = f;
+        tp = ((a ^ ~b) & (a ^ ans) & x80) != 0;
         th = (((a & x0F) + (b & x0F) + c) & T4h) != 0;
 
         A = ans;
@@ -1799,8 +1796,7 @@ public class CPU {
         ts = (ans & T7s) != 0;
         tz = ans == 0;
         tc = (wans & x100) != 0;
-        boolean f = ((a ^ ~b) & (a ^ ans) & x80) != 0;
-        tp = f;
+        tp = ((a ^ ~b) & (a ^ ans) & x80) != 0;
         th = (((a & x0F) + (b & x0F)) & T4h) != 0;
 
         A = ans;
@@ -1811,7 +1807,7 @@ public class CPU {
      */
     private void sbc_a(int b) {
         int a = A;
-        int c = Tci();
+        int c = tc();
         int wans = a - b - c;
         int ans = lo(wans);
 
@@ -2029,8 +2025,7 @@ public class CPU {
      * Complement carry flag - alters N 3 5 C flags (CHECKED)
      */
     private void ccf() {
-        boolean f = !tc;
-        tc = f;
+        tc = !tc;
     }
 
     /**
@@ -2076,10 +2071,6 @@ public class CPU {
         th = (((a & x0FFF) + (b & x0FFF)) & x1000) != 0;
 
         return ans;
-    }
-    
-    private static int qdec8(int a) {
-        return lo(a - 1);
     }
 
     public void runAt(int addr) {
