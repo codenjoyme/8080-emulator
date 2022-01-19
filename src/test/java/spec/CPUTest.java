@@ -33,6 +33,10 @@ public class CPUTest {
         assertEquals(expected, cpu.toStringDetails());
     }
 
+    private void cpuShort(String expected) {
+        assertEquals(expected, cpu.toString());
+    }
+
     @Test
     public void testNop() {
         // when
@@ -63,5 +67,12 @@ public class CPUTest {
             "th:   false\n" +
             "tp:   false\n" +
             "tc:   false\n");
+
+        cpuShort("BC: 0x0000\n" +
+                "DE: 0x0000\n" +
+                "HL: 0x0000\n" +
+                "AF: 0x0002\n" +
+                "SP: 0x0000\n" +
+                "PC: 0x0005\n");
     }
 }

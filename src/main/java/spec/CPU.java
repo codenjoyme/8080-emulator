@@ -52,12 +52,12 @@ public class CPU {
 
     public String toString() {
         return String.format(
-                "BC:   0x%04x\n" +
-                "DE:   0x%04x\n" +
-                "HL:   0x%04x\n" +
-                "AF:   0x%04x\n" +
-                "SP:   0x%04x\n" +
-                "PC:   0x%04x\n",
+                "BC: 0x%04x\n" +
+                "DE: 0x%04x\n" +
+                "HL: 0x%04x\n" +
+                "AF: 0x%04x\n" +
+                "SP: 0x%04x\n" +
+                "PC: 0x%04x\n",
                 BC,
                 DE,
                 HL,
