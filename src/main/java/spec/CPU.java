@@ -27,13 +27,13 @@ public class CPU {
 
     private int interrupt;
 
-    private static final int T0c = x01; // Разряд Tc =1, если был перенос или заем
+    private static final int T0c = x01; // Разряд Tc = 1, если был перенос или заем
     private static final int T11 = x02; // Всегда 1
     private static final int T2p = x04; // Разряд Tp = 1, если число единиц в результате четно
     private static final int T30 = x08; // Всегда 0
     private static final int T4h = x10; // Разряд Th = 1, если был перенос из старшей тетрады в младшую
     private static final int T50 = x20; // Всегда 0
-    private static final int T6z = x40; // Разряд tZ = 1, если результат = 0
+    private static final int T6z = x40; // Разряд Tz = 1, если результат = 0
     private static final int T7s = x80; // Разряд Ts = 1, если результат отрицательный (первый бит результата = 1)
 
     private static final boolean[] parity = new boolean[256];
@@ -78,6 +78,7 @@ public class CPU {
                 "D,E:  0x%02x 0x%02x\n" +
                 "H,L:  0x%02x 0x%02x\n" +
                 "A,F:  0x%02x 0x%02x\n" +
+                "        76543210\n" +
                 "B:    0b%s\n" +
                 "C:    0b%s\n" +
                 "D:    0b%s\n" +
@@ -85,6 +86,7 @@ public class CPU {
                 "H:    0b%s\n" +
                 "L:    0b%s\n" +
                 "A:    0b%s\n" +
+                "        sz0h0p1c\n" +
                 "F:    0b%s\n" +
                 "ts:   %s\n" +
                 "tz:   %s\n" +

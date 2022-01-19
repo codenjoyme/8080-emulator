@@ -54,6 +54,7 @@ public class CPUTest {
             "D,E:  0x00 0x00\n" +
             "H,L:  0x00 0x00\n" +
             "A,F:  0x00 0x02\n" +
+            "        76543210\n" +
             "B:    0b00000000\n" +
             "C:    0b00000000\n" +
             "D:    0b00000000\n" +
@@ -61,6 +62,7 @@ public class CPUTest {
             "H:    0b00000000\n" +
             "L:    0b00000000\n" +
             "A:    0b00000000\n" +
+            "        sz0h0p1c\n" +
             "F:    0b00000010\n" +
             "ts:   false\n" +
             "tz:   false\n" +
@@ -93,6 +95,7 @@ public class CPUTest {
             "D,E:  0x00 0x00\n" +
             "H,L:  0x00 0x00\n" +
             "A,F:  0x00 0x02\n" +
+            "        76543210\n" +
             "B:    0b00110100\n" +
             "C:    0b00010010\n" +
             "D:    0b00000000\n" +
@@ -100,6 +103,7 @@ public class CPUTest {
             "H:    0b00000000\n" +
             "L:    0b00000000\n" +
             "A:    0b00000000\n" +
+            "        sz0h0p1c\n" +
             "F:    0b00000010\n" +
             "ts:   false\n" +
             "tz:   false\n" +
