@@ -15,20 +15,6 @@ public class CPUTest {
     private CPU cpu;
     private int stopWhen;
     private Assembler asm;
-
-    /**
-     * Инициализация возможна двумя путями:
-     * - либо используя метод givenPr передавая ему комманду на ассемблере,
-     *   тогда метод givenMm будет валидировать измененную область памяти
-     * - либо игнорируя метод givenPr,
-     *   тогда метод givenMm запишет данные в память без валидации.
-     *
-     * Зачем так сложно? При миграции из старой реализации на новую для меня
-     * важно было проверять отрабатывет ли на тесте старая версия так же как новая
-     * для этого приходилось комментировать строчку добавления команды в Assembler,
-     * а раз так, то она и не сможет попариться через givenPr.
-     */
-    private boolean skipProgram = false;
     private boolean init;
 
     @Before
@@ -45,10 +31,13 @@ public class CPUTest {
     }
 
     private void givenPr(String program) {
-        if (skipProgram) return;
         givenMm(asm.parse(program));
     }
 
+    /**
+     * Либо метод запишет данные в память без валидации (если еще никто не делал этого),
+     * либо будет валидировать уже измененную ранее область памяти.
+     */
     private void givenMm(String bites) {
         if (!init) {
             init = true;
@@ -66,6 +55,17 @@ public class CPUTest {
 
     private void cpuShort(String expected) {
         assertEquals(expected, cpu.toString());
+    }
+
+    private void assertMem(int addr, String expected) {
+        assertEquals(expected, hex(cpu.accessor.peekb(addr)));
+    }
+
+    private void assertMem(int begin, int endOrLength, String expected) {
+        int end = (begin < endOrLength)
+                ? endOrLength
+                : begin + endOrLength - 1;
+        assertEquals(expected, accessor.memory().asString(new Range(begin, end)));
     }
 
     @Test
@@ -776,20 +776,20 @@ public class CPUTest {
     public void performance() {
         // about 3.6 sec (vs 1.4)
         // when
-        givenPr("LXI B,1111\n" + 
+        givenPr("LXI B,1111\n" +
                 "LXI SP,789A\n" +
-                "DAD D\n" +     
+                "DAD D\n" +
                 "NOP\n" +
                 "DAD D\n" +
                 "LXI H,A987\n" +
                 "NOP\n" +
                 "DAD SP\n" +
-                "LXI D,2222\n" + 
-                "NOP\n" + 
-                "DAD B\n" +     
-                "LXI H,A987\n" + 
-                "NOP\n" + 
-                "DAD H\n" +     
+                "LXI D,2222\n" +
+                "NOP\n" +
+                "DAD B\n" +
+                "LXI H,A987\n" +
+                "NOP\n" +
+                "DAD H\n" +
                 "NOP\n");
 
         int ticks = 10_000_000;
@@ -821,13 +821,13 @@ public class CPUTest {
                 "02\n" +
                 "00");
 
-        assertMemAt(0x0003, "11");
+        assertMem(0x0003, "11");
 
         // when
         cpu.execute();
 
         // then
-        assertMemAt(0x0003, "24");
+        assertMem(0x0003, "24");
 
         asrtCpu("BC:   0x0003\n" +
                 "DE:   0x1111\n" +
@@ -880,13 +880,13 @@ public class CPUTest {
                 "12\n" +
                 "00");
 
-        assertMemAt(0x0003, "11");
+        assertMem(0x0003, "11");
 
         // when
         cpu.execute();
 
         // then
-        assertMemAt(0x0003, "24");
+        assertMem(0x0003, "24");
 
         asrtCpu("BC:   0x1111\n" +
                 "DE:   0x0003\n" +
@@ -939,13 +939,13 @@ public class CPUTest {
                 "0A\n" +
                 "00");
 
-        assertMemAt(0x0003, "11");
+        assertMem(0x0003, "11");
 
         // when
         cpu.execute();
 
         // then
-        assertMemAt(0x0003, "11");
+        assertMem(0x0003, "11");
 
         asrtCpu("BC:   0x0003\n" +
                 "DE:   0x1111\n" +
@@ -998,13 +998,13 @@ public class CPUTest {
                 "1A\n" +
                 "00");
 
-        assertMemAt(0x0003, "11");
+        assertMem(0x0003, "11");
 
         // when
         cpu.execute();
 
         // then
-        assertMemAt(0x0003, "11");
+        assertMem(0x0003, "11");
 
         asrtCpu("BC:   0x1111\n" +
                 "DE:   0x0003\n" +
@@ -1038,7 +1038,60 @@ public class CPUTest {
                 "tc:   false\n");
     }
 
-    private void assertMemAt(int addr, String expected) {
-        assertEquals(expected, hex(cpu.accessor.peekb(addr)));
+    @Test
+    public void test__SHLD_XXYY__0x22() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,2222\n" +  // ignored
+                "LXI SP,3333\n" + // ignored
+                "LXI H,1234\n" +  // working with memory 0x1234
+                "SHLD 5678\n" +   // copy (56,79)=H (56,78)=L
+                "NOP\n");
+
+        givenMm("01 11 11\n" +
+                "11 22 22\n" +
+                "31 33 33\n" +
+                "21 34 12\n" +
+                "22 78 56\n" +
+                "00");
+
+        assertMem(0x5678, 2, "00 00");
+
+        // when
+        cpu.execute();
+
+        // then
+        assertMem(0x5678, 0x5679, "34 12");
+
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x2222\n" +
+                "HL:   0x1234\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x3333\n" +
+                "PC:   0x0010\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x22 0x22\n" +
+                "H,L:  0x12 0x34\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00110011 0b00110011\n" +
+                "PC:   0b00000000 0b00010000\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00100010\n" +
+                "E:    0b00100010\n" +
+                "H:    0b00010010\n" +
+                "L:    0b00110100\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
     }
 }

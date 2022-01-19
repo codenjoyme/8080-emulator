@@ -136,12 +136,6 @@ public class CPU extends Registry {
             }
             
             switch (bite) {
-
-                case 0x22: {             // SHLD XXYY     (XX,YY)=HL, []
-                    pokew(lxi(), HL());
-                    ticks += 16;
-                    break;
-                }
                 case 0x2A: {             // LHLD XXYY     HL=(XX,YY), []
                     HL(peekw(lxi()));
                     ticks += 16;

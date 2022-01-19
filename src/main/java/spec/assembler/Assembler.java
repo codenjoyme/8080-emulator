@@ -21,6 +21,7 @@ public class Assembler {
         add(new DAD_R());
         add(new STAX_R());
         add(new LDAX_R());
+        add(new SHLD_XXYY());
     }
 
     private static void add(Command command) {
@@ -81,6 +82,9 @@ public class Assembler {
     }
 
     public Command find(int bite) {
-        return COMMANDS[bite];
+        Command command = COMMANDS[bite];
+        return command.disabled()
+                ? null
+                : command;
     }
 }

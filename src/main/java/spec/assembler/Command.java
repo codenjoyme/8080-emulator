@@ -68,6 +68,10 @@ public abstract class Command {
 
     public abstract int ticks();
 
+    protected boolean disabled() {
+        return false;
+    }
+
     public List<Integer> take(List<Integer> bites) {
         return new LinkedList<Integer>(){{
             if (!bites.isEmpty()) {
