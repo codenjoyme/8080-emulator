@@ -42,7 +42,7 @@ public class Memory {
     }
 
     public int[] read8arr(Range range) {
-        int length = range.size();
+        int length = range.length();
         if (length < 0) {
             return new int[0];
         }

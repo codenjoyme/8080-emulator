@@ -226,6 +226,9 @@ public class Main extends Applet implements Runnable {
 
             URL specRom1URL = new URL(baseURL, "specialist/roms/monitor1.rom");
             hard.roms.loadROM(specRom1URL.toString(), specRom1URL.openStream(), 0xC800);
+
+            URL blobcopURL = new URL(baseURL, "specialist/apps/blobcop.rks");
+            hard.roms.loadRKS(blobcopURL.toString(), blobcopURL.openStream());
         }
 
         String snapshot = getParameter("snapshot");
