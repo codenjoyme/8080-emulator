@@ -275,89 +275,89 @@ public class Cpu extends Registry {
 //                }
 
 
-//                case 7: {
-//                    rlc_a();
-//                    ticks += 4;
-//                    break;
-//                }
-//                case 15: {
-//                    rrc_a();
-//                    ticks += 4;
-//                    break;
-//                }
-//                case 23: {
-//                    rl_a();
-//                    ticks += 4;
-//                    break;
-//                }
-//                case 31: {
-//                    rr_a();
-//                    ticks += 4;
-//                    break;
-//                }
-//                case 39: {
-//                    daa_a();
-//                    ticks += 4;
-//                    break;
-//                }
-//                case 47: {
-//                    cpl_a();
-//                    ticks += 4;
-//                    break;
-//                }
-//                case 55: {
-//                    scf();
-//                    ticks += 4;
-//                    break;
-//                }
-//                case 63: {
-//                    ccf();
-//                    ticks += 4;
-//                    break;
-//                }
-//
-//
-//                case 64: {
-//                    ticks += 4;
-//                    break;
-//                }
-//                case 65: {
-//                    B(C());
-//                    ticks += 4;
-//                    break;
-//                }
-//                case 66: {
-//                    B(D());
-//                    ticks += 4;
-//                    break;
-//                }
-//                case 67: {
-//                    B(E());
-//                    ticks += 4;
-//                    break;
-//                }
-//                case 68: {
-//                    B(H());
-//                    ticks += 4;
-//                    break;
-//                }
-//                case 69: {
-//                    B(L());
-//                    ticks += 4;
-//                    break;
-//                }
-//                case 70: {
-//                    B(read8(HL()));
-//                    ticks += 7;
-//                    break;
-//                }
-//                case 71: {
-//                    B(A());
-//                    ticks += 4;
-//                    break;
-//                }
-//
-//
+                case 7: {
+                    rlc_a();
+                    ticks += 4;
+                    break;
+                }
+                case 15: {
+                    rrc_a();
+                    ticks += 4;
+                    break;
+                }
+                case 23: {
+                    rl_a();
+                    ticks += 4;
+                    break;
+                }
+                case 31: {
+                    rr_a();
+                    ticks += 4;
+                    break;
+                }
+                case 39: {
+                    daa_a();
+                    ticks += 4;
+                    break;
+                }
+                case 47: {
+                    cpl_a();
+                    ticks += 4;
+                    break;
+                }
+                case 55: {
+                    scf();
+                    ticks += 4;
+                    break;
+                }
+                case 63: {
+                    ccf();
+                    ticks += 4;
+                    break;
+                }
+
+
+                case 64: {
+                    ticks += 4;
+                    break;
+                }
+                case 65: {
+                    B(C());
+                    ticks += 4;
+                    break;
+                }
+                case 66: {
+                    B(D());
+                    ticks += 4;
+                    break;
+                }
+                case 67: {
+                    B(E());
+                    ticks += 4;
+                    break;
+                }
+                case 68: {
+                    B(H());
+                    ticks += 4;
+                    break;
+                }
+                case 69: {
+                    B(L());
+                    ticks += 4;
+                    break;
+                }
+                case 70: {
+                    B(read8(HL()));
+                    ticks += 7;
+                    break;
+                }
+                case 71: {
+                    B(A());
+                    ticks += 4;
+                    break;
+                }
+
+
 //                case 72: {
 //                    C(B());
 //                    ticks += 4;
@@ -598,6 +598,43 @@ public class Cpu extends Registry {
 //                    ticks += 7;
 //                    break;
 //                }
+//
+//                case 120: {
+//                    A(B());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 121: {
+//                    A(C());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 122: {
+//                    A(D());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 123: {
+//                    A(E());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 124: {
+//                    A(H());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 125: {
+//                    A(L());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 126: {
+//                    A(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+
 
                 case 118: {
                     int haltsToInterrupt = (-ticks - 1) / 4 + 1;
@@ -605,41 +642,6 @@ public class Cpu extends Registry {
                     break;
                 }
 
-                case 120: {
-                    A(B());
-                    ticks += 4;
-                    break;
-                }
-                case 121: {
-                    A(C());
-                    ticks += 4;
-                    break;
-                }
-                case 122: {
-                    A(D());
-                    ticks += 4;
-                    break;
-                }
-                case 123: {
-                    A(E());
-                    ticks += 4;
-                    break;
-                }
-                case 124: {
-                    A(H());
-                    ticks += 4;
-                    break;
-                }
-                case 125: {
-                    A(L());
-                    ticks += 4;
-                    break;
-                }
-                case 126: {
-                    A(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
                 case 127: {
                     ticks += 4;
                     break;
