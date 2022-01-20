@@ -1,10 +1,11 @@
 package spec;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import spec.assembler.Assembler;
 
-import static junit.framework.TestCase.assertEquals;
+import static spec.SmartAssert.assertEquals;
 import static spec.WordMath.hex;
 
 public class CPUTest {
@@ -18,7 +19,7 @@ public class CPUTest {
     private boolean init;
 
     @Before
-    public void setup() {
+    public void before() {
         data = new TestData(() -> {
             if (cpu.PC() >= stopWhen) {
                 data.stopCpu();
@@ -28,6 +29,11 @@ public class CPUTest {
         cpu = new CPU(50.1 * 1e-6, data);
         cpu.PC(START);
         asm = new Assembler();
+    }
+
+    @After
+    public void after() throws Exception {
+        SmartAssert.checkResult();
     }
 
     private void givenPr(String program) {

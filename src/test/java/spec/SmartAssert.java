@@ -60,11 +60,11 @@ public class SmartAssert {
         }
     }
 
-    public static void checkResult() {
+    public static void checkResult() throws Exception {
         if (failures.isEmpty()) return;
 
         List<Throwable> errors = new LinkedList<>(failures);
         failures.clear();
-        throw new RuntimeException(new MultipleFailureException(errors));
+        throw new MultipleFailureException(errors);
     }
 }
