@@ -136,26 +136,26 @@ public class CPU extends Registry {
             }
             
             switch (bite) {
-                case 11:    /* DEC BC */ {
-                    BC(dec16(BC()));
-                    ticks += 6;
-                    break;
-                }
-                case 27:    /* DEC DE */ {
-                    DE(dec16(DE()));
-                    ticks += 6;
-                    break;
-                }
-                case 43:    /* DEC HL */ {
-                    HL(dec16(HL()));
-                    ticks += 6;
-                    break;
-                }
-                case 59:    /* DEC SP */ {
-                    SP(dec16(SP()));
-                    ticks += 6;
-                    break;
-                }
+//                case 11:    /* DEC BC */ {
+//                    BC(dec16(BC()));
+//                    ticks += 6;
+//                    break;
+//                }
+//                case 27:    /* DEC DE */ {
+//                    DE(dec16(DE()));
+//                    ticks += 6;
+//                    break;
+//                }
+//                case 43:    /* DEC HL */ {
+//                    HL(dec16(HL()));
+//                    ticks += 6;
+//                    break;
+//                }
+//                case 59:    /* DEC SP */ {
+//                    SP(dec16(SP()));
+//                    ticks += 6;
+//                    break;
+//                }
 
                 /* INC * */
                 case 4:    /* INC B */ {
