@@ -76,6 +76,8 @@ public class Hardware {
 
     public Cpu cpu;
 
+    public RomLoader roms;
+
 
     /**
      * Container — это абстрактный подкласс класса Component, определяющий дополнительные методы,
@@ -109,6 +111,8 @@ public class Hardware {
                 Hardware.this.write8(addr, bite);
             }
         });
+
+        roms = new RomLoader(memory, cpu);
 
         // Конструктору класса Spechard() из Main.class передается ссылка на компонент,
         // для которого необходимо отслеживать загрузку изображений (или что-то?).
@@ -1408,66 +1412,16 @@ public class Hardware {
             }
 
             is = new ByteArrayInputStream(os.toByteArray());
-            snapshotLength = i;
         }
         // Грубая проверка, но будет работать (SNA имеет фиксированный размер)
         // Crude check but it'll work (SNA is a fixed size)
 
-        loadRKS(name, is);
+        roms.loadRKS(name, is);
         refreshWholeScreen();
         resetKeyboard();
 
         canvas.requestFocus();
     }
-
-    // чтение ПЗУ ZX Spectrum
-    public void loadROMZ(String name, InputStream is) throws Exception {
-        startProgress("Loading " + name, 16384);
-
-        readBytes(is, memory.all(), 0, 16384);
-    }
-
-    private void logLoading(String name, int offset, int length) {
-        System.out.printf("Loading '%s' into [%04X:%04X]\n",
-                name,
-                offset & WORD,
-                (offset + length) & WORD);
-    }
-
-    // для ПК "Специалист"
-    // чтение ПЗУ
-    public void loadROM(String name, InputStream is, int offset) throws Exception {
-        int length = 2048;
-        startProgress("Loading " + name, length);
-        logLoading(name, offset, length);
-        readBytes(is, memory.all(), offset, length);
-    }
-
-    // для ПК "Специалист"
-    // ADN: ML_B, ST_B
-    // ADK: ML_B, ST_B
-    // Bytes...
-    // KSM: ML_B, ST_B
-    public void loadRKS(String name, InputStream is) throws Exception {
-        int[] header = new int[6];
-
-        readBytes(is, header, 0, 4);
-        int ABeg = header[1] * 256 + header[0];
-        int AEnd = header[3] * 256 + header[2];
-        int ALen = AEnd - ABeg;
-        logLoading(name, ABeg, ALen);
-        readBytes(is, memory.all(), ABeg, ALen);
-        readBytes(is, header, 4, 2);
-
-        cpu.PC(ABeg);
-
-        if (urlField != null) {
-            urlField.setText(name);
-        }
-    }
-
-    public int bytesReadSoFar = 0;
-    public int bytesToReadTotal = 0;
 
     private String bytesToMes() {
         String mes = "";
@@ -1479,65 +1433,6 @@ public class Hardware {
             xxx = (ptr[i - 1] ^ xxx) & 0x00FF;
         }
         return mes;
-    }
-
-    private void startProgress(String text, int nBytes) {
-        progressBar.setText(text);
-
-        bytesReadSoFar = 0;
-        bytesToReadTotal = nBytes;
-        updateProgress(0);
-        if (showStats) {
-            progressBar.setVisible(true);
-            Thread.yield();
-        }
-    }
-
-    private void stopProgress() {
-        bytesReadSoFar = 0;
-        bytesToReadTotal = 0;
-        progressBar.setPercent(0.0);
-        if (showStats) {
-            progressBar.setVisible(true);
-            Thread.yield();
-        }
-    }
-
-    private void updateProgress(int bytesRead) {
-        bytesReadSoFar += bytesRead;
-        if (bytesReadSoFar >= bytesToReadTotal) {
-            stopProgress();
-            return;
-        }
-        progressBar.setPercent((double) bytesReadSoFar / (double) bytesToReadTotal);
-        Thread.yield();
-    }
-
-    // Чтение байт из потока InputStream is
-    private int readBytes(InputStream is, int[] a, int off, int n) throws Exception {
-        try {//try readBytes(             is, int mem[],     0, 16384 );
-            BufferedInputStream bis = new BufferedInputStream(is, n);
-
-            int toRead = n;             // число байт для прочтения (передано int n)
-            byte[] buff = new byte[n]; // массив заданного числа int n БАЙТ!
-
-            while (toRead > 0) { // от числа байт для прочтения до 0.
-                // BufferedInputStream( is, n )
-                int nRead = bis.read(buff, n - toRead, toRead);
-                toRead -= nRead;
-                updateProgress(nRead);
-            }
-
-            for (int i = 0; i < n; i++) { // буффер "byte" превращаем в буффер "int"
-                a[i + off] = (buff[i] + 256) & BITE;
-            }
-            return n;
-        } catch (Exception e) {
-            System.err.println(e);
-            e.printStackTrace();
-            stopProgress();
-            throw e;
-        }
     }
 
     public void execute() {
