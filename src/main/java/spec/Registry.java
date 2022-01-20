@@ -378,33 +378,33 @@ public class Registry {
 
     public String toString() {
         return String.format(
-                "BC: %04X\n" +
-                "DE: %04X\n" +
-                "HL: %04X\n" +
-                "AF: %04X\n" +
-                "SP: %04X\n" +
-                "PC: %04X\n",
-                BC(),
-                DE(),
-                HL(),
-                AF(),
-                SP(),
-                PC());
+                "BC: %s\n" +
+                "DE: %s\n" +
+                "HL: %s\n" +
+                "AF: %s\n" +
+                "SP: %s\n" +
+                "PC: %s\n",
+                hex16(BC()),
+                hex16(DE()),
+                hex16(HL()),
+                hex16(AF()),
+                hex16(SP()),
+                hex16(PC()));
     }
 
     public String toStringDetails() {
         return String.format(
-                "BC:  %04X\n" +
-                "DE:  %04X\n" +
-                "HL:  %04X\n" +
-                "AF:  %04X\n" +
-                "SP:  %04X\n" +
-                "PC:  %04X\n" +
-                "B,C: %02X %02X\n" +
-                "D,E: %02X %02X\n" +
-                "H,L: %02X %02X\n" +
-                "M:   %02X\n" +
-                "A,F: %02X %02X\n" +
+                "BC:  %s\n" +
+                "DE:  %s\n" +
+                "HL:  %s\n" +
+                "AF:  %s\n" +
+                "SP:  %s\n" +
+                "PC:  %s\n" +
+                "B,C: %s %s\n" +
+                "D,E: %s %s\n" +
+                "H,L: %s %s\n" +
+                "M:   %s\n" +
+                "A,F: %s %s\n" +
                 "     76543210 76543210\n" +
                 "SP:  %s %s\n" +
                 "PC:  %s %s\n" +
@@ -424,17 +424,17 @@ public class Registry {
                 "th:  %s\n" +
                 "tp:  %s\n" +
                 "tc:  %s\n",
-                BC(),
-                DE(),
-                HL(),
-                AF(),
-                SP(),
-                PC(),
-                B(), C(),
-                D(), E(),
-                H(), L(),
-                M(),
-                A(), F(),
+                hex16(BC()),
+                hex16(DE()),
+                hex16(HL()),
+                hex16(AF()),
+                hex16(SP()),
+                hex16(PC()),
+                hex8(B()), hex8(C()),
+                hex8(D()), hex8(E()),
+                hex8(H()), hex8(L()),
+                hex8(M()),
+                hex8(A()), hex8(F()),
                 bits(hi(SP())), bits(lo(SP())),
                 bits(hi(PC())), bits(lo(PC())),
                 bits(B()),
