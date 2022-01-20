@@ -25,11 +25,16 @@ public interface Data {
         return hi | lo;
     }
 
+    default int read8(Reg r) {
+        int addr = r.get();
+        int bite = read8(addr);
+        r.set(inc16(addr));
+        return bite;
+    }
+
     default int read16(Reg r) {
-        int lo = read8(r.get());
-        r.set(inc16(r.get()));
-        int hi = read8(r.get()) << 8;
-        r.set(inc16(r.get()));
+        int lo = read8(r);
+        int hi = read8(r) << 8;
         return hi | lo;
     }
 }

@@ -29,10 +29,19 @@ public class Assembler {
         add(new DCX_R());
         add(new INR_R());
         add(new DCR_R());
+        add(new MVI_R_XX());
     }
 
     private static void add(Command command) {
         for (int code : command.codes()) {
+            if (COMMANDS[code] != null) {
+                throw new IllegalArgumentException(String.format(
+                        "There is already such a command '%s' with code %s " +
+                        "instead of new '%s'",
+                        COMMANDS[code].pattern(),
+                        code,
+                        command.pattern()));
+            }
             COMMANDS[code] = command;
         }
     }

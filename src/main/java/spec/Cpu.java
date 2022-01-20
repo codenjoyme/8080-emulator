@@ -8,7 +8,8 @@ import spec.assembler.Assembler;
 import spec.assembler.Command;
 
 import static spec.Constants.*;
-import static spec.WordMath.*;
+import static spec.WordMath.lo;
+import static spec.WordMath.word;
 
 public class Cpu extends Registry {
 
@@ -60,6 +61,10 @@ public class Cpu extends Registry {
         return data.read16(reg);
     }
 
+    private int read8(Reg reg) {
+        return data.read8(reg);
+    }
+
     private int pop16() {
         return read16(rSP);
     }
@@ -73,9 +78,7 @@ public class Cpu extends Registry {
     }
 
     private int read8PC() {
-        int bite = read8(PC());
-        PC(inc16(PC()));
-        return bite;
+        return read8(rPC);
     }
 
     private int read16PC() {
@@ -229,46 +232,46 @@ public class Cpu extends Registry {
 //                }
 
 
-                case 6: {
-                    B(read8PC());
-                    ticks += 7;
-                    break;
-                }
-                case 14: {
-                    C(read8PC());
-                    ticks += 7;
-                    break;
-                }
-                case 22: {
-                    D(read8PC());
-                    ticks += 7;
-                    break;
-                }
-                case 30: {
-                    E(read8PC());
-                    ticks += 7;
-                    break;
-                }
-                case 38: {
-                    H(read8PC());
-                    ticks += 7;
-                    break;
-                }
-                case 46: {
-                    L(read8PC());
-                    ticks += 7;
-                    break;
-                }
-                case 54: {
-                    write8(HL(), read8PC());
-                    ticks += 10;
-                    break;
-                }
-                case 62: {
-                    A(read8PC());
-                    ticks += 7;
-                    break;
-                }
+//                case 6: {
+//                    B(read8PC());
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 14: {
+//                    C(read8PC());
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 22: {
+//                    D(read8PC());
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 30: {
+//                    E(read8PC());
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 38: {
+//                    H(read8PC());
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 46: {
+//                    L(read8PC());
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 54: {
+//                    write8(HL(), read8PC());
+//                    ticks += 10;
+//                    break;
+//                }
+//                case 62: {
+//                    A(read8PC());
+//                    ticks += 7;
+//                    break;
+//                }
 
 
                 case 7: {
