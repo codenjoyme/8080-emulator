@@ -29,12 +29,12 @@ public class TestData implements Data {
 
     @Override
     public int read8(int addr) {
-        return memory.get(addr);
+        return memory.read8(addr);
     }
 
     @Override
     public void write8(int addr, int bite) {
-        memory.set(addr, bite);
+        memory.write8(addr, bite);
     }
 
     public Memory memory() {

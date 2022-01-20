@@ -10,11 +10,11 @@ public class Memory {
         mem = new int[size];
     }
 
-    public int get(int addr) {
+    public int read8(int addr) {
         return mem[addr];
     }
 
-    public void set(int addr, int bite) {
+    public void write8(int addr, int bite) {
         mem[addr] = bite;
     }
 
@@ -22,14 +22,14 @@ public class Memory {
         return mem;
     }
 
-    public void write(int addr, int... bites) {
+    public void write8arr(int addr, int... bites) {
         for (int bite : bites) {
-            set(addr, bite);
+            write8(addr, bite);
             addr = inc16(addr);
         }
     }
 
-    public void write(int addr, String bites) {
+    public void write8str(int addr, String bites) {
         bites = bites.replace(" ", "");
         int[] array = new int[bites.length() / 2];
         for (int i = 0; i < array.length; i++) {
@@ -38,23 +38,23 @@ public class Memory {
             array[i] = bite;
         }
 
-        write(addr, array);
+        write8arr(addr, array);
     }
 
-    public int[] get(Range range) {
+    public int[] read8arr(Range range) {
         int length = range.size();
         if (length < 0) {
             return new int[0];
         }
         int[] array = new int[length];
         for (int i = 0; i < length; i++) {
-            array[i] = get(range.offset(i));
+            array[i] = read8(range.offset(i));
         }
         return array;
     }
 
-    public String asString(Range range) {
-        int[] bites = get(range);
+    public String read8srt(Range range) {
+        int[] bites = read8arr(range);
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < bites.length; i++) {
             if (i != 0) {

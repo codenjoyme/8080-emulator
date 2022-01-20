@@ -14,7 +14,7 @@ public class TestMemory extends Memory {
     }
 
     @Override
-    public void set(int addr, int bite) {
+    public void write8(int addr, int bite) {
         if (updated.begin() > addr) {
             updated.begin(addr);
         }
@@ -22,10 +22,10 @@ public class TestMemory extends Memory {
         if (updated.end() < addr) {
             updated.end(addr);
         }
-        super.set(addr, bite);
+        super.write8(addr, bite);
     }
 
     public String changes() {
-        return asString(updated);
+        return read8srt(updated);
     }
 }

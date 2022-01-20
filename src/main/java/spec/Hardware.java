@@ -352,7 +352,7 @@ public class Hardware {
                             {
                                 for (int j = 0; j < 8; j++)  // по битам порта A от 0 до 7
                                 {// если такая нажата  и  такой бит порта B = 0, ставим бит A = 0
-                                    if (speci_matr[j][i] && (memory.get(PortB) & msk[i + 2]) == 0) {
+                                    if (speci_matr[j][i] && (memory.read8(PortB) & msk[i + 2]) == 0) {
                                         res &= bit[j];
                                     }
                                 }//  for( int j)
@@ -361,7 +361,7 @@ public class Hardware {
                         }// если порт B - на вывод   закончился
                         // если порт B - на ввод то и делать нечего
                     }// если порт A - на ввод   закончился
-                    return memory.get(PortA); //  порта A - на вывод < последнее записанное
+                    return memory.read8(PortA); //  порта A - на вывод < последнее записанное
                 }// Порт А  закончился
 
                 case PortB: {  // Порт В
@@ -372,7 +372,7 @@ public class Hardware {
                             {
                                 for (int j = 0; j < 6; j++)  // по битам порта В от 2 до 7
                                 {// если такая нажата  и  такой бит порта A = 0, ставим бит В = 0
-                                    if (speci_matr[i][j] && (memory.get(PortA) & msk[i]) == 0) {
+                                    if (speci_matr[i][j] && (memory.read8(PortA) & msk[i]) == 0) {
                                         res &= bit[j + 2];
                                     }
                                 }//  for( int j)
@@ -385,7 +385,7 @@ public class Hardware {
                                 // по битам порта В от 2 до 7
                                 for (int j = 0; j < 6; j++) {
                                     // если такая нажата  и  такой бит порта C = 0, ставим бит В = 0
-                                    if (speci_matr[i + 8][j] && (memory.get(PortC) & msk[i]) == 0) {
+                                    if (speci_matr[i + 8][j] && (memory.read8(PortC) & msk[i]) == 0) {
                                         res &= bit[j + 2];
                                     }
                                 }
@@ -412,7 +412,7 @@ public class Hardware {
 
                         return res; //  возвращаем состояние порта В
                     }// если порта В - на ввод   закончился
-                    return memory.get(PortB); //  порта В - на вывод < последнее записанное
+                    return memory.read8(PortB); //  порта В - на вывод < последнее записанное
                 }// Порт В  закончился
 
                 default: {// Порт С orphaned default
@@ -422,7 +422,7 @@ public class Hardware {
                             {
                                 for (int j = 0; j < 4; j++)  // по битам порта CLow от 0 до 3
                                 {// если такая нажата  и  такой бит порта В = 0, ставим бит C = 0
-                                    if (speci_matr[j + 8][i] && (memory.get(PortB) & msk[i + 2]) == 0) {
+                                    if (speci_matr[j + 8][i] && (memory.read8(PortB) & msk[i + 2]) == 0) {
                                         res = res & bit[j];
                                     }
                                 }// for( int j)
@@ -432,14 +432,14 @@ public class Hardware {
                         // если порт B - на ввод то и делать нечего
                     }// если порта CLow - на ввод   закончился
                     else {// если порта CLow - на вывод
-                        return memory.get(PortC) & 0x000F | 0x00F0;
+                        return memory.read8(PortC) & 0x000F | 0x00F0;
                     }
                 }// Порт С  закончился
 //ЗДЕСЬ - ПОДУМАТЬ И ПРОВЕРИТЬ!!!
             }//  switch   закончился
         }// port 580BB55   закончился
         else { // остальные порты и РУС ВРЕМЕННО считаем ячейками памяти!
-            res = memory.get(addr);   // читаем байт памяти!
+            res = memory.read8(addr);   // читаем байт памяти!
         }
 // Тест обращения к порту 580ВВ55 -
 //      String raddr = Integer.toHexString(addr);
@@ -472,60 +472,60 @@ public class Hardware {
                     PrC0IN = true; // порт C0- на ввод
                 } else {
                     PrC0IN = false; // порт C0- на вывод
-                    tmpByte = memory.get(PortC);
-                    memory.set(PortC, tmpByte & 0x00F0);// порт C0 = 0
+                    tmpByte = memory.read8(PortC);
+                    memory.write8(PortC, tmpByte & 0x00F0);// порт C0 = 0
                 }
                 if ((outByte & 0x0002) != 0) { // КАНАЛ_В(РВ0-РВ7)
                     PrtBIN = true; // порт B - на ввод
                 } else {
                     PrtBIN = false; // порт B - на вывод
-                    memory.set(PortB, 0);// порт B = 0
+                    memory.write8(PortB, 0);// порт B = 0
                 }
                 if ((outByte & 0x0008) != 0) { // КАНАЛ_С(СТ.)(РС4-РС7)
                     PrC1IN = true; // порт C1- на ввод
                 } else {
                     PrC1IN = false; // порт C1- на вывод
-                    tmpByte = memory.get(PortC);
-                    memory.set(PortC, tmpByte & 0x000F);// порт C1 = 0
+                    tmpByte = memory.read8(PortC);
+                    memory.write8(PortC, tmpByte & 0x000F);// порт C1 = 0
                 }
                 if ((outByte & 0x0010) != 0) { // КАНАЛ_A(РА0-РА7)
                     PrtAIN = true;   // порт A - на ввод
                 } else {
                     PrtAIN = false; // порт A - на вывод
-                    memory.set(PortA, 0); // порт A = 0
+                    memory.write8(PortA, 0); // порт A = 0
                 }
-                memory.set(addr, outByte); // в ПОРТ RYC запишем YC   ПОРТЫ 0xFFE3
+                memory.write8(addr, outByte); // в ПОРТ RYC запишем YC   ПОРТЫ 0xFFE3
                 return;
             } else { // побитное управление портом 0xFFE3 .
                 if (!PrC0IN) { // если порт C0- на вывод
                     if ((outByte & 0x0001) == 1) {// уст. в 1
                         if (((outByte & 0x000E) >> 1) < 4) {// биты 0-3
-                            tmpByte = memory.get(PortC);
-                            memory.set(PortC, tmpByte | msk[((outByte & 0x000E) >> 1)]); // уст. в 1
+                            tmpByte = memory.read8(PortC);
+                            memory.write8(PortC, tmpByte | msk[((outByte & 0x000E) >> 1)]); // уст. в 1
                         }
                     } else {// уст. в 0
                         if (((outByte & 0x000e) >> 1) < 4) {// биты 0-3
-                            tmpByte = memory.get(PortC);
-                            memory.set(PortC, tmpByte & bit[((outByte & 0x000E) >> 1)]); // уст. в 0
+                            tmpByte = memory.read8(PortC);
+                            memory.write8(PortC, tmpByte & bit[((outByte & 0x000E) >> 1)]); // уст. в 0
                         }
                     }// уст. в X кончилися
                 } // порт C0- на вывод кончился
                 if (!PrC1IN) { // если порт C1- на вывод
                     if ((outByte & 0x0001) == 1) {// уст. в 1
                         if (((outByte & 0x000E) >> 1) > 3) {// биты 4-7
-                            tmpByte = memory.get(PortC);
-                            memory.set(PortC, tmpByte | msk[((outByte & 0x000E) >> 1)]); // уст. в 1
+                            tmpByte = memory.read8(PortC);
+                            memory.write8(PortC, tmpByte | msk[((outByte & 0x000E) >> 1)]); // уст. в 1
                         }
                     } else {// уст. в 0
                         if (((outByte & 0x000E) >> 1) > 3) {// биты 4-7
-                            tmpByte = memory.get(PortC);
-                            memory.set(PortC, tmpByte & bit[((outByte & 0x000E) >> 1)]); // уст. в 0
+                            tmpByte = memory.read8(PortC);
+                            memory.write8(PortC, tmpByte & bit[((outByte & 0x000E) >> 1)]); // уст. в 0
                         }
                     }
                 } // порт C1- на вывод кончился
             }// побитное управление портом 0xFFE3 кончилось
         } // остальные ПОРТЫ: в том числе и 0xFFF8- цвет.
-        memory.set(addr, outByte); // в остальные ПОРТЫ пишем в память: 0xC000 < ПОРТЫ < 0xFFFF
+        memory.write8(addr, outByte); // в остальные ПОРТЫ пишем в память: 0xC000 < ПОРТЫ < 0xFFFF
     }
 
     private int shiftPortAddress(int addr) {
@@ -817,7 +817,7 @@ public class Hardware {
         // от  0  до  5800Н
         for (int i = 0; i < firstAttr; i++) {//  [ 0 ] = -1, 0, 1 ...  firstAttr - 1
             nextAddr[i] = i - 1; // ВСЕ смещения в области экрана: -1, 0, 1 ...  firstAttr - 1
-            lastByte[i] = (~memory.get(i + SCREEN.begin())) & 0xFF; // ВСЕ инвертированные байты из видео-ОЗУ.
+            lastByte[i] = (~memory.read8(i + SCREEN.begin())) & 0xFF; // ВСЕ инвертированные байты из видео-ОЗУ.
             //lastByte[ i ] = (mem( i + 16384 )) & 0xFF;
         }
         first = firstAttr - 1; // последнее смещение байта буфера экрана = 57FFH  != -1 !!!
@@ -840,7 +840,7 @@ public class Hardware {
         int offset = addr - SCREEN.begin();  // смещение в видео-ОЗУ: (адрес в ОЗУ) - 4000h
 
         if (nextAddr[offset] == -1) { // если по ЭТОМУ адресу в видео-ОЗУ есть признак ОБНОВИТЬ,
-            rgb[offset] = memory.get(RgRGB); // по смещению видео-ОЗУ пишем код в ОЗУ цвета
+            rgb[offset] = memory.read8(RgRGB); // по смещению видео-ОЗУ пишем код в ОЗУ цвета
             if (offset < firstAttr) {  // если ЭТОТ адрес в видео-ОЗУ, а не в аттрибутах,
                 nextAddr[offset] = first;// указали в буфере смещений по ЭТОМУ адресу: first
                 first = offset;        // first присвоили значение ЭТОГО адреса смещения в экране
@@ -1103,7 +1103,7 @@ public class Hardware {
         addr = first;  // в первый заход first = адресу последнего байта экрана...
         while (addr >= 0) { // !=-1
             int oldPixels = lastByte[addr];   // байт из буфера байтов по смещению "first"
-            int newPixels = memory.get(addr + SCREEN.begin()); // байт из видео-ОЗУ по смещению "first"
+            int newPixels = memory.read8(addr + SCREEN.begin()); // байт из видео-ОЗУ по смещению "first"
             int changes = oldPixels ^ newPixels; // changes = 0, если они одинаковы...
             //                   ^-XOR
 
@@ -1548,7 +1548,7 @@ public class Hardware {
         if (PORTS.includes(addr)) {
             return inPort(addr);
         }
-        return memory.get(addr);
+        return memory.read8(addr);
     }
 
     private void write16(int addr, int word) {
@@ -1565,7 +1565,7 @@ public class Hardware {
         }
 
         if (SCREEN.includes(addr)) {
-            if (memory.get(addr) != bite) {
+            if (memory.read8(addr) != bite) {
                 plot(addr); // было изменение ячейки видеопамяти
             }
         }
@@ -1574,6 +1574,6 @@ public class Hardware {
             outPort(addr, bite);
         }
 
-        memory.set(addr, bite);
+        memory.write8(addr, bite);
     }
 }

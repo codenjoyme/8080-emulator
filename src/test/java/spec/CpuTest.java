@@ -48,7 +48,7 @@ public class CpuTest {
             init = true;
             bites = bites.replace("\n", " ");
          stopWhen = bites.split(" ").length;
-            data.memory().write(START, bites);
+            data.memory().write8str(START, bites);
         } else {
             assertEquals(bites, asm.split(data.updatedMemory()));
         }
@@ -70,7 +70,7 @@ public class CpuTest {
         int end = (begin < endOrLength)
                 ? endOrLength
                 : begin + endOrLength - 1;
-        assertEquals(expected, data.memory().asString(new Range(begin, end)));
+        assertEquals(expected, data.memory().read8srt(new Range(begin, end)));
     }
 
     @Test
