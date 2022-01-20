@@ -83,7 +83,7 @@ public class Assembler {
 
     public Command find(int bite) {
         Command command = COMMANDS[bite];
-        return command.disabled()
+        return command == null || command.disabled()
                 ? null
                 : command;
     }
