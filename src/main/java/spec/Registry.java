@@ -14,7 +14,7 @@ public class Registry {
     public static final int T6z = x40; // Разряд Tz = 1, если результат = 0
     public static final int T7s = x80; // Разряд Ts = 1, если результат отрицательный (первый бит результата = 1)
 
-    protected Accessor accessor;
+    protected Data data;
 
     private int A = 0;
     private int HL = 0;
@@ -85,8 +85,8 @@ public class Registry {
         }
     };
 
-    public Registry(Accessor accessor) {
-        this.accessor = accessor;
+    public Registry(Data data) {
+        this.data = data;
         reset();
     }
 
@@ -195,11 +195,11 @@ public class Registry {
     }
 
     public int M() {
-        return accessor.peekb(HL());
+        return data.peekb(HL());
     }
 
     public void M(int bite) {
-        accessor.pokeb(HL(), bite);
+        data.pokeb(HL(), bite);
     }
 
     public int C() {
@@ -364,7 +364,7 @@ public class Registry {
                 tc());
     }
 
-    public Accessor accessor() {
-        return accessor;
+    public Data data() {
+        return data;
     }
 }

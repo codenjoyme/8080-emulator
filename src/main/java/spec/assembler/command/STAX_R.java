@@ -42,6 +42,6 @@ public class STAX_R extends Command {
     @Override
     public void apply(int command, Registry r) {
         int op1 = r.reg(rindex(command)).get();
-        r.accessor().pokeb(op1, r.A());
+        r.data().pokeb(op1, r.A());
     }
 }

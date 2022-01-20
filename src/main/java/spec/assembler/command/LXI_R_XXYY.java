@@ -50,7 +50,7 @@ public class LXI_R_XXYY extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int bite = r.accessor().peekwi(r.rPC);
+        int bite = r.data().peekwi(r.rPC);
         r.reg(rindex(command)).set(bite);
     }
 }

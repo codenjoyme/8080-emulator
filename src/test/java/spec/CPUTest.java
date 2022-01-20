@@ -11,7 +11,7 @@ public class CPUTest {
 
     public static final int START = 0x0000;
 
-    private TestAccessor accessor;
+    private TestData data;
     private CPU cpu;
     private int stopWhen;
     private Assembler asm;
@@ -19,13 +19,13 @@ public class CPUTest {
 
     @Before
     public void setup() {
-        accessor = new TestAccessor(() -> {
+        data = new TestData(() -> {
             if (cpu.PC() >= stopWhen) {
-                accessor.stopCpu();
+                data.stopCpu();
             }
         });
         init = false;
-        cpu = new CPU(50.1 * 1e-6, accessor);
+        cpu = new CPU(50.1 * 1e-6, data);
         cpu.PC(START);
         asm = new Assembler();
     }
@@ -43,9 +43,9 @@ public class CPUTest {
             init = true;
             bites = bites.replace("\n", " ");
             stopWhen = bites.split(" ").length;
-            accessor.memory().write(START, bites);
+            data.memory().write(START, bites);
         } else {
-            assertEquals(bites, asm.split(accessor.updatedMemory()));
+            assertEquals(bites, asm.split(data.updatedMemory()));
         }
     }
 
@@ -58,14 +58,14 @@ public class CPUTest {
     }
 
     private void assertMem(int addr, String expected) {
-        assertEquals(expected, hex(cpu.accessor.peekb(addr)));
+        assertEquals(expected, hex(cpu.data.peekb(addr)));
     }
 
     private void assertMem(int begin, int endOrLength, String expected) {
         int end = (begin < endOrLength)
                 ? endOrLength
                 : begin + endOrLength - 1;
-        assertEquals(expected, accessor.memory().asString(new Range(begin, end)));
+        assertEquals(expected, data.memory().asString(new Range(begin, end)));
     }
 
     @Test
@@ -798,7 +798,7 @@ public class CPUTest {
         for (int tick = 0; tick < ticks; tick++) {
             cpu.PC(0x0000);
             cpu.execute();
-            accessor.clear();
+            data.clear();
         }
     }
 

@@ -88,7 +88,7 @@ public class Hardware {
         memory = new Memory(65536);
 
         // Specialist runs at 3.5Mhz;
-        processor = new CPU(1.6, new Accessor() {
+        processor = new CPU(1.6, new Data() {
 
             @Override
             public boolean interrupt() {

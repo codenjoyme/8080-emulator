@@ -4,7 +4,7 @@ import static spec.CPU.inc16;
 import static spec.WordMath.hi;
 import static spec.WordMath.lo;
 
-public interface Accessor {
+public interface Data {
 
     boolean interrupt();
 
@@ -16,7 +16,6 @@ public interface Accessor {
 
     default void pokew(int addr, int word) {
         pokeb(addr, lo(word));
-        // увеличиваем адресс на 1 и если он превысил 0xFFFF, то делаем его равным 0x0000
         addr = inc16(addr);
         pokeb(addr, hi(word));
     }

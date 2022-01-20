@@ -35,8 +35,8 @@ public class CPU extends Registry {
     private int interrupt;
     private Assembler asm;
 
-    public CPU(double clockFrequencyInMHz, Accessor accessor) {
-        super(accessor);
+    public CPU(double clockFrequencyInMHz, Data data) {
+        super(data);
         // Количество тактов на 1 прерывание, которое происходит 50 раз в секунду.
         // 1000000/50 раз в секунду
         interrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);
@@ -44,19 +44,19 @@ public class CPU extends Registry {
     }
     
     private int peekb(int addr) {
-        return accessor.peekb(addr);
+        return data.peekb(addr);
     }
 
     private int peekw(int addr) {
-        return accessor.peekw(addr);
+        return data.peekw(addr);
     }
 
     private void pokew(int addr, int word) {
-        accessor.pokew(addr, word);
+        data.pokew(addr, word);
     }
 
     private void pokeb(int addr, int bite) {
-        accessor.pokeb(addr, bite);
+        data.pokeb(addr, bite);
     }
 
     private void pushw(int word) {
@@ -65,7 +65,7 @@ public class CPU extends Registry {
     }
 
     private int peekwi(Reg r) {
-        return accessor.peekwi(r);
+        return data.peekwi(r);
     }
 
     private int popw() {
@@ -119,7 +119,7 @@ public class CPU extends Registry {
         // цикл выборки/выполнения
         while (true) {
             if (interruptNeeded(ticks)) {
-                if (!accessor.interrupt()) {
+                if (!data.interrupt()) {
                     break;
                 }
                 ticks -= interrupt;
@@ -1223,7 +1223,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 211:    /* OUT (n),A */ {
-                    accessor.outb(nextCommand(), A());
+                    data.outb(nextCommand(), A());
                     ticks += 11;
                     break;
                 }
@@ -1738,6 +1738,9 @@ public class CPU extends Registry {
         tc(!tc());
     }
 
+    /**
+     * Увеличиваем адресс на 1 и если он превысил 0xFFFF, то делаем его равным 0x0000.
+     */
     public static int inc16(int word) {
         return word(++word);
     }

@@ -1,12 +1,12 @@
 package spec;
 
-public class TestAccessor implements Accessor {
+public class TestData implements Data {
 
     private TestMemory memory;
     private boolean working;
     private Runnable onInterrupt;
 
-    public TestAccessor(Runnable onInterrupt) {
+    public TestData(Runnable onInterrupt) {
         this.onInterrupt = onInterrupt;
         clear();
         memory = new TestMemory(65536);

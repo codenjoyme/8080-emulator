@@ -45,6 +45,6 @@ public class SHLD_XXYY extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        r.accessor().pokew(r.accessor().peekwi(r.rPC), r.HL());
+        r.data().pokew(r.data().peekwi(r.rPC), r.HL());
     }
 }
