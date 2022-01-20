@@ -16,6 +16,9 @@ public abstract class Command {
 
     private int[] indexes = new int[0x100];
 
+    public static final List<String> BD = Arrays.asList("B", "D");
+    public static final List<String> BDHSP = Arrays.asList("B", "D", "H", "SP");
+
     public Command() {
         List<Integer> codes = codes();
         List<String> registers = registers();
@@ -34,8 +37,8 @@ public abstract class Command {
         }
 
         throw new IllegalArgumentException(
-                String.format("Command codes (%s) != registers (%s)",
-                        codes, registers));
+                String.format("Command codes (%s) != registers (%s) for: %s",
+                        codes, registers, this.getClass().getSimpleName()));
     }
 
     public Optional<String> parse(String command) {

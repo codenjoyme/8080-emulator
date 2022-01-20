@@ -14,13 +14,13 @@ public class DAD_R extends Command {
     private static final List<Integer> CODES = Arrays.asList(0x09, 0x19, 0x29, 0x39);
 
     @Override
-    public List<String> registers() {
-        return Arrays.asList("B", "D", "H", "SP");
+    public List<Integer> codes() {
+        return CODES;
     }
 
     @Override
-    public List<Integer> codes() {
-        return CODES;
+    public List<String> registers() {
+        return BDHSP;
     }
 
     @Override

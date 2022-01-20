@@ -17,7 +17,7 @@ public class STAX_R extends Command {
 
     @Override
     public List<String> registers() {
-        return Arrays.asList("B", "D");
+        return BD;
     }
 
     @Override

@@ -15,15 +15,15 @@ public class DCX_R extends Command {
     private static final List<Integer> CODES = Arrays.asList(0x0B, 0x1B, 0x2B, 0x3B);
 
     @Override
-    public List<String> registers() {
-        return Arrays.asList("B", "D", "H", "SP");
-    }
-
-    @Override
     public List<Integer> codes() {
         return CODES;
     }
-
+    
+    @Override
+    public List<String> registers() {
+        return BDHSP;
+    }
+    
     @Override
     public String pattern() {
         return "DCX (B|D|H|SP)";

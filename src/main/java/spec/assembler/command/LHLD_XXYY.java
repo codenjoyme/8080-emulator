@@ -21,13 +21,13 @@ public class LHLD_XXYY extends Command {
     }
 
     @Override
-    public int ticks() {
-        return 16;
+    public int size() {
+        return 3;
     }
 
     @Override
-    public int size() {
-        return 3;
+    public int ticks() {
+        return 16;
     }
 
     @Override
