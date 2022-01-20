@@ -325,12 +325,12 @@ public class Registry {
 
     public String toString() {
         return String.format(
-                "BC: 0x%04X\n" +
-                "DE: 0x%04X\n" +
-                "HL: 0x%04X\n" +
-                "AF: 0x%04X\n" +
-                "SP: 0x%04X\n" +
-                "PC: 0x%04X\n",
+                "BC: %04X\n" +
+                "DE: %04X\n" +
+                "HL: %04X\n" +
+                "AF: %04X\n" +
+                "SP: %04X\n" +
+                "PC: %04X\n",
                 BC(),
                 DE(),
                 HL(),
@@ -341,36 +341,36 @@ public class Registry {
 
     public String toStringDetails() {
         return String.format(
-                "BC:   0x%04X\n" +
-                "DE:   0x%04X\n" +
-                "HL:   0x%04X\n" +
-                "AF:   0x%04X\n" +
-                "SP:   0x%04X\n" +
-                "PC:   0x%04X\n" +
-                "B,C:  0x%02X 0x%02X\n" +
-                "D,E:  0x%02X 0x%02X\n" +
-                "H,L:  0x%02X 0x%02X\n" +
-                "M:    0x%02X\n" +
-                "A,F:  0x%02X 0x%02X\n" +
-                "        76543210   76543210\n" +
-                "SP:   0b%s 0b%s\n" +
-                "PC:   0b%s 0b%s\n" +
-                "        76543210\n" +
-                "B:    0b%s\n" +
-                "C:    0b%s\n" +
-                "D:    0b%s\n" +
-                "E:    0b%s\n" +
-                "H:    0b%s\n" +
-                "L:    0b%s\n" +
-                "M:    0b%s\n" +
-                "A:    0b%s\n" +
-                "        sz0h0p1c\n" +
-                "F:    0b%s\n" +
-                "ts:   %s\n" +
-                "tz:   %s\n" +
-                "th:   %s\n" +
-                "tp:   %s\n" +
-                "tc:   %s\n",
+                "BC:  %04X\n" +
+                "DE:  %04X\n" +
+                "HL:  %04X\n" +
+                "AF:  %04X\n" +
+                "SP:  %04X\n" +
+                "PC:  %04X\n" +
+                "B,C: %02X %02X\n" +
+                "D,E: %02X %02X\n" +
+                "H,L: %02X %02X\n" +
+                "M:   %02X\n" +
+                "A,F: %02X %02X\n" +
+                "     76543210 76543210\n" +
+                "SP:  %s %s\n" +
+                "PC:  %s %s\n" +
+                "     76543210\n" +
+                "B:   %s\n" +
+                "C:   %s\n" +
+                "D:   %s\n" +
+                "E:   %s\n" +
+                "H:   %s\n" +
+                "L:   %s\n" +
+                "M:   %s\n" +
+                "A:   %s\n" +
+                "     sz0h0p1c\n" +
+                "F:   %s\n" +
+                "ts:  %s\n" +
+                "tz:  %s\n" +
+                "th:  %s\n" +
+                "tp:  %s\n" +
+                "tc:  %s\n",
                 BC(),
                 DE(),
                 HL(),
