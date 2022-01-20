@@ -24,6 +24,7 @@ public class Assembler {
         add(new SHLD_XXYY());
         add(new LHLD_XXYY());
         add(new STA_XXYY());
+        add(new LDA_XXYY());
     }
 
     private static void add(Command command) {

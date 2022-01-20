@@ -136,13 +136,6 @@ public class CPU extends Registry {
             }
             
             switch (bite) {
-                case 58: {
-                    A(peekb(lxi()));
-                    ticks += 13;
-                    break;
-                }
-
-
                 /* INC/DEC * */
                 case 3:    /* INC BC */ {
                     BC(inc16(BC()));
