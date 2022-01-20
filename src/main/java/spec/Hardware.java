@@ -1381,7 +1381,6 @@ public class Hardware {
                 }// else
                 break;
             }
-//  case Event.END:
             case 0x0400: { // <Pause>
                 if (down) {
                     resetAtNextInterrupt = true;
@@ -1404,11 +1403,9 @@ public class Hardware {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             is = new BufferedInputStream(is, 4096);
 
-            int byteOrMinus1;
-            int i;
-
-            for (i = 0; (byteOrMinus1 = is.read()) != -1; i++) {
-                os.write((byte) byteOrMinus1);
+            int bite;
+            while ((bite = is.read()) != -1) {
+                os.write((byte) bite);
             }
 
             is = new ByteArrayInputStream(os.toByteArray());

@@ -5,7 +5,6 @@ package spec;
  * Special thanks to Adam Davidson & Andrew Pollard for Jasper sources.
  */
 
-
 /**
  * java.applet.Applet содержит классы, необходимые для создания аплетов, то есть
  * разновидности приложений Java, встраиваемых в документы HTML и работающих под
@@ -24,32 +23,6 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
- * <p>The <a href="http://www.odie.demon.co.uk/spectrum">Main</a> class wraps up
- * the Spechard class into an Applet which emulates a ZX Spechard in a Web Page.</p>
- *
- * <p><center>
- * <applet code=Main.class width=296 height=232>
- * <param name=sleepHack value=5>
- * </applet>
- * </center></p>
- *
- * <p>This applet can be supplied the following parameters:
- * <ul>
- *   <li><b>snapshot   </b> - name of SNA or Z80 snapshot to load
- *   <li><b>rom        </b> - filename of ROM (default=ramfos.rom)
- *   <li><b>borderWidth</b> - width of Spechard border (default=20)
- *   <li><b>refreshRate</b> - refresh screen every 'X' interrupts (default=1)
- *   <li><b>sleepHack  </b> - sleep per interrupt in ms, for old VMs (default=0)
- *   <li><b>showStats  </b> - show progress bar (default=Yes)
- * </ul>
- * <p>
- * Pollard</A><br>
- *
- * @see Spechard
- * @see Z80
- */
-
-/**
  * Класс 'Main' с помощью ключевого слова {extends} наследуется от класса Applet.
  * При этом методам класса 'Main' становятся доступными все методы и данные класса,
  * за исключением определенных как private. Класс 'Applet' определен в библиотеке
@@ -60,11 +33,6 @@ public class Main extends Applet implements Runnable {
     private Hardware hard = null;
     private Thread thread = null;
 
-    /**
-     * Version and author information.
-     *     мы переопределили метод getAppletInfo из базового класса так, что getAppletInfo
-     *     возвращает текстовую информацию об аплете в виде объекта класса String.
-     */
     @Override
     public String getAppletInfo() {
         return "Specialist V1.0 alpha, © 2011 Sam_Computers LTD";
@@ -115,7 +83,6 @@ public class Main extends Applet implements Runnable {
         }
     }
 
-
     /**
      * #5 Stop the applet.
      *     метод stop. Он получает управление, когда пользователь покидает страницу с аплетом
@@ -124,7 +91,6 @@ public class Main extends Applet implements Runnable {
     @Override
     public void stop() {
         if (thread != null) {
-            // thread.stop();
             thread = null;
         }
     }
@@ -147,7 +113,6 @@ public class Main extends Applet implements Runnable {
     public void run() {
         showStatus(getAppletInfo());
 
-        //--- ещё не создан экземпляр Spechard.class
         if (hard == null) {
             try {
                 // Конструктору класса  Spechard()передается ссылка на компонент,
@@ -164,15 +129,12 @@ public class Main extends Applet implements Runnable {
         }
     }
 
-
     /**
      * Parse available applet parameters.
      * Вызывается из метода  RUN
      * @throws Exception Problem loading ROM or snaphot.
      */
     public void readParameters() throws Exception {
-        String rom = getParameter("rom");
-
         hard.setBorderWidth(getIntParameter("borderWidth",
                 hard.borderWidth * Hardware.pixelScale, 0, 100));
 
@@ -276,7 +238,6 @@ public class Main extends Applet implements Runnable {
      */
     @Override
     public void paint(Graphics g) {
-// showStatus(" Happenned PAINT !");
         if (hard != null) {
             hard.repaint();
         }
@@ -302,10 +263,6 @@ public class Main extends Applet implements Runnable {
         return super.handleEvent(e);
     }
 
-
-    /**
-     * Applet size.
-     */
     @Override
     public Dimension minimumSize() {
         int scale = Hardware.pixelScale;
