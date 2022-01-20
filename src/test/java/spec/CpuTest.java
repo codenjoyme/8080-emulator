@@ -1,77 +1,8 @@
 package spec;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import spec.assembler.Assembler;
 
-import static spec.SmartAssert.assertEquals;
-
-public class CpuTest {
-
-    public static final int START =0000;
-
-    private TestData data;
-    private Cpu cpu;
-    private int stopWhen;
-    private Assembler asm;
-    private boolean init;
-
-    @Before
-    public void before() {
-        data = new TestData(() -> {
-            if (cpu.PC() >= stopWhen) {
-                data.stopCpu();
-            }
-        });
-        init = false;
-        cpu = new Cpu(50.1 * 1e-6, data);
-        cpu.PC(START);
-        asm = new Assembler();
-    }
-
-    @After
-    public void after() throws Exception {
-        SmartAssert.checkResult();
-    }
-
-    private void givenPr(String program) {
-        givenMm(asm.parse(program));
-    }
-
-    /**
-     * Либо метод запишет данные в память без валидации (если еще никто не делал этого),
-     * либо будет валидировать уже измененную ранее область памяти.
-     */
-    private void givenMm(String bites) {
-        if (!init) {
-            init = true;
-            bites = bites.replace("\n", " ");
-         stopWhen = bites.split(" ").length;
-            data.memory().write8str(START, bites);
-        } else {
-            assertEquals(bites, asm.split(data.updatedMemory()));
-        }
-    }
-
-    private void asrtCpu(String expected) {
-        assertEquals(expected, cpu.toStringDetails());
-    }
-
-    private void cpuShort(String expected) {
-        assertEquals(expected, cpu.toString());
-    }
-
-    private void assertMem(int addr, String expected) {
-        assertEquals(expected, WordMath.hex8(cpu.data.read8(addr)));
-    }
-
-    private void assertMem(int begin, int endOrLength, String expected) {
-        int end = (begin < endOrLength)
-                ? endOrLength
-                : begin + endOrLength - 1;
-        assertEquals(expected, data.memory().read8srt(new Range(begin, end)));
-    }
+public class CpuTest extends AbstractCpuTest {
 
     @Test
     public void code00__NOP() {
@@ -2831,5 +2762,4 @@ public class CpuTest {
                 "tp:  false\n" +
                 "tc:  false\n");
     }
-
 }

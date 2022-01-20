@@ -14,6 +14,9 @@ package spec;
  * java.awt. С ее помощью аплет может выполнять в своем окне рисование различных
  * изображений или текста.
  */
+import spec.platforms.Lik;
+import spec.platforms.Specialist;
+
 import java.applet.Applet;
 import java.awt.*;
 import java.io.InputStream;
@@ -198,37 +201,11 @@ public class Main extends Applet implements Runnable {
 
         boolean lik = true;
         if (lik) {
-            // ЛИК
-            URL likRom1URL = new URL(baseURL, "lik/roms/01_zagr.bin");
-            hard.roms.loadROM(likRom1URL.toString(), likRom1URL.openStream(), 0xC000);
-
-            URL likRom2URL = new URL(baseURL, "lik/roms/02_mon-1m.bin");
-            hard.roms.loadROM(likRom2URL.toString(), likRom2URL.openStream(), 0xC800);
-
-            URL likRom3URL = new URL(baseURL, "lik/roms/03_mon-1m_basicLik.bin");
-            hard.roms.loadROM(likRom3URL.toString(), likRom3URL.openStream(), 0xD000);
-
-            URL likRom4URL = new URL(baseURL, "lik/roms/04_basicLik.bin");
-            hard.roms.loadROM(likRom4URL.toString(), likRom4URL.openStream(), 0xD800);
-
-            URL likRom5URL = new URL(baseURL, "lik/roms/05_basicLik.bin");
-            hard.roms.loadROM(likRom5URL.toString(), likRom5URL.openStream(), 0xE000);
-
-            URL likRom6URL = new URL(baseURL, "lik/roms/06_basicLik.bin");
-            hard.roms.loadROM(likRom6URL.toString(), likRom6URL.openStream(), 0xE800);
-
-            URL kladURL = new URL(baseURL, "lik/apps/klad.rks");
-            hard.roms.loadRKS(kladURL.toString(), kladURL.openStream());
+            Lik.loadRom(baseURL, hard.roms);
+            Lik.loadGame(baseURL, hard.roms, "klad");
         } else {
-            // Специалист
-            URL specRom0URL = new URL(baseURL, "specialist/roms/monitor0.rom");
-            hard.roms.loadROM(specRom0URL.toString(), specRom0URL.openStream(), 0xC000);
-
-            URL specRom1URL = new URL(baseURL, "specialist/roms/monitor1.rom");
-            hard.roms.loadROM(specRom1URL.toString(), specRom1URL.openStream(), 0xC800);
-
-            URL blobcopURL = new URL(baseURL, "specialist/apps/blobcop.rks");
-            hard.roms.loadRKS(blobcopURL.toString(), blobcopURL.openStream());
+            Specialist.loadRom(baseURL, hard.roms);
+            Specialist.loadGame(baseURL, hard.roms, "blobcop");
         }
 
         String snapshot = getParameter("snapshot");
