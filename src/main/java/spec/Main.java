@@ -54,7 +54,7 @@ import java.net.URLConnection;
  */
 public class Main extends Applet implements Runnable {
 
-    private Hardware spechard = null;
+    private Hardware hard = null;
     private Thread thread = null;
 
     /**
@@ -145,19 +145,19 @@ public class Main extends Applet implements Runnable {
         showStatus(getAppletInfo());
 
         //--- ещё не создан экземпляр Spechard.class
-        if (spechard == null) {
+        if (hard == null) {
             try {
                 // Конструктору класса  Spechard()передается ссылка на компонент,
                 // для которого необходимо отслеживать загрузку изображений (или что-то?).
                 // В данном случае это наш аплет,
-                spechard = new Hardware(this);
+                hard = new Hardware(this);
                 readParameters();
             } catch (Exception e) {
                 showStatus("Caught IO Error: " + e);
             }
         }
-        if (spechard != null) {
-            spechard.execute();
+        if (hard != null) {
+            hard.execute();
         }
     }
 
@@ -170,14 +170,14 @@ public class Main extends Applet implements Runnable {
     public void readParameters() throws Exception {
         String rom = getParameter("rom");
 
-        spechard.setBorderWidth(getIntParameter("borderWidth",
-                spechard.borderWidth * Hardware.pixelScale, 0, 100));
+        hard.setBorderWidth(getIntParameter("borderWidth",
+                hard.borderWidth * Hardware.pixelScale, 0, 100));
 
-        spechard.refreshRate = getIntParameter("refreshRate",
-                spechard.refreshRate, 1, 100);
+        hard.refreshRate = getIntParameter("refreshRate",
+                hard.refreshRate, 1, 100);
 
-        spechard.sleepHack = getIntParameter("sleepHack",
-                spechard.sleepHack, 0, 100);
+        hard.sleepHack = getIntParameter("sleepHack",
+                hard.sleepHack, 0, 100);
 
         // once borderWidth is set up
         resize(preferredSize());
@@ -185,47 +185,47 @@ public class Main extends Applet implements Runnable {
         String showStats = getParameter("showStats");
         if (showStats != null) {
             if (showStats.equals("Yes")) {
-                spechard.showStats = true;
-                spechard.pbaron = true;
+                hard.showStats = true;
+                hard.pbaron = true;
             } else if (showStats.equals("No")) {
-                spechard.showStats = false;
-                spechard.pbaron = false;
+                hard.showStats = false;
+                hard.pbaron = false;
             }
         }
 
         URL baseURL = getDocumentBase();
-        spechard.urlField.setText(baseURL.toString());
+        hard.urlField.setText(baseURL.toString());
 
         boolean lik = true;
         if (lik) {
             // ЛИК
             URL likRom1URL = new URL(baseURL, "lik/roms/01_zagr.bin");
-            spechard.loadROM(likRom1URL.toString(), likRom1URL.openStream(), 0xC000);
+            hard.loadROM(likRom1URL.toString(), likRom1URL.openStream(), 0xC000);
 
             URL likRom2URL = new URL(baseURL, "lik/roms/02_mon-1m.bin");
-            spechard.loadROM(likRom2URL.toString(), likRom2URL.openStream(), 0xC800);
+            hard.loadROM(likRom2URL.toString(), likRom2URL.openStream(), 0xC800);
 
             URL likRom3URL = new URL(baseURL, "lik/roms/03_mon-1m_basicLik.bin");
-            spechard.loadROM(likRom3URL.toString(), likRom3URL.openStream(), 0xD000);
+            hard.loadROM(likRom3URL.toString(), likRom3URL.openStream(), 0xD000);
 
             URL likRom4URL = new URL(baseURL, "lik/roms/04_basicLik.bin");
-            spechard.loadROM(likRom4URL.toString(), likRom4URL.openStream(), 0xD800);
+            hard.loadROM(likRom4URL.toString(), likRom4URL.openStream(), 0xD800);
 
             URL likRom5URL = new URL(baseURL, "lik/roms/05_basicLik.bin");
-            spechard.loadROM(likRom5URL.toString(), likRom5URL.openStream(), 0xE000);
+            hard.loadROM(likRom5URL.toString(), likRom5URL.openStream(), 0xE000);
 
             URL likRom6URL = new URL(baseURL, "lik/roms/06_basicLik.bin");
-            spechard.loadROM(likRom6URL.toString(), likRom6URL.openStream(), 0xE800);
+            hard.loadROM(likRom6URL.toString(), likRom6URL.openStream(), 0xE800);
 
             URL kladURL = new URL(baseURL, "lik/apps/klad.rks");
-            spechard.loadRKS(kladURL.toString(), kladURL.openStream());
+            hard.loadRKS(kladURL.toString(), kladURL.openStream());
         } else {
             // Специалист
             URL specRom0URL = new URL(baseURL, "specialist/roms/monitor0.rom");
-            spechard.loadROM(specRom0URL.toString(), specRom0URL.openStream(), 0xC000);
+            hard.loadROM(specRom0URL.toString(), specRom0URL.openStream(), 0xC000);
 
             URL specRom1URL = new URL(baseURL, "specialist/roms/monitor1.rom");
-            spechard.loadROM(specRom1URL.toString(), specRom1URL.openStream(), 0xC800);
+            hard.loadROM(specRom1URL.toString(), specRom1URL.openStream(), 0xC800);
         }
 
         String snapshot = getParameter("snapshot");
@@ -237,11 +237,11 @@ public class Main extends Applet implements Runnable {
             URLConnection snap = url.openConnection();
 
             InputStream input = snap.getInputStream();
-            spechard.loadSnapshot(url.toString(), input, snap.getContentLength());
+            hard.loadSnapshot(url.toString(), input, snap.getContentLength());
             input.close();
         } else {
-            spechard.reset();
-            spechard.refreshWholeScreen();
+            hard.reset();
+            hard.refreshWholeScreen();
         }
     }
 
@@ -297,8 +297,8 @@ public class Main extends Applet implements Runnable {
     @Override
     public void paint(Graphics g) {
 // showStatus(" Happenned PAINT !");
-        if (spechard != null) {
-            spechard.repaint();
+        if (hard != null) {
+            hard.repaint();
         }
     }
 
@@ -316,8 +316,8 @@ public class Main extends Applet implements Runnable {
      */
     @Override
     public boolean handleEvent(Event e) {
-        if (spechard != null) {
-            return spechard.handleEvent(e);
+        if (hard != null) {
+            return hard.handleEvent(e);
         }
         return super.handleEvent(e);
     }
@@ -329,7 +329,7 @@ public class Main extends Applet implements Runnable {
     @Override
     public Dimension minimumSize() {
         int scale = Hardware.pixelScale;
-        int border = (spechard == null) ? 20 : spechard.borderWidth;
+        int border = (hard == null) ? 20 : hard.borderWidth;
 
         return new Dimension(
                 Hardware.nPixelsWide * scale + border * 2,
