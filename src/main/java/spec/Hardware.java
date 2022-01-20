@@ -74,7 +74,7 @@ public class Hardware {
 
     private Memory memory;
 
-    public Cpu processor;
+    public Cpu cpu;
 
 
     /**
@@ -87,7 +87,7 @@ public class Hardware {
         memory = new Memory(65536);
 
         // Specialist runs at 3.5Mhz;
-        processor = new Cpu(1.6, new Data() {
+        cpu = new Cpu(1.6, new Data() {
 
             @Override
             public boolean interrupt() {
@@ -701,7 +701,7 @@ public class Hardware {
 
     //================================== сброс =================================================
     public void reset() {
-        processor.reset(); // reset() class Z80
+        cpu.reset(); // reset() class Z80
         if (wfocus) {
             outb(254, 0x02);
         } else {
@@ -1459,7 +1459,7 @@ public class Hardware {
         readBytes(is, memory.all(), ABeg, ALen);
         readBytes(is, header, 4, 2);
 
-        processor.PC(ABeg);
+        cpu.PC(ABeg);
 
         if (urlField != null) {
             urlField.setText(name);
@@ -1541,7 +1541,7 @@ public class Hardware {
     }
 
     public void execute() {
-        processor.execute();
+        cpu.execute();
     }
 
     private int read8(int addr) {
