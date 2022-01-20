@@ -55,7 +55,11 @@ public abstract class Command {
     }
 
     public List<Integer> code(String... params) {
-        return codes();
+        if (registers().isEmpty()){
+            return codes();
+        } else {
+            return Arrays.asList(codes().get(registers().indexOf(params[0])));
+        }
     }
 
     public List<String> registers() {
