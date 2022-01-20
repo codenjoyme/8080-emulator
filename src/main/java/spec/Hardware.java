@@ -86,7 +86,7 @@ public class Hardware {
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
     public Hardware(Container _parent) {
-        memory = new Memory(65536);
+        memory = new Memory(x10000);
 
         // Specialist runs at 3.5Mhz;
         cpu = new Cpu(1.6, new Data() {

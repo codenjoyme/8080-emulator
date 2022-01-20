@@ -1,5 +1,7 @@
 package spec;
 
+import static spec.Constants.x10000;
+
 public class TestData implements Data {
 
     private TestMemory memory;
@@ -9,7 +11,7 @@ public class TestData implements Data {
     public TestData(Runnable onInterrupt) {
         this.onInterrupt = onInterrupt;
         clear();
-        memory = new TestMemory(65536);
+        memory = new TestMemory(x10000);
     }
 
     public void clear() {
