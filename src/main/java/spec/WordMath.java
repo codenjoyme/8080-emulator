@@ -46,8 +46,8 @@ public class WordMath {
         return bites;
     }
 
-    public static String bits(int f) {
-        return String.format("%8s", Integer.toBinaryString(f)).replaceAll(" ", "0");
+    public static String bits(int bite) {
+        return String.format("%8s", Integer.toBinaryString(bite)).replaceAll(" ", "0");
     }
 
     public static int inc16(int word) {
