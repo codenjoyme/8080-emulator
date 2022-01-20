@@ -16,19 +16,19 @@ public class Registry {
 
     protected Data data;
 
-    private int A = 0;
-    private int HL = 0;
-    private int BC = 0;
-    private int DE = 0;
+    private int A;
+    private int HL;
+    private int BC;
+    private int DE;
 
-    private boolean ts = false;
-    private boolean tz = false;
-    private boolean th = false;
-    private boolean tp = false;
-    private boolean tc = false;
+    private boolean ts;
+    private boolean tz;
+    private boolean th;
+    private boolean tp;
+    private boolean tc;
 
-    private int SP = 0;
-    private int PC = START_POINT;
+    private int SP;
+    private int PC;
 
     public Reg rBC = new Reg() {
 
