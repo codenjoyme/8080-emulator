@@ -1062,7 +1062,7 @@ public class Hardware {
                 //  это адрес аттрибута, а надо попасть в первую строку его знакоместа.
                 // ***
                 //int scrAddr   = ((addr & 0x0300) << 3) | (addr & 0xFF);
-                int scrAddr = (addr);
+                int scrAddr = addr;
 
                 //                  54321098.76543210    .765_43210
                 //                  00000011.00000000   Y.543_76543—X
@@ -1079,8 +1079,7 @@ public class Hardware {
                     changes |= ((~newPixels) & 0xFF);
                 }//inkChange
 
-                if (changes != 0)  // если изменений нет - просто продолжаем...
-                {
+                if (changes != 0) { // если изменений нет - просто продолжаем...
                     lastByte[scrAddr + firstAttr] = changes ^ newPixels;
                     if (nextAddr[scrAddr + firstAttr] == -1) {
                         nextAddr[scrAddr] = first; //   + firstAttr  ????
@@ -1159,8 +1158,8 @@ public class Hardware {
                 // получили хитрый индекс: 0aaa.aaaabbbb
                 Image image1 = imageMap[imageMapEntry1]; // по индексу ищем image1
 
-                if (image1 == null) // если такого image1 нет
-                { // получим новый:    аттрибут, младший ниббл
+                if (image1 == null) { // если такого image1 нет
+                    // получим новый:    аттрибут, младший ниббл
                     image1 = getImage(parent, attr, newPixels1); // новый image1
                     imageMap[imageMapEntry1] = image1; // занесём в массив imageMap
                 } // похоже - это убыстряет всё; если есть рисунок полубайта, то
