@@ -28,6 +28,7 @@ public class Assembler {
         add(new INX_R());
         add(new DCX_R());
         add(new INR_R());
+        add(new DCR_R());
     }
 
     private static void add(Command command) {

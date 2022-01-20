@@ -200,47 +200,47 @@ public class CPU extends Registry {
 //                }
 
                 /* DEC * */
-                case 5:    /* DEC B */ {
-                    B(dec8(B()));
-                    ticks += 4;
-                    break;
-                }
-                case 13:    /* DEC C */ {
-                    C(dec8(C()));
-                    ticks += 4;
-                    break;
-                }
-                case 21:    /* DEC D */ {
-                    D(dec8(D()));
-                    ticks += 4;
-                    break;
-                }
-                case 29:    /* DEC E */ {
-                    E(dec8(E()));
-                    ticks += 4;
-                    break;
-                }
-                case 37:    /* DEC H */ {
-                    H(dec8(H()));
-                    ticks += 4;
-                    break;
-                }
-                case 45:    /* DEC L */ {
-                    L(dec8(L()));
-                    ticks += 4;
-                    break;
-                }
-                case 53:    /* DEC (HL) */ {
-                    int hl = HL();
-                    pokeb(hl, dec8(peekb(hl)));
-                    ticks += 11;
-                    break;
-                }
-                case 61:    /* DEC A() */ {
-                    A(dec8(A()));
-                    ticks += 4;
-                    break;
-                }
+//                case 5:    /* DEC B */ {
+//                    B(dec8(B()));
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 13:    /* DEC C */ {
+//                    C(dec8(C()));
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 21:    /* DEC D */ {
+//                    D(dec8(D()));
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 29:    /* DEC E */ {
+//                    E(dec8(E()));
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 37:    /* DEC H */ {
+//                    H(dec8(H()));
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 45:    /* DEC L */ {
+//                    L(dec8(L()));
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 53:    /* DEC (HL) */ {
+//                    int hl = HL();
+//                    pokeb(hl, dec8(peekb(hl)));
+//                    ticks += 11;
+//                    break;
+//                }
+//                case 61:    /* DEC A() */ {
+//                    A(dec8(A()));
+//                    ticks += 4;
+//                    break;
+//                }
 
                 /* LD *,N */
                 case 6:    /* LD B,n */ {
@@ -1709,18 +1709,18 @@ public class CPU extends Registry {
     /**
      * Decrement - alters all but C flag (CHECKED)
      */
-    private int dec8(int ans) {
-        boolean p = (ans == x80);
-        boolean h = (((ans & x0F) - 1) & T4h) != 0;
-        ans = lo(ans - 1);
-
-        ts((ans & T7s) != 0);
-        tz(ans == 0);
-        tp(p);
-        th(h);
-
-        return ans;
-    }
+//    private int dec8(int ans) {
+//        boolean p = (ans == x80);
+//        boolean h = (((ans & x0F) - 1) & T4h) != 0;
+//        ans = lo(ans - 1);
+//
+//        ts((ans & T7s) != 0);
+//        tz(ans == 0);
+//        tp(p);
+//        th(h);
+//
+//        return ans;
+//    }
 
     /**
      * Increment - alters all but C flag (CHECKED)

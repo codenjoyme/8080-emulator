@@ -1771,4 +1771,75 @@ public class CPUTest {
                 "tc:   false\n");
     }
 
+    @Test
+    public void code__DCR_R() { // TODO разделить этот тест
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "DCR B\n" +       // B=B-1
+                "DCR C\n" +       // C=C-1
+                "DCR D\n" +       // D=D-1
+                "DCR E\n" +       // E=E-1
+                "DCR H\n" +       // H=H-1
+                "DCR L\n" +       // L=L-1
+                "DCR M\n" +       // M=M-1
+                "DCR A\n" +       // A=A-1
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
+                "05\n" +
+                "0D\n" +
+                "15\n" +
+                "1D\n" +
+                "25\n" +
+                "2D\n" +
+                "35\n" +
+                "3D\n" +
+                "00");
+
+        assertMem(0x5566, "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        assertMem(0x5566, "FF");
+
+        asrtCpu("BC:   0x1122\n" +
+                "DE:   0x3344\n" +
+                "HL:   0x5566\n" +
+                "AF:   0xFF92\n" +
+                "SP:   0x7889\n" +
+                "PC:   0x0015\n" +
+                "B,C:  0x11 0x22\n" +
+                "D,E:  0x33 0x44\n" +
+                "H,L:  0x55 0x66\n" +
+                "M:    0xFF\n" +
+                "A,F:  0xFF 0x92\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b01111000 0b10001001\n" +
+                "PC:   0b00000000 0b00010101\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00100010\n" +
+                "D:    0b00110011\n" +
+                "E:    0b01000100\n" +
+                "H:    0b01010101\n" +
+                "L:    0b01100110\n" +
+                "M:    0b11111111\n" +
+                "A:    0b11111111\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b10010010\n" +
+                "ts:   true\n" +
+                "tz:   false\n" +
+                "th:   true\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
 }
