@@ -37,7 +37,7 @@ public class LXI_R_XXYY extends Command  {
 
     @Override
     public void apply(int command, Registry r) {
-        int word = r.data().readw(r.rPC);
-        r.regw(rindex(command)).set(word);
+        int word = r.data().read16(r.rPC);
+        r.reg16(rindex(command)).set(word);
     }
 }

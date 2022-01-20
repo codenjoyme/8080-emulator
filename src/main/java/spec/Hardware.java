@@ -10,7 +10,7 @@ package spec;
  *  protected int( Z80.java)_SP = 0, _PC = 0; //программный счётчик = C000h - адрес старта!
  *     public int( Z80.java)interrupt() - здесь заглушить переход на адреса прерываний.
  *
- *  переписал функции writeb(), writew();
+ *  переписал функции write8(), write16();
  *  ЭТО ПОСЛЕДНЯЯ РАБОЧАЯ ВЕРСИЯ, ГДЕ "СПЕЦИАЛИСТ" и "ZX" ВМЕСТЕ.
  *
  *  ЭТО ПЕРВАЯ РАБОЧАЯ ВЕРСИЯ "СПЕЦИАЛИСТ" ГДЕ "ZX"-код ПРАКТИЧЕСКИ ВЕСЬ НА МЕСТЕ!
@@ -34,7 +34,6 @@ import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.Hashtable;
 
-import static spec.CPU.inc16;
 import static spec.Constants.*;
 import static spec.WordMath.*;
 
@@ -96,18 +95,18 @@ public class Hardware {
             }
 
             @Override
-            public void outb(int port, int bite) {
+            public void out8(int port, int bite) {
                 Hardware.this.outb(port, bite);
             }
 
             @Override
-            public int readb(int addr) {
-                return Hardware.this.readb(addr);
+            public int read8(int addr) {
+                return Hardware.this.read8(addr);
             }
 
             @Override
-            public void writeb(int addr, int bite) {
-                Hardware.this.writeb(addr, bite);
+            public void write8(int addr, int bite) {
+                Hardware.this.write8(addr, bite);
             }
         });
 
@@ -715,8 +714,8 @@ public class Hardware {
         PrC1IN = true; // порт C1- на ввод
         Arrays.sort(ascii_keys); // сортируем массив ascii-массив кодов клавиш для поиска
         resetKeyboard();// все кнопки ненажаты
-        writew(RgRYS, 0x009b);// порт RYC[0xFFE3] = 9Bh (все на ввод)
-        writew(RgRGB, 0x0020);// порт цвета - зелёный на черном.
+        write16(RgRYS, 0x009b);// порт RYC[0xFFE3] = 9Bh (все на ввод)
+        write16(RgRGB, 0x0020);// порт цвета - зелёный на черном.
     }
 
     //
@@ -1545,21 +1544,21 @@ public class Hardware {
         processor.execute();
     }
 
-    private int readb(int addr) {
+    private int read8(int addr) {
         if (PORTS.includes(addr)) {
             return inPort(addr);
         }
         return memory.get(addr);
     }
 
-    private void writew(int addr, int word) {
-        writeb(addr, lo(word));
+    private void write16(int addr, int word) {
+        write8(addr, lo(word));
         // увеличиваем адресс на 1 и если он превысил 0xFFFF, то делаем его равным 0x0000
         addr = inc16(addr);
-        writeb(addr, hi(word));
+        write8(addr, hi(word));
     }
 
-    private void writeb(int addr, int bite) {
+    private void write8(int addr, int bite) {
         if (ROM.includes(addr)) {
             // в ПЗУ не пишем
             return;

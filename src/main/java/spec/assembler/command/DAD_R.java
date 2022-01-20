@@ -35,12 +35,12 @@ public class DAD_R extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int op2 = r.regw(rindex(command)).get();
-        int res = sum(r, r.HL(), op2);
+        int op2 = r.reg16(rindex(command)).get();
+        int res = sum16(r, r.HL(), op2);
         r.HL(res);
     }
 
-    private int sum(Registry r, int a, int b) {
+    private int sum16(Registry r, int a, int b) {
         int lans = a + b;
         int ans = word(lans);
 

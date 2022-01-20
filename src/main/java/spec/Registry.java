@@ -88,11 +88,11 @@ public class Registry {
     public Reg rM = new Reg() {
         @Override
         public int get() {
-            return data.readb(HL());
+            return data.read8(HL());
         }
         @Override
         public void set(int bite) {
-            data.writeb(HL(), bite);
+            data.write8(HL(), bite);
         }
     };
 
@@ -122,7 +122,7 @@ public class Registry {
         HL(0);
     }
 
-    public Reg regw(int index) {
+    public Reg reg16(int index) {
         switch (index) {
             case 0: return rBC;
             case 1: return rDE;
@@ -132,7 +132,7 @@ public class Registry {
         throw new UnsupportedOperationException("Unexpected registry index: " + index);
     }
 
-    public Reg regb(int index) {
+    public Reg reg8(int index) {
         switch (index) {
             case 0: return rBC.hi();
             case 1: return rBC.lo();
@@ -231,11 +231,11 @@ public class Registry {
     }
 
     public int M() {
-        return data.readb(HL());
+        return data.read8(HL());
     }
 
     public void M(int bite) {
-        data.writeb(HL(), bite);
+        data.write8(HL(), bite);
     }
 
     public int C() {

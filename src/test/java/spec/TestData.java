@@ -23,17 +23,17 @@ public class TestData implements Data {
     }
 
     @Override
-    public void outb(int port, int bite) {
+    public void out8(int port, int bite) {
         // do nothing
     }
 
     @Override
-    public int readb(int addr) {
+    public int read8(int addr) {
         return memory.get(addr);
     }
 
     @Override
-    public void writeb(int addr, int bite) {
+    public void write8(int addr, int bite) {
         memory.set(addr, bite);
     }
 

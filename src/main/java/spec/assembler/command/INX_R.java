@@ -7,7 +7,7 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-import static spec.CPU.inc16;
+import static spec.WordMath.inc16;
 
 public class INX_R extends Command {
 
@@ -35,7 +35,7 @@ public class INX_R extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        Reg reg = r.regw(rindex(command));
+        Reg reg = r.reg16(rindex(command));
         int op = reg.get();
         int word = inc16(op);
         reg.set(word);

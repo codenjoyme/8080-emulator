@@ -32,8 +32,8 @@ public class LDA_XXYY extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int addr = r.data().readw(r.rPC);
-        int bite = r.data().readb(addr);
+        int addr = r.data().read16(r.rPC);
+        int bite = r.data().read8(addr);
         r.A(bite);
     }
 }

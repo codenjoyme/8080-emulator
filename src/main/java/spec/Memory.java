@@ -1,7 +1,7 @@
 package spec;
 
-import static spec.CPU.inc16;
 import static spec.WordMath.hex;
+import static spec.WordMath.inc16;
 
 public class Memory {
 

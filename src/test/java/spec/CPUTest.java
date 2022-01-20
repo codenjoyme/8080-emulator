@@ -64,7 +64,7 @@ public class CPUTest {
     }
 
     private void assertMem(int addr, String expected) {
-        assertEquals(expected, hex(cpu.data.readb(addr)));
+        assertEquals(expected, hex(cpu.data.read8(addr)));
     }
 
     private void assertMem(int begin, int endOrLength, String expected) {

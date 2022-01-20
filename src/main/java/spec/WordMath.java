@@ -46,4 +46,12 @@ public class WordMath {
     public static String bits(int f) {
         return String.format("%8s", Integer.toBinaryString(f)).replaceAll(" ", "0");
     }
+
+    public static int inc16(int word) {
+        return word(++word);
+    }
+
+    public static int dec16(int word) {
+        return word(--word);
+    }
 }

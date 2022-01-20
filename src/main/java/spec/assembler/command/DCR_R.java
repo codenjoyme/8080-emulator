@@ -41,7 +41,7 @@ public class DCR_R extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        Reg reg = r.regb(rindex(command));
+        Reg reg = r.reg8(rindex(command));
         int op = reg.get();
         int bite = dec8(r, op);
         reg.set(bite);
