@@ -26,8 +26,12 @@ public class WordMath {
         return word & WORD;
     }
 
-    public static String hex(int bite) {
+    public static String hex8(int bite) {
         return String.format("%02X", bite);
+    }
+
+    public static String hex16(int bite) {
+        return String.format("%04X", bite);
     }
 
     public static List<Integer> hex(String bites) {

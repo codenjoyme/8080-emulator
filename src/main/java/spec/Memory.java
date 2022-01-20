@@ -1,6 +1,5 @@
 package spec;
 
-import static spec.WordMath.hex;
 import static spec.WordMath.inc16;
 
 public class Memory {
@@ -61,7 +60,7 @@ public class Memory {
             if (i != 0) {
                 result.append(' ');
             }
-            result.append(hex(bites[i]));
+            result.append(WordMath.hex8(bites[i]));
         }
         return result.toString();
     }

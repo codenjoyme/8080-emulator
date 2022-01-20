@@ -14,7 +14,7 @@ import static spec.WordMath.reverse;
 
 public abstract class Command {
 
-    private int[] indexes = new int[0x100];
+    protected int[] indexes = new int[0x100];
 
     public static final List<String> BD =
             Arrays.asList("B", "D");
@@ -29,16 +29,21 @@ public abstract class Command {
         List<Integer> codes = codes();
         List<String> registers = registers();
         validate(codes.size(), registers.size());
+        initIndexes(codes, registers);
+    }
 
+    public void initIndexes(List<Integer> codes, List<String> registers) {
         for (int i = 0; i < codes.size(); i++) {
-            indexes[codes.get(i)] = i;
+            int div = (registers.size() == 0) ? 1 : registers.size();
+            indexes[codes.get(i)] = i % div;
         }
     }
 
-    private void validate(int codes, int registers) {
+    public void validate(int codes, int registers) {
         if (this instanceof NONE
-            || codes == 1
-            || codes == registers) {
+            || codes == 1                               // <COMMAND>
+            || codes == registers                       // <COMMAND> R
+            || (codes + 1) == registers * registers) {  // MOV R,R
             return;
         }
 
@@ -58,7 +63,7 @@ public abstract class Command {
             params[i] = matcher.group(i + 1);
         }
         return Optional.of(code(params).stream()
-                .map(WordMath::hex)
+                .map(WordMath::hex8)
                 .collect(joining(" ")));
     }
 

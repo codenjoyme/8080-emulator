@@ -31,79 +31,132 @@ public class Registry {
     private int PC = START_POINT;
 
     public Reg rBC = new Reg() {
+
         @Override
         public int get() {
             return BC();
         }
+
         @Override
         public void set(int word) {
             BC(word);
         }
+
+        @Override
+        public String toString() {
+            return "BC=" + hex16(get());
+        }
     };
 
     public Reg rDE = new Reg() {
+
         @Override
         public int get() {
             return DE();
         }
+
         @Override
         public void set(int word) {
             DE(word);
         }
+
+        @Override
+        public String toString() {
+            return "DE=" + hex16(get());
+        }
     };
 
     public Reg rHL = new Reg() {
+
         @Override
         public int get() {
             return HL();
         }
+
         @Override
         public void set(int word) {
             HL(word);
         }
+
+        @Override
+        public String toString() {
+            return "HL=" + hex16(get());
+        }
     };
 
     public Reg rPC = new Reg() {
+
         @Override
         public int get() {
             return PC();
         }
+
         @Override
         public void set(int word) {
             PC(word);
         }
+
+        @Override
+        public String toString() {
+            return "PC=" + hex16(get());
+        }
     };
 
     public Reg rSP = new Reg() {
+
         @Override
         public int get() {
             return SP();
         }
+
         @Override
         public void set(int word) {
             SP(word);
         }
+
+        @Override
+        public String toString() {
+            return "SP=" + hex16(get());
+        }
     };
 
     public Reg rM = new Reg() {
+
         @Override
         public int get() {
-            return data.read8(HL());
+            int addr = HL();
+            return data.read8(addr);
         }
+
         @Override
         public void set(int bite) {
-            data.write8(HL(), bite);
+            int addr = HL();
+            data.write8(addr, bite);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("M[%s]=%s",
+                    hex16(Registry.this.HL()),
+                    hex8(get()));
         }
     };
 
     public Reg rA = new Reg() {
+
         @Override
         public int get() {
             return A();
         }
+
         @Override
         public void set(int bite) {
             A(bite);
+        }
+
+        @Override
+        public String toString() {
+            return "A=" + hex8(get());
         }
     };
 

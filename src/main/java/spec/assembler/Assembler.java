@@ -30,6 +30,7 @@ public class Assembler {
         add(new INR_R());
         add(new DCR_R());
         add(new MVI_R_XX());
+        add(new MOV_R_R());
     }
 
     private static void add(Command command) {
@@ -89,7 +90,7 @@ public class Assembler {
                 }
 
                 result.add(commandBits.stream()
-                        .map(WordMath::hex)
+                        .map(WordMath::hex8)
                         .collect(joining(" ")));
                 break;
             }

@@ -275,335 +275,335 @@ public class Cpu extends Registry {
 //                }
 
 
-                case 7: {
-                    rlc_a();
-                    ticks += 4;
-                    break;
-                }
-                case 15: {
-                    rrc_a();
-                    ticks += 4;
-                    break;
-                }
-                case 23: {
-                    rl_a();
-                    ticks += 4;
-                    break;
-                }
-                case 31: {
-                    rr_a();
-                    ticks += 4;
-                    break;
-                }
-                case 39: {
-                    daa_a();
-                    ticks += 4;
-                    break;
-                }
-                case 47: {
-                    cpl_a();
-                    ticks += 4;
-                    break;
-                }
-                case 55: {
-                    scf();
-                    ticks += 4;
-                    break;
-                }
-                case 63: {
-                    ccf();
-                    ticks += 4;
-                    break;
-                }
+//                case 7: {
+//                    rlc_a();
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 15: {
+//                    rrc_a();
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 23: {
+//                    rl_a();
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 31: {
+//                    rr_a();
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 39: {
+//                    daa_a();
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 47: {
+//                    cpl_a();
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 55: {
+//                    scf();
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 63: {
+//                    ccf();
+//                    ticks += 4;
+//                    break;
+//                }
+//
+//
+//                case 64: {
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 65: {
+//                    B(C());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 66: {
+//                    B(D());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 67: {
+//                    B(E());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 68: {
+//                    B(H());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 69: {
+//                    B(L());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 70: {
+//                    B(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 71: {
+//                    B(A());
+//                    ticks += 4;
+//                    break;
+//                }
+//
+//
+//                case 72: {
+//                    C(B());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 73: {
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 74: {
+//                    C(D());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 75: {
+//                    C(E());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 76: {
+//                    C(H());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 77: {
+//                    C(L());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 78: {
+//                    C(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 79: {
+//                    C(A());
+//                    ticks += 4;
+//                    break;
+//                }
+//
+//
+//                case 80: {
+//                    D(B());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 81: {
+//                    D(C());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 82: {
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 83: {
+//                    D(E());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 84: {
+//                    D(H());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 85: {
+//                    D(L());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 86: {
+//                    D(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 87: {
+//                    D(A());
+//                    ticks += 4;
+//                    break;
+//                }
+//
+//
+//                case 88: {
+//                    E(B());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 89: {
+//                    E(C());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 90: {
+//                    E(D());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 91: {
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 92: {
+//                    E(H());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 93: {
+//                    E(L());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 94: {
+//                    E(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 95: {
+//                    E(A());
+//                    ticks += 4;
+//                    break;
+//                }
+//
+//
+//                case 96: {
+//                    H(B());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 97: {
+//                    H(C());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 98: {
+//                    H(D());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 99: {
+//                    H(E());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 100: {
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 101: {
+//                    H(L());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 102: {
+//                    H(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 103: {
+//                    H(A());
+//                    ticks += 4;
+//                    break;
+//                }
+//
+//
+//                case 104: {
+//                    L(B());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 105: {
+//                    L(C());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 106: {
+//                    L(D());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 107: {
+//                    L(E());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 108: {
+//                    L(H());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 109: {
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 110: {
+//                    L(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 111: {
+//                    L(A());
+//                    ticks += 4;
+//                    break;
+//                }
+//
+//
+//                case 112: {
+//                    write8(HL(), B());
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 113: {
+//                    write8(HL(), C());
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 114: {
+//                    write8(HL(), D());
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 115: {
+//                    write8(HL(), E());
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 116: {
+//                    write8(HL(), H());
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 117: {
+//                    write8(HL(), L());
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 119: {
+//                    write8(HL(), A());
+//                    ticks += 7;
+//                    break;
+//                }
 
-
-                case 64: {
-                    ticks += 4;
-                    break;
-                }
-                case 65: {
-                    B(C());
-                    ticks += 4;
-                    break;
-                }
-                case 66: {
-                    B(D());
-                    ticks += 4;
-                    break;
-                }
-                case 67: {
-                    B(E());
-                    ticks += 4;
-                    break;
-                }
-                case 68: {
-                    B(H());
-                    ticks += 4;
-                    break;
-                }
-                case 69: {
-                    B(L());
-                    ticks += 4;
-                    break;
-                }
-                case 70: {
-                    B(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
-                case 71: {
-                    B(A());
-                    ticks += 4;
-                    break;
-                }
-
-
-                case 72: {
-                    C(B());
-                    ticks += 4;
-                    break;
-                }
-                case 73: {
-                    ticks += 4;
-                    break;
-                }
-                case 74: {
-                    C(D());
-                    ticks += 4;
-                    break;
-                }
-                case 75: {
-                    C(E());
-                    ticks += 4;
-                    break;
-                }
-                case 76: {
-                    C(H());
-                    ticks += 4;
-                    break;
-                }
-                case 77: {
-                    C(L());
-                    ticks += 4;
-                    break;
-                }
-                case 78: {
-                    C(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
-                case 79: {
-                    C(A());
-                    ticks += 4;
-                    break;
-                }
-
-
-                case 80: {
-                    D(B());
-                    ticks += 4;
-                    break;
-                }
-                case 81: {
-                    D(C());
-                    ticks += 4;
-                    break;
-                }
-                case 82: {
-                    ticks += 4;
-                    break;
-                }
-                case 83: {
-                    D(E());
-                    ticks += 4;
-                    break;
-                }
-                case 84: {
-                    D(H());
-                    ticks += 4;
-                    break;
-                }
-                case 85: {
-                    D(L());
-                    ticks += 4;
-                    break;
-                }
-                case 86: {
-                    D(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
-                case 87: {
-                    D(A());
-                    ticks += 4;
-                    break;
-                }
-
-
-                case 88: {
-                    E(B());
-                    ticks += 4;
-                    break;
-                }
-                case 89: {
-                    E(C());
-                    ticks += 4;
-                    break;
-                }
-                case 90: {
-                    E(D());
-                    ticks += 4;
-                    break;
-                }
-                case 91: {
-                    ticks += 4;
-                    break;
-                }
-                case 92: {
-                    E(H());
-                    ticks += 4;
-                    break;
-                }
-                case 93: {
-                    E(L());
-                    ticks += 4;
-                    break;
-                }
-                case 94: {
-                    E(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
-                case 95: {
-                    E(A());
-                    ticks += 4;
-                    break;
-                }
-
-
-                case 96: {
-                    H(B());
-                    ticks += 4;
-                    break;
-                }
-                case 97: {
-                    H(C());
-                    ticks += 4;
-                    break;
-                }
-                case 98: {
-                    H(D());
-                    ticks += 4;
-                    break;
-                }
-                case 99: {
-                    H(E());
-                    ticks += 4;
-                    break;
-                }
-                case 100: {
-                    ticks += 4;
-                    break;
-                }
-                case 101: {
-                    H(L());
-                    ticks += 4;
-                    break;
-                }
-                case 102: {
-                    H(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
-                case 103: {
-                    H(A());
-                    ticks += 4;
-                    break;
-                }
-
-
-                case 104: {
-                    L(B());
-                    ticks += 4;
-                    break;
-                }
-                case 105: {
-                    L(C());
-                    ticks += 4;
-                    break;
-                }
-                case 106: {
-                    L(D());
-                    ticks += 4;
-                    break;
-                }
-                case 107: {
-                    L(E());
-                    ticks += 4;
-                    break;
-                }
-                case 108: {
-                    L(H());
-                    ticks += 4;
-                    break;
-                }
-                case 109: {
-                    ticks += 4;
-                    break;
-                }
-                case 110: {
-                    L(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
-                case 111: {
-                    L(A());
-                    ticks += 4;
-                    break;
-                }
-
-
-                case 112: {
-                    write8(HL(), B());
-                    ticks += 7;
-                    break;
-                }
-                case 113: {
-                    write8(HL(), C());
-                    ticks += 7;
-                    break;
-                }
-                case 114: {
-                    write8(HL(), D());
-                    ticks += 7;
-                    break;
-                }
-                case 115: {
-                    write8(HL(), E());
-                    ticks += 7;
-                    break;
-                }
-                case 116: {
-                    write8(HL(), H());
-                    ticks += 7;
-                    break;
-                }
-                case 117: {
-                    write8(HL(), L());
-                    ticks += 7;
-                    break;
-                }
                 case 118: {
                     int haltsToInterrupt = (-ticks - 1) / 4 + 1;
                     ticks += haltsToInterrupt * 4;
                     break;
                 }
-                case 119: {
-                    write8(HL(), A());
-                    ticks += 7;
-                    break;
-                }
-
 
                 case 120: {
                     A(B());
