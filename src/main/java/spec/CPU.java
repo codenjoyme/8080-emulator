@@ -136,11 +136,6 @@ public class CPU extends Registry {
             }
             
             switch (bite) {
-                case 50: {
-                    pokeb(lxi(), A());
-                    ticks += 13;
-                    break;
-                }
                 case 58: {
                     A(peekb(lxi()));
                     ticks += 13;

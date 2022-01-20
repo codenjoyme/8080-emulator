@@ -1157,4 +1157,63 @@ public class CPUTest {
                 "tp:   false\n" +
                 "tc:   false\n");
     }
+
+    @Test
+    public void code02__STA_XXYY() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,2222\n" +  // ignored
+                "LXI SP,3333\n" + // ignored
+                "LXI H,4444\n" +  // ignored
+                "STA 1234\n" +    // copy (1234)=A
+                "NOP\n");
+
+        cpu.A(0x24);
+
+        givenMm("01 11 11\n" +
+                "11 22 22\n" +
+                "31 33 33\n" +
+                "21 44 44\n" +
+                "32 34 12\n" +
+                "00");
+
+        assertMem(0x1234, "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        assertMem(0x1234, "24");
+
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x2222\n" +
+                "HL:   0x4444\n" +
+                "AF:   0x2402\n" +
+                "SP:   0x3333\n" +
+                "PC:   0x0010\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x22 0x22\n" +
+                "H,L:  0x44 0x44\n" +
+                "M:    0x00\n" +
+                "A,F:  0x24 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00110011 0b00110011\n" +
+                "PC:   0b00000000 0b00010000\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00100010\n" +
+                "E:    0b00100010\n" +
+                "H:    0b01000100\n" +
+                "L:    0b01000100\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00100100\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
 }
