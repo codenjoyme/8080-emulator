@@ -53,22 +53,22 @@ import static spec.WordMath.*;
 
 public class Hardware {
 
-    public Graphics parentGraphics = null;
-    public Graphics canvasGraphics = null;
-    public Graphics bufferGraphics = null;
-    public Image bufferImage = null;
+    public Graphics parentGraphics;
+    public Graphics canvasGraphics;
+    public Graphics bufferGraphics;
+    public Image bufferImage;
 
     // SpecApp usually (where border is drawn)
-    public Container parent = null;
+    public Container parent;
 
     // Main screen
-    public Canvas canvas = null;
+    public Canvas canvas;
 
     // ESC shows a URL popup
-    public TextField urlField = null;
+    public TextField urlField;
 
     // How much loaded/how fast?
-    public AMDProgressBar progressBar = null;
+    public AMDProgressBar progressBar;
 
     // массив байт цвета контроллера цвета 0xC000-9000h
     public int[] rgb = new int[12288];
@@ -560,7 +560,7 @@ public class Hardware {
         try {
             pauseOrResume();
 
-            urlField.setVisible(false);//  hide();
+            urlField.setVisible(false);
             URL url = new URL(urlField.getText());
             URLConnection snap = url.openConnection();
 
@@ -568,7 +568,7 @@ public class Hardware {
             loadSnapshot(url.toString(), input, snap.getContentLength());
             input.close();
         } catch (Exception e) {
-            showMessage(e.toString()); // Error loading
+            showMessage(e.toString()); 
         }
     }
 
@@ -576,19 +576,18 @@ public class Hardware {
     private boolean interrupt() {
         if (pauseAtNextInterrupt) {
             // поле ввода url
-            urlField.setVisible(true);//   show();
+            urlField.setVisible(true);
 
             pausedThread = Thread.currentThread();
 
             while (pauseAtNextInterrupt) {
                 if (!pbaron) {
                     showStats = true;
-                    progressBar.setVisible(true);//   show();
+                    progressBar.setVisible(true);
                 }
                 showMessage("© 2011 Sam_Computers LTD");
 
-                if (refreshNextInterrupt) // проверка флага - рисовать.
-                {
+                if (refreshNextInterrupt) { // проверка флага - рисовать.
                     refreshNextInterrupt = false; // сбросим флаг рисовать.
                     oldBorder = -1;// обновить Border
                     paintBuffer(); // перерисовка экрана РИСУЕМ !!!
@@ -607,10 +606,10 @@ public class Hardware {
             }
             pausedThread = null;
             // поле ввода url
-            urlField.setVisible(false);//  hide();
+            urlField.setVisible(false);
             if (!pbaron) {
                 showStats = false;
-                progressBar.setVisible(false);//   show();
+                progressBar.setVisible(false);
             }
         }
 
@@ -681,6 +680,7 @@ public class Hardware {
             try {
                 Thread.sleep(sleepHack);
             } catch (Exception ignored) {
+                // do nothing
             }
         }
 
@@ -852,17 +852,14 @@ public class Hardware {
         }
     }
 
-    public void borderPaint()// может понадобиться в Специалист для фокуса экрана
-    {
-        if (oldBorder == newBorder)// если признак равен цвету Border - ничего не делать!
-        {
+    public void borderPaint() {// может понадобиться в Специалист для фокуса экрана
+        if (oldBorder == newBorder) {// если признак равен цвету Border - ничего не делать!
             return;
         }
 
         oldBorder = newBorder; // иначе - присвоить признаку цвет Border
 
-        if (borderWidth == 0) // если бордюра нет - ничего не делать!
-        {
+        if (borderWidth == 0) { // если бордюра нет - ничего не делать!
             return;
         }
         // если бордюр есть - перерисовать его цветом  newBorder;
@@ -927,15 +924,14 @@ public class Hardware {
             }
         }
         progressBar.setText(stats);
-        progressBar.setVisible(true);//   show();
+        progressBar.setVisible(true);
     }
 
     //===========================================================================================
     public static synchronized Image getImage(Component comp, int attr, int pattern) {
         try {//                 аттрибут, ниббл = 4 бита.
             return tryGetImage(comp, attr, pattern);
-        } catch (OutOfMemoryError e) // может и не хватить памяти на все нибблы...
-        {
+        } catch (OutOfMemoryError e) { // может и не хватить памяти на все нибблы...
             imageMap = null;          // в таком случае обнулим imageMap
             patternMap = null;          //                обнулим patternMap
 
@@ -968,8 +964,7 @@ public class Hardware {
         int ink = ((attr >> 4) & 0x000f); // старший ниббл - цвет (ink)
         int pap = ((attr) & 0x000f); // младший ниббл - фон  (paper)
         int hashValue = 0;
-        for (int i = 0; i < 4; i++) // побитно просматриваем ниббл из ОЗУ экрана
-        {
+        for (int i = 0; i < 4; i++) { // побитно просматриваем ниббл из ОЗУ экрана
             int col = ((pattern & (1 << i)) == 0) ? pap : ink; // присваиваем цвета
 
             hashValue |= (col << (i << 2)); //? ? ?
@@ -1078,11 +1073,9 @@ public class Hardware {
                 int oldPixels = lastByte[scrAddr + firstAttr]; // байт из буфера байтов по смещению ""
                 int newPixels = rgb[scrAddr]; // байт из ОЗУ аттриб.по смещению ""
                 int changes = oldPixels ^ newPixels; // changes = 0, если они одинаковы...
-                if (inkChange) // если изменения чернил:
-                {
+                if (inkChange) { // если изменения чернил:
                     changes |= newPixels;
-                } else // если не менялись чернила?
-                {
+                } else { // если не менялись чернила?
                     changes |= ((~newPixels) & 0xFF);
                 }//inkChange
 
@@ -1104,15 +1097,13 @@ public class Hardware {
         FIRST = -1;
 
         // Only update screen if necessary
-        if (first < 0) // =-1
-        {
+        if (first < 0) { // =-1
             return;
         }
         // далее изменим все нужные пиксели экрана
         // Update affected pixels
         addr = first;  // в первый заход first = адресу последнего байта экрана...
-        while (addr >= 0) // !=-1
-        {
+        while (addr >= 0) { // !=-1
             int oldPixels = lastByte[addr];   // байт из буфера байтов по смещению "first"
             int newPixels = memory.get(addr + SCREEN.begin()); // байт из видео-ОЗУ по смещению "first"
             int changes = oldPixels ^ newPixels; // changes = 0, если они одинаковы...
@@ -1160,8 +1151,8 @@ public class Hardware {
 //
             // Swap colors around if doing flash
             // Redraw left nibble if necessary
-            if ((changes & 0xF0) != 0) // если есть изменения в старшем ниббле:
-            {// старший ниббл байта сдвинули в младший - 0000.0000bbbb
+            if ((changes & 0xF0) != 0) { // если есть изменения в старшем ниббле:
+                // старший ниббл байта сдвинули в младший - 0000.0000bbbb
                 int newPixels1 = (newPixels & 0xF0) >> 4;
                 // аттрибуты кроме мерц. сдвинули выше младшего ниббла 0aaa.aaaa.0000
                 int imageMapEntry1 = (((attr & 0x7F) << 4) | newPixels1);
@@ -1183,16 +1174,16 @@ public class Hardware {
             }
 
             // Redraw right nibble if necessary
-            if ((changes & 0x0F) != 0) // если есть изменения в младшем ниббле:
-            {// выделили младший ниббл байта - 0000.0000bbbb
+            if ((changes & 0x0F) != 0) { // если есть изменения в младшем ниббле:
+                // выделили младший ниббл байта - 0000.0000bbbb
                 int newPixels2 = (newPixels & 0x0F);
                 // аттрибуты кроме мерц. сдвинули выше младшего ниббла 0aaa.aaaa.0000
                 int imageMapEntry2 = (((attr & 0x7F) << 4) | newPixels2);
                 // получили хитрый индекс: 0aaa.aaaabbbb
                 Image image2 = imageMap[imageMapEntry2]; //  по индексу ищем image2
 
-                if (image2 == null) // если такого image2 нет
-                { // получим новый:    аттрибут, младший ниббл
+                if (image2 == null) { // если такого image2 нет
+                    // получим новый:    аттрибут, младший ниббл
                     image2 = getImage(parent, attr, newPixels2); // новый image2
                     imageMap[imageMapEntry2] = image2; // занесём в массив imageMap
                 }// похоже - это убыстряет всё; рисунок есть - берём из массива,
@@ -1499,7 +1490,7 @@ public class Hardware {
         bytesToReadTotal = nBytes;
         updateProgress(0);
         if (showStats) {
-            progressBar.setVisible(true);//   show();
+            progressBar.setVisible(true);
             Thread.yield();
         }
     }
@@ -1509,7 +1500,7 @@ public class Hardware {
         bytesToReadTotal = 0;
         progressBar.setPercent(0.0);
         if (showStats) {
-            progressBar.setVisible(true);//   show();
+            progressBar.setVisible(true);
             Thread.yield();
         }
     }
@@ -1532,8 +1523,8 @@ public class Hardware {
             int toRead = n;             // число байт для прочтения (передано int n)
             byte[] buff = new byte[n]; // массив заданного числа int n БАЙТ!
 
-            while (toRead > 0) // от числа байт для прочтения до 0.
-            {//      BufferedInputStream( is, n )
+            while (toRead > 0) { // от числа байт для прочтения до 0.
+                // BufferedInputStream( is, n )
                 int nRead = bis.read(buff, n - toRead, toRead);
                 toRead -= nRead;
                 updateProgress(nRead);
@@ -1587,6 +1578,4 @@ public class Hardware {
 
         memory.set(addr, bite);
     }
-
-
 }
