@@ -47,7 +47,7 @@ import static spec.WordMath.*;
  * @author <A HREF="http://www.odie.demon.co.uk/spectrum">Adam Davidson & Andrew Pollard</A>
  * @version 1.1 27 Apr 1997
  * @see Main
- * @see CPU
+ * @see Cpu
  */
 
 public class Hardware {
@@ -74,7 +74,7 @@ public class Hardware {
 
     private Memory memory;
 
-    public CPU processor;
+    public Cpu processor;
 
 
     /**
@@ -87,7 +87,7 @@ public class Hardware {
         memory = new Memory(65536);
 
         // Specialist runs at 3.5Mhz;
-        processor = new CPU(1.6, new Data() {
+        processor = new Cpu(1.6, new Data() {
 
             @Override
             public boolean interrupt() {

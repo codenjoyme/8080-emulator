@@ -10,7 +10,7 @@ import spec.assembler.Command;
 import static spec.Constants.*;
 import static spec.WordMath.*;
 
-public class CPU extends Registry {
+public class Cpu extends Registry {
 
     private static final boolean[] parity = new boolean[256]; static {
         for (int i = 0; i < 256; i++) {
@@ -27,7 +27,7 @@ public class CPU extends Registry {
     private int interrupt;
     private Assembler asm;
 
-    public CPU(double clockFrequencyInMHz, Data data) {
+    public Cpu(double clockFrequencyInMHz, Data data) {
         super(data);
         // Количество тактов на 1 прерывание, которое происходит 50 раз в секунду.
         // 1000000/50 раз в секунду

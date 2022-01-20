@@ -8,12 +8,12 @@ import spec.assembler.Assembler;
 import static spec.SmartAssert.assertEquals;
 import static spec.WordMath.hex;
 
-public class CPUTest {
+public class CpuTest {
 
     public static final int START =0000;
 
     private TestData data;
-    private CPU cpu;
+    private Cpu cpu;
     private int stopWhen;
     private Assembler asm;
     private boolean init;
@@ -26,7 +26,7 @@ public class CPUTest {
             }
         });
         init = false;
-        cpu = new CPU(50.1 * 1e-6, data);
+        cpu = new Cpu(50.1 * 1e-6, data);
         cpu.PC(START);
         asm = new Assembler();
     }
