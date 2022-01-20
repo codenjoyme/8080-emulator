@@ -10,7 +10,7 @@ package spec;
  *  protected int( Z80.java)_SP = 0, _PC = 0; //программный счётчик = C000h - адрес старта!
  *     public int( Z80.java)interrupt() - здесь заглушить переход на адреса прерываний.
  *
- *  переписал функции pokeb(), pokew();
+ *  переписал функции writeb(), writew();
  *  ЭТО ПОСЛЕДНЯЯ РАБОЧАЯ ВЕРСИЯ, ГДЕ "СПЕЦИАЛИСТ" и "ZX" ВМЕСТЕ.
  *
  *  ЭТО ПЕРВАЯ РАБОЧАЯ ВЕРСИЯ "СПЕЦИАЛИСТ" ГДЕ "ZX"-код ПРАКТИЧЕСКИ ВЕСЬ НА МЕСТЕ!
@@ -101,13 +101,13 @@ public class Hardware {
             }
 
             @Override
-            public int peekb(int addr) {
-                return Hardware.this.peekb(addr);
+            public int readb(int addr) {
+                return Hardware.this.readb(addr);
             }
 
             @Override
-            public void pokeb(int addr, int bite) {
-                Hardware.this.pokeb(addr, bite);
+            public void writeb(int addr, int bite) {
+                Hardware.this.writeb(addr, bite);
             }
         });
 
@@ -715,8 +715,8 @@ public class Hardware {
         PrC1IN = true; // порт C1- на ввод
         Arrays.sort(ascii_keys); // сортируем массив ascii-массив кодов клавиш для поиска
         resetKeyboard();// все кнопки ненажаты
-        pokew(RgRYS, 0x009b);// порт RYC[0xFFE3] = 9Bh (все на ввод)
-        pokew(RgRGB, 0x0020);// порт цвета - зелёный на черном.
+        writew(RgRYS, 0x009b);// порт RYC[0xFFE3] = 9Bh (все на ввод)
+        writew(RgRGB, 0x0020);// порт цвета - зелёный на черном.
     }
 
     //
@@ -1545,21 +1545,21 @@ public class Hardware {
         processor.execute();
     }
 
-    private int peekb(int addr) {
+    private int readb(int addr) {
         if (PORTS.includes(addr)) {
             return inPort(addr);
         }
         return memory.get(addr);
     }
 
-    private void pokew(int addr, int word) {
-        pokeb(addr, lo(word));
+    private void writew(int addr, int word) {
+        writeb(addr, lo(word));
         // увеличиваем адресс на 1 и если он превысил 0xFFFF, то делаем его равным 0x0000
         addr = inc16(addr);
-        pokeb(addr, hi(word));
+        writeb(addr, hi(word));
     }
 
-    private void pokeb(int addr, int bite) {
+    private void writeb(int addr, int bite) {
         if (ROM.includes(addr)) {
             // в ПЗУ не пишем
             return;

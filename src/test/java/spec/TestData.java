@@ -28,12 +28,12 @@ public class TestData implements Data {
     }
 
     @Override
-    public int peekb(int addr) {
+    public int readb(int addr) {
         return memory.get(addr);
     }
 
     @Override
-    public void pokeb(int addr, int bite) {
+    public void writeb(int addr, int bite) {
         memory.set(addr, bite);
     }
 

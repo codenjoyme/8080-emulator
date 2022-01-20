@@ -88,11 +88,11 @@ public class Registry {
     public Reg rM = new Reg() {
         @Override
         public int get() {
-            return data.peekb(HL());
+            return data.readb(HL());
         }
         @Override
         public void set(int bite) {
-            data.pokeb(HL(), bite);
+            data.writeb(HL(), bite);
         }
     };
 
@@ -231,11 +231,11 @@ public class Registry {
     }
 
     public int M() {
-        return data.peekb(HL());
+        return data.readb(HL());
     }
 
     public void M(int bite) {
-        data.pokeb(HL(), bite);
+        data.writeb(HL(), bite);
     }
 
     public int C() {

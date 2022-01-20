@@ -10,28 +10,28 @@ public interface Data {
 
     void outb(int port, int bite);
 
-    int peekb(int addr);
+    int readb(int addr);
 
-    void pokeb(int addr, int bite);
+    void writeb(int addr, int bite);
 
-    default void pokew(int addr, int word) {
-        pokeb(addr, lo(word));
+    default void writew(int addr, int word) {
+        writeb(addr, lo(word));
         addr = inc16(addr);
-        pokeb(addr, hi(word));
+        writeb(addr, hi(word));
     }
 
-    default int peekw(int addr) {
-        int lo = peekb(addr);
+    default int readw(int addr) {
+        int lo = readb(addr);
         addr = inc16(addr);
-        int hi = peekb(addr) << 8;
-        return lo | hi;
+        int hi = readb(addr) << 8;
+        return hi | lo;
     }
 
-    default int peekwi(Reg r) {
-        int result = peekb(r.get());
+    default int readw(Reg r) {
+        int lo = readb(r.get());
         r.set(inc16(r.get()));
-        result |= peekb(r.get()) << 8;
+        int hi = readb(r.get()) << 8;
         r.set(inc16(r.get()));
-        return result;
+        return hi | lo;
     }
 }

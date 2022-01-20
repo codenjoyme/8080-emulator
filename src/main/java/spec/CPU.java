@@ -43,33 +43,33 @@ public class CPU extends Registry {
         asm = new Assembler();
     }
     
-    private int peekb(int addr) {
-        return data.peekb(addr);
+    private int readb(int addr) {
+        return data.readb(addr);
     }
 
-    private int peekw(int addr) {
-        return data.peekw(addr);
+    private int readw(int addr) {
+        return data.readw(addr);
     }
 
-    private void pokew(int addr, int word) {
-        data.pokew(addr, word);
+    private void writew(int addr, int word) {
+        data.writew(addr, word);
     }
 
-    private void pokeb(int addr, int bite) {
-        data.pokeb(addr, bite);
+    private void writeb(int addr, int bite) {
+        data.writeb(addr, bite);
     }
 
     private void pushw(int word) {
         SP(word(SP() - 2));
-        pokew(SP(), word);
+        writew(SP(), word);
     }
 
-    private int peekwi(Reg r) {
-        return data.peekwi(r);
+    private int readw(Reg r) {
+        return data.readw(r);
     }
 
     private int popw() {
-        return peekwi(rSP);
+        return readw(rSP);
     }
 
     private void pushpc() {
@@ -80,14 +80,14 @@ public class CPU extends Registry {
         PC(popw());
     }
 
-    private int nextCommand() {
-        int result = peekb(PC());
+    private int readpc() {
+        int bite = readb(PC());
         PC(inc16(PC()));
-        return result;
+        return bite;
     }
 
-    private int lxi() {
-        return peekwi(rPC);
+    private int readwpc() {
+        return readw(rPC);
     }
 
     // ввод из порта
@@ -125,7 +125,7 @@ public class CPU extends Registry {
                 ticks -= interrupt;
             }
 
-            int bite = nextCommand();
+            int bite = readpc();
             Command command = asm.find(bite);
             if (command != null) {
                 command.apply(bite, this);
@@ -189,7 +189,7 @@ public class CPU extends Registry {
 //                    break;
 //                }
 //                case 52:    /* INC (HL) */ {
-//                    pokeb(HL(), inc8(peekb(HL())));
+//                    writeb(HL(), inc8(readb(HL())));
 //                    ticks += 11;
 //                    break;
 //                }
@@ -232,7 +232,7 @@ public class CPU extends Registry {
 //                }
 //                case 53:    /* DEC (HL) */ {
 //                    int hl = HL();
-//                    pokeb(hl, dec8(peekb(hl)));
+//                    writeb(hl, dec8(readb(hl)));
 //                    ticks += 11;
 //                    break;
 //                }
@@ -244,42 +244,42 @@ public class CPU extends Registry {
 
                 /* LD *,N */
                 case 6:    /* LD B,n */ {
-                    B(nextCommand());
+                    B(readpc());
                     ticks += 7;
                     break;
                 }
                 case 14:    /* LD C,n */ {
-                    C(nextCommand());
+                    C(readpc());
                     ticks += 7;
                     break;
                 }
                 case 22:    /* LD D,n */ {
-                    D(nextCommand());
+                    D(readpc());
                     ticks += 7;
                     break;
                 }
                 case 30:    /* LD E,n */ {
-                    E(nextCommand());
+                    E(readpc());
                     ticks += 7;
                     break;
                 }
                 case 38:    /* LD H,n */ {
-                    H(nextCommand());
+                    H(readpc());
                     ticks += 7;
                     break;
                 }
                 case 46:    /* LD L,n */ {
-                    L(nextCommand());
+                    L(readpc());
                     ticks += 7;
                     break;
                 }
                 case 54:    /* LD (HL),n */ {
-                    pokeb(HL(), nextCommand());
+                    writeb(HL(), readpc());
                     ticks += 10;
                     break;
                 }
                 case 62:    /* LD A,n */ {
-                    A(nextCommand());
+                    A(readpc());
                     ticks += 7;
                     break;
                 }
@@ -357,7 +357,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 70:    /* LD B,(HL) */ {
-                    B(peekb(HL()));
+                    B(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -398,7 +398,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 78:    /* LD C,(HL) */ {
-                    C(peekb(HL()));
+                    C(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -439,7 +439,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 86:    /* LD D,(HL) */ {
-                    D(peekb(HL()));
+                    D(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -480,7 +480,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 94:    /* LD E,(HL) */ {
-                    E(peekb(HL()));
+                    E(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -521,7 +521,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 102:    /* LD H,(HL) */ {
-                    H(peekb(HL()));
+                    H(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -562,7 +562,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 110:    /* LD L,(HL) */ {
-                    L(peekb(HL()));
+                    L(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -574,32 +574,32 @@ public class CPU extends Registry {
 
                 /* LD (HL),* */
                 case 112:    /* LD (HL),B */ {
-                    pokeb(HL(), B());
+                    writeb(HL(), B());
                     ticks += 7;
                     break;
                 }
                 case 113:    /* LD (HL),C */ {
-                    pokeb(HL(), C());
+                    writeb(HL(), C());
                     ticks += 7;
                     break;
                 }
                 case 114:    /* LD (HL),D */ {
-                    pokeb(HL(), D());
+                    writeb(HL(), D());
                     ticks += 7;
                     break;
                 }
                 case 115:    /* LD (HL),E */ {
-                    pokeb(HL(), E());
+                    writeb(HL(), E());
                     ticks += 7;
                     break;
                 }
                 case 116:    /* LD (HL),H */ {
-                    pokeb(HL(), H());
+                    writeb(HL(), H());
                     ticks += 7;
                     break;
                 }
                 case 117:    /* LD (HL),L */ {
-                    pokeb(HL(), L());
+                    writeb(HL(), L());
                     ticks += 7;
                     break;
                 }
@@ -609,7 +609,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 119:    /* LD (HL),A */ {
-                    pokeb(HL(), A());
+                    writeb(HL(), A());
                     ticks += 7;
                     break;
                 }
@@ -646,7 +646,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 126:    /* LD A,(HL) */ {
-                    A(peekb(HL()));
+                    A(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -687,7 +687,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 134:    /* ADD A,(HL) */ {
-                    add_a(peekb(HL()));
+                    add_a(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -729,7 +729,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 142:    /* ADC A,(HL) */ {
-                    adc_a(peekb(HL()));
+                    adc_a(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -771,7 +771,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 150:    /* SUB (HL) */ {
-                    sub_a(peekb(HL()));
+                    sub_a(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -813,7 +813,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 158:    /* SBC A,(HL) */ {
-                    sbc_a(peekb(HL()));
+                    sbc_a(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -855,7 +855,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 166:    /* AND (HL) */ {
-                    and_a(peekb(HL()));
+                    and_a(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -897,7 +897,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 174:    /* XOR (HL) */ {
-                    xor_a(peekb(HL()));
+                    xor_a(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -939,7 +939,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 182:    /* OR (HL) */ {
-                    or_a(peekb(HL()));
+                    or_a(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -981,7 +981,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 190:    /* CP (HL) */ {
-                    cp_a(peekb(HL()));
+                    cp_a(readb(HL()));
                     ticks += 7;
                     break;
                 }
@@ -1105,7 +1105,7 @@ public class CPU extends Registry {
                 /* JP cc,nn */
                 case 194:    /* JP NZ,nn */ {
                     if (!tz()) {
-                        PC(lxi());
+                        PC(readwpc());
                     } else {
                         PC(word(PC() + 2));
                     }
@@ -1114,7 +1114,7 @@ public class CPU extends Registry {
                 }
                 case 202:    /* JP Z,nn */ {
                     if (tz()) {
-                        PC(lxi());
+                        PC(readwpc());
                     } else {
                         PC(word(PC() + 2));
                     }
@@ -1123,7 +1123,7 @@ public class CPU extends Registry {
                 }
                 case 210:    /* JP NC,nn */ {
                     if (!tc()) {
-                        PC(lxi());
+                        PC(readwpc());
                     } else {
                         PC(word(PC() + 2));
                     }
@@ -1132,7 +1132,7 @@ public class CPU extends Registry {
                 }
                 case 218:    /* JP C,nn */ {
                     if (tc()) {
-                        PC(lxi());
+                        PC(readwpc());
                     } else {
                         PC(word(PC() + 2));
                     }
@@ -1141,7 +1141,7 @@ public class CPU extends Registry {
                 }
                 case 226:    /* JP PO,nn */ {
                     if (!tp()) {
-                        PC(lxi());
+                        PC(readwpc());
                     } else {
                         PC(word(PC() + 2));
                     }
@@ -1150,7 +1150,7 @@ public class CPU extends Registry {
                 }
                 case 234:    /* JP PE,nn */ {
                     if (tp()) {
-                        PC(lxi());
+                        PC(readwpc());
                     } else {
                         PC(word(PC() + 2));
                     }
@@ -1159,7 +1159,7 @@ public class CPU extends Registry {
                 }
                 case 242:    /* JP P,nn */ {
                     if (!ts()) {
-                        PC(lxi());
+                        PC(readwpc());
                     } else {
                         PC(word(PC() + 2));
                     }
@@ -1168,7 +1168,7 @@ public class CPU extends Registry {
                 }
                 case 250:    /* JP M,nn */ {
                     if (ts()) {
-                        PC(lxi());
+                        PC(readwpc());
                     } else {
                         PC(word(PC() + 2));
                     }
@@ -1178,25 +1178,25 @@ public class CPU extends Registry {
                 
                 /* Various */
                 case 195:    /* JP nn */ {
-                    PC(peekw(PC()));
+                    PC(readw(PC()));
                     ticks += 10;
                     break;
                 }
                 case 211:    /* OUT (n),A */ {
-                    data.outb(nextCommand(), A());
+                    data.outb(readpc(), A());
                     ticks += 11;
                     break;
                 }
                 case 219:    /* IN A,(n) */ {
-                    A(inb((A() << 8) | nextCommand()));
+                    A(inb((A() << 8) | readpc()));
                     ticks += 11;
                     break;
                 }
                 case 227:    /* EX (SP),HL */ {
                     int t = HL();
                     int sp = SP();
-                    HL(peekw(sp));
-                    pokew(sp, t);
+                    HL(readw(sp));
+                    writew(sp, t);
                     ticks += 19;
                     break;
                 }
@@ -1219,7 +1219,7 @@ public class CPU extends Registry {
                 /* CALL cc,nn */
                 case 196: /* CALL NZ,nn */ {
                     if (!tz()) {
-                        int t = lxi();
+                        int t = readwpc();
                         pushpc();
                         PC(t);
                         ticks += 17;
@@ -1231,7 +1231,7 @@ public class CPU extends Registry {
                 }
                 case 204: /* CALL Z,nn */ {
                     if (tz()) {
-                        int t = lxi();
+                        int t = readwpc();
                         pushpc();
                         PC(t);
                         ticks += 17;
@@ -1243,7 +1243,7 @@ public class CPU extends Registry {
                 }
                 case 212: /* CALL NC,nn */ {
                     if (!tc()) {
-                        int t = lxi();
+                        int t = readwpc();
                         pushpc();
                         PC(t);
                         ticks += 17;
@@ -1255,7 +1255,7 @@ public class CPU extends Registry {
                 }
                 case 220: /* CALL C,nn */ {
                     if (tc()) {
-                        int t = lxi();
+                        int t = readwpc();
                         pushpc();
                         PC(t);
                         ticks += 17;
@@ -1267,7 +1267,7 @@ public class CPU extends Registry {
                 }
                 case 228: /* CALL PO,nn */ {
                     if (!tp()) {
-                        int t = lxi();
+                        int t = readwpc();
                         pushpc();
                         PC(t);
                         ticks += 17;
@@ -1279,7 +1279,7 @@ public class CPU extends Registry {
                 }
                 case 236: /* CALL PE,nn */ {
                     if (tp()) {
-                        int t = lxi();
+                        int t = readwpc();
                         pushpc();
                         PC(t);
                         ticks += 17;
@@ -1291,7 +1291,7 @@ public class CPU extends Registry {
                 }
                 case 244: /* CALL P,nn */ {
                     if (!ts()) {
-                        int t = lxi();
+                        int t = readwpc();
                         pushpc();
                         PC(t);
                         ticks += 17;
@@ -1303,7 +1303,7 @@ public class CPU extends Registry {
                 }
                 case 252: /* CALL M,nn */ {
                     if (ts()) {
-                        int t = lxi();
+                        int t = readwpc();
                         pushpc();
                         PC(t);
                         ticks += 17;
@@ -1321,7 +1321,7 @@ public class CPU extends Registry {
                     break;
                 }
                 case 205:    /* CALL nn */ {
-                    int t = lxi();
+                    int t = readwpc();
                     pushpc();
                     PC(t);
                     ticks += 17;
@@ -1344,42 +1344,42 @@ public class CPU extends Registry {
                 }
                 /* op A,N */
                 case 198: /* ADD A,N */ {
-                    add_a(nextCommand());
+                    add_a(readpc());
                     ticks += 7;
                     break;
                 }
                 case 206: /* ADC A,N */ {
-                    adc_a(nextCommand());
+                    adc_a(readpc());
                     ticks += 7;
                     break;
                 }
                 case 214: /* SUB N */ {
-                    sub_a(nextCommand());
+                    sub_a(readpc());
                     ticks += 7;
                     break;
                 }
                 case 222: /* SBC A,N */ {
-                    sbc_a(nextCommand());
+                    sbc_a(readpc());
                     ticks += 7;
                     break;
                 }
                 case 230: /* AND N */ {
-                    and_a(nextCommand());
+                    and_a(readpc());
                     ticks += 7;
                     break;
                 }
                 case 238: /* XOR N */ {
-                    xor_a(nextCommand());
+                    xor_a(readpc());
                     ticks += 7;
                     break;
                 }
                 case 246: /* OR N */ {
-                    or_a(nextCommand());
+                    or_a(readpc());
                     ticks += 7;
                     break;
                 }
                 case 254: /* CP N */ {
-                    cp_a(nextCommand());
+                    cp_a(readpc());
                     ticks += 7;
                     break;
                 }

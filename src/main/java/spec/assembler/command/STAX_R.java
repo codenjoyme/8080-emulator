@@ -33,6 +33,6 @@ public class STAX_R extends Command {
     @Override
     public void apply(int command, Registry r) {
         int addr = r.regw(rindex(command)).get();
-        r.data().pokeb(addr, r.A());
+        r.data().writeb(addr, r.A());
     }
 }
