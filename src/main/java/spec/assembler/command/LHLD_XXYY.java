@@ -6,9 +6,9 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-public class SHLD_XXYY extends Command {
+public class LHLD_XXYY extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(0x22);
+    private static final List<Integer> CODES = Arrays.asList(0x2A);
 
     @Override
     public List<Integer> codes() {
@@ -17,7 +17,7 @@ public class SHLD_XXYY extends Command {
 
     @Override
     public String pattern() {
-        return "SHLD (....)";
+        return "LHLD (....)";
     }
 
     @Override
@@ -33,6 +33,7 @@ public class SHLD_XXYY extends Command {
     @Override
     public void apply(int command, Registry r) {
         int addr = r.data().peekwi(r.rPC);
-        r.data().pokew(addr, r.HL());
+        int bits = r.data().peekw(addr);
+        r.HL(bits);
     }
 }

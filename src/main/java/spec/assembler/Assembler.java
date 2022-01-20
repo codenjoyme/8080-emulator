@@ -22,6 +22,7 @@ public class Assembler {
         add(new STAX_R());
         add(new LDAX_R());
         add(new SHLD_XXYY());
+        add(new LHLD_XXYY());
     }
 
     private static void add(Command command) {
