@@ -6,7 +6,6 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
 
 import static spec.Constants.x10000;
 import static spec.WordMath.word;
@@ -16,9 +15,9 @@ public class DAD_R extends Command {
     private static final List<Integer> CODES = Arrays.asList(0x09, 0x19, 0x29, 0x39);
 
     @Override
-    public List<Integer> code(Matcher matcher) {
+    public List<Integer> code(String... params) {
         return new LinkedList<Integer>(){{
-            add(codes().get(registers().indexOf(matcher.group(1))));
+            add(codes().get(registers().indexOf(params[0])));
         }};
     }
 

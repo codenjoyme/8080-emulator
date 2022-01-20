@@ -6,7 +6,6 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
 
 import static spec.WordMath.hex;
 import static spec.WordMath.reverse;
@@ -16,10 +15,10 @@ public class LXI_R_XXYY extends Command {
     private static final List<Integer> CODES = Arrays.asList(0x01, 0x11, 0x21, 0x31);
 
     @Override
-    public List<Integer> code(Matcher matcher) {
+    public List<Integer> code(String... params) {
         return new LinkedList<Integer>(){{
-            add(codes().get(registers().indexOf(matcher.group(1))));
-            addAll(reverse(hex(matcher.group(2))));
+            add(codes().get(registers().indexOf(params[0])));
+            addAll(reverse(hex(params[1])));
         }};
     }
 

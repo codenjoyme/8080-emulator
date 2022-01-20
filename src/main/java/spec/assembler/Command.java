@@ -45,12 +45,16 @@ public abstract class Command {
         if (!matcher.matches()) {
             return Optional.empty();
         }
-        return Optional.of(code(matcher).stream()
+        String[] params = new String[matcher.groupCount()];
+        for (int i = 0; i < params.length; i++) {
+            params[i] = matcher.group(i + 1);
+        }
+        return Optional.of(code(params).stream()
                 .map(WordMath::hex)
                 .collect(joining(" ")));
     }
 
-    public List<Integer> code(Matcher matcher) {
+    public List<Integer> code(String... params) {
         return codes();
     }
 
