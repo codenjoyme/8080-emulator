@@ -28,33 +28,9 @@ public class SmartAssert {
 
     private static List<AssertionError> failures = new CopyOnWriteArrayList<>();
 
-    public static void assertEquals(String message, Object expected, Object actual) {
-        try {
-            Assert.assertEquals(message, expected, actual);
-        } catch (AssertionError e) {
-            failures.add(e);
-        }
-    }
-
-    public static void assertNotEquals(Object expected, Object actual) {
-        try {
-            Assert.assertNotEquals(expected, actual);
-        } catch (AssertionError e) {
-            failures.add(e);
-        }
-    }
-
     public static void assertEquals(Object expected, Object actual) {
         try {
             Assert.assertEquals(expected, actual);
-        } catch (AssertionError e) {
-            failures.add(e);
-        }
-    }
-
-    public static void assertSame(Object object1, Object object2) {
-        try {
-            Assert.assertSame(object1, object2);
         } catch (AssertionError e) {
             failures.add(e);
         }

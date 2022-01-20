@@ -37,12 +37,10 @@ public class Constants {
     public static final int x9F = i159_b10011111;
     public static final int xFF = 0xFF;
     public static final int x100 = 0x100;
-    public static final int x0FFF = 0x0FFF;
-    public static final int x1000 = 0x1000;
     public static final int x10000 = 0x10000;
     
-    public static final int START_POINT = 0xC000;  // старт процессора после ристарта
+    public static final int START_POINT = 0xC000;  // старт процессора после перезапуска
     public static final Range SCREEN = new Range(0x9000, 0xBFFF); // область экрана
-    public static final Range ROM = new Range(0xC000, 0xF7FF); // ПЗУ
-    public static final Range PORTS = new Range(0xF800, 0xFFFE); // порты
+    public static final Range ROM = new Range(0xC000, 0xF7FF);    // ПЗУ
+    public static final Range PORTS = new Range(0xF800, 0xFFFE);  // порты
 }

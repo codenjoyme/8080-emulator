@@ -35,5 +35,4 @@ public class STA_XXYY extends Command {
         int addr = r.data().read16(r.rPC);
         r.data().write8(addr, r.A());
     }
-
 }

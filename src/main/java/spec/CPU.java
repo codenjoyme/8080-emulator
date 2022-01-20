@@ -10,13 +10,6 @@ import spec.assembler.Command;
 import static spec.Constants.*;
 import static spec.WordMath.*;
 
-/**
- * <p>The Z80 class emulates the Zilog Z80 microprocessor.</p>
- *
- * @author <A HREF="http://www.odie.demon.co.uk/spectrum">Adam Davidson & Andrew Pollard</A>
- * @version 1.1 27 Apr 1997
- */
-
 public class CPU extends Registry {
 
     private static final boolean[] parity = new boolean[256]; static {
@@ -101,16 +94,10 @@ public class CPU extends Registry {
         return xFF;
     }
 
-    /**
-     * Interrupt handlers
-     */
     private static boolean interruptNeeded(int tick) {
         return tick >= 0;  
     }
 
-    /**
-     * Основной цикл выполнения кода
-     */
     public void execute() {
         // закладываем время до прерывания
         int ticks = -interrupt;
@@ -135,863 +122,863 @@ public class CPU extends Registry {
             }
             
             switch (bite) {
-//                case 11:    /* DEC BC */ {
+//                case 11: {
 //                    BC(dec16(BC()));
 //                    ticks += 6;
 //                    break;
 //                }
-//                case 27:    /* DEC DE */ {
+//                case 27: {
 //                    DE(dec16(DE()));
 //                    ticks += 6;
 //                    break;
 //                }
-//                case 43:    /* DEC HL */ {
+//                case 43: {
 //                    HL(dec16(HL()));
 //                    ticks += 6;
 //                    break;
 //                }
-//                case 59:    /* DEC SP */ {
+//                case 59: {
 //                    SP(dec16(SP()));
 //                    ticks += 6;
 //                    break;
 //                }
 
-                /* INC * */
-//                case 4:    /* INC B */ {
+
+//                case 4: {
 //                    B(inc8(B()));
 //                    ticks += 4;
 //                    break;
 //                }
-//                case 12:    /* INC C */ {
+//                case 12: {
 //                    C(inc8(C()));
 //                    ticks += 4;
 //                    break;
 //                }
-//                case 20:    /* INC D */ {
+//                case 20: {
 //                    D(inc8(D()));
 //                    ticks += 4;
 //                    break;
 //                }
-//                case 28:    /* INC E */ {
+//                case 28: {
 //                    E(inc8(E()));
 //                    ticks += 4;
 //                    break;
 //                }
-//                case 36:    /* INC H */ {
+//                case 36: {
 //                    H(inc8(H()));
 //                    ticks += 4;
 //                    break;
 //                }
-//                case 44:    /* INC L */ {
+//                case 44: {
 //                    L(inc8(L()));
 //                    ticks += 4;
 //                    break;
 //                }
-//                case 52:    /* INC (HL) */ {
+//                case 52: {
 //                    write8(HL(), inc8(read8(HL())));
 //                    ticks += 11;
 //                    break;
 //                }
-//                case 60:    /* INC A() */ {
+//                case 60: {
 //                    A(inc8(A()));
 //                    ticks += 4;
 //                    break;
 //                }
 
-                /* DEC * */
-//                case 5:    /* DEC B */ {
+
+//                case 5: {
 //                    B(dec8(B()));
 //                    ticks += 4;
 //                    break;
 //                }
-//                case 13:    /* DEC C */ {
+//                case 13: {
 //                    C(dec8(C()));
 //                    ticks += 4;
 //                    break;
 //                }
-//                case 21:    /* DEC D */ {
+//                case 21: {
 //                    D(dec8(D()));
 //                    ticks += 4;
 //                    break;
 //                }
-//                case 29:    /* DEC E */ {
+//                case 29: {
 //                    E(dec8(E()));
 //                    ticks += 4;
 //                    break;
 //                }
-//                case 37:    /* DEC H */ {
+//                case 37: {
 //                    H(dec8(H()));
 //                    ticks += 4;
 //                    break;
 //                }
-//                case 45:    /* DEC L */ {
+//                case 45: {
 //                    L(dec8(L()));
 //                    ticks += 4;
 //                    break;
 //                }
-//                case 53:    /* DEC (HL) */ {
+//                case 53: {
 //                    int hl = HL();
 //                    write8(hl, dec8(read8(hl)));
 //                    ticks += 11;
 //                    break;
 //                }
-//                case 61:    /* DEC A() */ {
+//                case 61: {
 //                    A(dec8(A()));
 //                    ticks += 4;
 //                    break;
 //                }
 
-                /* LD *,N */
-                case 6:    /* LD B,n */ {
+
+                case 6: {
                     B(read8PC());
                     ticks += 7;
                     break;
                 }
-                case 14:    /* LD C,n */ {
+                case 14: {
                     C(read8PC());
                     ticks += 7;
                     break;
                 }
-                case 22:    /* LD D,n */ {
+                case 22: {
                     D(read8PC());
                     ticks += 7;
                     break;
                 }
-                case 30:    /* LD E,n */ {
+                case 30: {
                     E(read8PC());
                     ticks += 7;
                     break;
                 }
-                case 38:    /* LD H,n */ {
+                case 38: {
                     H(read8PC());
                     ticks += 7;
                     break;
                 }
-                case 46:    /* LD L,n */ {
+                case 46: {
                     L(read8PC());
                     ticks += 7;
                     break;
                 }
-                case 54:    /* LD (HL),n */ {
+                case 54: {
                     write8(HL(), read8PC());
                     ticks += 10;
                     break;
                 }
-                case 62:    /* LD A,n */ {
+                case 62: {
                     A(read8PC());
                     ticks += 7;
                     break;
                 }
 
-                /* R**A */
-                case 7: /* RLCA */ {
+
+                case 7: {
                     rlc_a();
                     ticks += 4;
                     break;
                 }
-                case 15: /* RRCA */ {
+                case 15: {
                     rrc_a();
                     ticks += 4;
                     break;
                 }
-                case 23: /* RLA */ {
+                case 23: {
                     rl_a();
                     ticks += 4;
                     break;
                 }
-                case 31: /* RRA */ {
+                case 31: {
                     rr_a();
                     ticks += 4;
                     break;
                 }
-                case 39: /* DAA */ {
+                case 39: {
                     daa_a();
                     ticks += 4;
                     break;
                 }
-                case 47: /* CPL */ {
+                case 47: {
                     cpl_a();
                     ticks += 4;
                     break;
                 }
-                case 55: /* SCF */ {
+                case 55: {
                     scf();
                     ticks += 4;
                     break;
                 }
-                case 63: /* CCF */ {
+                case 63: {
                     ccf();
                     ticks += 4;
                     break;
                 }
 
-                /* LD B,* */
-                case 64:    /* LD B,B */ {
+
+                case 64: {
                     ticks += 4;
                     break;
                 }
-                case 65:    /* LD B,C */ {
+                case 65: {
                     B(C());
                     ticks += 4;
                     break;
                 }
-                case 66:    /* LD B,D */ {
+                case 66: {
                     B(D());
                     ticks += 4;
                     break;
                 }
-                case 67:    /* LD B,E */ {
+                case 67: {
                     B(E());
                     ticks += 4;
                     break;
                 }
-                case 68:    /* LD B,H */ {
+                case 68: {
                     B(H());
                     ticks += 4;
                     break;
                 }
-                case 69:    /* LD B,L */ {
+                case 69: {
                     B(L());
                     ticks += 4;
                     break;
                 }
-                case 70:    /* LD B,(HL) */ {
+                case 70: {
                     B(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 71:    /* LD B,A */ {
+                case 71: {
                     B(A());
                     ticks += 4;
                     break;
                 }
 
-                /* LD C,* */
-                case 72:    /* LD C,B */ {
+
+                case 72: {
                     C(B());
                     ticks += 4;
                     break;
                 }
-                case 73:    /* LD C,C */ {
+                case 73: {
                     ticks += 4;
                     break;
                 }
-                case 74:    /* LD C,D */ {
+                case 74: {
                     C(D());
                     ticks += 4;
                     break;
                 }
-                case 75:    /* LD C,E */ {
+                case 75: {
                     C(E());
                     ticks += 4;
                     break;
                 }
-                case 76:    /* LD C,H */ {
+                case 76: {
                     C(H());
                     ticks += 4;
                     break;
                 }
-                case 77:    /* LD C,L */ {
+                case 77: {
                     C(L());
                     ticks += 4;
                     break;
                 }
-                case 78:    /* LD C,(HL) */ {
+                case 78: {
                     C(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 79:    /* LD C,A */ {
+                case 79: {
                     C(A());
                     ticks += 4;
                     break;
                 }
 
-                /* LD D,* */
-                case 80:    /* LD D,B */ {
+
+                case 80: {
                     D(B());
                     ticks += 4;
                     break;
                 }
-                case 81:    /* LD D,C */ {
+                case 81: {
                     D(C());
                     ticks += 4;
                     break;
                 }
-                case 82:    /* LD D,D */ {
+                case 82: {
                     ticks += 4;
                     break;
                 }
-                case 83:    /* LD D,E */ {
+                case 83: {
                     D(E());
                     ticks += 4;
                     break;
                 }
-                case 84:    /* LD D,H */ {
+                case 84: {
                     D(H());
                     ticks += 4;
                     break;
                 }
-                case 85:    /* LD D,L */ {
+                case 85: {
                     D(L());
                     ticks += 4;
                     break;
                 }
-                case 86:    /* LD D,(HL) */ {
+                case 86: {
                     D(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 87:    /* LD D,A */ {
+                case 87: {
                     D(A());
                     ticks += 4;
                     break;
                 }
 
-                /* LD E,* */
-                case 88:    /* LD E,B */ {
+
+                case 88: {
                     E(B());
                     ticks += 4;
                     break;
                 }
-                case 89:    /* LD E,C */ {
+                case 89: {
                     E(C());
                     ticks += 4;
                     break;
                 }
-                case 90:    /* LD E,D */ {
+                case 90: {
                     E(D());
                     ticks += 4;
                     break;
                 }
-                case 91:    /* LD E,E */ {
+                case 91: {
                     ticks += 4;
                     break;
                 }
-                case 92:    /* LD E,H */ {
+                case 92: {
                     E(H());
                     ticks += 4;
                     break;
                 }
-                case 93:    /* LD E,L */ {
+                case 93: {
                     E(L());
                     ticks += 4;
                     break;
                 }
-                case 94:    /* LD E,(HL) */ {
+                case 94: {
                     E(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 95:    /* LD E,A */ {
+                case 95: {
                     E(A());
                     ticks += 4;
                     break;
                 }
 
-                /* LD H,* */
-                case 96:    /* LD H,B */ {
+
+                case 96: {
                     H(B());
                     ticks += 4;
                     break;
                 }
-                case 97:    /* LD H,C */ {
+                case 97: {
                     H(C());
                     ticks += 4;
                     break;
                 }
-                case 98:    /* LD H,D */ {
+                case 98: {
                     H(D());
                     ticks += 4;
                     break;
                 }
-                case 99:    /* LD H,E */ {
+                case 99: {
                     H(E());
                     ticks += 4;
                     break;
                 }
-                case 100: /* LD H,H */ {
+                case 100: {
                     ticks += 4;
                     break;
                 }
-                case 101:    /* LD H,L */ {
+                case 101: {
                     H(L());
                     ticks += 4;
                     break;
                 }
-                case 102:    /* LD H,(HL) */ {
+                case 102: {
                     H(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 103:    /* LD H,A */ {
+                case 103: {
                     H(A());
                     ticks += 4;
                     break;
                 }
 
-                /* LD L,* */
-                case 104:    /* LD L,B */ {
+
+                case 104: {
                     L(B());
                     ticks += 4;
                     break;
                 }
-                case 105:    /* LD L,C */ {
+                case 105: {
                     L(C());
                     ticks += 4;
                     break;
                 }
-                case 106:    /* LD L,D */ {
+                case 106: {
                     L(D());
                     ticks += 4;
                     break;
                 }
-                case 107:    /* LD L,E */ {
+                case 107: {
                     L(E());
                     ticks += 4;
                     break;
                 }
-                case 108:    /* LD L,H */ {
+                case 108: {
                     L(H());
                     ticks += 4;
                     break;
                 }
-                case 109:    /* LD L,L */ {
+                case 109: {
                     ticks += 4;
                     break;
                 }
-                case 110:    /* LD L,(HL) */ {
+                case 110: {
                     L(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 111:    /* LD L,A */ {
+                case 111: {
                     L(A());
                     ticks += 4;
                     break;
                 }
 
-                /* LD (HL),* */
-                case 112:    /* LD (HL),B */ {
+
+                case 112: {
                     write8(HL(), B());
                     ticks += 7;
                     break;
                 }
-                case 113:    /* LD (HL),C */ {
+                case 113: {
                     write8(HL(), C());
                     ticks += 7;
                     break;
                 }
-                case 114:    /* LD (HL),D */ {
+                case 114: {
                     write8(HL(), D());
                     ticks += 7;
                     break;
                 }
-                case 115:    /* LD (HL),E */ {
+                case 115: {
                     write8(HL(), E());
                     ticks += 7;
                     break;
                 }
-                case 116:    /* LD (HL),H */ {
+                case 116: {
                     write8(HL(), H());
                     ticks += 7;
                     break;
                 }
-                case 117:    /* LD (HL),L */ {
+                case 117: {
                     write8(HL(), L());
                     ticks += 7;
                     break;
                 }
-                case 118:    /* HALT */ {
+                case 118: {
                     int haltsToInterrupt = (-ticks - 1) / 4 + 1;
                     ticks += haltsToInterrupt * 4;
                     break;
                 }
-                case 119:    /* LD (HL),A */ {
+                case 119: {
                     write8(HL(), A());
                     ticks += 7;
                     break;
                 }
 
-                /* LD A,* */
-                case 120:    /* LD A,B */ {
+
+                case 120: {
                     A(B());
                     ticks += 4;
                     break;
                 }
-                case 121:    /* LD A,C */ {
+                case 121: {
                     A(C());
                     ticks += 4;
                     break;
                 }
-                case 122:    /* LD A,D */ {
+                case 122: {
                     A(D());
                     ticks += 4;
                     break;
                 }
-                case 123:    /* LD A,E */ {
+                case 123: {
                     A(E());
                     ticks += 4;
                     break;
                 }
-                case 124:    /* LD A,H */ {
+                case 124: {
                     A(H());
                     ticks += 4;
                     break;
                 }
-                case 125:    /* LD A,L */ {
+                case 125: {
                     A(L());
                     ticks += 4;
                     break;
                 }
-                case 126:    /* LD A,(HL) */ {
+                case 126: {
                     A(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 127:    /* LD A,A */ {
+                case 127: {
                     ticks += 4;
                     break;
                 }
 
-                /* ADD A,* */
-                case 128:    /* ADD A,B */ {
+
+                case 128: {
                     add_a(B());
                     ticks += 4;
                     break;
                 }
-                case 129:    /* ADD A,C */ {
+                case 129: {
                     add_a(C());
                     ticks += 4;
                     break;
                 }
-                case 130:    /* ADD A,D */ {
+                case 130: {
                     add_a(D());
                     ticks += 4;
                     break;
                 }
-                case 131:    /* ADD A,E */ {
+                case 131: {
                     add_a(E());
                     ticks += 4;
                     break;
                 }
-                case 132:    /* ADD A,H */ {
+                case 132: {
                     add_a(H());
                     ticks += 4;
                     break;
                 }
-                case 133:    /* ADD A,L */ {
+                case 133: {
                     add_a(L());
                     ticks += 4;
                     break;
                 }
-                case 134:    /* ADD A,(HL) */ {
+                case 134: {
                     add_a(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 135:    /* ADD A,A */ {
+                case 135: {
                     add_a(A());
                     ticks += 4;
                     break;
                 }
 
-                /* ADC A,* */
-                case 136:    /* ADC A,B */ {
+
+                case 136: {
                     adc_a(B());
                     ticks += 4;
                     break;
                 }
-                case 137:    /* ADC A,C */ {
+                case 137: {
                     adc_a(C());
                     ticks += 4;
                     break;
                 }
-                case 138:    /* ADC A,D */ {
+                case 138: {
                     adc_a(D());
                     ticks += 4;
                     break;
                 }
-                case 139:    /* ADC A,E */ {
+                case 139: {
                     adc_a(E());
                     ticks += 4;
                     break;
                 }
-                case 140:    /* ADC A,H */ {
+                case 140: {
                     adc_a(H());
                     ticks += 4;
                     break;
                 }
-                case 141:    /* ADC A,L */ {
+                case 141: {
                     adc_a(L());
                     ticks += 4;
                     break;
                 }
-                case 142:    /* ADC A,(HL) */ {
+                case 142: {
                     adc_a(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 143:    /* ADC A,A */ {
+                case 143: {
                     adc_a(A());
                     ticks += 4;
                     break;
                 }
 
-                /* SUB * */
-                case 144:    /* SUB B */ {
+
+                case 144: {
                     sub_a(B());
                     ticks += 4;
                     break;
                 }
-                case 145:    /* SUB C */ {
+                case 145: {
                     sub_a(C());
                     ticks += 4;
                     break;
                 }
-                case 146:    /* SUB D */ {
+                case 146: {
                     sub_a(D());
                     ticks += 4;
                     break;
                 }
-                case 147:    /* SUB E */ {
+                case 147: {
                     sub_a(E());
                     ticks += 4;
                     break;
                 }
-                case 148:    /* SUB H */ {
+                case 148: {
                     sub_a(H());
                     ticks += 4;
                     break;
                 }
-                case 149:    /* SUB L */ {
+                case 149: {
                     sub_a(L());
                     ticks += 4;
                     break;
                 }
-                case 150:    /* SUB (HL) */ {
+                case 150: {
                     sub_a(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 151:    /* SUB A() */ {
+                case 151: {
                     sub_a(A());
                     ticks += 4;
                     break;
                 }
 
-                /* SBC A,* */
-                case 152:    /* SBC A,B */ {
+
+                case 152: {
                     sbc_a(B());
                     ticks += 4;
                     break;
                 }
-                case 153:    /* SBC A,C */ {
+                case 153: {
                     sbc_a(C());
                     ticks += 4;
                     break;
                 }
-                case 154:    /* SBC A,D */ {
+                case 154: {
                     sbc_a(D());
                     ticks += 4;
                     break;
                 }
-                case 155:    /* SBC A,E */ {
+                case 155: {
                     sbc_a(E());
                     ticks += 4;
                     break;
                 }
-                case 156:    /* SBC A,H */ {
+                case 156: {
                     sbc_a(H());
                     ticks += 4;
                     break;
                 }
-                case 157:    /* SBC A,L */ {
+                case 157: {
                     sbc_a(L());
                     ticks += 4;
                     break;
                 }
-                case 158:    /* SBC A,(HL) */ {
+                case 158: {
                     sbc_a(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 159:    /* SBC A,A */ {
+                case 159: {
                     sbc_a(A());
                     ticks += 4;
                     break;
                 }
 
-                /* AND * */
-                case 160:    /* AND B */ {
+
+                case 160: {
                     and_a(B());
                     ticks += 4;
                     break;
                 }
-                case 161:    /* AND C */ {
+                case 161: {
                     and_a(C());
                     ticks += 4;
                     break;
                 }
-                case 162:    /* AND D */ {
+                case 162: {
                     and_a(D());
                     ticks += 4;
                     break;
                 }
-                case 163:    /* AND E */ {
+                case 163: {
                     and_a(E());
                     ticks += 4;
                     break;
                 }
-                case 164:    /* AND H */ {
+                case 164: {
                     and_a(H());
                     ticks += 4;
                     break;
                 }
-                case 165:    /* AND L */ {
+                case 165: {
                     and_a(L());
                     ticks += 4;
                     break;
                 }
-                case 166:    /* AND (HL) */ {
+                case 166: {
                     and_a(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 167:    /* AND A() */ {
+                case 167: {
                     and_a(A());
                     ticks += 4;
                     break;
                 }
 
-                /* XOR * */
-                case 168:    /* XOR B */ {
+
+                case 168: {
                     xor_a(B());
                     ticks += 4;
                     break;
                 }
-                case 169:    /* XOR C */ {
+                case 169: {
                     xor_a(C());
                     ticks += 4;
                     break;
                 }
-                case 170:    /* XOR D */ {
+                case 170: {
                     xor_a(D());
                     ticks += 4;
                     break;
                 }
-                case 171:    /* XOR E */ {
+                case 171: {
                     xor_a(E());
                     ticks += 4;
                     break;
                 }
-                case 172:    /* XOR H */ {
+                case 172: {
                     xor_a(H());
                     ticks += 4;
                     break;
                 }
-                case 173:    /* XOR L */ {
+                case 173: {
                     xor_a(L());
                     ticks += 4;
                     break;
                 }
-                case 174:    /* XOR (HL) */ {
+                case 174: {
                     xor_a(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 175:    /* XOR A() */ {
+                case 175: {
                     xor_a(A());
                     ticks += 4;
                     break;
                 }
 
-                /* OR * */
-                case 176:    /* OR B */ {
+
+                case 176: {
                     or_a(B());
                     ticks += 4;
                     break;
                 }
-                case 177:    /* OR C */ {
+                case 177: {
                     or_a(C());
                     ticks += 4;
                     break;
                 }
-                case 178:    /* OR D */ {
+                case 178: {
                     or_a(D());
                     ticks += 4;
                     break;
                 }
-                case 179:    /* OR E */ {
+                case 179: {
                     or_a(E());
                     ticks += 4;
                     break;
                 }
-                case 180:    /* OR H */ {
+                case 180: {
                     or_a(H());
                     ticks += 4;
                     break;
                 }
-                case 181:    /* OR L */ {
+                case 181: {
                     or_a(L());
                     ticks += 4;
                     break;
                 }
-                case 182:    /* OR (HL) */ {
+                case 182: {
                     or_a(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 183:    /* OR A() */ {
+                case 183: {
                     or_a(A());
                     ticks += 4;
                     break;
                 }
 
-                /* CP * */
-                case 184:    /* CP B */ {
+
+                case 184: {
                     cp_a(B());
                     ticks += 4;
                     break;
                 }
-                case 185:    /* CP C */ {
+                case 185: {
                     cp_a(C());
                     ticks += 4;
                     break;
                 }
-                case 186:    /* CP D */ {
+                case 186: {
                     cp_a(D());
                     ticks += 4;
                     break;
                 }
-                case 187:    /* CP E */ {
+                case 187: {
                     cp_a(E());
                     ticks += 4;
                     break;
                 }
-                case 188:    /* CP H */ {
+                case 188: {
                     cp_a(H());
                     ticks += 4;
                     break;
                 }
-                case 189:    /* CP L */ {
+                case 189: {
                     cp_a(L());
                     ticks += 4;
                     break;
                 }
-                case 190:    /* CP (HL) */ {
+                case 190: {
                     cp_a(read8(HL()));
                     ticks += 7;
                     break;
                 }
-                case 191:    /* CP A() */ {
+                case 191: {
                     cp_a(A());
                     ticks += 4;
                     break;
                 }
 
-                /* RET cc */
-                case 192:    /* RET NZ */ {
+
+                case 192: {
                     if (!tz()) {
                         popPC();
                         ticks += 11;
@@ -1000,7 +987,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 200:    /* RET Z */ {
+                case 200: {
                     if (tz()) {
                         popPC();
                         ticks += 11;
@@ -1009,7 +996,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 208:    /* RET NC */ {
+                case 208: {
                     if (!tc()) {
                         popPC();
                         ticks += 11;
@@ -1018,7 +1005,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 216:    /* RET C */ {
+                case 216: {
                     if (tc()) {
                         popPC();
                         ticks += 11;
@@ -1027,7 +1014,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 224:    /* RET PO */ {
+                case 224: {
                     if (!tp()) {
                         popPC();
                         ticks += 11;
@@ -1036,7 +1023,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 232:    /* RET PE */ {
+                case 232: {
                     if (tp()) {
                         popPC();
                         ticks += 11;
@@ -1045,7 +1032,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 240:    /* RET P */ {
+                case 240: {
                     if (!ts()) {
                         popPC();
                         ticks += 11;
@@ -1054,7 +1041,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 248:    /* RET M */ {
+                case 248: {
                     if (ts()) {
                         popPC();
                         ticks += 11;
@@ -1064,45 +1051,45 @@ public class CPU extends Registry {
                     break;
                 }
 
-                /* POP,Various */
-                case 193:    /* POP BC */ {
+
+                case 193: {
                     BC(pop16());
                     ticks += 10;
                     break;
                 }
-                case 201: /* RET */ {
+                case 201: {
                     popPC();
                     ticks += 10;
                     break;
                 }
-                case 209:    /* POP DE */ {
+                case 209: {
                     DE(pop16());
                     ticks += 10;
                     break;
                 }
-                case 225:    /* POP HL */ {
+                case 225: {
                     HL(pop16());
                     ticks += 10;
                     break;
                 }
-                case 233: /* JP (HL) */ {
+                case 233: {
                     PC(HL());
                     ticks += 4;
                     break;
                 }
-                case 241:    /* POP AF */ {
+                case 241: {
                     AF(pop16());
                     ticks += 10;
                     break;
                 }
-                case 249:    /* LD SP,HL */ {
+                case 249: {
                     SP(HL());
                     ticks += 6;
                     break;
                 }
 
-                /* JP cc,nn */
-                case 194:    /* JP NZ,nn */ {
+
+                case 194: {
                     if (!tz()) {
                         PC(read16PC());
                     } else {
@@ -1111,7 +1098,7 @@ public class CPU extends Registry {
                     ticks += 10;
                     break;
                 }
-                case 202:    /* JP Z,nn */ {
+                case 202: {
                     if (tz()) {
                         PC(read16PC());
                     } else {
@@ -1120,7 +1107,7 @@ public class CPU extends Registry {
                     ticks += 10;
                     break;
                 }
-                case 210:    /* JP NC,nn */ {
+                case 210: {
                     if (!tc()) {
                         PC(read16PC());
                     } else {
@@ -1129,7 +1116,7 @@ public class CPU extends Registry {
                     ticks += 10;
                     break;
                 }
-                case 218:    /* JP C,nn */ {
+                case 218: {
                     if (tc()) {
                         PC(read16PC());
                     } else {
@@ -1138,7 +1125,7 @@ public class CPU extends Registry {
                     ticks += 10;
                     break;
                 }
-                case 226:    /* JP PO,nn */ {
+                case 226: {
                     if (!tp()) {
                         PC(read16PC());
                     } else {
@@ -1147,7 +1134,7 @@ public class CPU extends Registry {
                     ticks += 10;
                     break;
                 }
-                case 234:    /* JP PE,nn */ {
+                case 234: {
                     if (tp()) {
                         PC(read16PC());
                     } else {
@@ -1156,7 +1143,7 @@ public class CPU extends Registry {
                     ticks += 10;
                     break;
                 }
-                case 242:    /* JP P,nn */ {
+                case 242: {
                     if (!ts()) {
                         PC(read16PC());
                     } else {
@@ -1165,7 +1152,7 @@ public class CPU extends Registry {
                     ticks += 10;
                     break;
                 }
-                case 250:    /* JP M,nn */ {
+                case 250: {
                     if (ts()) {
                         PC(read16PC());
                     } else {
@@ -1175,23 +1162,23 @@ public class CPU extends Registry {
                     break;
                 }
                 
-                /* Various */
-                case 195:    /* JP nn */ {
+
+                case 195: {
                     PC(read16(PC()));
                     ticks += 10;
                     break;
                 }
-                case 211:    /* OUT (n),A */ {
+                case 211: {
                     data.out8(read8PC(), A());
                     ticks += 11;
                     break;
                 }
-                case 219:    /* IN A,(n) */ {
+                case 219: {
                     A(inb((A() << 8) | read8PC()));
                     ticks += 11;
                     break;
                 }
-                case 227:    /* EX (SP),HL */ {
+                case 227: {
                     int t = HL();
                     int sp = SP();
                     HL(read16(sp));
@@ -1199,24 +1186,24 @@ public class CPU extends Registry {
                     ticks += 19;
                     break;
                 }
-                case 235:    /* EX DE,HL */ {
+                case 235: {
                     int t = HL();
                     HL(DE());
                     DE(t);
                     ticks += 4;
                     break;
                 }
-                case 243:    /* DI */ {
+                case 243: {
                     ticks += 4;
                     break;
                 }
-                case 251:    /* EI */ {
+                case 251: {
                     ticks += 4;
                     break;
                 }
 
-                /* CALL cc,nn */
-                case 196: /* CALL NZ,nn */ {
+
+                case 196: {
                     if (!tz()) {
                         int t = read16PC();
                         pushPC();
@@ -1228,7 +1215,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 204: /* CALL Z,nn */ {
+                case 204: {
                     if (tz()) {
                         int t = read16PC();
                         pushPC();
@@ -1240,7 +1227,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 212: /* CALL NC,nn */ {
+                case 212: {
                     if (!tc()) {
                         int t = read16PC();
                         pushPC();
@@ -1252,7 +1239,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 220: /* CALL C,nn */ {
+                case 220: {
                     if (tc()) {
                         int t = read16PC();
                         pushPC();
@@ -1264,7 +1251,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 228: /* CALL PO,nn */ {
+                case 228: {
                     if (!tp()) {
                         int t = read16PC();
                         pushPC();
@@ -1276,7 +1263,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 236: /* CALL PE,nn */ {
+                case 236: {
                     if (tp()) {
                         int t = read16PC();
                         pushPC();
@@ -1288,7 +1275,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 244: /* CALL P,nn */ {
+                case 244: {
                     if (!ts()) {
                         int t = read16PC();
                         pushPC();
@@ -1300,7 +1287,7 @@ public class CPU extends Registry {
                     }
                     break;
                 }
-                case 252: /* CALL M,nn */ {
+                case 252: {
                     if (ts()) {
                         int t = read16PC();
                         pushPC();
@@ -1313,120 +1300,121 @@ public class CPU extends Registry {
                     break;
                 }
 
-                /* PUSH,Various */
-                case 197:    /* PUSH BC */ {
+
+                case 197: {
                     push16(BC());
                     ticks += 11;
                     break;
                 }
-                case 205:    /* CALL nn */ {
+                case 205: {
                     int t = read16PC();
                     pushPC();
                     PC(t);
                     ticks += 17;
                     break;
                 }
-                case 213:    /* PUSH DE */ {
+                case 213: {
                     push16(DE());
                     ticks += 11;
                     break;
                 }
-                case 229:    /* PUSH HL */ {
+                case 229: {
                     push16(HL());
                     ticks += 11;
                     break;
                 }
-                case 245:    /* PUSH AF */ {
+                case 245: {
                     push16(AF());
                     ticks += 11;
                     break;
                 }
-                /* op A,N */
-                case 198: /* ADD A,N */ {
+
+
+                case 198: {
                     add_a(read8PC());
                     ticks += 7;
                     break;
                 }
-                case 206: /* ADC A,N */ {
+                case 206: {
                     adc_a(read8PC());
                     ticks += 7;
                     break;
                 }
-                case 214: /* SUB N */ {
+                case 214: {
                     sub_a(read8PC());
                     ticks += 7;
                     break;
                 }
-                case 222: /* SBC A,N */ {
+                case 222: {
                     sbc_a(read8PC());
                     ticks += 7;
                     break;
                 }
-                case 230: /* AND N */ {
+                case 230: {
                     and_a(read8PC());
                     ticks += 7;
                     break;
                 }
-                case 238: /* XOR N */ {
+                case 238: {
                     xor_a(read8PC());
                     ticks += 7;
                     break;
                 }
-                case 246: /* OR N */ {
+                case 246: {
                     or_a(read8PC());
                     ticks += 7;
                     break;
                 }
-                case 254: /* CP N */ {
+                case 254: {
                     cp_a(read8PC());
                     ticks += 7;
                     break;
                 }
 
-                /* RST n */
-                case 199:    /* RST 0 */ {
+
+                case 199: {
                     pushPC();
                     PC(0);
                     ticks += 11;
                     break;
                 }
-                case 207:    /* RST 8 */ {
+                case 207: {
                     pushPC();
                     PC(8);
                     ticks += 11;
                     break;
                 }
-                case 215:    /* RST 16 */ {
+                case 215: {
                     pushPC();
                     PC(16);
                     ticks += 11;
                     break;
                 }
-                case 223:    /* RST 24 */ {
+                case 223: {
                     pushPC();
                     PC(24);
                     ticks += 11;
                     break;
                 }
-                case 231:    /* RST 32 */ {
+                case 231: {
                     pushPC();
                     PC(32);
                     ticks += 11;
                     break;
                 }
-                case 239:    /* RST 40 */ {
+                case 239: {
                     pushPC();
                     PC(40);
                     ticks += 11;
                     break;
                 }
-                case 247:    /* RST 48 */ {
+                case 247: {
                     pushPC();
                     PC(48);
                     ticks += 11;
                     break;
                 }
-                case 255:    /* RST 56 */ {
+                case 255: {
                     pushPC();
                     PC(56);
                     ticks += 11;
@@ -1436,9 +1424,6 @@ public class CPU extends Registry {
         }
     }
 
-    /**
-     * Add with carry - alters all flags (CHECKED)
-     */
     private void adc_a(int b) {
         int a = A();
         int c = tci();
@@ -1454,9 +1439,6 @@ public class CPU extends Registry {
         A(ans);
     }
 
-    /**
-     * Add - alters all flags (CHECKED)
-     */
     private void add_a(int b) {
         int a = A();
         int wans = a + b;
@@ -1471,9 +1453,6 @@ public class CPU extends Registry {
         A(ans);
     }
 
-    /**
-     * Subtract with carry - alters all flags (CHECKED)
-     */
     private void sbc_a(int b) {
         int a = A();
         int c = tci();
@@ -1489,9 +1468,6 @@ public class CPU extends Registry {
         A(ans);
     }
 
-    /**
-     * Subtract - alters all flags (CHECKED)
-     */
     private void sub_a(int b) {
         int a = A();
         int wans = a - b;
@@ -1506,9 +1482,6 @@ public class CPU extends Registry {
         A(ans);
     }
 
-    /**
-     * Rotate Left - alters H N C 3 5 flags (CHECKED)
-     */
     private void rlc_a() {
         int ans = A();
         boolean c = (ans & x80) != 0;
@@ -1526,9 +1499,6 @@ public class CPU extends Registry {
         A(ans);
     }
 
-    /**
-     * Rotate Right - alters H N C 3 5 flags (CHECKED)
-     */
     private void rrc_a() {
         int ans = A();
         boolean c = (ans & x01) != 0;
@@ -1545,9 +1515,6 @@ public class CPU extends Registry {
         A(ans);
     }
 
-    /**
-     * Rotate Left through Carry - alters H N C 3 5 flags (CHECKED)
-     */
     private void rl_a() {
         int ans = A();
         boolean c = (ans & x80) != 0;
@@ -1566,9 +1533,6 @@ public class CPU extends Registry {
         A(ans);
     }
 
-    /**
-     * Rotate Right through Carry - alters H N C 3 5 flags (CHECKED)
-     */
     private void rr_a() {
         int ans = A();
         boolean c = (ans & x01) != 0;
@@ -1585,9 +1549,6 @@ public class CPU extends Registry {
         A(ans);
     }
 
-    /**
-     * Compare - alters all flags (CHECKED)
-     */
     private void cp_a(int b) {
         int a = A();
         int wans = a - b;
@@ -1600,9 +1561,6 @@ public class CPU extends Registry {
         tp(((a ^ b) & (a ^ ans) & x80) != 0);
     }
 
-    /**
-     * Bitwise and - alters all flags (CHECKED)
-     */
     private void and_a(int b) {
         int ans = A() & b;
 
@@ -1615,9 +1573,6 @@ public class CPU extends Registry {
         A(ans);
     }
 
-    /**
-     * Bitwise or - alters all flags (CHECKED)
-     */
     private void or_a(int b) {
         int ans = A() | b;
 
@@ -1630,9 +1585,6 @@ public class CPU extends Registry {
         A(ans);
     }
 
-    /**
-     * Bitwise exclusive or - alters all flags (CHECKED)
-     */
     private void xor_a(int b) {
         int ans = lo(A() ^ b);
 
@@ -1645,10 +1597,6 @@ public class CPU extends Registry {
         A(ans);
     }
 
-
-    /**
-     * One's complement - alters N H 3 5 flags (CHECKED)
-     */
     private void cpl_a() {
         int ans = A() ^ xFF;
 
@@ -1657,9 +1605,6 @@ public class CPU extends Registry {
         A(ans);
     }
 
-    /**
-     * Decimal Adjust Accumulator - alters all flags (CHECKED)
-     */
     private void daa_a() {
         int ans = A();
         int incr = 0;
@@ -1682,25 +1627,16 @@ public class CPU extends Registry {
         tp(parity[ans]);
     }
 
-    /**
-     * Set carry flag - alters N H 3 5 C flags (CHECKED)
-     */
     private void scf() {
         th(false);
         tc(true);
     }
 
-    /**
-     * Complement carry flag - alters N 3 5 C flags (CHECKED)
-     */
     private void ccf() {
         tc(!tc());
     }
 
 
-    /**
-     * Decrement - alters all but C flag (CHECKED)
-     */
 //    private int dec8(int ans) {
 //        boolean p = (ans == x80);
 //        boolean h = (((ans & x0F) - 1) & T4h) != 0;
@@ -1714,9 +1650,6 @@ public class CPU extends Registry {
 //        return ans;
 //    }
 
-    /**
-     * Increment - alters all but C flag (CHECKED)
-     */
 //    private int inc8(int ans) {
 //        boolean p = (ans == x7F);
 //        boolean h = (((ans & x0F) + 1) & T4h) != 0;
