@@ -13,4 +13,9 @@ public class NONE extends NOP {
     public List<Integer> codes() {
         return CODES;
     }
+
+    @Override
+    public int ticks() {
+        return 1; // TODO если тут поставить 0, тогда PC счетчик будет неправильно бегать, на 1 больше
+    }
 }

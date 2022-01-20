@@ -125,6 +125,7 @@ public class Cpu extends Registry {
             }
             
             switch (bite) {
+                // DCX_R
 //                case 11: {
 //                    BC(dec16(BC()));
 //                    ticks += 6;
@@ -146,7 +147,7 @@ public class Cpu extends Registry {
 //                    break;
 //                }
 
-
+                // INR_R
 //                case 4: {
 //                    B(inc8(B()));
 //                    ticks += 4;
@@ -188,7 +189,7 @@ public class Cpu extends Registry {
 //                    break;
 //                }
 
-
+                // DCR_R
 //                case 5: {
 //                    B(dec8(B()));
 //                    ticks += 4;
@@ -231,7 +232,7 @@ public class Cpu extends Registry {
 //                    break;
 //                }
 
-
+                // MVI_R_XX
 //                case 6: {
 //                    B(read8PC());
 //                    ticks += 7;

@@ -36,7 +36,7 @@ public class DCR_R extends Command {
 
     @Override
     public int ticks() {
-        return 4;
+        return 4; // TODO для M регистра 11 тиков
     }
 
     @Override

@@ -33,7 +33,7 @@ public class MVI_R_XX extends Command  {
 
     @Override
     public int ticks() {
-        return 7;
+        return 7; // TODO для M регистра 10 тиков
     }
 
     @Override
