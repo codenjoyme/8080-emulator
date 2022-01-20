@@ -780,7 +780,7 @@ public class CPUTest {
 
     @Test
     public void performance() {
-        // about 3.6 sec (vs 1.4)
+        // about 3.6 sec (vs 1.4) / 1_000_000
         // when
         givenPr("LXI B,1111\n" +
                 "LXI SP,789A\n" +
@@ -798,7 +798,7 @@ public class CPUTest {
                 "DAD H\n" +
                 "NOP\n");
 
-        int ticks = 10_000_000;
+        int ticks = 100_000;
 
         // when then
         for (int tick = 0; tick < ticks; tick++) {
@@ -1159,7 +1159,7 @@ public class CPUTest {
     }
 
     @Test
-    public void code02__STA_XXYY() {
+    public void code32__STA_XXYY() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
@@ -1218,7 +1218,7 @@ public class CPUTest {
     }
 
     @Test
-    public void code02__LDA_XXYY() {
+    public void code3A__LDA_XXYY() {
         // when
         givenPr("LXI B,1234\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
@@ -1267,6 +1267,430 @@ public class CPUTest {
                 "L:    0b01000100\n" +
                 "M:    0b00000000\n" +
                 "A:    0b00110100\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void code03__INX_B() {
+        // when
+        givenPr("LXI B,1234\n" +  // will be increased
+                "LXI D,1111\n" +  // ignored
+                "LXI SP,2222\n" + // ignored
+                "LXI H,3333\n" +  // ignored
+                "INX B\n" +       // BC=BC+1
+                "NOP\n");
+
+        givenMm("01 34 12\n" +
+                "11 11 11\n" +
+                "31 22 22\n" +
+                "21 33 33\n" +
+                "03\n" +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x1235\n" +
+                "DE:   0x1111\n" +
+                "HL:   0x3333\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x2222\n" +
+                "PC:   0x000E\n" +
+                "B,C:  0x12 0x35\n" +
+                "D,E:  0x11 0x11\n" +
+                "H,L:  0x33 0x33\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00100010 0b00100010\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010010\n" +
+                "C:    0b00110101\n" +
+                "D:    0b00010001\n" +
+                "E:    0b00010001\n" +
+                "H:    0b00110011\n" +
+                "L:    0b00110011\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void code03__INX_B__overflow() {
+        // when
+        givenPr("LXI B,FFFF\n" +  // will be increased
+                "LXI D,1111\n" +  // ignored
+                "LXI SP,2222\n" + // ignored
+                "LXI H,3333\n" +  // ignored
+                "INX B\n" +       // BC=BC+1, [c=0]
+                "NOP\n");
+
+        givenMm("01 FF FF\n" +
+                "11 11 11\n" +
+                "31 22 22\n" +
+                "21 33 33\n" +
+                "03\n" +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x0000\n" +
+                "DE:   0x1111\n" +
+                "HL:   0x3333\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x2222\n" +
+                "PC:   0x000E\n" +
+                "B,C:  0x00 0x00\n" +
+                "D,E:  0x11 0x11\n" +
+                "H,L:  0x33 0x33\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00100010 0b00100010\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00000000\n" +
+                "C:    0b00000000\n" +
+                "D:    0b00010001\n" +
+                "E:    0b00010001\n" +
+                "H:    0b00110011\n" +
+                "L:    0b00110011\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void code13__INX_D() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,1234\n" +  // will be increased
+                "LXI SP,2222\n" + // ignored
+                "LXI H,3333\n" +  // ignored
+                "INX D\n" +       // DE=DE+1
+                "NOP\n");
+
+        givenMm("01 11 11\n" +
+                "11 34 12\n" +
+                "31 22 22\n" +
+                "21 33 33\n" +
+                "13\n" +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x1235\n" +
+                "HL:   0x3333\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x2222\n" +
+                "PC:   0x000E\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x12 0x35\n" +
+                "H,L:  0x33 0x33\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00100010 0b00100010\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00010010\n" +
+                "E:    0b00110101\n" +
+                "H:    0b00110011\n" +
+                "L:    0b00110011\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void code13__INX_D__overflow() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,FFFF\n" +  // will be increased
+                "LXI SP,2222\n" + // ignored
+                "LXI H,3333\n" +  // ignored
+                "INX D\n" +       // DE=DE+1, [c=0]
+                "NOP\n");
+
+        givenMm("01 11 11\n" +
+                "11 FF FF\n" +
+                "31 22 22\n" +
+                "21 33 33\n" +
+                "13\n" +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x0000\n" +
+                "HL:   0x3333\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x2222\n" +
+                "PC:   0x000E\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x00 0x00\n" +
+                "H,L:  0x33 0x33\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00100010 0b00100010\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00000000\n" +
+                "E:    0b00000000\n" +
+                "H:    0b00110011\n" +
+                "L:    0b00110011\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void code23__INX_H() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,2222\n" +  // ignored
+                "LXI SP,3333\n" + // ignored
+                "LXI H,1234\n" +  // will be increased
+                "INX H\n" +       // HL=HL+1
+                "NOP\n");
+
+        givenMm("01 11 11\n" +
+                "11 22 22\n" +
+                "31 33 33\n" +
+                "21 34 12\n" +
+                "23\n" +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x2222\n" +
+                "HL:   0x1235\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x3333\n" +
+                "PC:   0x000E\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x22 0x22\n" +
+                "H,L:  0x12 0x35\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00110011 0b00110011\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00100010\n" +
+                "E:    0b00100010\n" +
+                "H:    0b00010010\n" +
+                "L:    0b00110101\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void code23__INX_H__overflow() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,2222\n" +  // ignored
+                "LXI SP,3333\n" + // ignored
+                "LXI H,FFFF\n" +  // will be increased
+                "INX H\n" +       // HL=HL+1, [c=0]
+                "NOP\n");
+
+        givenMm("01 11 11\n" +
+                "11 22 22\n" +
+                "31 33 33\n" +
+                "21 FF FF\n" +
+                "23\n" +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x2222\n" +
+                "HL:   0x0000\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x3333\n" +
+                "PC:   0x000E\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x22 0x22\n" +
+                "H,L:  0x00 0x00\n" +
+                "M:    0x01\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00110011 0b00110011\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00100010\n" +
+                "E:    0b00100010\n" +
+                "H:    0b00000000\n" +
+                "L:    0b00000000\n" +
+                "M:    0b00000001\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void code33__INX_SP() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,2222\n" +  // ignored
+                "LXI SP,1234\n" + // will be increased
+                "LXI H,3333\n" +  // ignored
+                "INX SP\n" +       // HL=HL+1
+                "NOP\n");
+
+        givenMm("01 11 11\n" +
+                "11 22 22\n" +
+                "31 34 12\n" +
+                "21 33 33\n" +
+                "33\n" +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x2222\n" +
+                "HL:   0x3333\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x1235\n" +
+                "PC:   0x000E\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x22 0x22\n" +
+                "H,L:  0x33 0x33\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00010010 0b00110101\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00100010\n" +
+                "E:    0b00100010\n" +
+                "H:    0b00110011\n" +
+                "L:    0b00110011\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b00000010\n" +
+                "ts:   false\n" +
+                "tz:   false\n" +
+                "th:   false\n" +
+                "tp:   false\n" +
+                "tc:   false\n");
+    }
+
+    @Test
+    public void code33__INX_SP__overflow() {
+        // when
+        givenPr("LXI B,1111\n" +  // ignored
+                "LXI D,2222\n" +  // ignored
+                "LXI SP,FFFF\n" + // will be increased
+                "LXI H,3333\n" +  // ignored
+                "INX SP\n" +      // SP=SP+1, [c=0]
+                "NOP\n");
+
+        givenMm("01 11 11\n" +
+                "11 22 22\n" +
+                "31 FF FF\n" +
+                "21 33 33\n" +
+                "33\n" +
+                "00");
+
+        // when
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:   0x1111\n" +
+                "DE:   0x2222\n" +
+                "HL:   0x3333\n" +
+                "AF:   0x0002\n" +
+                "SP:   0x0000\n" +
+                "PC:   0x000E\n" +
+                "B,C:  0x11 0x11\n" +
+                "D,E:  0x22 0x22\n" +
+                "H,L:  0x33 0x33\n" +
+                "M:    0x00\n" +
+                "A,F:  0x00 0x02\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b00000000 0b00000000\n" +
+                "PC:   0b00000000 0b00001110\n" +
+                "        76543210\n" +
+                "B:    0b00010001\n" +
+                "C:    0b00010001\n" +
+                "D:    0b00100010\n" +
+                "E:    0b00100010\n" +
+                "H:    0b00110011\n" +
+                "L:    0b00110011\n" +
+                "M:    0b00000000\n" +
+                "A:    0b00000000\n" +
                 "        sz0h0p1c\n" +
                 "F:    0b00000010\n" +
                 "ts:   false\n" +
