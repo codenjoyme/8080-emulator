@@ -16,8 +16,14 @@ public abstract class Command {
 
     private int[] indexes = new int[0x100];
 
-    public static final List<String> BD = Arrays.asList("B", "D");
-    public static final List<String> BDHSP = Arrays.asList("B", "D", "H", "SP");
+    public static final List<String> BD =
+            Arrays.asList("B", "D");
+
+    public static final List<String> BDHSP =
+            Arrays.asList("B", "D", "H", "SP");
+
+    public static final List<String> BCDEHLMA =
+            Arrays.asList("B", "C", "D", "E", "H", "L", "M", "A");
 
     public Command() {
         List<Integer> codes = codes();

@@ -27,6 +27,7 @@ public class Assembler {
         add(new LDA_XXYY());
         add(new INX_R());
         add(new DCX_R());
+        add(new INR_R());
     }
 
     private static void add(Command command) {

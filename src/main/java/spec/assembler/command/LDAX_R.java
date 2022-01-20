@@ -32,7 +32,7 @@ public class LDAX_R extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int addr = r.reg(rindex(command)).get();
+        int addr = r.regw(rindex(command)).get();
         int bite = r.data().peekb(addr);
         r.A(bite);
     }

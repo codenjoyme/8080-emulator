@@ -35,7 +35,7 @@ public class INX_R extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        Reg reg = r.reg(rindex(command));
+        Reg reg = r.regw(rindex(command));
         int op = reg.get();
         int word = inc16(op);
         reg.set(word);

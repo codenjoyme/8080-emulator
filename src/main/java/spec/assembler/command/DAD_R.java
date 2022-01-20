@@ -35,7 +35,7 @@ public class DAD_R extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int op2 = r.reg(rindex(command)).get();
+        int op2 = r.regw(rindex(command)).get();
         int res = sum(r, r.HL(), op2);
         r.HL(res);
     }
@@ -43,7 +43,9 @@ public class DAD_R extends Command {
     private int sum(Registry r, int a, int b) {
         int lans = a + b;
         int ans = word(lans);
+
         r.tc((lans & x10000) != 0);
+
         return ans;
     }
 }

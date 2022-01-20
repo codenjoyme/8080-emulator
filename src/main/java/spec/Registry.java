@@ -85,6 +85,28 @@ public class Registry {
         }
     };
 
+    public Reg rM = new Reg() {
+        @Override
+        public int get() {
+            return data.peekb(HL());
+        }
+        @Override
+        public void set(int bite) {
+            data.pokeb(HL(), bite);
+        }
+    };
+
+    public Reg rA = new Reg() {
+        @Override
+        public int get() {
+            return A();
+        }
+        @Override
+        public void set(int bite) {
+            A(bite);
+        }
+    };
+
     public Registry(Data data) {
         this.data = data;
         reset();
@@ -100,12 +122,26 @@ public class Registry {
         HL(0);
     }
 
-    public Reg reg(int index) {
+    public Reg regw(int index) {
         switch (index) {
             case 0: return rBC;
             case 1: return rDE;
             case 2: return rHL;
             case 3: return rSP;
+        }
+        throw new UnsupportedOperationException("Unexpected registry index: " + index);
+    }
+
+    public Reg regb(int index) {
+        switch (index) {
+            case 0: return rBC.hi();
+            case 1: return rBC.lo();
+            case 2: return rDE.hi();
+            case 3: return rDE.lo();
+            case 4: return rHL.hi();
+            case 5: return rHL.lo();
+            case 6: return rM;
+            case 7: return rA;
         }
         throw new UnsupportedOperationException("Unexpected registry index: " + index);
     }
@@ -290,11 +326,11 @@ public class Registry {
     public String toString() {
         return String.format(
                 "BC: 0x%04X\n" +
-                        "DE: 0x%04X\n" +
-                        "HL: 0x%04X\n" +
-                        "AF: 0x%04X\n" +
-                        "SP: 0x%04X\n" +
-                        "PC: 0x%04X\n",
+                "DE: 0x%04X\n" +
+                "HL: 0x%04X\n" +
+                "AF: 0x%04X\n" +
+                "SP: 0x%04X\n" +
+                "PC: 0x%04X\n",
                 BC(),
                 DE(),
                 HL(),
@@ -306,35 +342,35 @@ public class Registry {
     public String toStringDetails() {
         return String.format(
                 "BC:   0x%04X\n" +
-                        "DE:   0x%04X\n" +
-                        "HL:   0x%04X\n" +
-                        "AF:   0x%04X\n" +
-                        "SP:   0x%04X\n" +
-                        "PC:   0x%04X\n" +
-                        "B,C:  0x%02X 0x%02X\n" +
-                        "D,E:  0x%02X 0x%02X\n" +
-                        "H,L:  0x%02X 0x%02X\n" +
-                        "M:    0x%02X\n" +
-                        "A,F:  0x%02X 0x%02X\n" +
-                        "        76543210   76543210\n" +
-                        "SP:   0b%s 0b%s\n" +
-                        "PC:   0b%s 0b%s\n" +
-                        "        76543210\n" +
-                        "B:    0b%s\n" +
-                        "C:    0b%s\n" +
-                        "D:    0b%s\n" +
-                        "E:    0b%s\n" +
-                        "H:    0b%s\n" +
-                        "L:    0b%s\n" +
-                        "M:    0b%s\n" +
-                        "A:    0b%s\n" +
-                        "        sz0h0p1c\n" +
-                        "F:    0b%s\n" +
-                        "ts:   %s\n" +
-                        "tz:   %s\n" +
-                        "th:   %s\n" +
-                        "tp:   %s\n" +
-                        "tc:   %s\n",
+                "DE:   0x%04X\n" +
+                "HL:   0x%04X\n" +
+                "AF:   0x%04X\n" +
+                "SP:   0x%04X\n" +
+                "PC:   0x%04X\n" +
+                "B,C:  0x%02X 0x%02X\n" +
+                "D,E:  0x%02X 0x%02X\n" +
+                "H,L:  0x%02X 0x%02X\n" +
+                "M:    0x%02X\n" +
+                "A,F:  0x%02X 0x%02X\n" +
+                "        76543210   76543210\n" +
+                "SP:   0b%s 0b%s\n" +
+                "PC:   0b%s 0b%s\n" +
+                "        76543210\n" +
+                "B:    0b%s\n" +
+                "C:    0b%s\n" +
+                "D:    0b%s\n" +
+                "E:    0b%s\n" +
+                "H:    0b%s\n" +
+                "L:    0b%s\n" +
+                "M:    0b%s\n" +
+                "A:    0b%s\n" +
+                "        sz0h0p1c\n" +
+                "F:    0b%s\n" +
+                "ts:   %s\n" +
+                "tz:   %s\n" +
+                "th:   %s\n" +
+                "tp:   %s\n" +
+                "tc:   %s\n",
                 BC(),
                 DE(),
                 HL(),

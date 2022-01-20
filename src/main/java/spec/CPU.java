@@ -158,46 +158,46 @@ public class CPU extends Registry {
 //                }
 
                 /* INC * */
-                case 4:    /* INC B */ {
-                    B(inc8(B()));
-                    ticks += 4;
-                    break;
-                }
-                case 12:    /* INC C */ {
-                    C(inc8(C()));
-                    ticks += 4;
-                    break;
-                }
-                case 20:    /* INC D */ {
-                    D(inc8(D()));
-                    ticks += 4;
-                    break;
-                }
-                case 28:    /* INC E */ {
-                    E(inc8(E()));
-                    ticks += 4;
-                    break;
-                }
-                case 36:    /* INC H */ {
-                    H(inc8(H()));
-                    ticks += 4;
-                    break;
-                }
-                case 44:    /* INC L */ {
-                    L(inc8(L()));
-                    ticks += 4;
-                    break;
-                }
-                case 52:    /* INC (HL) */ {
-                    pokeb(HL(), inc8(peekb(HL())));
-                    ticks += 11;
-                    break;
-                }
-                case 60:    /* INC A() */ {
-                    A(inc8(A()));
-                    ticks += 4;
-                    break;
-                }
+//                case 4:    /* INC B */ {
+//                    B(inc8(B()));
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 12:    /* INC C */ {
+//                    C(inc8(C()));
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 20:    /* INC D */ {
+//                    D(inc8(D()));
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 28:    /* INC E */ {
+//                    E(inc8(E()));
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 36:    /* INC H */ {
+//                    H(inc8(H()));
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 44:    /* INC L */ {
+//                    L(inc8(L()));
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 52:    /* INC (HL) */ {
+//                    pokeb(HL(), inc8(peekb(HL())));
+//                    ticks += 11;
+//                    break;
+//                }
+//                case 60:    /* INC A() */ {
+//                    A(inc8(A()));
+//                    ticks += 4;
+//                    break;
+//                }
 
                 /* DEC * */
                 case 5:    /* DEC B */ {
@@ -1698,9 +1698,6 @@ public class CPU extends Registry {
         tc(!tc());
     }
 
-    /**
-     * Увеличиваем адресс на 1 и если он превысил 0xFFFF, то делаем его равным 0x0000.
-     */
     public static int inc16(int word) {
         return word(++word);
     }
@@ -1728,16 +1725,16 @@ public class CPU extends Registry {
     /**
      * Increment - alters all but C flag (CHECKED)
      */
-    private int inc8(int ans) {
-        boolean p = (ans == x7F);
-        boolean h = (((ans & x0F) + 1) & T4h) != 0;
-        ans = lo(ans + 1);
-
-        ts((ans & T7s) != 0);
-        tz(ans == 0);
-        tp(p);
-        th(h);
-
-        return ans;
-    }
+//    private int inc8(int ans) {
+//        boolean p = (ans == x7F);
+//        boolean h = (((ans & x0F) + 1) & T4h) != 0;
+//        ans = lo(ans + 1);
+//
+//        ts((ans & T7s) != 0);
+//        tz(ans == 0);
+//        tp(p);
+//        th(h);
+//
+//        return ans;
+//    }
 }
