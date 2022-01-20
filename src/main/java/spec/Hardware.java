@@ -1529,7 +1529,7 @@ public class Hardware {
             }
 
             for (int i = 0; i < n; i++) { // буффер "byte" превращаем в буффер "int"
-                a[i + off] = (buff[i] + 256) & xFF;
+                a[i + off] = (buff[i] + 256) & BITE;
             }
             return n;
         } catch (Exception e) {

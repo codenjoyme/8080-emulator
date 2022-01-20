@@ -8,8 +8,7 @@ import spec.assembler.Assembler;
 import spec.assembler.Command;
 
 import static spec.Constants.*;
-import static spec.WordMath.lo;
-import static spec.WordMath.word;
+import static spec.WordMath.*;
 
 public class Cpu extends Registry {
 
@@ -1604,7 +1603,7 @@ public class Cpu extends Registry {
     }
 
     private void cpl_a() {
-        int ans = A() ^ xFF;
+        int ans = A() ^ BITE;
 
         th(true);
 

@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.joining;
-import static spec.WordMath.hex;
+import static spec.WordMath.hex8;
 import static spec.WordMath.reverse;
 
 public abstract class Command {
@@ -76,10 +76,10 @@ public abstract class Command {
         }
         if (size() == 3) {
             String bites = params.length == 1 ? params[0] : params[1];
-            result.addAll(reverse(hex(bites)));
+            result.addAll(reverse(hex8(bites)));
         }
         if (size() == 2) {
-            result.addAll(hex(params[1]));
+            result.addAll(hex8(params[1]));
         }
         return result;
     }
