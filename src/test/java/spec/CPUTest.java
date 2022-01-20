@@ -75,7 +75,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__NOP__0x00() {
+    public void test__NOP__00() {
         // when
         givenPr("NOP\n" +
                 "NOP\n" +
@@ -174,7 +174,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__LXI_B_XXYY__0x01() {
+    public void test__LXI_B_XXYY__01() {
         // when
         givenPr("LXI B,1234\n" +
                 "NOP\n");
@@ -219,7 +219,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__LXI_D_XXYY__0x11() {
+    public void test__LXI_D_XXYY__11() {
         // when
         givenPr("LXI D,1234\n" +
                 "NOP\n");
@@ -264,7 +264,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__LXI_H_XXYY__0x21() {
+    public void test__LXI_H_XXYY__21() {
         // when
         givenPr("LXI H,1234\n" +
                 "NOP\n");
@@ -309,7 +309,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__LXI_SP_XXYY__0x31() {
+    public void test__LXI_SP_XXYY__31() {
         // when
         givenPr("LXI SP,1234\n" +
                 "NOP\n");
@@ -354,7 +354,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_B__0x09__caseC0() {
+    public void test__DAD_B__С0__09() {
         // when
         givenPr("LXI B,1234\n" +  // operand 1
                 "LXI D,1111\n" +  // ignored
@@ -407,7 +407,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_B__0x09__caseC1() {
+    public void test__DAD_B__С1__09() {
         // when
         givenPr("LXI B,789A\n" +  // operand 1
                 "LXI D,1111\n" +  // ignored
@@ -460,7 +460,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_D__0x19__caseC0() {
+    public void test__DAD_D__C0__19() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,1234\n" +  // operand 1
@@ -513,7 +513,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_D__0x19__caseC1() {
+    public void test__DAD_D__С1__19() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,789A\n" +  // operand 1
@@ -566,7 +566,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_H__0x29__caseC0() {
+    public void test__DAD_H__C0__29() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
@@ -619,7 +619,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_H__0x29__caseC1() {
+    public void test__DAD_H__C1__29() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
@@ -672,7 +672,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_SP__0x09__caseC0() {
+    public void test__DAD_SP__С0__09() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
@@ -726,7 +726,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__DAD_SP__0x39__caseC1() {
+    public void test__DAD_SP__С1__39() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
@@ -809,7 +809,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__STAX_B__0x02() {
+    public void test__STAX_B__02() {
         // when
         givenPr("LXI B,0003\n" +  // working with memory 0x0003
                 "LXI D,1111\n" +  // ignored
@@ -868,7 +868,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__STAX_D__0x12() {
+    public void test__STAX_D__12() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,0003\n" +  // working with memory 0x0003
@@ -927,7 +927,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__LDAX_B__0x0A() {
+    public void test__LDAX_B__0A() {
         // when
         givenPr("LXI B,0003\n" +  // working with memory 0x0003
                 "LXI D,1111\n" +  // ignored
@@ -986,7 +986,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__LDAX_D__0x1A() {
+    public void test__LDAX_D__1A() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,0003\n" +  // working with memory 0x0003
@@ -1045,7 +1045,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__SHLD_XXYY__0x22() {
+    public void test__SHLD_XXYY__22() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
@@ -1102,7 +1102,7 @@ public class CPUTest {
     }
 
     @Test
-    public void test__LHLD_XXYY__0x2A() {
+    public void test__LHLD_XXYY__2A() {
         // when
         givenPr("LXI B,1234\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
