@@ -176,7 +176,7 @@ public class CpuTest {
     @Test
     public void code01__LXI_B_XXYY() {
         // when
-        givenPr("LXI B,1234\n" +
+        givenPr("LXI B,1234\n" + // set B=XX, C=YY
                 "NOP\n");
 
         givenMm("01 34 12\n" +
@@ -221,7 +221,7 @@ public class CpuTest {
     @Test
     public void code11__LXI_D_XXYY() {
         // when
-        givenPr("LXI D,1234\n" +
+        givenPr("LXI D,1234\n" + // set D=XX, E=YY
                 "NOP\n");
 
         givenMm("11 34 12\n" +
@@ -266,7 +266,7 @@ public class CpuTest {
     @Test
     public void code21__LXI_H_XXYY() {
         // when
-        givenPr("LXI H,1234\n" +
+        givenPr("LXI H,1234\n" + // set H=XX, L=YY
                 "NOP\n");
 
         givenMm("21 34 12\n" +
@@ -311,7 +311,7 @@ public class CpuTest {
     @Test
     public void code31__LXI_SP_XXYY() {
         // when
-        givenPr("LXI SP,1234\n" +
+        givenPr("LXI SP,1234\n" + // set SP=XXYY
                 "NOP\n");
 
         givenMm("31 34 12\n" +
@@ -360,7 +360,7 @@ public class CpuTest {
                 "LXI D,1111\n" +  // ignored
                 "LXI SP,2222\n" + // ignored
                 "LXI H,4321\n" +  // operand 2 & result
-                "DAD B\n" +       // sum HL=HL+BC, [c=0]
+                "DAD B\n" +       // add HL=HL+BC, [c=0]
                 "NOP\n");
 
         givenMm("01 34 12\n" +
@@ -413,7 +413,7 @@ public class CpuTest {
                 "LXI D,1111\n" +  // ignored
                 "LXI SP,2222\n" + // ignored
                 "LXI H,A987\n" +  // operand 2 & result
-                "DAD B\n" +       // sum HL=HL+BC, [c=1]
+                "DAD B\n" +       // add HL=HL+BC, [c=1]
                 "NOP\n");
 
         givenMm("01 9A 78\n" +
@@ -466,7 +466,7 @@ public class CpuTest {
                 "LXI D,1234\n" +  // operand 1
                 "LXI SP,2222\n" + // ignored
                 "LXI H,4321\n" +  // operand 2 & result
-                "DAD D\n" +       // sum HL=HL+DE, [c=0]
+                "DAD D\n" +       // add HL=HL+DE, [c=0]
                 "NOP\n");
 
         givenMm("01 11 11\n" +
@@ -519,7 +519,7 @@ public class CpuTest {
                 "LXI D,789A\n" +  // operand 1
                 "LXI SP,2222\n" + // ignored
                 "LXI H,A987\n" +  // operand 2 & result
-                "DAD D\n" +       // sum HL=HL+DE, [c=1]
+                "DAD D\n" +       // add HL=HL+DE, [c=1]
                 "NOP\n");
 
         givenMm("01 11 11\n" +
@@ -572,7 +572,7 @@ public class CpuTest {
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
                 "LXI H,1234\n" +  // operand 1 & 2 & result
-                "DAD H\n" +       // sum HL=HL+HL, [c=0]
+                "DAD H\n" +       // add HL=HL+HL, [c=0]
                 "NOP\n");
 
         givenMm("01 11 11\n" +
@@ -625,7 +625,7 @@ public class CpuTest {
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
                 "LXI H,89AB\n" +  // operand 1 & 2 & result
-                "DAD H\n" +       // sum HL=HL+HL, [c=1]
+                "DAD H\n" +       // add HL=HL+HL, [c=1]
                 "NOP\n");
 
         givenMm("01 11 11\n" +
@@ -678,7 +678,7 @@ public class CpuTest {
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,1234\n" + // operand 1
                 "LXI H,4321\n" +  // operand 2 & result
-                "DAD SP\n" +      // sum HL=HL+SP, [c=0]
+                "DAD SP\n" +      // add HL=HL+SP, [c=0]
                 //
                 "NOP\n");
 
@@ -732,7 +732,7 @@ public class CpuTest {
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,789A\n" + // operand 1
                 "LXI H,A987\n" +  // operand 2 & result
-                "DAD SP\n" +      // sum HL=HL+SP, [c=1]
+                "DAD SP\n" +      // add HL=HL+SP, [c=1]
                 "NOP\n");
 
         givenMm("01 11 11\n" +
@@ -811,10 +811,10 @@ public class CpuTest {
     @Test
     public void code02__STAX_B() {
         // when
-        givenPr("LXI B,0003\n" +  // working with memory0003
+        givenPr("LXI B,0003\n" +  // working with memory 0003
                 "LXI D,1111\n" +  // ignored
                 "LXI SP,2222\n" + // ignored
-                "LXI H,0003\n" +  // M=(HL)=(0x0003)
+                "LXI H,0003\n" +  // M=(HL)=(0003) is used to check value
                 "STAX B\n" +      // copy (BC)=A
                 "NOP\n");
 
@@ -871,9 +871,9 @@ public class CpuTest {
     public void code12__STAX_D() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
-                "LXI D,0003\n" +  // working with memory0003
+                "LXI D,0003\n" +  // working with memory 0003
                 "LXI SP,2222\n" + // ignored
-                "LXI H,0003\n" +  // M=(HL)=(0x0003)
+                "LXI H,0003\n" +  // M=(HL)=(0003) is used to check value
                 "STAX D\n" +      // copy (DE)=A
                 "NOP\n");
 
@@ -929,10 +929,10 @@ public class CpuTest {
     @Test
     public void code0A__LDAX_B() {
         // when
-        givenPr("LXI B,0003\n" +  // working with memory0003
+        givenPr("LXI B,0003\n" +  // working with memory 0003
                 "LXI D,1111\n" +  // ignored
                 "LXI SP,2222\n" + // ignored
-                "LXI H,0003\n" +  // M=(HL)=(0x0003)
+                "LXI H,0003\n" +  // M=(HL)=(0003) is used to check value
                 "LDAX B\n" +      // copy A=(BC)
                 "NOP\n");
 
@@ -989,9 +989,9 @@ public class CpuTest {
     public void code1A__LDAX_D() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
-                "LXI D,0003\n" +  // working with memory0003
+                "LXI D,0003\n" +  // working with memory 0003
                 "LXI SP,2222\n" + // ignored
-                "LXI H,0003\n" +  // M=(HL)=(0x0003)
+                "LXI H,0003\n" +  // M=(HL)=(0003) is used to check value
                 "LDAX D\n" +      // copy A=(DE)
                 "NOP\n");
 
@@ -1051,7 +1051,7 @@ public class CpuTest {
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
                 "LXI H,1234\n" +  // data will be copied to memory
-                "SHLD 5678\n" +   // copy (56,79)=H (56,78)=L
+                "SHLD 5678\n" +   // copy (5679)=H, (5678)=L
                 "NOP\n");
 
         givenMm("01 11 11\n" +
@@ -1108,7 +1108,7 @@ public class CpuTest {
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
                 "LXI H,1111\n" +  // data will be overwritten
-                "LHLD 0001\n" +   // copy H=(00,02) L=(00,01)
+                "LHLD 0001\n" +   // copy H=(0002), L=(0001)
                 "NOP\n");
 
         givenMm("01 34 12\n" +
@@ -1283,7 +1283,7 @@ public class CpuTest {
                 "LXI D,1111\n" +  // ignored
                 "LXI SP,2222\n" + // ignored
                 "LXI H,3333\n" +  // ignored
-                "INX B\n" +       // BC=BC+1
+                "INX B\n" +       // increase BC=BC+1
                 "NOP\n");
 
         givenMm("01 34 12\n" +
@@ -1330,13 +1330,13 @@ public class CpuTest {
     }
 
     @Test
-    public void code03__INX_B__overflow() {
+    public void code03__INX_B__c0__ignoredOverflow() {
         // when
-        givenPr("LXI B,FFFF\n" +  // will be increased
+        givenPr("LXI B,FFFF\n" +  // will be increased with overflow
                 "LXI D,1111\n" +  // ignored
                 "LXI SP,2222\n" + // ignored
                 "LXI H,3333\n" +  // ignored
-                "INX B\n" +       // BC=BC+1, [c=0]
+                "INX B\n" +       // increase BC=BC+1, [c=0] ignored
                 "NOP\n");
 
         givenMm("01 FF FF\n" +
@@ -1389,7 +1389,7 @@ public class CpuTest {
                 "LXI D,1234\n" +  // will be increased
                 "LXI SP,2222\n" + // ignored
                 "LXI H,3333\n" +  // ignored
-                "INX D\n" +       // DE=DE+1
+                "INX D\n" +       // increase DE=DE+1
                 "NOP\n");
 
         givenMm("01 11 11\n" +
@@ -1436,13 +1436,13 @@ public class CpuTest {
     }
 
     @Test
-    public void code13__INX_D__overflow() {
+    public void code13__INX_D__c0__ignoredOverflow() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
-                "LXI D,FFFF\n" +  // will be increased
+                "LXI D,FFFF\n" +  // will be increased with overflow
                 "LXI SP,2222\n" + // ignored
                 "LXI H,3333\n" +  // ignored
-                "INX D\n" +       // DE=DE+1, [c=0]
+                "INX D\n" +       // increase DE=DE+1, [c=0] ignored
                 "NOP\n");
 
         givenMm("01 11 11\n" +
@@ -1495,7 +1495,7 @@ public class CpuTest {
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
                 "LXI H,1234\n" +  // will be increased
-                "INX H\n" +       // HL=HL+1
+                "INX H\n" +       // increase HL=HL+1
                 "NOP\n");
 
         givenMm("01 11 11\n" +
@@ -1542,13 +1542,13 @@ public class CpuTest {
     }
 
     @Test
-    public void code23__INX_H__overflow() {
+    public void code23__INX_H__c0__ignoredOverflow() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
-                "LXI H,FFFF\n" +  // will be increased
-                "INX H\n" +       // HL=HL+1, [c=0]
+                "LXI H,FFFF\n" +  // will be increased with overflow
+                "INX H\n" +       // increase HL=HL+1, [c=0] ignored
                 "NOP\n");
 
         givenMm("01 11 11\n" +
@@ -1601,7 +1601,7 @@ public class CpuTest {
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,1234\n" + // will be increased
                 "LXI H,3333\n" +  // ignored
-                "INX SP\n" +       // HL=HL+1
+                "INX SP\n" +      // increase HL=HL+1
                 "NOP\n");
 
         givenMm("01 11 11\n" +
@@ -1648,13 +1648,13 @@ public class CpuTest {
     }
 
     @Test
-    public void code33__INX_SP__overflow() {
+    public void code33__INX_SP__c0__ignoredOverflow() {
         // when
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
-                "LXI SP,FFFF\n" + // will be increased
+                "LXI SP,FFFF\n" + // will be increased with overflow
                 "LXI H,3333\n" +  // ignored
-                "INX SP\n" +      // SP=SP+1, [c=0]
+                "INX SP\n" +      // increase SP=SP+1, [c=0] ignored
                 "NOP\n");
 
         givenMm("01 11 11\n" +
@@ -1701,20 +1701,20 @@ public class CpuTest {
     }
 
     @Test
-    public void code__INR_R() { // TODO разделить этот тест
+    public void codeXX__INR_R__c0() { // TODO разделить этот тест
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
                 "LXI SP,7889\n" + // data
-                "INR B\n" +       // B=B+1
-                "INR C\n" +       // C=C+1
-                "INR D\n" +       // D=D+1
-                "INR E\n" +       // E=E+1
-                "INR H\n" +       // H=H+1
-                "INR L\n" +       // L=L+1
-                "INR M\n" +       // M=M+1
-                "INR A\n" +       // A=A+1
+                "INR B\n" +       // increase B=B+1, [c=0]
+                "INR C\n" +       // increase C=C+1, [c=0]
+                "INR D\n" +       // increase D=D+1, [c=0]
+                "INR E\n" +       // increase E=E+1, [c=0]
+                "INR H\n" +       // increase H=H+1, [c=0]
+                "INR L\n" +       // increase L=L+1, [c=0]
+                "INR M\n" +       // increase M=M+1, [c=0]
+                "INR A\n" +       // increase A=A+1, [c=0]
                 "NOP\n");
 
         givenMm("01 23 12\n" +
@@ -1772,20 +1772,20 @@ public class CpuTest {
     }
 
     @Test
-    public void code__DCR_R() { // TODO разделить этот тест
+    public void codeXX__DCR_R() { // TODO разделить этот тест
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
                 "LXI SP,7889\n" + // data
-                "DCR B\n" +       // B=B-1
-                "DCR C\n" +       // C=C-1
-                "DCR D\n" +       // D=D-1
-                "DCR E\n" +       // E=E-1
-                "DCR H\n" +       // H=H-1
-                "DCR L\n" +       // L=L-1
-                "DCR M\n" +       // M=M-1
-                "DCR A\n" +       // A=A-1
+                "DCR B\n" +       // decrease B=B-1
+                "DCR C\n" +       // decrease C=C-1
+                "DCR D\n" +       // decrease D=D-1
+                "DCR E\n" +       // decrease E=E-1
+                "DCR H\n" +       // decrease H=H-1
+                "DCR L\n" +       // decrease L=L-1
+                "DCR M\n" +       // decrease M=M-1
+                "DCR A\n" +       // decrease A=A-1
                 "NOP\n");
 
         givenMm("01 23 12\n" +
@@ -1842,22 +1842,21 @@ public class CpuTest {
                 "tc:  false\n");
     }
 
-
     @Test
-    public void code__MVI_R() { // TODO разделить этот тест
+    public void codeXX__MVI_R() { // TODO разделить этот тест
         // when
         givenPr("LXI B,1111\n" +  // data
                 "LXI D,2222\n" +  // data
                 "LXI H,3333\n" +  // data
                 "LXI SP,4444\n" + // data
-                "MVI B,12\n" +    // B=XX
-                "MVI C,23\n" +    // C=XX
-                "MVI D,34\n" +    // D=XX
-                "MVI E,45\n" +    // E=XX
-                "MVI H,56\n" +    // H=XX
-                "MVI L,67\n" +    // L=XX
-                "MVI M,78\n" +    // M=XX
-                "MVI A,89\n" +    // A=XX
+                "MVI B,12\n" +    // set B=XX
+                "MVI C,23\n" +    // set C=XX
+                "MVI D,34\n" +    // set D=XX
+                "MVI E,45\n" +    // set E=XX
+                "MVI H,56\n" +    // set H=XX
+                "MVI L,67\n" +    // set L=XX
+                "MVI M,78\n" +    // set M=XX
+                "MVI A,89\n" +    // set A=XX
                 "NOP\n");
 
         givenMm("01 11 11\n" +
