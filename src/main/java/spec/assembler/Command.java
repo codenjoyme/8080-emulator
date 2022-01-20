@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.joining;
 
 public abstract class Command {
 
-    private int[] mapper = new int[0x100];
+    private int[] indexes = new int[0x100];
 
     public Command() {
         List<Integer> codes = codes();
@@ -23,7 +23,7 @@ public abstract class Command {
         validate(codes.size(), registers.size());
 
         for (int i = 0; i < codes.size(); i++) {
-            mapper[codes.get(i)] = i;
+            indexes[codes.get(i)] = i;
         }
     }
 
@@ -91,6 +91,6 @@ public abstract class Command {
     public abstract void apply(int command, Registry r);
 
     public int rindex(int command) {
-        return mapper[command];
+        return indexes[command];
     }
 }
