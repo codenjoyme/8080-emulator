@@ -33,7 +33,7 @@ public class LHLD_XXYY extends Command {
     @Override
     public void apply(int command, Registry r) {
         int addr = r.data().peekwi(r.rPC);
-        int bits = r.data().peekw(addr);
-        r.HL(bits);
+        int word = r.data().peekw(addr);
+        r.HL(word);
     }
 }

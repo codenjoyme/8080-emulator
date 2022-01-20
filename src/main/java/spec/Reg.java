@@ -4,5 +4,5 @@ public interface Reg {
 
     int get();
 
-    void set(int value);
+    void set(int word);
 }
