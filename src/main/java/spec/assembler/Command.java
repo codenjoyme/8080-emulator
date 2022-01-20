@@ -4,14 +4,13 @@ import spec.Registry;
 import spec.WordMath;
 import spec.assembler.command.NONE;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.joining;
+import static spec.WordMath.hex;
+import static spec.WordMath.reverse;
 
 public abstract class Command {
 
@@ -55,11 +54,20 @@ public abstract class Command {
     }
 
     public List<Integer> code(String... params) {
+        List<Integer> result = new ArrayList<>(3);
         if (registers().isEmpty()){
-            return codes();
+            result.addAll(codes());
         } else {
-            return Arrays.asList(codes().get(registers().indexOf(params[0])));
+            result.add(codes().get(registers().indexOf(params[0])));
         }
+        if (size() == 3) {
+            String bites = params.length == 1 ? params[0] : params[1];
+            result.addAll(reverse(hex(bites)));
+        }
+        if (size() == 2) {
+            result.addAll(hex(params[1]));
+        }
+        return result;
     }
 
     public List<String> registers() {
