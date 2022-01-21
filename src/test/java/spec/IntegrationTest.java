@@ -1,7 +1,10 @@
 package spec;
 
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import spec.platforms.Lik;
 import spec.platforms.Specialist;
 
@@ -12,14 +15,27 @@ import static spec.Constants.START_POINT;
 
 public class IntegrationTest extends AbstractCpuTest {
 
-    public RomLoader roms;
-    public int ticks;
-    public int maxTicks;
+    public static final int MAX_TICKS = 10_000_000;
+    @Rule
+    public TestName test = new TestName();
+
+    private RomLoader roms;
+    private int ticks;
+    private int maxTicks;
+    private PngVideo video;
 
     @Before
     public void before() {
         super.before();
         roms = new RomLoader(data.memory(), cpu);
+        video = new PngVideo(data.memory());
+    }
+
+    @After
+    public void after() throws Exception {
+        video.drawToFile(new File("src/test/resources/"
+                + test.getMethodName() + ".png"));
+        SmartAssert.checkResult();
     }
 
     @Override
@@ -32,7 +48,7 @@ public class IntegrationTest extends AbstractCpuTest {
     @Test
     public void testLik_runCom() throws Exception {
         // given
-        maxTicks = 100_000;
+        maxTicks = MAX_TICKS;
 
         URL base = new File("src/main/resources/").toURI().toURL();
         Lik.loadRom(base, roms);
@@ -77,7 +93,7 @@ public class IntegrationTest extends AbstractCpuTest {
     @Test
     public void testLik_klad() throws Exception {
         // given
-        maxTicks = 100_000;
+        maxTicks = MAX_TICKS;
 
         URL base = new File("src/main/resources/").toURI().toURL();
         Lik.loadRom(base, roms);
@@ -88,42 +104,42 @@ public class IntegrationTest extends AbstractCpuTest {
         cpu.execute();
 
         // then
-        asrtCpu("BC:  4360\n" +
-                "DE:  9276\n" +
-                "HL:  0800\n" +
-                "AF:  0102\n" +
-                "SP:  FFFA\n" +
-                "PC:  4138\n" +
-                "B,C: 43 60\n" +
-                "D,E: 92 76\n" +
-                "H,L: 08 00\n" +
-                "M:   21\n" +
-                "A,F: 01 02\n" +
+        asrtCpu("BC:  0100\n" +
+                "DE:  0700\n" +
+                "HL:  0148\n" +
+                "AF:  0193\n" +
+                "SP:  3FF5\n" +
+                "PC:  C427\n" +
+                "B,C: 01 00\n" +
+                "D,E: 07 00\n" +
+                "H,L: 01 48\n" +
+                "M:   E1\n" +
+                "A,F: 01 93\n" +
                 "     76543210 76543210\n" +
-                "SP:  11111111 11111010\n" +
-                "PC:  01000001 00111000\n" +
+                "SP:  00111111 11110101\n" +
+                "PC:  11000100 00100111\n" +
                 "     76543210\n" +
-                "B:   01000011\n" +
-                "C:   01100000\n" +
-                "D:   10010010\n" +
-                "E:   01110110\n" +
-                "H:   00001000\n" +
-                "L:   00000000\n" +
-                "M:   00100001\n" +
+                "B:   00000001\n" +
+                "C:   00000000\n" +
+                "D:   00000111\n" +
+                "E:   00000000\n" +
+                "H:   00000001\n" +
+                "L:   01001000\n" +
+                "M:   11100001\n" +
                 "A:   00000001\n" +
                 "     sz0h0p1c\n" +
-                "F:   00000010\n" +
-                "ts:  false\n" +
+                "F:   10010011\n" +
+                "ts:  true\n" +
                 "tz:  false\n" +
-                "th:  false\n" +
+                "th:  true\n" +
                 "tp:  false\n" +
-                "tc:  false\n");
+                "tc:  true\n");
     }
 
     @Test
     public void testSpecialist_monitor() throws Exception {
         // given
-        maxTicks = 100_000;
+        maxTicks = MAX_TICKS;
 
         URL base = new File("src/main/resources/").toURI().toURL();
         Specialist.loadRom(base, roms);
@@ -168,7 +184,7 @@ public class IntegrationTest extends AbstractCpuTest {
     @Test
     public void testSpecialist_blobcop() throws Exception {
         // given
-        maxTicks = 100_000;
+        maxTicks = MAX_TICKS;
 
         URL base = new File("src/main/resources/").toURI().toURL();
         Specialist.loadRom(base, roms);
@@ -179,29 +195,29 @@ public class IntegrationTest extends AbstractCpuTest {
         cpu.execute();
 
         // then
-        asrtCpu("BC:  7CC7\n" +
-                "DE:  F77F\n" +
-                "HL:  F79E\n" +
-                "AF:  EF87\n" +
-                "SP:  8F9B\n" +
+        asrtCpu("BC:  0000\n" +
+                "DE:  9D21\n" +
+                "HL:  C4C9\n" +
+                "AF:  8987\n" +
+                "SP:  8F99\n" +
                 "PC:  0FA9\n" +
-                "B,C: 7C C7\n" +
-                "D,E: F7 7F\n" +
-                "H,L: F7 9E\n" +
-                "M:   00\n" +
-                "A,F: EF 87\n" +
+                "B,C: 00 00\n" +
+                "D,E: 9D 21\n" +
+                "H,L: C4 C9\n" +
+                "M:   76\n" +
+                "A,F: 89 87\n" +
                 "     76543210 76543210\n" +
-                "SP:  10001111 10011011\n" +
+                "SP:  10001111 10011001\n" +
                 "PC:  00001111 10101001\n" +
                 "     76543210\n" +
-                "B:   01111100\n" +
-                "C:   11000111\n" +
-                "D:   11110111\n" +
-                "E:   01111111\n" +
-                "H:   11110111\n" +
-                "L:   10011110\n" +
-                "M:   00000000\n" +
-                "A:   11101111\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   10011101\n" +
+                "E:   00100001\n" +
+                "H:   11000100\n" +
+                "L:   11001001\n" +
+                "M:   01110110\n" +
+                "A:   10001001\n" +
                 "     sz0h0p1c\n" +
                 "F:   10000111\n" +
                 "ts:  true\n" +

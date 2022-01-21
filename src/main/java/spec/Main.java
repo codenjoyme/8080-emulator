@@ -206,8 +206,8 @@ public class Main extends Applet implements Runnable {
     public Dimension minimumSize() {
         int border = (hard == null) ? 20 : hard.borderWidth;
         return new Dimension(
-                Video.width + border * 2,
-                Video.height + border * 2);
+                WIDTH + border * 2,
+                HEIGHT + border * 2);
     }
 
     @Override

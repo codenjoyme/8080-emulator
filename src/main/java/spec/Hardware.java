@@ -90,12 +90,12 @@ public class Hardware {
         parent.add(canvas = new Canvas());
 
         // размер canvas
-        canvas.setSize(width, height);
+        canvas.setSize(WIDTH, HEIGHT);
 
         // сделали canvas видимым.
         canvas.setVisible(true);
 
-        bufferImage = parent.createImage(width, height);
+        bufferImage = parent.createImage(WIDTH, HEIGHT);
 
         // контенты графики
         bufferGraphics = bufferImage.getGraphics();
@@ -196,8 +196,8 @@ public class Hardware {
         currentBorder = newBorder;
         parentGraphics.setColor(currentBorder);
         parentGraphics.fillRect(0, 0,
-                width + borderWidth * 2,
-                height + borderWidth * 2);
+                WIDTH + borderWidth * 2,
+                HEIGHT + borderWidth * 2);
     }
 
     public void paintBuffer() {
