@@ -21,13 +21,13 @@ public class RomLoader {
     }
 
     // чтение ПЗУ ZX Spectrum
-    public void loadROMZ(URL base, String path) throws Exception {
+    public int loadROMZ(URL base, String path) throws Exception {
         URL url = new URL(base, path);
         InputStream is = url.openStream();
         int length = is.available();
         Range range = new Range(0, - length);
         logLoading(url.toString(), range);
-        readBytes(is, memory.all(), range);
+        return readBytes(is, memory.all(), range);
     }
 
     private void logLoading(String name, Range range) {
@@ -37,13 +37,13 @@ public class RomLoader {
 
     // для ПК "Специалист"
     // чтение ПЗУ
-    public void loadROM(URL base, String path, int offset) throws Exception {
+    public int loadROM(URL base, String path, int offset) throws Exception {
         URL url = new URL(base, path);
         InputStream is = url.openStream();
         int length = is.available();
         Range range = new Range(offset, - length);
         logLoading(url.toString(), range);
-        readBytes(is, memory.all(), range);
+        return readBytes(is, memory.all(), range);
     }
 
     // для ПК "Специалист"
@@ -51,7 +51,7 @@ public class RomLoader {
     // ADK: ML_B, ST_B
     // Bytes...
     // KSM: ML_B, ST_B
-    public void loadRKS(URL base, String path) throws Exception {
+    public int loadRKS(URL base, String path) throws Exception {
         URL url = new URL(base, path);
         InputStream is = url.openStream();
         int[] header = read8arr(is, 4);
@@ -60,10 +60,9 @@ public class RomLoader {
                 merge(header[3], header[2]));
 
         logLoading(url.toString(), range);
-        readBytes(is, memory.all(), range);
-
-        // int[] data = read8arr(is, 4); // TODO в конце еще два байта, зачем?
         cpu.PC(range.begin());
+        return readBytes(is, memory.all(), range);
+        // int[] data = read8arr(is, 4); // TODO в конце еще два байта, зачем?
     }
 
     private int[] read8arr(InputStream is, int length) throws Exception {

@@ -277,32 +277,74 @@ public class IntegrationTest extends AbstractCpuTest {
         // https://github.com/begoon/i8080-core/blob/master/TEST.ASM
 
         // given
-        maxTicks = TICKS;
-
-        roms.loadROM(base, "test/TEST.COM", 0x0100);
+        Lik.loadRom(base, roms);
+        maxTicks = roms.loadROM(base, "test/test.com", 0x0000) * 10;
 
         // when
-        cpu.PC(0x0100);
+        cpu.PC(0x0000);
         cpu.execute();
 
         // then
-        asrtCpu("BC:  010F\n" +
+        asrtCpu("BC:  0109\n" +
                 "DE:  000F\n" +
                 "HL:  4D0F\n" +
                 "AF:  4D02\n" +
                 "SP:  0102\n" +
-                "PC:  ED8F\n" +
-                "B,C: 01 0F\n" +
+                "PC:  4E74\n" +
+                "B,C: 01 09\n" +
                 "D,E: 00 0F\n" +
                 "H,L: 4D 0F\n" +
                 "M:   4D\n" +
                 "A,F: 4D 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000001 00000010\n" +
-                "PC:  11101101 10001111\n" +
+                "PC:  01001110 01110100\n" +
                 "     76543210\n" +
                 "B:   00000001\n" +
-                "C:   00001111\n" +
+                "C:   00001001\n" +
+                "D:   00000000\n" +
+                "E:   00001111\n" +
+                "H:   01001101\n" +
+                "L:   00001111\n" +
+                "M:   01001101\n" +
+                "A:   01001101\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void testLik_helloWorld() throws Exception {
+        // given
+        Lik.loadRom(base, roms);
+        maxTicks = roms.loadROM(base, "test/hello_world.com", 0x0000) * 1000;
+
+        // when
+        cpu.PC(0x0000);
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:  0109\n" +
+                "DE:  000F\n" +
+                "HL:  4D0F\n" +
+                "AF:  4D02\n" +
+                "SP:  0102\n" +
+                "PC:  4E74\n" +
+                "B,C: 01 09\n" +
+                "D,E: 00 0F\n" +
+                "H,L: 4D 0F\n" +
+                "M:   4D\n" +
+                "A,F: 4D 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000001 00000010\n" +
+                "PC:  01001110 01110100\n" +
+                "     76543210\n" +
+                "B:   00000001\n" +
+                "C:   00001001\n" +
                 "D:   00000000\n" +
                 "E:   00001111\n" +
                 "H:   01001101\n" +

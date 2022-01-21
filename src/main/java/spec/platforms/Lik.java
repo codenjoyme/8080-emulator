@@ -20,6 +20,6 @@ public class Lik {
     }
 
     public static void loadTest(URL base, RomLoader roms, String name) throws Exception {
-        roms.loadROM(base, "test/" + name + ".com", 0x0100);
+        roms.loadROM(base, "test/" + name + ".com", 0x0000);
     }
 }

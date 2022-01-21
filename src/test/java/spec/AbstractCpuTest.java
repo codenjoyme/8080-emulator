@@ -8,7 +8,7 @@ import static spec.SmartAssert.assertEquals;
 
 public abstract class AbstractCpuTest {
 
-    public static final int START = 0000;
+    public static int START = 0x0000;
 
     protected TestData data;
     protected Cpu cpu;
