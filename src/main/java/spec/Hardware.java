@@ -4,12 +4,10 @@ import java.awt.*;
 import java.net.URL;
 
 import static java.awt.Event.*;
-import static spec.Constants.*;
 import static spec.Video.*;
 
 public class Hardware {
 
-    private static final double CLOCK = 1.6; // Specialist runs at 3.5Mhz;
     private static final int BORDER_PORT = 254;
     public static final int PAUSE = 0x0400;
 
@@ -41,11 +39,7 @@ public class Hardware {
     private Color currentBorder = null; // null mean update screen
     private Color newBorder = Color.YELLOW;
 
-    private Memory memory;
-    private Cpu cpu;
-    private RomLoader roms;
-    private IOPorts ports;
-    private Video video;
+    private Hard hard;
 
     /**
      * Container — это абстрактный подкласс класса Component, определяющий дополнительные методы,
@@ -55,34 +49,22 @@ public class Hardware {
      */
     public Hardware(Container container) {
         parent = container;
-        memory = new Memory(x10000);
-        video = new Video((pt, color) -> {
-                    bufferGraphics.setColor(color);
-                    bufferGraphics.fillRect(pt.x, pt.y, 1, 1);
-                });
-        cpu = new Cpu(CLOCK, new Data() {
+        hard = new Hard() {
             @Override
-            public boolean interrupt() {
-                return Hardware.this.interrupt();
-            }
-
-            @Override
-            public void out8(int port, int bite) {
+            protected void outb(int port, int bite) {
                 Hardware.this.outb(port, bite);
             }
 
             @Override
-            public int read8(int addr) {
-                return Hardware.this.read8(addr);
+            protected boolean interrupt() {
+                return Hardware.this.interrupt();
             }
 
             @Override
-            public void write8(int addr, int bite) {
-                Hardware.this.write8(addr, bite);
+            protected void drawPixel(Point point, Color color) {
+                Hardware.this.drawPixel(point, color);
             }
-        });
-        ports = new IOPorts(memory);
-        roms = new RomLoader(memory, cpu);
+        };
 
         parent.add(canvas = new Canvas());
 
@@ -98,6 +80,11 @@ public class Hardware {
         bufferGraphics = bufferImage.getGraphics();
         parentGraphics = parent.getGraphics();
         canvasGraphics = canvas.getGraphics();
+    }
+
+    private void drawPixel(Point pt, Color color) {
+        bufferGraphics.setColor(color);
+        bufferGraphics.fillRect(pt.x, pt.y, 1, 1);
     }
 
     public void setBorderWidth(int width) {
@@ -137,7 +124,7 @@ public class Hardware {
         if (resetAtNextInterrupt) {
             System.out.println("Total RESET !!!");
             resetAtNextInterrupt = false;
-            reset();
+            hard.reset();
         }
 
         interruptCounter++;
@@ -149,7 +136,7 @@ public class Hardware {
 
         // Обновлять экран каждое прерывание по умолчанию
         if ((interruptCounter % refreshRate) == 0) {
-            video.screenPaint();
+            hard.video.screenPaint();
             paintBuffer();
         }
         // возвращает текущее системное время в виде миллисекунд,
@@ -176,11 +163,6 @@ public class Hardware {
 
     public void repaint() {
         refreshNextInterrupt = true;
-    }
-
-    public void reset() {
-        cpu.reset();
-        ports.reset();
     }
 
     public void borderPaint() {
@@ -222,13 +204,13 @@ public class Hardware {
             case GOT_FOCUS: {
                 System.out.println("'SPECIALIST' GOT FOCUS");
                 outb(BORDER_PORT, 0x02);
-                ports.resetKeyboard();
+                hard.ports.resetKeyboard();
                 return true;
             }
             case LOST_FOCUS: {
                 System.out.println("'SPECIALIST' LOST FOCUS");
                 outb(BORDER_PORT, 0x06);
-                ports.resetKeyboard();
+                hard.ports.resetKeyboard();
                 return true;
             }
         }
@@ -236,7 +218,7 @@ public class Hardware {
     }
 
     public boolean doKey(boolean down, int ascii, int mods) {
-        ports.processKey(down, ascii);
+        hard.ports.processKey(down, ascii);
 
         switch (ascii) {
             case PAUSE: {
@@ -249,39 +231,8 @@ public class Hardware {
         return true;
     }
 
-    public void execute() {
-        cpu.execute();
-    }
-
-    private int read8(int addr) {
-        if (PORTS.includes(addr)) {
-            return ports.inPort(addr);
-        }
-        return memory.read8(addr);
-    }
-
-    private void write8(int addr, int bite) {
-        if (ROM.includes(addr)) {
-            // в ПЗУ не пишем
-            return;
-        }
-
-        if (SCREEN.includes(addr)) {
-            if (memory.read8(addr) != bite) {
-                // было изменение ячейки видеопамяти
-                video.plot(addr, bite);
-            }
-        }
-
-        if (PORTS.includes(addr)) {
-            ports.outPort(addr, bite);
-        }
-
-        memory.write8(addr, bite);
-    }
-
     public RomLoader roms() {
-        return roms;
+        return hard.roms;
     }
 
     public void refreshWholeScreen() {
@@ -289,9 +240,17 @@ public class Hardware {
     }
 
     public void loadSnapshot(URL base, String snapshot) throws Exception {
-        roms.loadSnapshot(base, snapshot);
+        hard.roms.loadSnapshot(base, snapshot);
         refreshWholeScreen();
-        ports.resetKeyboard();
+        hard.ports.resetKeyboard();
         canvas.requestFocus();
+    }
+
+    public void start() {
+        hard.start();
+    }
+
+    public void reset() {
+        hard.reset();
     }
 }

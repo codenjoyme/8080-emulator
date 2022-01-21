@@ -105,7 +105,7 @@ public class Main extends Applet implements Runnable {
             }
         }
         if (hard != null) {
-            hard.execute();
+            hard.start();
         }
     }
 

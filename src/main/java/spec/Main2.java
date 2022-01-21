@@ -5,7 +5,9 @@ import java.awt.*;
 
 public class Main2 extends JPanel {
 
-    private final JFrame frame;
+    private static final double CLOCK = 1.6; // Specialist runs at 3.5Mhz;
+
+    private JFrame frame;
 
     public static void main(String[] args) {
         new Main2();
