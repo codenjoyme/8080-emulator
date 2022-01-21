@@ -1,6 +1,10 @@
 package spec;
 
+import spec.platforms.Lik;
+import spec.platforms.Specialist;
+
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import static java.awt.Event.*;
@@ -9,7 +13,7 @@ import static spec.Video.*;
 public class Application {
 
     private static final int BORDER_PORT = 254;
-    public static final int PAUSE = 0x0400;
+    private static final int PAUSE = 0x0400;
 
     private Graphics parentGraphics;
     private Graphics canvasGraphics;
@@ -74,7 +78,7 @@ public class Application {
         // сделали canvas видимым.
         canvas.setVisible(true);
 
-        bufferImage = parent.createImage(WIDTH, HEIGHT);
+        bufferImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
         // контенты графики
         bufferGraphics = bufferImage.getGraphics();
@@ -82,15 +86,40 @@ public class Application {
         canvasGraphics = canvas.getGraphics();
     }
 
+    /**
+     * Parse available applet parameters.
+     * Вызывается из метода  RUN
+     * @throws Exception Problem loading ROM or snaphot.
+     */
+    public void readParameters(URL base) throws Exception {
+        setBorderWidth(borderWidth);
+
+        boolean lik = true;
+        if (lik) {
+            Lik.loadRom(base, hard.roms());
+            Lik.loadGame(base, hard.roms(), "klad");
+            // Lik.loadTest(base, hard.roms(), "test");
+        } else {
+            Specialist.loadRom(base, hard.roms());
+            Specialist.loadGame(base, hard.roms(), "blobcop");
+        }
+
+        String snapshot = null; // TODO научиться сохранять и загружать снепшоты
+        if (snapshot != null) {
+            loadSnapshot(base, snapshot);
+        } else {
+            reset();
+        }
+    }
+
     private void drawPixel(Point pt, Color color) {
         bufferGraphics.setColor(color);
         bufferGraphics.fillRect(pt.x, pt.y, 1, 1);
     }
 
-    public void setBorderWidth(int width) {
+    private void setBorderWidth(int width) {
         borderWidth = width;
         canvas.setLocation(borderWidth, borderWidth);
-
     }
 
     private void outb(int port, int outByte) {
@@ -165,7 +194,7 @@ public class Application {
         refreshNextInterrupt = true;
     }
 
-    public void borderPaint() {
+    private void borderPaint() {
         if (borderWidth == 0) { // если бордюра нет - ничего не делать!
             return;
         }
@@ -179,7 +208,7 @@ public class Application {
                 HEIGHT + borderWidth * 2);
     }
 
-    public void paintBuffer() {
+    private void paintBuffer() {
         canvasGraphics.drawImage(bufferImage, 0, 0, null);
         borderPaint();
     }
@@ -217,7 +246,7 @@ public class Application {
         return false;
     }
 
-    public boolean doKey(boolean down, int ascii, int mods) {
+    private boolean doKey(boolean down, int ascii, int mods) {
         hard.ports.processKey(down, ascii);
 
         switch (ascii) {
@@ -231,18 +260,13 @@ public class Application {
         return true;
     }
 
-    public RomLoader roms() {
-        return hard.roms;
-    }
-
-    public void refreshWholeScreen() {
+    private void refreshWholeScreen() {
         currentBorder = null;
     }
 
-    public void loadSnapshot(URL base, String snapshot) throws Exception {
-        hard.roms.loadSnapshot(base, snapshot);
+    private void loadSnapshot(URL base, String snapshot) throws Exception {
+        hard.loadSnapshot(base, snapshot);
         refreshWholeScreen();
-        hard.ports.resetKeyboard();
         canvas.requestFocus();
     }
 
@@ -250,7 +274,8 @@ public class Application {
         hard.start();
     }
 
-    public void reset() {
+    private void reset() {
         hard.reset();
+        refreshWholeScreen();
     }
 }

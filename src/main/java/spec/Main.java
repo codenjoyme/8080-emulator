@@ -14,12 +14,8 @@ package spec;
  * изображений или текста.
  */
 
-import spec.platforms.Lik;
-import spec.platforms.Specialist;
-
 import java.applet.Applet;
 import java.awt.*;
-import java.net.URL;
 
 /**
  * Класс 'Main' с помощью ключевого слова {extends} наследуется от класса Applet.
@@ -99,44 +95,14 @@ public class Main extends Applet implements Runnable {
         if (hard == null) {
             try {
                 hard = new Application(this);
-                readParameters();
+                hard.readParameters(getDocumentBase());
+                resize(preferredSize());
             } catch (Exception e) {
                 showStatus("Caught IO Error: " + e);
             }
         }
         if (hard != null) {
             hard.start();
-        }
-    }
-
-    /**
-     * Parse available applet parameters.
-     * Вызывается из метода  RUN
-     * @throws Exception Problem loading ROM or snaphot.
-     */
-    public void readParameters() throws Exception {
-        hard.setBorderWidth(hard.borderWidth);
-
-        // once borderWidth is set up
-        resize(preferredSize());
-
-        URL base = getDocumentBase();
-        boolean lik = true;
-        if (lik) {
-            Lik.loadRom(base, hard.roms());
-            Lik.loadGame(base, hard.roms(), "klad");
-            // Lik.loadTest(base, hard.roms(), "test");
-        } else {
-            Specialist.loadRom(base, hard.roms());
-            Specialist.loadGame(base, hard.roms(), "blobcop");
-        }
-
-        String snapshot = null; // TODO научиться сохранять и загружать снепшоты
-        if (snapshot != null) {
-            hard.loadSnapshot(base, snapshot);
-        } else {
-            hard.reset();
-            hard.refreshWholeScreen();
         }
     }
 

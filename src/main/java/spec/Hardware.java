@@ -1,6 +1,7 @@
 package spec;
 
 import java.awt.*;
+import java.net.URL;
 
 import static spec.Constants.*;
 
@@ -84,4 +85,12 @@ public abstract class Hardware {
         memory.write8(addr, bite);
     }
 
+    public RomLoader roms() {
+        return roms;
+    }
+
+    public void loadSnapshot(URL base, String snapshot) throws Exception {
+        roms.loadSnapshot(base, snapshot);
+        ports.resetKeyboard();
+    }
 }
