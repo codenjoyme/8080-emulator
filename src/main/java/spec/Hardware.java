@@ -79,8 +79,7 @@ public class Hardware {
 
         memory = new Memory(x10000);
 
-        video = new Video(memory,
-                (pt, color) -> {
+        video = new Video((pt, color) -> {
                     bufferGraphics.setColor(color);
                     bufferGraphics.fillRect(pt.x, pt.y, 1, 1);
                 });
@@ -554,7 +553,7 @@ public class Hardware {
         if (SCREEN.includes(addr)) {
             if (memory.read8(addr) != bite) {
                 // было изменение ячейки видеопамяти
-                // video.plot(addr);
+                video.plot(addr, bite);
             }
         }
 
