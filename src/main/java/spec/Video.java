@@ -11,18 +11,18 @@ import static spec.IOPorts.RgRGB;
 public class Video {
 
     // Screen stuff - метрики экрана
-
     public static final int pixelScale = 1;    // scales pixels in main screen, not border
 
-    public static final int nPixelsWide = 384;  // точек по X 384 - Спец.; 256 - ZX;
-    public static final int nPixelsHigh = 256;  // точек по Y 256 - Спец.; 192 - ZX;
+    public static final int nPixelsWide = 384;  // точек по X
+    public static final int nPixelsHigh = 256;  // точек по Y
 
-    public static final int nCharsWide = 48;   // 256/8=32 (Байт в строке); 48 - Спец.; 32 - ZX;
-    public static final int nCharsHigh = 256;   // 192/8=24 строки в экране;256 - Спец.; 24 - ZX;
+    public static final int nCharsWide = 48;   // 256/8=32 (Байт в строке)
+    public static final int nCharsHigh = 256;   // 192/8=24 строки в экране
 
-    private static final int str = 238;         // насыщенность (saturation) 0EEh
-    public static final Color[] SpecMXColors = {// 16 цветов - массив цветов "Специалист"
-            Color.black, ////00-черный тусклые цвета
+    private static final int str = 238;          // насыщенность (saturation) 0EEh
+    public static final Color[] SpecMXColors = { // 16 цветов - массив цветов "Специалист"
+            Color.black,             // 00-черный
+            // тусклые цвета
             Color.blue,              // 01 синий
             Color.green,             // 02 зелёный
             Color.cyan,              // 03 бирюзовый
@@ -30,15 +30,15 @@ public class Video {
             Color.magenta,           // 05 фиолетовый
             Color.yellow,            // 06 коричневый
             Color.white,             // 07 белый
-            new Color(0, 0, 0),  // 08 серый   // яркие цвета
-            new Color(0, 0, str),  // 09 голубой
-            new Color(0, str, 0),  // 0A светло-зелёный
+            new Color(0, 0, 0),      // 08 серый
+            // яркие цвета
+            new Color(0, 0, str),    // 09 голубой
+            new Color(0, str, 0),    // 0A светло-зелёный
             new Color(0, str, str),  // 0B светло-бирюзовый
-            new Color(str, 0, 0),  // 0C розовый
+            new Color(str, 0, 0),    // 0C розовый
             new Color(str, 0, str),  // 0D светло-фиолетовый
             new Color(str, str, 0),  // 0E желтый
-            new Color(str, str, str)   // 0F ярко-белый
-            //   R     G    B
+            new Color(str, str, str) // 0F ярко-белый
     };
 
     // 4000h = 16384 - начало экрана;  6144 байт (1800h) - размер экрана
@@ -74,9 +74,8 @@ public class Video {
     // 7 bits for attr, 4 bits for pattern = 11 bits > 2^11=2048 элементов
     // "Специалист": 8 bits for attr, 4 bits for pattern = 12 bits > 2^12=4096 элементов
 
-
-    // массив байт цвета контроллера цвета 0xC000-9000h
-    private int[] rgb = new int[12288];
+    // массив байт цвета контроллера цвета 0x9000-9FFFh
+    private int[] rgb = new int[0x3000];
 
     private Memory memory;
     private BiFunction<Integer, Integer, Image> imageCreator;
@@ -223,7 +222,7 @@ public class Video {
                     }
                 }
 
-            } // if( inkChange || papChange )
+            }
 
             int newAddr = nextAddr[addr];
             nextAddr[addr] = -1;
