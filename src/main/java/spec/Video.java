@@ -1,7 +1,6 @@
 package spec;
 
 import java.awt.*;
-import java.util.Hashtable;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
@@ -65,10 +64,6 @@ public class Video {
 
     //  массив смещений [] = 6912 в буфере - ФАКТИЧЕСКИ АДРЕСА В ЭКРАНЕ
     private final int[] nextAddr = new int[(nPixelsHigh + nCharsHigh) * nCharsWide];
-
-    //  создали первоначально словарь patternMap
-    public static Hashtable patternMap = new Hashtable();
-    //  создали первоначально массив рисунков в 2048 экземпляров
 
     public static Image[] imageMap = new Image[1 << 12];// 100000000000b = 2048d = 800h
     // 7 bits for attr, 4 bits for pattern = 11 bits > 2^11=2048 элементов
@@ -223,52 +218,27 @@ public class Video {
     }
 
     private void qwe(int newPixels, int changes, int x, int y, int attr) {
-        // старший ниббл байта сдвинули в младший - 0000.0000bbbb
-        // аттрибуты кроме мерц. сдвинули выше младшего ниббла 0aaa.aaaa.0000
-        int imageMapEntry1 = (((attr & 0x7F) << 4) | newPixels);
-        // получили хитрый индекс: 0aaa.aaaabbbb
-        Image image1 = imageMap[imageMapEntry1]; // по индексу ищем image1
-
-        if (image1 == null) { // если такого image1 нет
-            // получим новый:    аттрибут, младший ниббл
-            image1 = getImage(attr, newPixels); // новый image1
-            imageMap[imageMapEntry1] = image1; // занесём в массив imageMap
-        } // похоже - это убыстряет всё; если есть рисунок полубайта, то
-        // берём из массива (это быстро), если нет - создадим его, но в
-        // другой раз - не создаём, а быстро берём из массива.
-
+        // получим новый:    аттрибут, младший ниббл
+        Image image = getImage(attr, newPixels); // новый image1
         // Метод paint использует drawlmage с четырьмя аргументами:
         // это ссылка на изображение art, координаты левого верхнего угла рисунка х, у
         // и объект типа ImageObserver.
-        drawer.accept(image1, new Point(x, y)); // рисуем старшие нибблы байта
+        drawer.accept(image, new Point(x, y)); // рисуем старшие нибблы байта
     }
 
     public synchronized Image getImage(int attr, int pattern) {
         int ink = ((attr >> 4) & 0x000f); // старший ниббл - цвет (ink)
         int pap = ((attr) & 0x000f); // младший ниббл - фон  (paper)
-        int hashValue = 0;
-        for (int i = 0; i < 4; i++) { // побитно просматриваем ниббл из ОЗУ экрана
-            int col = ((pattern & (1 << i)) == 0) ? pap : ink; // присваиваем цвета
+        // сменили палитру
+        Color[] colors = SpecMXColors;
+        Image image = imageCreator.apply(4, 1); // создали Image 4 х 1 точек: ниббл.
+        Graphics g = image.getGraphics(); // создали для него графический контент
 
-            hashValue |= (col << (i << 2)); //? ? ?
-        }
+        for (int i = 0; i < 4; i++) { // по 4-м точкам ниббла:
+            int col = ((pattern & (1 << i)) == 0) ? pap : ink; // вычисляем цвет.
 
-        Image image = (Image) patternMap.get(hashValue);
-
-        if (image == null) { // если готового image в словаре нет, сделаем его...
-            // сменили палитру
-            Color[] colors = SpecMXColors;
-            image = imageCreator.apply(4, 1); // создали Image 4 х 1 точек: ниббл.
-            Graphics g = image.getGraphics(); // создали для него графический контент
-
-            for (int i = 0; i < 4; i++) { // по 4-м точкам ниббла:
-                int col = ((pattern & (1 << i)) == 0) ? pap : ink; // вычисляем цвет.
-
-                g.setColor(colors[col]); // выставляем для точки цвет из  SpecMXColors[];
-                g.fillRect((3 - i), 0, 1, 1); // ставим точку на графический контент
-            }
-            // добавляем запись: ключ(imageKey=Integer( hashValue )),значение (image)
-            patternMap.put(hashValue, image); // положим image в словарь под ключом imageKey
+            g.setColor(colors[col]); // выставляем для точки цвет из  SpecMXColors[];
+            g.fillRect((3 - i), 0, 1, 1); // ставим точку на графический контент
         }
         return image; // вернём созданный или считанный image
     }
