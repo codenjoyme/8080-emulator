@@ -1,7 +1,11 @@
 package spec;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 import static spec.WordMath.BITE;
 import static spec.WordMath.merge;
@@ -85,5 +89,33 @@ public class RomLoader {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    public void loadSnapshot(URL base, String snapshot) throws Exception {
+        URL url = new URL(base, snapshot);
+        URLConnection snap = url.openConnection();
+
+        InputStream is = snap.getInputStream();
+        int length = snap.getContentLength();
+        String name = base.toString();
+
+        // Linux  JDK doesn't always know the size of files
+        if (length < 0) {
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            is = new BufferedInputStream(is, 4096);
+
+            int bite;
+            while ((bite = is.read()) != -1) {
+                os.write((byte) bite);
+            }
+
+            is = new ByteArrayInputStream(os.toByteArray());
+        }
+        // Грубая проверка, но будет работать (SNA имеет фиксированный размер)
+        // Crude check but it'll work (SNA is a fixed size)
+
+        loadRKS(name, is);
+
+        is.close();
     }
 }

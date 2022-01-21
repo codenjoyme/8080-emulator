@@ -13,14 +13,13 @@ package spec;
  * java.awt. С ее помощью аплет может выполнять в своем окне рисование различных
  * изображений или текста.
  */
+
 import spec.platforms.Lik;
 import spec.platforms.Specialist;
 
 import java.applet.Applet;
 import java.awt.*;
-import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
 
 /**
  * Класс 'Main' с помощью ключевого слова {extends} наследуется от класса Applet.
@@ -133,12 +132,7 @@ public class Main extends Applet implements Runnable {
 
         String snapshot = null; // TODO научиться сохранять и загружать снепшоты
         if (snapshot != null) {
-            URL url = new URL(base, snapshot);
-            URLConnection snap = url.openConnection();
-
-            InputStream input = snap.getInputStream();
-            hard.loadSnapshot(url.toString(), input, snap.getContentLength());
-            input.close();
+            hard.loadSnapshot(base, snapshot);
         } else {
             hard.reset();
             hard.refreshWholeScreen();

@@ -1,10 +1,7 @@
 package spec;
 
 import java.awt.*;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.net.URL;
 
 import static java.awt.Event.*;
 import static spec.Constants.*;
@@ -252,29 +249,6 @@ public class Hardware {
         return true;
     }
 
-    public void loadSnapshot(String name, InputStream is, int snapshotLength) throws Exception {
-        // Linux  JDK doesn't always know the size of files
-        if (snapshotLength < 0) {
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            is = new BufferedInputStream(is, 4096);
-
-            int bite;
-            while ((bite = is.read()) != -1) {
-                os.write((byte) bite);
-            }
-
-            is = new ByteArrayInputStream(os.toByteArray());
-        }
-        // Грубая проверка, но будет работать (SNA имеет фиксированный размер)
-        // Crude check but it'll work (SNA is a fixed size)
-
-        roms.loadRKS(name, is);
-        refreshWholeScreen();
-        ports.resetKeyboard();
-
-        canvas.requestFocus();
-    }
-
     public void execute() {
         cpu.execute();
     }
@@ -312,5 +286,12 @@ public class Hardware {
 
     public void refreshWholeScreen() {
         currentBorder = null;
+    }
+
+    public void loadSnapshot(URL base, String snapshot) throws Exception {
+        roms.loadSnapshot(base, snapshot);
+        refreshWholeScreen();
+        ports.resetKeyboard();
+        canvas.requestFocus();
     }
 }
