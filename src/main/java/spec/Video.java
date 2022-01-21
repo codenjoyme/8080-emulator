@@ -204,50 +204,15 @@ public class Video {
             int attr = rgb[addr];
 
 //
-            // Swap colors around if doing flash
+            // Swap colors around   if doing flash
             // Redraw left nibble if necessary
             if ((changes & 0xF0) != 0) { // если есть изменения в старшем ниббле:
-                // старший ниббл байта сдвинули в младший - 0000.0000bbbb
-                int newPixels1 = (newPixels & 0xF0) >> 4;
-                // аттрибуты кроме мерц. сдвинули выше младшего ниббла 0aaa.aaaa.0000
-                int imageMapEntry1 = (((attr & 0x7F) << 4) | newPixels1);
-                // получили хитрый индекс: 0aaa.aaaabbbb
-                Image image1 = imageMap[imageMapEntry1]; // по индексу ищем image1
-
-                if (image1 == null) { // если такого image1 нет
-                    // получим новый:    аттрибут, младший ниббл
-                    image1 = getImage(attr, newPixels1); // новый image1
-                    imageMap[imageMapEntry1] = image1; // занесём в массив imageMap
-                } // похоже - это убыстряет всё; если есть рисунок полубайта, то
-                // берём из массива (это быстро), если нет - создадим его, но в
-                // другой раз - не создаём, а быстро берём из массива.
-
-                // Метод paint использует drawlmage с четырьмя аргументами:
-                // это ссылка на изображение art, координаты левого верхнего угла рисунка х, у
-                // и объект типа ImageObserver.
-                drawer.accept(image1, new Point(X, Y)); // рисуем старшие нибблы байта
+                qwe((newPixels & 0xF0) >> 4, changes, X, Y, attr);
             }
 
             // Redraw right nibble if necessary
-            if ((changes & 0x0F) != 0) { // если есть изменения в младшем ниббле:
-                // выделили младший ниббл байта - 0000.0000bbbb
-                int newPixels2 = (newPixels & 0x0F);
-                // аттрибуты кроме мерц. сдвинули выше младшего ниббла 0aaa.aaaa.0000
-                int imageMapEntry2 = (((attr & 0x7F) << 4) | newPixels2);
-                // получили хитрый индекс: 0aaa.aaaabbbb
-                Image image2 = imageMap[imageMapEntry2]; //  по индексу ищем image2
-
-                if (image2 == null) { // если такого image2 нет
-                    // получим новый:    аттрибут, младший ниббл
-                    image2 = getImage(attr, newPixels2); // новый image2
-                    imageMap[imageMapEntry2] = image2; // занесём в массив imageMap
-                }// похоже - это убыстряет всё; рисунок есть - берём из массива,
-                // если нет - создадим его, но в другой раз - быстро берём из массива.
-
-                // Метод paint использует drawlmage с четырьмя аргументами:
-                // это ссылка на изображение art, координаты левого верхнего угла рисунка х, у
-                // и объект типа ImageObserver.
-                drawer.accept(image2, new Point(X + 4, Y)); // младшие нибблы байта
+            if ((changes & 0x0F) != 0) { // если есть изменения в старшем ниббле:
+                qwe(newPixels & 0x0F, changes, X + 4, Y, attr);
             }
 
             int newAddr = nextAddr[addr]; // новый адрес из буфера адресов по смещению "first"
@@ -255,6 +220,27 @@ public class Video {
             addr = newAddr;          // текущий "адрес" = новому адресу, пока != -1;
         }
         first = -1; // признак, что обновлений более нет.
+    }
+
+    private void qwe(int newPixels, int changes, int x, int y, int attr) {
+        // старший ниббл байта сдвинули в младший - 0000.0000bbbb
+        // аттрибуты кроме мерц. сдвинули выше младшего ниббла 0aaa.aaaa.0000
+        int imageMapEntry1 = (((attr & 0x7F) << 4) | newPixels);
+        // получили хитрый индекс: 0aaa.aaaabbbb
+        Image image1 = imageMap[imageMapEntry1]; // по индексу ищем image1
+
+        if (image1 == null) { // если такого image1 нет
+            // получим новый:    аттрибут, младший ниббл
+            image1 = getImage(attr, newPixels); // новый image1
+            imageMap[imageMapEntry1] = image1; // занесём в массив imageMap
+        } // похоже - это убыстряет всё; если есть рисунок полубайта, то
+        // берём из массива (это быстро), если нет - создадим его, но в
+        // другой раз - не создаём, а быстро берём из массива.
+
+        // Метод paint использует drawlmage с четырьмя аргументами:
+        // это ссылка на изображение art, координаты левого верхнего угла рисунка х, у
+        // и объект типа ImageObserver.
+        drawer.accept(image1, new Point(x, y)); // рисуем старшие нибблы байта
     }
 
     public synchronized Image getImage(int attr, int pattern) {
