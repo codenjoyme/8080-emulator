@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import static spec.Video.*;
+
 /**
  * Класс 'Main' с помощью ключевого слова {extends} наследуется от класса Applet.
  * При этом методам класса 'Main' становятся доступными все методы и данные класса,
@@ -116,7 +118,7 @@ public class Main extends Applet implements Runnable {
      * @throws Exception Problem loading ROM or snaphot.
      */
     public void readParameters() throws Exception {
-        hard.setBorderWidth(hard.borderWidth * Hardware.pixelScale);
+        hard.setBorderWidth(hard.borderWidth * pixelScale);
 
         // once borderWidth is set up
         resize(preferredSize());
@@ -132,21 +134,19 @@ public class Main extends Applet implements Runnable {
             }
         }
 
-        URL baseURL = getDocumentBase();
-        hard.urlField.setText(baseURL.toString());
-
+        URL base = getDocumentBase();
         boolean lik = true;
         if (lik) {
-            Lik.loadRom(baseURL, hard.roms());
-            Lik.loadGame(baseURL, hard.roms(), "klad");
+            Lik.loadRom(base, hard.roms());
+            Lik.loadGame(base, hard.roms(), "klad");
         } else {
-            Specialist.loadRom(baseURL, hard.roms());
-            Specialist.loadGame(baseURL, hard.roms(), "blobcop");
+            Specialist.loadRom(base, hard.roms());
+            Specialist.loadGame(base, hard.roms(), "blobcop");
         }
 
         String snapshot = null; // TODO научиться сохранять и загружать снепшоты
         if (snapshot != null) {
-            URL url = new URL(baseURL, snapshot);
+            URL url = new URL(base, snapshot);
             URLConnection snap = url.openConnection();
 
             InputStream input = snap.getInputStream();
@@ -217,12 +217,12 @@ public class Main extends Applet implements Runnable {
 
     @Override
     public Dimension minimumSize() {
-        int scale = Hardware.pixelScale;
+        int scale = pixelScale;
         int border = (hard == null) ? 20 : hard.borderWidth;
 
         return new Dimension(
-                Hardware.nPixelsWide * scale + border * 2,
-                Hardware.nPixelsHigh * scale + border * 2);
+                nPixelsWide * scale + border * 2,
+                nPixelsHigh * scale + border * 2);
     }
 
     @Override

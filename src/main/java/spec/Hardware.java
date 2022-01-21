@@ -30,10 +30,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Hashtable;
 
 import static spec.Constants.*;
-import static spec.IOPorts.RgRGB;
+import static spec.Video.*;
 
 /**
  * The Spechard class extends the Z80 class implementing the supporting
@@ -50,34 +49,59 @@ import static spec.IOPorts.RgRGB;
 
 public class Hardware {
 
-    public Graphics parentGraphics;
-    public Graphics canvasGraphics;
-    public Graphics bufferGraphics;
-    public Image bufferImage;
+    private static final double CLOCK = 1.6; // Specialist runs at 3.5Mhz;
+
+    private Graphics parentGraphics;
+    private Graphics canvasGraphics;
+    private Graphics bufferGraphics;
+    private Image bufferImage;
 
     // SpecApp usually (where border is drawn)
-    public Container parent;
+    private Container parent;
 
     // Main screen
-    public Canvas canvas;
+    private Canvas canvas;
+
+    // ширина бордюра
+    public int borderWidth = 20;   // absolute, not relative to pixelScale
 
     // ESC shows a URL popup
-    public TextField urlField;
+    private TextField urlField;
 
     // How much loaded/how fast?
-    public AMDProgressBar progressBar;
+    private AMDProgressBar progressBar;
 
     public boolean pbaron = false;  // progbar - невидим.
     private boolean wfocus = false; // фокус окном не получен
     private boolean invfoc = false; // моргание бордюром
 
-    // массив байт цвета контроллера цвета 0xC000-9000h
-    public int[] rgb = new int[12288];
+    // Поскольку исполнение проходит как плотный цикл, некоторые реализации виртуальной машины
+    // Java не позволяют любым другим процессам получить доступ. Это даёт (GUI) Графическому
+    // Интерфейсу Пользователя время для обновления.
+    //
+    // Since execute runs as a tight loop, some Java VM implementations
+    //  don't allow any other threads to get a look in. This give the
+    //  GUI time to update. If anyone has a better solution please
+    //  email us at mailto:spectrum@odie.demon.co.uk
+    //
+    public int sleepHack = 0;
+    public int refreshRate = 1;  // refresh every 'n' interrupts
+
+    private int interruptCounter = 0;
+    private boolean resetAtNextInterrupt = false;
+    private boolean pauseAtNextInterrupt = false;
+    private boolean refreshNextInterrupt = true;
+    private boolean loadFromURLFieldNextInterrupt = false;
+
+    public Thread pausedThread = null;
+    public long timeOfLastInterrupt = 0;
+    private long timeOfLastSample = 0;
 
     private Memory memory;
     private Cpu cpu;
     private RomLoader roms;
     private IOPorts ports;
+    private Video video;
 
     /**
      * Container — это абстрактный подкласс класса Component, определяющий дополнительные методы,
@@ -85,11 +109,16 @@ public class Hardware {
      * иерархической системы визуальных объектов. Container отвечает за расположение содержащихся
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
-    public Hardware(Container _parent) {
+    public Hardware(Container container) {
+        parent = container;
+
         memory = new Memory(x10000);
 
-        // Specialist runs at 3.5Mhz;
-        cpu = new Cpu(1.6, new Data() {
+        video = new Video(memory,
+                parent::createImage,
+                (image, pt) -> bufferGraphics.drawImage(image, pt.x, pt.y, null));
+
+        cpu = new Cpu(CLOCK, new Data() {
 
             @Override
             public boolean interrupt() {
@@ -115,10 +144,6 @@ public class Hardware {
         ports = new IOPorts(memory);
         roms = new RomLoader(memory, cpu);
 
-        // Конструктору класса Spechard() из Main.class передается ссылка на компонент,
-        // для которого необходимо отслеживать загрузку изображений (или что-то?).
-        // В данном случае это наш аплет, > мы передаем конструктору значение (this)!!!
-        parent = _parent;
         parent.add(canvas = new Canvas());
 
         // размер canvas
@@ -137,16 +162,15 @@ public class Hardware {
         // добавили Z80 AMDProgressBar
         parent.add(progressBar = new AMDProgressBar());
         progressBar.setBarColor(new Color(192, 52, 4));
-        progressBar.setVisible(true);  // show();
-        progressBar.setVisible(false); // hide();
+        progressBar.setVisible(true);  
+        progressBar.setVisible(false); 
 
         // добавили TextField - поле ввода url файла для загрузки
         parent.add(urlField = new TextField());
-        urlField.setVisible(true);   // show();
-        urlField.setVisible(false);  // hide();
+        urlField.setVisible(true);   
+        urlField.setVisible(false);  
     }
 
-    //
     public void setBorderWidth(int width) {
         borderWidth = width;
         canvas.setLocation(borderWidth, borderWidth);
@@ -162,36 +186,11 @@ public class Hardware {
         progressBar.setFont(urlField.getFont());
     }
 
-
-
     private void outb(int port, int outByte) {
         if ((port & 0x0001) == 0) {   // port xx.FEh
             newBorder = (outByte & 0x000F); // 0000.0111 бордюр & 0x07
         }
     }
-
-
-    // Поскольку исполнение проходит как плотный цикл, некоторые реализации виртуальной машины
-    // Java не позволяют любым другим процессам получить доступ. Это даёт (GUI) Графическому
-    // Интерфейсу Пользователя время для обновления.
-    //
-    // Since execute runs as a tight loop, some Java VM implementations
-    //  don't allow any other threads to get a look in. This give the
-    //  GUI time to update. If anyone has a better solution please
-    //  email us at mailto:spectrum@odie.demon.co.uk
-    //
-    public int sleepHack = 0;
-    public int refreshRate = 1;  // refresh every 'n' interrupts
-
-    private int interruptCounter = 0;
-    private boolean resetAtNextInterrupt = false;
-    private boolean pauseAtNextInterrupt = false;
-    private boolean refreshNextInterrupt = true;
-    private boolean loadFromURLFieldNextInterrupt = false;
-
-    public Thread pausedThread = null;
-    public long timeOfLastInterrupt = 0;
-    private long timeOfLastSample = 0;
 
     private void loadFromURLField() {
         try {
@@ -205,7 +204,8 @@ public class Hardware {
             loadSnapshot(url.toString(), input, snap.getContentLength());
             input.close();
         } catch (Exception e) {
-            showMessage(e.toString()); 
+            e.printStackTrace();
+            showMessage(e.toString());
         }
     }
 
@@ -236,7 +236,7 @@ public class Hardware {
                     try {
                         Thread.sleep(500); // дали случиться внешним событиям
                     } catch (Exception ignored) {
-                        // Exception
+                        // do noting
                     }
                 }
             }
@@ -287,7 +287,8 @@ public class Hardware {
         // Refresh screen every interrupt by default
         // Обновлять экран каждое прерывание по умолчанию
         if ((interruptCounter % refreshRate) == 0) {
-            screenPaint(); // вызывается из interrupt() >>>
+            video.screenPaint(); // вызывается из interrupt()
+            paintBuffer(); // перерисовка экрана РИСУЕМ !!!
         }
         // возвращает текущее системное время в виде миллисекунд,
         // прошедших с 1 января 1970 года
@@ -305,7 +306,7 @@ public class Hardware {
                 try {
                     Thread.sleep(50 - durOfLastInterrupt); // 50
                 } catch (Exception ignored) {
-                    // Exception
+                    // do nothing
                 }
             }
         }
@@ -324,8 +325,6 @@ public class Hardware {
     }
 
     public void pauseOrResume() {
-        // Pause
-        // Resume
         pauseAtNextInterrupt = pausedThread == null;
     }
 
@@ -336,8 +335,7 @@ public class Hardware {
         refreshNextInterrupt = true; // установили флаг - разрешить обновление экрана
     }
 
-    //================================== сброс =================================================
-    public void reset() {
+     public void reset() {
         cpu.reset(); // reset() class Z80
         if (wfocus) {
             outb(254, 0x02);
@@ -347,74 +345,7 @@ public class Hardware {
         ports.reset();
     }
 
-    //
-    // Пользуясь ключевыми словами static и final, можно определять внутри классов
-    // глобальные константы. Внутри класса можно определять статические методы и поля
-    // (с помощью ключевого слова static), которые будут играть роль глобальных методов
-    // и данных. Если в базовом классе метод определен с ключевым словом {final}, его
-    // нельзя переопределить в дочернем классе, созданном на базе данного метода.
-    //
-    // Screen stuff - метрики экрана
-    // ширина бордюра
-    public int borderWidth = 20;   // absolute, not relative to pixelScale
-    public static final int pixelScale = 1;    // scales pixels in main screen, not border
-
-    public static final int nPixelsWide = 384;  // точек по X 384 - Спец.; 256 - ZX;
-    public static final int nPixelsHigh = 256;  // точек по Y 256 - Спец.; 192 - ZX;
-
-    public static final int nCharsWide = 48;   // 256/8=32 (Байт в строке); 48 - Спец.; 32 - ZX;
-    public static final int nCharsHigh = 256;   // 192/8=24 строки в экране;256 - Спец.; 24 - ZX;
-
-    private static final int str = 238;         // насыщенность (saturation) 0EEh
-    private static final Color[] SpecMXColors = {// 16 цветов - массив цветов "Специалист"
-            Color.black, ////00-черный тусклые цвета
-            Color.blue,              // 01 синий
-            Color.green,             // 02 зелёный
-            Color.cyan,              // 03 бирюзовый
-            Color.red,               // 04 красный
-            Color.magenta,           // 05 фиолетовый
-            Color.yellow,            // 06 коричневый
-            Color.white,             // 07 белый
-            new Color(0, 0, 0),  // 08 серый   // яркие цвета
-            new Color(0, 0, str),  // 09 голубой
-            new Color(0, str, 0),  // 0A светло-зелёный
-            new Color(0, str, str),  // 0B светло-бирюзовый
-            new Color(str, 0, 0),  // 0C розовый
-            new Color(str, 0, str),  // 0D светло-фиолетовый
-            new Color(str, str, 0),  // 0E желтый
-            new Color(str, str, str)   // 0F ярко-белый
-            //   R     G    B
-    };
-
-    // 4000h = 16384 - начало экрана;  6144 байт (1800h) - размер экрана
-    // 32 байта в сроке * 192 строки = 1800 смещение 1 аттрибута = 5800h-4000h (22528)
-    private static final int firstAttr = (nPixelsHigh * nCharsWide); // 768 байт аттрибутов(300h)
-
-    // адрес 1 аттрибута + 24 строки * по 32 символа = адрес последнего аттрибута
-    // 5B00h (23296) - конец аттрибутов               24 строки  32 символа
-    private static final int lastAttr = firstAttr + firstAttr;  // для "Специалист"
-    // (nCharsHigh*nCharsWide);
-
-    // first screen line in linked list to be redrawn
-    //         первая строка экрана в списке указателей, для перерисовки
-    private int first = -1;
-
-    // first attribute in linked list to be redrawn
-    //         первый атрибут в списке указателей, для перерисовки
-    private int FIRST = -1;
-
-    // массив БАЙТ ЭКРАНА[]    192 точек по Y + 24 строки * 32 Байт в строке
-    private final int[] lastByte = new int[(nPixelsHigh + nCharsHigh) * nCharsWide];
-
-    // 192 точек по Y * 32 Байт в строке = 6144 байта в области экрана
-    // 24 строки символов * 32 Байт в строке = 768 байт аттрибутов(300h)
-    // 6144 байта в области экрана + 768 байт аттрибутов = 6912 в буфере
-
-    //        массив смещений [] = 6912 в буфере - ФАКТИЧЕСКИ АДРЕСА В ЭКРАНЕ
-    private final int[] nextAddr = new int[(nPixelsHigh + nCharsHigh) * nCharsWide];
-
     public int newBorder = 6;  // White border on startup  0x0111b
-
     public int oldBorder = -1; // -1 mean update screen
 
     public long oldTime = 0;
@@ -438,45 +369,6 @@ public class Hardware {
             showMessage(cancelMessage); // "Click here at any time to cancel sleep"
         } else {
             showMessage(null);
-        }
-    }
-
-    // стартовый refresh экрана
-    public void refreshWholeScreen() {//   первый раз вызывается из Main.class после вызова reset();
-        // от  0  до  5800Н
-        for (int i = 0; i < firstAttr; i++) {//  [ 0 ] = -1, 0, 1 ...  firstAttr - 1
-            nextAddr[i] = i - 1; // ВСЕ смещения в области экрана: -1, 0, 1 ...  firstAttr - 1
-            lastByte[i] = (~memory.read8(i + SCREEN.begin())) & 0xFF; // ВСЕ инвертированные байты из видео-ОЗУ.
-            //lastByte[ i ] = (mem( i + 16384 )) & 0xFF;
-        }
-        first = firstAttr - 1; // последнее смещение байта буфера экрана = 57FFH  != -1 !!!
-
-        //   по области аттрибутов
-        for (int i = 0; i < firstAttr; i++) // у "Специалист" область аттрибутов отдельная.
-        {
-            nextAddr[i + firstAttr] = -1; // во все адреса аттрибутов заносим -1.
-            // буфер аттрибутов
-            lastByte[i + firstAttr] = rgb[i];
-        }
-        FIRST = -1; // признак обновления
-
-        oldBorder = -1; // -1 mean update screen, newBorder - текущий цвет Border.
-        oldSpeed = -1; // update progressBar
-    }
-
-    // запись в видео-ОЗУ
-    private void plot(int addr) {
-        int offset = addr - SCREEN.begin();  // смещение в видео-ОЗУ: (адрес в ОЗУ) - 4000h
-
-        if (nextAddr[offset] == -1) { // если по ЭТОМУ адресу в видео-ОЗУ есть признак ОБНОВИТЬ,
-            rgb[offset] = memory.read8(RgRGB); // по смещению видео-ОЗУ пишем код в ОЗУ цвета
-            if (offset < firstAttr) {  // если ЭТОТ адрес в видео-ОЗУ, а не в аттрибутах,
-                nextAddr[offset] = first;// указали в буфере смещений по ЭТОМУ адресу: first
-                first = offset;        // first присвоили значение ЭТОГО адреса смещения в экране
-            } else {                   // адрес в ОЗУ аттрибутов:
-                nextAddr[offset] = FIRST;
-                FIRST = offset; // значит обработается в screenPaint()
-            }
         }
     }
 
@@ -555,280 +447,6 @@ public class Hardware {
         progressBar.setVisible(true);
     }
 
-    //===========================================================================================
-    public static synchronized Image getImage(Component comp, int attr, int pattern) {
-        try {//                 аттрибут, ниббл = 4 бита.
-            return tryGetImage(comp, attr, pattern);
-        } catch (OutOfMemoryError e) { // может и не хватить памяти на все нибблы...
-            imageMap = null;          // в таком случае обнулим imageMap
-            patternMap = null;          //                обнулим patternMap
-
-            System.gc();                // подчистим мусор после ошибки
-
-            // HashTable — это подкласс Dictionary, являющийся конкретной реализацией словаря.
-            // Представителя класса HashTable можно использовать для хранения произвольных объектов,
-            // причем для индексации в этой коллекции также годятся любые объекты.
-
-            // после ошибки придётся заново создать patternMap
-            patternMap = new Hashtable();
-            // и заново создать imageMap  // <10987654321<
-
-            imageMap = new Image[1 << 12];// 100000000000b = 2048d = 800h  Image[ 1<<11 ]; для "ZX"
-            // и попытаемся создать с теми-же параметрами Image...
-            return tryGetImage(comp, attr, pattern);
-        }
-    }
-
-    //  создали первоначально словарь patternMap
-    public static Hashtable patternMap = new Hashtable();
-    //  создали первоначально массив рисунков в 2048 экземпляров
-
-    public static Image[] imageMap = new Image[1 << 12];// 100000000000b = 2048d = 800h
-    // 7 bits for attr, 4 bits for pattern = 11 bits > 2^11=2048 элементов
-    // "Специалист": 8 bits for attr, 4 bits for pattern = 12 bits > 2^12=4096 элементов
-
-    //===========================================================================================
-    private static Image tryGetImage(Component comp, int attr, int pattern) {
-        int ink = ((attr >> 4) & 0x000f); // старший ниббл - цвет (ink)
-        int pap = ((attr) & 0x000f); // младший ниббл - фон  (paper)
-        int hashValue = 0;
-        for (int i = 0; i < 4; i++) { // побитно просматриваем ниббл из ОЗУ экрана
-            int col = ((pattern & (1 << i)) == 0) ? pap : ink; // присваиваем цвета
-
-            hashValue |= (col << (i << 2)); //? ? ?
-        }
-        //  Что же касается данных базовых типов, если вам нужно передавать на них ссылки,
-        //  то следует заменить базовые типы на соответствующие   замещающие классы.
-        //  Например, вместо типа int используйте класс Integer, вместо типа long - класс Long
-        //  и так далее.
-        //  Инициализация таких объектов должна выполняться с помощью конструктора,
-        //  как это показано ниже:
-
-        // это будет ссылкой на объект( hashValue ).
-        Integer imageKey = new Integer(hashValue);
-
-        // возвращает запись, соответствующую ключу( imageKey )
-        Image image = (Image) patternMap.get(imageKey);
-
-        if (image == null) { // если готового image в словаре нет, сделаем его...
-            // сменили палитру
-            Color[] colors = SpecMXColors;
-            image = comp.createImage(4, 1); // создали Image 4 х 1 точек: ниббл.
-            Graphics g = image.getGraphics(); // создали для него графический контент
-
-            for (int i = 0; i < 4; i++) { // по 4-м точкам ниббла:
-                int col = ((pattern & (1 << i)) == 0) ? pap : ink; // вычисляем цвет.
-
-                g.setColor(colors[col]); // выставляем для точки цвет из  SpecMXColors[];
-                g.fillRect((3 - i), 0, 1, 1); // ставим точку на графический контент
-            }
-            // добавляем запись: ключ(imageKey=Integer( hashValue )),значение (image)
-            patternMap.put(imageKey, image); // положим image в словарь под ключом imageKey
-        }
-        return image; // вернём созданный или считанный image
-    }
-
-    // Отрисовка экрана в буфере
-    // Основная идея - как можно меньше РИСОВАТЬ, для этого отслеживаются изменения и
-    // ОТРИСОВЫВАЮТСЯ только они.
-    public void screenPaint() // вызывается из interrupt()
-    {
-        int addr = FIRST; // часто = -1 -> не обновляем...
-        // в первый заход FIRST = -1 => цикл  while( addr >= 0 ) пропускаем.
-        // сначала изменим все аттрибуты цвета
-        // Update attribute affected pixels
-        while (addr >= 0) { // если FIRST = -1 то и не делаем ничего.
-            int oldAttr = lastByte[addr + firstAttr];// байт из буфера байтов по смещению "FIRST"
-            int newAttr = rgb[addr]; // байт из ОЗУ аттриб.по смещению "FIRST"
-            lastByte[addr + firstAttr] = newAttr; // байт из буфера байтов заменим байтом из ОЗУ аттриб.
-
-            //                        Бит 6 - бит яркости. цвета фона и чернил - высокой яркости.
-            //                              0100.0111b Биты 2, 1, 0 цвет чернил: зелёный,красный,синий.
-            //   boolean inkChange    = ((oldAttr & 0x47) != (newAttr & 0x47));
-            //                              0111.1000b Биты 5, 4, 3 цвета фона:  зелёный,красный,синий.
-            //   boolean papChange    = ((oldAttr & 0x78) != (newAttr & 0x78));
-            //                              1000.0000b Бит 7 - признак мерцания.
-            //   boolean flashChange  = ((oldAttr & 0x80) != (newAttr & 0x80));
-            //
-            boolean inkChange = ((oldAttr & 0x00F0) != (newAttr & 0x00F0)); // цвет чернил
-            boolean papChange = ((oldAttr & 0x000F) != (newAttr & 0x000F)); // цвет фона
-
-            // отличие ПК "Специалист" в том, что аттрибут = код цвета нельзя изменить отдельно от
-            // байта графики. Они всегда пишутся синхронно. Код цвета выставляется в порт 0xFFF8 и
-            // запись байта по адресу в ОЗУ экрана запишет цвет по этому же адресу в ОЗУ цвета.
-            // Код цвета единожды выставленный красит все байты экрана. Так что изменений ink и
-            // paper может при записи и не быть. (Вероятно надо следить за изменением 0xFFF8.)
-            //
-            if (inkChange || papChange) { // если случились изменения:   || flashChange
-                //     boolean allChange = ((inkChange && papChange) || flashChange); //
-                // изменения:       чернил и фона       или мерцания
-                //
-                // экранный адрес точки Специалист вычисляется по адресу памяти из след.соотношения:
-                // если адрес как А: 15 14 13 12 11 10  9  8__7  6  5  4  3  2  1  0 ; то
-                //                  CS1CS0 X8 X7 X6 X5 X4 X3|Y7 Y6 Y5 Y4 Y3 Y2 Y1 Y0
-                // где X2...X0 - координаты бита в байте;
-                //     X7...X3 - координаты байта в строке: 2^6=64 возможных байта в строке,
-                //               из которых отображаем только 48 байт: 00H - 2Fh.
-                //     Y7...Y0 - координаты строки: 2^8=256, (00h — верх, 0FFh=255 — низ);
-                //    CS1 -CS0 - область памяти, где расположен экран: 9000h - текущий.
-                //
-                // экранный адрес точки ZX_Spec вычисляется по адресу памяти из след.соотношения:
-                // если адрес как А: 15 14 13 12 11 10  9  8__7  6  5  4  3  2  1  0 ; то
-                //                   CS 01 00 y7 y6 Y2 Y1 Y0 y5 y4 y3|X7 X6 X5 X4 X3 |
-                // где X2...X0 - координаты бита в байте;
-                //     X7...X3 - координаты байта в строке: 2^5=32 байта в строке;
-                //     Y7...Y0 - координаты строки: 2^8=256, но только (0 — верх, 0BFh=191 — низ);
-                //          CS - область памяти (=0 — 4000h...5AFFh, =1 — C000h...DAFFh).
-                //
-                //  Соответствие битов адреса в области атрибутов координатам экрана
-                // если адрес как А: 15 14 13 12 11 10  9  8__7  6  5  4  3  2  1  0 ; то
-                //                   CS  1  0  1  1  0 Y7 Y6 Y5 Y4 Y3 X7 X6 X5 X4 X3
-                // где X7...X3 — биты горизонт. координаты (0 — левая сторона, 0FFh — правая);
-                //     Y7...Y3 — биты вертикальной координаты (0 — верх, 0BFh — низ);
-                // Так как атрибут покрывает целое поле 8?8, то 3 младших бита координаты
-                // X и Y не используются.
-                //  это адрес аттрибута, а надо попасть в первую строку его знакоместа.
-                // ***
-                //int scrAddr   = ((addr & 0x0300) << 3) | (addr & 0xFF);
-                int scrAddr = addr;
-
-                //                  54321098.76543210    .765_43210
-                //                  00000011.00000000   Y.543_76543—X
-                //                       Y76 - старшая координата аттрибута
-                //             3 << 00011000.00000000 = 00011000.543_76543
-                //                    Y76 - сдвинута в старшую координату экрана.
-
-                int oldPixels = lastByte[scrAddr + firstAttr]; // байт из буфера байтов по смещению ""
-                int newPixels = rgb[scrAddr]; // байт из ОЗУ аттриб.по смещению ""
-                int changes = oldPixels ^ newPixels; // changes = 0, если они одинаковы...
-                if (inkChange) { // если изменения чернил:
-                    changes |= newPixels;
-                } else { // если не менялись чернила?
-                    changes |= ((~newPixels) & 0xFF);
-                }//inkChange
-
-                if (changes != 0) { // если изменений нет - просто продолжаем...
-                    lastByte[scrAddr + firstAttr] = changes ^ newPixels;
-                    if (nextAddr[scrAddr + firstAttr] == -1) {
-                        nextAddr[scrAddr] = first; //   + firstAttr  ????
-                        first = scrAddr;
-                    }
-                }
-
-            } // if( inkChange || papChange )
-
-            int newAddr = nextAddr[addr];
-            nextAddr[addr] = -1;
-            addr = newAddr;
-        } //  while( addr >= 0 )
-        FIRST = -1;
-
-        // Only update screen if necessary
-        if (first < 0) { // =-1
-            return;
-        }
-        // далее изменим все нужные пиксели экрана
-        // Update affected pixels
-        addr = first;  // в первый заход first = адресу последнего байта экрана...
-        while (addr >= 0) { // !=-1
-            int oldPixels = lastByte[addr];   // байт из буфера байтов по смещению "first"
-            int newPixels = memory.read8(addr + SCREEN.begin()); // байт из видео-ОЗУ по смещению "first"
-            int changes = oldPixels ^ newPixels; // changes = 0, если они одинаковы...
-            //                   ^-XOR
-
-            lastByte[addr] = newPixels; // в буфер байтов по смещению "first" запишем -
-            // байт из видео-ОЗУ по смещению "first"
-            //
-            // экранный адрес точки Специалист вычисляется по адресу памяти из след.соотношения:
-            // если адрес как А: 15 14 13 12 11 10  9  8__7  6  5  4  3  2  1  0 ; то
-            //                  CS1CS0 X8 X7 X6 X5 X4 X3|Y7 Y6 Y5 Y4 Y3 Y2 Y1 Y0
-            // где X2...X0 - координаты бита в байте;
-            //     X7...X3 - координаты байта в строке: 2^6=64 возможных байта в строке,
-            //               из которых отображаем только 48 байт: 00H - 2Fh.
-            //     Y7...Y0 - координаты строки: 2^8=256, (00h — верх, 0FFh=255 — низ);
-            //    CS1 -CS0 - область памяти, где расположен экран: 9000h - текущий.
-            //
-
-            // выделим из адреса памяти координату X = А4...А0
-            //
-            //    int x = ((addr & 0x1f) << 3); // сдвиг на 3 = * 8 (т.к. x2...x0 - адрес бита в байте)
-            //
-            int x = ((addr & 0x3F00) >> 5); // сдвиг на 5 (т.к. x2...x0 - адрес бита в байте)
-            //                    0011.1111.0000.0000
-            //                    0000.0001.1111.1000
-
-            // выделим из адреса памяти координату Y:
-            //
-            //    int y = (((int)(addr&0x00e0))>>2)+(((int)(addr&0x0700))>>8)+(((int)(addr&0x1800))>>5);
-            //                0000.0000.1110.0000 >>2 = 0000.0000.0011.1000 = 0000.0000.0054.3000
-            //                0000.0111.0000.0000 >>8 = 0000.0000.0000.0111 = 0000.0000.0000.0210
-            //                0001.1000.0000.0000 >>5 = 0000.0000.1100.0000 = 0000.0000.7600.0000
-            // полный экранный адрес по координате Y: = 0000.0000.7654.3210
-            int y = addr & 0x00FF;
-
-            int X = (x * pixelScale); // Учтём_
-            int Y = (y * pixelScale); // масштаб.
-
-//
-            // адрес 1 аттрибута 22528
-            //    int attr = mem( ATRBeg + (addr & 0x1f) + ((y >> 3) * nCharsWide) );
-            //           5800h        0001.1111b
-            int attr = rgb[addr];
-
-//
-            // Swap colors around if doing flash
-            // Redraw left nibble if necessary
-            if ((changes & 0xF0) != 0) { // если есть изменения в старшем ниббле:
-                // старший ниббл байта сдвинули в младший - 0000.0000bbbb
-                int newPixels1 = (newPixels & 0xF0) >> 4;
-                // аттрибуты кроме мерц. сдвинули выше младшего ниббла 0aaa.aaaa.0000
-                int imageMapEntry1 = (((attr & 0x7F) << 4) | newPixels1);
-                // получили хитрый индекс: 0aaa.aaaabbbb
-                Image image1 = imageMap[imageMapEntry1]; // по индексу ищем image1
-
-                if (image1 == null) { // если такого image1 нет
-                    // получим новый:    аттрибут, младший ниббл
-                    image1 = getImage(parent, attr, newPixels1); // новый image1
-                    imageMap[imageMapEntry1] = image1; // занесём в массив imageMap
-                } // похоже - это убыстряет всё; если есть рисунок полубайта, то
-                // берём из массива (это быстро), если нет - создадим его, но в
-                // другой раз - не создаём, а быстро берём из массива.
-
-                // Метод paint использует drawlmage с четырьмя аргументами:
-                // это ссылка на изображение art, координаты левого верхнего угла рисунка х, у
-                // и объект типа ImageObserver.
-                bufferGraphics.drawImage(image1, X, Y, null); // рисуем старшие нибблы байта
-            }
-
-            // Redraw right nibble if necessary
-            if ((changes & 0x0F) != 0) { // если есть изменения в младшем ниббле:
-                // выделили младший ниббл байта - 0000.0000bbbb
-                int newPixels2 = (newPixels & 0x0F);
-                // аттрибуты кроме мерц. сдвинули выше младшего ниббла 0aaa.aaaa.0000
-                int imageMapEntry2 = (((attr & 0x7F) << 4) | newPixels2);
-                // получили хитрый индекс: 0aaa.aaaabbbb
-                Image image2 = imageMap[imageMapEntry2]; //  по индексу ищем image2
-
-                if (image2 == null) { // если такого image2 нет
-                    // получим новый:    аттрибут, младший ниббл
-                    image2 = getImage(parent, attr, newPixels2); // новый image2
-                    imageMap[imageMapEntry2] = image2; // занесём в массив imageMap
-                }// похоже - это убыстряет всё; рисунок есть - берём из массива,
-                // если нет - создадим его, но в другой раз - быстро берём из массива.
-
-                // Метод paint использует drawlmage с четырьмя аргументами:
-                // это ссылка на изображение art, координаты левого верхнего угла рисунка х, у
-                // и объект типа ImageObserver.
-                bufferGraphics.drawImage(image2, X + 4, Y, null); // младшие нибблы байта
-            }
-
-            int newAddr = nextAddr[addr]; // новый адрес из буфера адресов по смещению "first"
-            nextAddr[addr] = -1; // в буфере сюда записать "адрес" = -1;
-            addr = newAddr;          // текущий "адрес" = новому адресу, пока != -1;
-        }
-        first = -1; // признак, что обновлений более нет.
-        paintBuffer(); // перерисовка экрана РИСУЕМ !!!
-    }
     // Рисует на Graphics g - bufferImage: это сама отрисовка на canvas, остальное - в буфере!
     public void paintBuffer() {  // вызывается из screenPaint( )
         canvasGraphics.drawImage(bufferImage, 0, 0, null); // ПЕРЕРИСОВКА ЭКРАНА ИЗ БУФЕРА
@@ -994,7 +612,7 @@ public class Hardware {
         if (SCREEN.includes(addr)) {
             if (memory.read8(addr) != bite) {
                 // было изменение ячейки видеопамяти
-                plot(addr);
+                video.plot(addr);
             }
         }
 
@@ -1007,5 +625,11 @@ public class Hardware {
 
     public RomLoader roms() {
         return roms;
+    }
+
+    public void refreshWholeScreen() {
+        video.refresh();
+        oldBorder = -1; // -1 mean update screen, newBorder - текущий цвет Border.
+        oldSpeed = -1; // update progressBar
     }
 }
