@@ -63,7 +63,7 @@ public class Video {
     // 24 строки символов * 32 Байт в строке = 768 байт аттрибутов(300h)
     // 6144 байта в области экрана + 768 байт аттрибутов = 6912 в буфере
 
-    //        массив смещений [] = 6912 в буфере - ФАКТИЧЕСКИ АДРЕСА В ЭКРАНЕ
+    //  массив смещений [] = 6912 в буфере - ФАКТИЧЕСКИ АДРЕСА В ЭКРАНЕ
     private final int[] nextAddr = new int[(nPixelsHigh + nCharsHigh) * nCharsWide];
 
     //  создали первоначально словарь patternMap
@@ -258,29 +258,6 @@ public class Video {
     }
 
     public synchronized Image getImage(int attr, int pattern) {
-        try {//                 аттрибут, ниббл = 4 бита.
-            return tryGetImage(attr, pattern);
-        } catch (OutOfMemoryError e) { // может и не хватить памяти на все нибблы...
-            imageMap = null;          // в таком случае обнулим imageMap
-            patternMap = null;          //                обнулим patternMap
-
-            System.gc();                // подчистим мусор после ошибки
-
-            // HashTable — это подкласс Dictionary, являющийся конкретной реализацией словаря.
-            // Представителя класса HashTable можно использовать для хранения произвольных объектов,
-            // причем для индексации в этой коллекции также годятся любые объекты.
-
-            // после ошибки придётся заново создать patternMap
-            patternMap = new Hashtable();
-            // и заново создать imageMap  // <10987654321<
-
-            imageMap = new Image[1 << 12];// 100000000000b = 2048d = 800h  Image[ 1<<11 ]; для "ZX"
-            // и попытаемся создать с теми-же параметрами Image...
-            return tryGetImage(attr, pattern);
-        }
-    }
-
-    private Image tryGetImage(int attr, int pattern) {
         int ink = ((attr >> 4) & 0x000f); // старший ниббл - цвет (ink)
         int pap = ((attr) & 0x000f); // младший ниббл - фон  (paper)
         int hashValue = 0;
