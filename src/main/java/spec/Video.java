@@ -190,17 +190,10 @@ public class Video {
             int X = (x * pixelScale); // Учтём_
             int Y = (y * pixelScale); // масштаб.
 
-//
-            // адрес 1 аттрибута 22528
-            //    int attr = mem( ATRBeg + (addr & 0x1f) + ((y >> 3) * nCharsWide) );
-            //           5800h        0001.1111b
-            int attr = rgb[addr];
-
-//
             // Swap colors around   if doing flash
             // Redraw left nibble if necessary
-            qwe((newPixels & 0xF0) >> 4, X, Y, attr);
-            qwe(newPixels & 0x0F, X + 4, Y, attr);
+            qwe((newPixels & 0xF0) >> 4, X, Y);
+            qwe(newPixels & 0x0F, X + 4, Y);
 
             int newAddr = nextAddr[addr]; // новый адрес из буфера адресов по смещению "first"
             nextAddr[addr] = -1; // в буфере сюда записать "адрес" = -1;
@@ -209,27 +202,24 @@ public class Video {
         first = -1; // признак, что обновлений более нет.
     }
 
-    private void qwe(int newPixels, int x, int y, int attr) {
+    private void qwe(int newPixels, int x, int y) {
         // получим новый:    аттрибут, младший ниббл
-        Image image = getImage(attr, newPixels); // новый image1
+        Image image = getImage(newPixels); // новый image1
         // Метод paint использует drawlmage с четырьмя аргументами:
         // это ссылка на изображение art, координаты левого верхнего угла рисунка х, у
         // и объект типа ImageObserver.
         drawer.accept(image, new Point(x, y)); // рисуем старшие нибблы байта
     }
 
-    public synchronized Image getImage(int attr, int pattern) {
-        int ink = ((attr >> 4) & 0x000f); // старший ниббл - цвет (ink)
-        int pap = ((attr) & 0x000f); // младший ниббл - фон  (paper)
+    public synchronized Image getImage(int pattern) {
         // сменили палитру
-        Color[] colors = SpecMXColors;
         Image image = imageCreator.apply(4, 1); // создали Image 4 х 1 точек: ниббл.
         Graphics g = image.getGraphics(); // создали для него графический контент
 
         for (int i = 0; i < 4; i++) { // по 4-м точкам ниббла:
-            int col = ((pattern & (1 << i)) == 0) ? pap : ink; // вычисляем цвет.
+            Color col = ((pattern & (1 << i)) == 0) ? Color.BLACK : Color.WHITE; // вычисляем цвет.
 
-            g.setColor(colors[col]); // выставляем для точки цвет из  SpecMXColors[];
+            g.setColor(col); // выставляем для точки цвет из  SpecMXColors[];
             g.fillRect((3 - i), 0, 1, 1); // ставим точку на графический контент
         }
         return image; // вернём созданный или считанный image
