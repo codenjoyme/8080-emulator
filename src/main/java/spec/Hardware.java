@@ -211,11 +211,13 @@ public class Hardware {
                 canvas.requestFocus();
                 return true;
             }
+            case KEY_ACTION:
             case KEY_PRESS: {
                 // событие клавиатуры - КЛАВИША_НАЖАТА_: e.key - код нажатой клавиши.
                 // Обычно является Unicode значением символа, который представлен этой клавишей.
                 return doKey(true, e.key, e.modifiers);
             }
+            case KEY_ACTION_RELEASE:
             case KEY_RELEASE: {
                 // событие клавиатуры - КЛАВИША_ОТПУЩЕНА_
                 return doKey(false, e.key, e.modifiers);
