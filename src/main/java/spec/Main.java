@@ -163,11 +163,11 @@ public class Main extends Applet implements Runnable {
 
         boolean lik = true;
         if (lik) {
-            Lik.loadRom(baseURL, hard.roms);
-            Lik.loadGame(baseURL, hard.roms, "klad");
+            Lik.loadRom(baseURL, hard.roms());
+            Lik.loadGame(baseURL, hard.roms(), "klad");
         } else {
-            Specialist.loadRom(baseURL, hard.roms);
-            Specialist.loadGame(baseURL, hard.roms, "blobcop");
+            Specialist.loadRom(baseURL, hard.roms());
+            Specialist.loadGame(baseURL, hard.roms(), "blobcop");
         }
 
         String snapshot = getParameter("snapshot");

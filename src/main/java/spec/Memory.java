@@ -1,6 +1,6 @@
 package spec;
 
-import static spec.WordMath.inc16;
+import static spec.WordMath.*;
 
 public class Memory {
 
@@ -39,6 +39,12 @@ public class Memory {
         }
 
         write8arr(addr, array);
+    }
+
+    public void write16(int addr, int word) {
+        write8(addr, lo(word));
+        addr = inc16(addr);
+        write8(addr, hi(word));
     }
 
     public int[] read8arr(Range range) {
