@@ -121,17 +121,6 @@ public class Main extends Applet implements Runnable {
         // once borderWidth is set up
         resize(preferredSize());
 
-        String showStats = getParameter("showStats");
-        if (showStats != null) {
-            if (showStats.equals("Yes")) {
-                hard.showStats = true;
-                hard.pbaron = true;
-            } else if (showStats.equals("No")) {
-                hard.showStats = false;
-                hard.pbaron = false;
-            }
-        }
-
         URL base = getDocumentBase();
         boolean lik = true;
         if (lik) {

@@ -33,28 +33,12 @@ public class Hardware {
     // ESC shows a URL popup
     private TextField urlField;
 
-    // How much loaded/how fast?
-    private AMDProgressBar progressBar;
-
-    public boolean pbaron = false;  // progbar - невидим
-
-    // Поскольку исполнение проходит как плотный цикл, некоторые реализации виртуальной машины
-    // Java не позволяют любым другим процессам получить доступ. Это даёт (GUI) Графическому
-    // Интерфейсу Пользователя время для обновления.
-    //
-    // Since execute runs as a tight loop, some Java VM implementations
-    //  don't allow any other threads to get a look in. This give the
-    //  GUI time to update. If anyone has a better solution please
-    //  email us at mailto:spectrum@odie.demon.co.uk
-    //
-    public int sleepHack = 0;
     public int refreshRate = 1;  // refresh every 'n' interrupts
 
     private int interruptCounter = 0;
     private boolean resetAtNextInterrupt = false;
     private boolean pauseAtNextInterrupt = false;
     private boolean refreshNextInterrupt = true;
-    private boolean loadFromURLFieldNextInterrupt = false;
 
     public Thread pausedThread = null;
     public long timeOfLastInterrupt = 0;
@@ -123,12 +107,6 @@ public class Hardware {
         parentGraphics = parent.getGraphics();
         canvasGraphics = canvas.getGraphics();
 
-        // добавили Z80 AMDProgressBar
-        parent.add(progressBar = new AMDProgressBar());
-        progressBar.setBarColor(new Color(192, 52, 4));
-        progressBar.setVisible(true);  
-        progressBar.setVisible(false); 
-
         // добавили TextField - поле ввода url файла для загрузки
         parent.add(urlField = new TextField());
         urlField.setVisible(true);   
@@ -142,11 +120,6 @@ public class Hardware {
         // установить границы
         urlField.setBounds(0, 0, parent.getPreferredSize().width,
                 urlField.getPreferredSize().height);
-
-        progressBar.setBounds(1, (borderWidth + height) + 2,
-                Video.width + borderWidth * 2 - 2, borderWidth - 2);
-
-        progressBar.setFont(urlField.getFont());
     }
 
     private void outb(int port, int outByte) {
@@ -168,7 +141,6 @@ public class Hardware {
             input.close();
         } catch (Exception e) {
             e.printStackTrace();
-            showMessage(e.toString());
         }
     }
 
@@ -179,34 +151,14 @@ public class Hardware {
             pausedThread = Thread.currentThread();
 
             while (pauseAtNextInterrupt) {
-                if (!pbaron) {
-                    showStats = true;
-                    progressBar.setVisible(true);
-                }
-
                 if (refreshNextInterrupt) {
                     refreshNextInterrupt = false;
                     currentBorder = null; // обновить Border
                     paintBuffer();
                 }
-
-                if (loadFromURLFieldNextInterrupt) {
-                    loadFromURLFieldNextInterrupt = false;
-                    loadFromURLField();
-                } else {
-                    try {
-                        Thread.sleep(500); // дали случиться внешним событиям
-                    } catch (Exception ignored) {
-                        // do nothing
-                    }
-                }
             }
             pausedThread = null;
             urlField.setVisible(false);
-            if (!pbaron) {
-                showStats = false;
-                progressBar.setVisible(false);
-            }
         }
 
         if (refreshNextInterrupt) {
@@ -216,7 +168,7 @@ public class Hardware {
         }
 
         if (resetAtNextInterrupt) {
-            showMessage("Total RESET !!!");
+            System.out.println("Total RESET !!!");
             resetAtNextInterrupt = false;
             reset();
         }
@@ -225,7 +177,7 @@ public class Hardware {
 
         // Update speed indicator every 2 seconds of 'Spechard time'
         if ((interruptCounter % 100) == 0) {
-            refreshSpeed(); // обновить значение скорости эмуляции
+            // обновить значение скорости эмуляции
         }
 
         // Refresh screen every interrupt by default
@@ -254,17 +206,6 @@ public class Hardware {
                 }
             }
         }
-
-        // This was put in to handle Netscape 2 which was prone to
-        // locking up if one thread never gave up its time slice.
-        if (sleepHack > 0) {
-            try {
-                Thread.sleep(sleepHack);
-            } catch (Exception ignored) {
-                // do nothing
-            }
-        }
-
         return true;
     }
 
@@ -286,29 +227,6 @@ public class Hardware {
 
     public Color currentBorder = null; // null mean update screen
     public Color newBorder = Color.YELLOW;
-    public long oldTime = 0;
-    public int oldSpeed = -1; // -1 mean update progressBar
-    public int newSpeed = 0;
-    public boolean showStats = true;
-    public String statsMessage = null;
-
-    private static final String cancelMessage = "Click here at any time to cancel sleep";
-
-    public void refreshSpeed() {
-        long newTime = timeOfLastInterrupt;
-
-        if (oldTime != 0) {
-            newSpeed = (int) (200000.0 / (newTime - oldTime));
-        }
-
-        oldTime = newTime;
-
-        if ((statsMessage != null) && (sleepHack > 0) && (statsMessage != cancelMessage)) {
-            showMessage(cancelMessage); // "Click here at any time to cancel sleep"
-        } else {
-            showMessage(null);
-        }
-    }
 
     public void borderPaint() {
         if (borderWidth == 0) { // если бордюра нет - ничего не делать!
@@ -330,40 +248,6 @@ public class Hardware {
 
     private void toggleSpeed() {
         runAtFullSpeed = !runAtFullSpeed;
-        showMessage(statsMessage); //
-    }
-
-    public void showMessage(String m) {
-        statsMessage = m;
-        oldSpeed = -1; // Force update of progressBar
-        statsPaint();
-    }
-
-    public void statsPaint() {
-        if (oldSpeed == newSpeed) {
-            return;
-        }
-        oldSpeed = newSpeed;
-
-        if ((!showStats) || (borderWidth < 10)) {
-            return;
-        }
-
-        String stats = statsMessage;
-        if (stats == null) {
-            String speedString = runAtFullSpeed ? fullSpeed : slowSpeed;
-
-            if (newSpeed > 0) {
-                stats = speedString + newSpeed + "%";
-            } else {
-                stats = "Speed: calculating";
-            }
-            if (sleepHack > 0) {
-                stats = stats + ", Sleep: " + sleepHack;
-            }
-        }
-        progressBar.setText(stats);
-        progressBar.setVisible(true);
     }
 
     public void paintBuffer() {
@@ -372,30 +256,6 @@ public class Hardware {
     }
 
     public boolean handleEvent(Event e) {
-        if (e.target == progressBar) {
-            if (e.id == Event.MOUSE_DOWN) {
-
-                if (sleepHack > 0) {
-                    sleepHack = 0;
-                    showMessage("Sleep Cancelled");
-                } else {
-                    toggleSpeed();
-                }
-                canvas.requestFocus();
-                return true;
-            }
-            return false;
-        }
-
-        // urlField Event - событие от поля ввода url
-        if (e.target == urlField) {
-            if (e.id == Event.ACTION_EVENT) {
-                loadFromURLFieldNextInterrupt = true;
-                return true;
-            }
-            return false;
-        }
-
         // остальные события - от canvas-а
         switch (e.id) {
             case Event.MOUSE_DOWN:
@@ -417,13 +277,13 @@ public class Hardware {
                 return doKey(false, e.key, e.modifiers);
 
             case Event.GOT_FOCUS:
-                showMessage("'SPECIALIST' GOT FOCUS");
+                System.out.println("'SPECIALIST' GOT FOCUS");
                 outb(BORDER_PORT, 0x02);
                 ports.resetKeyboard();
                 return true;
 
             case Event.LOST_FOCUS:
-                showMessage("'SPECIALIST' LOST FOCUS");
+                System.out.println("'SPECIALIST' LOST FOCUS");
                 outb(BORDER_PORT, 0x06);
                 ports.resetKeyboard();
                 return true;
@@ -541,6 +401,5 @@ public class Hardware {
 
     public void refreshWholeScreen() {
         currentBorder = null; // обновить Border
-        oldSpeed = -1; // update progressBar
     }
 }
