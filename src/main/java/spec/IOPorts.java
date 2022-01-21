@@ -86,7 +86,7 @@ public class IOPorts {
 //  23 строки по 8 = 184 + 4 + 2 + 2 = 192 клавиши.
 
     //                                     <BckSpc>  <Tab>  <Enter> <Esc>
-    private final short[] keybd_matr = {0x0001, 0x0600, 0x0000, 0x0700,
+    private final short[] keyboard = {0x0001, 0x0600, 0x0000, 0x0700,
 //          <Space>  | ! |   | " |   | # |   | $ |   | % |   | & |   | ' |
             0x0500, 0x7a04, 0x7904, 0x7804, 0x7704, 0x7604, 0x7504, 0x7404,
 //           | ( |   | ) |   | * |   | + |   | , |   | - |   | . |   | / |
@@ -141,7 +141,7 @@ public class IOPorts {
 
     // массив матрицы клавш "Специалиста" ( true - нажата, false - отпущена)
     // 12 x 6 + Shift + Reset
-    private boolean[][] speci_matr = new boolean[12][6];
+    private boolean[][] keyStatus = new boolean[12][6];
 
     private Memory memory;
 
@@ -188,7 +188,7 @@ public class IOPorts {
                                 // по битам порта A от 0 до 7
                                 for (int j = 0; j < 8; j++)  {
                                     // если такая нажата  и  такой бит порта B = 0, ставим бит A = 0
-                                    if (speci_matr[j][i] && (memory.read8(PortB) & msk[i + 2]) == 0) {
+                                    if (keyStatus[j][i] && (B() & msk[i + 2]) == 0) {
                                         result &= bit[j];
                                     }
                                 }
@@ -199,7 +199,7 @@ public class IOPorts {
                         // если порт B - на ввод то и делать нечего
                     }
                     //  порта A - на вывод < последнее записанное
-                    return memory.read8(PortA);
+                    return A();
                 }
 
                 // Порт В
@@ -213,7 +213,7 @@ public class IOPorts {
                                 // по битам порта В от 2 до 7
                                 for (int j = 0; j < 6; j++)  {
                                     // если такая нажата  и  такой бит порта A = 0, ставим бит В = 0
-                                    if (speci_matr[i][j] && (memory.read8(PortA) & msk[i]) == 0) {
+                                    if (keyStatus[i][j] && (A() & msk[i]) == 0) {
                                         result &= bit[j + 2];
                                     }
                                 }
@@ -227,7 +227,7 @@ public class IOPorts {
                                 // по битам порта В от 2 до 7
                                 for (int j = 0; j < 6; j++) {
                                     // если такая нажата  и  такой бит порта C = 0, ставим бит В = 0
-                                    if (speci_matr[i + 8][j] && (memory.read8(PortC) & msk[i]) == 0) {
+                                    if (keyStatus[i + 8][j] && (C() & msk[i]) == 0) {
                                         result &= bit[j + 2];
                                     }
                                 }
@@ -248,7 +248,7 @@ public class IOPorts {
                         return result;
                     }
                     //  порта В - на вывод < последнее записанное
-                    return memory.read8(PortB);
+                    return B();
                 }
 
                 // Порт С orphaned default
@@ -262,7 +262,7 @@ public class IOPorts {
                                 // по битам порта CLow от 0 до 3
                                 for (int j = 0; j < 4; j++) {
                                     // если такая нажата  и  такой бит порта В = 0, ставим бит C = 0
-                                    if (speci_matr[j + 8][i] && (memory.read8(PortB) & msk[i + 2]) == 0) {
+                                    if (keyStatus[j + 8][i] && (B() & msk[i + 2]) == 0) {
                                         result = result & bit[j];
                                     }
                                 }
@@ -272,7 +272,7 @@ public class IOPorts {
                         }
                     } else {
                         // если порта CLow - на вывод
-                        return memory.read8(PortC) & 0x000F | 0x00F0;
+                        return C() & 0x000F | 0x00F0;
                     }
                 }
                 //ЗДЕСЬ - ПОДУМАТЬ И ПРОВЕРИТЬ!!!
@@ -294,26 +294,26 @@ public class IOPorts {
         // РУС
         if (addr == RgRYS) {
             // управляющие слова 1-старший бит
-            if ((bite & 0x0080) != 0) {
+            if ((bite & 0x80) != 0) {
                 // КАНАЛ_С(МЛ.)(РС0-РС3)
-                C0in = (bite & 0x0001) != 0;
+                C0in = (bite & 0x01) != 0;
                 if (!C0in) {
-                    memory.write8(PortC, memory.read8(PortC) & 0x00F0);
+                    C(C() & 0xF0);
                 }
                 // КАНАЛ_В(РВ0-РВ7)
-                Bin = (bite & 0x0002) != 0;
+                Bin = (bite & 0x02) != 0;
                 if (!Bin) {
-                    memory.write8(PortB, 0);
+                    B(0);
                 }
                 // КАНАЛ_С(СТ.)(РС4-РС7)
-                C1in = (bite & 0x0008) != 0;
+                C1in = (bite & 0x08) != 0;
                 if (!C1in) {
-                    memory.write8(PortC, memory.read8(PortC) & 0x000F);
+                    C(C() & 0x0F);
                 }
                 // КАНАЛ_A(РА0-РА7)
-                Ain = (bite & 0x0010) != 0;
+                Ain = (bite & 0x10) != 0;
                 if (!Ain) {
-                    memory.write8(PortA, 0);
+                    A(0);
                 }
                 // в ПОРТ RYC запишем YC   ПОРТЫ 0xFFE3
                 memory.write8(addr, bite);
@@ -322,41 +322,35 @@ public class IOPorts {
                 // побитное управление портом 0xFFE3
                 // если порт C0- на вывод
                 if (!C0in) {
-                    if ((bite & 0x0001) == 1) {
-                        // уст. в 1
+                    if ((bite & 0x01) == 1) {
                         // биты 0-3
-                        if (((bite & 0x000E) >> 1) < 4) {
-                            int b = memory.read8(PortC);
-                            // уст. в 1
-                            memory.write8(PortC, b | msk[((bite & 0x000E) >> 1)]);
+                        // уст. в 1
+                        if (((bite & 0x0E) >> 1) < 4) {
+                            C(C() | msk[((bite & 0x0E) >> 1)]);
                         }
                     } else {
-                        // уст. в 0
                         // биты 0-3
-                        if (((bite & 0x000e) >> 1) < 4) {
-                            int b = memory.read8(PortC);
-                            // уст. в 0
-                            memory.write8(PortC, b & bit[((bite & 0x000E) >> 1)]);
+                        // уст. в 0
+                        if (((bite & 0x0E) >> 1) < 4) {
+                            C(C() & bit[((bite & 0x0E) >> 1)]);
                         }
                     }
                 }
                 // если порт C1- на вывод
                 if (!C1in) {
-                    if ((bite & 0x0001) == 1) {
-                        // уст. в 1
+                    if ((bite & 0x01) == 1) {
                         // биты 4-7
-                        if (((bite & 0x000E) >> 1) > 3) {
-                            int b = memory.read8(PortC);
-                            // уст. в 1
-                            memory.write8(PortC, b | msk[((b & 0x000E) >> 1)]);
+                        // уст. в 1
+                        if (((bite & 0x0E) >> 1) > 3) {
+                            int b = C();
+                            C(b | msk[((b & 0x0E) >> 1)]);
                         }
                     } else {
-                        // уст. в 0
                         // биты 4-7
-                        if (((bite & 0x000E) >> 1) > 3) {
-                            int b = memory.read8(PortC);
-                            // уст. в 0
-                            memory.write8(PortC, b & bit[((b & 0x000E) >> 1)]);
+                        // уст. в 0
+                        if (((bite & 0x0E) >> 1) > 3) {
+                            int b = C();
+                            C(b & bit[((b & 0x0E) >> 1)]);
                         }
                     }
                 }
@@ -367,6 +361,30 @@ public class IOPorts {
         memory.write8(addr, bite);
     }
 
+    private int A() {
+        return memory.read8(PortA);
+    }
+
+    private void A(int bite) {
+        memory.write8(PortA, bite);
+    }
+
+    private int B() {
+        return memory.read8(PortB);
+    }
+
+    private void B(int bite) {
+        memory.write8(PortB, bite);
+    }
+
+    private int C() {
+        return memory.read8(PortC);
+    }
+
+    private void C(int bite) {
+        memory.write8(PortC, bite);
+    }
+
     private int shiftPortAddress(int addr) {
         return (addr & 0x0003) | 0xFFE0;
     }
@@ -375,13 +393,11 @@ public class IOPorts {
     // значение в них устанавливается при нажатии-отпускании клавиши.
     // в порт клавиатуры - xxfeh они записываются во время его опроса
     // согласно "0", выбирающему конкретный полуряд: public int inb( int port )
-    // ***
 
-    // сброс клавиатуры -
     public void resetKeyboard() {
         for (int i = 0; i < 12; i++) {  // все кнопки ненажаты
             for (int j = 0; j < 6; j++) {
-                speci_matr[i][j] = false;
+                keyStatus[i][j] = false;
             }
         }
     }
@@ -392,16 +408,16 @@ public class IOPorts {
         // если она есть в таблице:
         if (index >= 0) {
             // по индексу находим "координату" в матрице X_Y
-            short XYmatr = keybd_matr[index];
-            int Xcoord = (XYmatr & 0x0F00) >> 8;
-            int Ycoord = XYmatr & 0x00FF;
+            short point = keyboard[index];
+            int x = (point & 0x0F00) >> 8;
+            int y = point & 0x00FF;
 
             // по координате установим "нажатие" В таблице матрицы Специалиста.
             // нажата(отпущена)
-            speci_matr[Xcoord][Ycoord] = down;
+            keyStatus[x][y] = down;
             // какой_то конфликт СО <CapsLock> - он работает наоборот
             // в МОНИТОРЕ Shift не влияет. Влияет РУС/ЛАТ = НР_ФИКС.
-            if ((XYmatr & 0x7000) == 0) {
+            if ((point & 0x7000) == 0) {
                 // если старший ниббл - заглавные символы
                 //  Shift не нажат
                 shift = false;
@@ -415,13 +431,21 @@ public class IOPorts {
 
     public void reset() {
         shift = false; // Shift не нажат
-        Ain = true; // порт A - на ввод
-        Bin = true; // порт B - на ввод
-        C0in = true; // порт C0- на ввод
-        C1in = true; // порт C1- на ввод
-        Arrays.sort(ascii_keys); // сортируем массив ascii-массив кодов клавиш для поиска
-        resetKeyboard();// все кнопки ненажаты
-        memory.write16(RgRYS, 0x009b);// порт RYC[0xFFE3] = 9Bh (все на ввод)
-        memory.write16(RgRGB, 0x0020);// порт цвета - зелёный на черном.
+        Ain = true;    // порт A на ввод
+        Bin = true;    // порт B на ввод
+        C0in = true;   // порт C0 на ввод
+        C1in = true;   // порт C1 на ввод
+
+        // сортируем массив ascii-массив кодов клавиш для поиска
+        Arrays.sort(ascii_keys);
+
+        // все кнопки не нажаты
+        resetKeyboard();
+
+        // порт RYC[0xFFE3] = 9Bh (все на ввод)
+        memory.write16(RgRYS, 0x009b);
+        // порт цвета - зелёный на черном.
+
+        memory.write16(RgRGB, 0x0020);
     }
 }
