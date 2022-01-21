@@ -39,22 +39,6 @@ public class Main extends Applet implements Runnable {
     }
 
     /**
-     * Applet parameters and their descriptions.
-     */
-    @Override
-    public String[][] getParameterInfo() {
-        String[][] info = {
-                {"snapshot", "filename", "name of SNA or Z80 snapshot to load"},
-                {"rom", "filename", "filename of ROM (default=ramfos.rom)"},
-                {"borderWidth", "integer", "width of Spechard border (default=20)"},
-                {"refreshRate", "integer", "refresh screen every 'X' interrupts (default=1)"},
-                {"sleepHack", "integer", "sleep per interrupt in ms, for old VMs (default=0)"},
-                {"showStats", "Yes/No", "show progress bar (default=Yes)"},
-        };
-        return info;
-    }
-
-    /**
      * #1 Метод init вызывается первым. В нем вы должны инициализировать свои переменные,
      *     Метод init вызывается только однажды — при загрузке апплета.
      *     Initailize the applet.
@@ -115,9 +99,6 @@ public class Main extends Applet implements Runnable {
 
         if (hard == null) {
             try {
-                // Конструктору класса  Spechard()передается ссылка на компонент,
-                // для которого необходимо отслеживать загрузку изображений (или что-то?).
-                // В данном случае это наш аплет,
                 hard = new Hardware(this);
                 readParameters();
             } catch (Exception e) {
@@ -135,14 +116,7 @@ public class Main extends Applet implements Runnable {
      * @throws Exception Problem loading ROM or snaphot.
      */
     public void readParameters() throws Exception {
-        hard.setBorderWidth(getIntParameter("borderWidth",
-                hard.borderWidth * Hardware.pixelScale, 0, 100));
-
-        hard.refreshRate = getIntParameter("refreshRate",
-                hard.refreshRate, 1, 100);
-
-        hard.sleepHack = getIntParameter("sleepHack",
-                hard.sleepHack, 0, 100);
+        hard.setBorderWidth(hard.borderWidth * Hardware.pixelScale);
 
         // once borderWidth is set up
         resize(preferredSize());
@@ -170,10 +144,7 @@ public class Main extends Applet implements Runnable {
             Specialist.loadGame(baseURL, hard.roms(), "blobcop");
         }
 
-        String snapshot = getParameter("snapshot");
-        snapshot = ((snapshot == null) ? getParameter("sna") : snapshot);
-        snapshot = ((snapshot == null) ? getParameter("z80") : snapshot);
-
+        String snapshot = null; // TODO научиться сохранять и загружать снепшоты
         if (snapshot != null) {
             URL url = new URL(baseURL, snapshot);
             URLConnection snap = url.openConnection();
@@ -184,25 +155,6 @@ public class Main extends Applet implements Runnable {
         } else {
             hard.reset();
             hard.refreshWholeScreen();
-        }
-    }
-
-    /**
-     * Handle integer parameters in a range with defaults.
-     *     Вызывается из метода readParameters()
-     */
-    public int getIntParameter(String name, int ifUndef, int min, int max) {
-        String param = getParameter(name);
-        if (param == null) {
-            return ifUndef;
-        }
-        try {
-            int n = Integer.parseInt(param);
-            if (n < min) return min;
-            if (n > max) return max;
-            return n;
-        } catch (Exception e) {
-            return ifUndef;
         }
     }
 

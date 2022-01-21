@@ -193,7 +193,6 @@ public class Hardware {
     public long timeOfLastInterrupt = 0;
     private long timeOfLastSample = 0;
 
-    //
     private void loadFromURLField() {
         try {
             pauseOrResume();
@@ -210,7 +209,6 @@ public class Hardware {
         }
     }
 
-    // прерывание
     private boolean interrupt() {
         if (pauseAtNextInterrupt) {
             // поле ввода url
@@ -842,7 +840,7 @@ public class Hardware {
 
     // вызывается  Main.handleEvent-ом.-
     public boolean handleEvent(Event e) {  // По сути это переопределённый handleEvent();
-        if (e.target == progressBar) { // progressBar Event
+        if (e.target == progressBar) {
             if (e.id == Event.MOUSE_DOWN) {
 
                 if (sleepHack > 0) {
@@ -855,7 +853,7 @@ public class Hardware {
                 return true;
             }
             return false;
-        } // progressBar END_
+        }
 
         // urlField Event - событие от поля ввода url
         if (e.target == urlField) {
@@ -865,7 +863,8 @@ public class Hardware {
             }
             return false;
         }
-        // остальные события - от canvas-а Spechard (он же Z80)
+
+        // остальные события - от canvas-а
         switch (e.id) {
             case Event.MOUSE_DOWN:
                 // showMessage( "MOUSE_DOWN Event" );
@@ -877,14 +876,13 @@ public class Hardware {
                 // событие клавиатуры - КЛАВИША_НАЖАТА_: e.key - код нажатой клавиши.
                 // Обычно является Unicode значением символа, который представлен этой клавишей.
             case Event.KEY_PRESS:
-                return doKey(true, e.key, e.modifiers); // пересчет клавиатуры
+                return doKey(true, e.key, e.modifiers);
 
             case Event.KEY_ACTION_RELEASE:
 
                 // событие клавиатуры - КЛАВИША_ОТПУЩЕНА_
             case Event.KEY_RELEASE:
-                //     doKey - вызываем отсюда...
-                return doKey(false, e.key, e.modifiers);// пересчет клавиатуры
+                return doKey(false, e.key, e.modifiers);
 
             case Event.GOT_FOCUS:
                 showMessage("'SPECIALIST' GOT FOCUS");
@@ -953,10 +951,6 @@ public class Hardware {
         return true;
     }
 
-    // Методы Java могут создавать исключения, вызванные возникновением ошибок или других
-    // событий. Все исключения должны либо обрабатываться внутри метода, либо описываться
-    // в определении метода после ключевого слова throws.
-    //
     public void loadSnapshot(String name, InputStream is, int snapshotLength) throws Exception {
         // Linux  JDK doesn't always know the size of files
         if (snapshotLength < 0) {
@@ -999,7 +993,8 @@ public class Hardware {
 
         if (SCREEN.includes(addr)) {
             if (memory.read8(addr) != bite) {
-                plot(addr); // было изменение ячейки видеопамяти
+                // было изменение ячейки видеопамяти
+                plot(addr);
             }
         }
 
