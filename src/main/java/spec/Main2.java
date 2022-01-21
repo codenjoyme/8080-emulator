@@ -5,6 +5,16 @@ import java.awt.*;
 
 public class Main2 extends JPanel {
 
+    private final JFrame frame;
+
+    public Main2() {
+        frame = new JFrame("Demo");
+        frame.add(this);
+        frame.setSize(550, 250);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
     @Override
     public void paint(Graphics g) {
         Graphics2D graphic2d = (Graphics2D) g;
@@ -13,10 +23,6 @@ public class Main2 extends JPanel {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Demo");
-        frame.add(new Main2());
-        frame.setSize(550, 250);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        new Main2();
     }
 }
