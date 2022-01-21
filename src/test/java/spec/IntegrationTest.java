@@ -15,7 +15,8 @@ import static spec.Constants.START_POINT;
 
 public class IntegrationTest extends AbstractCpuTest {
 
-    public static final int MAX_TICKS = 10_000_000;
+    public static final int TICKS = 10_000_000;
+
     @Rule
     public TestName test = new TestName();
 
@@ -48,7 +49,7 @@ public class IntegrationTest extends AbstractCpuTest {
     @Test
     public void testLik_runCom() throws Exception {
         // given
-        maxTicks = MAX_TICKS;
+        maxTicks = TICKS;
 
         URL base = new File("src/main/resources/").toURI().toURL();
         Lik.loadRom(base, roms);
@@ -93,7 +94,7 @@ public class IntegrationTest extends AbstractCpuTest {
     @Test
     public void testLik_klad() throws Exception {
         // given
-        maxTicks = MAX_TICKS;
+        maxTicks = TICKS;
 
         URL base = new File("src/main/resources/").toURI().toURL();
         Lik.loadRom(base, roms);
@@ -139,7 +140,7 @@ public class IntegrationTest extends AbstractCpuTest {
     @Test
     public void testSpecialist_monitor() throws Exception {
         // given
-        maxTicks = MAX_TICKS;
+        maxTicks = TICKS;
 
         URL base = new File("src/main/resources/").toURI().toURL();
         Specialist.loadRom(base, roms);
@@ -184,7 +185,7 @@ public class IntegrationTest extends AbstractCpuTest {
     @Test
     public void testSpecialist_blobcop() throws Exception {
         // given
-        maxTicks = MAX_TICKS;
+        maxTicks = TICKS;
 
         URL base = new File("src/main/resources/").toURI().toURL();
         Specialist.loadRom(base, roms);
@@ -225,5 +226,51 @@ public class IntegrationTest extends AbstractCpuTest {
                 "th:  false\n" +
                 "tp:  true\n" +
                 "tc:  true\n");
+    }
+
+    @Test
+    public void testSpecialist_babnik() throws Exception {
+        // given
+        maxTicks = TICKS;
+
+        URL base = new File("src/main/resources/").toURI().toURL();
+        Specialist.loadRom(base, roms);
+        Specialist.loadGame(base, roms, "babnik");
+
+        // when
+        cpu.PC(0x0000);
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:  0108\n" +
+                "DE:  0E5A\n" +
+                "HL:  ADB0\n" +
+                "AF:  0482\n" +
+                "SP:  3FEB\n" +
+                "PC:  052D\n" +
+                "B,C: 01 08\n" +
+                "D,E: 0E 5A\n" +
+                "H,L: AD B0\n" +
+                "M:   FF\n" +
+                "A,F: 04 82\n" +
+                "     76543210 76543210\n" +
+                "SP:  00111111 11101011\n" +
+                "PC:  00000101 00101101\n" +
+                "     76543210\n" +
+                "B:   00000001\n" +
+                "C:   00001000\n" +
+                "D:   00001110\n" +
+                "E:   01011010\n" +
+                "H:   10101101\n" +
+                "L:   10110000\n" +
+                "M:   11111111\n" +
+                "A:   00000100\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000010\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
     }
 }
