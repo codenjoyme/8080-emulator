@@ -269,4 +269,51 @@ public class IntegrationTest extends AbstractCpuTest {
                 "tp:  false\n" +
                 "tc:  false\n");
     }
+
+    @Test
+    public void test8080CPUDiagnostic() throws Exception {
+        // 8080/8085 CPU Diagnostic, version 1.0, by Microcosm Associates
+        // https://github.com/begoon/i8080-core/blob/master/TEST.ASM
+
+        // given
+        maxTicks = TICKS;
+
+        roms.loadROM(base + "/test/test.com", 0x0100);
+
+        // when
+        cpu.PC(0x0100);
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:  010F\n" +
+                "DE:  000F\n" +
+                "HL:  4D0F\n" +
+                "AF:  4D02\n" +
+                "SP:  0102\n" +
+                "PC:  ED8F\n" +
+                "B,C: 01 0F\n" +
+                "D,E: 00 0F\n" +
+                "H,L: 4D 0F\n" +
+                "M:   4D\n" +
+                "A,F: 4D 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000001 00000010\n" +
+                "PC:  11101101 10001111\n" +
+                "     76543210\n" +
+                "B:   00000001\n" +
+                "C:   00001111\n" +
+                "D:   00000000\n" +
+                "E:   00001111\n" +
+                "H:   01001101\n" +
+                "L:   00001111\n" +
+                "M:   01001101\n" +
+                "A:   01001101\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
 }
