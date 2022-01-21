@@ -1,6 +1,9 @@
 package spec;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -18,9 +21,12 @@ public class RomLoader {
     }
 
     // чтение ПЗУ ZX Spectrum
-    public void loadROMZ(String name, InputStream is) throws Exception {
-        Range range = new Range(0, -0x4000);
-        logLoading(name, range);
+    public void loadROMZ(URL base, String path) throws Exception {
+        URL url = new URL(base, path);
+        InputStream is = url.openStream();
+        int length = is.available();
+        Range range = new Range(0, - length);
+        logLoading(url.toString(), range);
         readBytes(is, memory.all(), range);
     }
 
@@ -31,13 +37,13 @@ public class RomLoader {
 
     // для ПК "Специалист"
     // чтение ПЗУ
-    public void loadROM(String path, int offset) throws Exception {
-        File file = new File(path);
-        URL url = file.toURI().toURL();
-        int length = (int) file.length();
+    public void loadROM(URL base, String path, int offset) throws Exception {
+        URL url = new URL(base, path);
+        InputStream is = url.openStream();
+        int length = is.available();
         Range range = new Range(offset, - length);
         logLoading(url.toString(), range);
-        readBytes(url.openStream(), memory.all(), range);
+        readBytes(is, memory.all(), range);
     }
 
     // для ПК "Специалист"
@@ -45,9 +51,8 @@ public class RomLoader {
     // ADK: ML_B, ST_B
     // Bytes...
     // KSM: ML_B, ST_B
-    public void loadRKS(String path) throws Exception {
-        File file = new File(path);
-        URL url = file.toURI().toURL();
+    public void loadRKS(URL base, String path) throws Exception {
+        URL url = new URL(base, path);
         InputStream is = url.openStream();
         int[] header = read8arr(is, 4);
         Range range = new Range(
@@ -94,8 +99,8 @@ public class RomLoader {
         }
     }
 
-    public void loadSnapshot(String path) throws Exception {
-        URL url = new URL(path);
+    public void loadSnapshot(URL base, String path) throws Exception {
+        URL url = new URL(base, path);
         URLConnection snap = url.openConnection();
 
         InputStream is = snap.getInputStream();
@@ -116,7 +121,7 @@ public class RomLoader {
         // Грубая проверка, но будет работать (SNA имеет фиксированный размер)
         // Crude check but it'll work (SNA is a fixed size)
 
-        loadRKS(path);
+        loadRKS(base, path);
 
         is.close();
     }

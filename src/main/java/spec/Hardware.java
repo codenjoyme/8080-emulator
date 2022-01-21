@@ -1,6 +1,7 @@
 package spec;
 
 import java.awt.*;
+import java.net.URL;
 
 import static java.awt.Event.*;
 import static spec.Constants.*;
@@ -287,8 +288,8 @@ public class Hardware {
         currentBorder = null;
     }
 
-    public void loadSnapshot(String path) throws Exception {
-        roms.loadSnapshot(path);
+    public void loadSnapshot(URL base, String snapshot) throws Exception {
+        roms.loadSnapshot(base, snapshot);
         refreshWholeScreen();
         ports.resetKeyboard();
         canvas.requestFocus();

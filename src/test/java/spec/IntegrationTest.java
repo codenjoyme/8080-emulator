@@ -9,6 +9,7 @@ import spec.platforms.Lik;
 import spec.platforms.Specialist;
 
 import java.io.File;
+import java.net.URL;
 
 import static spec.Constants.START_POINT;
 
@@ -23,14 +24,14 @@ public class IntegrationTest extends AbstractCpuTest {
     private int ticks;
     private int maxTicks;
     private PngVideo video;
-    private String base;
+    private URL base;
 
     @Before
-    public void before() {
+    public void before() throws Exception {
         super.before();
         roms = new RomLoader(data.memory(), cpu);
         video = new PngVideo(data.memory());
-        base = new File("src/main/resources").getAbsolutePath() + "/";
+        base = new File("src/main/resources/").toURI().toURL();
     }
 
     @After
@@ -278,7 +279,7 @@ public class IntegrationTest extends AbstractCpuTest {
         // given
         maxTicks = TICKS;
 
-        roms.loadROM(base + "test/test.com", 0x0100);
+        roms.loadROM(base, "test/TEST.COM", 0x0100);
 
         // when
         cpu.PC(0x0100);
@@ -319,14 +320,15 @@ public class IntegrationTest extends AbstractCpuTest {
 
     @Test
     public void testDiagnostic_case2() throws Exception {
-        // 8080 instruction exerciser (KR580VM80A CPU)
+        // 8080/8085 CPU Exerciser by Ian Bartholomew and Frank Cringles
+        // The basic excerciser
         // https://raw.githubusercontent.com/begoon/i8080-core/master/8080EX1.MAC
 
         // given
         maxTicks = TICKS;
 
         Lik.loadRom(base, roms);
-        roms.loadROM(base + "test/test2.com", 0x0100);
+        roms.loadROM(base, "test/8080EX1.COM", 0x0100);
 
         // when
         cpu.PC(0x0100);
@@ -334,13 +336,13 @@ public class IntegrationTest extends AbstractCpuTest {
 
         // then
         asrtCpu("BC:  0009\n" +
-                "DE:  0569\n" +
+                "DE:  0DF6\n" +
                 "HL:  0000\n" +
                 "AF:  0002\n" +
                 "SP:  FFF4\n" +
                 "PC:  00F0\n" +
                 "B,C: 00 09\n" +
-                "D,E: 05 69\n" +
+                "D,E: 0D F6\n" +
                 "H,L: 00 00\n" +
                 "M:   00\n" +
                 "A,F: 00 02\n" +
@@ -350,8 +352,8 @@ public class IntegrationTest extends AbstractCpuTest {
                 "     76543210\n" +
                 "B:   00000000\n" +
                 "C:   00001001\n" +
-                "D:   00000101\n" +
-                "E:   01101001\n" +
+                "D:   00001101\n" +
+                "E:   11110110\n" +
                 "H:   00000000\n" +
                 "L:   00000000\n" +
                 "M:   00000000\n" +
@@ -363,5 +365,102 @@ public class IntegrationTest extends AbstractCpuTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+    }
+
+    @Test
+    public void testDiagnostic_case3() throws Exception {
+        // 8080/8085 CPU Exerciser by Ian Bartholomew and Frank Cringles
+        // The preliminary test
+        // https://raw.githubusercontent.com/begoon/i8080-core/master/8080PRE.MAC
+
+        // given
+        maxTicks = TICKS;
+
+        Lik.loadRom(base, roms);
+        roms.loadROM(base, "test/8080PRE.COM", 0x0100);
+
+        // when
+        cpu.PC(0x0100);
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:  EC34\n" +
+                "DE:  0C0A\n" +
+                "HL:  0014\n" +
+                "AF:  6A82\n" +
+                "SP:  0500\n" +
+                "PC:  0316\n" +
+                "B,C: EC 34\n" +
+                "D,E: 0C 0A\n" +
+                "H,L: 00 14\n" +
+                "M:   00\n" +
+                "A,F: 6A 82\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000101 00000000\n" +
+                "PC:  00000011 00010110\n" +
+                "     76543210\n" +
+                "B:   11101100\n" +
+                "C:   00110100\n" +
+                "D:   00001100\n" +
+                "E:   00001010\n" +
+                "H:   00000000\n" +
+                "L:   00010100\n" +
+                "M:   00000000\n" +
+                "A:   01101010\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000010\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void testDiagnostic_case4() throws Exception {
+        // Diagnostics II, version 1.2, CPU test by Supersoft Associates
+        // https://raw.githubusercontent.com/begoon/i8080-core/master/CPUTEST.MAC
+
+        // given
+        maxTicks = TICKS;
+
+        Lik.loadRom(base, roms);
+        roms.loadROM(base, "test/CPUTEST.COM", 0x0100);
+
+        // when
+        cpu.PC(0x0100);
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:  0002\n" +
+                "DE:  0000\n" +
+                "HL:  0080\n" +
+                "AF:  0D93\n" +
+                "SP:  2FEF\n" +
+                "PC:  004E\n" +
+                "B,C: 00 02\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 80\n" +
+                "M:   00\n" +
+                "A,F: 0D 93\n" +
+                "     76543210 76543210\n" +
+                "SP:  00101111 11101111\n" +
+                "PC:  00000000 01001110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000010\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   10000000\n" +
+                "M:   00000000\n" +
+                "A:   00001101\n" +
+                "     sz0h0p1c\n" +
+                "F:   10010011\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  false\n" +
+                "tc:  true\n");
     }
 }

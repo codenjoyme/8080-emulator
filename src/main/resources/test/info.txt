@@ -1,2 +1,2 @@
-Тест взят тут https://github.com/begoon/i8080-core/blob/master/TEST.ASM
+Тест взят тут https://github.com/begoon/i8080-core
 Собирался тут https://svofski.github.io/pretty-8080-assembler/

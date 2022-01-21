@@ -17,7 +17,7 @@ public abstract class AbstractCpuTest {
     private boolean init;
 
     @Before
-    public void before() {
+    public void before() throws Exception {
         data = new TestData(this::onInterrupt);
         init = false;
         cpu = new Cpu(50.1 * 1e-6, data);
