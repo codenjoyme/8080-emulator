@@ -124,8 +124,8 @@ public class Main extends Applet implements Runnable {
         boolean lik = true;
         if (lik) {
             Lik.loadRom(base, hard.roms());
-            // Lik.loadGame(base, hard.roms(), "klad");
-            Lik.loadTest(base, hard.roms(), "test");
+            Lik.loadGame(base, hard.roms(), "klad");
+            // Lik.loadTest(base, hard.roms(), "test");
         } else {
             Specialist.loadRom(base, hard.roms());
             Specialist.loadGame(base, hard.roms(), "blobcop");
