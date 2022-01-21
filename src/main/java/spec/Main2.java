@@ -7,6 +7,10 @@ public class Main2 extends JPanel {
 
     private final JFrame frame;
 
+    public static void main(String[] args) {
+        new Main2();
+    }
+
     public Main2() {
         frame = new JFrame("Demo");
         frame.add(this);
@@ -20,9 +24,5 @@ public class Main2 extends JPanel {
         Graphics2D graphic2d = (Graphics2D) g;
         graphic2d.setColor(Color.BLUE);
         graphic2d.fillRect(100, 50, 60, 80);
-    }
-
-    public static void main(String[] args) {
-        new Main2();
     }
 }
