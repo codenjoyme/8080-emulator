@@ -29,7 +29,7 @@ import java.net.URL;
  */
 public class Main extends Applet implements Runnable {
 
-    private Hardware hard = null;
+    private Application hard = null;
     private Thread thread = null;
 
     @Override
@@ -98,7 +98,7 @@ public class Main extends Applet implements Runnable {
 
         if (hard == null) {
             try {
-                hard = new Hardware(this);
+                hard = new Application(this);
                 readParameters();
             } catch (Exception e) {
                 showStatus("Caught IO Error: " + e);

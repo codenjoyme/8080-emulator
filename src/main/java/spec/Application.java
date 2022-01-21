@@ -6,7 +6,7 @@ import java.net.URL;
 import static java.awt.Event.*;
 import static spec.Video.*;
 
-public class Hardware {
+public class Application {
 
     private static final int BORDER_PORT = 254;
     public static final int PAUSE = 0x0400;
@@ -47,22 +47,22 @@ public class Hardware {
      * иерархической системы визуальных объектов. Container отвечает за расположение содержащихся
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
-    public Hardware(Container container) {
+    public Application(Container container) {
         parent = container;
         hard = new Hard() {
             @Override
             protected void outb(int port, int bite) {
-                Hardware.this.outb(port, bite);
+                Application.this.outb(port, bite);
             }
 
             @Override
             protected boolean interrupt() {
-                return Hardware.this.interrupt();
+                return Application.this.interrupt();
             }
 
             @Override
             protected void drawPixel(Point point, Color color) {
-                Hardware.this.drawPixel(point, color);
+                Application.this.drawPixel(point, color);
             }
         };
 
