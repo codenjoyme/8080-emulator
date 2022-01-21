@@ -6,10 +6,10 @@ import static spec.Constants.ROM;
 
 public class IOPorts {
 
-    private boolean PrtAIN = true;  // порт A - на ввод
-    private boolean PrtBIN = true;  // порт B - на ввод
-    private boolean PrC0IN = true;  // порт C0- на ввод
-    private boolean PrC1IN = true;  // порт C1- на ввод
+    private boolean Ain = true;  // порт A на ввод
+    private boolean Bin = true;  // порт B на ввод
+    private boolean C0in = true;  // порт C0 на ввод
+    private boolean C1in = true;  // порт C1 на ввод
     private boolean shift = false; // Shift не нажат
 
     private static final int PortA = 0xFFE0; // Порт А ППА
@@ -180,9 +180,9 @@ public class IOPorts {
             switch (addr) {
                 case PortA: {
                     // если порт A - на ввод
-                    if (PrtAIN) {
+                    if (Ain) {
                         // если порт B - на вывод
-                        if (!PrtBIN) {
+                        if (!Bin) {
                             // по битам порта B от 2 до 7
                             for (int i = 0; i < 6; i++) {
                                 // по битам порта A от 0 до 7
@@ -205,9 +205,9 @@ public class IOPorts {
                 // Порт В
                 case PortB: {
                     // если порта В - на ввод
-                    if (PrtBIN) {
+                    if (Bin) {
                         // если порт A - на вывод
-                        if (!PrtAIN) {
+                        if (!Ain) {
                             // по битам порта A от 0 до 7
                             for (int i = 0; i < 8; i++) {
                                 // по битам порта В от 2 до 7
@@ -221,7 +221,7 @@ public class IOPorts {
                         }
 
                         // если порт CLow - на вывод
-                        if (!PrC0IN) {
+                        if (!C0in) {
                             // по битам порта CLow от 0 до 3
                             for (int i = 0; i < 4; i++) {
                                 // по битам порта В от 2 до 7
@@ -254,9 +254,9 @@ public class IOPorts {
                 // Порт С orphaned default
                 default: {
                     // если порта CLow - на ввод
-                    if (PrC0IN) {
+                    if (C0in) {
                         // если порт B - на вывод
-                        if (!PrtBIN) {
+                        if (!Bin) {
                             // по битам порта B от 2 до 7
                             for (int i = 0; i < 6; i++) {
                                 // по битам порта CLow от 0 до 3
@@ -296,45 +296,23 @@ public class IOPorts {
             // управляющие слова 1-старший бит
             if ((bite & 0x0080) != 0) {
                 // КАНАЛ_С(МЛ.)(РС0-РС3)
-                if ((bite & 0x0001) != 0) {
-                    // порт C0- на ввод
-                    PrC0IN = true;
-                } else {
-                    // порт C0- на вывод
-                    PrC0IN = false;
-                    int b = memory.read8(PortC);
-                    // порт C0 = 0
-                    memory.write8(PortC, b & 0x00F0);
+                C0in = (bite & 0x0001) != 0;
+                if (!C0in) {
+                    memory.write8(PortC, memory.read8(PortC) & 0x00F0);
                 }
                 // КАНАЛ_В(РВ0-РВ7)
-                if ((bite & 0x0002) != 0) {
-                    // порт B - на ввод
-                    PrtBIN = true;
-                } else {
-                    // порт B - на вывод
-                    PrtBIN = false;
-                    // порт B = 0
+                Bin = (bite & 0x0002) != 0;
+                if (!Bin) {
                     memory.write8(PortB, 0);
                 }
                 // КАНАЛ_С(СТ.)(РС4-РС7)
-                if ((bite & 0x0008) != 0) {
-                    // порт C1- на ввод
-                    PrC1IN = true;
-                } else {
-                    // порт C1- на вывод
-                    PrC1IN = false;
-                    int b = memory.read8(PortC);
-                    // порт C1 = 0
-                    memory.write8(PortC, b & 0x000F);
+                C1in = (bite & 0x0008) != 0;
+                if (!C1in) {
+                    memory.write8(PortC, memory.read8(PortC) & 0x000F);
                 }
                 // КАНАЛ_A(РА0-РА7)
-                if ((bite & 0x0010) != 0) {
-                    // порт A - на ввод
-                    PrtAIN = true;
-                } else {
-                    // порт A - на вывод
-                    PrtAIN = false;
-                    // порт A = 0
+                Ain = (bite & 0x0010) != 0;
+                if (!Ain) {
                     memory.write8(PortA, 0);
                 }
                 // в ПОРТ RYC запишем YC   ПОРТЫ 0xFFE3
@@ -343,7 +321,7 @@ public class IOPorts {
             } else {
                 // побитное управление портом 0xFFE3
                 // если порт C0- на вывод
-                if (!PrC0IN) {
+                if (!C0in) {
                     if ((bite & 0x0001) == 1) {
                         // уст. в 1
                         // биты 0-3
@@ -363,7 +341,7 @@ public class IOPorts {
                     }
                 }
                 // если порт C1- на вывод
-                if (!PrC1IN) {
+                if (!C1in) {
                     if ((bite & 0x0001) == 1) {
                         // уст. в 1
                         // биты 4-7
@@ -437,10 +415,10 @@ public class IOPorts {
 
     public void reset() {
         shift = false; // Shift не нажат
-        PrtAIN = true; // порт A - на ввод
-        PrtBIN = true; // порт B - на ввод
-        PrC0IN = true; // порт C0- на ввод
-        PrC1IN = true; // порт C1- на ввод
+        Ain = true; // порт A - на ввод
+        Bin = true; // порт B - на ввод
+        C0in = true; // порт C0- на ввод
+        C1in = true; // порт C1- на ввод
         Arrays.sort(ascii_keys); // сортируем массив ascii-массив кодов клавиш для поиска
         resetKeyboard();// все кнопки ненажаты
         memory.write16(RgRYS, 0x009b);// порт RYC[0xFFE3] = 9Bh (все на ввод)
