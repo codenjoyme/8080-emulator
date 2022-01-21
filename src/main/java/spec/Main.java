@@ -25,7 +25,7 @@ import java.awt.*;
  */
 public class Main extends Applet implements Runnable {
 
-    private Application hard = null;
+    private Application app = null;
     private Thread thread = null;
 
     @Override
@@ -92,17 +92,17 @@ public class Main extends Applet implements Runnable {
     public void run() {
         showStatus(getAppletInfo());
 
-        if (hard == null) {
+        if (app == null) {
             try {
-                hard = new Application(this);
-                hard.readParameters(getDocumentBase());
+                app = new Application(this);
+                app.readParameters(getDocumentBase());
                 resize(preferredSize());
             } catch (Exception e) {
                 showStatus("Caught IO Error: " + e);
             }
         }
-        if (hard != null) {
-            hard.start();
+        if (app != null) {
+            app.start();
         }
     }
 
@@ -138,8 +138,8 @@ public class Main extends Applet implements Runnable {
      */
     @Override
     public void paint(Graphics g) {
-        if (hard != null) {
-            hard.repaint();
+        if (app != null) {
+            app.repaint();
         }
     }
 
@@ -157,15 +157,15 @@ public class Main extends Applet implements Runnable {
      */
     @Override
     public boolean handleEvent(Event e) {
-        if (hard != null) {
-            return hard.handleEvent(e);
+        if (app != null) {
+            return app.handleEvent(e);
         }
         return super.handleEvent(e);
     }
 
     @Override
     public Dimension minimumSize() {
-        int border = (hard == null) ? 20 : hard.borderWidth;
+        int border = (app == null) ? 20 : app.borderWidth;
         return new Dimension(
                 Video.WIDTH + border * 2,
                 Video.HEIGHT + border * 2);

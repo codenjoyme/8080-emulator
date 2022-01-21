@@ -7,7 +7,7 @@ import java.io.File;
 public class Main2 extends JPanel {
 
     private Application app;
-    private final JFrame frame;
+    private JFrame frame;
 
     public static void main(String[] args) throws Exception {
         new Main2();
