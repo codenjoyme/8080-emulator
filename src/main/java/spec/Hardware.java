@@ -9,12 +9,12 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import static spec.Constants.*;
-import static spec.Video.height;
-import static spec.Video.width;
+import static spec.Video.*;
 
 public class Hardware {
 
     private static final double CLOCK = 1.6; // Specialist runs at 3.5Mhz;
+    public static final int BORDER_PORT = 254;
 
     private Graphics parentGraphics;
     private Graphics canvasGraphics;
@@ -28,7 +28,7 @@ public class Hardware {
     private Canvas canvas;
 
     // ширина бордюра
-    public int borderWidth = 20;   // absolute, not relative to pixelScale
+    public int borderWidth = 20;
 
     // ESC shows a URL popup
     private TextField urlField;
@@ -36,9 +36,7 @@ public class Hardware {
     // How much loaded/how fast?
     private AMDProgressBar progressBar;
 
-    public boolean pbaron = false;  // progbar - невидим.
-    private boolean wfocus = false; // фокус окном не получен
-    private boolean invfoc = false; // моргание бордюром
+    public boolean pbaron = false;  // progbar - невидим
 
     // Поскольку исполнение проходит как плотный цикл, некоторые реализации виртуальной машины
     // Java не позволяют любым другим процессам получить доступ. Это даёт (GUI) Графическому
@@ -141,7 +139,6 @@ public class Hardware {
         borderWidth = width;
         canvas.setLocation(borderWidth, borderWidth);
 
-
         // установить границы
         urlField.setBounds(0, 0, parent.getPreferredSize().width,
                 urlField.getPreferredSize().height);
@@ -154,7 +151,7 @@ public class Hardware {
 
     private void outb(int port, int outByte) {
         if ((port & 0x0001) == 0) {   // port xx.FEh
-            // TODO borderColor = (outByte & 0x000F); // 0000.0111 бордюр & 0x07
+            newBorder = COLORS[outByte & 0x000F]; // 0000.0111 бордюр & 0x07
         }
     }
 
@@ -177,7 +174,6 @@ public class Hardware {
 
     private boolean interrupt() {
         if (pauseAtNextInterrupt) {
-            // поле ввода url
             urlField.setVisible(true);
 
             pausedThread = Thread.currentThread();
@@ -187,12 +183,11 @@ public class Hardware {
                     showStats = true;
                     progressBar.setVisible(true);
                 }
-                showMessage("© 2011 Sam_Computers LTD");
 
-                if (refreshNextInterrupt) { // проверка флага - рисовать.
-                    refreshNextInterrupt = false; // сбросим флаг рисовать.
-                    oldBorder = -1;// обновить Border
-                    paintBuffer(); // перерисовка экрана РИСУЕМ !!!
+                if (refreshNextInterrupt) {
+                    refreshNextInterrupt = false;
+                    currentBorder = null; // обновить Border
+                    paintBuffer();
                 }
 
                 if (loadFromURLFieldNextInterrupt) {
@@ -202,12 +197,11 @@ public class Hardware {
                     try {
                         Thread.sleep(500); // дали случиться внешним событиям
                     } catch (Exception ignored) {
-                        // do noting
+                        // do nothing
                     }
                 }
             }
             pausedThread = null;
-            // поле ввода url
             urlField.setVisible(false);
             if (!pbaron) {
                 showStats = false;
@@ -217,9 +211,8 @@ public class Hardware {
 
         if (refreshNextInterrupt) {
             refreshNextInterrupt = false;
-            oldBorder = -1;// обновить Border
-            // перерисовка экрана РИСУЕМ !!!
-            paintBuffer(); // рисовать разрешили из repaint() < paint( Graphics g )
+            currentBorder = null; // обновить Border
+            paintBuffer();
         }
 
         if (resetAtNextInterrupt) {
@@ -229,21 +222,6 @@ public class Hardware {
         }
 
         interruptCounter++;
-
-        // Characters flash every 1/2 a second
-
-        if (!wfocus) // если потерян фокус - мигаем бордюром
-        {
-            if ((interruptCounter % 200) == 0) // every 4 seconds of 'Spechard time'
-            {  // Этот оператор возвращает остаток от деления первого операнда на второй.
-                invfoc = !invfoc;
-                if (invfoc) { // обновить мигающий бордюр
-                    outb(254, 0x06);
-                } else {
-                    outb(254, 0x04);
-                }
-            }
-        }
 
         // Update speed indicator every 2 seconds of 'Spechard time'
         if ((interruptCounter % 100) == 0) {
@@ -303,16 +281,11 @@ public class Hardware {
 
      public void reset() {
         cpu.reset(); // reset() class Z80
-        if (wfocus) {
-            outb(254, 0x02);
-        } else {
-            outb(254, 0x06); // White border on startup: port 0FEh ff
-        }
         ports.reset();
     }
 
-    public int oldBorder = -1; // -1 mean update screen
-
+    public Color currentBorder = null; // null mean update screen
+    public Color newBorder = Color.YELLOW;
     public long oldTime = 0;
     public int oldSpeed = -1; // -1 mean update progressBar
     public int newSpeed = 0;
@@ -341,11 +314,11 @@ public class Hardware {
         if (borderWidth == 0) { // если бордюра нет - ничего не делать!
             return;
         }
-        if (wfocus) {
-            parentGraphics.setColor(Color.GREEN);
-        } else {
-            parentGraphics.setColor(Color.YELLOW);
+        if (currentBorder == newBorder) { // цвет не менялся
+            return;
         }
+        currentBorder = newBorder;
+        parentGraphics.setColor(currentBorder);
         parentGraphics.fillRect(0, 0,
                 width + borderWidth * 2,
                 height + borderWidth * 2);
@@ -445,15 +418,13 @@ public class Hardware {
 
             case Event.GOT_FOCUS:
                 showMessage("'SPECIALIST' GOT FOCUS");
-                outb(254, 0x02);
-                wfocus = true;
+                outb(BORDER_PORT, 0x02);
                 ports.resetKeyboard();
                 return true;
 
             case Event.LOST_FOCUS:
                 showMessage("'SPECIALIST' LOST FOCUS");
-                outb(254, 0x06);
-                wfocus = false;
+                outb(BORDER_PORT, 0x06);
                 ports.resetKeyboard();
                 return true;
         }
@@ -569,7 +540,7 @@ public class Hardware {
     }
 
     public void refreshWholeScreen() {
-        oldBorder = -1; // -1 mean update screen, newBorder - текущий цвет Border.
+        currentBorder = null; // обновить Border
         oldSpeed = -1; // update progressBar
     }
 }

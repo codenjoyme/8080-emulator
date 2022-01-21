@@ -9,6 +9,29 @@ import static spec.Constants.SCREEN;
 
 public class Video {
 
+    // 16 цветов - массив цветов "Специалист"
+    private static final int str = 238;
+    public static final Color[] COLORS = {
+            Color.black,             // 00-черный
+            // тусклые цвета
+            Color.blue,              // 01 синий
+            Color.green,             // 02 зелёный
+            Color.cyan,              // 03 бирюзовый
+            Color.red,               // 04 красный
+            Color.magenta,           // 05 фиолетовый
+            Color.yellow,            // 06 коричневый
+            Color.white,             // 07 белый
+            new Color(0, 0, 0),      // 08 серый
+            // яркие цвета
+            new Color(0, 0, str),    // 09 голубой
+            new Color(0, str, 0),    // 0A светло-зелёный
+            new Color(0, str, str),  // 0B светло-бирюзовый
+            new Color(str, 0, 0),    // 0C розовый
+            new Color(str, 0, str),  // 0D светло-фиолетовый
+            new Color(str, str, 0),  // 0E желтый
+            new Color(str, str, str) // 0F ярко-белый
+    };
+
     public static final int width = 384;
     public static final int height = 256;
 
