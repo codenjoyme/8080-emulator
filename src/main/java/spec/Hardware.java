@@ -4,7 +4,7 @@ import java.awt.*;
 
 import static spec.Constants.*;
 
-public abstract class Hard {
+public abstract class Hardware {
 
     private static final double CLOCK = 1.6; // Specialist runs at 3.5Mhz;
 
@@ -14,28 +14,28 @@ public abstract class Hard {
     protected IOPorts ports;
     protected Video video;
 
-    public Hard() {
+    public Hardware() {
         memory = new Memory(x10000);
-        video = new Video(Hard.this::drawPixel);
+        video = new Video(Hardware.this::drawPixel);
         cpu = new Cpu(CLOCK, new Data() {
             @Override
             public boolean interrupt() {
-                return Hard.this.interrupt();
+                return Hardware.this.interrupt();
             }
 
             @Override
             public void out8(int port, int bite) {
-                Hard.this.outb(port, bite);
+                Hardware.this.outb(port, bite);
             }
 
             @Override
             public int read8(int addr) {
-                return Hard.this.read8(addr);
+                return Hardware.this.read8(addr);
             }
 
             @Override
             public void write8(int addr, int bite) {
-                Hard.this.write8(addr, bite);
+                Hardware.this.write8(addr, bite);
             }
         });
         ports = new IOPorts(memory);

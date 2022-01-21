@@ -39,7 +39,7 @@ public class Application {
     private Color currentBorder = null; // null mean update screen
     private Color newBorder = Color.YELLOW;
 
-    private Hard hard;
+    private Hardware hard;
 
     /**
      * Container — это абстрактный подкласс класса Component, определяющий дополнительные методы,
@@ -49,7 +49,7 @@ public class Application {
      */
     public Application(Container container) {
         parent = container;
-        hard = new Hard() {
+        hard = new Hardware() {
             @Override
             protected void outb(int port, int bite) {
                 Application.this.outb(port, bite);
