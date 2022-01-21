@@ -30,7 +30,7 @@ public class IntegrationTest extends AbstractCpuTest {
         super.before();
         roms = new RomLoader(data.memory(), cpu);
         video = new PngVideo(data.memory());
-        base = new File("src/main/resources/").getAbsolutePath();
+        base = new File("src/main/resources").getAbsolutePath() + "/";
     }
 
     @After
@@ -271,14 +271,14 @@ public class IntegrationTest extends AbstractCpuTest {
     }
 
     @Test
-    public void test8080CPUDiagnostic() throws Exception {
+    public void testDiagnostic_case1() throws Exception {
         // 8080/8085 CPU Diagnostic, version 1.0, by Microcosm Associates
         // https://github.com/begoon/i8080-core/blob/master/TEST.ASM
 
         // given
         maxTicks = TICKS;
 
-        roms.loadROM(base + "/test/test.com", 0x0100);
+        roms.loadROM(base + "test/test.com", 0x0100);
 
         // when
         cpu.PC(0x0100);
@@ -308,6 +308,54 @@ public class IntegrationTest extends AbstractCpuTest {
                 "L:   00001111\n" +
                 "M:   01001101\n" +
                 "A:   01001101\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void testDiagnostic_case2() throws Exception {
+        // 8080 instruction exerciser (KR580VM80A CPU)
+        // https://raw.githubusercontent.com/begoon/i8080-core/master/8080EX1.MAC
+
+        // given
+        maxTicks = TICKS;
+
+        Lik.loadRom(base, roms);
+        roms.loadROM(base + "test/test2.com", 0x0100);
+
+        // when
+        cpu.PC(0x0100);
+        cpu.execute();
+
+        // then
+        asrtCpu("BC:  0009\n" +
+                "DE:  0569\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFF4\n" +
+                "PC:  00F0\n" +
+                "B,C: 00 09\n" +
+                "D,E: 05 69\n" +
+                "H,L: 00 00\n" +
+                "M:   00\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11110100\n" +
+                "PC:  00000000 11110000\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00001001\n" +
+                "D:   00000101\n" +
+                "E:   01101001\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
                 "     sz0h0p1c\n" +
                 "F:   00000010\n" +
                 "ts:  false\n" +
