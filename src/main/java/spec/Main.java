@@ -22,8 +22,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import static spec.Video.*;
-
 /**
  * Класс 'Main' с помощью ключевого слова {extends} наследуется от класса Applet.
  * При этом методам класса 'Main' становятся доступными все методы и данные класса,
@@ -118,7 +116,7 @@ public class Main extends Applet implements Runnable {
      * @throws Exception Problem loading ROM or snaphot.
      */
     public void readParameters() throws Exception {
-        hard.setBorderWidth(hard.borderWidth * pixelScale);
+        hard.setBorderWidth(hard.borderWidth);
 
         // once borderWidth is set up
         resize(preferredSize());
@@ -217,12 +215,10 @@ public class Main extends Applet implements Runnable {
 
     @Override
     public Dimension minimumSize() {
-        int scale = pixelScale;
         int border = (hard == null) ? 20 : hard.borderWidth;
-
         return new Dimension(
-                nPixelsWide * scale + border * 2,
-                nPixelsHigh * scale + border * 2);
+                Video.width + border * 2,
+                Video.height + border * 2);
     }
 
     @Override

@@ -1,28 +1,5 @@
 package spec;
 
-/**
- * Надо обозначить все константы "Специалист" в портах ОЗУ ПЗУ и экране
- *  Заменены константами все характерные адреса типа 0xFFE0 чтобы читалось
- *  удобнее и легче было переходить к внедрению нового экрана.
- *  Всё фактически готово! (Может ещё проверю подпрограммы).
- *
- *  Уточнить вопрос с прерываниями и с адресом старта!!!
- *  protected int( Z80.java)_SP = 0, _PC = 0; //программный счётчик = C000h - адрес старта!
- *     public int( Z80.java)interrupt() - здесь заглушить переход на адреса прерываний.
- *
- *  переписал функции write8(), write16();
- *  ЭТО ПОСЛЕДНЯЯ РАБОЧАЯ ВЕРСИЯ, ГДЕ "СПЕЦИАЛИСТ" и "ZX" ВМЕСТЕ.
- *
- *  ЭТО ПЕРВАЯ РАБОЧАЯ ВЕРСИЯ "СПЕЦИАЛИСТ" ГДЕ "ZX"-код ПРАКТИЧЕСКИ ВЕСЬ НА МЕСТЕ!
- *  СДЕЛАНА ЗАГРУЗКА ФАЙЛА *.RKS - работает! Подглюкивает игра Бабник...
- *  СДЕЛАНО МИГАНИЕ БОРДЮРА ПРИ ПОТЕРЕ ФОКУСА ОКНОМ АППЛЕТА.
- *
- *  Версия от 21.05.2011 19:11:48, реализован К580ВВ55А рабочая копия
- *  прототип для ПК "Специалист".
- *  Вариант с заменой: next[], last[] на nextAddr[], lastByte[].
- *  @(#)Spechard.java 1.1 27/04/97 Adam Davidson & Andrew Pollard.
- */
-
 import java.awt.*;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -32,20 +9,8 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import static spec.Constants.*;
-import static spec.Video.*;
-
-/**
- * The Spechard class extends the Z80 class implementing the supporting
- * hardware emulation which was specific to the 'Specialist' computer.
- * This includes the memory mapped screen and the IO ports which were
- * used to read the keyboard, change the border color and turn the
- * speaker on/off. There is no sound support in this version.<P>
- *
- * @author <A HREF="http://www.odie.demon.co.uk/spectrum">Adam Davidson & Andrew Pollard</A>
- * @version 1.1 27 Apr 1997
- * @see Main
- * @see Cpu
- */
+import static spec.Video.height;
+import static spec.Video.width;
 
 public class Hardware {
 
@@ -115,8 +80,10 @@ public class Hardware {
         memory = new Memory(x10000);
 
         video = new Video(memory,
-                parent::createImage,
-                (image, pt) -> bufferGraphics.drawImage(image, pt.x, pt.y, null));
+                (pt, color) -> {
+                    bufferGraphics.setColor(color);
+                    bufferGraphics.fillRect(pt.x, pt.y, 1, 1);
+                });
 
         cpu = new Cpu(CLOCK, new Data() {
 
@@ -147,12 +114,12 @@ public class Hardware {
         parent.add(canvas = new Canvas());
 
         // размер canvas
-        canvas.setSize(nPixelsWide * pixelScale, nPixelsHigh * pixelScale);
+        canvas.setSize(width, height);
 
         // сделали canvas видимым.
         canvas.setVisible(true);
 
-        bufferImage = parent.createImage(nPixelsWide * pixelScale, nPixelsHigh * pixelScale);
+        bufferImage = parent.createImage(width, height);
 
         // контенты графики
         bufferGraphics = bufferImage.getGraphics();
@@ -180,15 +147,15 @@ public class Hardware {
         urlField.setBounds(0, 0, parent.getPreferredSize().width,
                 urlField.getPreferredSize().height);
 
-        progressBar.setBounds(1, (borderWidth + nPixelsHigh * pixelScale) + 2,
-                nPixelsWide * pixelScale + borderWidth * 2 - 2, borderWidth - 2);
+        progressBar.setBounds(1, (borderWidth + height) + 2,
+                Video.width + borderWidth * 2 - 2, borderWidth - 2);
 
         progressBar.setFont(urlField.getFont());
     }
 
     private void outb(int port, int outByte) {
         if ((port & 0x0001) == 0) {   // port xx.FEh
-            newBorder = (outByte & 0x000F); // 0000.0111 бордюр & 0x07
+            // TODO borderColor = (outByte & 0x000F); // 0000.0111 бордюр & 0x07
         }
     }
 
@@ -345,7 +312,6 @@ public class Hardware {
         ports.reset();
     }
 
-    public int newBorder = 6;  // White border on startup  0x0111b
     public int oldBorder = -1; // -1 mean update screen
 
     public long oldTime = 0;
@@ -372,54 +338,35 @@ public class Hardware {
         }
     }
 
-    public void borderPaint() {// может понадобиться в Специалист для фокуса экрана
-        if (oldBorder == newBorder) {// если признак равен цвету Border - ничего не делать!
-            return;
-        }
-
-        oldBorder = newBorder; // иначе - присвоить признаку цвет Border
-
+    public void borderPaint() {
         if (borderWidth == 0) { // если бордюра нет - ничего не делать!
             return;
         }
-        // если бордюр есть - перерисовать его цветом  newBorder;
-        // parentGraphics.setColor( brightColors[ newBorder ] );
-        parentGraphics.setColor(SpecMXColors[newBorder]);
-
-        //   обновить Border - это нагло нарисовать прямоугольник цвета newBorder?!!!  Font.PLAIN|Font.BOLD
-        parentGraphics.fillRect(0, 0, (nPixelsWide * pixelScale) + borderWidth * 2,
-                (nPixelsHigh * pixelScale) + borderWidth * 2);
         if (wfocus) {
-            parentGraphics.setFont(urlField.getFont()); //  установить шрифт.
-            parentGraphics.setColor(SpecMXColors[0x01]);
-            parentGraphics.drawString("'Specialist'", 24, 16);
-            parentGraphics.setColor(SpecMXColors[newBorder]);
+            parentGraphics.setColor(Color.GREEN);
         } else {
-            parentGraphics.setFont(urlField.getFont()); //  установить шрифт.
-            parentGraphics.setColor(SpecMXColors[0]);
-            parentGraphics.drawString("'Specialist' - old Russian 8-bit computer emulator. (Click here to test it.)", 24, 16);
-            parentGraphics.setColor(SpecMXColors[newBorder]);
+            parentGraphics.setColor(Color.YELLOW);
         }
+        parentGraphics.fillRect(0, 0,
+                width + borderWidth * 2,
+                height + borderWidth * 2);
     }
 
     private static final String fullSpeed = "Full Speed: ";
     private static final String slowSpeed = "Slow Speed: ";
     public boolean runAtFullSpeed = true;
 
-    //
     private void toggleSpeed() {
         runAtFullSpeed = !runAtFullSpeed;
         showMessage(statsMessage); //
     }
 
-    //
     public void showMessage(String m) {
         statsMessage = m;
         oldSpeed = -1; // Force update of progressBar
         statsPaint();
     }
 
-    //
     public void statsPaint() {
         if (oldSpeed == newSpeed) {
             return;
@@ -447,17 +394,12 @@ public class Hardware {
         progressBar.setVisible(true);
     }
 
-    // Рисует на Graphics g - bufferImage: это сама отрисовка на canvas, остальное - в буфере!
-    public void paintBuffer() {  // вызывается из screenPaint( )
-        canvasGraphics.drawImage(bufferImage, 0, 0, null); // ПЕРЕРИСОВКА ЭКРАНА ИЗ БУФЕРА
-        // Бордюр
+    public void paintBuffer() {
+        canvasGraphics.drawImage(bufferImage, 0, 0, null);
         borderPaint();
     }
 
-    // Process events from UI - обработка событий
-
-    // вызывается  Main.handleEvent-ом.-
-    public boolean handleEvent(Event e) {  // По сути это переопределённый handleEvent();
+    public boolean handleEvent(Event e) {
         if (e.target == progressBar) {
             if (e.id == Event.MOUSE_DOWN) {
 
@@ -612,7 +554,7 @@ public class Hardware {
         if (SCREEN.includes(addr)) {
             if (memory.read8(addr) != bite) {
                 // было изменение ячейки видеопамяти
-                video.plot(addr);
+                // video.plot(addr);
             }
         }
 
@@ -628,7 +570,6 @@ public class Hardware {
     }
 
     public void refreshWholeScreen() {
-        video.refresh();
         oldBorder = -1; // -1 mean update screen, newBorder - текущий цвет Border.
         oldSpeed = -1; // update progressBar
     }
