@@ -86,12 +86,7 @@ public class Application {
         canvasGraphics = canvas.getGraphics();
     }
 
-    /**
-     * Parse available applet parameters.
-     * Вызывается из метода  RUN
-     * @throws Exception Problem loading ROM or snaphot.
-     */
-    public void readParameters(URL base) throws Exception {
+    public void loadRoms(URL base) throws Exception {
         setBorderWidth(borderWidth);
 
         boolean lik = true;

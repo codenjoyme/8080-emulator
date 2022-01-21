@@ -21,7 +21,7 @@ public class Main2 extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         app = new Application(this);
-        app.readParameters(new File("src/main/resources").toURI().toURL());
+        app.loadRoms(new File("src/main/resources").toURI().toURL());
         app.start();
     }
 

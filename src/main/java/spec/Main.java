@@ -95,7 +95,7 @@ public class Main extends Applet implements Runnable {
         if (app == null) {
             try {
                 app = new Application(this);
-                app.readParameters(getDocumentBase());
+                app.loadRoms(getDocumentBase());
                 resize(preferredSize());
             } catch (Exception e) {
                 showStatus("Caught IO Error: " + e);
