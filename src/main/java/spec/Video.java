@@ -192,8 +192,7 @@ public class Video {
 
             // Swap colors around   if doing flash
             // Redraw left nibble if necessary
-            qwe((newPixels & 0xF0) >> 4, X, Y);
-            qwe(newPixels & 0x0F, X + 4, Y);
+            qwe(newPixels, X, Y);
 
             int newAddr = nextAddr[addr]; // новый адрес из буфера адресов по смещению "first"
             nextAddr[addr] = -1; // в буфере сюда записать "адрес" = -1;
@@ -202,26 +201,16 @@ public class Video {
         first = -1; // признак, что обновлений более нет.
     }
 
-    private void qwe(int newPixels, int x, int y) {
-        // получим новый:    аттрибут, младший ниббл
-        Image image = getImage(newPixels); // новый image1
-        // Метод paint использует drawlmage с четырьмя аргументами:
-        // это ссылка на изображение art, координаты левого верхнего угла рисунка х, у
-        // и объект типа ImageObserver.
-        drawer.accept(image, new Point(x, y)); // рисуем старшие нибблы байта
-    }
+    private void qwe(int pattern, int x, int y) {
+        Image image = imageCreator.apply(8, 1);
+        Graphics g = image.getGraphics();
 
-    public synchronized Image getImage(int pattern) {
-        // сменили палитру
-        Image image = imageCreator.apply(4, 1); // создали Image 4 х 1 точек: ниббл.
-        Graphics g = image.getGraphics(); // создали для него графический контент
+        for (int i = 0; i < 8; i++) {
+            Color col = ((pattern & (1 << i)) == 0) ? Color.BLACK : Color.WHITE;
 
-        for (int i = 0; i < 4; i++) { // по 4-м точкам ниббла:
-            Color col = ((pattern & (1 << i)) == 0) ? Color.BLACK : Color.WHITE; // вычисляем цвет.
-
-            g.setColor(col); // выставляем для точки цвет из  SpecMXColors[];
-            g.fillRect((3 - i), 0, 1, 1); // ставим точку на графический контент
+            g.setColor(col);
+            g.fillRect((7 - i), 0, 1, 1);
         }
-        return image; // вернём созданный или считанный image
+        drawer.accept(image, new Point(x, y));
     }
 }
