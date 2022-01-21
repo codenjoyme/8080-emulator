@@ -47,8 +47,6 @@ public class Video {
 
     // адрес 1 аттрибута + 24 строки * по 32 символа = адрес последнего аттрибута
     // 5B00h (23296) - конец аттрибутов               24 строки  32 символа
-    private static final int lastAttr = firstAttr + firstAttr;  // для "Специалист"
-    // (nCharsHigh*nCharsWide);
 
     // first screen line in linked list to be redrawn
     //         первая строка экрана в списке указателей, для перерисовки
@@ -371,18 +369,8 @@ public class Video {
 
             hashValue |= (col << (i << 2)); //? ? ?
         }
-        //  Что же касается данных базовых типов, если вам нужно передавать на них ссылки,
-        //  то следует заменить базовые типы на соответствующие   замещающие классы.
-        //  Например, вместо типа int используйте класс Integer, вместо типа long - класс Long
-        //  и так далее.
-        //  Инициализация таких объектов должна выполняться с помощью конструктора,
-        //  как это показано ниже:
 
-        // это будет ссылкой на объект( hashValue ).
-        Integer imageKey = new Integer(hashValue);
-
-        // возвращает запись, соответствующую ключу( imageKey )
-        Image image = (Image) patternMap.get(imageKey);
+        Image image = (Image) patternMap.get(hashValue);
 
         if (image == null) { // если готового image в словаре нет, сделаем его...
             // сменили палитру
@@ -397,7 +385,7 @@ public class Video {
                 g.fillRect((3 - i), 0, 1, 1); // ставим точку на графический контент
             }
             // добавляем запись: ключ(imageKey=Integer( hashValue )),значение (image)
-            patternMap.put(imageKey, image); // положим image в словарь под ключом imageKey
+            patternMap.put(hashValue, image); // положим image в словарь под ключом imageKey
         }
         return image; // вернём созданный или считанный image
     }
