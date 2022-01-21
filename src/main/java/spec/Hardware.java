@@ -23,7 +23,6 @@ package spec;
  *  @(#)Spechard.java 1.1 27/04/97 Adam Davidson & Andrew Pollard.
  */
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -143,7 +142,6 @@ public class Hardware {
         parent.add(urlField = new TextField());
         urlField.setVisible(true);   // show();
         urlField.setVisible(false);  // hide();
-        autor = bytesToMes();
     }
 
     //
@@ -171,8 +169,6 @@ public class Hardware {
     private boolean PrC1IN = true;  // порт C1- на ввод
     private boolean Shiftk = false; // Shift не нажат
 
-    private String autor = "";
-
     // ЭТИ ПОРТЫ ЛУЧШЕ СДЕЛАТЬ АДРЕСМИ, ЧТОБЫ МЕНЯТЬ ИХ ТОЛЬКО ЗДЕСЬ,,,
     // Пользуясь ключевыми словами static и final, можно определять внутри классов
     // глобальные константы.
@@ -188,19 +184,6 @@ public class Hardware {
 
     // биты установки
     private final int[] msk = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080};
-
-    private final int[] ptr = {0x0074, 0x0023, 0x0015, 0x0006, 0x000A, 0x0008, 0x000D, 0x0005, 0x001A, 0x0007,
-            0x0053, 0x0007, 0x0042, 0x001B, 0x0059, 0x0061, 0x002F, 0x000A, 0x0016, 0x0017,
-            0x001C, 0x0059, 0x0061, 0x006F, 0x000E, 0x0073, 0x0036, 0x0008, 0x0008, 0x000B,
-            0x0001, 0x0009, 0x0000, 0x006C, 0x00A3, 0x0089, 0x0012, 0x0002, 0x0001, 0x0000,
-            0x0011, 0x0073, 0x0032, 0x000C, 0x0032, 0x001C, 0x002C, 0x0002, 0x001D, 0x0005,
-            0x0001, 0x0011, 0x0017, 0x0001, 0x0053, 0x006C, 0x0018, 0x0010, 0x004E, 0x0059,
-            0x0023, 0x0015, 0x0006, 0x000A, 0x0008, 0x000D, 0x004C, 0x0074, 0x003C, 0x0009,
-            0x000F, 0x0005, 0x0018, 0x0053, 0x0074, 0x003B, 0x0065, 0x004B, 0x0025, 0x0005,
-            0x000C, 0x004D, 0x0064, 0x0025, 0x0017, 0x001F, 0x000D, 0x0017, 0x001C, 0x0001,
-            0x004E, 0x0006, 0x0006, 0x0061, 0x002F, 0x000A, 0x0016, 0x0017, 0x0012, 0x0057,
-            0x0070, 0x003F, 0x0003, 0x0000, 0x000D, 0x0013, 0x0016, 0x009B, 0x00FF
-    };
 
 //  массив возможных ascii-кодов нажатых клавиш...
 //  23 строки по 8 = 184 + 4 + 2 + 2 = 192 клавиши.
@@ -1319,11 +1302,11 @@ public class Hardware {
             } else { // если нет старшего ниббла - строчные: старший бит = 1 -> нажат Shift
                 Shiftk = down; // Shift нажат (отпущен)down
             }
-        }// index >= 0 кончился
+        }
         boolean CTRL = ((mods & Event.CTRL_MASK) != 0); // Была нажата клавиша <Ctrl>
         boolean ALT = ((mods & Event.ALT_MASK) != 0);  // Была нажата мета-клавиша <Alt>
 
-        //                               клавиши - модификаторы:
+        // клавиши - модификаторы:
         //  boolean  CAPS = ((mods & Event.CTRL_MASK) != 0); // Была нажата клавиша <Ctrl>
         //  boolean  SYMB = ((mods & Event.META_MASK) != 0); // Была нажата мета-клавиша <Alt> Meta key
         //  boolean SHIFT = ((mods & Event.SHIFT_MASK)!= 0); // Была нажата клавиша <Shift>
@@ -1346,41 +1329,7 @@ public class Hardware {
         // Meta — условное обозначение для набора мета-клавиш. На современном PC это обычно
         // Alt и клавиша Windows. На некоторых устройствах/ОС под мета клавиши попадает и Esc.
 
-
         switch (ascii) {  // down=true КЛАВИША_НАЖАТА_, false КЛАВИША_ОТПУЩЕНА_
-
-        // ESC - не будет работать в "СПЕЦИАЛИСТЕ"!!!
-        // case Event.HOME:
-            case '\033': {// ESC  '\' - восьмиричная система = 0x1b - HEX.
-                if (down) {
-                    if (pauseAtNextInterrupt) {
-                        pauseOrResume();
-                    }
-                }
-                break;
-            }
-
-            case Event.F1: {
-                if (ALT && CTRL) {
-                    if (down) {
-                        JOptionPane.showMessageDialog(null, autor, " About",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        // WARNING_MESSAGE
-                        // INFORMATION_MESSAGE
-                        break;
-                    }
-                }// ALT && CTRL
-                else {
-                    if (ALT) {
-                        if (down) {
-                            if (!pauseAtNextInterrupt) {
-                                pauseOrResume();
-                            }
-                        }// down
-                    }// ALT
-                }// else
-                break;
-            }
             case 0x0400: { // <Pause>
                 if (down) {
                     resetAtNextInterrupt = true;
@@ -1418,18 +1367,6 @@ public class Hardware {
         resetKeyboard();
 
         canvas.requestFocus();
-    }
-
-    private String bytesToMes() {
-        String mes = "";
-        int lng = ptr.length - 1;
-        int xxx = ptr[lng];
-
-        for (int i = lng; i != 0; i--) {
-            mes = (char) ((ptr[i - 1] ^ xxx) & 0x00FF) + mes;
-            xxx = (ptr[i - 1] ^ xxx) & 0x00FF;
-        }
-        return mes;
     }
 
     public void execute() {
