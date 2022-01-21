@@ -123,16 +123,16 @@ public class Main extends Applet implements Runnable {
         URL base = getDocumentBase();
         boolean lik = true;
         if (lik) {
-            Lik.loadRom(base, hard.roms());
-            Lik.loadGame(base, hard.roms(), "klad");
+            Lik.loadRom(base.getPath(), hard.roms());
+            Lik.loadGame(base.getPath(), hard.roms(), "klad");
         } else {
-            Specialist.loadRom(base, hard.roms());
-            Specialist.loadGame(base, hard.roms(), "blobcop");
+            Specialist.loadRom(base.getPath(), hard.roms());
+            Specialist.loadGame(base.getPath(), hard.roms(), "blobcop");
         }
 
         String snapshot = null; // TODO научиться сохранять и загружать снепшоты
         if (snapshot != null) {
-            hard.loadSnapshot(base, snapshot);
+            hard.loadSnapshot(base.getPath() + snapshot);
         } else {
             hard.reset();
             hard.refreshWholeScreen();

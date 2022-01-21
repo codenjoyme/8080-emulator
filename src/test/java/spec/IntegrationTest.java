@@ -9,7 +9,6 @@ import spec.platforms.Lik;
 import spec.platforms.Specialist;
 
 import java.io.File;
-import java.net.URL;
 
 import static spec.Constants.START_POINT;
 
@@ -24,12 +23,14 @@ public class IntegrationTest extends AbstractCpuTest {
     private int ticks;
     private int maxTicks;
     private PngVideo video;
+    private String base;
 
     @Before
     public void before() {
         super.before();
         roms = new RomLoader(data.memory(), cpu);
         video = new PngVideo(data.memory());
+        base = new File("src/main/resources/").getAbsolutePath();
     }
 
     @After
@@ -51,7 +52,6 @@ public class IntegrationTest extends AbstractCpuTest {
         // given
         maxTicks = TICKS;
 
-        URL base = new File("src/main/resources/").toURI().toURL();
         Lik.loadRom(base, roms);
 
         // when
@@ -96,7 +96,6 @@ public class IntegrationTest extends AbstractCpuTest {
         // given
         maxTicks = TICKS;
 
-        URL base = new File("src/main/resources/").toURI().toURL();
         Lik.loadRom(base, roms);
         Lik.loadGame(base, roms, "klad");
 
@@ -142,7 +141,6 @@ public class IntegrationTest extends AbstractCpuTest {
         // given
         maxTicks = TICKS;
 
-        URL base = new File("src/main/resources/").toURI().toURL();
         Specialist.loadRom(base, roms);
 
         // when
@@ -187,7 +185,6 @@ public class IntegrationTest extends AbstractCpuTest {
         // given
         maxTicks = TICKS;
 
-        URL base = new File("src/main/resources/").toURI().toURL();
         Specialist.loadRom(base, roms);
         Specialist.loadGame(base, roms, "blobcop");
 
@@ -233,7 +230,6 @@ public class IntegrationTest extends AbstractCpuTest {
         // given
         maxTicks = TICKS;
 
-        URL base = new File("src/main/resources/").toURI().toURL();
         Specialist.loadRom(base, roms);
         Specialist.loadGame(base, roms, "babnik");
 

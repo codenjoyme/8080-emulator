@@ -1,9 +1,6 @@
 package spec;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -34,10 +31,13 @@ public class RomLoader {
 
     // для ПК "Специалист"
     // чтение ПЗУ
-    public void loadROM(String name, InputStream is, int offset) throws Exception {
-        Range range = new Range(offset, -0x0800);
-        logLoading(name, range);
-        readBytes(is, memory.all(), range);
+    public void loadROM(String path, int offset) throws Exception {
+        File file = new File(path);
+        URL url = file.toURI().toURL();
+        int length = (int) file.length();
+        Range range = new Range(offset, - length);
+        logLoading(url.toString(), range);
+        readBytes(url.openStream(), memory.all(), range);
     }
 
     // для ПК "Специалист"
@@ -45,13 +45,16 @@ public class RomLoader {
     // ADK: ML_B, ST_B
     // Bytes...
     // KSM: ML_B, ST_B
-    public void loadRKS(String name, InputStream is) throws Exception {
+    public void loadRKS(String path) throws Exception {
+        File file = new File(path);
+        URL url = file.toURI().toURL();
+        InputStream is = url.openStream();
         int[] header = read8arr(is, 4);
         Range range = new Range(
                 merge(header[1], header[0]),
                 merge(header[3], header[2]));
 
-        logLoading(name, range);
+        logLoading(url.toString(), range);
         readBytes(is, memory.all(), range);
 
         // int[] data = read8arr(is, 4); // TODO в конце еще два байта, зачем?
@@ -91,13 +94,12 @@ public class RomLoader {
         }
     }
 
-    public void loadSnapshot(URL base, String snapshot) throws Exception {
-        URL url = new URL(base, snapshot);
+    public void loadSnapshot(String path) throws Exception {
+        URL url = new URL(path);
         URLConnection snap = url.openConnection();
 
         InputStream is = snap.getInputStream();
         int length = snap.getContentLength();
-        String name = base.toString();
 
         // Linux  JDK doesn't always know the size of files
         if (length < 0) {
@@ -114,7 +116,7 @@ public class RomLoader {
         // Грубая проверка, но будет работать (SNA имеет фиксированный размер)
         // Crude check but it'll work (SNA is a fixed size)
 
-        loadRKS(name, is);
+        loadRKS(path);
 
         is.close();
     }
