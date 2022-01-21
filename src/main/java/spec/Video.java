@@ -155,9 +155,7 @@ public class Video {
         // Update affected pixels
         addr = first;  // в первый заход first = адресу последнего байта экрана...
         while (addr >= 0) {
-            int oldPixels = lastByte[addr];   // байт из буфера байтов по смещению "first"
             int newPixels = memory.read8(addr + SCREEN.begin()); // байт из видео-ОЗУ по смещению "first"
-            int changes = oldPixels ^ newPixels; // changes = 0, если они одинаковы...
 
             lastByte[addr] = newPixels; // в буфер байтов по смещению "first" запишем -
             // байт из видео-ОЗУ по смещению "first"
@@ -201,14 +199,8 @@ public class Video {
 //
             // Swap colors around   if doing flash
             // Redraw left nibble if necessary
-            if ((changes & 0xF0) != 0) { // если есть изменения в старшем ниббле:
-                qwe((newPixels & 0xF0) >> 4, changes, X, Y, attr);
-            }
-
-            // Redraw right nibble if necessary
-            if ((changes & 0x0F) != 0) { // если есть изменения в старшем ниббле:
-                qwe(newPixels & 0x0F, changes, X + 4, Y, attr);
-            }
+            qwe((newPixels & 0xF0) >> 4, X, Y, attr);
+            qwe(newPixels & 0x0F, X + 4, Y, attr);
 
             int newAddr = nextAddr[addr]; // новый адрес из буфера адресов по смещению "first"
             nextAddr[addr] = -1; // в буфере сюда записать "адрес" = -1;
@@ -217,7 +209,7 @@ public class Video {
         first = -1; // признак, что обновлений более нет.
     }
 
-    private void qwe(int newPixels, int changes, int x, int y, int attr) {
+    private void qwe(int newPixels, int x, int y, int attr) {
         // получим новый:    аттрибут, младший ниббл
         Image image = getImage(attr, newPixels); // новый image1
         // Метод paint использует drawlmage с четырьмя аргументами:
