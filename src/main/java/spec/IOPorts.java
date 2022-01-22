@@ -328,6 +328,10 @@ public class IOPorts {
                 .findFirst()
                 .ifPresent(button -> {
                     keyStatus[button.x()][button.y()] = key.pressed();
+
+                    System.out.println("-------------------------------------");
+                    log(key, button);
+                    System.out.println(toString(keyStatus));
                 });
     }
 
