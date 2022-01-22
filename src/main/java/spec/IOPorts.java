@@ -59,9 +59,7 @@ public class IOPorts {
     // ввод из порта памяти 580ВВ55
     public synchronized int inPort(int addr) {
         // все порты ППА перенесём в область 0xFFE0 - 0xFFE3
-        if (addr <= RgRYS) {
-            addr = shiftPortAddress(addr);
-        }
+        addr = shiftPortAddress(addr);
 
         int result = 0b1111_1111; // предварительно ни одна кнопка не нажата
         // port 580BB55
@@ -178,9 +176,7 @@ public class IOPorts {
 
     public synchronized void outPort(int addr, int bite) {
         // все порты ППА перенесём в область 0xFFE0 - 0xFFE3
-        if (addr <= RgRYS) {
-            addr = shiftPortAddress(addr);
-        }
+        addr = shiftPortAddress(addr);
 
         // Разбор управляющего слова ППА 580ВВ55
         // РУС
@@ -278,7 +274,17 @@ public class IOPorts {
     }
 
     private int shiftPortAddress(int addr) {
-        return (addr & 0x0003) | 0xFFE0;
+        if (addr > RgRYS) {
+            // адреса 0xFFF9...0xFFFE не трогаем
+            return addr;
+        }
+
+        // для всех портов ППА из диапазона 0xF800...0xFFF8
+        // берем первые два бита 0x0000...0x0003
+        // превращаем их в 0xFFE0...0xFFE3
+        // короче там циклическое дублирование во все диапазоне
+        return (addr & 0b0000_0000_0000_0011)
+                | 0b1111_1111_1110_0000;
     }
 
     // переменные-заготовки для полу-рядов матрицы клавиатуры .
