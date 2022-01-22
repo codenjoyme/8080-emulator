@@ -20,7 +20,9 @@ public class IOPorts {
     private boolean Bin;   // порт B на ввод
     private boolean C0in;  // порт C0 на ввод
     private boolean C1in;  // порт C1 на ввод
-    private boolean shift;
+
+    private boolean shiftIn;  // нажат ли shift на host машине
+    private boolean shiftOut; // нажат ли shift на эмулируемой машине
 
     private static final int PortA = 0xFFE0; // Порт А ППА
     private static final int PortB = 0xFFE1; // Порт В ППА
@@ -44,7 +46,8 @@ public class IOPorts {
             new Dot(),
             new MoreThan(),
             new End(),
-            new Semicolon());
+            new Semicolon(),
+            new Colon());
 
     private Memory memory;
     private int layout;
@@ -129,7 +132,7 @@ public class IOPorts {
                         // КАКОЙ_ТО КОНФЛИКТ СО <CapsLock> - он работает наоборот
                         // <CpsLk> = Р/Л ЭТО ДАЁТ СБОЙ ЗДЕСЬ Т.К. ВЛИЯЕТ НА КОД КЛАВИШИ!!!
                         // в Мониторе "Shift" не влияет на клавишу. Влияет РУС/ЛАТ (НР.ФИКС) !!!
-                        if (shift) {
+                        if (shiftOut) {
                             result &= 0b1111_1101; // выставим состояние Shift: B1 = 0
                         } else {
                             result |= 0b0000_0010; // выставим состояние Shift: B1 = 1
@@ -311,17 +314,20 @@ public class IOPorts {
 
     public void processKey(boolean down, int keyCode) {
         if (layout == LAYOUT_SWING && keyCode == 0x0010) {
-            shift = down;
+            shiftIn = down;
             return;
         }
 
         keys.stream()
-                .filter(k -> k.itsMe(keyCode, layout, shift))
+                .filter(k -> k.itsMe(keyCode, layout, shiftIn))
                 .findFirst()
                 .ifPresent(key -> {
                     keyStatus[key.x()][key.y()] = down;
-                    if (layout == LAYOUT_AWT && key.shift()) {
-                        shift = down;
+
+                    if (key.shiftOut()) {
+                        shiftOut = (layout == LAYOUT_AWT) ? down : shiftIn;
+                    } else {
+                        shiftOut = false;
                     }
                 });
 
@@ -329,11 +335,12 @@ public class IOPorts {
     }
 
     public void reset() {
-        shift = false; // Shift не нажат
-        Ain = true;    // порт A на ввод
-        Bin = true;    // порт B на ввод
-        C0in = true;   // порт C0 на ввод
-        C1in = true;   // порт C1 на ввод
+        shiftIn = false;
+        shiftOut = false;
+        Ain = true;
+        Bin = true;
+        C0in = true;
+        C1in = true;
 
         // все кнопки не нажаты
         resetKeyboard();

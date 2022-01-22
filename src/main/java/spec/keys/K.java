@@ -13,7 +13,7 @@ public interface K {
     default boolean itsMe(int keyCode, int layout, boolean shift) {
         return (layout == LAYOUT_AWT)
                 ? keyCode == awtCode()
-                : shift() == shift && keyCode == swingCode();
+                : shiftIn() == shift && keyCode == swingCode();
     }
 
     default int x() {
@@ -32,7 +32,11 @@ public interface K {
         return ch();
     }
 
-    default boolean shift() {
+    default boolean shiftIn() {
         return false;
+    }
+
+    default boolean shiftOut() {
+        return shiftIn();
     }
 }

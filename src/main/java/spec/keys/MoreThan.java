@@ -13,7 +13,7 @@ public class MoreThan extends Dot {
     }
 
     @Override
-    public boolean shift() {
+    public boolean shiftIn() {
         return true;
     }
 }
