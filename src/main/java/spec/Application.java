@@ -51,7 +51,7 @@ public class Application {
      * иерархической системы визуальных объектов. Container отвечает за расположение содержащихся
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
-    public Application(Container container) {
+    public Application(Container container, URL base) {
         parent = container;
         hard = new Hardware() {
             @Override
@@ -84,9 +84,11 @@ public class Application {
         bufferGraphics = bufferImage.getGraphics();
         parentGraphics = parent.getGraphics();
         canvasGraphics = canvas.getGraphics();
+
+        loadRoms(base);
     }
 
-    public void loadRoms(URL base) {
+    private void loadRoms(URL base) {
         setBorderWidth(borderWidth);
 
         boolean lik = true;

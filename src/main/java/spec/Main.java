@@ -25,8 +25,8 @@ import java.awt.*;
  */
 public class Main extends Applet implements Runnable {
 
-    private Application app = null;
-    private Thread thread = null;
+    private Application app;
+    private Thread thread;
 
     @Override
     public String getAppletInfo() {
@@ -56,10 +56,8 @@ public class Main extends Applet implements Runnable {
      */
     @Override
     public void start() {
-        if (thread == null) {
-            thread = new Thread(this, "Main");
-            thread.start();
-        }
+        thread = new Thread(this, "Main");
+        thread.start();
     }
 
     /**
@@ -69,9 +67,7 @@ public class Main extends Applet implements Runnable {
      */
     @Override
     public void stop() {
-        if (thread != null) {
-            thread = null;
-        }
+        thread = null;
     }
 
     /**
@@ -92,8 +88,7 @@ public class Main extends Applet implements Runnable {
     public void run() {
         showStatus(getAppletInfo());
 
-        app = new Application(this);
-        app.loadRoms(getDocumentBase());
+        app = new Application(this, getDocumentBase());
         resize(preferredSize());
         app.start();
     }
@@ -130,9 +125,7 @@ public class Main extends Applet implements Runnable {
      */
     @Override
     public void paint(Graphics g) {
-        if (app != null) {
-            app.repaint();
-        }
+        app.repaint();
     }
 
     /**
@@ -149,15 +142,12 @@ public class Main extends Applet implements Runnable {
      */
     @Override
     public boolean handleEvent(Event e) {
-        if (app != null) {
-            return app.handleEvent(e);
-        }
-        return super.handleEvent(e);
+        return app.handleEvent(e);
     }
 
     @Override
     public Dimension minimumSize() {
-        int border = (app == null) ? 20 : app.borderWidth;
+        int border = app.borderWidth;
         return new Dimension(
                 Video.WIDTH + border * 2,
                 Video.HEIGHT + border * 2);

@@ -2,6 +2,7 @@ package spec;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 public class Main2 extends JPanel {
@@ -20,15 +21,17 @@ public class Main2 extends JPanel {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        app = new Application(this);
-        app.loadRoms(new File("src/main/resources").toURI().toURL());
+        app = new Application(this, new File("src/main/resources").toURI().toURL());
         app.start();
     }
 
     @Override
     public void paint(Graphics g) {
-        if (app != null) {
-            app.repaint();
-        }
+        app.repaint();
+    }
+
+    @Override
+    protected void processKeyEvent(KeyEvent e) {
+        super.processKeyEvent(e);
     }
 }
