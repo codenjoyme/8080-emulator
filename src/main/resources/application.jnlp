@@ -2,15 +2,13 @@
 <jnlp spec="1.0+" 
       href="application.jnlp">
     <information>
-        <title>Specialist emulator</title>
+        <title>i8080 emulator</title>
         <vendor>Commulity</vendor>
     </information>
     <resources>
-        <!-- Application Resources -->
         <j2se version="1.7+"
               href="http://java.sun.com/products/autodl/j2se"/>
         <jar href="spec-1.0.jar" main="false" />
-
     </resources>
     <applet-desc
             main-class="spec.Main"

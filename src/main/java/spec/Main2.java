@@ -15,7 +15,7 @@ public class Main2 extends JPanel {
     }
 
     public Main2() throws Exception {
-        frame = new JFrame("Demo");
+        frame = new JFrame("i8080 emulator");
         frame.add(this);
         frame.setSize(550, 250);
         frame.setVisible(true);
