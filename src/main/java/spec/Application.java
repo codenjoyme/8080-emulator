@@ -15,18 +15,15 @@ public class Application {
     private static final int BORDER_PORT = 254;
     private static final int PAUSE = 0x0400;
 
-    private Graphics parentGraphics;
-    private Graphics canvasGraphics;
-    private Graphics bufferGraphics;
-    private Image bufferImage;
+    private Container container;
+    private Graphics background;
 
-    // SpecApp usually (where border is drawn)
-    private Container parent;
-
-    // Main screen
     private Canvas canvas;
+    private Graphics scene;
 
-    // ширина бордюра
+    private Image bufferImage;
+    private Graphics buffer;
+
     private static int BORDER_WIDTH = 20;
 
     private int refreshRate = 1;  // refresh every 'n' interrupts
@@ -50,8 +47,8 @@ public class Application {
      * иерархической системы визуальных объектов. Container отвечает за расположение содержащихся
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
-    public Application(Container container, URL base) {
-        parent = container;
+    public Application(Container parent, URL base) {
+        container = parent;
         hard = new Hardware() {
             @Override
             protected void outb(int port, int bite) {
@@ -70,17 +67,23 @@ public class Application {
         };
 
         // мы рисуем на канве, чтобы не мерцало изображение
-        parent.add(canvas = new Canvas());
+        container.add(canvas = new Canvas());
         canvas.setSize(WIDTH, HEIGHT);
-        if (parent.getKeyListeners().length > 0) {
-            canvas.addKeyListener(parent.getKeyListeners()[0]);
+        // переопределяем лиснер только для Swing приложения,
+        // иначе не будут отлавливаться там клавиши так как canvas перекрывает
+        if (container.getKeyListeners().length > 0) {
+            canvas.addKeyListener(container.getKeyListeners()[0]);
         }
         canvas.setVisible(true);
 
+        // тут мы кешируем уже отрисованное из видеопамяти изображение
         bufferImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-        bufferGraphics = bufferImage.getGraphics();
-        parentGraphics = parent.getGraphics();
-        canvasGraphics = canvas.getGraphics();
+        // через него мы рисуем на cache-image пиксели
+        buffer = bufferImage.getGraphics();
+        // на нем мы рисуем рамку, это фон под canvas
+        background = container.getGraphics();
+        // а через это мы рисуем на канве
+        scene = canvas.getGraphics();
 
         loadRoms(base);
     }
@@ -114,8 +117,8 @@ public class Application {
     }
 
     private void drawPixel(Point pt, Color color) {
-        bufferGraphics.setColor(color);
-        bufferGraphics.fillRect(pt.x, pt.y, 1, 1);
+        buffer.setColor(color);
+        buffer.fillRect(pt.x, pt.y, 1, 1);
     }
 
     private void setBorderWidth(int width) {
@@ -200,14 +203,14 @@ public class Application {
             return;
         }
         currentBorder = newBorder;
-        parentGraphics.setColor(currentBorder);
-        parentGraphics.fillRect(0, 0,
-                parent.getWidth(),
-                parent.getHeight());
+        background.setColor(currentBorder);
+        background.fillRect(0, 0,
+                container.getWidth(),
+                container.getHeight());
     }
 
     private void paintBuffer() {
-        canvasGraphics.drawImage(bufferImage, 0, 0, null);
+        scene.drawImage(bufferImage, 0, 0, null);
         borderPaint();
     }
 
