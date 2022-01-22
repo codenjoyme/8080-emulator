@@ -1,16 +1,18 @@
 package spec;
 
-import spec.keys.*;
-
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static spec.Constants.ROM;
+import static spec.Key.CYR;
+import static spec.Key.SHIFT;
+import static spec.WordMath.hex16;
+import static spec.WordMath.hex8;
 
 public class IOPorts {
 
-    public static final int PAUSE_KEY = 19;
-    public static final int SHIFT_KEY = 0x0010;
+    public static final int PAUSE_KEY = 0x13;
+    public static final int SHIFT_KEY = 0x10;
 
     private boolean Ain;   // порт A на ввод
     private boolean Bin;   // порт B на ввод
@@ -34,16 +36,6 @@ public class IOPorts {
     // массив матрицы клавш "Специалиста" ( true - нажата, false - отпущена)
     // 12 x 6 + Shift + Reset
     private boolean[][] keyStatus = new boolean[12][6];
-
-    private List<K> keys = Arrays.asList(
-            new Enter(),
-            new Backspace(),
-            new Dot(),
-            new MoreThan(),
-            new End(),
-            new Semicolon(),
-            new Colon(),
-            new Star());
 
     private Memory memory;
 
@@ -312,18 +304,65 @@ public class IOPorts {
  * +========================================================================================+
  **/
 
+    private Map<Integer, Integer> keys = new HashMap(){{
+        put(0x0A, 0x00);
+
+        put(0x00, 0x01);
+
+        put((int)'.', 0x02);
+        put((int)'>' | SHIFT, 0x02);
+
+        put((int)'*', 0x03);
+        put((int)';' | SHIFT, 0x03);
+
+        put((int)'=', 0x04);
+        put((int)'=' | SHIFT, 0x04);
+
+        put((int)'/', 0x11);
+        put((int)'/' | SHIFT, 0x11);
+
+        put((int)'Q', 0xB1);
+        put((int)'й', 0xB3);
+
+        put((int)'W', 0x92);
+        put((int)'ц', 0xA3);
+
+        put((int)'B', 0x41);
+        put((int)'и' | CYR, 0x71);
+
+        put(0xDE, 0x12);
+
+        put(0x11, 0xB0);  // Left Ctrl -> Rus/Lat
+
+        put(0x22, 0x10);
+
+        // put(0x21, 0x00);  // PageUp
+
+        put(0x23, 0xA5);
+
+        put((int)';', 0xB4);
+    }};
+
     public synchronized void processKey(Key key) {
+        if (key.pressed()) {
+            System.out.println(
+                    (char)key.code() + " _ "
+                    + hex8(key.code()) + " _ "
+                    + hex16(key.joint()));
+        }
+
         if (key.code() == SHIFT_KEY) {
             shift = key.pressed();
             return;
         }
 
-        keys.stream()
-                .filter(k -> k.itsMe(key))
-                .findFirst()
-                .ifPresent(button -> {
-                    keyStatus[button.x()][button.y()] = key.pressed();
-                });
+        Integer pt = keys.get(key.joint());
+        if (pt != null) {
+            int x = (pt & 0xF0) >> 4;
+            int y = pt & 0x0F;
+            keyStatus[x][y] = key.pressed();
+            return;
+        }
     }
 
     public synchronized void reset() {

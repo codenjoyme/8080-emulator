@@ -6,10 +6,13 @@ import static spec.IOPorts.PAUSE_KEY;
 
 public class Key {
 
-    public static final int SHIFT =      0b0000_0000_0100_0000;
-    public static final int LEFT_ALT =   0b0000_0010_0000_0000;
-    public static final int RIGHT_ALT =  0b0010_0010_0000_0000;
-    public static final int CTRL =       0b0000_0000_1000_0000;
+    public static final int MOD_SHIFT =      0b0000_0000_0100_0000;
+    public static final int MOD_LEFT_ALT =   0b0000_0010_0000_0000;
+    public static final int MOD_RIGHT_ALT =  0b0010_0010_0000_0000;
+    public static final int MOD_CTRL =       0b0000_0000_1000_0000;
+
+    public static final int SHIFT = 0b0000_0001_0000_0000;
+    public static final int CYR = 0x1000000;
 
     private int code;
     private boolean press;
@@ -29,11 +32,15 @@ public class Key {
         return press;
     }
 
+    public int joint() {
+        return code | (shift() ? SHIFT : 0);
+    }
+
     public int code() {
         return code;
     }
 
     public boolean shift() {
-        return (mods & SHIFT) == SHIFT;
+        return (mods & MOD_SHIFT) == MOD_SHIFT;
     }
 }
