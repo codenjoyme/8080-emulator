@@ -64,7 +64,7 @@ public abstract class Hardware {
 
     private int read8(int addr) {
         if (PORTS.includes(addr)) {
-            return ports.inPort(addr);
+            return ports.read8(addr);
         }
         return memory.read8(addr);
     }
@@ -83,7 +83,7 @@ public abstract class Hardware {
         }
 
         if (PORTS.includes(addr)) {
-            ports.outPort(addr, bite);
+            ports.write8(addr, bite);
         }
 
         memory.write8(addr, bite);

@@ -57,7 +57,7 @@ public class IOPorts {
     }
 
     // ввод из порта памяти 580ВВ55
-    public synchronized int inPort(int addr) {
+    public synchronized int read8(int addr) {
         // все порты ППА перенесём в область 0xFFE0 - 0xFFE3
         addr = shiftPortAddress(addr);
 
@@ -174,7 +174,7 @@ public class IOPorts {
         return result;
     }
 
-    public synchronized void outPort(int addr, int bite) {
+    public synchronized void write8(int addr, int bite) {
         // все порты ППА перенесём в область 0xFFE0 - 0xFFE3
         addr = shiftPortAddress(addr);
 
@@ -293,7 +293,7 @@ public class IOPorts {
     // согласно "0", выбирающему конкретный полуряд: public int inb( int port )
 
     public synchronized void resetKeyboard() {
-        for (int i = 0; i < 12; i++) {  // все кнопки ненажаты
+        for (int i = 0; i < 12; i++) {  // все кнопки не нажаты
             for (int j = 0; j < 6; j++) {
                 keyStatus[i][j] = false;
             }
