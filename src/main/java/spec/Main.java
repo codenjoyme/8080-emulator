@@ -147,7 +147,7 @@ public class Main extends Applet implements Runnable {
         if (app != null) {
             return app.handleEvent(e);
         }
-        return handleEvent(e);
+        return super.handleEvent(e);
     }
 
     @Override
