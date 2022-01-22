@@ -17,7 +17,7 @@ package spec;
 import java.applet.Applet;
 import java.awt.*;
 
-import static spec.IOPorts.LAYOUT_AWT;
+import static java.awt.Event.*;
 
 /**
  * Класс 'Main' с помощью ключевого слова {extends} наследуется от класса Applet.
@@ -90,7 +90,7 @@ public class Main extends Applet implements Runnable {
     public void run() {
         showStatus(getAppletInfo());
 
-        app = new Application(this, getDocumentBase(), LAYOUT_AWT);
+        app = new Application(this, getDocumentBase());
         resize(preferredSize());
         app.start();
     }
@@ -145,11 +145,34 @@ public class Main extends Applet implements Runnable {
      *     приложение может переопределить метод handleEvent и обрабатывать события самостоятельно
      */
     @Override
-    public boolean handleEvent(Event e) {
+    public boolean handleEvent(Event event) {
         if (app != null) {
-            return app.handleEvent(e);
+            switch (event.id) {
+                case MOUSE_DOWN: {
+                    app.requestFocus(); // TODO надо ли это тут?
+                    return true;
+                }
+                case KEY_ACTION:
+                case KEY_PRESS: {
+                    app.handleKey(new Key(event, true));
+                    return true;
+                }
+                case KEY_ACTION_RELEASE:
+                case KEY_RELEASE: {
+                    app.handleKey(new Key(event, false));
+                    return true;
+                }
+                case GOT_FOCUS: {
+                    app.gotFocus();
+                    return true;
+                }
+                case LOST_FOCUS: {
+                    app.lostFocus();
+                    return true;
+                }
+            }
         }
-        return super.handleEvent(e);
+        return super.handleEvent(event);
     }
 
     @Override

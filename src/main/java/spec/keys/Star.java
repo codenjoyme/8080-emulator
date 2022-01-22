@@ -1,6 +1,6 @@
 package spec.keys;
 
-public class Star extends Colon {
+public class Star implements K {
 
     @Override
     public char ch() {
@@ -18,7 +18,8 @@ public class Star extends Colon {
     }
 
     @Override
-    public boolean shiftOut() {
-        return true;
+    public int pt() {
+        return 0x03;
     }
+
 }

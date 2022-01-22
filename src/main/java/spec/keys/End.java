@@ -3,11 +3,6 @@ package spec.keys;
 public class End implements K {
 
     @Override
-    public int pt() {
-        return 0xA5; // like F1
-    }
-
-    @Override
     public int awtCode() {
         return 0x03E9;
     }
@@ -15,5 +10,10 @@ public class End implements K {
     @Override
     public int swingCode() {
         return 0x0023;
+    }
+
+    @Override
+    public int pt() {
+        return 0xA5; // like F1
     }
 }

@@ -21,8 +21,7 @@ public class IOPorts {
     private boolean C0in;  // порт C0 на ввод
     private boolean C1in;  // порт C1 на ввод
 
-    private boolean shiftIn;  // нажат ли shift на host машине
-    private boolean shiftOut; // нажат ли shift на эмулируемой машине
+    private boolean shift; // нажат ли shift на эмулируемой машине
 
     private static final int PortA = 0xFFE0; // Порт А ППА
     private static final int PortB = 0xFFE1; // Порт В ППА
@@ -51,16 +50,14 @@ public class IOPorts {
             new Star());
 
     private Memory memory;
-    private int layout;
 
-    public IOPorts(Memory memory, int layout) {
-        this.layout = layout;
+    public IOPorts(Memory memory) {
         this.memory = memory;
         reset();
     }
 
     // ввод из порта памяти 580ВВ55
-    public int inPort(int addr) {
+    public synchronized int inPort(int addr) {
         // все порты ППА перенесём в область 0xFFE0 - 0xFFE3
         if (addr <= RgRYS) {
             addr = shiftPortAddress(addr);
@@ -133,7 +130,7 @@ public class IOPorts {
                         // КАКОЙ_ТО КОНФЛИКТ СО <CapsLock> - он работает наоборот
                         // <CpsLk> = Р/Л ЭТО ДАЁТ СБОЙ ЗДЕСЬ Т.К. ВЛИЯЕТ НА КОД КЛАВИШИ!!!
                         // в Мониторе "Shift" не влияет на клавишу. Влияет РУС/ЛАТ (НР.ФИКС) !!!
-                        if (shiftOut) {
+                        if (shift) {
                             result &= 0b1111_1101; // выставим состояние Shift: B1 = 0
                         } else {
                             result |= 0b0000_0010; // выставим состояние Shift: B1 = 1
@@ -179,7 +176,7 @@ public class IOPorts {
         return result;
     }
 
-    public void outPort(int addr, int bite) {
+    public synchronized void outPort(int addr, int bite) {
         // все порты ППА перенесём в область 0xFFE0 - 0xFFE3
         if (addr <= RgRYS) {
             addr = shiftPortAddress(addr);
@@ -289,7 +286,7 @@ public class IOPorts {
     // в порт клавиатуры - xxfeh они записываются во время его опроса
     // согласно "0", выбирающему конкретный полуряд: public int inb( int port )
 
-    public void resetKeyboard() {
+    public synchronized void resetKeyboard() {
         for (int i = 0; i < 12; i++) {  // все кнопки ненажаты
             for (int j = 0; j < 6; j++) {
                 keyStatus[i][j] = false;
@@ -312,32 +309,35 @@ public class IOPorts {
  * |  _0  | Р/Л |HOME |  Up |Down | ESC | TAB | SPС |  <= |  ПВ |  => |  ПС |  ВК |    B0   |
  * +========================================================================================+
  **/
+    int tick = 0;
 
-    public void processKey(boolean down, int keyCode) {
-        if (layout == LAYOUT_SWING && keyCode == 0x0010) {
-            shiftIn = down;
-            return;
-        }
-
+    public synchronized void processKey(Key key) {
         keys.stream()
-                .filter(k -> k.itsMe(keyCode, layout, shiftIn))
+                .filter(k -> k.itsMe(key))
                 .findFirst()
-                .ifPresent(key -> {
-                    keyStatus[key.x()][key.y()] = down;
-
-                    if (key.shiftOut()) {
-                        shiftOut = (layout == LAYOUT_AWT) ? down : shiftIn;
+                .ifPresent(button -> {
+                    if (key.pressed()) {
+                        shift = button.shiftOut();
+                        log(key, button);
                     } else {
-                        shiftOut = false;
+                        shift = false;
                     }
+                    keyStatus[button.x()][button.y()] = key.pressed();
                 });
-
-        System.out.println((down ? "down- " : "up-   ") + "0x" + hex16(keyCode));
     }
 
-    public void reset() {
-        shiftIn = false;
-        shiftOut = false;
+    private void log(Key key, K button) {
+        System.out.println((++tick) + "> "
+                + (key.shift() ? "+" : " ")
+                + " "
+                + (key.pressed() ? "down " : "up   ")
+                + "0x" + hex16(key.code())
+                + " " + (button.shiftOut() ? "+" : " ")
+                + button.getClass().getSimpleName());
+    }
+
+    public synchronized void reset() {
+        shift = false;
         Ain = true;
         Bin = true;
         C0in = true;

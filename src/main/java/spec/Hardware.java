@@ -15,7 +15,7 @@ public abstract class Hardware {
     protected IOPorts ports;
     protected Video video;
 
-    public Hardware(int keyboardLayout) {
+    public Hardware() {
         memory = new Memory(x10000);
 
         video = new Video(Hardware.this::drawPixel);
@@ -42,7 +42,7 @@ public abstract class Hardware {
             }
         });
 
-        ports = new IOPorts(memory, keyboardLayout);
+        ports = new IOPorts(memory);
 
         roms = new RomLoader(memory, cpu);
     }

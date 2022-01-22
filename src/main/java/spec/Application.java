@@ -6,9 +6,6 @@ import spec.platforms.Specialist;
 import java.awt.*;
 import java.net.URL;
 
-import static java.awt.Event.*;
-import static spec.IOPorts.PAUSE_AWT;
-import static spec.IOPorts.PAUSE_SWING;
 import static spec.Video.COLORS;
 
 public class Application {
@@ -35,10 +32,10 @@ public class Application {
      * иерархической системы визуальных объектов. Container отвечает за расположение содержащихся
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
-    public Application(Container parent, URL base, int keyboardLayout) {
+    public Application(Container parent, URL base) {
         graphic = new Graphic(parent);
 
-        hard = new Hardware(keyboardLayout) {
+        hard = new Hardware() {
             @Override
             protected void outb(int port, int bite) {
                 Application.this.outb(port, bite);
@@ -146,32 +143,6 @@ public class Application {
         refreshNextInterrupt = true;
     }
 
-    public boolean handleEvent(Event event) {
-        switch (event.id) {
-            case MOUSE_DOWN: {
-                graphic.requestFocus();
-                return true;
-            }
-            case KEY_ACTION:
-            case KEY_PRESS: {
-                return handleKey(true, event.key);
-            }
-            case KEY_ACTION_RELEASE:
-            case KEY_RELEASE: {
-                return handleKey(false, event.key);
-            }
-            case GOT_FOCUS: {
-                gotFocus();
-                return true;
-            }
-            case LOST_FOCUS: {
-                lostFocus();
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void lostFocus() {
         System.out.println("LOST FOCUS");
         outb(BORDER_PORT, 0x06);
@@ -184,19 +155,12 @@ public class Application {
         hard.ports.resetKeyboard();
     }
 
-    public boolean handleKey(boolean down, int keyCode) {
-        hard.ports.processKey(down, keyCode);
+    public void handleKey(Key key) {
+        hard.ports.processKey(key);
 
-        switch (keyCode) {
-            case PAUSE_SWING:
-            case PAUSE_AWT: {
-                if (down) {
-                    resetAtNextInterrupt = true;
-                }
-                return true;
-            }
+        if (key.pause() && key.pressed()) {
+            resetAtNextInterrupt = true;
         }
-        return false;
     }
 
     private void refreshWholeScreen() {
@@ -216,5 +180,9 @@ public class Application {
     private void reset() {
         hard.reset();
         refreshWholeScreen();
+    }
+
+    public void requestFocus() {
+        graphic.requestFocus();
     }
 }

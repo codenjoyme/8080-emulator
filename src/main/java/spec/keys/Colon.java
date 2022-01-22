@@ -8,11 +8,6 @@ public class Colon implements K {
     }
 
     @Override
-    public int pt() {
-        return 0x03;
-    }
-
-    @Override
     public int swingCode() {
         return ';';
     }
@@ -20,6 +15,11 @@ public class Colon implements K {
     @Override
     public boolean shiftIn() {
         return true;
+    }
+
+    @Override
+    public int pt() {
+        return 0x03;
     }
 
     @Override

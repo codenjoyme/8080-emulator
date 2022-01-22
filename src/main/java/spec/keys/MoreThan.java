@@ -1,6 +1,6 @@
 package spec.keys;
 
-public class MoreThan extends Dot {
+public class MoreThan implements K {
 
     @Override
     public char ch() {
@@ -9,11 +9,16 @@ public class MoreThan extends Dot {
 
     @Override
     public int swingCode() {
-        return 0x002E;
+        return '.';
     }
 
     @Override
     public boolean shiftIn() {
         return true;
+    }
+
+    @Override
+    public int pt() {
+        return 0x02;
     }
 }
