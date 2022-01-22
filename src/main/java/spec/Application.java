@@ -151,7 +151,7 @@ public class Application {
         }
 
         if (resetAtNextInterrupt) {
-            System.out.println("Total RESET !!!");
+            System.out.println("TOTAL RESET");
             resetAtNextInterrupt = false;
             hard.reset();
         }
@@ -231,13 +231,13 @@ public class Application {
                 return doKey(false, e.key, e.modifiers);
             }
             case GOT_FOCUS: {
-                System.out.println("'SPECIALIST' GOT FOCUS");
+                System.out.println("GOT FOCUS");
                 outb(BORDER_PORT, 0x02);
                 hard.ports.resetKeyboard();
                 return true;
             }
             case LOST_FOCUS: {
-                System.out.println("'SPECIALIST' LOST FOCUS");
+                System.out.println("LOST FOCUS");
                 outb(BORDER_PORT, 0x06);
                 hard.ports.resetKeyboard();
                 return true;
