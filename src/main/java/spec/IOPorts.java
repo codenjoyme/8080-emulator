@@ -43,7 +43,8 @@ public class IOPorts {
             new Backspace(),
             new Dot(),
             new MoreThan(),
-            new End());
+            new End(),
+            new Semicolon());
 
     private Memory memory;
     private int layout;
@@ -319,7 +320,7 @@ public class IOPorts {
                 .filter(k -> k.itsMe(keyCode, layout, shift))
                 .findFirst()
                 .ifPresent(key -> {
-                    keyStatus[key.pt().x][key.pt().y] = down;
+                    keyStatus[key.x()][key.y()] = down;
                     if (layout == LAYOUT_AWT && key.shift()) {
                         shift = down;
                     }

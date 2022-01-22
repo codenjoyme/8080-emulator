@@ -1,7 +1,5 @@
 package spec.keys;
 
-import java.awt.*;
-
 import static spec.IOPorts.LAYOUT_AWT;
 
 public interface K {
@@ -10,12 +8,20 @@ public interface K {
         return 0x00;
     }
 
-    Point pt();
+    int pt();
 
     default boolean itsMe(int keyCode, int layout, boolean shift) {
         return (layout == LAYOUT_AWT)
                 ? keyCode == awtCode()
                 : shift() == shift && keyCode == swingCode();
+    }
+
+    default int x() {
+        return (pt() & 0xF0) >> 4;
+    }
+
+    default int y() {
+        return pt() & 0x0F;
     }
 
     default int awtCode() {

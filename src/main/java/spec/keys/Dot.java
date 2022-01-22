@@ -1,7 +1,5 @@
 package spec.keys;
 
-import java.awt.*;
-
 public class Dot implements K {
 
     @Override
@@ -10,7 +8,7 @@ public class Dot implements K {
     }
 
     @Override
-    public Point pt() {
-        return new Point(0, 2);
+    public int pt() {
+        return 0x02;
     }
 }

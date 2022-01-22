@@ -1,14 +1,14 @@
 package spec.keys;
 
-public class Enter implements K {
+public class Semicolon implements K {
 
     @Override
     public char ch() {
-        return 0x0A;
+        return ';';
     }
 
     @Override
     public int pt() {
-        return 0x00;
+        return 0xB4;
     }
 }

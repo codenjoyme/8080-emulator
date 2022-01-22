@@ -1,12 +1,10 @@
 package spec.keys;
 
-import java.awt.*;
-
 public class End implements K {
 
     @Override
-    public Point pt() {
-        return new Point(0xA, 0x5); // like F1
+    public int pt() {
+        return 0xA5; // like F1
     }
 
     @Override

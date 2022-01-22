@@ -1,7 +1,5 @@
 package spec.keys;
 
-import java.awt.*;
-
 public class Backspace implements K {
 
     @Override
@@ -10,7 +8,7 @@ public class Backspace implements K {
     }
 
     @Override
-    public Point pt() {
-        return new Point(0, 1);
+    public int pt() {
+        return 0x01;
     }
 }
