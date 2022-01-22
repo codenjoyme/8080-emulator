@@ -3,6 +3,7 @@ package spec;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.File;
@@ -10,28 +11,43 @@ import java.io.File;
 import static java.awt.Event.GOT_FOCUS;
 import static java.awt.Event.LOST_FOCUS;
 
-public class Main2 extends JPanel {
+public class Main2 extends JFrame implements KeyListener {
 
     private Application app;
-    private JFrame frame;
 
     public static void main(String[] args) throws Exception {
         new Main2();
     }
 
     public Main2() throws Exception {
-        frame = new JFrame("i8080 emulator");
-        frame.add(this);
-        frame.setMinimumSize(Application.getMinimumSize(15, 40));
-        frame.setVisible(true);
-        frame.setFocusable(true);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.addWindowFocusListener(focusListener());
+        super("i8080 emulator");
+        setMinimumSize(Application.getMinimumSize(15, 40));
+        setVisible(true);
+        setFocusable(true);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowFocusListener(focusListener());
+        setFocusTraversalKeysEnabled(true);
+        addKeyListener(this);
 
         app = new Application(this, new File("src/main/resources").toURI().toURL());
         onFocus(GOT_FOCUS);
         app.start();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        System.out.println(e);
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println(e);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        System.out.println(e);
     }
 
     private WindowFocusListener focusListener() {
@@ -61,10 +77,5 @@ public class Main2 extends JPanel {
         if (app != null) {
             app.repaint();
         }
-    }
-
-    @Override
-    protected void processKeyEvent(KeyEvent e) {
-        System.out.println(e);
     }
 }

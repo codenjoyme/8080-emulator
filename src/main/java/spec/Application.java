@@ -69,17 +69,15 @@ public class Application {
             }
         };
 
+        // мы рисуем на канве, чтобы не мерцало изображение
         parent.add(canvas = new Canvas());
-
-        // размер canvas
         canvas.setSize(WIDTH, HEIGHT);
-
-        // сделали canvas видимым.
+        if (parent.getKeyListeners().length > 0) {
+            canvas.addKeyListener(parent.getKeyListeners()[0]);
+        }
         canvas.setVisible(true);
 
         bufferImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-
-        // контенты графики
         bufferGraphics = bufferImage.getGraphics();
         parentGraphics = parent.getGraphics();
         canvasGraphics = canvas.getGraphics();
@@ -204,8 +202,8 @@ public class Application {
         currentBorder = newBorder;
         parentGraphics.setColor(currentBorder);
         parentGraphics.fillRect(0, 0,
-                WIDTH + BORDER_WIDTH * 2,
-                HEIGHT + BORDER_WIDTH * 2);
+                parent.getWidth(),
+                parent.getHeight());
     }
 
     private void paintBuffer() {
