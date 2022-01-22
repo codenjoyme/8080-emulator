@@ -86,7 +86,7 @@ public class Application {
         canvasGraphics = canvas.getGraphics();
     }
 
-    public void loadRoms(URL base) throws Exception {
+    public void loadRoms(URL base) {
         setBorderWidth(borderWidth);
 
         boolean lik = true;
@@ -259,7 +259,7 @@ public class Application {
         currentBorder = null;
     }
 
-    private void loadSnapshot(URL base, String snapshot) throws Exception {
+    private void loadSnapshot(URL base, String snapshot) {
         hard.loadSnapshot(base, snapshot);
         refreshWholeScreen();
         canvas.requestFocus();

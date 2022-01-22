@@ -92,18 +92,10 @@ public class Main extends Applet implements Runnable {
     public void run() {
         showStatus(getAppletInfo());
 
-        if (app == null) {
-            try {
-                app = new Application(this);
-                app.loadRoms(getDocumentBase());
-                resize(preferredSize());
-            } catch (Exception e) {
-                showStatus("Caught IO Error: " + e);
-            }
-        }
-        if (app != null) {
-            app.start();
-        }
+        app = new Application(this);
+        app.loadRoms(getDocumentBase());
+        resize(preferredSize());
+        app.start();
     }
 
     /**

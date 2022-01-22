@@ -89,7 +89,7 @@ public abstract class Hardware {
         return roms;
     }
 
-    public void loadSnapshot(URL base, String snapshot) throws Exception {
+    public void loadSnapshot(URL base, String snapshot) {
         roms.loadSnapshot(base, snapshot);
         ports.resetKeyboard();
     }

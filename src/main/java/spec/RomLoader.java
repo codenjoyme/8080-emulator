@@ -21,13 +21,17 @@ public class RomLoader {
     }
 
     // чтение ПЗУ ZX Spectrum
-    public int loadROMZ(URL base, String path) throws Exception {
-        URL url = new URL(base, path);
-        InputStream is = url.openStream();
-        int length = is.available();
-        Range range = new Range(0, - length);
-        logLoading(url.toString(), range);
-        return readBytes(is, memory.all(), range);
+    public int loadROMZ(URL base, String path) {
+        try {
+            URL url = new URL(base, path);
+            InputStream is = url.openStream();
+            int length = is.available();
+            Range range = new Range(0, -length);
+            logLoading(url.toString(), range);
+            return readBytes(is, memory.all(), range);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void logLoading(String name, Range range) {
@@ -37,13 +41,17 @@ public class RomLoader {
 
     // для ПК "Специалист"
     // чтение ПЗУ
-    public int loadROM(URL base, String path, int offset) throws Exception {
-        URL url = new URL(base, path);
-        InputStream is = url.openStream();
-        int length = is.available();
-        Range range = new Range(offset, - length);
-        logLoading(url.toString(), range);
-        return readBytes(is, memory.all(), range);
+    public int loadROM(URL base, String path, int offset) {
+        try {
+            URL url = new URL(base, path);
+            InputStream is = url.openStream();
+            int length = is.available();
+            Range range = new Range(offset, - length);
+            logLoading(url.toString(), range);
+            return readBytes(is, memory.all(), range);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // для ПК "Специалист"
@@ -51,18 +59,22 @@ public class RomLoader {
     // ADK: ML_B, ST_B
     // Bytes...
     // KSM: ML_B, ST_B
-    public int loadRKS(URL base, String path) throws Exception {
-        URL url = new URL(base, path);
-        InputStream is = url.openStream();
-        int[] header = read8arr(is, 4);
-        Range range = new Range(
-                merge(header[1], header[0]),
-                merge(header[3], header[2]));
+    public int loadRKS(URL base, String path) {
+        try {
+            URL url = new URL(base, path);
+            InputStream is = url.openStream();
+            int[] header = read8arr(is, 4);
+            Range range = new Range(
+                    merge(header[1], header[0]),
+                    merge(header[3], header[2]));
 
-        logLoading(url.toString(), range);
-        cpu.PC(range.begin());
-        return readBytes(is, memory.all(), range);
-        // int[] data = read8arr(is, 4); // TODO в конце еще два байта, зачем?
+            logLoading(url.toString(), range);
+            cpu.PC(range.begin());
+            return readBytes(is, memory.all(), range);
+            // int[] data = read8arr(is, 4); // TODO в конце еще два байта, зачем?
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private int[] read8arr(InputStream is, int length) throws Exception {
@@ -98,30 +110,34 @@ public class RomLoader {
         }
     }
 
-    public void loadSnapshot(URL base, String path) throws Exception {
-        URL url = new URL(base, path);
-        URLConnection snap = url.openConnection();
+    public void loadSnapshot(URL base, String path) {
+        try {
+            URL url = new URL(base, path);
+            URLConnection snap = url.openConnection();
 
-        InputStream is = snap.getInputStream();
-        int length = snap.getContentLength();
+            InputStream is = snap.getInputStream();
+            int length = snap.getContentLength();
 
-        // Linux  JDK doesn't always know the size of files
-        if (length < 0) {
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            is = new BufferedInputStream(is, 4096);
+            // Linux  JDK doesn't always know the size of files
+            if (length < 0) {
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                is = new BufferedInputStream(is, 4096);
 
-            int bite;
-            while ((bite = is.read()) != -1) {
-                os.write((byte) bite);
+                int bite;
+                while ((bite = is.read()) != -1) {
+                    os.write((byte) bite);
+                }
+
+                is = new ByteArrayInputStream(os.toByteArray());
             }
+            // Грубая проверка, но будет работать (SNA имеет фиксированный размер)
+            // Crude check but it'll work (SNA is a fixed size)
 
-            is = new ByteArrayInputStream(os.toByteArray());
+            loadRKS(base, path);
+
+            is.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        // Грубая проверка, но будет работать (SNA имеет фиксированный размер)
-        // Crude check but it'll work (SNA is a fixed size)
-
-        loadRKS(base, path);
-
-        is.close();
     }
 }
