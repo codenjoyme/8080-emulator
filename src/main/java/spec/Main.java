@@ -10,16 +10,16 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class Main2 extends JFrame implements KeyListener {
+public class Main extends JFrame implements KeyListener {
 
     private Application app;
 
     public static void main(String[] args) {
         String host = (args.length == 1) ? args[0] : null;
-        new Main2(host);
+        new Main(host);
     }
 
-    public Main2(String host) {
+    public Main(String host) {
         super("i8080 emulator");
         setMinimumSize(Graphic.getMinimumSize(15, 40));
         setVisible(true);

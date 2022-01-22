@@ -91,7 +91,7 @@
   области
 ```
 <application-desc
-    main-class="spec.Main2"
+    main-class="spec.Main"
     name="i8080 Emulator"
     width="424" height="296"> <!-- 424 = 384 + 2*20, 296 = 256 + 2*20  -->
     <argument>http://localhost:8080/</argument>
