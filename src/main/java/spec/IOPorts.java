@@ -318,23 +318,41 @@ public class IOPorts {
     int tick = 0;
 
     public synchronized void processKey(Key key) {
+        if (key.layout() == LAYOUT_SWING && key.code() == 0x0010) {
+            shift = key.pressed();
+            return;
+        }
+
         keys.stream()
                 .filter(k -> k.itsMe(key))
                 .findFirst()
                 .ifPresent(button -> {
-                    if (key.pressed()) {
-                        shift = button.shiftOut();
-                        log(key, button);
-                    } else {
-                        shift = false;
-                    }
                     keyStatus[button.x()][button.y()] = key.pressed();
                 });
+    }
+
+    private String toString(boolean[][] keys) {
+        StringBuilder result = new StringBuilder();
+        result.append(' ');
+        for (int x = keys.length - 1; x >= 0; x--) {
+            result.append(String.format("%1X", x));
+        }
+        result.append('\n');
+        for (int y = keys[0].length - 1; y >= 0; y--) {
+            result.append(String.format("%1X", y));
+            for (int x = keys.length - 1; x >= 0; x--) {
+                result.append(keys[x][y] ? '+' : '-');
+            }
+            result.append('\n');
+        }
+        return result.toString();
     }
 
     private void log(Key key, K button) {
         System.out.println((++tick) + "> "
                 + (key.shift() ? "+" : " ")
+                + " "
+                + (String.format("%1X", button.x()) + "," + String.format("%1X", button.y()))
                 + " "
                 + (key.pressed() ? "down " : "up   ")
                 + "0x" + hex16(key.code())
