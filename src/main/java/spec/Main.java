@@ -37,11 +37,9 @@ public class Main extends JFrame implements KeyListener {
 
     private URL getBaseUrl(String base) {
         try {
-            if (base == null) {
-                return new File("src/main/resources").toURI().toURL();
-            } else {
-                return new URL(base);
-            }
+            return base == null
+                    ? new File("src/main/resources").toURI().toURL()
+                    : new URL(base);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
