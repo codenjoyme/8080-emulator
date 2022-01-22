@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static spec.Constants.ROM;
-import static spec.Key.CYR;
+import static spec.Key.CYRYLIC;
 import static spec.Key.SHIFT;
 import static spec.WordMath.hex16;
 import static spec.WordMath.hex8;
@@ -37,10 +37,13 @@ public class IOPorts {
     // 12 x 6 + Shift + Reset
     private boolean[][] keyStatus = new boolean[12][6];
 
+    private Map<Integer, Integer> keys = new HashMap<>();
+
     private Memory memory;
 
     public IOPorts(Memory memory) {
         this.memory = memory;
+        initKeys();
         reset();
     }
 
@@ -304,44 +307,60 @@ public class IOPorts {
  * +========================================================================================+
  **/
 
-    private Map<Integer, Integer> keys = new HashMap(){{
-        put(0x0A, 0x00);
 
-        put(0x00, 0x01);
+    private void putNorm(Integer code, int pt) {
+        keys.put(code, pt);
+    }
 
-        put((int)'.', 0x02);
-        put((int)'>' | SHIFT, 0x02);
+    private void putNorm(char code, int pt) {
+        keys.put((int)code, pt);
+    }
 
-        put((int)'*', 0x03);
-        put((int)';' | SHIFT, 0x03);
+    private void putShft(char code, int pt) {
+        keys.put((int)code | SHIFT, pt);
+    }
 
-        put((int)'=', 0x04);
-        put((int)'=' | SHIFT, 0x04);
+    private void putCyrl(char code, int pt) {
+        keys.put((int)code | CYRYLIC, pt);
+    }
 
-        put((int)'/', 0x11);
-        put((int)'/' | SHIFT, 0x11);
+    private void initKeys() {
+        putNorm(0x0A, 0x00);
+        putNorm(0x00, 0x01);
 
-        put((int)'Q', 0xB1);
-        put((int)'й', 0xB3);
+        putNorm('.', 0x02);
+        putShft('>', 0x02);
 
-        put((int)'W', 0x92);
-        put((int)'ц', 0xA3);
+        putNorm('*', 0x03);
+        putShft(';', 0x03);
 
-        put((int)'B', 0x41);
-        put((int)'и' | CYR, 0x71);
+        putNorm('=', 0x04);
+        putShft('=', 0x04);
 
-        put(0xDE, 0x12);
+        putNorm('/', 0x11);
+        putShft('/', 0x11);
 
-        put(0x11, 0xB0);  // Left Ctrl -> Rus/Lat
+        putNorm('Q', 0xB1);
+        putCyrl('й', 0xB3);
 
-        put(0x22, 0x10);
+        putNorm('W', 0x92);
+        putCyrl('ц', 0xA3);
+
+        putNorm('B', 0x41);
+        putCyrl('и', 0x71);
+
+        putNorm(0xDE, 0x12);
+
+        putNorm(0x11, 0xB0);  // Left Ctrl -> Rus/Lat
+
+        putNorm(0x22, 0x10);
 
         // put(0x21, 0x00);  // PageUp
 
-        put(0x23, 0xA5);
+        putNorm(0x23, 0xA5);
 
-        put((int)';', 0xB4);
-    }};
+        putNorm(';', 0xB4);
+    }
 
     public synchronized void processKey(Key key) {
         if (key.pressed()) {

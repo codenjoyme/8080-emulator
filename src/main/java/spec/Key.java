@@ -12,7 +12,7 @@ public class Key {
     public static final int MOD_CTRL =       0b0000_0000_1000_0000;
 
     public static final int SHIFT = 0b0000_0001_0000_0000;
-    public static final int CYR = 0x1000000;
+    public static final int CYRYLIC = 0x1000000;
 
     private int code;
     private boolean press;
