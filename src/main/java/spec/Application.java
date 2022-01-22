@@ -145,37 +145,42 @@ public class Application {
         refreshNextInterrupt = true;
     }
 
-    public boolean handleEvent(Event e) {
-        switch (e.id) {
+    public boolean handleEvent(Event event) {
+        switch (event.id) {
             case MOUSE_DOWN: {
                 graphic.requestFocus();
                 return true;
             }
             case KEY_ACTION:
             case KEY_PRESS: {
-                // событие клавиатуры - КЛАВИША_НАЖАТА_: e.key - код нажатой клавиши.
-                // Обычно является Unicode значением символа, который представлен этой клавишей.
-                return doKey(true, e.key, e.modifiers);
+                return doKey(true, event.key, event.modifiers);
             }
             case KEY_ACTION_RELEASE:
             case KEY_RELEASE: {
-                // событие клавиатуры - КЛАВИША_ОТПУЩЕНА_
-                return doKey(false, e.key, e.modifiers);
+                return doKey(false, event.key, event.modifiers);
             }
             case GOT_FOCUS: {
-                System.out.println("GOT FOCUS");
-                outb(BORDER_PORT, 0x02);
-                hard.ports.resetKeyboard();
+                gotFocus();
                 return true;
             }
             case LOST_FOCUS: {
-                System.out.println("LOST FOCUS");
-                outb(BORDER_PORT, 0x06);
-                hard.ports.resetKeyboard();
+                lostFocus();
                 return true;
             }
         }
         return false;
+    }
+
+    public void lostFocus() {
+        System.out.println("LOST FOCUS");
+        outb(BORDER_PORT, 0x06);
+        hard.ports.resetKeyboard();
+    }
+
+    public void gotFocus() {
+        System.out.println("GOT FOCUS");
+        outb(BORDER_PORT, 0x02);
+        hard.ports.resetKeyboard();
     }
 
     private boolean doKey(boolean down, int ascii, int mods) {

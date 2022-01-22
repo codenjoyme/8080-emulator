@@ -8,9 +8,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.File;
 
-import static java.awt.Event.GOT_FOCUS;
-import static java.awt.Event.LOST_FOCUS;
-
 public class Main2 extends JFrame implements KeyListener {
 
     private Application app;
@@ -31,7 +28,7 @@ public class Main2 extends JFrame implements KeyListener {
         addKeyListener(this);
 
         app = new Application(this, new File("src/main/resources").toURI().toURL());
-        onFocus(GOT_FOCUS);
+        app.gotFocus();
         app.start();
     }
 
@@ -55,21 +52,17 @@ public class Main2 extends JFrame implements KeyListener {
             @Override
             public void windowGainedFocus(WindowEvent event) {
                 if (app != null) {
-                    onFocus(GOT_FOCUS);
+                    app.gotFocus();
                 }
             }
 
             @Override
             public void windowLostFocus(WindowEvent event) {
                 if (app != null) {
-                    onFocus(LOST_FOCUS);
+                    app.lostFocus();
                 }
             }
         };
-    }
-
-    private void onFocus(int status) {
-        app.handleEvent(new Event(null, status, null));
     }
 
     @Override
