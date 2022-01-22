@@ -13,6 +13,6 @@
     <applet-desc
             main-class="spec.Main"
             name="SpecialistEmulator"
-            width="460" height="320">
+            width="424" height="296"> <!-- 424 = 384 + 2*20, 296 = 256 + 2*20  -->
      </applet-desc>
 </jnlp>

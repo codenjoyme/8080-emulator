@@ -17,8 +17,10 @@ public class Main2 extends JPanel {
     public Main2() throws Exception {
         frame = new JFrame("i8080 emulator");
         frame.add(this);
-        frame.setSize(550, 250);
+        frame.setMinimumSize(Application.getMinimumSize(15, 40));
         frame.setVisible(true);
+        frame.setFocusable(true);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         app = new Application(this, new File("src/main/resources").toURI().toURL());
@@ -27,11 +29,13 @@ public class Main2 extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        app.repaint();
+        if (app != null) {
+            app.repaint();
+        }
     }
 
     @Override
     protected void processKeyEvent(KeyEvent e) {
-        super.processKeyEvent(e);
+        System.out.println(e);
     }
 }

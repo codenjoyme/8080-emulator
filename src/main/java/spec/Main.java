@@ -147,10 +147,7 @@ public class Main extends Applet implements Runnable {
 
     @Override
     public Dimension minimumSize() {
-        int border = app.borderWidth;
-        return new Dimension(
-                Video.WIDTH + border * 2,
-                Video.HEIGHT + border * 2);
+        return Application.getMinimumSize(0, 0);
     }
 
     @Override

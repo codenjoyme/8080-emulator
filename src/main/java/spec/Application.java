@@ -27,7 +27,7 @@ public class Application {
     private Canvas canvas;
 
     // ширина бордюра
-    public int borderWidth = 20;
+    private static int BORDER_WIDTH = 20;
 
     private int refreshRate = 1;  // refresh every 'n' interrupts
 
@@ -36,7 +36,6 @@ public class Application {
     private boolean pauseAtNextInterrupt = false;
     private boolean refreshNextInterrupt = true;
 
-    private Thread pausedThread = null;
     private long timeOfLastInterrupt = 0;
     private long timeOfLastSample = 0;
     private boolean runAtFullSpeed = false;
@@ -88,8 +87,15 @@ public class Application {
         loadRoms(base);
     }
 
+    public static Dimension getMinimumSize(int dx, int dy) {
+        int border = BORDER_WIDTH;
+        return new Dimension(
+                Video.WIDTH + border * 2 + dx,
+                Video.HEIGHT + border * 2 + dy);
+    }
+
     private void loadRoms(URL base) {
-        setBorderWidth(borderWidth);
+        setBorderWidth(BORDER_WIDTH);
 
         boolean lik = true;
         if (lik) {
@@ -115,8 +121,8 @@ public class Application {
     }
 
     private void setBorderWidth(int width) {
-        borderWidth = width;
-        canvas.setLocation(borderWidth, borderWidth);
+        BORDER_WIDTH = width;
+        canvas.setLocation(BORDER_WIDTH, BORDER_WIDTH);
     }
 
     private void outb(int port, int outByte) {
@@ -129,8 +135,6 @@ public class Application {
 
     private boolean interrupt() {
         if (pauseAtNextInterrupt) {
-            pausedThread = Thread.currentThread();
-
             while (pauseAtNextInterrupt) {
                 if (refreshNextInterrupt) {
                     refreshNextInterrupt = false;
@@ -138,7 +142,6 @@ public class Application {
                     paintBuffer();
                 }
             }
-            pausedThread = null;
         }
 
         if (refreshNextInterrupt) {
@@ -192,7 +195,7 @@ public class Application {
     }
 
     private void borderPaint() {
-        if (borderWidth == 0) { // если бордюра нет - ничего не делать!
+        if (BORDER_WIDTH == 0) { // если бордюра нет - ничего не делать!
             return;
         }
         if (currentBorder == newBorder) { // цвет не менялся
@@ -201,8 +204,8 @@ public class Application {
         currentBorder = newBorder;
         parentGraphics.setColor(currentBorder);
         parentGraphics.fillRect(0, 0,
-                WIDTH + borderWidth * 2,
-                HEIGHT + borderWidth * 2);
+                WIDTH + BORDER_WIDTH * 2,
+                HEIGHT + BORDER_WIDTH * 2);
     }
 
     private void paintBuffer() {

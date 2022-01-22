@@ -32,6 +32,7 @@ public class Video {
             new Color(str, str, str) // 0F ярко-белый
     };
 
+    // TODO make this not static
     public static final int WIDTH = 384;
     public static final int HEIGHT = 256;
 
