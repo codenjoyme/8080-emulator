@@ -7,9 +7,9 @@ import java.awt.*;
 import java.net.URL;
 
 import static java.awt.Event.*;
+import static spec.IOPorts.PAUSE_AWT;
+import static spec.IOPorts.PAUSE_SWING;
 import static spec.Video.COLORS;
-import static spec.keyboard.KeyParser.PAUSE_AWT;
-import static spec.keyboard.KeyParser.PAUSE_SWING;
 
 public class Application {
 

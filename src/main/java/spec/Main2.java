@@ -8,7 +8,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.File;
 
-import static spec.keyboard.KeyParser.LAYOUT_SWING;
+import static spec.IOPorts.LAYOUT_SWING;
 
 public class Main2 extends JFrame implements KeyListener {
 

@@ -17,7 +17,7 @@ package spec;
 import java.applet.Applet;
 import java.awt.*;
 
-import static spec.keyboard.KeyParser.LAYOUT_AWT;
+import static spec.IOPorts.LAYOUT_AWT;
 
 /**
  * Класс 'Main' с помощью ключевого слова {extends} наследуется от класса Applet.

@@ -188,45 +188,4 @@ public class KeyParser {
             0x7b04, 0x7804
     };
 
-    public static final int PAUSE_AWT = 1024;
-    public static final int PAUSE_SWING = 19;
-
-    public static int LAYOUT_SWING = 1;
-    public static int LAYOUT_AWT = 2;
-
-    private int layout;
-
-    public KeyParser(int layout) {
-        this.layout = layout;
-    }
-
-    public Key get(int keyCode) {
-        // находим индекс Ascii-кода нажатой или отпущенной клавиши.
-        int index = search(keys(layout), keyCode);
-        // если она есть в таблице:
-        if (index < 0) {
-            return null;
-        }
-
-        return new Key(keyboard[index]);
-    }
-
-    private int search(int[] array, int element) {
-        for (int index = 0; index < array.length; index++) {
-            if (array[index] == element) {
-                return index;
-            }
-        }
-        return -1;
-    }
-
-    private int[] keys(int layout) {
-        return (layout == LAYOUT_AWT)
-                ? ascii_keys
-                : swing_keys;
-    }
-
-    public int layout() {
-        return layout;
-    }
 }

@@ -1,18 +1,20 @@
 package spec;
 
-import spec.keyboard.Key;
-import spec.keyboard.KeyParser;
-import spec.keyboard.keys.*;
+import spec.keys.*;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static spec.Constants.ROM;
 import static spec.WordMath.hex16;
-import static spec.keyboard.KeyParser.LAYOUT_AWT;
-import static spec.keyboard.KeyParser.LAYOUT_SWING;
 
 public class IOPorts {
+
+    public static final int PAUSE_AWT = 1024;
+    public static final int PAUSE_SWING = 19;
+
+    public static final int LAYOUT_SWING = 1;
+    public static final int LAYOUT_AWT = 2;
 
     private boolean Ain;   // порт A на ввод
     private boolean Bin;   // порт B на ввод
@@ -36,17 +38,18 @@ public class IOPorts {
     // 12 x 6 + Shift + Reset
     private boolean[][] keyStatus = new boolean[12][6];
 
-    private KeyParser parser;
     private List<K> keys = Arrays.asList(
-            new VK(),
-            new ZB(),
+            new Enter(),
+            new Backspace(),
             new Dot(),
-            new MoreThan());
+            new MoreThan(),
+            new End());
 
     private Memory memory;
+    private int layout;
 
     public IOPorts(Memory memory, int layout) {
-        this.parser = new KeyParser(layout);
+        this.layout = layout;
         this.memory = memory;
         reset();
     }
@@ -289,65 +292,40 @@ public class IOPorts {
         }
     }
 
+    /**
+     * Матрица клавиш 12х6. True = замкнуто, False = разомкнуто
+     * ======================================================================================
+     *       C3    C2    C1    C0    A7    A6    A5    A4    A3    A2    A1    A0  <==:ПОРТ:|
+     * ============================================================================      |  |
+     *    |  _B |  _A |  _9 |  _8 |  _7 |  _6 |  _5 |  _4 |  _3 |  _2 |  _1 |  _0 |      |  |
+     * ==================================================================================^==|
+     * 5_ |  F  |  F1 |  F2 |  F3 |  F4 |  F5 |  F6 |  F7 |  F8 | [X] | [ ] | [/] | 50 | B5 |
+     * 4_ | + ; | ! 1 | " 2 | # 3 | $ 4 | % 5 | & 6 | ' 7 | ( 8 | ) 9 |   0 | = = | 40 | B4 |
+     * 3_ | J Й | C Ц | U У | K K | E E | N Н | G Г | [ Ш | ] Щ | Z З | H Х | : * | 30 | B3 |
+     * 2_ | F Ф | Y Ы | W В | A A | P П | R Р | O O | L Л | D Д | V Ж | \ Э | . > | 20 | B2 |
+     * 1_ | Q Я | ^ Ч | S С | M M | I И | T T | X Ь | B Б | @ Ю | < , | ? / |  ЗБ | 10 | B1 |
+     * 0_ | Р/Л |HOME |  Up |Down | ESC | TAB | SPС |  <= |  ПВ |  => |  ПС |  ВК | 00 | B0 |
+     * =============================================================================^=======|
+     *      0B    0A    09    08    07    06    05    04    03    02    01    00 <X Y      |
+     **/
+
     public void processKey(boolean down, int keyCode) {
-        if (tryProcess(keyCode, down, shift)) {
+        if (layout == LAYOUT_SWING && keyCode == 0x0010) {
+            shift = down;
             return;
         }
 
-        if (parser.layout() == LAYOUT_SWING) {
-            if ((keyCode & 0x1000000) == 0x1000000) {
-                keyCode &= ~0x1000000;
-            }
-            if (keyCode == 0x0010) {
-                shift = down;
-                System.out.println((shift ? "+" : "-") + (down ? "down| " : "up|   ") + "0x" + hex16(keyCode));
-                return;
-            } else {
-                if (shift) {
-                    keyCode = keyCode + 0x1000;
-                }
-            }
-        }
-
-        Key key = parser.get(keyCode);
-        if (key == null) {
-            System.out.println((shift ? "+" : "-") + (down ? "down- " : "up-   ") + "0x" + hex16(keyCode));
-            return;
-        }
-        System.out.println((shift ? "+" : "-") + (down ? "down+ " : "up+   ") + "0x" + hex16(keyCode));
-
-        // по координате установим "нажатие" В таблице матрицы Специалиста.
-        // нажата(отпущена)
-        keyStatus[key.x()][key.y()] = down;
-        // какой_то конфликт СО <CapsLock> - он работает наоборот
-        // в МОНИТОРЕ Shift не влияет. Влияет РУС/ЛАТ = НР_ФИКС.
-
-        if (parser.layout() == LAYOUT_AWT) {
-            if (!key.shift()) {
-                // если старший ниббл - заглавные символы
-                // Shift не нажат
-                shift = false;
-            } else {
-                // если нет старшего ниббла - строчные: старший бит = 1
-                // Shift зажат/отпущен
-                shift = down;
-            }
-        }
-    }
-
-    private boolean tryProcess(int keyCode, boolean down, boolean shift) {
-        K key = keys.stream()
-                .filter(k -> k.itsMe(keyCode, parser.layout(), shift))
+        keys.stream()
+                .filter(k -> k.itsMe(keyCode, layout, shift))
                 .findFirst()
-                .orElse(null);
+                .ifPresent(key -> {
+                    keyStatus[key.pt().x][key.pt().y] = down;
+                    if (layout == LAYOUT_AWT && key.shift()) {
+                        shift = down;
+                    }
+                });
 
-        if (key == null) {
-            return false;
-        }
-
-        keyStatus[key.x()][key.y()] = down;
-        this.shift = key.shift();
-        return true;
+        System.out.println((down ? "down- " : "up-   ") + "0x" + hex16(keyCode));
     }
 
     public void reset() {
