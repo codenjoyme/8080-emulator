@@ -26,15 +26,17 @@ public class Graphic {
         container = parent;
 
         // мы рисуем на канве, чтобы не мерцало изображение
-        container.add(canvas = new Canvas());
+        canvas = new Canvas();
         canvas.setSize(WIDTH, HEIGHT);
         // переопределяем лиснер только для Swing приложения,
         // иначе не будут отлавливаться там клавиши так как canvas перекрывает
         if (container.getKeyListeners().length > 0) {
             canvas.addKeyListener(container.getKeyListeners()[0]);
         }
-        canvas.setVisible(true);
         setBorderWidth(BORDER_WIDTH);
+        canvas.setVisible(true);
+        sleep(50);
+        container.add(canvas);
 
         // тут мы кешируем уже отрисованное из видеопамяти изображение
         bufferImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
@@ -44,6 +46,14 @@ public class Graphic {
         background = container.getGraphics();
         // а через это мы рисуем на канве
         scene = canvas.getGraphics();
+    }
+
+    private void sleep(int mills) {
+        try {
+            Thread.sleep(mills);
+        } catch (InterruptedException e) {
+            // do nothing
+        }
     }
 
     public static Dimension getMinimumSize(int dx, int dy) {
