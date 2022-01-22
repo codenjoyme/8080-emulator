@@ -8,11 +8,17 @@
     <resources>
         <j2se version="1.7+"
               href="http://java.sun.com/products/autodl/j2se"/>
-        <jar href="spec-1.0.jar" main="false" />
+        <jar href="emulator-1.0.jar"
+             main="false"
+             java-vm-args="-Djava.security.policy=${jnlp.ip}${jnlp.port}/ed/security/java.policy"/>
     </resources>
-    <applet-desc
-            main-class="spec.Main"
-            name="SpecialistEmulator"
+    <!--security>
+        <all-permissions/>
+    </security-->
+    <application-desc
+            main-class="spec.Main2"
+            name="i8080 Emulator"
             width="424" height="296"> <!-- 424 = 384 + 2*20, 296 = 256 + 2*20  -->
-     </applet-desc>
+        <argument>http://localhost:8080/</argument>
+    </application-desc>
 </jnlp>

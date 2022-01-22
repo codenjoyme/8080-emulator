@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>spec</groupId>
-    <artifactId>spec</artifactId>
+    <artifactId>emulator</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
 
     <properties>
-        <module.name>spec1987</module.name>
+        <module.name>emulator</module.name>
 
         <java.version>8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

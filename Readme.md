@@ -61,7 +61,7 @@
 - Спасибо Oracle за Java.
 - Спасибо Markdown за то, что я не мучаюсь с версткой.
 
-Запуск приложения
+Запуск приложения через jnlp
 -----------------
 - Для запуска необходимо установить java 1.8 версии.
 - Прописать переменную окружения JAVA_HOME ссылающуюся на папку с установленной java.
@@ -87,6 +87,16 @@
 - Так мы настроили вывод логов из Applet в консоль, которая откроется при запуске приложения.
 - Направляемся в браузер и набираем в адресной строке `http://localhost:8080/`. 
   В этот момент Applet незамедлительно попробует загрузиться.
+- Для другого URL необходимо править файл `src/main/resources/application.jnlp` в 
+  области
+```
+<application-desc
+    main-class="spec.Main2"
+    name="i8080 Emulator"
+    width="424" height="296"> <!-- 424 = 384 + 2*20, 296 = 256 + 2*20  -->
+    <argument>http://localhost:8080/</argument>
+</application-desc>
+```
 - Если агент безопасности спросит можно ли это сделать - разрешаем ему открыть приложение.
 - Приветствуем надпись `* RUN"COM:"`
 - В открытом окне кликаем на панельку с надписью `Full Speed: 100000%` - это замедлит 
@@ -110,39 +120,18 @@ OK
 
 Загрузка других ROM/RKS
 -----------------------
-- В классе `spec.Main` есть код
+- В методе `spec.Application.loadRoms()` можно поменять настройки загружаеых ROM
 ```
-//--- для ПК "ЛИК" ---------------------------------------------------------------
-boolean lik = true; // ЛИК или Специалист
+boolean lik = true;
 if (lik) {
-    URL likRom1URL = new URL(baseURL, "lik/01_zagr.BIN");
-    spechard.loadROM(likRom1URL.toString(), likRom1URL.openStream(), 0xC000);
-
-    URL likRom2URL = new URL(baseURL, "lik/02_mon-1m.BIN");
-    spechard.loadROM(likRom2URL.toString(), likRom2URL.openStream(), 0xC800);
-
-    URL likRom3URL = new URL(baseURL, "lik/03_mon-1m_basicLik.BIN");
-    spechard.loadROM(likRom3URL.toString(), likRom3URL.openStream(), 0xD000);
-
-    URL likRom4URL = new URL(baseURL, "lik/04_basicLik.BIN");
-    spechard.loadROM(likRom4URL.toString(), likRom4URL.openStream(), 0xD800);
-
-    URL likRom5URL = new URL(baseURL, "lik/05_basicLik.BIN");
-    spechard.loadROM(likRom5URL.toString(), likRom5URL.openStream(), 0xE000);
-
-    URL likRom6URL = new URL(baseURL, "lik/06_basicLik.BIN");
-    spechard.loadROM(likRom6URL.toString(), likRom6URL.openStream(), 0xE800);
-
-    URL kladURL = new URL(baseURL, "lik/apps/klad.rks");
-    spechard.loadRKS(kladURL.toString(), kladURL.openStream());
+    Lik.loadRom(base, hard.roms());
+    Lik.loadGame(base, hard.roms(), "klad");
+    // Lik.loadTest(base, hard.roms(), "test");
 } else {
-//--- для ПК "Специалист" ---------------------------------------------------------------
-    URL specRom0URL = new URL(baseURL, "specialist/monitor0.rom");
-    spechard.loadROM(specRom0URL.toString(), specRom0URL.openStream(), 0xC000);
-
-    URL specRom1URL = new URL(baseURL, "specialist/monitor1.rom");
-    spechard.loadROM(specRom1URL.toString(), specRom1URL.openStream(), 0xC800);
+    Specialist.loadRom(base, hard.roms());
+    Specialist.loadGame(base, hard.roms(), "blobcop");
 }
+
 ```
 - Отредактировав его можно выбрать любой ROM/RKS загрузить его в определенное место памяти.
 - После сервер jetty стоит перезапустить, закрыть старый Applet и открыть его повторно.

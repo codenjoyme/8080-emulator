@@ -7,16 +7,19 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class Main2 extends JFrame implements KeyListener {
 
     private Application app;
 
-    public static void main(String[] args) throws Exception {
-        new Main2();
+    public static void main(String[] args) {
+        String host = (args.length == 1) ? args[0] : null;
+        new Main2(host);
     }
 
-    public Main2() throws Exception {
+    public Main2(String host) {
         super("i8080 emulator");
         setMinimumSize(Graphic.getMinimumSize(15, 40));
         setVisible(true);
@@ -27,9 +30,21 @@ public class Main2 extends JFrame implements KeyListener {
         setFocusTraversalKeysEnabled(true);
         addKeyListener(this);
 
-        app = new Application(this, new File("src/main/resources").toURI().toURL());
+        app = new Application(this, getBaseUrl(host));
         app.gotFocus();
         app.start();
+    }
+
+    private URL getBaseUrl(String base) {
+        try {
+            if (base == null) {
+                return new File("src/main/resources").toURI().toURL();
+            } else {
+                return new URL(base);
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
