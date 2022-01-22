@@ -1,10 +1,12 @@
 package spec.keyboard.keys;
 
-public class ZB implements K {
+import static spec.keyboard.KeyParser.LAYOUT_AWT;
+
+public class MoreThan implements K {
 
     @Override
     public char ch() {
-        return (char) 0x08;
+        return '>';
     }
 
     @Override
@@ -14,16 +16,18 @@ public class ZB implements K {
 
     @Override
     public int y() {
-        return 1;
+        return 2;
     }
 
     @Override
     public boolean itsMe(int keyCode, int layout, boolean shift) {
-        return keyCode == ch();
+        return (layout == LAYOUT_AWT)
+                ? keyCode == 0x003E
+                : shift && keyCode == 0x002E;
     }
 
     @Override
     public boolean shift() {
-        return false;
+        return true;
     }
 }

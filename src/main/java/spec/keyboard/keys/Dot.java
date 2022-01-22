@@ -18,8 +18,8 @@ public class Dot implements K {
     }
 
     @Override
-    public int code(int layout, boolean shift) {
-        return 0x002E;
+    public boolean itsMe(int keyCode, int layout, boolean shift) {
+        return !shift && keyCode == 0x002E;
     }
 
     @Override

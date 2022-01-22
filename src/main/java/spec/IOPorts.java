@@ -2,10 +2,7 @@ package spec;
 
 import spec.keyboard.Key;
 import spec.keyboard.KeyParser;
-import spec.keyboard.keys.Dot;
-import spec.keyboard.keys.K;
-import spec.keyboard.keys.VK;
-import spec.keyboard.keys.ZB;
+import spec.keyboard.keys.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +37,11 @@ public class IOPorts {
     private boolean[][] keyStatus = new boolean[12][6];
 
     private KeyParser parser;
-    private List<K> keys = Arrays.asList(new VK(), new ZB(), new Dot());
+    private List<K> keys = Arrays.asList(
+            new VK(),
+            new ZB(),
+            new Dot(),
+            new MoreThan());
 
     private Memory memory;
 
@@ -336,7 +337,7 @@ public class IOPorts {
 
     private boolean tryProcess(int keyCode, boolean down, boolean shift) {
         K key = keys.stream()
-                .filter(k -> k.code(parser.layout(), shift) == keyCode)
+                .filter(k -> k.itsMe(keyCode, parser.layout(), shift))
                 .findFirst()
                 .orElse(null);
 

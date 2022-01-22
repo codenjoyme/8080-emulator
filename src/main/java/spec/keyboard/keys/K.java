@@ -2,13 +2,13 @@ package spec.keyboard.keys;
 
 public interface K {
 
+    char ch();
+
     int x();
 
     int y();
 
-    int code(int layout, boolean shift);
+    boolean itsMe(int keyCode, int layout, boolean shift);
 
     boolean shift();
-
-    char ch();
 }

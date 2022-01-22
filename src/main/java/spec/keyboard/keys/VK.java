@@ -18,8 +18,8 @@ public class VK implements K {
     }
 
     @Override
-    public int code(int layout, boolean shift) {
-        return ch();
+    public boolean itsMe(int keyCode, int layout, boolean shift) {
+        return keyCode == ch();
     }
 
     @Override
