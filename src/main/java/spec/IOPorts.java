@@ -47,7 +47,8 @@ public class IOPorts {
             new MoreThan(),
             new End(),
             new Semicolon(),
-            new Colon());
+            new Colon(),
+            new Star());
 
     private Memory memory;
     private int layout;
