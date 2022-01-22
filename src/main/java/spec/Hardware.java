@@ -15,9 +15,11 @@ public abstract class Hardware {
     protected IOPorts ports;
     protected Video video;
 
-    public Hardware() {
+    public Hardware(int keyboardLayout) {
         memory = new Memory(x10000);
+
         video = new Video(Hardware.this::drawPixel);
+
         cpu = new Cpu(CLOCK, new Data() {
             @Override
             public boolean interrupt() {
@@ -39,7 +41,9 @@ public abstract class Hardware {
                 Hardware.this.write8(addr, bite);
             }
         });
-        ports = new IOPorts(memory);
+
+        ports = new IOPorts(memory, keyboardLayout);
+
         roms = new RomLoader(memory, cpu);
     }
 

@@ -17,6 +17,8 @@ package spec;
 import java.applet.Applet;
 import java.awt.*;
 
+import static spec.keyboard.KeyParser.LAYOUT_AWT;
+
 /**
  * Класс 'Main' с помощью ключевого слова {extends} наследуется от класса Applet.
  * При этом методам класса 'Main' становятся доступными все методы и данные класса,
@@ -88,7 +90,7 @@ public class Main extends Applet implements Runnable {
     public void run() {
         showStatus(getAppletInfo());
 
-        app = new Application(this, getDocumentBase());
+        app = new Application(this, getDocumentBase(), LAYOUT_AWT);
         resize(preferredSize());
         app.start();
     }

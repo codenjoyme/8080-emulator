@@ -8,11 +8,12 @@ import java.net.URL;
 
 import static java.awt.Event.*;
 import static spec.Video.COLORS;
+import static spec.keyboard.KeyParser.PAUSE_AWT;
+import static spec.keyboard.KeyParser.PAUSE_SWING;
 
 public class Application {
 
     private static final int BORDER_PORT = 254;
-    private static final int PAUSE = 0x0400;
 
     private int refreshRate = 1;  // refresh every 'n' interrupts
 
@@ -34,10 +35,10 @@ public class Application {
      * иерархической системы визуальных объектов. Container отвечает за расположение содержащихся
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
-    public Application(Container parent, URL base) {
+    public Application(Container parent, URL base, int keyboardLayout) {
         graphic = new Graphic(parent);
 
-        hard = new Hardware() {
+        hard = new Hardware(keyboardLayout) {
             @Override
             protected void outb(int port, int bite) {
                 Application.this.outb(port, bite);
@@ -153,11 +154,11 @@ public class Application {
             }
             case KEY_ACTION:
             case KEY_PRESS: {
-                return doKey(true, event.key, event.modifiers);
+                return handleKey(true, event.key);
             }
             case KEY_ACTION_RELEASE:
             case KEY_RELEASE: {
-                return doKey(false, event.key, event.modifiers);
+                return handleKey(false, event.key);
             }
             case GOT_FOCUS: {
                 gotFocus();
@@ -183,18 +184,19 @@ public class Application {
         hard.ports.resetKeyboard();
     }
 
-    private boolean doKey(boolean down, int ascii, int mods) {
-        hard.ports.processKey(down, ascii);
+    public boolean handleKey(boolean down, int keyCode) {
+        hard.ports.processKey(down, keyCode);
 
-        switch (ascii) {
-            case PAUSE: {
-                if (down) resetAtNextInterrupt = true;
-                break;
+        switch (keyCode) {
+            case PAUSE_SWING:
+            case PAUSE_AWT: {
+                if (down) {
+                    resetAtNextInterrupt = true;
+                }
+                return true;
             }
-            default:
-                return false;
         }
-        return true;
+        return false;
     }
 
     private void refreshWholeScreen() {

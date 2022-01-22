@@ -8,6 +8,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.File;
 
+import static spec.keyboard.KeyParser.LAYOUT_SWING;
+
 public class Main2 extends JFrame implements KeyListener {
 
     private Application app;
@@ -27,24 +29,28 @@ public class Main2 extends JFrame implements KeyListener {
         setFocusTraversalKeysEnabled(true);
         addKeyListener(this);
 
-        app = new Application(this, new File("src/main/resources").toURI().toURL());
+        app = new Application(this, new File("src/main/resources").toURI().toURL(), LAYOUT_SWING);
         app.gotFocus();
         app.start();
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-        System.out.println(e);
+    public void keyTyped(KeyEvent event) {
+        // do nothing
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println(e);
+    public void keyPressed(KeyEvent event) {
+        if (app != null) {
+            app.handleKey(true, event.getExtendedKeyCode());
+        }
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-        System.out.println(e);
+    public void keyReleased(KeyEvent event) {
+        if (app != null) {
+            app.handleKey(false, event.getExtendedKeyCode());
+        }
     }
 
     private WindowFocusListener focusListener() {
