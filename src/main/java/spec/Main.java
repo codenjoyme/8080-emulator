@@ -152,7 +152,7 @@ public class Main extends Applet implements Runnable {
 
     @Override
     public Dimension minimumSize() {
-        return Application.getMinimumSize(0, 0);
+        return Graphic.getMinimumSize(0, 0);
     }
 
     @Override

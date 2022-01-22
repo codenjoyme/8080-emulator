@@ -4,27 +4,15 @@ import spec.platforms.Lik;
 import spec.platforms.Specialist;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import static java.awt.Event.*;
-import static spec.Video.*;
+import static spec.Video.COLORS;
 
 public class Application {
 
     private static final int BORDER_PORT = 254;
     private static final int PAUSE = 0x0400;
-
-    private Container container;
-    private Graphics background;
-
-    private Canvas canvas;
-    private Graphics scene;
-
-    private Image bufferImage;
-    private Graphics buffer;
-
-    private static int BORDER_WIDTH = 20;
 
     private int refreshRate = 1;  // refresh every 'n' interrupts
 
@@ -36,9 +24,8 @@ public class Application {
     private long timeOfLastInterrupt = 0;
     private long timeOfLastSample = 0;
     private boolean runAtFullSpeed = false;
-    private Color currentBorder = null; // null mean update screen
-    private Color newBorder = Color.YELLOW;
 
+    private Graphic graphic;
     private Hardware hard;
 
     /**
@@ -48,7 +35,8 @@ public class Application {
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
     public Application(Container parent, URL base) {
-        container = parent;
+        graphic = new Graphic(parent);
+
         hard = new Hardware() {
             @Override
             protected void outb(int port, int bite) {
@@ -62,42 +50,14 @@ public class Application {
 
             @Override
             protected void drawPixel(Point point, Color color) {
-                Application.this.drawPixel(point, color);
+                Application.this.graphic.drawPixel(point, color);
             }
         };
-
-        // мы рисуем на канве, чтобы не мерцало изображение
-        container.add(canvas = new Canvas());
-        canvas.setSize(WIDTH, HEIGHT);
-        // переопределяем лиснер только для Swing приложения,
-        // иначе не будут отлавливаться там клавиши так как canvas перекрывает
-        if (container.getKeyListeners().length > 0) {
-            canvas.addKeyListener(container.getKeyListeners()[0]);
-        }
-        canvas.setVisible(true);
-
-        // тут мы кешируем уже отрисованное из видеопамяти изображение
-        bufferImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-        // через него мы рисуем на cache-image пиксели
-        buffer = bufferImage.getGraphics();
-        // на нем мы рисуем рамку, это фон под canvas
-        background = container.getGraphics();
-        // а через это мы рисуем на канве
-        scene = canvas.getGraphics();
 
         loadRoms(base);
     }
 
-    public static Dimension getMinimumSize(int dx, int dy) {
-        int border = BORDER_WIDTH;
-        return new Dimension(
-                Video.WIDTH + border * 2 + dx,
-                Video.HEIGHT + border * 2 + dy);
-    }
-
     private void loadRoms(URL base) {
-        setBorderWidth(BORDER_WIDTH);
-
         boolean lik = true;
         if (lik) {
             Lik.loadRom(base, hard.roms());
@@ -116,21 +76,11 @@ public class Application {
         }
     }
 
-    private void drawPixel(Point pt, Color color) {
-        buffer.setColor(color);
-        buffer.fillRect(pt.x, pt.y, 1, 1);
-    }
-
-    private void setBorderWidth(int width) {
-        BORDER_WIDTH = width;
-        canvas.setLocation(BORDER_WIDTH, BORDER_WIDTH);
-    }
-
     private void outb(int port, int outByte) {
         // port xx.FEh
         if ((port & 0x0001) == 0) {
             // 0000.0111 бордюр & 0x07
-            newBorder = COLORS[outByte & 0x000F];
+            graphic.changeColor(COLORS[outByte & 0x000F]);
         }
     }
 
@@ -139,16 +89,16 @@ public class Application {
             while (pauseAtNextInterrupt) {
                 if (refreshNextInterrupt) {
                     refreshNextInterrupt = false;
-                    currentBorder = null; // обновить Border
-                    paintBuffer();
+                    graphic.refreshBorder();
+                    graphic.paintBuffer();
                 }
             }
         }
 
         if (refreshNextInterrupt) {
             refreshNextInterrupt = false;
-            currentBorder = null; // обновить Border
-            paintBuffer();
+            graphic.refreshBorder();
+            graphic.paintBuffer();
         }
 
         if (resetAtNextInterrupt) {
@@ -167,7 +117,7 @@ public class Application {
         // Обновлять экран каждое прерывание по умолчанию
         if ((interruptCounter % refreshRate) == 0) {
             hard.video.screenPaint();
-            paintBuffer();
+            graphic.paintBuffer();
         }
         // возвращает текущее системное время в виде миллисекунд,
         // прошедших с 1 января 1970 года
@@ -195,29 +145,10 @@ public class Application {
         refreshNextInterrupt = true;
     }
 
-    private void borderPaint() {
-        if (BORDER_WIDTH == 0) { // если бордюра нет - ничего не делать!
-            return;
-        }
-        if (currentBorder == newBorder) { // цвет не менялся
-            return;
-        }
-        currentBorder = newBorder;
-        background.setColor(currentBorder);
-        background.fillRect(0, 0,
-                container.getWidth(),
-                container.getHeight());
-    }
-
-    private void paintBuffer() {
-        scene.drawImage(bufferImage, 0, 0, null);
-        borderPaint();
-    }
-
     public boolean handleEvent(Event e) {
         switch (e.id) {
             case MOUSE_DOWN: {
-                canvas.requestFocus();
+                graphic.requestFocus();
                 return true;
             }
             case KEY_ACTION:
@@ -262,13 +193,13 @@ public class Application {
     }
 
     private void refreshWholeScreen() {
-        currentBorder = null;
+        graphic.refreshBorder();
     }
 
     private void loadSnapshot(URL base, String snapshot) {
         hard.loadSnapshot(base, snapshot);
         refreshWholeScreen();
-        canvas.requestFocus();
+        graphic.requestFocus();
     }
 
     public void start() {
