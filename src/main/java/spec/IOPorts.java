@@ -6,15 +6,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static spec.Constants.ROM;
-import static spec.WordMath.hex16;
 
 public class IOPorts {
 
-    public static final int PAUSE_AWT = 1024;
-    public static final int PAUSE_SWING = 19;
-
-    public static final int LAYOUT_SWING = 1;
-    public static final int LAYOUT_AWT = 2;
+    public static final int PAUSE_KEY = 19;
+    public static final int SHIFT_KEY = 0x0010;
 
     private boolean Ain;   // порт A на ввод
     private boolean Bin;   // порт B на ввод
@@ -33,7 +29,7 @@ public class IOPorts {
     private final int[] bit = {0x00FE, 0x00FD, 0x00FB, 0x00F7, 0x00EF, 0x00DF, 0x00BF, 0x007F};
 
     // биты установки
-    private final int[] msk = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080};
+    private final int[] msk = {0x0001, 0x0002, 0x0004, 0x0008, SHIFT_KEY, 0x0020, 0x0040, 0x0080};
 
     // массив матрицы клавш "Специалиста" ( true - нажата, false - отпущена)
     // 12 x 6 + Shift + Reset
@@ -315,10 +311,9 @@ public class IOPorts {
  * |  _0  | Р/Л |HOME |  Up |Down | ESC | TAB | SPС |  <= |  ПВ |  => |  ПС |  ВК |    B0   |
  * +========================================================================================+
  **/
-    int tick = 0;
 
     public synchronized void processKey(Key key) {
-        if (key.layout() == LAYOUT_SWING && key.code() == 0x0010) {
+        if (key.code() == SHIFT_KEY) {
             shift = key.pressed();
             return;
         }
@@ -328,40 +323,7 @@ public class IOPorts {
                 .findFirst()
                 .ifPresent(button -> {
                     keyStatus[button.x()][button.y()] = key.pressed();
-
-                    System.out.println("-------------------------------------");
-                    log(key, button);
-                    System.out.println(toString(keyStatus));
                 });
-    }
-
-    private String toString(boolean[][] keys) {
-        StringBuilder result = new StringBuilder();
-        result.append(' ');
-        for (int x = keys.length - 1; x >= 0; x--) {
-            result.append(String.format("%1X", x));
-        }
-        result.append('\n');
-        for (int y = keys[0].length - 1; y >= 0; y--) {
-            result.append(String.format("%1X", y));
-            for (int x = keys.length - 1; x >= 0; x--) {
-                result.append(keys[x][y] ? '+' : '-');
-            }
-            result.append('\n');
-        }
-        return result.toString();
-    }
-
-    private void log(Key key, K button) {
-        System.out.println((++tick) + "> "
-                + (key.shift() ? "+" : " ")
-                + " "
-                + (String.format("%1X", button.x()) + "," + String.format("%1X", button.y()))
-                + " "
-                + (key.pressed() ? "down " : "up   ")
-                + "0x" + hex16(key.code())
-                + " " + (button.shiftOut() ? "+" : " ")
-                + button.getClass().getSimpleName());
     }
 
     public synchronized void reset() {

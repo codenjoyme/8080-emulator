@@ -8,7 +8,7 @@ public class MoreThan implements K {
     }
 
     @Override
-    public int swingCode() {
+    public int code() {
         return '.';
     }
 

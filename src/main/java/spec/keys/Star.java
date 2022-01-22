@@ -8,7 +8,7 @@ public class Star implements K {
     }
 
     @Override
-    public int swingCode() {
+    public int code() {
         return '8';
     }
 

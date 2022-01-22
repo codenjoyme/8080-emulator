@@ -2,8 +2,6 @@ package spec.keys;
 
 import spec.Key;
 
-import static spec.IOPorts.LAYOUT_AWT;
-
 public interface K {
 
     default char ch() {
@@ -14,12 +12,9 @@ public interface K {
 
     default boolean itsMe(Key key) {
         int keyCode = key.code();
-        int layout = key.layout();
         boolean shift = key.shift();
 
-        return (layout == LAYOUT_AWT)
-                ? keyCode == awtCode()
-                : shiftIn() == shift && keyCode == swingCode();
+        return shiftIn() == shift && keyCode == code();
     }
 
     default int x() {
@@ -30,11 +25,7 @@ public interface K {
         return pt() & 0x0F;
     }
 
-    default int awtCode() {
-        return ch();
-    }
-
-    default int swingCode() {
+    default int code() {
         return ch();
     }
 

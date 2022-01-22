@@ -3,12 +3,7 @@ package spec.keys;
 public class End implements K {
 
     @Override
-    public int awtCode() {
-        return 0x03E9;
-    }
-
-    @Override
-    public int swingCode() {
+    public int code() {
         return 0x0023;
     }
 

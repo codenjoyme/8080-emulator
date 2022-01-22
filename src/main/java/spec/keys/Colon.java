@@ -8,7 +8,7 @@ public class Colon implements K {
     }
 
     @Override
-    public int swingCode() {
+    public int code() {
         return ';';
     }
 
