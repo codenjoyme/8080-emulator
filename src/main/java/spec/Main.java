@@ -125,7 +125,9 @@ public class Main extends Applet implements Runnable {
      */
     @Override
     public void paint(Graphics g) {
-        app.repaint();
+        if (app != null) {
+            app.repaint();
+        }
     }
 
     /**
@@ -142,7 +144,10 @@ public class Main extends Applet implements Runnable {
      */
     @Override
     public boolean handleEvent(Event e) {
-        return app.handleEvent(e);
+        if (app != null) {
+            return app.handleEvent(e);
+        }
+        return handleEvent(e);
     }
 
     @Override
