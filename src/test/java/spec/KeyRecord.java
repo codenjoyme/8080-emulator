@@ -20,6 +20,7 @@ public class KeyRecord {
     }
 
     public Action after(int tick) {
+        System.out.println(tick);
         Action action = new Action(tick);
         scenario.put(tick, action);
         return action;
@@ -52,7 +53,7 @@ public class KeyRecord {
             // жмем кнопку в этом тике
             down(code, mode);
             // а это уже другой Action через 10k тиков, в котором отпускаем кнопку
-            return after(tick + 10).up(code, mode);
+            return after(10).up(code, mode);
         }
 
         public Action down(int code, int mode) {
@@ -74,8 +75,8 @@ public class KeyRecord {
             return this;
         }
 
-        public Action after(int tick) {
-            return KeyRecord.this.after(tick);
+        public Action after(int delta) {
+            return KeyRecord.this.after(tick + delta);
         }
     }
 

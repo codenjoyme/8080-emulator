@@ -82,11 +82,11 @@ public class IntegrationTest extends AbstractCpuTest {
 
         // when
         record.after(20).shot().press(END).shot()
-                .after(50).press(ENTER)
-                .after(100).shot()
-                .after(110).press('A')
-                .after(150).press(ENTER)
-                .after(270).shot().stopCpu();
+                .after(20).press(ENTER)
+                .after(40).shot()
+                .after(10).press('A')
+                .after(30).press(ENTER)
+                .after(110).shot().stopCpu();
 
         cpu.PC(START_POINT);
         cpu.execute();
