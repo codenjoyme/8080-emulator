@@ -6,12 +6,18 @@ import static spec.IOPorts.PAUSE_KEY;
 
 public class Key {
 
+    // Swing key event mods
     public static final int MOD_SHIFT =      0b0000_0000_0100_0000;
     public static final int MOD_LEFT_ALT =   0b0000_0010_0000_0000;
     public static final int MOD_RIGHT_ALT =  0b0010_0010_0000_0000;
     public static final int MOD_CTRL =       0b0000_0000_1000_0000;
 
-    public static final int SHIFT = 0b0000_0001_0000_0000;
+    // наши кастомные флаги, для изменения key code
+    public static final int SHIFT     = 0b0000_0001_0000_0000;
+    public static final int LEFT_ALT  = 0b0000_0010_0000_0000;
+    public static final int RIGHT_ALT = 0b0000_0100_0000_0000;
+    public static final int CTRL      = 0b0000_1000_0000_0000;
+
     public static final int CYRYLIC = 0x1000000;
 
     private int code;
@@ -33,7 +39,11 @@ public class Key {
     }
 
     public int joint() {
-        return code | (shift() ? SHIFT : 0);
+        return code
+                | (shift() ? SHIFT : 0)
+                | (leftAlt() ? LEFT_ALT : 0)
+                | (rightAlt() ? RIGHT_ALT : 0)
+                | (ctrl() ? CTRL : 0);
     }
 
     public int code() {
@@ -42,5 +52,20 @@ public class Key {
 
     public boolean shift() {
         return (mods & MOD_SHIFT) == MOD_SHIFT;
+    }
+
+    public boolean leftAlt() {
+        // TODO Придумать другой сопособ соответствия, так как флаги
+        // MOD_LEFT_ALT и MOD_RIGHT_ALT пересекаются
+        return !rightAlt()
+                && (mods & MOD_LEFT_ALT) == MOD_LEFT_ALT;
+    }
+
+    public boolean rightAlt() {
+        return (mods & MOD_RIGHT_ALT) == MOD_RIGHT_ALT;
+    }
+
+    public boolean ctrl() {
+        return (mods & MOD_CTRL) == MOD_CTRL;
     }
 }

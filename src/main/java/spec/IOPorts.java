@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static spec.Constants.ROM;
-import static spec.Key.CYRYLIC;
-import static spec.Key.SHIFT;
+import static spec.Key.*;
 import static spec.WordMath.hex16;
 import static spec.WordMath.hex8;
 
@@ -13,6 +12,8 @@ public class IOPorts {
 
     public static final int PAUSE_KEY = 0x13;
     public static final int SHIFT_KEY = 0x10;
+    public static final int CTRL_KEY = 0x11;
+    public static final int ALT_KEY = 0x12;
 
     private boolean Ain;   // порт A на ввод
     private boolean Bin;   // порт B на ввод
@@ -31,7 +32,7 @@ public class IOPorts {
     private final int[] bit = {0x00FE, 0x00FD, 0x00FB, 0x00F7, 0x00EF, 0x00DF, 0x00BF, 0x007F};
 
     // биты установки
-    private final int[] msk = {0x0001, 0x0002, 0x0004, 0x0008, SHIFT_KEY, 0x0020, 0x0040, 0x0080};
+    private final int[] msk = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080};
 
     // массив матрицы клавш "Специалиста" ( true - нажата, false - отпущена)
     // 12 x 6 + Shift + Reset
@@ -320,6 +321,22 @@ public class IOPorts {
         keys.put((int)code | SHIFT, pt);
     }
 
+    private void putAltR(char code, int pt) {
+        keys.put((int)code | RIGHT_ALT, pt);
+    }
+
+    private void putAltL(char code, int pt) {
+        keys.put((int)code | LEFT_ALT , pt);
+    }
+
+    private void putAlLS(char code, int pt) {
+        keys.put((int)code | LEFT_ALT | SHIFT, pt);
+    }
+
+    private void putCtrl(char code, int pt) {
+        keys.put((int)code | CTRL, pt);
+    }
+
     private void putCyrl(char code, int pt) {
         keys.put((int)code | CYRYLIC, pt);
     }
@@ -337,40 +354,47 @@ public class IOPorts {
         //putCrSh('ё', 0x00);
 
         putNorm('1', 0xA4); // 1 -> 1
-        putShft('1', 0xA4); // ! -> !
+        putShft('1', 0xA4); // shift 1 -> !
 
         putNorm('2', 0x94); // 2 -> 2
-        putShft('2', 0x31); // @ -> @ [Ю]
+        putShft('2', 0x31); // shift 2 -> @ [Ю]
+        // пример того как можно навешать на одну клавишу
+        putAlLS('2', 0x94); // left_alt shift 2 -> "
 
         putNorm('3', 0x84); // 3 -> 3
         putShft('3', 0x84); // # -> #
 
         putNorm('4', 0x74); // 4 -> 4
-        putShft('4', 0x74); // 4 -> $
+        putShft('4', 0x74); // shift 4 -> $
+        putAltL('4', 0x03); // left_alt 4 -> :
+        putCtrl('4', 0xB4); // ctrl 4 -> ;
 
         putNorm('5', 0x64); // 5 -> 5
-        putShft('5', 0x64); // % -> %
+        putShft('5', 0x64); // shift 5 -> %
 
         putNorm('6', 0x54); // 6 -> 6
-        putShft('6', 0xA1); // ^ -> ^ [Ч]
+        putShft('6', 0xA1); // shift 6 -> ^ [Ч]
+        putAltL('6', 0x03); // left_alt 6 -> :
+        putCtrl('6', 0xB4); // ctrl 6 -> ;
 
         putNorm('7', 0x44); // 7 -> 7
-        putShft('7', 0x54); // & -> &
+        putShft('7', 0x54); // shift 7 -> &
+        putAlLS('7', 0x11); // left_alt shift 7 -> ?
 
         putNorm('8', 0x34); // 8 -> 8
-        putShft('8', 0x03); // * -> *
+        putShft('8', 0x03); // shift 8 -> *
 
         putNorm('9', 0x24); // 9 -> 9
-        putShft('9', 0x34); // ( -> (
+        putShft('9', 0x34); // shift 9 -> (
 
         putNorm('0', 0x14); // 0 -> 0
-        putShft('0', 0x24); // ) -> )
+        putShft('0', 0x24); // shift 0 -> )
 
         putNorm('-', 0x04); // - -> -
-        putShft('-', 0x04); // _ -> =
+        putShft('-', 0x04); // shift - -> =
 
         putNorm('=', 0xB4); // = -> ;
-        putShft('=', 0xB4); // + -> +
+        putShft('=', 0xB4); // shift = -> +
 
         putNorm(0x0A, 0x00); // backspace -> backspace
 
@@ -418,7 +442,7 @@ public class IOPorts {
 
         // третья линия стандартной клавиатуры
 
-        putNorm(0x14, 0xB0);  // CapsLock -> RusLat
+        putNorm(0x14, 0xB0);  // caps_lock -> RusLat
 
         putNorm('A', 0x82); //  A  -> A [А]
         putCyrl('ф', 0xB2); // [Ф] -> F [Ф]
@@ -447,16 +471,17 @@ public class IOPorts {
         putNorm('L', 0x42); //  L  -> L [Л]
         putCyrl('д', 0x32); // [Д] -> D [Д]
 
-        putNorm(';', 0x03); //  ;  -> :
-        putShft(';', 0xB4); //  :  -> +
+        putNorm(';', 0x03); // ;   -> :
+        putShft(';', 0xB4); // shift ;  -> +
+        putAltR(';', 0xB4); // right_alt ; -> ;
         putCyrl('ж', 0x22); // [Ж] -> V [Ж]
 
         putNorm('Þ', 0xA1); // ' -> ^ [Ч]
-        putShft('Þ', 0x94); // " -> "
+        putShft('Þ', 0x94); // shift ' -> "
         putCyrl('э', 0x12); // Э -> \ [Э]
 
         putNorm('\\', 0x11); // \ -> /
-        putShft('\\', 0x12); // | -> \ [Э]
+        putShft('\\', 0x12); // shift \ -> \ [Э]
 
         // четвертая линия стандартной клавиатуры
 
@@ -484,15 +509,15 @@ public class IOPorts {
         putCyrl('ь', 0x51); // [Ь] -> X [Ь]
 
         putNorm(',', 0x21); //  ,  -> ,
-        putShft(',', 0x21); //  <  -> <
+        putShft(',', 0x21); //  shift , -> <
         putCyrl('б', 0x41); // [Б] -> B [Б]
 
         putNorm('.', 0x02); //  .  -> .
-        putShft('.', 0x02); //  >  -> >
+        putShft('.', 0x02); //  shift . -> >
         putCyrl('ю', 0x31); // [Ю] -> @ [Ю]
 
         putNorm('/', 0x11); //  /  -> /
-        putShft('/', 0x11); //  ?  -> ?
+        putShft('/', 0x11); //  shift / -> ?
 
         // другие клавиши
 
@@ -535,6 +560,13 @@ public class IOPorts {
 
         if (key.code() == SHIFT_KEY) {
             shift = key.pressed();
+            return;
+        }
+
+        if (key.code() == ALT_KEY
+                || key.code() == CTRL_KEY
+                || key.code() == PAUSE_KEY)
+        {
             return;
         }
 
