@@ -17,7 +17,10 @@ import static spec.Layout.ENTER;
 
 public class IntegrationTest extends AbstractCpuTest {
 
-    public static final int TICKS = 10_000_000;
+    private static final int TICKS = 10_000_000;
+
+    private static final String TEST_RESOURCES = "src/test/resources/";
+    private static final String APP_RESOURCES = "src/main/resources/";
 
     @Rule
     public TestName test = new TestName();
@@ -38,9 +41,20 @@ public class IntegrationTest extends AbstractCpuTest {
         ports = new IOPorts(data.memory(), new Layout());
         video = new PngVideo(data.memory());
         data.ports(ports);
-        base = new File("src/main/resources/").toURI().toURL();
+        base = new File(APP_RESOURCES).toURI().toURL();
         maxTicks = TICKS;
         record = new KeyRecord(ports, this::screenShoot, data::stopCpu);
+        removeTestScreenShots();
+    }
+
+    private void removeTestScreenShots() {
+        File[] files = new File(TEST_RESOURCES).listFiles();
+        if (files == null) return;
+        for (File file : files) {
+            if (file.getName().startsWith(test.getMethodName())) {
+                file.delete();
+            }
+        }
     }
 
     @After
@@ -49,7 +63,7 @@ public class IntegrationTest extends AbstractCpuTest {
     }
 
     private void screenShoot() {
-        video.drawToFile(new File("src/test/resources/"
+        video.drawToFile(new File(TEST_RESOURCES
                 + test.getMethodName() + "_" + tick + ".png"));
     }
 
@@ -62,7 +76,7 @@ public class IntegrationTest extends AbstractCpuTest {
     }
 
     @Test
-    public void testLik_runCom() {
+    public void testLik_smoke() {
         // given
         Lik.loadRom(base, roms);
 
@@ -71,7 +85,12 @@ public class IntegrationTest extends AbstractCpuTest {
                 .when(20_000).release(END).shot()
                 .when(40_000).press(ENTER)
                 .when(50_000).release(ENTER)
-                .when(100_000).shot().stopCpu();
+                .when(100_000).shot()
+                .when(110_000).press('A')
+                .when(120_000).release('A')
+                .when(150_000).press(ENTER)
+                .when(170_000).release(ENTER)
+                .when(270_000).shot().stopCpu();
 
         cpu.PC(START_POINT);
         cpu.execute();
