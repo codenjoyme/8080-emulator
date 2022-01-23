@@ -324,42 +324,205 @@ public class IOPorts {
         keys.put((int)code | CYRYLIC, pt);
     }
 
+    private void putCrSh(char code, int pt) {
+        keys.put((int)code | CYRYLIC | SHIFT, pt);
+    }
+
     private void initKeys() {
-        putNorm(0x0A, 0x00);
-        putNorm(0x00, 0x01);
+        // первая линия стандартной клавиатуры
 
-        putNorm('.', 0x02);
-        putShft('>', 0x02);
+        //putNorm('À', 0x00); // первая клавиша ~/[Ё]
+        //putShft('À', 0x00);
+        //putCyrl('ё', 0x00);
+        //putCrSh('ё', 0x00);
 
-        putNorm('*', 0x03);
-        putShft(';', 0x03);
+        putNorm('1', 0xA4); // 1 -> 1
+        putShft('1', 0xA4); // ! -> !
 
-        putNorm('=', 0x04);
-        putShft('=', 0x04);
+        putNorm('2', 0x94); // 2 -> 2
+        putShft('2', 0x31); // @ -> @ [Ю]
 
-        putNorm('/', 0x11);
-        putShft('/', 0x11);
+        putNorm('3', 0x84); // 3 -> 3
+        putShft('3', 0x84); // # -> #
 
-        putNorm('Q', 0xB1);
-        putCyrl('й', 0xB3);
+        putNorm('4', 0x74); // 4 -> 4
+        putShft('4', 0x74); // 4 -> $
 
-        putNorm('W', 0x92);
-        putCyrl('ц', 0xA3);
+        putNorm('5', 0x64); // 5 -> 5
+        putShft('5', 0x64); // % -> %
 
-        putNorm('B', 0x41);
-        putCyrl('и', 0x71);
+        putNorm('6', 0x54); // 6 -> 6
+        putShft('6', 0xA1); // ^ -> ^ [Ч]
 
-        putNorm(0xDE, 0x12);
+        putNorm('7', 0x44); // 7 -> 7
+        putShft('7', 0x54); // & -> &
 
-        putNorm(0x11, 0xB0);  // Left Ctrl -> Rus/Lat
+        putNorm('8', 0x34); // 8 -> 8
+        putShft('8', 0x03); // * -> *
 
-        putNorm(0x22, 0x10);
+        putNorm('9', 0x24); // 9 -> 9
+        putShft('9', 0x34); // ( -> (
 
-        // put(0x21, 0x00);  // PageUp
+        putNorm('0', 0x14); // 0 -> 0
+        putShft('0', 0x24); // ) -> )
 
-        putNorm(0x23, 0xA5);
+        putNorm('-', 0x04); // - -> -
+        putShft('-', 0x04); // _ -> =
 
-        putNorm(';', 0xB4);
+        putNorm('=', 0xB4); // = -> ;
+        putShft('=', 0xB4); // + -> +
+
+        putNorm(0x0A, 0x00); // backspace -> backspace
+
+        // вторая линия стандартной клавиатуры
+
+        // Tab не определяется в Swing
+
+        putNorm('Q', 0xB1); //  Q  -> Q [Я]
+        putCyrl('й', 0xB3); // [Й] -> J [Й]
+
+        putNorm('W', 0x92); //  W  -> W [В]
+        putCyrl('ц', 0xA3); // [Ц] -> С [Ц]
+
+        putNorm('E', 0x73); //  E  -> E [E]
+        putCyrl('у', 0x93); // [У] -> u [У]
+
+        putNorm('R', 0x62); //  R  -> R [Р]
+        putCyrl('к', 0x83); // [К] -> К [К]
+
+        putNorm('T', 0x61); //  T  -> T [Т]
+        putCyrl('е', 0x73); // [Е] -> Е [Е]
+
+        putNorm('Y', 0xA2); //  Y  -> Y [Ы]
+        putCyrl('н', 0x63); // [Н] -> N [Н]
+
+        putNorm('U', 0x93); //  U  -> U [У]
+        putCyrl('г', 0x53); // [Г] -> G [Г]
+
+        putNorm('I', 0x71); //  I  -> I [И]
+        putCyrl('ш', 0x43); // [Ш] -> [ [Ш]
+
+        putNorm('O', 0x52); //  O  -> O [О]
+        putCyrl('щ', 0x33); // [Щ] -> ] [Щ]
+
+        putNorm('P', 0x72); //  P  -> P [П]
+        putCyrl('з', 0x23); // [З] -> Z [З]
+
+        putNorm('[', 0x43); //  [  -> [ [Ш]
+        putCyrl('х', 0x51); // [Х] -> Ь [Х]
+
+        putNorm(']', 0x33); //  ]  -> ] [Щ]
+        //putCyrl('ъ', 0x00);  // нет такого знака
+
+        putNorm(0x00, 0x01); // enter -> enter
+
+        // третья линия стандартной клавиатуры
+
+        putNorm(0x14, 0xB0);  // CapsLock -> RusLat
+
+        putNorm('A', 0x82); //  A  -> A [А]
+        putCyrl('ф', 0xB2); // [Ф] -> F [Ф]
+
+        putNorm('S', 0x91); //  S  -> S [С]
+        putCyrl('ы', 0xA2); // [Ы] -> Y [Ы]
+
+        putNorm('D', 0x32); //  D  -> D [Д]
+        putCyrl('в', 0x92); // [В] -> W [В]
+
+        putNorm('F', 0xB2); //  F  -> F [Ф]
+        putCyrl('а', 0x82); // [А] -> A [А]
+
+        putNorm('G', 0x53); //  G  -> G [Г]
+        putCyrl('п', 0x72); // [П] -> p [П]
+
+        putNorm('H', 0x13); //  H  -> H [Х]
+        putCyrl('р', 0x62); // [Р] -> R [Р]
+
+        putNorm('J', 0xB3); //  J  -> J [й]
+        putCyrl('о', 0x52); // [О] -> O [О]
+
+        putNorm('K', 0x83); //  K  -> K [К]
+        putCyrl('л', 0x42); // [Л] -> L [Л]
+
+        putNorm('L', 0x42); //  L  -> L [Л]
+        putCyrl('д', 0x32); // [Д] -> D [Д]
+
+        putNorm(';', 0x03); //  ;  -> :
+        putShft(';', 0xB4); //  :  -> +
+        putCyrl('ж', 0x22); // [Ж] -> V [Ж]
+
+        putNorm('Þ', 0xA1); // ' -> ^ [Ч]
+        putShft('Þ', 0x94); // " -> "
+        putCyrl('э', 0x12); // Э -> \ [Э]
+
+        putNorm('\\', 0x11); // \ -> /
+        putShft('\\', 0x12); // | -> \ [Э]
+
+        // четвертая линия стандартной клавиатуры
+
+        // shift работает как системная клавиша
+
+        putNorm('Z', 0x23); //  Z  -> Z [З]
+        putCyrl('я', 0xB1); // [Я] -> Q [Я]
+
+        putNorm('X', 0x51); //  X  -> X [Ь]
+        putCyrl('ч', 0xA1); // [Ч] -> ^ [Ч]
+
+        putNorm('C', 0xA3); //  C  -> C [Ц]
+        putCyrl('с', 0x91); // [С] -> S [С]
+
+        putNorm('V', 0x22); //  V  -> V [Ж]
+        putCyrl('м', 0x81); // [М] -> M [М]
+
+        putNorm('B', 0x41); //  B  -> B [Б]
+        putCyrl('и', 0x71); // [И] -> I [И]
+
+        putNorm('N', 0x63); //  N  -> N [Н]
+        putCyrl('т', 0x61); // [Т] -> T [Т]
+
+        putNorm('M', 0x81); //  M  -> M [М]
+        putCyrl('ь', 0x51); // [Ь] -> X [Ь]
+
+        putNorm(',', 0x21); //  ,  -> ,
+        putShft(',', 0x21); //  <  -> <
+        putCyrl('б', 0x41); // [Б] -> B [Б]
+
+        putNorm('.', 0x02); //  .  -> .
+        putShft('.', 0x02); //  >  -> >
+        putCyrl('ю', 0x31); // [Ю] -> @ [Ю]
+
+        putNorm('/', 0x11); //  /  -> /
+        putShft('/', 0x11); //  ?  -> ?
+
+        // другие клавиши
+
+        putNorm(0x1B, 0x70); //  esc -> esc
+        putNorm(' ', 0x50);  //  space -> space
+
+        putNorm(0x9B, 0x30); //  ins -> ПВ
+        putNorm(0x24, 0xA0); //  home -> home
+        putNorm(0x24, 0x60); //  page up -> tab
+        putNorm(0x7F, 0x00); //  delete -> backspace
+        putNorm(0x23, 0x05); //  end -> F11
+        putNorm(0x22, 0x15); //  page down -> F10
+
+        putNorm(0x26, 0x90); //  up -> up
+        putNorm(0x28, 0x80); //  down -> down
+        putNorm(0x25, 0x40); //  left -> left
+        putNorm(0x27, 0x20); //  right -> right
+
+        putNorm(0x70, 0xA5); //  F1 -> F1
+        putNorm(0x71, 0x95); //  F2 -> F2
+        putNorm(0x72, 0x85); //  F3 -> F3
+        putNorm(0x73, 0x75); //  F4 -> F4
+        putNorm(0x74, 0x65); //  F5 -> F5
+        putNorm(0x75, 0x55); //  F6 -> F6
+        putNorm(0x76, 0x45); //  F7 -> F7
+        putNorm(0x77, 0x35); //  F8 -> F8
+        putNorm(0x78, 0x25); //  F9 -> F9
+        putNorm(0x79, 0x15); //  F10 -> F10
+        putNorm(0x7A, 0x05); //  F11 -> F11
+        putNorm(0x7B, 0xB5); //  F -> F12
     }
 
     public synchronized void processKey(Key key) {
