@@ -376,16 +376,16 @@ public class IOPorts {
 
         putNorm('4', 0x74); // 4 -> 4
         putShft('4', 0x74); // shift 4 -> $
-        putAltL('4', 0x03); // left_alt 4 -> :
-        putCtrl('4', 0xB4); // ctrl 4 -> ;
+        putCtrl('4', 0x03); // ctrl 4 -> :
+        putAltL('4', 0xB4); // left_alt 4 -> ;
 
         putNorm('5', 0x64); // 5 -> 5
         putShft('5', 0x64); // shift 5 -> %
 
         putNorm('6', 0x54); // 6 -> 6
         putShft('6', 0xA1); // shift 6 -> ^ [Ч]
-        putAltL('6', 0x03); // left_alt 6 -> :
-        putCtrl('6', 0xB4); // ctrl 6 -> ;
+        putCtrl('6', 0x03); // ctrl 6 -> :
+        putAltL('6', 0xB4); // left_alt 6 -> ;
 
         putNorm('7', 0x44); // 7 -> 7
         putShft('7', 0x54); // shift 7 -> &
@@ -405,6 +405,8 @@ public class IOPorts {
 
         putNorm('=', 0xB4); // = -> ;
         putShft('=', 0xB4); // shift = -> +
+        putCtrl('=', 0x03); // ctrl = -> :
+        putAltL('=', 0xB4); // left_alt = -> ;
 
         putNorm(0x0A, 0x00); // backspace -> backspace
 
@@ -487,7 +489,7 @@ public class IOPorts {
 
         putNorm(';', 0x03); // ;   -> :
         putShft(';', 0xB4); // shift ;  -> +
-        putAltR(';', 0xB4); // right_alt ; -> ;
+        putAltL(';', 0xB4); // left_alt ; -> ;
         putCyrl('ж', 0x22); // [Ж] -> V [Ж]
 
         putNorm('Þ', 0xA1); // ' -> ^ [Ч]
@@ -523,14 +525,17 @@ public class IOPorts {
         putCyrl('ь', 0x51); // [Ь] -> X [Ь]
 
         putNorm(',', 0x21); //  ,  -> ,
-        putShft(',', 0x21); //  shift , -> <
+        putShft(',', 0x21); // shift , -> <
+        putCtrl(',', 0x02); // ctrl , -> >
         putCyrl('б', 0x41); // [Б] -> B [Б]
 
         putNorm('.', 0x02); //  .  -> .
         putShft('.', 0x02); //  shift . -> >
+        putCtrl('.', 0x21); // ctrl . -> <
         putCyrl('ю', 0x31); // [Ю] -> @ [Ю]
 
         putNorm('/', 0x11); //  /  -> /
+        putCtrl('/', 0x12); //  ctrl /  -> \
         putShft('/', 0x11); //  shift / -> ?
 
         // другие клавиши
