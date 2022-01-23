@@ -10,8 +10,12 @@ import spec.platforms.Specialist;
 
 import java.io.File;
 import java.net.URL;
+import java.util.function.Consumer;
 
 import static spec.Constants.START_POINT;
+import static spec.Key.MOD_NONE;
+import static spec.Layout.END;
+import static spec.Layout.ENTER;
 
 public class IntegrationTest extends AbstractCpuTest {
 
@@ -24,9 +28,10 @@ public class IntegrationTest extends AbstractCpuTest {
     private IOPorts ports;
     private PngVideo video;
 
-    private int ticks;
+    private int tick;
     private int maxTicks;
     private URL base;
+    private Consumer<Integer> onInterrupt;
 
     @Before
     public void before() throws Exception {
@@ -46,9 +51,12 @@ public class IntegrationTest extends AbstractCpuTest {
     }
 
     @Override
-    protected void onInterrupt() {
-        if (++ticks >= maxTicks) {
+    protected void interrupt() {
+        if (++tick >= maxTicks) {
             data.stopCpu();
+        }
+        if (onInterrupt != null) {
+            onInterrupt.accept(tick);
         }
     }
 
@@ -60,7 +68,14 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadRom(base, roms);
 
         // when
-        ports.processKey(new Key(0x23, true, 0x00));
+        onInterrupt = tick -> {
+            switch (tick) {
+                case 10_000 : ports.processKey(new Key(END,   true,  MOD_NONE)); break;
+                case 20_000 : ports.processKey(new Key(END,   false, MOD_NONE)); break;
+                case 40_000 : ports.processKey(new Key(ENTER, true,  MOD_NONE)); break;
+                case 50_000 : ports.processKey(new Key(ENTER, false, MOD_NONE)); break;
+            }
+        };
 
         cpu.PC(START_POINT);
         cpu.execute();

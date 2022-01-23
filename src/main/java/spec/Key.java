@@ -10,6 +10,7 @@ import static spec.IOPorts.PAUSE_KEY;
 public class Key {
 
     // Swing key event mods
+    public static final int MOD_NONE =       0b0000_0000_0000_0000;
     public static final int MOD_SHIFT =      0b0000_0000_0100_0000;
     public static final int MOD_LEFT_ALT =   0b0000_0010_0000_0000;
     public static final int MOD_RIGHT_ALT =  0b0010_0010_0000_0000;

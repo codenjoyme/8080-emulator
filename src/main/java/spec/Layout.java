@@ -1,7 +1,10 @@
 package spec;
 
 public class Layout {
-    
+
+    public static final int END = 0x23;
+    public static final int ENTER = 0x0A;
+
     public void setup(Keyboard keyboard) {
         // первая линия стандартной клавиатуры
 
@@ -104,7 +107,7 @@ public class Layout {
                                      // ctrl (Щ) -> О [O]
 
         keyboard.putChar('P', 0x72,  //  P  -> P [П]
-                         'з', 0x23); // (З) -> Z [З]
+                         'з', END); // (З) -> Z [З]
                                      // ctrl  P  -> Z [З]
                                      // ctrl (З) -> П [P]
 
@@ -183,7 +186,7 @@ public class Layout {
 
         // shift работает как системная клавиша
 
-        keyboard.putChar('Z', 0x23,  //  Z  -> Z [З]
+        keyboard.putChar('Z', END,  //  Z  -> Z [З]
                          'я', 0xB1); // (Я) -> Q [Я]
                                      // ctrl  Z  -> Q [Я]
                                      // ctrl (Я) -> З [Z]
@@ -238,8 +241,8 @@ public class Layout {
 
         // другие клавиши
 
-        keyboard.putNorm(0x0A, 0x00); // enter -> enter
-        keyboard.putNorm(0x08, 0x01); // backspace -> backspace
+        keyboard.putNorm(ENTER, 0x00); // enter -> enter
+        keyboard.putNorm(0x08, 0x01);  // backspace -> backspace
         keyboard.putNorm(0x14, 0xB0);  // caps_lock -> RusLat
 
         keyboard.putNorm(0x1B, 0x70); // esc -> esc
@@ -249,7 +252,7 @@ public class Layout {
         keyboard.putNorm(0x24, 0xA0); // home -> home
         keyboard.putNorm(0x24, 0x60); // page up -> tab
         keyboard.putNorm(0x7F, 0x01); // delete -> backspace
-        keyboard.putNorm(0x23, 0x05); // end -> F11
+        keyboard.putNorm(END, 0x05);  // end -> F11
         keyboard.putNorm(0x22, 0x15); // page down -> F10
 
         keyboard.putNorm(0x26, 0x90); // up -> up

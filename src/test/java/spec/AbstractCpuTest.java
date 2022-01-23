@@ -18,14 +18,14 @@ public abstract class AbstractCpuTest {
 
     @Before
     public void before() throws Exception {
-        data = new TestData(this::onInterrupt);
+        data = new TestData(this::interrupt);
         init = false;
         cpu = new Cpu(50.1 * 1e-6, data);
         cpu.PC(START);
         asm = new Assembler();
     }
 
-    protected void onInterrupt() {
+    protected void interrupt() {
         if (cpu.PC() >= stopWhen) {
             data.stopCpu();
         }
