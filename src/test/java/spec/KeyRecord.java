@@ -7,6 +7,7 @@ import static spec.Key.MOD_NONE;
 
 public class KeyRecord {
 
+    public static final int K10 = 10_000;
     private Map<Integer, Action> scenario = new HashMap<>();
 
     private Runnable screenShoot;
@@ -48,7 +49,7 @@ public class KeyRecord {
         public Action enter(String text) {
             Action action = this;
             for (char ch : text.toCharArray()) {
-                action = action.press(ch).after(20);
+                action = action.press(ch).after(2);
             }
             return action;
         }
@@ -61,7 +62,7 @@ public class KeyRecord {
             // жмем кнопку в этом тике
             down(code, mode);
             // а это уже другой Action через 20k тиков, в котором отпускаем кнопку
-            return after(20).up(code, mode);
+            return after(2).up(code, mode);
         }
 
         public Action down(int code) {
@@ -97,9 +98,9 @@ public class KeyRecord {
     }
 
     public void accept(int tick) {
-        // нам интересны каждые 1000 тиков, реже смотреть нет смысла
-        if (tick % 1000 != 0) return;
-        int kiloTick = tick / 1000;
+        // нам интересны каждые 10 000 тиков, реже смотреть нет смысла
+        if (tick % K10 != 0) return;
+        int kiloTick = tick / K10;
         Action action = scenario.get(kiloTick);
         if (action == null) return;
         if (action.screenShoot) {

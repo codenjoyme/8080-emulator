@@ -81,50 +81,18 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadRom(base, roms);
 
         // when
-        record.after(20).shot().press(END).shot()
-                .after(20).press(ENTER)
-                .after(40).shot()
-                .after(10).enter("AC000")
-                .after(30).press(ENTER)
-                .after(200).shot().down(ENTER)
-                .after(50).press(END)
-                .after(50).up(ENTER)
-                .after(150).shot().stopCpu();
+        record.after(2).shot().press(END).shot()
+                .after(2).press(ENTER)
+                .after(4).shot()
+                .after(1).enter("AC000")
+                .after(3).press(ENTER)
+                .after(20).shot().down(ENTER)
+                .after(5).press(END)
+                .after(5).up(ENTER)
+                .after(15).shot().stopCpu();
 
         cpu.PC(START_POINT);
         cpu.execute();
-
-        // then
-        asrtCpu("BC:  0302\n" +
-                "DE:  C675\n" +
-                "HL:  0044\n" +
-                "AF:  0102\n" +
-                "SP:  7FE7\n" +
-                "PC:  C07B\n" +
-                "B,C: 03 02\n" +
-                "D,E: C6 75\n" +
-                "H,L: 00 44\n" +
-                "M:   00\n" +
-                "A,F: 01 02\n" +
-                "     76543210 76543210\n" +
-                "SP:  01111111 11100111\n" +
-                "PC:  11000000 01111011\n" +
-                "     76543210\n" +
-                "B:   00000011\n" +
-                "C:   00000010\n" +
-                "D:   11000110\n" +
-                "E:   01110101\n" +
-                "H:   00000000\n" +
-                "L:   01000100\n" +
-                "M:   00000000\n" +
-                "A:   00000001\n" +
-                "     sz0h0p1c\n" +
-                "F:   00000010\n" +
-                "ts:  false\n" +
-                "tz:  false\n" +
-                "th:  false\n" +
-                "tp:  false\n" +
-                "tc:  false\n");
     }
 
     @Test
