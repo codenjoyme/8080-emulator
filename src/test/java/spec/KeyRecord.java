@@ -61,6 +61,10 @@ public class KeyRecord {
             stopCpu = true;
             return this;
         }
+
+        public Action when(int tick) {
+            return KeyRecord.this.when(tick);
+        }
     }
 
     public void accept(int tick) {

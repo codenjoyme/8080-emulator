@@ -67,11 +67,11 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadRom(base, roms);
 
         // when
-        record.when(15_000).press(END).shot();
-        record.when(20_000).release(END).shot();
-        record.when(40_000).press(ENTER);
-        record.when(50_000).release(ENTER);
-        record.when(100_000).shot().stopCpu();
+        record.when(15_000).press(END).shot()
+                .when(20_000).release(END).shot()
+                .when(40_000).press(ENTER)
+                .when(50_000).release(ENTER)
+                .when(100_000).shot().stopCpu();
 
         cpu.PC(START_POINT);
         cpu.execute();
