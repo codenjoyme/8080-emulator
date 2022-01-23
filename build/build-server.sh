@@ -18,12 +18,15 @@ eval_echo() {
     eval $command
 }
 
+eval_echo "HOST=127.0.0.1"
+eval_echo "PORT=8081"
+
 eval_echo "cd .."
 eval_echo "ROOT=$(pwd)"
 
 color "Please run 'http://localhost:8080/' after build"
 
-eval_echo "$ROOT/mvnw clean jetty:run -DskipTests=true -Prun-server -Dserver.hostname=http://localhost:8080"
+eval_echo "$ROOT/mvnw clean jetty:run -DskipTests=true -Dserver.host=$HOST -Dserver.port=$PORT -Prun-server"
 
 echo
 color "Press Enter to continue"
