@@ -308,6 +308,12 @@ public class IOPorts {
  * +========================================================================================+
  **/
 
+    private void putChar(char en, int enPt, char cyr, int cyrPt) {
+        putNorm(en, enPt);   //  Q  -> Q [Я]
+        putCyrl(cyr, cyrPt); // [Й] -> J [Й]
+        putCtrl(en, cyrPt);  // ctrl  Q  -> J [Й]
+        putCyCt(cyr, enPt);  // ctrl [Й] -> Я [Q]
+    }
 
     private void putNorm(Integer code, int pt) {
         keys.put(code, pt);
@@ -337,11 +343,15 @@ public class IOPorts {
         keys.put((int)code | CTRL, pt);
     }
 
+    private void putCyCt(char code, int pt) {
+        keys.put((int)code | CYRYLIC | CTRL, pt);
+    }
+
     private void putCyrl(char code, int pt) {
         keys.put((int)code | CYRYLIC, pt);
     }
 
-    private void putCrSh(char code, int pt) {
+    private void putCySh(char code, int pt) {
         keys.put((int)code | CYRYLIC | SHIFT, pt);
     }
 
@@ -402,11 +412,15 @@ public class IOPorts {
 
         // Tab не определяется в Swing
 
-        putNorm('Q', 0xB1); //  Q  -> Q [Я]
-        putCyrl('й', 0xB3); // [Й] -> J [Й]
+        putChar('Q', 0xB1,  //  Q  -> Q [Я]
+                'й', 0xB3); // [Й] -> J [Й]
+                            // ctrl  Q  -> J [Й]
+                            // ctrl [Й] -> Я [Q]
 
-        putNorm('W', 0x92); //  W  -> W [В]
-        putCyrl('ц', 0xA3); // [Ц] -> С [Ц]
+        putChar('W', 0x92,  //  W  -> W [В]
+                'ц', 0xA3); // [Ц] -> С [Ц]
+                            // ctrl  W  -> С [Ц]
+                            // ctrl [Ц] -> В [W]  // TODO продолжить с этим чудом
 
         putNorm('E', 0x73); //  E  -> E [E]
         putCyrl('у', 0x93); // [У] -> u [У]
