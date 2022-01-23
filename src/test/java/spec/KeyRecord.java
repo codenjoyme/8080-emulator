@@ -64,11 +64,19 @@ public class KeyRecord {
             return after(20).up(code, mode);
         }
 
+        public Action down(int code) {
+            return down(code, MOD_NONE);
+        }
+
         public Action down(int code, int mode) {
             press = true;
             keyCode = code;
             this.mode = mode;
             return this;
+        }
+
+        public Action up(int code) {
+            return up(code, MOD_NONE);
         }
 
         public Action up(int code, int mode) {

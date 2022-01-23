@@ -86,7 +86,10 @@ public class IntegrationTest extends AbstractCpuTest {
                 .after(40).shot()
                 .after(10).enter("AC000")
                 .after(30).press(ENTER)
-                .after(200).shot().stopCpu();
+                .after(200).shot().down(ENTER)
+                .after(50).press(END)
+                .after(50).up(ENTER)
+                .after(150).shot().stopCpu();
 
         cpu.PC(START_POINT);
         cpu.execute();
