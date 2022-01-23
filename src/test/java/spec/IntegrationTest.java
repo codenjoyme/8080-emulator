@@ -60,40 +60,42 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadRom(base, roms);
 
         // when
+        ports.processKey(new Key(0x23, true, 0x00));
+
         cpu.PC(START_POINT);
         cpu.execute();
 
         // then
-        asrtCpu("BC:  9000\n" +
+        asrtCpu("BC:  90FF\n" +
                 "DE:  FF01\n" +
-                "HL:  C49C\n" +
-                "AF:  0142\n" +
-                "SP:  7FF7\n" +
-                "PC:  C387\n" +
-                "B,C: 90 00\n" +
+                "HL:  18A0\n" +
+                "AF:  7F87\n" +
+                "SP:  7FE5\n" +
+                "PC:  C254\n" +
+                "B,C: 90 FF\n" +
                 "D,E: FF 01\n" +
-                "H,L: C4 9C\n" +
+                "H,L: 18 A0\n" +
                 "M:   00\n" +
-                "A,F: 01 42\n" +
+                "A,F: 7F 87\n" +
                 "     76543210 76543210\n" +
-                "SP:  01111111 11110111\n" +
-                "PC:  11000011 10000111\n" +
+                "SP:  01111111 11100101\n" +
+                "PC:  11000010 01010100\n" +
                 "     76543210\n" +
                 "B:   10010000\n" +
-                "C:   00000000\n" +
+                "C:   11111111\n" +
                 "D:   11111111\n" +
                 "E:   00000001\n" +
-                "H:   11000100\n" +
-                "L:   10011100\n" +
+                "H:   00011000\n" +
+                "L:   10100000\n" +
                 "M:   00000000\n" +
-                "A:   00000001\n" +
+                "A:   01111111\n" +
                 "     sz0h0p1c\n" +
-                "F:   01000010\n" +
-                "ts:  false\n" +
-                "tz:  true\n" +
+                "F:   10000111\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
                 "th:  false\n" +
-                "tp:  false\n" +
-                "tc:  false\n");
+                "tp:  true\n" +
+                "tc:  true\n");
     }
 
     @Test

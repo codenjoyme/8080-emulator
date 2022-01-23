@@ -27,6 +27,12 @@ public class Key {
     private boolean press;
     private int mods;
 
+    public Key(int code, boolean press, int mods) {
+        this.code = code;
+        this.press = press;
+        this.mods = mods;
+    }
+
     public Key(KeyEvent event, boolean press) {
         this.press = press;
         code = event.getExtendedKeyCode();
