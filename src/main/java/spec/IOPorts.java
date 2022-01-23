@@ -593,42 +593,42 @@ public class IOPorts {
                 'ю', 0x31); // (Ю) -> @ [Ю]
                             // ctrl  .  -> @ [Ю]
                             // ctrl (Ю) -> .
-        putShft('.', 0x02); //  shift . -> >
+        putShft('.', 0x02); // shift . -> >
         putCtrl('.', 0x21); // ctrl . -> <
 
-        putNorm('/', 0x11); //  /  -> /
-        putCtrl('/', 0x12); //  ctrl /  -> \
-        putShft('/', 0x11); //  shift / -> ?
+        putNorm('/', 0x11); // /  -> /
+        putCtrl('/', 0x12); // ctrl /  -> \
+        putShft('/', 0x11); // shift / -> ?
 
         // другие клавиши
 
-        putNorm(0x1B, 0x70); //  esc -> esc
-        putNorm(' ', 0x50);  //  space -> space
+        putNorm(0x1B, 0x70); // esc -> esc
+        putNorm(' ', 0x50);  // space -> space
 
-        putNorm(0x9B, 0x30); //  ins -> ПВ
-        putNorm(0x24, 0xA0); //  home -> home
-        putNorm(0x24, 0x60); //  page up -> tab
-        putNorm(0x7F, 0x00); //  delete -> backspace
-        putNorm(0x23, 0x05); //  end -> F11
-        putNorm(0x22, 0x15); //  page down -> F10
+        putNorm(0x9B, 0x30); // ins -> ПВ
+        putNorm(0x24, 0xA0); // home -> home
+        putNorm(0x24, 0x60); // page up -> tab
+        putNorm(0x7F, 0x00); // delete -> backspace
+        putNorm(0x23, 0x05); // end -> F11
+        putNorm(0x22, 0x15); // page down -> F10
 
-        putNorm(0x26, 0x90); //  up -> up
-        putNorm(0x28, 0x80); //  down -> down
-        putNorm(0x25, 0x40); //  left -> left
-        putNorm(0x27, 0x20); //  right -> right
+        putNorm(0x26, 0x90); // up -> up
+        putNorm(0x28, 0x80); // down -> down
+        putNorm(0x25, 0x40); // left -> left
+        putNorm(0x27, 0x20); // right -> right
 
-        putNorm(0x70, 0xA5); //  F1 -> F1
-        putNorm(0x71, 0x95); //  F2 -> F2
-        putNorm(0x72, 0x85); //  F3 -> F3
-        putNorm(0x73, 0x75); //  F4 -> F4
-        putNorm(0x74, 0x65); //  F5 -> F5
-        putNorm(0x75, 0x55); //  F6 -> F6
-        putNorm(0x76, 0x45); //  F7 -> F7
-        putNorm(0x77, 0x35); //  F8 -> F8
-        putNorm(0x78, 0x25); //  F9 -> F9
-        putNorm(0x79, 0x15); //  F10 -> F10
-        putNorm(0x7A, 0x05); //  F11 -> F11
-        putNorm(0x7B, 0xB5); //  F -> F12
+        putNorm(0x70, 0xA5); // F1 -> F1
+        putNorm(0x71, 0x95); // F2 -> F2
+        putNorm(0x72, 0x85); // F3 -> F3
+        putNorm(0x73, 0x75); // F4 -> F4
+        putNorm(0x74, 0x65); // F5 -> F5
+        putNorm(0x75, 0x55); // F6 -> F6
+        putNorm(0x76, 0x45); // F7 -> F7
+        putNorm(0x77, 0x35); // F8 -> F8
+        putNorm(0x78, 0x25); // F9 -> F9
+        putNorm(0x79, 0x15); // F10 -> F10
+        putNorm(0x7A, 0x05); // F11 -> F11
+        putNorm(0x7B, 0xB5); // F -> F12
     }
 
     public synchronized void processKey(Key key) {
