@@ -21,7 +21,6 @@ public class KeyRecord {
     }
 
     public Action after(int tick) {
-        System.out.println(tick);
         Action action = new Action(tick);
         scenario.put(tick, action);
         return action;
@@ -100,9 +99,11 @@ public class KeyRecord {
     public void accept(int tick) {
         // нам интересны каждые 10 000 тиков, реже смотреть нет смысла
         if (tick % K10 != 0) return;
+
         int kiloTick = tick / K10;
         Action action = scenario.get(kiloTick);
         if (action == null) return;
+
         if (action.screenShoot) {
             screenShoot.run();
         }
