@@ -10,10 +10,8 @@ import spec.platforms.Specialist;
 
 import java.io.File;
 import java.net.URL;
-import java.util.function.Consumer;
 
 import static spec.Constants.START_POINT;
-import static spec.Key.MOD_NONE;
 import static spec.Layout.END;
 import static spec.Layout.ENTER;
 
@@ -27,11 +25,11 @@ public class IntegrationTest extends AbstractCpuTest {
     private RomLoader roms;
     private IOPorts ports;
     private PngVideo video;
+    private KeyRecord record;
 
     private int tick;
     private int maxTicks;
     private URL base;
-    private Consumer<Integer> onInterrupt;
 
     @Before
     public void before() throws Exception {
@@ -42,6 +40,7 @@ public class IntegrationTest extends AbstractCpuTest {
         data.ports(ports);
         base = new File("src/main/resources/").toURI().toURL();
         maxTicks = TICKS;
+        record = new KeyRecord(ports, this::screenShoot, data::stopCpu);
     }
 
     @After
@@ -59,9 +58,7 @@ public class IntegrationTest extends AbstractCpuTest {
         if (++tick >= maxTicks) {
             data.stopCpu();
         }
-        if (onInterrupt != null) {
-            onInterrupt.accept(tick);
-        }
+        record.accept(tick);
     }
 
     @Test
@@ -70,33 +67,11 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadRom(base, roms);
 
         // when
-        onInterrupt = tick -> {
-            switch (tick) {
-                case 15_000 : {
-                    screenShoot();
-                    ports.processKey(new Key(END, true, MOD_NONE));
-                    break;
-                }
-                case 20_000 : {
-                    screenShoot();
-                    ports.processKey(new Key(END, false, MOD_NONE));
-                    break;
-                }
-                case 40_000 : {
-                    ports.processKey(new Key(ENTER, true,  MOD_NONE));
-                    break;
-                }
-                case 50_000 : {
-                    ports.processKey(new Key(ENTER, false, MOD_NONE));
-                    break;
-                }
-                case 100_000 : {
-                    screenShoot();
-                    data.stopCpu();
-                    break;
-                }
-            }
-        };
+        record.when(15_000).press(END).shot();
+        record.when(20_000).release(END).shot();
+        record.when(40_000).press(ENTER);
+        record.when(50_000).release(ENTER);
+        record.when(100_000).shot().stopCpu();
 
         cpu.PC(START_POINT);
         cpu.execute();
