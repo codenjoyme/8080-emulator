@@ -23,7 +23,7 @@ eval_echo "ROOT=$(pwd)"
 
 color "Please run 'http://localhost:8080/' after build"
 
-eval_echo "$ROOT/mvnw clean jetty:run -DskipTests=true -Prun-server"
+eval_echo "$ROOT/mvnw clean jetty:run -DskipTests=true -Prun-server -Dserver.hostname=http://localhost:8080"
 
 echo
 color "Press Enter to continue"

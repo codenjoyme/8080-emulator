@@ -12,6 +12,8 @@
     <properties>
         <module.name>emulator</module.name>
 
+        <server.hostname>http://localhost:8080</server.hostname>
+
         <java.version>8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -96,7 +98,15 @@
                                     <directory>src/main/resources</directory>
                                     <includes>
                                         <include>**/*</include>
+                                        <exclude>application.jnlp</exclude>
                                     </includes>
+                                </resource>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>application.jnlp</include>
+                                    </includes>
+                                    <filtering>true</filtering>
                                 </resource>
                             </resources>
                         </configuration>
