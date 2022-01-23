@@ -309,10 +309,15 @@ public class IOPorts {
  **/
 
     private void putChar(char en, int enPt, char cyr, int cyrPt) {
-        putNorm(en, enPt);   //  Q  -> Q [Я]
-        putCyrl(cyr, cyrPt); // [Й] -> J [Й]
-        putCtrl(en, cyrPt);  // ctrl  Q  -> J [Й]
-        putCyCt(cyr, enPt);  // ctrl [Й] -> Я [Q]
+        // '1 -> ...'        просто нажатая клавиша в english регистре хостовой машины
+        // '... -> 1 ...'    результат нажатия в english регистре виртуальной машины
+        // '... -> ... [3]'  результат нажатия в cyrillic регистре виртуальной машины
+        // '(4) -> ...'      нажатая клавиша в cyrillic раскладка хостовой машины
+        // 'ctrl ... -> ...' нажатая c control клавиша на хостовой машине
+        putNorm(en, enPt);   //  1  -> 1 [3]
+        putCyrl(cyr, cyrPt); // (4) -> 2 [4]
+        putCtrl(en, cyrPt);  // ctrl  1  -> 2 [4]
+        putCyCt(cyr, enPt);  // ctrl (4) -> 3 [1]
     }
 
     private void putNorm(Integer code, int pt) {
@@ -368,7 +373,6 @@ public class IOPorts {
 
         putNorm('2', 0x94); // 2 -> 2
         putShft('2', 0x31); // shift 2 -> @ [Ю]
-        // пример того как можно навешать на одну клавишу
         putAlLS('2', 0x94); // left_alt shift 2 -> "
 
         putNorm('3', 0x84); // 3 -> 3
@@ -415,41 +419,59 @@ public class IOPorts {
         // Tab не определяется в Swing
 
         putChar('Q', 0xB1,  //  Q  -> Q [Я]
-                'й', 0xB3); // [Й] -> J [Й]
+                'й', 0xB3); // (Й) -> J [Й]
                             // ctrl  Q  -> J [Й]
-                            // ctrl [Й] -> Я [Q]
+                            // ctrl (Й) -> Я [Q]
 
         putChar('W', 0x92,  //  W  -> W [В]
-                'ц', 0xA3); // [Ц] -> С [Ц]
+                'ц', 0xA3); // (Ц) -> С [Ц]
                             // ctrl  W  -> С [Ц]
-                            // ctrl [Ц] -> В [W]  // TODO продолжить с этим чудом
+                            // ctrl (Ц) -> В [W]
 
-        putNorm('E', 0x73); //  E  -> E [E]
-        putCyrl('у', 0x93); // [У] -> u [У]
+        putChar('E', 0x73,  //  E  -> E [E]
+                'у', 0x93); // (У) -> U [У]
+                            // ctrl  E  -> U [У]
+                            // ctrl (У) -> E [E]
 
-        putNorm('R', 0x62); //  R  -> R [Р]
-        putCyrl('к', 0x83); // [К] -> К [К]
+        putChar('R', 0x62,  //  R  -> R [Р]
+                'к', 0x83); // (К) -> К [К]
+                            // ctrl  R  -> К [К]
+                            // ctrl (К) -> Р [R]
 
-        putNorm('T', 0x61); //  T  -> T [Т]
-        putCyrl('е', 0x73); // [Е] -> Е [Е]
+        putChar('T', 0x61,  //  T  -> T [Т]
+                'е', 0x73); // (Е) -> Е [Е]
+                            // ctrl  T  -> Е [Е]
+                            // ctrl (Е) -> Т [T]
 
-        putNorm('Y', 0xA2); //  Y  -> Y [Ы]
-        putCyrl('н', 0x63); // [Н] -> N [Н]
+        putChar('Y', 0xA2,  //  Y  -> Y [Ы]
+                'н', 0x63); // (Н) -> N [Н]
+                            // ctrl  Y  -> N [Н]
+                            // ctrl (Н) -> Ы [Y]
 
-        putNorm('U', 0x93); //  U  -> U [У]
-        putCyrl('г', 0x53); // [Г] -> G [Г]
+        putChar('U', 0x93,  //  U  -> U [У]
+                'г', 0x53); // (Г) -> G [Г]
+                            // ctrl  U  -> G [Г]
+                            // ctrl (Г) -> У [U]
 
-        putNorm('I', 0x71); //  I  -> I [И]
-        putCyrl('ш', 0x43); // [Ш] -> [ [Ш]
+        putChar('I', 0x71,  //  I  -> I [И]
+                'ш', 0x43); // (Ш) -> [ [Ш]
+                            // ctrl  I  -> [ [Ш]
+                            // ctrl (Ш) -> И [I]
 
-        putNorm('O', 0x52); //  O  -> O [О]
-        putCyrl('щ', 0x33); // [Щ] -> ] [Щ]
+        putChar('O', 0x52,  //  O  -> O [О]
+                'щ', 0x33); // (Щ) -> ] [Щ]
+                            // ctrl  O  -> ] [Щ]
+                            // ctrl (Щ) -> О [O]
 
-        putNorm('P', 0x72); //  P  -> P [П]
-        putCyrl('з', 0x23); // [З] -> Z [З]
+        putChar('P', 0x72,  //  P  -> P [П]
+                'з', 0x23); // (З) -> Z [З]
+                            // ctrl  P  -> Z [З]
+                            // ctrl (З) -> П [P]
 
-        putNorm('[', 0x43); //  [  -> [ [Ш]
-        putCyrl('х', 0x51); // [Х] -> Ь [Х]
+        putChar('[', 0x43,  //  [  -> [ [Ш]
+                'х', 0x51); // (Х) -> Ь [Х]
+                            // ctrl  [  -> Ь [Х]
+                            // ctrl (Х) -> Ш [[]
 
         putNorm(']', 0x33); //  ]  -> ] [Щ]
         //putCyrl('ъ', 0x00);  // нет такого знака
@@ -460,41 +482,63 @@ public class IOPorts {
 
         putNorm(0x14, 0xB0);  // caps_lock -> RusLat
 
-        putNorm('A', 0x82); //  A  -> A [А]
-        putCyrl('ф', 0xB2); // [Ф] -> F [Ф]
+        putChar('A', 0x82,  //  A  -> A [А]
+                'ф', 0xB2); // (Ф) -> F [Ф]
+                            // ctrl  A  -> F [Ф]
+                            // ctrl (Ф) -> А [A]
 
-        putNorm('S', 0x91); //  S  -> S [С]
-        putCyrl('ы', 0xA2); // [Ы] -> Y [Ы]
+        putChar('S', 0x91,  //  S  -> S [С]
+                'ы', 0xA2); // (Ы) -> Y [Ы]
+                            // ctrl  S  -> Y [Ы]
+                            // ctrl (Ы) -> С [S]
 
-        putNorm('D', 0x32); //  D  -> D [Д]
-        putCyrl('в', 0x92); // [В] -> W [В]
+        putChar('D', 0x32,  //  D  -> D [Д]
+                'в', 0x92); // (В) -> W [В]
+                            // ctrl  D  -> W [В]
+                            // ctrl (В) -> Д [D]
 
-        putNorm('F', 0xB2); //  F  -> F [Ф]
-        putCyrl('а', 0x82); // [А] -> A [А]
+        putChar('F', 0xB2,  //  F  -> F [Ф]
+                'а', 0x82); // (А) -> A [А]
+                            // ctrl  F  -> A [А]
+                            // ctrl (А) -> Ф [F]
 
-        putNorm('G', 0x53); //  G  -> G [Г]
-        putCyrl('п', 0x72); // [П] -> p [П]
+        putChar('G', 0x53,  //  G  -> G [Г]
+                'п', 0x72); // (П) -> P [П]
+                            // ctrl  G  -> P [П]
+                            // ctrl (П) -> Г [G]
 
-        putNorm('H', 0x13); //  H  -> H [Х]
-        putCyrl('р', 0x62); // [Р] -> R [Р]
+        putChar('H', 0x13,  //  H  -> H [Х]
+                'р', 0x62); // (Р) -> R [Р]
+                            // ctrl  H  -> R [Р]
+                            // ctrl (Р) -> Х [H]
 
-        putNorm('J', 0xB3); //  J  -> J [й]
-        putCyrl('о', 0x52); // [О] -> O [О]
+        putChar('J', 0xB3,  //  J  -> J [Й]
+                'о', 0x52); // (О) -> O [О]
+                            // ctrl  J  -> O [О]
+                            // ctrl (О) -> Й [J]
 
-        putNorm('K', 0x83); //  K  -> K [К]
-        putCyrl('л', 0x42); // [Л] -> L [Л]
+        putChar('K', 0x83,  //  K  -> K [К]
+                'л', 0x42); // (Л) -> L [Л]
+                            // ctrl  K  -> L [Л]
+                            // ctrl (Л) -> К [K]
 
-        putNorm('L', 0x42); //  L  -> L [Л]
-        putCyrl('д', 0x32); // [Д] -> D [Д]
+        putChar('L', 0x42,  //  L  -> L [Л]
+                'д', 0x32); // (Д) -> D [Д]
+                            // ctrl  L  -> D [Д]
+                            // ctrl (Д) -> Л [L]
 
-        putNorm(';', 0x03); // ;   -> :
+        putChar(';', 0x03,  // ;   -> :
+                'ж', 0x22); // (Ж) -> V [Ж]
+                            // ctrl  ;  -> V [Ж]
+                            // ctrl (Ж) -> :
         putShft(';', 0xB4); // shift ;  -> +
         putAltL(';', 0xB4); // left_alt ; -> ;
-        putCyrl('ж', 0x22); // [Ж] -> V [Ж]
 
-        putNorm('Þ', 0xA1); // ' -> ^ [Ч]
+        putChar('Þ', 0xA1,  // ' -> ^ [Ч]
+                'э', 0x12); // Э -> \ [Э]
+                            // ctrl  '  -> \ [Э]
+                            // ctrl (Э) -> Ч [^]
         putShft('Þ', 0x94); // shift ' -> "
-        putCyrl('э', 0x12); // Э -> \ [Э]
 
         putNorm('\\', 0x11); // \ -> /
         putShft('\\', 0x12); // shift \ -> \ [Э]
@@ -503,36 +547,54 @@ public class IOPorts {
 
         // shift работает как системная клавиша
 
-        putNorm('Z', 0x23); //  Z  -> Z [З]
-        putCyrl('я', 0xB1); // [Я] -> Q [Я]
+        putChar('Z', 0x23,  //  Z  -> Z [З]
+                'я', 0xB1); // (Я) -> Q [Я]
+                            // ctrl  Z  -> Q [Я]
+                            // ctrl (Я) -> З [Z]
 
-        putNorm('X', 0x51); //  X  -> X [Ь]
-        putCyrl('ч', 0xA1); // [Ч] -> ^ [Ч]
+        putChar('X', 0x51,  //  X  -> X [Ь]
+                'ч', 0xA1); // (Ч) -> ^ [Ч]
+                            // ctrl  X  -> ^ [Ч]
+                            // ctrl (Ч) -> Ь [X]
 
-        putNorm('C', 0xA3); //  C  -> C [Ц]
-        putCyrl('с', 0x91); // [С] -> S [С]
+        putChar('C', 0xA3,  //  C  -> C [Ц]
+                'с', 0x91); // (С) -> S [С]
+                            // ctrl  C  -> S [С]
+                            // ctrl (С) -> Ц [C]
 
-        putNorm('V', 0x22); //  V  -> V [Ж]
-        putCyrl('м', 0x81); // [М] -> M [М]
+        putChar('V', 0x22,  //  V  -> V [Ж]
+                'м', 0x81); // (М) -> M [М]
+                            // ctrl  V  -> M [М]
+                            // ctrl (М) -> Ж [V]
 
-        putNorm('B', 0x41); //  B  -> B [Б]
-        putCyrl('и', 0x71); // [И] -> I [И]
+        putChar('B', 0x41,  //  B  -> B [Б]
+                'и', 0x71); // (И) -> I [И]
+                            // ctrl  B  -> I [И]
+                            // ctrl (И) -> Б [B]
 
-        putNorm('N', 0x63); //  N  -> N [Н]
-        putCyrl('т', 0x61); // [Т] -> T [Т]
+        putChar('N', 0x63,  //  N  -> N [Н]
+                'т', 0x61); // (Т) -> T [Т]
+                            // ctrl  N  -> T [Т]
+                            // ctrl (Т) -> Н [N]
 
-        putNorm('M', 0x81); //  M  -> M [М]
-        putCyrl('ь', 0x51); // [Ь] -> X [Ь]
+        putChar('M', 0x81,  //  M  -> M [М]
+                'ь', 0x51); // (Ь) -> X [Ь]
+                            // ctrl  M  -> X [Ь]
+                            // ctrl (Ь) -> М [M]
 
-        putNorm(',', 0x21); //  ,  -> ,
+        putChar(',', 0x21,  //  ,  -> ,
+                'б', 0x41); // (Б) -> B [Б]
+                            // ctrl  ,  -> B [Б]
+                            // ctrl (Б) -> ,
         putShft(',', 0x21); // shift , -> <
         putCtrl(',', 0x02); // ctrl , -> >
-        putCyrl('б', 0x41); // [Б] -> B [Б]
 
-        putNorm('.', 0x02); //  .  -> .
+        putChar('.', 0x02,  //  .  -> .
+                'ю', 0x31); // (Ю) -> @ [Ю]
+                            // ctrl  .  -> @ [Ю]
+                            // ctrl (Ю) -> .
         putShft('.', 0x02); //  shift . -> >
         putCtrl('.', 0x21); // ctrl . -> <
-        putCyrl('ю', 0x31); // [Ю] -> @ [Ю]
 
         putNorm('/', 0x11); //  /  -> /
         putCtrl('/', 0x12); //  ctrl /  -> \
