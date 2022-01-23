@@ -41,13 +41,17 @@ public class IntegrationTest extends AbstractCpuTest {
         video = new PngVideo(data.memory());
         data.ports(ports);
         base = new File("src/main/resources/").toURI().toURL();
+        maxTicks = TICKS;
     }
 
     @After
     public void after() throws Exception {
-        video.drawToFile(new File("src/test/resources/"
-                + test.getMethodName() + ".png"));
         SmartAssert.checkResult();
+    }
+
+    private void screenShoot() {
+        video.drawToFile(new File("src/test/resources/"
+                + test.getMethodName() + "_" + tick + ".png"));
     }
 
     @Override
@@ -63,17 +67,34 @@ public class IntegrationTest extends AbstractCpuTest {
     @Test
     public void testLik_runCom() {
         // given
-        maxTicks = TICKS;
-
         Lik.loadRom(base, roms);
 
         // when
         onInterrupt = tick -> {
             switch (tick) {
-                case 10_000 : ports.processKey(new Key(END,   true,  MOD_NONE)); break;
-                case 20_000 : ports.processKey(new Key(END,   false, MOD_NONE)); break;
-                case 40_000 : ports.processKey(new Key(ENTER, true,  MOD_NONE)); break;
-                case 50_000 : ports.processKey(new Key(ENTER, false, MOD_NONE)); break;
+                case 15_000 : {
+                    screenShoot();
+                    ports.processKey(new Key(END, true, MOD_NONE));
+                    break;
+                }
+                case 20_000 : {
+                    screenShoot();
+                    ports.processKey(new Key(END, false, MOD_NONE));
+                    break;
+                }
+                case 40_000 : {
+                    ports.processKey(new Key(ENTER, true,  MOD_NONE));
+                    break;
+                }
+                case 50_000 : {
+                    ports.processKey(new Key(ENTER, false, MOD_NONE));
+                    break;
+                }
+                case 100_000 : {
+                    screenShoot();
+                    data.stopCpu();
+                    break;
+                }
             }
         };
 
@@ -81,43 +102,41 @@ public class IntegrationTest extends AbstractCpuTest {
         cpu.execute();
 
         // then
-        asrtCpu("BC:  90FF\n" +
+        asrtCpu("BC:  FF21\n" +
                 "DE:  FF01\n" +
                 "HL:  18A0\n" +
-                "AF:  7F87\n" +
-                "SP:  7FE5\n" +
-                "PC:  C254\n" +
-                "B,C: 90 FF\n" +
+                "AF:  FF42\n" +
+                "SP:  7FED\n" +
+                "PC:  C1B7\n" +
+                "B,C: FF 21\n" +
                 "D,E: FF 01\n" +
                 "H,L: 18 A0\n" +
                 "M:   00\n" +
-                "A,F: 7F 87\n" +
+                "A,F: FF 42\n" +
                 "     76543210 76543210\n" +
-                "SP:  01111111 11100101\n" +
-                "PC:  11000010 01010100\n" +
+                "SP:  01111111 11101101\n" +
+                "PC:  11000001 10110111\n" +
                 "     76543210\n" +
-                "B:   10010000\n" +
-                "C:   11111111\n" +
+                "B:   11111111\n" +
+                "C:   00100001\n" +
                 "D:   11111111\n" +
                 "E:   00000001\n" +
                 "H:   00011000\n" +
                 "L:   10100000\n" +
                 "M:   00000000\n" +
-                "A:   01111111\n" +
+                "A:   11111111\n" +
                 "     sz0h0p1c\n" +
-                "F:   10000111\n" +
-                "ts:  true\n" +
-                "tz:  false\n" +
+                "F:   01000010\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
                 "th:  false\n" +
-                "tp:  true\n" +
-                "tc:  true\n");
+                "tp:  false\n" +
+                "tc:  false\n");
     }
 
     @Test
     public void testLik_klad() {
         // given
-        maxTicks = TICKS;
-
         Lik.loadRom(base, roms);
         Lik.loadGame(base, roms, "klad");
 
@@ -156,13 +175,13 @@ public class IntegrationTest extends AbstractCpuTest {
                 "th:  true\n" +
                 "tp:  false\n" +
                 "tc:  true\n");
+
+        screenShoot();
     }
 
     @Test
     public void testSpecialist_monitor() {
         // given
-        maxTicks = TICKS;
-
         Specialist.loadRom(base, roms);
 
         // when
@@ -200,13 +219,13 @@ public class IntegrationTest extends AbstractCpuTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+
+        screenShoot();
     }
 
     @Test
     public void testSpecialist_blobcop() {
         // given
-        maxTicks = TICKS;
-
         Specialist.loadRom(base, roms);
         Specialist.loadGame(base, roms, "blobcop");
 
@@ -245,13 +264,13 @@ public class IntegrationTest extends AbstractCpuTest {
                 "th:  false\n" +
                 "tp:  true\n" +
                 "tc:  true\n");
+
+        screenShoot();
     }
 
     @Test
     public void testSpecialist_babnik() {
         // given
-        maxTicks = TICKS;
-
         Specialist.loadRom(base, roms);
         Specialist.loadGame(base, roms, "babnik");
 
@@ -290,6 +309,8 @@ public class IntegrationTest extends AbstractCpuTest {
                 "th:  true\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+
+        screenShoot();
     }
 
     @Test
@@ -336,6 +357,8 @@ public class IntegrationTest extends AbstractCpuTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+
+        screenShoot();
     }
 
     @Test
@@ -379,6 +402,8 @@ public class IntegrationTest extends AbstractCpuTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+
+        screenShoot();
     }
 
     @Test
@@ -388,8 +413,6 @@ public class IntegrationTest extends AbstractCpuTest {
         // https://raw.githubusercontent.com/begoon/i8080-core/master/8080EX1.MAC
 
         // given
-        maxTicks = TICKS;
-
         Lik.loadRom(base, roms);
         roms.loadROM(base, "test/8080EX1.COM", 0x0100);
 
@@ -428,6 +451,8 @@ public class IntegrationTest extends AbstractCpuTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+
+        screenShoot();
     }
 
     @Test
@@ -437,8 +462,6 @@ public class IntegrationTest extends AbstractCpuTest {
         // https://raw.githubusercontent.com/begoon/i8080-core/master/8080PRE.MAC
 
         // given
-        maxTicks = TICKS;
-
         Lik.loadRom(base, roms);
         roms.loadROM(base, "test/8080PRE.COM", 0x0100);
 
@@ -477,6 +500,8 @@ public class IntegrationTest extends AbstractCpuTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+
+        screenShoot();
     }
 
     @Test
@@ -485,8 +510,6 @@ public class IntegrationTest extends AbstractCpuTest {
         // https://raw.githubusercontent.com/begoon/i8080-core/master/CPUTEST.MAC
 
         // given
-        maxTicks = TICKS;
-
         Lik.loadRom(base, roms);
         roms.loadROM(base, "test/CPUTEST.COM", 0x0100);
 
@@ -525,5 +548,7 @@ public class IntegrationTest extends AbstractCpuTest {
                 "th:  true\n" +
                 "tp:  false\n" +
                 "tc:  true\n");
+
+        screenShoot();
     }
 }
