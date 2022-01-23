@@ -584,12 +584,25 @@ public class IOPorts {
             return;
         }
 
-        Integer pt = keys.get(key.joint());
+        if (key.pressed()) {
+            // если кнопка нажата, то мы изменяем оригинальную с учетом модификатора
+            // и кликаем кнопку (возможно уже иную) на виртуальной машине
+            pressKey(key.joint(), true);
+        } else {
+            // если кнопка отпущена, то нам надо отжать потенциально сразу все
+            // возможные зажатые кнопки (с модификаторами или без)
+            for (Integer pt : key.allKeysWithMods()) {
+                pressKey(pt, false);
+            }
+        }
+    }
+
+    private void pressKey(int code, boolean press) {
+        Integer pt = keys.get(code);
         if (pt != null) {
             int x = (pt & 0xF0) >> 4;
             int y = pt & 0x0F;
-            keyStatus[x][y] = key.pressed();
-            return;
+            keyStatus[x][y] = press;
         }
     }
 

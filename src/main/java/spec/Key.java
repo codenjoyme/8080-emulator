@@ -1,6 +1,9 @@
 package spec;
 
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static spec.IOPorts.PAUSE_KEY;
 
@@ -67,5 +70,30 @@ public class Key {
 
     public boolean ctrl() {
         return (mods & MOD_CTRL) == MOD_CTRL;
+    }
+
+    public Set<Integer> allKeysWithMods() {
+        return new LinkedHashSet<>(Arrays.asList(
+                code,
+
+                code | SHIFT,
+                code | LEFT_ALT,
+                code | RIGHT_ALT,
+                code | CTRL,
+
+                code | SHIFT | LEFT_ALT,
+                code | SHIFT | RIGHT_ALT,
+                code | SHIFT | CTRL,
+                code | LEFT_ALT | RIGHT_ALT,
+                code | LEFT_ALT | CTRL,
+                code | RIGHT_ALT | CTRL,
+
+                code | SHIFT | LEFT_ALT | RIGHT_ALT,
+                code | SHIFT | LEFT_ALT | CTRL,
+                code | SHIFT | RIGHT_ALT | CTRL,
+                code | LEFT_ALT | RIGHT_ALT | CTRL,
+
+                code | SHIFT | LEFT_ALT | RIGHT_ALT | CTRL
+        ));
     }
 }
