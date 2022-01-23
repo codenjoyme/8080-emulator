@@ -19,7 +19,7 @@ public class KeyRecord {
         this.stopCpu = stopCpu;
     }
 
-    public Action when(int tick) {
+    public Action after(int tick) {
         Action action = new Action(tick);
         scenario.put(tick, action);
         return action;
@@ -52,7 +52,7 @@ public class KeyRecord {
             // жмем кнопку в этом тике
             down(code, mode);
             // а это уже другой Action через 10k тиков, в котором отпускаем кнопку
-            return when(tick + 10_000).up(code, mode);
+            return after(tick + 10).up(code, mode);
         }
 
         public Action down(int code, int mode) {
@@ -65,6 +65,7 @@ public class KeyRecord {
         public Action up(int code, int mode) {
             press = false;
             keyCode = code;
+            this.mode = mode;
             return this;
         }
 
@@ -73,13 +74,16 @@ public class KeyRecord {
             return this;
         }
 
-        public Action when(int tick) {
-            return KeyRecord.this.when(tick);
+        public Action after(int tick) {
+            return KeyRecord.this.after(tick);
         }
     }
 
     public void accept(int tick) {
-        Action action = scenario.get(tick);
+        // нам интересны каждые 1000 тиков, реже смотреть нет смысла
+        if (tick % 1000 != 0) return;
+        int kiloTick = tick / 1000;
+        Action action = scenario.get(kiloTick);
         if (action == null) return;
         if (action.screenShoot) {
             screenShoot.run();
