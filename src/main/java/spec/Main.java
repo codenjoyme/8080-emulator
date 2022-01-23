@@ -15,11 +15,11 @@ public class Main extends JFrame implements KeyListener {
     private Application app;
 
     public static void main(String[] args) {
-        String host = (args.length == 1) ? args[0] : null;
-        new Main(host);
+        String base = (args.length == 1) ? args[0] : null;
+        new Main(base);
     }
 
-    public Main(String host) {
+    public Main(String base) {
         super("i8080 emulator");
         setMinimumSize(Graphic.getMinimumSize(15, 40));
         setVisible(true);
@@ -30,7 +30,7 @@ public class Main extends JFrame implements KeyListener {
         setFocusTraversalKeysEnabled(true);
         addKeyListener(this);
 
-        app = new Application(this, getBaseUrl(host));
+        app = new Application(this, getBaseUrl(base));
         app.gotFocus();
         app.start();
     }
@@ -38,11 +38,19 @@ public class Main extends JFrame implements KeyListener {
     private URL getBaseUrl(String base) {
         try {
             return base == null
-                    ? new File("src/main/resources").toURI().toURL()
+                    ? contentRoot().toURI().toURL()
                     : new URL(base);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private File contentRoot() {
+        File result = new File("src/main/resources");
+        if (!result.exists()) {
+            result = new File(".");
+        }
+        return result;
     }
 
     @Override

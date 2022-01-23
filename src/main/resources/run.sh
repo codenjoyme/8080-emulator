@@ -18,9 +18,8 @@ eval_echo() {
     eval $command
 }
 
-eval_echo "cd .."
-
-eval_echo "./mvnw clean jetty:run"
+eval_echo "ROOT=$(pwd)"
+eval_echo "java -jar $ROOT/emulator-1.0.jar"
 
 echo
 color "Press Enter to continue"

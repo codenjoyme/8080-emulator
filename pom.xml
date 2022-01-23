@@ -26,6 +26,7 @@
         <maven-resources.version>3.2.0</maven-resources.version>
         <maven-jar.version>3.2.0</maven-jar.version>
         <maven-jetty.version>11.0.7</maven-jetty.version>
+        <maven-assembly.version>3.3.0</maven-assembly.version>
 
         <jetty-webapp-folder>target/webapp-synth</jetty-webapp-folder>
     </properties>
@@ -47,6 +48,22 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>run-server</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- Плагин отвечает за запуск jetty -->
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
+                        <version>${maven-jetty.version}</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <build>
         <resources>
@@ -132,13 +149,13 @@
                 </executions>
                 <configuration>
                     <outputDirectory>${jetty-webapp-folder}</outputDirectory>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>spec.Main</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
-            </plugin>
-            <plugin>
-                <!-- Плагин отвечает за запуск jetty -->
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>${maven-jetty.version}</version>
             </plugin>
         </plugins>
     </build>
