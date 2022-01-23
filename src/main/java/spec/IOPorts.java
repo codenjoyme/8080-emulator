@@ -37,9 +37,10 @@ public class IOPorts {
     private Memory memory;
     private Keyboard keyboard;
 
-    public IOPorts(Memory memory) {
+    public IOPorts(Memory memory, Layout layout) {
         this.memory = memory;
         keyboard = new Keyboard();
+        layout.setup(keyboard);
         reset();
     }
 
