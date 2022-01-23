@@ -81,48 +81,44 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadRom(base, roms);
 
         // when
-        record.when(20_000).down(END).shot()
-                .when(30_000).up(END).shot()
-                .when(50_000).down(ENTER)
-                .when(60_000).up(ENTER)
+        record.when(20_000).shot().press(END).shot()
+                .when(50_000).press(ENTER)
                 .when(100_000).shot()
-                .when(110_000).down('A')
-                .when(120_000).up('A')
-                .when(150_000).down(ENTER)
-                .when(160_000).up(ENTER)
+                .when(110_000).press('A')
+                .when(150_000).press(ENTER)
                 .when(270_000).shot().stopCpu();
 
         cpu.PC(START_POINT);
         cpu.execute();
 
         // then
-        asrtCpu("BC:  FF21\n" +
-                "DE:  FF01\n" +
-                "HL:  18A0\n" +
-                "AF:  FF42\n" +
-                "SP:  7FED\n" +
-                "PC:  C1B7\n" +
-                "B,C: FF 21\n" +
-                "D,E: FF 01\n" +
-                "H,L: 18 A0\n" +
+        asrtCpu("BC:  0302\n" +
+                "DE:  C675\n" +
+                "HL:  0044\n" +
+                "AF:  0102\n" +
+                "SP:  7FE7\n" +
+                "PC:  C07B\n" +
+                "B,C: 03 02\n" +
+                "D,E: C6 75\n" +
+                "H,L: 00 44\n" +
                 "M:   00\n" +
-                "A,F: FF 42\n" +
+                "A,F: 01 02\n" +
                 "     76543210 76543210\n" +
-                "SP:  01111111 11101101\n" +
-                "PC:  11000001 10110111\n" +
+                "SP:  01111111 11100111\n" +
+                "PC:  11000000 01111011\n" +
                 "     76543210\n" +
-                "B:   11111111\n" +
-                "C:   00100001\n" +
-                "D:   11111111\n" +
-                "E:   00000001\n" +
-                "H:   00011000\n" +
-                "L:   10100000\n" +
+                "B:   00000011\n" +
+                "C:   00000010\n" +
+                "D:   11000110\n" +
+                "E:   01110101\n" +
+                "H:   00000000\n" +
+                "L:   01000100\n" +
                 "M:   00000000\n" +
-                "A:   11111111\n" +
+                "A:   00000001\n" +
                 "     sz0h0p1c\n" +
-                "F:   01000010\n" +
+                "F:   00000010\n" +
                 "ts:  false\n" +
-                "tz:  true\n" +
+                "tz:  false\n" +
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");

@@ -20,13 +20,14 @@ public class KeyRecord {
     }
 
     public Action when(int tick) {
-        Action action = new Action();
+        Action action = new Action(tick);
         scenario.put(tick, action);
         return action;
     }
 
     public class Action {
 
+        int tick;
         boolean screenShoot;
         boolean stopCpu;
 
@@ -34,24 +35,34 @@ public class KeyRecord {
         boolean press;
         int mode;
 
+        public Action(int tick) {
+            this.tick = tick;
+        }
+
         public Action shot() {
             screenShoot = true;
             return this;
         }
 
-        public Action down(int code) {
-            press(code, MOD_NONE);
-            return this;
+        public Action press(int code) {
+            return press(code, MOD_NONE);
         }
 
         public Action press(int code, int mode) {
+            // жмем кнопку в этом тике
+            down(code, mode);
+            // а это уже другой Action через 10k тиков, в котором отпускаем кнопку
+            return when(tick + 10_000).up(code, mode);
+        }
+
+        public Action down(int code, int mode) {
             press = true;
             keyCode = code;
             this.mode = mode;
             return this;
         }
 
-        public Action up(int code) {
+        public Action up(int code, int mode) {
             press = false;
             keyCode = code;
             return this;
