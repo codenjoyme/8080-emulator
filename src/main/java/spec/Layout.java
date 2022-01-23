@@ -54,8 +54,6 @@ public class Layout {
         keyboard.putCtrl('=', 0x03); // ctrl = -> :
         keyboard.putAltL('=', 0xB4); // left_alt = -> ;
 
-        keyboard.putNorm(0x0A, 0x00); // backspace -> backspace
-
         // вторая линия стандартной клавиатуры
 
         // Tab не определяется в Swing
@@ -118,11 +116,7 @@ public class Layout {
         keyboard.putNorm(']', 0x33); //  ]  -> ] [Щ]
         //keyboard.putCyrl('ъ', 0x00);  // нет такого знака
 
-        keyboard.putNorm(0x00, 0x01); // enter -> enter
-
         // третья линия стандартной клавиатуры
-
-        keyboard.putNorm(0x14, 0xB0);  // caps_lock -> RusLat
 
         keyboard.putChar('A', 0x82,  //  A  -> A [А]
                          'ф', 0xB2); // (Ф) -> F [Ф]
@@ -244,13 +238,17 @@ public class Layout {
 
         // другие клавиши
 
+        keyboard.putNorm(0x0A, 0x00); // enter -> enter
+        keyboard.putNorm(0x08, 0x01); // backspace -> backspace
+        keyboard.putNorm(0x14, 0xB0);  // caps_lock -> RusLat
+
         keyboard.putNorm(0x1B, 0x70); // esc -> esc
         keyboard.putNorm(' ', 0x50);  // space -> space
 
         keyboard.putNorm(0x9B, 0x30); // ins -> ПВ
         keyboard.putNorm(0x24, 0xA0); // home -> home
         keyboard.putNorm(0x24, 0x60); // page up -> tab
-        keyboard.putNorm(0x7F, 0x00); // delete -> backspace
+        keyboard.putNorm(0x7F, 0x01); // delete -> backspace
         keyboard.putNorm(0x23, 0x05); // end -> F11
         keyboard.putNorm(0x22, 0x15); // page down -> F10
 
