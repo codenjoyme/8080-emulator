@@ -39,7 +39,7 @@ public class KeyRecord {
             return this;
         }
 
-        public Action press(int code) {
+        public Action down(int code) {
             press(code, MOD_NONE);
             return this;
         }
@@ -51,7 +51,7 @@ public class KeyRecord {
             return this;
         }
 
-        public Action release(int code) {
+        public Action up(int code) {
             press = false;
             keyCode = code;
             return this;

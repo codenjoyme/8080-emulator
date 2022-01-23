@@ -81,15 +81,15 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadRom(base, roms);
 
         // when
-        record.when(20_000).press(END).shot()
-                .when(30_000).release(END).shot()
-                .when(50_000).press(ENTER)
-                .when(60_000).release(ENTER)
+        record.when(20_000).down(END).shot()
+                .when(30_000).up(END).shot()
+                .when(50_000).down(ENTER)
+                .when(60_000).up(ENTER)
                 .when(100_000).shot()
-                .when(110_000).press('A')
-                .when(120_000).release('A')
-                .when(150_000).press(ENTER)
-                .when(160_000).release(ENTER)
+                .when(110_000).down('A')
+                .when(120_000).up('A')
+                .when(150_000).down(ENTER)
+                .when(160_000).up(ENTER)
                 .when(270_000).shot().stopCpu();
 
         cpu.PC(START_POINT);
