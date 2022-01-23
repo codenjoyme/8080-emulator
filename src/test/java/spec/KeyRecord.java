@@ -45,6 +45,14 @@ public class KeyRecord {
             return this;
         }
 
+        public Action enter(String text) {
+            Action action = this;
+            for (char ch : text.toCharArray()) {
+                action = action.press(ch).after(20);
+            }
+            return action;
+        }
+
         public Action press(int code) {
             return press(code, MOD_NONE);
         }
@@ -52,8 +60,8 @@ public class KeyRecord {
         public Action press(int code, int mode) {
             // жмем кнопку в этом тике
             down(code, mode);
-            // а это уже другой Action через 10k тиков, в котором отпускаем кнопку
-            return after(10).up(code, mode);
+            // а это уже другой Action через 20k тиков, в котором отпускаем кнопку
+            return after(20).up(code, mode);
         }
 
         public Action down(int code, int mode) {
