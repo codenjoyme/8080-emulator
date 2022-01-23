@@ -21,16 +21,20 @@ public class IntegrationTest extends AbstractCpuTest {
     public TestName test = new TestName();
 
     private RomLoader roms;
+    private IOPorts ports;
+    private PngVideo video;
+
     private int ticks;
     private int maxTicks;
-    private PngVideo video;
     private URL base;
 
     @Before
     public void before() throws Exception {
         super.before();
         roms = new RomLoader(data.memory(), cpu);
+        ports = new IOPorts(data.memory(), new Layout());
         video = new PngVideo(data.memory());
+        data.ports(ports);
         base = new File("src/main/resources/").toURI().toURL();
     }
 
@@ -49,7 +53,7 @@ public class IntegrationTest extends AbstractCpuTest {
     }
 
     @Test
-    public void testLik_runCom() throws Exception {
+    public void testLik_runCom() {
         // given
         maxTicks = TICKS;
 
@@ -60,40 +64,40 @@ public class IntegrationTest extends AbstractCpuTest {
         cpu.execute();
 
         // then
-        asrtCpu("BC:  90FF\n" +
-                "DE:  FF00\n" +
-                "HL:  18A0\n" +
-                "AF:  0313\n" +
-                "SP:  7FE5\n" +
-                "PC:  C254\n" +
-                "B,C: 90 FF\n" +
-                "D,E: FF 00\n" +
-                "H,L: 18 A0\n" +
+        asrtCpu("BC:  9000\n" +
+                "DE:  FF01\n" +
+                "HL:  C49C\n" +
+                "AF:  0142\n" +
+                "SP:  7FF7\n" +
+                "PC:  C387\n" +
+                "B,C: 90 00\n" +
+                "D,E: FF 01\n" +
+                "H,L: C4 9C\n" +
                 "M:   00\n" +
-                "A,F: 03 13\n" +
+                "A,F: 01 42\n" +
                 "     76543210 76543210\n" +
-                "SP:  01111111 11100101\n" +
-                "PC:  11000010 01010100\n" +
+                "SP:  01111111 11110111\n" +
+                "PC:  11000011 10000111\n" +
                 "     76543210\n" +
                 "B:   10010000\n" +
-                "C:   11111111\n" +
+                "C:   00000000\n" +
                 "D:   11111111\n" +
-                "E:   00000000\n" +
-                "H:   00011000\n" +
-                "L:   10100000\n" +
+                "E:   00000001\n" +
+                "H:   11000100\n" +
+                "L:   10011100\n" +
                 "M:   00000000\n" +
-                "A:   00000011\n" +
+                "A:   00000001\n" +
                 "     sz0h0p1c\n" +
-                "F:   00010011\n" +
+                "F:   01000010\n" +
                 "ts:  false\n" +
-                "tz:  false\n" +
-                "th:  true\n" +
+                "tz:  true\n" +
+                "th:  false\n" +
                 "tp:  false\n" +
-                "tc:  true\n");
+                "tc:  false\n");
     }
 
     @Test
-    public void testLik_klad() throws Exception {
+    public void testLik_klad() {
         // given
         maxTicks = TICKS;
 
@@ -138,7 +142,7 @@ public class IntegrationTest extends AbstractCpuTest {
     }
 
     @Test
-    public void testSpecialist_monitor() throws Exception {
+    public void testSpecialist_monitor() {
         // given
         maxTicks = TICKS;
 
@@ -149,40 +153,40 @@ public class IntegrationTest extends AbstractCpuTest {
         cpu.execute();
 
         // then
-        asrtCpu("BC:  8FFF\n" +
+        asrtCpu("BC:  0E80\n" +
                 "DE:  8F60\n" +
                 "HL:  C196\n" +
-                "AF:  8213\n" +
-                "SP:  8F36\n" +
-                "PC:  C256\n" +
-                "B,C: 8F FF\n" +
+                "AF:  FF02\n" +
+                "SP:  8F30\n" +
+                "PC:  C191\n" +
+                "B,C: 0E 80\n" +
                 "D,E: 8F 60\n" +
                 "H,L: C1 96\n" +
                 "M:   C5\n" +
-                "A,F: 82 13\n" +
+                "A,F: FF 02\n" +
                 "     76543210 76543210\n" +
-                "SP:  10001111 00110110\n" +
-                "PC:  11000010 01010110\n" +
+                "SP:  10001111 00110000\n" +
+                "PC:  11000001 10010001\n" +
                 "     76543210\n" +
-                "B:   10001111\n" +
-                "C:   11111111\n" +
+                "B:   00001110\n" +
+                "C:   10000000\n" +
                 "D:   10001111\n" +
                 "E:   01100000\n" +
                 "H:   11000001\n" +
                 "L:   10010110\n" +
                 "M:   11000101\n" +
-                "A:   10000010\n" +
+                "A:   11111111\n" +
                 "     sz0h0p1c\n" +
-                "F:   00010011\n" +
+                "F:   00000010\n" +
                 "ts:  false\n" +
                 "tz:  false\n" +
-                "th:  true\n" +
+                "th:  false\n" +
                 "tp:  false\n" +
-                "tc:  true\n");
+                "tc:  false\n");
     }
 
     @Test
-    public void testSpecialist_blobcop() throws Exception {
+    public void testSpecialist_blobcop() {
         // given
         maxTicks = TICKS;
 
@@ -227,7 +231,7 @@ public class IntegrationTest extends AbstractCpuTest {
     }
 
     @Test
-    public void testSpecialist_babnik() throws Exception {
+    public void testSpecialist_babnik() {
         // given
         maxTicks = TICKS;
 
@@ -239,40 +243,40 @@ public class IntegrationTest extends AbstractCpuTest {
         cpu.execute();
 
         // then
-        asrtCpu("BC:  0108\n" +
-                "DE:  0E5A\n" +
-                "HL:  ADB0\n" +
-                "AF:  0482\n" +
-                "SP:  3FEB\n" +
-                "PC:  052D\n" +
-                "B,C: 01 08\n" +
-                "D,E: 0E 5A\n" +
-                "H,L: AD B0\n" +
-                "M:   FF\n" +
-                "A,F: 04 82\n" +
+        asrtCpu("BC:  125C\n" +
+                "DE:  0000\n" +
+                "HL:  201F\n" +
+                "AF:  0052\n" +
+                "SP:  3FFB\n" +
+                "PC:  04FE\n" +
+                "B,C: 12 5C\n" +
+                "D,E: 00 00\n" +
+                "H,L: 20 1F\n" +
+                "M:   20\n" +
+                "A,F: 00 52\n" +
                 "     76543210 76543210\n" +
-                "SP:  00111111 11101011\n" +
-                "PC:  00000101 00101101\n" +
+                "SP:  00111111 11111011\n" +
+                "PC:  00000100 11111110\n" +
                 "     76543210\n" +
-                "B:   00000001\n" +
-                "C:   00001000\n" +
-                "D:   00001110\n" +
-                "E:   01011010\n" +
-                "H:   10101101\n" +
-                "L:   10110000\n" +
-                "M:   11111111\n" +
-                "A:   00000100\n" +
+                "B:   00010010\n" +
+                "C:   01011100\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00100000\n" +
+                "L:   00011111\n" +
+                "M:   00100000\n" +
+                "A:   00000000\n" +
                 "     sz0h0p1c\n" +
-                "F:   10000010\n" +
-                "ts:  true\n" +
-                "tz:  false\n" +
-                "th:  false\n" +
+                "F:   01010010\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  true\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
     }
 
     @Test
-    public void testDiagnostic_case1() throws Exception {
+    public void testDiagnostic_case1() {
         // 8080/8085 CPU Diagnostic, version 1.0, by Microcosm Associates
         // https://github.com/begoon/i8080-core/blob/master/TEST.ASM
 
@@ -285,29 +289,29 @@ public class IntegrationTest extends AbstractCpuTest {
         cpu.execute();
 
         // then
-        asrtCpu("BC:  0109\n" +
-                "DE:  000F\n" +
-                "HL:  4D0F\n" +
-                "AF:  4D02\n" +
-                "SP:  0102\n" +
-                "PC:  4E74\n" +
-                "B,C: 01 09\n" +
-                "D,E: 00 0F\n" +
-                "H,L: 4D 0F\n" +
-                "M:   4D\n" +
-                "A,F: 4D 02\n" +
+        asrtCpu("BC:  C0F0\n" +
+                "DE:  2800\n" +
+                "HL:  C000\n" +
+                "AF:  0002\n" +
+                "SP:  FFEC\n" +
+                "PC:  743E\n" +
+                "B,C: C0 F0\n" +
+                "D,E: 28 00\n" +
+                "H,L: C0 00\n" +
+                "M:   C3\n" +
+                "A,F: 00 02\n" +
                 "     76543210 76543210\n" +
-                "SP:  00000001 00000010\n" +
-                "PC:  01001110 01110100\n" +
+                "SP:  11111111 11101100\n" +
+                "PC:  01110100 00111110\n" +
                 "     76543210\n" +
-                "B:   00000001\n" +
-                "C:   00001001\n" +
-                "D:   00000000\n" +
-                "E:   00001111\n" +
-                "H:   01001101\n" +
-                "L:   00001111\n" +
-                "M:   01001101\n" +
-                "A:   01001101\n" +
+                "B:   11000000\n" +
+                "C:   11110000\n" +
+                "D:   00101000\n" +
+                "E:   00000000\n" +
+                "H:   11000000\n" +
+                "L:   00000000\n" +
+                "M:   11000011\n" +
+                "A:   00000000\n" +
                 "     sz0h0p1c\n" +
                 "F:   00000010\n" +
                 "ts:  false\n" +
@@ -318,7 +322,7 @@ public class IntegrationTest extends AbstractCpuTest {
     }
 
     @Test
-    public void testLik_helloWorld() throws Exception {
+    public void testLik_helloWorld() {
         // given
         Lik.loadRom(base, roms);
         maxTicks = roms.loadROM(base, "test/hello_world.com", 0x0000) * 1000;
@@ -328,40 +332,40 @@ public class IntegrationTest extends AbstractCpuTest {
         cpu.execute();
 
         // then
-        asrtCpu("BC:  0109\n" +
-                "DE:  000F\n" +
-                "HL:  4D0F\n" +
-                "AF:  4D02\n" +
-                "SP:  0102\n" +
-                "PC:  4E74\n" +
-                "B,C: 01 09\n" +
-                "D,E: 00 0F\n" +
-                "H,L: 4D 0F\n" +
-                "M:   4D\n" +
-                "A,F: 4D 02\n" +
+        asrtCpu("BC:  C0C0\n" +
+                "DE:  0000\n" +
+                "HL:  BFFD\n" +
+                "AF:  8242\n" +
+                "SP:  FFA8\n" +
+                "PC:  9773\n" +
+                "B,C: C0 C0\n" +
+                "D,E: 00 00\n" +
+                "H,L: BF FD\n" +
+                "M:   00\n" +
+                "A,F: 82 42\n" +
                 "     76543210 76543210\n" +
-                "SP:  00000001 00000010\n" +
-                "PC:  01001110 01110100\n" +
+                "SP:  11111111 10101000\n" +
+                "PC:  10010111 01110011\n" +
                 "     76543210\n" +
-                "B:   00000001\n" +
-                "C:   00001001\n" +
+                "B:   11000000\n" +
+                "C:   11000000\n" +
                 "D:   00000000\n" +
-                "E:   00001111\n" +
-                "H:   01001101\n" +
-                "L:   00001111\n" +
-                "M:   01001101\n" +
-                "A:   01001101\n" +
+                "E:   00000000\n" +
+                "H:   10111111\n" +
+                "L:   11111101\n" +
+                "M:   00000000\n" +
+                "A:   10000010\n" +
                 "     sz0h0p1c\n" +
-                "F:   00000010\n" +
+                "F:   01000010\n" +
                 "ts:  false\n" +
-                "tz:  false\n" +
+                "tz:  true\n" +
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
     }
 
     @Test
-    public void testDiagnostic_case2() throws Exception {
+    public void testDiagnostic_case2() {
         // 8080/8085 CPU Exerciser by Ian Bartholomew and Frank Cringles
         // The basic excerciser
         // https://raw.githubusercontent.com/begoon/i8080-core/master/8080EX1.MAC
@@ -410,7 +414,7 @@ public class IntegrationTest extends AbstractCpuTest {
     }
 
     @Test
-    public void testDiagnostic_case3() throws Exception {
+    public void testDiagnostic_case3() {
         // 8080/8085 CPU Exerciser by Ian Bartholomew and Frank Cringles
         // The preliminary test
         // https://raw.githubusercontent.com/begoon/i8080-core/master/8080PRE.MAC
@@ -459,7 +463,7 @@ public class IntegrationTest extends AbstractCpuTest {
     }
 
     @Test
-    public void testDiagnostic_case4() throws Exception {
+    public void testDiagnostic_case4() {
         // Diagnostics II, version 1.2, CPU test by Supersoft Associates
         // https://raw.githubusercontent.com/begoon/i8080-core/master/CPUTEST.MAC
 

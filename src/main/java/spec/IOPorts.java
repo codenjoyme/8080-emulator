@@ -30,7 +30,7 @@ public class IOPorts {
     // биты установки
     private final int[] msk = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080};
 
-    // массив матрицы клавш "Специалиста" ( true - нажата, false - отпущена)
+    // массив матрицы клавиш "Специалиста" ( true - нажата, false - отпущена)
     // 12 x 6 + Shift + Reset
     private boolean[][] keyStatus = new boolean[12][6];
 
@@ -44,7 +44,7 @@ public class IOPorts {
         reset();
     }
 
-    // ввод из порта памяти 580ВВ55
+    // ввод из порта памяти КР580ВВ55
     public synchronized int read8(int addr) {
         // все порты ППА перенесём в область 0xFFE0 - 0xFFE3
         addr = shiftPortAddress(addr);
