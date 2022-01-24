@@ -148,6 +148,7 @@ public class IntegrationTest extends AbstractCpuTest {
                             it -> it.down(UP).after(30).up(UP).after(170))
                     .stopCpu();
 
+            // этот хак позволяет запускать игру со следующим уровенем
             cpu.PC(0x4567);
             cpu.execute();
         }
