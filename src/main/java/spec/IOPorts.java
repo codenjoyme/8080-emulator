@@ -293,7 +293,8 @@ public class IOPorts {
             char ch = (char) key.code();
             Logger.debug("Key pressed: '%s' 0x%s 0x%s",
                     String.valueOf(ch == '\n' ? "\\n" :
-                     ch == '\r' ? "\\r" : ch),
+                                   ch == '\r' ? "\\r" :
+                                   ch == '\b' ? "\\b" : ch),
                     hex8(key.code()),
                     hex16(key.joint()));
         }
