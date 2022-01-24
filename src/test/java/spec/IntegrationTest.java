@@ -84,14 +84,14 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadRom(base, roms);
 
         // when
-        record.after(2).shot("1-runCom")
-                .press(END).after(2).shot("2-stop")
-                .press(ENTER).after(5).shot("3-monitor")
-                .enter("AC000").press(ENTER).after(20).shot("4-assembler")
-                .down(ENTER).after(5).press(END).after(5).up(ENTER).after(15).shot("5-exit")
-                .enter("D9000").press(ENTER).after(30).shot("6-memory")
-                .press(ESC).after(5).shot("7-exit")
-                .enter("B").press(ENTER).after(10).shot("8-basic")
+        record.after(2).shoot("1-runCom")
+                .press(END).after(2).shoot("2-stop")
+                .press(ENTER).after(5).shoot("3-monitor")
+                .enter("AC000").press(ENTER).after(20).shoot("4-assembler")
+                .down(ENTER).after(5).press(END).after(5).up(ENTER).after(15).shoot("5-exit")
+                .enter("D9000").press(ENTER).after(30).shoot("6-memory")
+                .press(ESC).after(5).shoot("7-exit")
+                .enter("B").press(ENTER).after(10).shoot("8-basic")
                 .stopCpu();
 
         cpu.PC(START_POINT);
@@ -105,11 +105,11 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadGame(base, roms, "klad");
 
         // when
-        record.after(200).shot("1-logo")
-                .after(170).shot("2-logo")
-                .after(50).shot("3-speed")
-                .down(RIGHT).after(60).up(RIGHT).after(1).shot("4-speed")
-                .down(UP).after(30).up(UP).after(170).shot("5-level-1")
+        record.shoot("1-logo", it -> it.after(200))
+                .shoot("2-logo", it -> it.after(170))
+                .shoot("3-speed", it -> it.after(50))
+                .shoot("4-speed", it -> it.down(RIGHT).after(60).up(RIGHT).after(1))
+                .shoot("5-level-1", it -> it.down(UP).after(30).up(UP).after(170))
                 .stopCpu();
 
         cpu.PC(0x0000);

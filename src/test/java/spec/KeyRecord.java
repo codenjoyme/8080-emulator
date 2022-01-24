@@ -3,6 +3,7 @@ package spec;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static spec.Key.MOD_NONE;
 
@@ -27,6 +28,15 @@ public class KeyRecord {
         return action;
     }
 
+    public Action shoot(String name, Function<Action, Action> actions) {
+        return shoot(new Action(0), name, actions);
+    }
+
+    private Action shoot(Action action, String name, Function<Action, Action> actions) {
+        return actions.apply(action)
+                .shoot(name);
+    }
+
     public class Action {
 
         int tick;
@@ -41,7 +51,7 @@ public class KeyRecord {
             this.tick = tick;
         }
 
-        public Action shot(String name) {
+        public Action shoot(String name) {
             shoot = name;
             return this;
         }
@@ -94,6 +104,10 @@ public class KeyRecord {
 
         public Action after(int delta) {
             return KeyRecord.this.after(tick + delta);
+        }
+
+        public Action shoot(String name, Function<Action, Action> actions) {
+            return KeyRecord.this.shoot(this, name, actions);
         }
     }
 
