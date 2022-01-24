@@ -12,7 +12,7 @@ import java.io.File;
 import java.net.URL;
 
 import static spec.Constants.START_POINT;
-import static spec.Layout.*;
+import static spec.KeyCode.*;
 
 public class IntegrationTest extends AbstractCpuTest {
 
@@ -107,42 +107,13 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadGame(base, roms, "klad");
 
         // when
+        record.after(200).shot("1-logo")
+                .after(170).shot("2-logo")
+                .after(50).shot("3-speed")
+                .stopCpu();
+
         cpu.PC(0x0000);
         cpu.execute();
-
-        // then
-        asrtCpu("BC:  0100\n" +
-                "DE:  0700\n" +
-                "HL:  0148\n" +
-                "AF:  0193\n" +
-                "SP:  3FF5\n" +
-                "PC:  C427\n" +
-                "B,C: 01 00\n" +
-                "D,E: 07 00\n" +
-                "H,L: 01 48\n" +
-                "M:   E1\n" +
-                "A,F: 01 93\n" +
-                "     76543210 76543210\n" +
-                "SP:  00111111 11110101\n" +
-                "PC:  11000100 00100111\n" +
-                "     76543210\n" +
-                "B:   00000001\n" +
-                "C:   00000000\n" +
-                "D:   00000111\n" +
-                "E:   00000000\n" +
-                "H:   00000001\n" +
-                "L:   01001000\n" +
-                "M:   11100001\n" +
-                "A:   00000001\n" +
-                "     sz0h0p1c\n" +
-                "F:   10010011\n" +
-                "ts:  true\n" +
-                "tz:  false\n" +
-                "th:  true\n" +
-                "tp:  false\n" +
-                "tc:  true\n");
-
-        screenShoot();
     }
 
     @Test

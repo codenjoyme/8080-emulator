@@ -6,11 +6,6 @@ import static spec.WordMath.hex8;
 
 public class IOPorts {
 
-    public static final int PAUSE_KEY = 0x13;
-    public static final int SHIFT_KEY = 0x10;
-    public static final int CTRL_KEY = 0x11;
-    public static final int ALT_KEY = 0x12;
-
     private boolean Ain;   // порт A на ввод
     private boolean Bin;   // порт B на ввод
     private boolean C0in;  // порт C0 на ввод
@@ -299,14 +294,14 @@ public class IOPorts {
                     hex16(key.joint()));
         }
 
-        if (key.code() == SHIFT_KEY) {
+        if (key.code() == KeyCode.SHIFT) {
             shift = key.pressed();
             return;
         }
 
-        if (key.code() == ALT_KEY
-                || key.code() == CTRL_KEY
-                || key.code() == PAUSE_KEY)
+        if (key.code() == KeyCode.ALT
+                || key.code() == KeyCode.CTRL
+                || key.code() == KeyCode.PAUSE)
         {
             return;
         }

@@ -38,35 +38,35 @@ public class Keyboard {
     }
 
     public void putShft(char code, int pt) {
-        keys.put((int)code | SHIFT, pt);
+        keys.put((int)code | SHIFT_MASK, pt);
     }
 
     public void putAltR(char code, int pt) {
-        keys.put((int)code | RIGHT_ALT, pt);
+        keys.put((int)code | RIGHT_ALT_MASK, pt);
     }
 
     public void putAltL(char code, int pt) {
-        keys.put((int)code | LEFT_ALT , pt);
+        keys.put((int)code | LEFT_ALT_MASK, pt);
     }
 
     public void putAlLS(char code, int pt) {
-        keys.put((int)code | LEFT_ALT | SHIFT, pt);
+        keys.put((int)code | LEFT_ALT_MASK | SHIFT_MASK, pt);
     }
 
     public void putCtrl(char code, int pt) {
-        keys.put((int)code | CTRL, pt);
+        keys.put((int)code | CTRL_MASK, pt);
     }
 
     public void putCyCt(char code, int pt) {
-        keys.put((int)code | CYRYLIC | CTRL, pt);
+        keys.put((int)code | CYRILLIC_MASK | CTRL_MASK, pt);
     }
 
     public void putCyrl(char code, int pt) {
-        keys.put((int)code | CYRYLIC, pt);
+        keys.put((int)code | CYRILLIC_MASK, pt);
     }
 
     public void putCySh(char code, int pt) {
-        keys.put((int)code | CYRYLIC | SHIFT, pt);
+        keys.put((int)code | CYRILLIC_MASK | SHIFT_MASK, pt);
     }
 
     /**

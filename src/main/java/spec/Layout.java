@@ -1,10 +1,8 @@
 package spec;
 
-public class Layout {
+import static spec.KeyCode.*;
 
-    public static final int END = 0x23;
-    public static final int ENTER = 0x0A;
-    public static final int ESC = 0x1B;
+public class Layout {
 
     public void setup(Keyboard keyboard) {
         // первая линия стандартной клавиатуры
@@ -108,7 +106,7 @@ public class Layout {
                                      // ctrl (Щ) -> О [O]
 
         keyboard.putChar('P', 0x72,  //  P  -> P [П]
-                         'з', END); // (З) -> Z [З]
+                         'з', 0x23); // (З) -> Z [З]
                                      // ctrl  P  -> Z [З]
                                      // ctrl (З) -> П [P]
 
@@ -187,7 +185,7 @@ public class Layout {
 
         // shift работает как системная клавиша
 
-        keyboard.putChar('Z', END,  //  Z  -> Z [З]
+        keyboard.putChar('Z', 0x23,  //  Z  -> Z [З]
                          'я', 0xB1); // (Я) -> Q [Я]
                                      // ctrl  Z  -> Q [Я]
                                      // ctrl (Я) -> З [Z]
@@ -242,36 +240,36 @@ public class Layout {
 
         // другие клавиши
 
-        keyboard.putNorm(ENTER, 0x00); // enter -> enter
-        keyboard.putNorm(0x08, 0x01);  // backspace -> backspace
-        keyboard.putNorm(0x14, 0xB0);  // caps_lock -> RusLat
+        keyboard.putNorm(ENTER,     0x00); // enter -> enter
+        keyboard.putNorm(BACKSPACE, 0x01); // backspace -> backspace
+        keyboard.putNorm(CAPS_LOCK, 0xB0); // caps_lock -> RusLat
 
-        keyboard.putNorm(ESC, 0x70); // esc -> esc
-        keyboard.putNorm(' ', 0x50);  // space -> space
+        keyboard.putNorm(ESC,     0x70); // esc -> esc
+        keyboard.putNorm(SPACE,   0x50); // space -> space
 
-        keyboard.putNorm(0x9B, 0x30); // ins -> ПВ
-        keyboard.putNorm(0x24, 0xA0); // home -> home
-        keyboard.putNorm(0x24, 0x60); // page up -> tab
-        keyboard.putNorm(0x7F, 0x01); // delete -> backspace
-        keyboard.putNorm(END, 0x05);  // end -> F11
-        keyboard.putNorm(0x22, 0x15); // page down -> F10
+        keyboard.putNorm(INS,     0x30); // ins -> ПВ
+        keyboard.putNorm(HOME,   0xA0); // home -> home
+        keyboard.putNorm(PG_UP,   0x60); // page up -> tab
+        keyboard.putNorm(DEL,     0x01); // delete -> backspace
+        keyboard.putNorm(END,     0x05); // end -> F11
+        keyboard.putNorm(PG_DOWN, 0x15); // page down -> F10
 
-        keyboard.putNorm(0x26, 0x90); // up -> up
-        keyboard.putNorm(0x28, 0x80); // down -> down
-        keyboard.putNorm(0x25, 0x40); // left -> left
-        keyboard.putNorm(0x27, 0x20); // right -> right
+        keyboard.putNorm(UP,      0x90); // up -> up
+        keyboard.putNorm(DOWN,    0x80); // down -> down
+        keyboard.putNorm(LEFT,    0x40); // left -> left
+        keyboard.putNorm(RIGHT,   0x20); // right -> right
 
-        keyboard.putNorm(0x70, 0xA5); // F1 -> F1
-        keyboard.putNorm(0x71, 0x95); // F2 -> F2
-        keyboard.putNorm(0x72, 0x85); // F3 -> F3
-        keyboard.putNorm(0x73, 0x75); // F4 -> F4
-        keyboard.putNorm(0x74, 0x65); // F5 -> F5
-        keyboard.putNorm(0x75, 0x55); // F6 -> F6
-        keyboard.putNorm(0x76, 0x45); // F7 -> F7
-        keyboard.putNorm(0x77, 0x35); // F8 -> F8
-        keyboard.putNorm(0x78, 0x25); // F9 -> F9
-        keyboard.putNorm(0x79, 0x15); // F10 -> F10
-        keyboard.putNorm(0x7A, 0x05); // F11 -> F11
-        keyboard.putNorm(0x7B, 0xB5); // F -> F12
+        keyboard.putNorm(F1,  0xA5); // F1 -> F1
+        keyboard.putNorm(F2,  0x95); // F2 -> F2
+        keyboard.putNorm(F3,  0x85); // F3 -> F3
+        keyboard.putNorm(F4,  0x75); // F4 -> F4
+        keyboard.putNorm(F5,  0x65); // F5 -> F5
+        keyboard.putNorm(F6,  0x55); // F6 -> F6
+        keyboard.putNorm(F7,  0x45); // F7 -> F7
+        keyboard.putNorm(F8,  0x35); // F8 -> F8
+        keyboard.putNorm(F9,  0x25); // F9 -> F9
+        keyboard.putNorm(F10, 0x15); // F10 -> F10
+        keyboard.putNorm(F11, 0x05); // F11 -> F11
+        keyboard.putNorm(F12, 0xB5); // F -> F12
     } 
 }

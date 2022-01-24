@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static spec.IOPorts.PAUSE_KEY;
+import static spec.KeyCode.PAUSE;
 
 public class Key {
 
@@ -17,12 +17,12 @@ public class Key {
     public static final int MOD_CTRL =       0b0000_0000_1000_0000;
 
     // наши кастомные флаги, для изменения key code
-    public static final int SHIFT     = 0b0000_0001_0000_0000;
-    public static final int LEFT_ALT  = 0b0000_0010_0000_0000;
-    public static final int RIGHT_ALT = 0b0000_0100_0000_0000;
-    public static final int CTRL      = 0b0000_1000_0000_0000;
+    public static final int SHIFT_MASK = 0b0000_0001_0000_0000;
+    public static final int LEFT_ALT_MASK = 0b0000_0010_0000_0000;
+    public static final int RIGHT_ALT_MASK = 0b0000_0100_0000_0000;
+    public static final int CTRL_MASK = 0b0000_1000_0000_0000;
 
-    public static final int CYRYLIC = 0x1000000;
+    public static final int CYRILLIC_MASK = 0x1000000;
 
     private int code;
     private boolean press;
@@ -41,7 +41,7 @@ public class Key {
     }
 
     public boolean pause() {
-        return code == PAUSE_KEY;
+        return code == PAUSE;
     }
 
     public boolean pressed() {
@@ -50,10 +50,10 @@ public class Key {
 
     public int joint() {
         return code
-                | (shift() ? SHIFT : 0)
-                | (leftAlt() ? LEFT_ALT : 0)
-                | (rightAlt() ? RIGHT_ALT : 0)
-                | (ctrl() ? CTRL : 0);
+                | (shift() ? SHIFT_MASK : 0)
+                | (leftAlt() ? LEFT_ALT_MASK : 0)
+                | (rightAlt() ? RIGHT_ALT_MASK : 0)
+                | (ctrl() ? CTRL_MASK : 0);
     }
 
     public int code() {
@@ -83,24 +83,24 @@ public class Key {
         return new LinkedHashSet<>(Arrays.asList(
                 code,
 
-                code | SHIFT,
-                code | LEFT_ALT,
-                code | RIGHT_ALT,
-                code | CTRL,
+                code | SHIFT_MASK,
+                code | LEFT_ALT_MASK,
+                code | RIGHT_ALT_MASK,
+                code | CTRL_MASK,
 
-                code | SHIFT | LEFT_ALT,
-                code | SHIFT | RIGHT_ALT,
-                code | SHIFT | CTRL,
-                code | LEFT_ALT | RIGHT_ALT,
-                code | LEFT_ALT | CTRL,
-                code | RIGHT_ALT | CTRL,
+                code | SHIFT_MASK | LEFT_ALT_MASK,
+                code | SHIFT_MASK | RIGHT_ALT_MASK,
+                code | SHIFT_MASK | CTRL_MASK,
+                code | LEFT_ALT_MASK | RIGHT_ALT_MASK,
+                code | LEFT_ALT_MASK | CTRL_MASK,
+                code | RIGHT_ALT_MASK | CTRL_MASK,
 
-                code | SHIFT | LEFT_ALT | RIGHT_ALT,
-                code | SHIFT | LEFT_ALT | CTRL,
-                code | SHIFT | RIGHT_ALT | CTRL,
-                code | LEFT_ALT | RIGHT_ALT | CTRL,
+                code | SHIFT_MASK | LEFT_ALT_MASK | RIGHT_ALT_MASK,
+                code | SHIFT_MASK | LEFT_ALT_MASK | CTRL_MASK,
+                code | SHIFT_MASK | RIGHT_ALT_MASK | CTRL_MASK,
+                code | LEFT_ALT_MASK | RIGHT_ALT_MASK | CTRL_MASK,
 
-                code | SHIFT | LEFT_ALT | RIGHT_ALT | CTRL
+                code | SHIFT_MASK | LEFT_ALT_MASK | RIGHT_ALT_MASK | CTRL_MASK
         ));
     }
 }
