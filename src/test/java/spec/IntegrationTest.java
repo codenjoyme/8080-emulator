@@ -42,6 +42,7 @@ public class IntegrationTest extends AbstractCpuTest {
         data.ports(ports);
         base = new File(APP_RESOURCES).toURI().toURL();
         maxTicks = TICKS;
+        KeyLogger.K1 = 10_000;
         record = new KeyRecord(ports, this::screenShoot, data::cpuOff);
         removeTestScreenShots();
         reset();
