@@ -2,7 +2,7 @@ package spec;
 
 import org.junit.Test;
 
-public class CpuTest extends AbstractCpuTest {
+public class CpuTest extends AbstractTest {
 
     @Test
     public void code00__NOP() {
@@ -20,7 +20,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  0000\n" +
@@ -65,10 +65,21 @@ public class CpuTest extends AbstractCpuTest {
     @Test
     public void codeXX__NONE() {
         // when
-        givenMm("08 10 18 20 28 30 38 D9 CB DD ED FD");
+        givenMm("08\n" +
+                "10\n" +
+                "18\n" +
+                "20\n" +
+                "28\n" +
+                "30\n" +
+                "38\n" +
+                "D9\n" +
+                "CB\n" +
+                "DD\n" +
+                "ED\n" +
+                "FD");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  0000\n" +
@@ -113,7 +124,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1234\n" +
@@ -158,7 +169,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  0000\n" +
@@ -203,7 +214,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  0000\n" +
@@ -248,7 +259,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  0000\n" +
@@ -301,7 +312,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1234\n" +
@@ -354,7 +365,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  789A\n" +
@@ -407,7 +418,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1111\n" +
@@ -460,7 +471,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1111\n" +
@@ -513,7 +524,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1111\n" +
@@ -566,7 +577,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1111\n" +
@@ -620,7 +631,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1111\n" +
@@ -673,7 +684,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1111\n" +
@@ -710,7 +721,7 @@ public class CpuTest extends AbstractCpuTest {
 
     @Test
     public void performance() {
-        // about 3.6 sec (vs 1.4) / 1_000_000
+        // about 0.95 sec (vs 1.4) / 1_000_000
         // when
         givenPr("LXI B,1111\n" +
                 "LXI SP,789A\n" +
@@ -728,13 +739,13 @@ public class CpuTest extends AbstractCpuTest {
                 "DAD H\n" +
                 "NOP\n");
 
-        int ticks = 100_000;
+        int ticks = 1_000_000;
 
         // when then
         for (int tick = 0; tick < ticks; tick++) {
-            cpu.PC(0x0000);
-            cpu.execute();
-            data.cpuOn();
+            hardware.reset();
+            cpu().PC(0x0000);
+            cpu().execute();
         }
     }
 
@@ -748,7 +759,7 @@ public class CpuTest extends AbstractCpuTest {
                 "STAX B\n" +      // copy (BC)=A
                 "NOP\n");
 
-        cpu.A(0x24);
+        cpu().A(0x24);
 
         givenMm("01 03 00\n" +
                 "11 11 11\n" +
@@ -760,7 +771,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x0003, "11");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x0003, "24");
@@ -807,7 +818,7 @@ public class CpuTest extends AbstractCpuTest {
                 "STAX D\n" +      // copy (DE)=A
                 "NOP\n");
 
-        cpu.A(0x24);
+        cpu().A(0x24);
 
         givenMm("01 11 11\n" +
                 "11 03 00\n" +
@@ -819,7 +830,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x0003, "11");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x0003, "24");
@@ -866,7 +877,7 @@ public class CpuTest extends AbstractCpuTest {
                 "LDAX B\n" +      // copy A=(BC)
                 "NOP\n");
 
-        cpu.A(0x24);
+        cpu().A(0x24);
 
         givenMm("01 03 00\n" +
                 "11 11 11\n" +
@@ -878,7 +889,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x0003, "11");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x0003, "11");
@@ -925,7 +936,7 @@ public class CpuTest extends AbstractCpuTest {
                 "LDAX D\n" +      // copy A=(DE)
                 "NOP\n");
 
-        cpu.A(0x24);
+        cpu().A(0x24);
 
         givenMm("01 11 11\n" +
                 "11 03 00\n" +
@@ -937,7 +948,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x0003, "11");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x0003, "11");
@@ -994,7 +1005,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x5678, 2, "00 00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x5678, 0x5679, "34 12");
@@ -1051,7 +1062,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x0001, 2, "34 12");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x0001, 2, "34 12");
@@ -1098,7 +1109,7 @@ public class CpuTest extends AbstractCpuTest {
                 "STA 1234\n" +    // copy (1234)=A
                 "NOP\n");
 
-        cpu.A(0x24);
+        cpu().A(0x24);
 
         givenMm("01 11 11\n" +
                 "11 22 22\n" +
@@ -1110,7 +1121,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x1234, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x1234, "24");
@@ -1157,7 +1168,7 @@ public class CpuTest extends AbstractCpuTest {
                 "LDA 0001\n" +    // copy A=(0001)
                 "NOP\n");
 
-        cpu.A(0x00);
+        cpu().A(0x00);
 
         givenMm("01 34 12\n" +
                 "11 22 22\n" +
@@ -1169,7 +1180,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x0001, "34");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x0001, "34");
@@ -1224,7 +1235,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1235\n" +
@@ -1277,7 +1288,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  0000\n" +
@@ -1330,7 +1341,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1111\n" +
@@ -1383,7 +1394,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1111\n" +
@@ -1436,7 +1447,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1111\n" +
@@ -1489,7 +1500,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1111\n" +
@@ -1542,7 +1553,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1111\n" +
@@ -1595,7 +1606,7 @@ public class CpuTest extends AbstractCpuTest {
                 "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         asrtCpu("BC:  1111\n" +
@@ -1664,7 +1675,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x5768, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x5768, "01");
@@ -1735,7 +1746,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x5566, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x5566, "FF");
@@ -1806,7 +1817,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x5667, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x5667, "78");
@@ -1863,7 +1874,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");
@@ -1920,7 +1931,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");
@@ -1977,7 +1988,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");
@@ -2034,7 +2045,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");
@@ -2091,7 +2102,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");
@@ -2148,7 +2159,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");
@@ -2207,7 +2218,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "46");
@@ -2266,7 +2277,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");
@@ -2323,7 +2334,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");
@@ -2380,7 +2391,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");
@@ -2437,7 +2448,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");
@@ -2494,7 +2505,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");
@@ -2551,7 +2562,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");
@@ -2608,7 +2619,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");
@@ -2667,7 +2678,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "46");
@@ -2726,7 +2737,7 @@ public class CpuTest extends AbstractCpuTest {
         assertMem(0x9ABC, "00");
 
         // when
-        cpu.execute();
+        start();
 
         // then
         assertMem(0x9ABC, "00");

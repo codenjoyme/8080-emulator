@@ -1661,6 +1661,10 @@ public class Cpu extends Registry {
         tc(!tc());
     }
 
+    public Assembler asm() {
+        return asm;
+    }
+
 
 //    private int dec8(int ans) {
 //        boolean p = (ans == x80);

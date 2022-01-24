@@ -10,32 +10,37 @@ import static spec.KeyLogger.K1;
 
 public class KeyRecord {
 
-    private Map<Integer, Action> scenario = new HashMap<>();
+    private Map<Integer, Action> scenario;
 
     // наша клавиатура
     private IOPorts ports;
 
     // методы внешних компонентов, которые мы хотим дергать
+
     private Consumer<String> screenShoot;
     private Runnable stopCpu;
-
     private int shootIndex; // индекс сделанного скриншота
 
-    public KeyRecord(IOPorts ports, Consumer<String> screenShoot, Runnable stopCpu) {
+    public KeyRecord(IOPorts ports, Runnable stopCpu) {
         this.ports = ports;
-        this.screenShoot = screenShoot;
         this.stopCpu = stopCpu;
         this.shootIndex = 0;
+        scenario = null;
+    }
+
+    public void screenShoot(Consumer<String> screenShoot) {
+        this.screenShoot = screenShoot;
     }
 
     public Action after(int tick) {
+        scenario = (scenario == null) ? new HashMap<>() : scenario;
         Action action = new Action(tick);
         scenario.put(tick, action);
         return action;
     }
 
     public Action shoot(String name, Function<Action, Action> actions) {
-        return shoot(new Action(0), name, actions);
+        return shoot(after(0), name, actions);
     }
 
     private Action shoot(Action action, String name, Function<Action, Action> actions) {
@@ -44,7 +49,7 @@ public class KeyRecord {
     }
 
     public KeyRecord reset() {
-        scenario.clear();
+        scenario = null;
         return this;
     }
 
@@ -125,6 +130,8 @@ public class KeyRecord {
     }
 
     public void accept(int tick) {
+        if (scenario == null) return;
+
         // нам интересны каждые 10 000 тиков, реже смотреть нет смысла
         if (tick % K1 != 0) return;
 

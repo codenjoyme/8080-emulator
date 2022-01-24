@@ -7,7 +7,7 @@ import static spec.Constants.*;
 
 public abstract class Hardware {
 
-    private static final double CLOCK = 1.6; // Specialist runs at 3.5Mhz;
+    public static double CLOCK = 1.6; // Specialist runs at 3.5Mhz;
 
     private Memory memory;
     private Cpu cpu;
@@ -20,13 +20,13 @@ public abstract class Hardware {
     private boolean cpuEnabled;
 
     public Hardware() {
-        memory = new Memory(x10000);
+        memory = createMemory();
 
         keyLogger = new KeyLogger(() -> cpu.tick());
 
         ports = new IOPorts(memory, new Layout(), keyLogger::process);
 
-        record = new KeyRecord(ports, null, () -> cpuEnabled = false);
+        record = new KeyRecord(ports, this::stop);
 
         cpu = new Cpu(CLOCK, new Data() {
             @Override
@@ -48,11 +48,19 @@ public abstract class Hardware {
             public void write8(int addr, int bite) {
                 Hardware.this.write8(addr, bite);
             }
-        }, tick -> record.accept(tick));
+        }, record::accept);
 
         video = new Video(Hardware.this::drawPixel);
 
         roms = new RomLoader(memory, cpu);
+    }
+
+    public void stop() {
+        cpuEnabled = false;
+    }
+
+    protected Memory createMemory() {
+        return new Memory(x10000);
     }
 
     protected abstract void outb(int port, int bite);
@@ -71,6 +79,7 @@ public abstract class Hardware {
     }
 
     public void start() {
+        cpuEnabled = true;
         cpu.execute();
     }
 
@@ -112,5 +121,13 @@ public abstract class Hardware {
 
     public KeyRecord record() {
         return record;
+    }
+
+    public Cpu cpu() {
+        return cpu;
+    }
+
+    public Memory memory() {
+        return memory;
     }
 }

@@ -9,7 +9,7 @@ public class TestMemory extends Memory {
         clear();
     }
 
-    private void clear() {
+    public void clear() {
         updated = new Range(0xFFFF, 0x0000);
     }
 

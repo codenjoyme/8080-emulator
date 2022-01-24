@@ -14,45 +14,34 @@ import java.net.URL;
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
 
-public class IntegrationTest extends AbstractCpuTest {
+public class IntegrationTest extends AbstractTest {
 
-    private static final int TICKS = 10_000_000;
-
+    private static final int TICKS = 1_000;
     private static final String TEST_RESOURCES = "src/test/resources/";
     private static final String APP_RESOURCES = "src/main/resources/";
 
     @Rule
     public TestName test = new TestName();
-
-    private RomLoader roms;
-    private IOPorts ports;
-    private PngVideo video;
-    private KeyRecord record;
-
-    private int tick;
-    private int maxTicks;
     private URL base;
+
+    private PngVideo video;
 
     @Before
     public void before() throws Exception {
-        super.before();
-        roms = new RomLoader(data.memory(), cpu);
-        ports = new IOPorts(data.memory(), new Layout(), null);
-        video = new PngVideo(data.memory());
-        data.ports(ports);
-        base = new File(APP_RESOURCES).toURI().toURL();
-        maxTicks = TICKS;
         KeyLogger.K1 = 10_000;
-        record = new KeyRecord(ports, this::screenShoot, data::cpuOff);
+        super.before();
+
+        video = new PngVideo(hardware.memory());
+        base = new File(APP_RESOURCES).toURI().toURL();
+        hardware.record().screenShoot(this::screenShoot);
         removeTestScreenShots();
         reset();
+        record().after(TICKS).stopCpu();
     }
 
     private void reset() {
-        record.reset();
-        ports.reset();
-        tick = 0;
-        data.cpuOn();
+        record().reset();
+        hardware.reset();
     }
 
     private void removeTestScreenShots() {
@@ -91,21 +80,14 @@ public class IntegrationTest extends AbstractCpuTest {
         return result;
     }
 
-    @Override
-    protected void interrupt() {
-        if (++tick >= maxTicks) {
-            data.cpuOff();
-        }
-        record.accept(tick);
-    }
-
     @Test
     public void testLik_smoke() {
         // given
-        Lik.loadRom(base, roms);
+        Lik.loadRom(base, roms());
 
         // when
-        record.shoot("runcom", it -> it.after(2))
+        record().reset()
+                .shoot("runcom", it -> it.after(2))
                 .shoot("stop", it -> it.press(END).after(2))
                 .shoot("monitor", it -> it.press(ENTER).after(5))
                 .shoot("assembler", it -> it.enter("AC000").press(ENTER).after(20))
@@ -115,18 +97,18 @@ public class IntegrationTest extends AbstractCpuTest {
                 .shoot("basic", it -> it.enter("B").press(ENTER).after(10))
                 .stopCpu();
 
-        cpu.PC(START_POINT);
-        cpu.execute();
+        cpu().PC(START_POINT);
+        start();
     }
 
     @Test
     public void testLik_scenario() {
         // given
-        Lik.loadRom(base, roms);
-        Lik.loadGame(base, roms, "klad");
+        Lik.loadRom(base, roms());
+        Lik.loadGame(base, roms(), "klad");
 
         // when
-        record.after(12).down(0x23)
+        record().after(12).down(0x23)
                 .after(5).up(0x23).shoot("")
                 .after(10).down(0x0A)
                 .after(5).up(0x0A).shoot("")
@@ -139,29 +121,29 @@ public class IntegrationTest extends AbstractCpuTest {
                 .after(1).down(0x26)
                 .after(24).up(0x26).shoot("")
                 .after(127).down(0x27)
-                .after(51).up(0x27).shoot("")
+                .after(53).up(0x27).shoot("")
                 .after(1).down(0x26)
                 .after(28).up(0x26).shoot("")
                 .stopCpu();
 
-        cpu.PC(START_POINT);
-        cpu.execute();
+        cpu().PC(START_POINT);
+        start();
     }
 
     @Test
     public void testLik_klad() {
         // given
-        Lik.loadRom(base, roms);
-        Lik.loadGame(base, roms, "klad");
+        Lik.loadRom(base, roms());
+        Lik.loadGame(base, roms(), "klad");
 
         // when then
-        record.shoot("logo", it -> it.after(200))
+        record().shoot("logo", it -> it.after(200))
                 .shoot("logo", it -> it.after(170))
                 .shoot("speed", it -> it.after(50))
                 .stopCpu();
 
-        cpu.PC(0x0000);
-        cpu.execute();
+        cpu().PC(0x0000);
+        start();
 
         int LEVELS = 32;
         for (int level = 1; level < LEVELS; level++) {
@@ -170,28 +152,28 @@ public class IntegrationTest extends AbstractCpuTest {
 
             // скорость выбранная в первый раз поменяла тайминги
             int speed = (level == 1) ? 60 : 60 + 13;
-            record.shoot(null,
+            record().shoot(null,
                             it -> it.after(50))
                     .shoot(null,
                             it -> it.down(RIGHT).after(speed).up(RIGHT).after(1))
                     .shoot("level[" + level + "]",
-                            it -> it.down(UP).after(30).up(UP).after(170))
+                            it -> it.down(UP).after(30).up(UP).after(100))
                     .stopCpu();
 
             // этот хак позволяет запускать игру со следующим уровенем
-            cpu.PC(0x4567);
-            cpu.execute();
+            cpu().PC(0x4567);
+            start();
         }
     }
 
     @Test
     public void testSpecialist_monitor() {
         // given
-        Specialist.loadRom(base, roms);
+        Specialist.loadRom(base, roms());
 
         // when
-        cpu.PC(START_POINT);
-        cpu.execute();
+        cpu().PC(START_POINT);
+        start();
 
         // then
         asrtCpu("BC:  0E80\n" +
@@ -231,12 +213,12 @@ public class IntegrationTest extends AbstractCpuTest {
     @Test
     public void testSpecialist_blobcop() {
         // given
-        Specialist.loadRom(base, roms);
-        Specialist.loadGame(base, roms, "blobcop");
+        Specialist.loadRom(base, roms());
+        Specialist.loadGame(base, roms(), "blobcop");
 
         // when
-        cpu.PC(0x0000);
-        cpu.execute();
+        cpu().PC(0x0000);
+        start();
 
         // then
         asrtCpu("BC:  0000\n" +
@@ -276,12 +258,12 @@ public class IntegrationTest extends AbstractCpuTest {
     @Test
     public void testSpecialist_babnik() {
         // given
-        Specialist.loadRom(base, roms);
-        Specialist.loadGame(base, roms, "babnik");
+        Specialist.loadRom(base, roms());
+        Specialist.loadGame(base, roms(), "babnik");
 
         // when
-        cpu.PC(0x0000);
-        cpu.execute();
+        cpu().PC(0x0000);
+        start();
 
         // then
         asrtCpu("BC:  125C\n" +
@@ -324,43 +306,44 @@ public class IntegrationTest extends AbstractCpuTest {
         // https://github.com/begoon/i8080-core/blob/master/TEST.ASM
 
         // given
-        Lik.loadRom(base, roms);
-        maxTicks = roms.loadROM(base, "test/test.com", 0x0000) * 10;
+        Lik.loadRom(base, roms());
+        int ticks = roms().loadROM(base, "test/test.com", 0x0000) * 10;
+        record().after(ticks).stopCpu();
 
         // when
-        cpu.PC(0x0000);
-        cpu.execute();
+        cpu().PC(0x0000);
+        start();
 
         // then
-        asrtCpu("BC:  C0F0\n" +
-                "DE:  2800\n" +
-                "HL:  C000\n" +
-                "AF:  0002\n" +
-                "SP:  FFEC\n" +
-                "PC:  743E\n" +
-                "B,C: C0 F0\n" +
-                "D,E: 28 00\n" +
-                "H,L: C0 00\n" +
-                "M:   C3\n" +
-                "A,F: 00 02\n" +
+        asrtCpu("BC:  0048\n" +
+                "DE:  0032\n" +
+                "HL:  0000\n" +
+                "AF:  4806\n" +
+                "SP:  9470\n" +
+                "PC:  C02A\n" +
+                "B,C: 00 48\n" +
+                "D,E: 00 32\n" +
+                "H,L: 00 00\n" +
+                "M:   21\n" +
+                "A,F: 48 06\n" +
                 "     76543210 76543210\n" +
-                "SP:  11111111 11101100\n" +
-                "PC:  01110100 00111110\n" +
+                "SP:  10010100 01110000\n" +
+                "PC:  11000000 00101010\n" +
                 "     76543210\n" +
-                "B:   11000000\n" +
-                "C:   11110000\n" +
-                "D:   00101000\n" +
-                "E:   00000000\n" +
-                "H:   11000000\n" +
+                "B:   00000000\n" +
+                "C:   01001000\n" +
+                "D:   00000000\n" +
+                "E:   00110010\n" +
+                "H:   00000000\n" +
                 "L:   00000000\n" +
-                "M:   11000011\n" +
-                "A:   00000000\n" +
+                "M:   00100001\n" +
+                "A:   01001000\n" +
                 "     sz0h0p1c\n" +
-                "F:   00000010\n" +
+                "F:   00000110\n" +
                 "ts:  false\n" +
                 "tz:  false\n" +
                 "th:  false\n" +
-                "tp:  false\n" +
+                "tp:  true\n" +
                 "tc:  false\n");
 
         screenShoot();
@@ -369,37 +352,38 @@ public class IntegrationTest extends AbstractCpuTest {
     @Test
     public void testLik_helloWorld() {
         // given
-        Lik.loadRom(base, roms);
-        maxTicks = roms.loadROM(base, "test/hello_world.com", 0x0000) * 1000;
+        Lik.loadRom(base, roms());
+        int ticks = roms().loadROM(base, "test/hello_world.com", 0x0000) * 1000;
+        record().after(ticks).stopCpu();
 
         // when
-        cpu.PC(0x0000);
-        cpu.execute();
+        cpu().PC(0x0000);
+        start();
 
         // then
-        asrtCpu("BC:  C0C0\n" +
-                "DE:  0000\n" +
-                "HL:  BFFD\n" +
-                "AF:  8242\n" +
-                "SP:  FFA8\n" +
-                "PC:  9773\n" +
-                "B,C: C0 C0\n" +
-                "D,E: 00 00\n" +
-                "H,L: BF FD\n" +
+        asrtCpu("BC:  9000\n" +
+                "DE:  FF01\n" +
+                "HL:  C49C\n" +
+                "AF:  FF42\n" +
+                "SP:  7FF7\n" +
+                "PC:  C38A\n" +
+                "B,C: 90 00\n" +
+                "D,E: FF 01\n" +
+                "H,L: C4 9C\n" +
                 "M:   00\n" +
-                "A,F: 82 42\n" +
+                "A,F: FF 42\n" +
                 "     76543210 76543210\n" +
-                "SP:  11111111 10101000\n" +
-                "PC:  10010111 01110011\n" +
+                "SP:  01111111 11110111\n" +
+                "PC:  11000011 10001010\n" +
                 "     76543210\n" +
-                "B:   11000000\n" +
-                "C:   11000000\n" +
-                "D:   00000000\n" +
-                "E:   00000000\n" +
-                "H:   10111111\n" +
-                "L:   11111101\n" +
+                "B:   10010000\n" +
+                "C:   00000000\n" +
+                "D:   11111111\n" +
+                "E:   00000001\n" +
+                "H:   11000100\n" +
+                "L:   10011100\n" +
                 "M:   00000000\n" +
-                "A:   10000010\n" +
+                "A:   11111111\n" +
                 "     sz0h0p1c\n" +
                 "F:   01000010\n" +
                 "ts:  false\n" +
@@ -418,12 +402,12 @@ public class IntegrationTest extends AbstractCpuTest {
         // https://raw.githubusercontent.com/begoon/i8080-core/master/8080EX1.MAC
 
         // given
-        Lik.loadRom(base, roms);
-        roms.loadROM(base, "test/8080EX1.COM", 0x0100);
+        Lik.loadRom(base, roms());
+        roms().loadROM(base, "test/8080EX1.COM", 0x0100);
 
         // when
-        cpu.PC(0x0100);
-        cpu.execute();
+        cpu().PC(0x0100);
+        start();
 
         // then
         asrtCpu("BC:  0009\n" +
@@ -467,12 +451,12 @@ public class IntegrationTest extends AbstractCpuTest {
         // https://raw.githubusercontent.com/begoon/i8080-core/master/8080PRE.MAC
 
         // given
-        Lik.loadRom(base, roms);
-        roms.loadROM(base, "test/8080PRE.COM", 0x0100);
+        Lik.loadRom(base, roms());
+        roms().loadROM(base, "test/8080PRE.COM", 0x0100);
 
         // when
-        cpu.PC(0x0100);
-        cpu.execute();
+        cpu().PC(0x0100);
+        start();
 
         // then
         asrtCpu("BC:  EC34\n" +
@@ -515,12 +499,12 @@ public class IntegrationTest extends AbstractCpuTest {
         // https://raw.githubusercontent.com/begoon/i8080-core/master/CPUTEST.MAC
 
         // given
-        Lik.loadRom(base, roms);
-        roms.loadROM(base, "test/CPUTEST.COM", 0x0100);
+        Lik.loadRom(base, roms());
+        roms().loadROM(base, "test/CPUTEST.COM", 0x0100);
 
         // when
-        cpu.PC(0x0100);
-        cpu.execute();
+        cpu().PC(0x0100);
+        start();
 
         // then
         asrtCpu("BC:  0002\n" +

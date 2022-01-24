@@ -181,8 +181,4 @@ public class Application {
         hard.reset();
         refreshWholeScreen();
     }
-
-    public KeyRecord record() {
-        return hard.record();
-    }
 }
