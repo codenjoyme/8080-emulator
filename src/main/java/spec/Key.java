@@ -88,8 +88,8 @@ public class Key {
 
     public boolean system() {
         return code == CTRL
-                || code == RIGHT
-                || code == LEFT
+                || code == ALT
+                || code == SHIFT
                 || code == PAUSE;
     }
 }
