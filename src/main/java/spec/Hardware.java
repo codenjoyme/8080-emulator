@@ -15,11 +15,18 @@ public abstract class Hardware {
     protected IOPorts ports;
     protected Video video;
     private KeyLogger keyLogger;
+    private KeyRecord record;
+
+    private boolean cpuEnabled;
 
     public Hardware() {
         memory = new Memory(x10000);
 
-        video = new Video(Hardware.this::drawPixel);
+        keyLogger = new KeyLogger(() -> cpu.tick());
+
+        ports = new IOPorts(memory, new Layout(), keyLogger::process);
+
+        record = new KeyRecord(ports, null, () -> cpuEnabled = false);
 
         cpu = new Cpu(CLOCK, new Data() {
             @Override
@@ -41,22 +48,23 @@ public abstract class Hardware {
             public void write8(int addr, int bite) {
                 Hardware.this.write8(addr, bite);
             }
-        });
+        }, tick -> record.accept(tick));
 
-        keyLogger = new KeyLogger(cpu::tick);
-
-        ports = new IOPorts(memory, new Layout(), keyLogger::process);
+        video = new Video(Hardware.this::drawPixel);
 
         roms = new RomLoader(memory, cpu);
     }
 
     protected abstract void outb(int port, int bite);
 
-    protected abstract boolean interrupt();
+    protected boolean interrupt() {
+        return cpuEnabled;
+    }
 
     protected abstract void drawPixel(Point point, Color color);
 
     public void reset() {
+        cpuEnabled = true;
         cpu.reset();
         ports.reset();
         keyLogger.reset();
@@ -100,5 +108,9 @@ public abstract class Hardware {
     public void loadSnapshot(URL base, String snapshot) {
         roms.loadSnapshot(base, snapshot);
         ports.resetKeyboard();
+    }
+
+    public KeyRecord record() {
+        return record;
     }
 }

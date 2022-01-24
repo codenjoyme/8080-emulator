@@ -31,6 +31,24 @@ public class Main extends JFrame implements KeyListener {
         addKeyListener(this);
 
         app = new Application(this, getBaseUrl(base));
+        app.record()
+                .after(12).down(0x23)
+                .after(5).up(0x23)
+                .after(10).down(0x0A)
+                .after(5).up(0x0A)
+                .after(34).down(0x4A)
+                .after(4).up(0x4A)
+                .after(4).down(0x0A)
+                .after(10).up(0x0A)
+                .after(400).down(0x27)
+                .after(59).up(0x27)
+                .after(1).down(0x26)
+                .after(24).up(0x26)
+                .after(127).down(0x27)
+                .after(51).up(0x27)
+                .after(1).down(0x26)
+                .after(28).up(0x26);
+
         app.gotFocus();
         app.start();
     }

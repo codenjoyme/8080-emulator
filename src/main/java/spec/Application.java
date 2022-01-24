@@ -43,7 +43,8 @@ public class Application {
 
             @Override
             protected boolean interrupt() {
-                return Application.this.interrupt();
+                Application.this.interrupt();
+                return super.interrupt();
             }
 
             @Override
@@ -82,7 +83,7 @@ public class Application {
         }
     }
 
-    private boolean interrupt() {
+    private void interrupt() {
         if (pauseAtNextInterrupt) {
             while (pauseAtNextInterrupt) {
                 if (refreshNextInterrupt) {
@@ -136,7 +137,6 @@ public class Application {
                 }
             }
         }
-        return true;
     }
 
     public void repaint() {
@@ -182,7 +182,7 @@ public class Application {
         refreshWholeScreen();
     }
 
-    public void requestFocus() {
-        graphic.requestFocus();
+    public KeyRecord record() {
+        return hard.record();
     }
 }

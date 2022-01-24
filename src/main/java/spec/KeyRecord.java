@@ -132,7 +132,7 @@ public class KeyRecord {
         Action action = scenario.get(kiloTick);
         if (action == null) return;
 
-        if (action.shoot != null) {
+        if (action.shoot != null && screenShoot != null) {
             screenShoot.accept(action.shoot);
         }
         if (action.keyCode != null) {

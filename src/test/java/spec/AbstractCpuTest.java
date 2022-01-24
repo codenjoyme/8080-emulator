@@ -20,7 +20,7 @@ public abstract class AbstractCpuTest {
     public void before() throws Exception {
         data = new TestData(this::interrupt);
         init = false;
-        cpu = new Cpu(50.1 * 1e-6, data);
+        cpu = new Cpu(50.1 * 1e-6, data, null);
         cpu.PC(START);
         asm = new Assembler();
     }

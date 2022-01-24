@@ -29,7 +29,7 @@ public class KeyLogger {
     private void logForTest(Key key, Integer point) {
         int delta = getTick.get() - tick;
         tick = getTick.get();
-        Logger.debug(".after(%s).%s(0x%s).shoot(\"\")",
+        Logger.debug(".after(%s).%s(0x%s)",
                 (delta / K10 == 0) ? 1 : delta / K10,
                 key.pressed() ? "down" : "up",
                 hex8(key.code()));
