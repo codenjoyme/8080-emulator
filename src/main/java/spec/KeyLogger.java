@@ -8,7 +8,7 @@ import static spec.WordMath.hex8;
 public class KeyLogger {
 
     private static final boolean FOR_TEST = true;
-    public static final int K1 = 1_000;
+    public static final int K1 = 1;
 
     private Supplier<Integer> getTick;
     private int tick;
@@ -16,6 +16,9 @@ public class KeyLogger {
     public KeyLogger(Supplier<Integer> getTick) {
         this.getTick = getTick;
         reset();
+        if (FOR_TEST) {
+            Logger.info("KeyRecord.Action action = app.record();");
+        }
     }
 
     public void process(Key key, Integer point) {
@@ -29,7 +32,7 @@ public class KeyLogger {
     private void logForTest(Key key, Integer point) {
         int delta = getTick.get() - tick;
         tick = getTick.get();
-        Logger.debug(".after(%s).%s(0x%s)",
+        Logger.info("action = action.after(%s).%s(0x%s);",
                 (delta / K1 == 0) ? 1 : delta / K1,
                 key.pressed() ? "down" : "up",
                 hex8(key.code()));
