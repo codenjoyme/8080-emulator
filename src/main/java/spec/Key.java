@@ -10,17 +10,15 @@ import static spec.KeyCode.*;
 public class Key {
 
     // Swing key event mods
-    public static final int MOD_NONE =       0b0000_0000_0000_0000;
-    public static final int MOD_SHIFT =      0b0000_0000_0100_0000;
-    public static final int MOD_LEFT_ALT =   0b0000_0010_0000_0000;
-    public static final int MOD_RIGHT_ALT =  0b0010_0010_0000_0000;
-    public static final int MOD_CTRL =       0b0000_0000_1000_0000;
+    public static final int MOD_NONE =   0b0000_0000_0000_0000;
+    public static final int MOD_SHIFT =  0b0000_0000_0100_0000;
+    public static final int MOD_ALT =    0b0000_0010_0000_0000;
+    public static final int MOD_CTRL =   0b0000_0000_1000_0000;
 
     // наши кастомные флаги, для изменения key code
     public static final int SHIFT_MASK = 0b0000_0001_0000_0000;
-    public static final int LEFT_ALT_MASK = 0b0000_0010_0000_0000;
-    public static final int RIGHT_ALT_MASK = 0b0000_0100_0000_0000;
-    public static final int CTRL_MASK = 0b0000_1000_0000_0000;
+    public static final int ALT_MASK =   0b0000_0010_0000_0000;
+    public static final int CTRL_MASK =  0b0000_0100_0000_0000;
 
     public static final int CYRILLIC_MASK = 0x1000000;
 
@@ -51,8 +49,7 @@ public class Key {
     public int joint() {
         return code
                 | (shift() ? SHIFT_MASK : 0)
-                | (leftAlt() ? LEFT_ALT_MASK : 0)
-                | (rightAlt() ? RIGHT_ALT_MASK : 0)
+                | (alt() ? ALT_MASK : 0)
                 | (ctrl() ? CTRL_MASK : 0);
     }
 
@@ -64,16 +61,8 @@ public class Key {
         return (mods & MOD_SHIFT) == MOD_SHIFT;
     }
 
-    public boolean leftAlt() {
-        return (mods & MOD_LEFT_ALT) == MOD_LEFT_ALT
-                // MOD_LEFT_ALT и MOD_RIGHT_ALT пересекаются и отличаются 1 битом,
-                // надо проверить что это точно не MOD_RIGHT_ALT
-                // у MOD_LEFT_ALT этот отличный бит = 0
-                && (mods & (MOD_LEFT_ALT ^ MOD_RIGHT_ALT)) == 0;
-    }
-
-    public boolean rightAlt() {
-        return (mods & MOD_RIGHT_ALT) == MOD_RIGHT_ALT;
+    public boolean alt() {
+        return (mods & MOD_ALT) == MOD_ALT;
     }
 
     public boolean ctrl() {
@@ -86,23 +75,14 @@ public class Key {
                 new Key(code, up, MOD_NONE),
 
                 new Key(code, up, MOD_SHIFT),
-                new Key(code, up, MOD_LEFT_ALT),
-                new Key(code, up, MOD_RIGHT_ALT),
+                new Key(code, up, MOD_ALT),
                 new Key(code, up, MOD_CTRL),
                 
-                new Key(code, up, MOD_SHIFT | MOD_LEFT_ALT),
-                new Key(code, up, MOD_SHIFT | MOD_RIGHT_ALT),
+                new Key(code, up, MOD_SHIFT | MOD_ALT),
                 new Key(code, up, MOD_SHIFT | MOD_CTRL),
-                new Key(code, up, MOD_LEFT_ALT | MOD_RIGHT_ALT),
-                new Key(code, up, MOD_LEFT_ALT | MOD_CTRL),
-                new Key(code, up, MOD_RIGHT_ALT | MOD_CTRL),
+                new Key(code, up, MOD_ALT | MOD_CTRL),
 
-                new Key(code, up, MOD_SHIFT | MOD_LEFT_ALT | MOD_RIGHT_ALT),
-                new Key(code, up, MOD_SHIFT | MOD_LEFT_ALT | MOD_CTRL),
-                new Key(code, up, MOD_SHIFT | MOD_RIGHT_ALT | MOD_CTRL),
-                new Key(code, up, MOD_LEFT_ALT | MOD_RIGHT_ALT | MOD_CTRL),
-
-                new Key(code, up, MOD_SHIFT | MOD_LEFT_ALT | MOD_RIGHT_ALT | MOD_CTRL)
+                new Key(code, up, MOD_SHIFT | MOD_ALT | MOD_CTRL)
         ));
     }
 

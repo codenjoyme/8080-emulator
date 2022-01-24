@@ -41,16 +41,12 @@ public class Keyboard {
         keys.put((int)code | SHIFT_MASK, pt);
     }
 
-    public void putAltR(char code, int pt) {
-        keys.put((int)code | RIGHT_ALT_MASK, pt);
+    public void putAlt_(char code, int pt) {
+        keys.put((int)code | ALT_MASK, pt);
     }
 
-    public void putAltL(char code, int pt) {
-        keys.put((int)code | LEFT_ALT_MASK, pt);
-    }
-
-    public void putAlLS(char code, int pt) {
-        keys.put((int)code | LEFT_ALT_MASK | SHIFT_MASK, pt);
+    public void putAltS(char code, int pt) {
+        keys.put((int)code | ALT_MASK | SHIFT_MASK, pt);
     }
 
     public void putCtrl(char code, int pt) {

@@ -17,7 +17,7 @@ public class Layout {
 
         keyboard.putNorm('2', 0x94); // 2 -> 2
         keyboard.putShft('2', 0x31); // shift 2 -> @ [Ю]
-        keyboard.putAlLS('2', 0x94); // left_alt shift 2 -> "
+        keyboard.putAltS('2', 0x94); // alt shift 2 -> "
 
         keyboard.putNorm('3', 0x84); // 3 -> 3
         keyboard.putShft('3', 0x84); // # -> #
@@ -25,7 +25,7 @@ public class Layout {
         keyboard.putNorm('4', 0x74); // 4 -> 4
         keyboard.putShft('4', 0x74); // shift 4 -> $
         keyboard.putCtrl('4', 0x03); // ctrl 4 -> :
-        keyboard.putAltL('4', 0xB4); // left_alt 4 -> ;
+        keyboard.putAlt_('4', 0xB4); // alt 4 -> ;
 
         keyboard.putNorm('5', 0x64); // 5 -> 5
         keyboard.putShft('5', 0x64); // shift 5 -> %
@@ -33,11 +33,11 @@ public class Layout {
         keyboard.putNorm('6', 0x54); // 6 -> 6
         keyboard.putShft('6', 0xA1); // shift 6 -> ^ [Ч]
         keyboard.putCtrl('6', 0x03); // ctrl 6 -> :
-        keyboard.putAltL('6', 0xB4); // left_alt 6 -> ;
+        keyboard.putAlt_('6', 0xB4); // alt 6 -> ;
 
         keyboard.putNorm('7', 0x44); // 7 -> 7
         keyboard.putShft('7', 0x54); // shift 7 -> &
-        keyboard.putAlLS('7', 0x11); // left_alt shift 7 -> ?
+        keyboard.putAltS('7', 0x11); // alt shift 7 -> ?
 
         keyboard.putNorm('8', 0x34); // 8 -> 8
         keyboard.putShft('8', 0x03); // shift 8 -> *
@@ -54,7 +54,7 @@ public class Layout {
         keyboard.putNorm('=', 0xB4); // = -> ;
         keyboard.putShft('=', 0xB4); // shift = -> +
         keyboard.putCtrl('=', 0x03); // ctrl = -> :
-        keyboard.putAltL('=', 0xB4); // left_alt = -> ;
+        keyboard.putAlt_('=', 0xB4); // alt = -> ;
 
         // вторая линия стандартной клавиатуры
 
@@ -170,7 +170,7 @@ public class Layout {
                                      // ctrl  ;  -> V [Ж]
                                      // ctrl (Ж) -> :
         keyboard.putShft(';', 0xB4); // shift ;  -> +
-        keyboard.putAltL(';', 0xB4); // left_alt ; -> ;
+        keyboard.putAlt_(';', 0xB4); // alt ; -> ;
 
         keyboard.putChar('Þ', 0xA1,  // ' -> ^ [Ч]
                          'э', 0x12); // Э -> \ [Э]

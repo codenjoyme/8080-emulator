@@ -16,8 +16,7 @@ public class IOPorts {
 
     // зажата ли клавиша
     private boolean shift;
-    private boolean rightAlt;
-    private boolean leftAlt;
+    private boolean alt;
     private boolean ctrl;
 
     private static final int PortA = 0xFFE0; // Порт А ППА
@@ -325,35 +324,10 @@ public class IOPorts {
             return;
         }
 
-        if (key.code() == ALT) {
-            if (key.pressed()) {
-                if (key.leftAlt() && leftAlt != key.pressed()) {
-                    leftAlt = key.pressed();
-                    logKey(key, 0xFC);
-                    return;
-                }
-                if (key.rightAlt() && rightAlt != key.pressed()) {
-                    rightAlt = key.pressed();
-                    logKey(key, 0xFD);
-                    return;
-                }
-            } else {
-                // при отпускании клавиш alt мы не знаем какую именно
-                // (недоработка swing фреймворка)
-                if (!key.leftAlt() && !key.rightAlt()) {
-                    // TODO будем считать что отпускается всегда первой левая
-                    if (leftAlt) {
-                        leftAlt = false;
-                        logKey(key, 0xFC);
-                        return;
-                    }
-                    if (rightAlt) {
-                        rightAlt = false;
-                        logKey(key, 0xFD);
-                        return;
-                    }
-                }
-            }
+        if (key.code() == ALT && alt != key.pressed()) {
+            alt = key.pressed();
+            logKey(key, 0xFC);
+            return;
         }
     }
 
@@ -361,7 +335,7 @@ public class IOPorts {
         char ch = (char) key.code();
         Logger.debug("Key %s at tick [%s]: ch:'%s' " +
                         "code:0x%s joint:0x%s point:0x%s" +
-                        "%s%s%s%s",
+                        "%s%s%s",
                 key.pressed() ? "down" : "up  ",
                 tick.get(),
                 String.valueOf(ch == '\n' ? "\\n" :
@@ -371,9 +345,8 @@ public class IOPorts {
                 hex16(key.joint()),
                 hex8(point),
                 key.ctrl() ? " ctrl" : "",
-                key.shift() ? " shift" : "",
-                key.rightAlt() ? " rightAlt" : "",
-                key.leftAlt() ? " leftAlt" : ""
+                key.alt() ? " alt" : "",
+                key.shift() ? " shift" : ""
         );
     }
 
@@ -395,8 +368,7 @@ public class IOPorts {
 
     public synchronized void reset() {
         shift = false;
-        rightAlt = false;
-        leftAlt = false;
+        alt = false;
         ctrl = false;
 
         Ain = true;
