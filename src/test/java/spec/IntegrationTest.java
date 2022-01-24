@@ -119,6 +119,35 @@ public class IntegrationTest extends AbstractCpuTest {
     }
 
     @Test
+    public void testLik_scenario() {
+        // given
+        Lik.loadRom(base, roms);
+        Lik.loadGame(base, roms, "klad");
+
+        // when
+        record.after(12).down(0x23)
+                .after(5).up(0x23).shoot("")
+                .after(10).down(0x0A)
+                .after(5).up(0x0A).shoot("")
+                .after(34).down(0x4A)
+                .after(4).up(0x4A).shoot("")
+                .after(4).down(0x0A)
+                .after(10).up(0x0A).shoot("")
+                .after(400).down(0x27)
+                .after(59).up(0x27).shoot("")
+                .after(1).down(0x26)
+                .after(24).up(0x26).shoot("")
+                .after(127).down(0x27)
+                .after(51).up(0x27).shoot("")
+                .after(1).down(0x26)
+                .after(28).up(0x26).shoot("")
+                .stopCpu();
+
+        cpu.PC(START_POINT);
+        cpu.execute();
+    }
+
+    @Test
     public void testLik_klad() {
         // given
         Lik.loadRom(base, roms);

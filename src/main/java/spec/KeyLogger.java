@@ -7,19 +7,41 @@ import static spec.WordMath.hex8;
 
 public class KeyLogger {
 
-    private Supplier<Integer> tick;
+    private static final boolean FOR_TEST = true;
+    public static final int K10 = 10_000;
 
-    public KeyLogger(Supplier<Integer> tick) {
-        this.tick = tick;
+    private Supplier<Integer> getTick;
+    private int tick;
+
+    public KeyLogger(Supplier<Integer> getTick) {
+        this.getTick = getTick;
+        reset();
     }
 
     public void process(Key key, Integer point) {
+        if (FOR_TEST) {
+            logForTest(key, point);
+        } else {
+            logForCondole(key, point);
+        }
+    }
+
+    private void logForTest(Key key, Integer point) {
+        int delta = getTick.get() - tick;
+        tick = getTick.get();
+        Logger.debug(".after(%s).%s(0x%s).shoot(\"\")",
+                (delta / K10 == 0) ? 1 : delta / K10,
+                key.pressed() ? "down" : "up",
+                hex8(key.code()));
+    }
+
+    private void logForCondole(Key key, Integer point) {
         char ch = (char) key.code();
         Logger.debug("Key %s at tick [%s]: ch:'%s' " +
                         "code:0x%s joint:0x%s point:0x%s" +
                         "%s%s%s",
                 key.pressed() ? "down" : "up  ",
-                tick.get(),
+                getTick.get(),
                 String.valueOf(ch == '\n' ? "\\n" :
                         ch == '\r' ? "\\r" :
                                 ch == '\b' ? "\\b" : ch),
@@ -30,5 +52,9 @@ public class KeyLogger {
                 key.alt() ? " alt" : "",
                 key.shift() ? " shift" : ""
         );
+    }
+
+    public void reset() {
+        tick = 0;
     }
 }

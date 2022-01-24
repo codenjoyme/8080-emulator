@@ -14,6 +14,7 @@ public abstract class Hardware {
     protected RomLoader roms;
     protected IOPorts ports;
     protected Video video;
+    private KeyLogger keyLogger;
 
     public Hardware() {
         memory = new Memory(x10000);
@@ -42,7 +43,7 @@ public abstract class Hardware {
             }
         });
 
-        KeyLogger keyLogger = new KeyLogger(cpu::tick);
+        keyLogger = new KeyLogger(cpu::tick);
 
         ports = new IOPorts(memory, new Layout(), keyLogger::process);
 
@@ -58,6 +59,7 @@ public abstract class Hardware {
     public void reset() {
         cpu.reset();
         ports.reset();
+        keyLogger.reset();
     }
 
     public void start() {

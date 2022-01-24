@@ -6,10 +6,10 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static spec.Key.MOD_NONE;
+import static spec.KeyLogger.K10;
 
 public class KeyRecord {
 
-    public static final int K10 = 10_000;
     private Map<Integer, Action> scenario = new HashMap<>();
 
     // наша клавиатура
