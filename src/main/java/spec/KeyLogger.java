@@ -7,7 +7,7 @@ import static spec.WordMath.hex8;
 
 public class KeyLogger {
 
-    private static final boolean FOR_TEST = true;
+    private static final boolean FOR_TEST = false;
     public static int K1 = 1;
 
     private Supplier<Integer> getTick;

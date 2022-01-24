@@ -31,7 +31,7 @@ public class Main extends JFrame implements KeyListener {
         addKeyListener(this);
 
         app = new Application(this, getBaseUrl(base));
-        scenario();
+        // scenario();
         app.gotFocus();
         app.start();
     }
