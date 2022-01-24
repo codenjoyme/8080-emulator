@@ -110,6 +110,8 @@ public class IntegrationTest extends AbstractCpuTest {
         record.after(200).shot("1-logo")
                 .after(170).shot("2-logo")
                 .after(50).shot("3-speed")
+                .down(RIGHT).after(60).up(RIGHT).after(1).shot("4-speed")
+                .down(UP).after(30).up(UP).after(170).shot("5-level-1")
                 .stopCpu();
 
         cpu.PC(0x0000);
