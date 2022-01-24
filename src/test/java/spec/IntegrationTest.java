@@ -37,7 +37,7 @@ public class IntegrationTest extends AbstractCpuTest {
     public void before() throws Exception {
         super.before();
         roms = new RomLoader(data.memory(), cpu);
-        ports = new IOPorts(data.memory(), new Layout());
+        ports = new IOPorts(data.memory(), new Layout(), cpu::tick);
         video = new PngVideo(data.memory());
         data.ports(ports);
         base = new File(APP_RESOURCES).toURI().toURL();

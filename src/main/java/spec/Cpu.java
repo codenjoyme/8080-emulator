@@ -23,8 +23,9 @@ public class Cpu extends Registry {
             parity[i] = p;
         }
     }
-    
+
     private int interrupt;
+    private int tick;
     private Assembler asm;
 
     public Cpu(double clockFrequencyInMHz, Data data) {
@@ -34,7 +35,17 @@ public class Cpu extends Registry {
         interrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);
         asm = new Assembler();
     }
-    
+
+    @Override
+    public void reset() {
+        super.reset();
+        tick = 0;
+    }
+
+    public int tick() {
+        return tick;
+    }
+
     private int read8(int addr) {
         return data.read8(addr);
     }
@@ -106,6 +117,8 @@ public class Cpu extends Registry {
 
         // цикл выборки/выполнения
         while (true) {
+            tick++;
+
             if (interruptNeeded(ticks)) {
                 if (!data.interrupt()) {
                     break;

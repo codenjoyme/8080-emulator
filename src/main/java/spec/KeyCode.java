@@ -4,6 +4,8 @@ public class KeyCode {
 
     public static final int SHIFT = 0x10;
     public static final int CTRL = 0x11;
+    // левый и правый клавиши alt имеют одинаковый код,
+    // но разные модификаторы - это доставляет
     public static final int ALT = 0x12;
     public static final int WIN = 0x20C;
     public static final int CONTEXT = 0x20D;

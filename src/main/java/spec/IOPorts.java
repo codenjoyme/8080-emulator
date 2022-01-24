@@ -1,6 +1,9 @@
 package spec;
 
+import java.util.function.Supplier;
+
 import static spec.Constants.ROM;
+import static spec.KeyCode.*;
 import static spec.WordMath.hex16;
 import static spec.WordMath.hex8;
 
@@ -11,7 +14,11 @@ public class IOPorts {
     private boolean C0in;  // порт C0 на ввод
     private boolean C1in;  // порт C1 на ввод
 
-    private boolean shift; // нажат ли shift на эмулируемой машине
+    // зажата ли клавиша
+    private boolean shift;
+    private boolean rightAlt;
+    private boolean leftAlt;
+    private boolean ctrl;
 
     private static final int PortA = 0xFFE0; // Порт А ППА
     private static final int PortB = 0xFFE1; // Порт В ППА
@@ -31,9 +38,11 @@ public class IOPorts {
 
     private Memory memory;
     private Keyboard keyboard;
+    private Supplier<Integer> tick;
 
-    public IOPorts(Memory memory, Layout layout) {
+    public IOPorts(Memory memory, Layout layout, Supplier<Integer> tick) {
         this.memory = memory;
+        this.tick = tick;
         keyboard = new Keyboard();
         layout.setup(keyboard);
         reset();
@@ -284,52 +293,112 @@ public class IOPorts {
     }
 
     public synchronized void processKey(Key key) {
-        if (key.pressed()) {
-            char ch = (char) key.code();
-            Logger.debug("Key pressed: '%s' 0x%s 0x%s",
-                    String.valueOf(ch == '\n' ? "\\n" :
-                                   ch == '\r' ? "\\r" :
-                                   ch == '\b' ? "\\b" : ch),
-                    hex8(key.code()),
-                    hex16(key.joint()));
+        if (!key.system()) {
+            if (key.pressed()) {
+                // если кнопка нажата, то мы изменяем оригинальную с учетом модификатора
+                // и кликаем кнопку (возможно уже иную) на виртуальной машине
+                pressKey(key);
+            } else {
+                // если кнопка отпущена, то нам надо отжать потенциально сразу все
+                // возможные зажатые кнопки (с модификаторами или без)
+                for (Key key2 : key.allKeysWithMods()) {
+                    pressKey(key2);
+                }
+            }
         }
 
-        if (key.code() == KeyCode.SHIFT) {
+        if (key.pause()) {
+            logKey(key, 0xFF);
+            return;
+        }
+
+        if (key.code() == SHIFT && shift != key.pressed()) {
             shift = key.pressed();
+            logKey(key, 0xFA);
             return;
         }
 
-        if (key.code() == KeyCode.ALT
-                || key.code() == KeyCode.CTRL
-                || key.code() == KeyCode.PAUSE)
-        {
+
+        if (key.code() == CTRL && ctrl != key.pressed()) {
+            ctrl = key.pressed();
+            logKey(key, 0xFB);
             return;
         }
 
-        if (key.pressed()) {
-            // если кнопка нажата, то мы изменяем оригинальную с учетом модификатора
-            // и кликаем кнопку (возможно уже иную) на виртуальной машине
-            pressKey(key.joint(), true);
-        } else {
-            // если кнопка отпущена, то нам надо отжать потенциально сразу все
-            // возможные зажатые кнопки (с модификаторами или без)
-            for (Integer pt : key.allKeysWithMods()) {
-                pressKey(pt, false);
+        if (key.code() == ALT) {
+            if (key.pressed()) {
+                if (key.leftAlt() && leftAlt != key.pressed()) {
+                    leftAlt = key.pressed();
+                    logKey(key, 0xFC);
+                    return;
+                }
+                if (key.rightAlt() && rightAlt != key.pressed()) {
+                    rightAlt = key.pressed();
+                    logKey(key, 0xFD);
+                    return;
+                }
+            } else {
+                // при отпускании клавиш alt мы не знаем какую именно
+                // (недоработка swing фреймворка)
+                if (key.noMods()) {
+                    // TODO будем считать что отпускается всегда первой левая
+                    if (leftAlt) {
+                        leftAlt = false;
+                        logKey(key, 0xFC);
+                        return;
+                    }
+                    if (rightAlt) {
+                        rightAlt = false;
+                        logKey(key, 0xFD);
+                        return;
+                    }
+                }
             }
         }
     }
 
-    private void pressKey(int code, boolean press) {
-        Integer pt = keyboard.key(code);
-        if (pt != null) {
-            int x = (pt & 0xF0) >> 4;
-            int y = pt & 0x0F;
-            keyStatus[x][y] = press;
+    private void logKey(Key key, int point) {
+        char ch = (char) key.code();
+        Logger.debug("Key %s at tick [%s]: ch:'%s' " +
+                        "code:0x%s joint:0x%s point:0x%s" +
+                        "%s%s%s%s",
+                key.pressed() ? "down" : "up  ",
+                tick.get(),
+                String.valueOf(ch == '\n' ? "\\n" :
+                                ch == '\r' ? "\\r" :
+                                ch == '\b' ? "\\b" : ch),
+                hex8(key.code()),
+                hex16(key.joint()),
+                hex8(point),
+                key.ctrl() ? " ctrl" : "",
+                key.shift() ? " shift" : "",
+                key.rightAlt() ? " rightAlt" : "",
+                key.leftAlt() ? " leftAlt" : ""
+        );
+    }
+
+    private void pressKey(Key key) {
+        Integer point = keyboard.key(key.joint());
+        if (point == null) {
+            return;
         }
+
+        int x = (point & 0xF0) >> 4;
+        int y = point & 0x0F;
+        if (keyStatus[x][y] == key.pressed()) {
+            return;
+        }
+
+        logKey(key, point);
+        keyStatus[x][y] = key.pressed();
     }
 
     public synchronized void reset() {
         shift = false;
+        rightAlt = false;
+        leftAlt = false;
+        ctrl = false;
+
         Ain = true;
         Bin = true;
         C0in = true;

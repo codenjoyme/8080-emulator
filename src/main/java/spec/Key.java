@@ -2,10 +2,10 @@ package spec;
 
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
-import static spec.KeyCode.PAUSE;
+import static spec.KeyCode.*;
 
 public class Key {
 
@@ -79,28 +79,40 @@ public class Key {
         return (mods & MOD_CTRL) == MOD_CTRL;
     }
 
-    public Set<Integer> allKeysWithMods() {
-        return new LinkedHashSet<>(Arrays.asList(
-                code,
+    public List<Key> allKeysWithMods() {
+        boolean up = false;
+        return new LinkedList<>(Arrays.asList(
+                new Key(code, up, MOD_NONE),
 
-                code | SHIFT_MASK,
-                code | LEFT_ALT_MASK,
-                code | RIGHT_ALT_MASK,
-                code | CTRL_MASK,
+                new Key(code, up, MOD_SHIFT),
+                new Key(code, up, MOD_LEFT_ALT),
+                new Key(code, up, MOD_RIGHT_ALT),
+                new Key(code, up, MOD_CTRL),
+                
+                new Key(code, up, MOD_SHIFT | MOD_LEFT_ALT),
+                new Key(code, up, MOD_SHIFT | MOD_RIGHT_ALT),
+                new Key(code, up, MOD_SHIFT | MOD_CTRL),
+                new Key(code, up, MOD_LEFT_ALT | MOD_RIGHT_ALT),
+                new Key(code, up, MOD_LEFT_ALT | MOD_CTRL),
+                new Key(code, up, MOD_RIGHT_ALT | MOD_CTRL),
 
-                code | SHIFT_MASK | LEFT_ALT_MASK,
-                code | SHIFT_MASK | RIGHT_ALT_MASK,
-                code | SHIFT_MASK | CTRL_MASK,
-                code | LEFT_ALT_MASK | RIGHT_ALT_MASK,
-                code | LEFT_ALT_MASK | CTRL_MASK,
-                code | RIGHT_ALT_MASK | CTRL_MASK,
+                new Key(code, up, MOD_SHIFT | MOD_LEFT_ALT | MOD_RIGHT_ALT),
+                new Key(code, up, MOD_SHIFT | MOD_LEFT_ALT | MOD_CTRL),
+                new Key(code, up, MOD_SHIFT | MOD_RIGHT_ALT | MOD_CTRL),
+                new Key(code, up, MOD_LEFT_ALT | MOD_RIGHT_ALT | MOD_CTRL),
 
-                code | SHIFT_MASK | LEFT_ALT_MASK | RIGHT_ALT_MASK,
-                code | SHIFT_MASK | LEFT_ALT_MASK | CTRL_MASK,
-                code | SHIFT_MASK | RIGHT_ALT_MASK | CTRL_MASK,
-                code | LEFT_ALT_MASK | RIGHT_ALT_MASK | CTRL_MASK,
-
-                code | SHIFT_MASK | LEFT_ALT_MASK | RIGHT_ALT_MASK | CTRL_MASK
+                new Key(code, up, MOD_SHIFT | MOD_LEFT_ALT | MOD_RIGHT_ALT | MOD_CTRL)
         ));
+    }
+
+    public boolean system() {
+        return code == CTRL
+                || code == RIGHT
+                || code == LEFT
+                || code == PAUSE;
+    }
+
+    public boolean noMods() {
+        return mods == 0;
     }
 }

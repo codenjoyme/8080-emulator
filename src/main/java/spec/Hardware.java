@@ -42,7 +42,7 @@ public abstract class Hardware {
             }
         });
 
-        ports = new IOPorts(memory, new Layout());
+        ports = new IOPorts(memory, new Layout(), cpu::tick);
 
         roms = new RomLoader(memory, cpu);
     }
