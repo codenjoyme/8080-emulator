@@ -42,7 +42,9 @@ public abstract class Hardware {
             }
         });
 
-        ports = new IOPorts(memory, new Layout(), cpu::tick);
+        KeyLogger keyLogger = new KeyLogger(cpu::tick);
+
+        ports = new IOPorts(memory, new Layout(), keyLogger::process);
 
         roms = new RomLoader(memory, cpu);
     }

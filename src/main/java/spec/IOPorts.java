@@ -1,11 +1,9 @@
 package spec;
 
-import java.util.function.Supplier;
+import java.util.function.BiConsumer;
 
 import static spec.Constants.ROM;
 import static spec.KeyCode.*;
-import static spec.WordMath.hex16;
-import static spec.WordMath.hex8;
 
 public class IOPorts {
 
@@ -37,11 +35,11 @@ public class IOPorts {
 
     private Memory memory;
     private Keyboard keyboard;
-    private Supplier<Integer> tick;
+    private BiConsumer<Key, Integer> keyLogger;
 
-    public IOPorts(Memory memory, Layout layout, Supplier<Integer> tick) {
+    public IOPorts(Memory memory, Layout layout, BiConsumer<Key, Integer> keyLogger) {
         this.memory = memory;
-        this.tick = tick;
+        this.keyLogger = keyLogger;
         keyboard = new Keyboard();
         layout.setup(keyboard);
         reset();
@@ -332,22 +330,9 @@ public class IOPorts {
     }
 
     private void logKey(Key key, int point) {
-        char ch = (char) key.code();
-        Logger.debug("Key %s at tick [%s]: ch:'%s' " +
-                        "code:0x%s joint:0x%s point:0x%s" +
-                        "%s%s%s",
-                key.pressed() ? "down" : "up  ",
-                tick.get(),
-                String.valueOf(ch == '\n' ? "\\n" :
-                                ch == '\r' ? "\\r" :
-                                ch == '\b' ? "\\b" : ch),
-                hex8(key.code()),
-                hex16(key.joint()),
-                hex8(point),
-                key.ctrl() ? " ctrl" : "",
-                key.alt() ? " alt" : "",
-                key.shift() ? " shift" : ""
-        );
+        if (keyLogger == null) return;
+
+        keyLogger.accept(key, point);
     }
 
     private void pressKey(Key key) {
