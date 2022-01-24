@@ -65,10 +65,11 @@ public class Key {
     }
 
     public boolean leftAlt() {
-        // TODO Придумать другой сопособ соответствия, так как флаги
-        // MOD_LEFT_ALT и MOD_RIGHT_ALT пересекаются
-        return !rightAlt()
-                && (mods & MOD_LEFT_ALT) == MOD_LEFT_ALT;
+        return (mods & MOD_LEFT_ALT) == MOD_LEFT_ALT
+                // MOD_LEFT_ALT и MOD_RIGHT_ALT пересекаются и отличаются 1 битом,
+                // надо проверить что это точно не MOD_RIGHT_ALT
+                // у MOD_LEFT_ALT этот отличный бит = 0
+                && (mods & (MOD_LEFT_ALT ^ MOD_RIGHT_ALT)) == 0;
     }
 
     public boolean rightAlt() {
@@ -110,9 +111,5 @@ public class Key {
                 || code == RIGHT
                 || code == LEFT
                 || code == PAUSE;
-    }
-
-    public boolean noMods() {
-        return mods == 0;
     }
 }

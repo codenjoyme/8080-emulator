@@ -340,7 +340,7 @@ public class IOPorts {
             } else {
                 // при отпускании клавиш alt мы не знаем какую именно
                 // (недоработка swing фреймворка)
-                if (key.noMods()) {
+                if (!key.leftAlt() && !key.rightAlt()) {
                     // TODO будем считать что отпускается всегда первой левая
                     if (leftAlt) {
                         leftAlt = false;
