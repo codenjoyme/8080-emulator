@@ -2,6 +2,7 @@ package spec;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static spec.Key.MOD_NONE;
 
@@ -10,11 +11,11 @@ public class KeyRecord {
     public static final int K10 = 10_000;
     private Map<Integer, Action> scenario = new HashMap<>();
 
-    private Runnable screenShoot;
+    private Consumer<String> screenShoot;
     private Runnable stopCpu;
     private IOPorts ports;
 
-    public KeyRecord(IOPorts ports, Runnable screenShoot, Runnable stopCpu) {
+    public KeyRecord(IOPorts ports, Consumer<String> screenShoot, Runnable stopCpu) {
         this.ports = ports;
         this.screenShoot = screenShoot;
         this.stopCpu = stopCpu;
@@ -29,7 +30,7 @@ public class KeyRecord {
     public class Action {
 
         int tick;
-        boolean screenShoot;
+        String shoot;
         boolean stopCpu;
 
         Integer keyCode;
@@ -40,8 +41,8 @@ public class KeyRecord {
             this.tick = tick;
         }
 
-        public Action shot() {
-            screenShoot = true;
+        public Action shot(String name) {
+            shoot = name;
             return this;
         }
 
@@ -104,8 +105,8 @@ public class KeyRecord {
         Action action = scenario.get(kiloTick);
         if (action == null) return;
 
-        if (action.screenShoot) {
-            screenShoot.run();
+        if (action.shoot != null) {
+            screenShoot.accept(action.shoot);
         }
         if (action.keyCode != null) {
             ports.processKey(new Key(action.keyCode, action.press, action.mode));

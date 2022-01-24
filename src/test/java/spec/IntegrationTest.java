@@ -12,8 +12,7 @@ import java.io.File;
 import java.net.URL;
 
 import static spec.Constants.START_POINT;
-import static spec.Layout.END;
-import static spec.Layout.ENTER;
+import static spec.Layout.*;
 
 public class IntegrationTest extends AbstractCpuTest {
 
@@ -63,8 +62,12 @@ public class IntegrationTest extends AbstractCpuTest {
     }
 
     private void screenShoot() {
+        screenShoot("end");
+    }
+
+    private void screenShoot(String name) {
         video.drawToFile(new File(TEST_RESOURCES
-                + test.getMethodName() + "_" + tick + ".png"));
+                + test.getMethodName() + "_" + name + ".png"));
     }
 
     @Override
@@ -81,15 +84,17 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadRom(base, roms);
 
         // when
-        record.after(2).shot().press(END).shot()
+        record.after(2).shot("1-runCom").press(END).shot("2-stop")
                 .after(2).press(ENTER)
-                .after(4).shot()
-                .after(1).enter("AC000")
-                .after(3).press(ENTER)
-                .after(20).shot().down(ENTER)
+                .after(4).shot("3-monitor")
+                .after(1).enter("AC000").press(ENTER)
+                .after(20).shot("4-assembler").down(ENTER)
                 .after(5).press(END)
                 .after(5).up(ENTER)
-                .after(15).shot().stopCpu();
+                .after(15).shot("5-exit").enter("D9000").press(ENTER)
+                .after(30).shot("6-memory").press(ESC)
+                .after(5).enter("B").press(ENTER)
+                .after(10).shot("7-basic").stopCpu();
 
         cpu.PC(START_POINT);
         cpu.execute();

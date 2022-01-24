@@ -4,6 +4,7 @@ public class Layout {
 
     public static final int END = 0x23;
     public static final int ENTER = 0x0A;
+    public static final int ESC = 0x1B;
 
     public void setup(Keyboard keyboard) {
         // первая линия стандартной клавиатуры
@@ -245,7 +246,7 @@ public class Layout {
         keyboard.putNorm(0x08, 0x01);  // backspace -> backspace
         keyboard.putNorm(0x14, 0xB0);  // caps_lock -> RusLat
 
-        keyboard.putNorm(0x1B, 0x70); // esc -> esc
+        keyboard.putNorm(ESC, 0x70); // esc -> esc
         keyboard.putNorm(' ', 0x50);  // space -> space
 
         keyboard.putNorm(0x9B, 0x30); // ins -> ПВ
