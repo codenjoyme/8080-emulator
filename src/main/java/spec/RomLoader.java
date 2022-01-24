@@ -35,8 +35,7 @@ public class RomLoader {
     }
 
     private void logLoading(String name, Range range) {
-        System.out.printf("Loading '%s' into %s\n",
-                name, range);
+        Logger.info("Loading '%s' into %s", name, range);
     }
 
     // для ПК "Специалист"

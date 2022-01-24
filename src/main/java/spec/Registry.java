@@ -246,7 +246,6 @@ public class Registry {
 
     public void PC(int word) {
         PC = word;
-//        System.out.println(hex16(PC) + ": " + hex8(data.read8(PC)));
     }
 
     public int F() {

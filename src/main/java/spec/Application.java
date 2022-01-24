@@ -100,7 +100,7 @@ public class Application {
         }
 
         if (resetAtNextInterrupt) {
-            System.out.println("TOTAL RESET");
+            Logger.info("Reset Hardware!");
             resetAtNextInterrupt = false;
             hard.reset();
         }
@@ -144,13 +144,13 @@ public class Application {
     }
 
     public void lostFocus() {
-        System.out.println("LOST FOCUS");
+        Logger.debug("Lost focus");
         outb(BORDER_PORT, 0x06);
         hard.ports.resetKeyboard();
     }
 
     public void gotFocus() {
-        System.out.println("GOT FOCUS");
+        Logger.debug("Got focus");
         outb(BORDER_PORT, 0x02);
         hard.ports.resetKeyboard();
     }

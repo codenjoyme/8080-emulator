@@ -1,6 +1,8 @@
 package spec;
 
 import static spec.Constants.ROM;
+import static spec.WordMath.hex16;
+import static spec.WordMath.hex8;
 
 public class IOPorts {
 
@@ -287,12 +289,14 @@ public class IOPorts {
     }
 
     public synchronized void processKey(Key key) {
-//        if (key.pressed()) {
-//            System.out.println(
-//                    (char)key.code() + " _ "
-//                    + hex8(key.code()) + " _ "
-//                    + hex16(key.joint()));
-//        }
+        if (key.pressed()) {
+            char ch = (char) key.code();
+            Logger.debug("Key pressed: '%s' 0x%s 0x%s",
+                    String.valueOf(ch == '\n' ? "\\n" :
+                     ch == '\r' ? "\\r" : ch),
+                    hex8(key.code()),
+                    hex16(key.joint()));
+        }
 
         if (key.code() == SHIFT_KEY) {
             shift = key.pressed();
