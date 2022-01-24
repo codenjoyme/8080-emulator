@@ -84,17 +84,15 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadRom(base, roms);
 
         // when
-        record.after(2).shot("1-runCom").press(END).shot("2-stop")
-                .after(2).press(ENTER)
-                .after(4).shot("3-monitor")
-                .after(1).enter("AC000").press(ENTER)
-                .after(20).shot("4-assembler").down(ENTER)
-                .after(5).press(END)
-                .after(5).up(ENTER)
-                .after(15).shot("5-exit").enter("D9000").press(ENTER)
-                .after(30).shot("6-memory").press(ESC)
-                .after(5).enter("B").press(ENTER)
-                .after(10).shot("7-basic").stopCpu();
+        record.after(2).shot("1-runCom")
+                .press(END).after(2).shot("2-stop")
+                .press(ENTER).after(5).shot("3-monitor")
+                .enter("AC000").press(ENTER).after(20).shot("4-assembler")
+                .down(ENTER).after(5).press(END).after(5).up(ENTER).after(15).shot("5-exit")
+                .enter("D9000").press(ENTER).after(30).shot("6-memory")
+                .press(ESC).after(5).shot("7-exit")
+                .enter("B").press(ENTER).after(10).shot("8-basic")
+                .stopCpu();
 
         cpu.PC(START_POINT);
         cpu.execute();
