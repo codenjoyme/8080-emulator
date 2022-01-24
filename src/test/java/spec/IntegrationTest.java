@@ -10,7 +10,6 @@ import spec.platforms.Specialist;
 
 import java.io.File;
 import java.net.URL;
-import java.util.function.Function;
 
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
@@ -45,23 +44,29 @@ public class IntegrationTest extends AbstractCpuTest {
         maxTicks = TICKS;
         record = new KeyRecord(ports, this::screenShoot, data::cpuOff);
         removeTestScreenShots();
-        clear();
+        reset();
     }
 
-    private void clear() {
-        record.clear();
+    private void reset() {
+        record.reset();
+        ports.reset();
         tick = 0;
         data.cpuOn();
     }
 
     private void removeTestScreenShots() {
-        File[] files = new File(TEST_RESOURCES).listFiles();
+        File dir = testDir();
+        if (!dir.exists()) return;
+
+        File[] files = dir.listFiles();
         if (files == null) return;
+
         for (File file : files) {
-            if (file.getName().startsWith(test.getMethodName())) {
+            if (file.getName().endsWith(".png")) { // на всякий случай
                 file.delete();
             }
         }
+        dir.delete();
     }
 
     @After
@@ -74,8 +79,15 @@ public class IntegrationTest extends AbstractCpuTest {
     }
 
     private void screenShoot(String name) {
-        video.drawToFile(new File(TEST_RESOURCES
-                + test.getMethodName() + "_" + name + ".png"));
+        video.drawToFile(testDir().getAbsolutePath() + "/" + name + ".png");
+    }
+
+    private File testDir() {
+        File result = new File(TEST_RESOURCES + test.getMethodName());
+        if (!result.exists()) {
+            result.mkdir();
+        }
+        return result;
     }
 
     @Override
@@ -92,14 +104,14 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadRom(base, roms);
 
         // when
-        record.after(2).shoot("1-runCom")
-                .press(END).after(2).shoot("2-stop")
-                .press(ENTER).after(5).shoot("3-monitor")
-                .enter("AC000").press(ENTER).after(20).shoot("4-assembler")
-                .down(ENTER).after(5).press(END).after(5).up(ENTER).after(15).shoot("5-exit")
-                .enter("D9000").press(ENTER).after(30).shoot("6-memory")
-                .press(ESC).after(5).shoot("7-exit")
-                .enter("B").press(ENTER).after(10).shoot("8-basic")
+        record.shoot("runcom", it -> it.after(2))
+                .shoot("stop", it -> it.press(END).after(2))
+                .shoot("monitor", it -> it.press(ENTER).after(5))
+                .shoot("assembler", it -> it.enter("AC000").press(ENTER).after(20))
+                .shoot("exit", it -> it.down(ENTER).after(5).press(END).after(5).up(ENTER).after(15))
+                .shoot("memory", it -> it.enter("D9000").press(ENTER).after(30))
+                .shoot("exit", it -> it.press(ESC).after(5))
+                .shoot("basic", it -> it.enter("B").press(ENTER).after(10))
                 .stopCpu();
 
         cpu.PC(START_POINT);
@@ -113,36 +125,32 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadGame(base, roms, "klad");
 
         // when then
-        int speed = 60;
-        record.shoot("1-logo", it -> it.after(200))
-                .shoot("2-logo", it -> it.after(170))
-                .shoot("3-speed", it -> it.after(50))
-                .shoot("4-speed", likKlad_selectSpeed(speed))
-                .shoot("5-level-1", likKlad_runLevel())
+        record.shoot("logo", it -> it.after(200))
+                .shoot("logo", it -> it.after(170))
+                .shoot("speed", it -> it.after(50))
                 .stopCpu();
 
         cpu.PC(0x0000);
         cpu.execute();
 
-        // when then
-        clear();
+        int LEVELS = 32;
+        for (int level = 1; level < LEVELS; level++) {
+            // when then
+            reset();
 
-        record.shoot("6-speed", it -> it.after(50))
-                // скорость выбранная в прошлый раз поменяла тайминги
-                .shoot("7-speed", likKlad_selectSpeed(speed + 13))
-                .shoot("8-level-2", likKlad_runLevel())
-                .stopCpu();
+            // скорость выбранная в первый раз поменяла тайминги
+            int speed = (level == 1) ? 60 : 60 + 13;
+            record.shoot(null,
+                            it -> it.after(50))
+                    .shoot(null,
+                            it -> it.down(RIGHT).after(speed).up(RIGHT).after(1))
+                    .shoot("level[" + level + "]",
+                            it -> it.down(UP).after(30).up(UP).after(170))
+                    .stopCpu();
 
-        cpu.PC(0x4567);
-        cpu.execute();
-    }
-
-    private Function<KeyRecord.Action, KeyRecord.Action> likKlad_runLevel() {
-        return it -> it.down(UP).after(30).up(UP).after(170);
-    }
-
-    private Function<KeyRecord.Action, KeyRecord.Action> likKlad_selectSpeed(int delta) {
-        return it -> it.down(RIGHT).after(delta).up(RIGHT).after(1);
+            cpu.PC(0x4567);
+            cpu.execute();
+        }
     }
 
     @Test

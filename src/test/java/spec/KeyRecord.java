@@ -12,14 +12,20 @@ public class KeyRecord {
     public static final int K10 = 10_000;
     private Map<Integer, Action> scenario = new HashMap<>();
 
+    // наша клавиатура
+    private IOPorts ports;
+
+    // методы внешних компонентов, которые мы хотим дергать
     private Consumer<String> screenShoot;
     private Runnable stopCpu;
-    private IOPorts ports;
+
+    private int shootIndex; // индекс сделанного скриншота
 
     public KeyRecord(IOPorts ports, Consumer<String> screenShoot, Runnable stopCpu) {
         this.ports = ports;
         this.screenShoot = screenShoot;
         this.stopCpu = stopCpu;
+        this.shootIndex = 0;
     }
 
     public Action after(int tick) {
@@ -37,7 +43,7 @@ public class KeyRecord {
                 .shoot(name);
     }
 
-    public KeyRecord clear() {
+    public KeyRecord reset() {
         scenario.clear();
         return this;
     }
@@ -57,7 +63,9 @@ public class KeyRecord {
         }
 
         public Action shoot(String name) {
-            shoot = name;
+            if (name != null) {
+                shoot = ++shootIndex + "_" + name;
+            }
             return this;
         }
 

@@ -27,11 +27,11 @@ public class PngVideo {
         });
     }
 
-    public void drawToFile(File file) {
+    public void drawToFile(String name) {
         draw();
 
         try {
-            ImageIO.write(image, "PNG", file);
+            ImageIO.write(image, "PNG", new File(name));
         } catch (IOException e) {
             e.printStackTrace();
         }
