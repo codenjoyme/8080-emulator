@@ -27,7 +27,7 @@ public abstract class AbstractCpuTest {
 
     protected void interrupt() {
         if (cpu.PC() >= stopWhen) {
-            data.stopCpu();
+            data.cpuOff();
         }
     }
 

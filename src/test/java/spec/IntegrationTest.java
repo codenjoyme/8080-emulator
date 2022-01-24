@@ -10,6 +10,7 @@ import spec.platforms.Specialist;
 
 import java.io.File;
 import java.net.URL;
+import java.util.function.Function;
 
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
@@ -42,8 +43,15 @@ public class IntegrationTest extends AbstractCpuTest {
         data.ports(ports);
         base = new File(APP_RESOURCES).toURI().toURL();
         maxTicks = TICKS;
-        record = new KeyRecord(ports, this::screenShoot, data::stopCpu);
+        record = new KeyRecord(ports, this::screenShoot, data::cpuOff);
         removeTestScreenShots();
+        clear();
+    }
+
+    private void clear() {
+        record.clear();
+        tick = 0;
+        data.cpuOn();
     }
 
     private void removeTestScreenShots() {
@@ -73,7 +81,7 @@ public class IntegrationTest extends AbstractCpuTest {
     @Override
     protected void interrupt() {
         if (++tick >= maxTicks) {
-            data.stopCpu();
+            data.cpuOff();
         }
         record.accept(tick);
     }
@@ -104,16 +112,37 @@ public class IntegrationTest extends AbstractCpuTest {
         Lik.loadRom(base, roms);
         Lik.loadGame(base, roms, "klad");
 
-        // when
+        // when then
+        int speed = 60;
         record.shoot("1-logo", it -> it.after(200))
                 .shoot("2-logo", it -> it.after(170))
                 .shoot("3-speed", it -> it.after(50))
-                .shoot("4-speed", it -> it.down(RIGHT).after(60).up(RIGHT).after(1))
-                .shoot("5-level-1", it -> it.down(UP).after(30).up(UP).after(170))
+                .shoot("4-speed", likKlad_selectSpeed(speed))
+                .shoot("5-level-1", likKlad_runLevel())
                 .stopCpu();
 
         cpu.PC(0x0000);
         cpu.execute();
+
+        // when then
+        clear();
+
+        record.shoot("6-speed", it -> it.after(50))
+                // скорость выбранная в прошлый раз поменяла тайминги
+                .shoot("7-speed", likKlad_selectSpeed(speed + 13))
+                .shoot("8-level-2", likKlad_runLevel())
+                .stopCpu();
+
+        cpu.PC(0x4567);
+        cpu.execute();
+    }
+
+    private Function<KeyRecord.Action, KeyRecord.Action> likKlad_runLevel() {
+        return it -> it.down(UP).after(30).up(UP).after(170);
+    }
+
+    private Function<KeyRecord.Action, KeyRecord.Action> likKlad_selectSpeed(int delta) {
+        return it -> it.down(RIGHT).after(delta).up(RIGHT).after(1);
     }
 
     @Test

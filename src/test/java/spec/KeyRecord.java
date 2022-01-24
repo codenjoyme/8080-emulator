@@ -37,6 +37,11 @@ public class KeyRecord {
                 .shoot(name);
     }
 
+    public KeyRecord clear() {
+        scenario.clear();
+        return this;
+    }
+
     public class Action {
 
         int tick;

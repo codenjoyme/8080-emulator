@@ -12,12 +12,8 @@ public class TestData implements Data {
 
     public TestData(Runnable onInterrupt) {
         this.onInterrupt = onInterrupt;
-        clear();
         memory = new TestMemory(x10000);
-    }
-
-    public void clear() {
-        working = true;
+        cpuOn();
     }
 
     @Override
@@ -55,7 +51,11 @@ public class TestData implements Data {
         return memory;
     }
 
-    public void stopCpu() {
+    public void cpuOn() {
+        working = true;
+    }
+
+    public void cpuOff() {
         working = false;
     }
 

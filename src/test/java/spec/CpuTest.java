@@ -734,7 +734,7 @@ public class CpuTest extends AbstractCpuTest {
         for (int tick = 0; tick < ticks; tick++) {
             cpu.PC(0x0000);
             cpu.execute();
-            data.clear();
+            data.cpuOn();
         }
     }
 
