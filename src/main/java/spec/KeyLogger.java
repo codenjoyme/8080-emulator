@@ -8,7 +8,7 @@ import static spec.WordMath.hex8;
 public class KeyLogger {
 
     private static final boolean FOR_TEST = true;
-    public static final int K10 = 10_000;
+    public static final int K1 = 1_000;
 
     private Supplier<Integer> getTick;
     private int tick;
@@ -30,7 +30,7 @@ public class KeyLogger {
         int delta = getTick.get() - tick;
         tick = getTick.get();
         Logger.debug(".after(%s).%s(0x%s)",
-                (delta / K10 == 0) ? 1 : delta / K10,
+                (delta / K1 == 0) ? 1 : delta / K1,
                 key.pressed() ? "down" : "up",
                 hex8(key.code()));
     }

@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static spec.Key.MOD_NONE;
-import static spec.KeyLogger.K10;
+import static spec.KeyLogger.K1;
 
 public class KeyRecord {
 
@@ -126,9 +126,9 @@ public class KeyRecord {
 
     public void accept(int tick) {
         // нам интересны каждые 10 000 тиков, реже смотреть нет смысла
-        if (tick % K10 != 0) return;
+        if (tick % K1 != 0) return;
 
-        int kiloTick = tick / K10;
+        int kiloTick = tick / K1;
         Action action = scenario.get(kiloTick);
         if (action == null) return;
 
