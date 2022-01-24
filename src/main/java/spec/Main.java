@@ -31,6 +31,12 @@ public class Main extends JFrame implements KeyListener {
         addKeyListener(this);
 
         app = new Application(this, getBaseUrl(base));
+        // scenario();
+        app.gotFocus();
+        app.start();
+    }
+
+    private void scenario() {
         app.record()
                 .after(12).down(0x23)
                 .after(5).up(0x23)
@@ -48,9 +54,6 @@ public class Main extends JFrame implements KeyListener {
                 .after(51).up(0x27)
                 .after(1).down(0x26)
                 .after(28).up(0x26);
-
-        app.gotFocus();
-        app.start();
     }
 
     private URL getBaseUrl(String base) {
