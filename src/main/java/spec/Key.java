@@ -42,6 +42,14 @@ public class Key {
         return code == PAUSE;
     }
 
+    public boolean numSlash() {
+        return code == NUM_SLASH;
+    }
+
+    public boolean numStar() {
+        return code == NUM_STAR;
+    }
+
     public boolean pressed() {
         return press;
     }
@@ -90,11 +98,8 @@ public class Key {
         return code == CTRL
                 || code == ALT
                 || code == SHIFT
-                || code == PAUSE
-                || code == NUM_SLASH;
-    }
-
-    public boolean numSlash() {
-        return code == NUM_SLASH;
+                || pause()
+                || numSlash()
+                || numStar();
     }
 }

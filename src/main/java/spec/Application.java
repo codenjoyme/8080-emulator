@@ -164,6 +164,13 @@ public class Application {
             return;
         }
 
+        if (key.numStar()) {
+            if (key.pressed()) {
+                runAtFullSpeed = !runAtFullSpeed;
+            }
+            return;
+        }
+
         if (key.pause()) {
             if (key.pressed()) {
                 resetAtNextInterrupt = true;
