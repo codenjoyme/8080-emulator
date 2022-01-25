@@ -16,6 +16,8 @@ public abstract class AbstractTest {
     protected Hardware hardware;
     protected TestMemory memory;
     protected Cpu cpu;
+    protected Assembler asm;
+    protected KeyRecord record;
 
     @Before
     public void before() throws Exception {
@@ -33,6 +35,8 @@ public abstract class AbstractTest {
             }
         };
 
+        record = hardware.record();
+        asm = hardware.cpu().asm();
         memory.clear();
         init = false;
         cpu.PC(START);
@@ -44,7 +48,7 @@ public abstract class AbstractTest {
     }
 
     public void givenPr(String program) {
-        givenMm(asm().split(asm().parse(program)));
+        givenMm(asm.split(asm.parse(program)));
     }
 
     /**
@@ -56,10 +60,10 @@ public abstract class AbstractTest {
             init = true;
             memory.write8str(START, bites.replace("\n", " "));
         }
-        String split = asm().split(memory.changes());
+        String split = asm.split(memory.changes());
         assertEquals(bites, split);
         int ticks = split.split("\n").length;
-        record().after(ticks).stopCpu();
+        record.after(ticks).stopCpu();
     }
 
     public void asrtCpu(String expected) {
@@ -87,13 +91,5 @@ public abstract class AbstractTest {
 
     public RomLoader roms() {
         return hardware.roms();
-    }
-
-    public KeyRecord record() {
-        return hardware.record();
-    }
-
-    private Assembler asm() {
-        return hardware.cpu().asm();
     }
 }

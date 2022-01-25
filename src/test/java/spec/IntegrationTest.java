@@ -33,14 +33,14 @@ public class IntegrationTest extends AbstractTest {
 
         video = new PngVideo(hardware.memory());
         base = new File(APP_RESOURCES).toURI().toURL();
-        hardware.record().screenShoot(this::screenShoot);
+        record.screenShoot(this::screenShoot);
         removeTestScreenShots();
         reset();
-        record().after(TICKS).stopCpu();
+        record.after(TICKS).stopCpu();
     }
 
     private void reset() {
-        record().reset();
+        record.reset();
         hardware.reset();
     }
 
@@ -86,7 +86,7 @@ public class IntegrationTest extends AbstractTest {
         Lik.loadRom(base, roms());
 
         // when
-        record().reset()
+        record.reset()
                 .shoot("runcom", it -> it.after(2))
                 .shoot("stop", it -> it.press(END).after(2))
                 .shoot("monitor", it -> it.press(ENTER).after(5))
@@ -108,7 +108,7 @@ public class IntegrationTest extends AbstractTest {
         Lik.loadGame(base, roms(), "klad");
 
         // when
-        record().after(12).down(0x23)
+        record.after(12).down(0x23)
                 .after(5).up(0x23).shoot("")
                 .after(10).down(0x0A)
                 .after(5).up(0x0A).shoot("")
@@ -137,7 +137,7 @@ public class IntegrationTest extends AbstractTest {
         Lik.loadGame(base, roms(), "klad");
 
         // when then
-        record().shoot("logo", it -> it.after(200))
+        record.shoot("logo", it -> it.after(200))
                 .shoot("logo", it -> it.after(170))
                 .shoot("speed", it -> it.after(50))
                 .stopCpu();
@@ -152,7 +152,7 @@ public class IntegrationTest extends AbstractTest {
 
             // скорость выбранная в первый раз поменяла тайминги
             int speed = (level == 1) ? 60 : 60 + 13;
-            record().shoot(null,
+            record.shoot(null,
                             it -> it.after(50))
                     .shoot(null,
                             it -> it.down(RIGHT).after(speed).up(RIGHT).after(1))
@@ -308,7 +308,7 @@ public class IntegrationTest extends AbstractTest {
         // given
         Lik.loadRom(base, roms());
         int ticks = roms().loadROM(base, "test/test.com", 0x0000) * 10;
-        record().after(ticks).stopCpu();
+        record.after(ticks).stopCpu();
 
         // when
         cpu.PC(0x0000);
@@ -354,7 +354,7 @@ public class IntegrationTest extends AbstractTest {
         // given
         Lik.loadRom(base, roms());
         int ticks = roms().loadROM(base, "test/hello_world.com", 0x0000) * 1000;
-        record().after(ticks).stopCpu();
+        record.after(ticks).stopCpu();
 
         // when
         cpu.PC(0x0000);
