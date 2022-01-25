@@ -92,4 +92,8 @@ public class Key {
                 || code == SHIFT
                 || code == PAUSE;
     }
+
+    public boolean numSlash() {
+        return code == NUM_SLASH;
+    }
 }

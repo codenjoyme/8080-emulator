@@ -2,6 +2,7 @@ package spec;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -10,18 +11,16 @@ import static spec.Key.MOD_NONE;
 public class KeyRecord {
 
     private Map<Integer, Action> scenario;
-
+    private FileRecorder fileRecorder;
     private int precision;
-    // наша клавиатура
     private IOPorts ports;
-
-    // методы внешних компонентов, которые мы хотим дергать
-
     private Consumer<String> screenShoot;
     private Runnable stopCpu;
     private int shootIndex; // индекс сделанного скриншота
+    private Integer lastRecordedTick;
 
-    public KeyRecord(int precision, IOPorts ports, Runnable stopCpu) {
+    public KeyRecord(FileRecorder fileRecorder, int precision, IOPorts ports, Runnable stopCpu) {
+        this.fileRecorder = fileRecorder;
         this.precision = precision;
         this.ports = ports;
         this.stopCpu = stopCpu;
@@ -52,6 +51,22 @@ public class KeyRecord {
     public KeyRecord reset() {
         scenario = null;
         return this;
+    }
+
+    public void loadFromFile() {
+        AtomicReference<Action> after = new AtomicReference<>(reset().after(0));
+        fileRecorder.stopWriting();
+        fileRecorder.read((delta, key) -> {
+            Action it = after.get().after(delta);
+            if (key.pressed()) {
+                after.set(it.down(key.code()));
+            } else {
+                after.set(it.up(key.code()));
+            }
+        });
+        lastRecordedTick = scenario.keySet().stream()
+                .max(Integer::compareTo)
+                .orElse(0);
     }
 
     public class Action {
@@ -138,16 +153,22 @@ public class KeyRecord {
 
         int kiloTick = tick / precision;
         Action action = scenario.get(kiloTick);
-        if (action == null) return;
 
-        if (action.shoot != null && screenShoot != null) {
-            screenShoot.accept(action.shoot);
+        if (action != null) {
+            if (action.shoot != null && screenShoot != null) {
+                screenShoot.accept(action.shoot);
+            }
+            if (action.keyCode != null) {
+                ports.processKey(new Key(action.keyCode, action.press, action.mode));
+            }
+            if (action.stopCpu) {
+                stopCpu.run();
+            }
         }
-        if (action.keyCode != null) {
-            ports.processKey(new Key(action.keyCode, action.press, action.mode));
-        }
-        if (action.stopCpu) {
-            stopCpu.run();
+
+        if (lastRecordedTick != null && lastRecordedTick == kiloTick) {
+            lastRecordedTick = null;
+            fileRecorder.startWriting();
         }
     }
 }

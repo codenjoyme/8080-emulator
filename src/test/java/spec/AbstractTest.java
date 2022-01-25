@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import spec.assembler.Assembler;
 
+import java.io.File;
+
 import static spec.Constants.*;
 import static spec.SmartAssert.assertEquals;
 import static spec.WordMath.hex8;
@@ -21,6 +23,7 @@ public abstract class AbstractTest {
     protected Assembler asm;
     protected KeyRecord record;
     protected RomLoader roms;
+    protected FileRecorder fileRecorder;
 
     @Before
     public void before() throws Exception {
@@ -39,11 +42,18 @@ public abstract class AbstractTest {
             }
 
             @Override
+            protected FileRecorder createFileRecorder(File logFile) {
+                return fileRecorder = super.createFileRecorder(logFile);
+            }
+
+            @Override
             protected int recordPrecision() {
                 return RECORD_PRECISION;
             }
+
         };
 
+        fileRecorder.stopWriting();
         roms = hardware.roms();
         record = hardware.record();
         asm = hardware.cpu().asm();

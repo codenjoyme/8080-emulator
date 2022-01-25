@@ -4,7 +4,6 @@ import spec.platforms.Lik;
 import spec.platforms.Specialist;
 
 import java.awt.*;
-import java.io.File;
 import java.net.URL;
 
 import static spec.Constants.*;
@@ -50,13 +49,6 @@ public class Application {
             @Override
             protected void drawPixel(Point point, Color color) {
                 graphic.drawPixel(point, color);
-            }
-
-            @Override
-            protected File logFile() {
-                File file = super.logFile();
-                file.delete();
-                return file;
             }
         };
 
@@ -163,11 +155,19 @@ public class Application {
     }
 
     public void handleKey(Key key) {
-        hard.ports().processKey(key);
+        if (key.numSlash() && key.pressed()) {
+            hard.pause();
+            hard.record().loadFromFile();
+            hard.reset();
+            return;
+        }
 
         if (key.pause() && key.pressed()) {
             resetAtNextInterrupt = true;
+            return;
         }
+
+        hard.ports().processKey(key);
     }
 
     private void refreshWholeScreen() {

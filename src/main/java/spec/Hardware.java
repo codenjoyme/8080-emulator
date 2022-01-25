@@ -16,12 +16,15 @@ public class Hardware {
     private Video video;
     private KeyLogger keyLogger;
     private KeyRecord record;
+    private FileRecorder fileRecorder;
 
     private boolean cpuEnabled;
+    private boolean cpuSuspended;
 
     public Hardware(int screenWidth, int screenHeight) {
         memory = createMemory();
-        keyLogger = createKeyLogger(logFile(), recordPrecision());
+        fileRecorder = createFileRecorder(logFile());
+        keyLogger = createKeyLogger(recordPrecision());
         ports = createIoPorts();
         record = createKeyRecord(recordPrecision());
         data = createHardwareData();
@@ -31,7 +34,6 @@ public class Hardware {
     }
 
     // components
-
     protected RomLoader createRomLoader() {
         return new RomLoader(memory, cpu);
     }
@@ -55,16 +57,20 @@ public class Hardware {
         };
     }
 
+    protected FileRecorder createFileRecorder(File logFile) {
+        return new FileRecorder(logFile);
+    }
+
     protected KeyRecord createKeyRecord(int precision) {
-        return new KeyRecord(precision, ports, this::stop);
+        return new KeyRecord(fileRecorder, precision, ports, this::stop);
     }
 
     protected IOPorts createIoPorts() {
         return new IOPorts(memory, new Layout(), keyLogger::process);
     }
 
-    protected KeyLogger createKeyLogger(File logFile, int precision) {
-        return new KeyLogger(logFile, precision, () -> cpu.tick());
+    protected KeyLogger createKeyLogger(int precision) {
+        return new KeyLogger(fileRecorder, precision, () -> cpu.tick());
     }
 
     protected Memory createMemory() {
@@ -75,11 +81,22 @@ public class Hardware {
 
     private boolean cpuInterrupt() {
         update();
+        while (cpuSuspended) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                // do nothing
+            }
+        }
         return cpuEnabled;
     }
 
     public void stop() {
         cpuEnabled = false;
+    }
+
+    public void pause() {
+        cpuSuspended = true;
     }
 
     protected void out8(int port, int bite) {
@@ -105,6 +122,7 @@ public class Hardware {
 
     public void reset() {
         cpuEnabled = true;
+        cpuSuspended = false;
         cpu.reset();
         ports.reset();
         keyLogger.reset();
@@ -112,6 +130,7 @@ public class Hardware {
 
     public void start() {
         cpuEnabled = true;
+        cpuSuspended = false;
         cpu.execute();
     }
 

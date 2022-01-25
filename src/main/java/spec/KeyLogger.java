@@ -1,8 +1,5 @@
 package spec;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.function.Supplier;
 
 import static spec.WordMath.hex16;
@@ -11,12 +8,12 @@ import static spec.WordMath.hex8;
 public class KeyLogger {
 
     private Supplier<Integer> getTick;
-    private File logFile;
     private int precision;
     private int tick;
+    private FileRecorder recorder;
 
-    public KeyLogger(File file, int precision, Supplier<Integer> getTick) {
-        logFile = file;
+    public KeyLogger(FileRecorder recorder, int precision, Supplier<Integer> getTick) {
+        this.recorder = recorder;
         this.precision = precision;
         this.getTick = getTick;
         reset();
@@ -28,18 +25,12 @@ public class KeyLogger {
     }
 
     private void logInFile(Key key) {
-        int delta = getTick.get() - tick;
-        tick = getTick.get();
+        int nextTick = getTick.get();
+        int delta = nextTick - tick;
+        tick = nextTick;
+        delta = delta / precision;
 
-        try (FileWriter writer = new FileWriter(logFile.getAbsolutePath(), true)) {
-            writer.write(String.format(
-                    "after(%s).%s(0x%s);\n",
-                    (delta / precision == 0) ? 1 : delta / precision,
-                    key.pressed() ? "down" : "up",
-                    hex8(key.code())));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        recorder.write(delta, key);
     }
 
     private void logForConsole(Key key, Integer point) {
