@@ -90,7 +90,8 @@ public class Key {
         return code == CTRL
                 || code == ALT
                 || code == SHIFT
-                || code == PAUSE;
+                || code == PAUSE
+                || code == NUM_SLASH;
     }
 
     public boolean numSlash() {

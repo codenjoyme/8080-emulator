@@ -155,15 +155,19 @@ public class Application {
     }
 
     public void handleKey(Key key) {
-        if (key.numSlash() && key.pressed()) {
-            hard.pause();
-            hard.record().loadFromFile();
-            hard.reset();
+        if (key.numSlash()) {
+            if (key.pressed()) {
+                hard.pause();
+                hard.record().loadFromFile();
+                hard.reset();
+            }
             return;
         }
 
-        if (key.pause() && key.pressed()) {
-            resetAtNextInterrupt = true;
+        if (key.pause()) {
+            if (key.pressed()) {
+                resetAtNextInterrupt = true;
+            }
             return;
         }
 
