@@ -11,7 +11,7 @@ import spec.platforms.Specialist;
 import java.io.File;
 import java.net.URL;
 
-import static spec.Constants.*;
+import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
 
 public class IntegrationTest extends AbstractTest {
@@ -31,7 +31,7 @@ public class IntegrationTest extends AbstractTest {
         RECORD_PRECISION = 10_000;
         super.before();
 
-        video = new PngVideo(WIDTH, HEIGHT, hardware.memory());
+        video = new PngVideo(hardware.video(), hardware.memory());
         base = new File(APP_RESOURCES).toURI().toURL();
         record.screenShoot(this::screenShoot);
         removeTestScreenShots();

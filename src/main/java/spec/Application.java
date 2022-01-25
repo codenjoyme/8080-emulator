@@ -33,9 +33,9 @@ public class Application {
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
     public Application(Container parent, URL base) {
-        graphic = new Graphic(WIDTH, HEIGHT, BORDER_WIDTH, parent);
+        graphic = new Graphic(SCREEN_WIDTH, SCREEN_HEIGHT, BORDER_WIDTH, parent);
 
-        hard = new Hardware(WIDTH, HEIGHT) {
+        hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT) {
 
             @Override
             protected void out8(int port, int bite) {

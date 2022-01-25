@@ -44,10 +44,11 @@ public class Constants {
     public static final Range ROM = new Range(0xC000, 0xF7FF);    // ПЗУ
     public static final Range PORTS = new Range(0xF800, 0xFFFE);  // порты
 
-    public static final int BORDER_PORT = 254;
     public static final int BORDER_WIDTH = 20;
-    public static final int WIDTH = 384;
-    public static final int HEIGHT = 256;
+    public static final int BORDER_PORT = 254;
+
+    public static final int SCREEN_WIDTH = 384;
+    public static final int SCREEN_HEIGHT = 256;
 
     public static final int RECORD_PRECISION = 1;
     public static final String RECORD_LOG_FILE = "./keys.rec";

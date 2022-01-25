@@ -32,17 +32,20 @@ public class Video {
             new Color(str, str, str) // 0F ярко-белый
     };
 
-    private final int width;
-    private final int height;
+    private int width;
+    private int height;
     private BiConsumer<Point, Color> drawer;
     private Color[][] colors;
 
-    public Video(int width, int height, BiConsumer<Point, Color> drawer) {
+    public Video(int width, int height) {
         this.width = width;
         this.height = height;
-        this.drawer = drawer;
         colors = new Color[width][height];
         clean();
+    }
+
+    public void drawer(BiConsumer<Point, Color> drawer) {
+        this.drawer = drawer;
     }
 
     private void clean() {
@@ -69,9 +72,19 @@ public class Video {
                 if (colors[x][y] == null) continue;
 
                 Color color = colors[x][y];
-                drawer.accept(new Point(x, y), color);
+                if (drawer != null){
+                    drawer.accept(new Point(x, y), color);
+                }
                 colors[x][y] = null;
             }
         }
+    }
+
+    public int width() {
+        return width;
+    }
+
+    public int height() {
+        return height;
     }
 }

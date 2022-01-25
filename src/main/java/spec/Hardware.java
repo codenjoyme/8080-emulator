@@ -37,7 +37,9 @@ public class Hardware {
     }
 
     protected Video createVideo(int width, int height) {
-        return new Video(width, height, this::drawPixel);
+        Video video = new Video(width, height);
+        video.drawer(this::drawPixel);
+        return video;
     }
 
     protected Cpu createCpu(double clock) {

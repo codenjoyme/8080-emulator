@@ -16,11 +16,12 @@ public class PngVideo {
     private Video video;
     private Memory memory;
 
-    public PngVideo(int width, int height, Memory memory) {
+    public PngVideo(Video video, Memory memory) {
+        this.video = video;
+        video.drawer(this::draw);
         this.memory = memory;
-        image = new BufferedImage(width, height, TYPE_INT_ARGB);
+        image = new BufferedImage(video.width(), video.height(), TYPE_INT_ARGB);
         graphics = image.getGraphics();
-        video = new Video(width, height, this::draw);
     }
 
     private void draw(Point pt, Color color) {

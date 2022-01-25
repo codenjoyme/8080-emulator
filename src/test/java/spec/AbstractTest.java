@@ -24,7 +24,7 @@ public abstract class AbstractTest {
 
     @Before
     public void before() throws Exception {
-        hardware = new Hardware(WIDTH, HEIGHT) {
+        hardware = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT) {
 
             @Override
             protected Memory createMemory() {
