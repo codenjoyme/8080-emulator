@@ -83,7 +83,7 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testLik_smoke() {
         // given
-        Lik.loadRom(base, roms());
+        Lik.loadRom(base, roms);
 
         // when
         record.reset()
@@ -104,8 +104,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testLik_scenario() {
         // given
-        Lik.loadRom(base, roms());
-        Lik.loadGame(base, roms(), "klad");
+        Lik.loadRom(base, roms);
+        Lik.loadGame(base, roms, "klad");
 
         // when
         record.after(12).down(0x23)
@@ -133,8 +133,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testLik_klad() {
         // given
-        Lik.loadRom(base, roms());
-        Lik.loadGame(base, roms(), "klad");
+        Lik.loadRom(base, roms);
+        Lik.loadGame(base, roms, "klad");
 
         // when then
         record.shoot("logo", it -> it.after(200))
@@ -169,7 +169,7 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testSpecialist_monitor() {
         // given
-        Specialist.loadRom(base, roms());
+        Specialist.loadRom(base, roms);
 
         // when
         cpu.PC(START_POINT);
@@ -213,8 +213,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testSpecialist_blobcop() {
         // given
-        Specialist.loadRom(base, roms());
-        Specialist.loadGame(base, roms(), "blobcop");
+        Specialist.loadRom(base, roms);
+        Specialist.loadGame(base, roms, "blobcop");
 
         // when
         cpu.PC(0x0000);
@@ -258,8 +258,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testSpecialist_babnik() {
         // given
-        Specialist.loadRom(base, roms());
-        Specialist.loadGame(base, roms(), "babnik");
+        Specialist.loadRom(base, roms);
+        Specialist.loadGame(base, roms, "babnik");
 
         // when
         cpu.PC(0x0000);
@@ -306,8 +306,8 @@ public class IntegrationTest extends AbstractTest {
         // https://github.com/begoon/i8080-core/blob/master/TEST.ASM
 
         // given
-        Lik.loadRom(base, roms());
-        int ticks = roms().loadROM(base, "test/test.com", 0x0000) * 10;
+        Lik.loadRom(base, roms);
+        int ticks = roms.loadROM(base, "test/test.com", 0x0000) * 10;
         record.after(ticks).stopCpu();
 
         // when
@@ -352,8 +352,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testLik_helloWorld() {
         // given
-        Lik.loadRom(base, roms());
-        int ticks = roms().loadROM(base, "test/hello_world.com", 0x0000) * 1000;
+        Lik.loadRom(base, roms);
+        int ticks = roms.loadROM(base, "test/hello_world.com", 0x0000) * 1000;
         record.after(ticks).stopCpu();
 
         // when
@@ -402,8 +402,8 @@ public class IntegrationTest extends AbstractTest {
         // https://raw.githubusercontent.com/begoon/i8080-core/master/8080EX1.MAC
 
         // given
-        Lik.loadRom(base, roms());
-        roms().loadROM(base, "test/8080EX1.COM", 0x0100);
+        Lik.loadRom(base, roms);
+        roms.loadROM(base, "test/8080EX1.COM", 0x0100);
 
         // when
         cpu.PC(0x0100);
@@ -451,8 +451,8 @@ public class IntegrationTest extends AbstractTest {
         // https://raw.githubusercontent.com/begoon/i8080-core/master/8080PRE.MAC
 
         // given
-        Lik.loadRom(base, roms());
-        roms().loadROM(base, "test/8080PRE.COM", 0x0100);
+        Lik.loadRom(base, roms);
+        roms.loadROM(base, "test/8080PRE.COM", 0x0100);
 
         // when
         cpu.PC(0x0100);
@@ -499,8 +499,8 @@ public class IntegrationTest extends AbstractTest {
         // https://raw.githubusercontent.com/begoon/i8080-core/master/CPUTEST.MAC
 
         // given
-        Lik.loadRom(base, roms());
-        roms().loadROM(base, "test/CPUTEST.COM", 0x0100);
+        Lik.loadRom(base, roms);
+        roms.loadROM(base, "test/CPUTEST.COM", 0x0100);
 
         // when
         cpu.PC(0x0100);

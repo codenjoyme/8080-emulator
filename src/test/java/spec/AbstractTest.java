@@ -12,12 +12,14 @@ public abstract class AbstractTest {
 
     public static int START = 0x0000;
 
-    private boolean init;
+    private boolean memoryInit;
+
     protected Hardware hardware;
     protected TestMemory memory;
     protected Cpu cpu;
     protected Assembler asm;
     protected KeyRecord record;
+    protected RomLoader roms;
 
     @Before
     public void before() throws Exception {
@@ -35,10 +37,11 @@ public abstract class AbstractTest {
             }
         };
 
+        roms = hardware.roms();
         record = hardware.record();
         asm = hardware.cpu().asm();
         memory.clear();
-        init = false;
+        memoryInit = false;
         cpu.PC(START);
     }
 
@@ -56,8 +59,8 @@ public abstract class AbstractTest {
      * либо будет валидировать уже измененную ранее область памяти.
      */
     public void givenMm(String bites) {
-        if (!init) {
-            init = true;
+        if (!memoryInit) {
+            memoryInit = true;
             memory.write8str(START, bites.replace("\n", " "));
         }
         String split = asm.split(memory.changes());
@@ -87,9 +90,5 @@ public abstract class AbstractTest {
 
     public void start() {
         hardware.start();
-    }
-
-    public RomLoader roms() {
-        return hardware.roms();
     }
 }
