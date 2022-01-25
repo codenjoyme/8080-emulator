@@ -6,12 +6,12 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static spec.Key.MOD_NONE;
-import static spec.KeyLogger.K1;
 
 public class KeyRecord {
 
     private Map<Integer, Action> scenario;
 
+    private int precision;
     // наша клавиатура
     private IOPorts ports;
 
@@ -21,7 +21,8 @@ public class KeyRecord {
     private Runnable stopCpu;
     private int shootIndex; // индекс сделанного скриншота
 
-    public KeyRecord(IOPorts ports, Runnable stopCpu) {
+    public KeyRecord(int precision, IOPorts ports, Runnable stopCpu) {
+        this.precision = precision;
         this.ports = ports;
         this.stopCpu = stopCpu;
         this.shootIndex = 0;
@@ -132,10 +133,10 @@ public class KeyRecord {
     public void accept(int tick) {
         if (scenario == null) return;
 
-        // нам интересны каждые 10 000 тиков, реже смотреть нет смысла
-        if (tick % K1 != 0) return;
+        // нам интересны каждые precision тиков, реже смотреть нет смысла
+        if (tick % precision != 0) return;
 
-        int kiloTick = tick / K1;
+        int kiloTick = tick / precision;
         Action action = scenario.get(kiloTick);
         if (action == null) return;
 

@@ -10,6 +10,7 @@ import static spec.WordMath.hex8;
 
 public abstract class AbstractTest {
 
+    public static int RECORD_PRECISION = 1;
     public static int START = 0x0000;
 
     private boolean memoryInit;
@@ -24,6 +25,7 @@ public abstract class AbstractTest {
     @Before
     public void before() throws Exception {
         hardware = new Hardware() {
+
             @Override
             protected Memory createMemory() {
                 return memory = new TestMemory(x10000);
@@ -34,6 +36,11 @@ public abstract class AbstractTest {
                 // interrupt будет проходить каждый тик
                 clock = 50.1 * 1e-6;
                 return cpu = super.createCpu(clock);
+            }
+
+            @Override
+            protected int recordPrecision() {
+                return RECORD_PRECISION;
             }
         };
 

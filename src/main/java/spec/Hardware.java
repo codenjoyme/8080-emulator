@@ -20,9 +20,9 @@ public class Hardware {
 
     public Hardware() {
         memory = createMemory();
-        keyLogger = createKeyLogger();
+        keyLogger = createKeyLogger(recordPrecision());
         ports = createIoPorts();
-        record = createKeyRecord();
+        record = createKeyRecord(recordPrecision());
         data = createHardwareData();
         cpu = createCpu(1.6); // Specialist runs at 3.5Mhz;
         video = createVideo();
@@ -52,16 +52,16 @@ public class Hardware {
         };
     }
 
-    protected KeyRecord createKeyRecord() {
-        return new KeyRecord(ports, this::stop);
+    protected KeyRecord createKeyRecord(int precision) {
+        return new KeyRecord(precision, ports, this::stop);
     }
 
     protected IOPorts createIoPorts() {
         return new IOPorts(memory, new Layout(), keyLogger::process);
     }
 
-    protected KeyLogger createKeyLogger() {
-        return new KeyLogger(() -> cpu.tick());
+    protected KeyLogger createKeyLogger(int precision) {
+        return new KeyLogger(precision, () -> cpu.tick());
     }
 
     protected Memory createMemory() {
@@ -89,6 +89,11 @@ public class Hardware {
 
     protected void drawPixel(Point point, Color color) {
         // please override if needed
+    }
+
+    protected int recordPrecision() {
+        // запись происходит с точностью до 1 тика cpu
+        return 1;
     }
 
     public void reset() {

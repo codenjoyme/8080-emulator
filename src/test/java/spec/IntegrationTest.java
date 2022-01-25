@@ -28,7 +28,7 @@ public class IntegrationTest extends AbstractTest {
 
     @Before
     public void before() throws Exception {
-        KeyLogger.K1 = 10_000;
+        RECORD_PRECISION = 10_000;
         super.before();
 
         video = new PngVideo(hardware.memory());
