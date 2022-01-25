@@ -1,5 +1,8 @@
 package spec;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.function.Supplier;
 
 import static spec.WordMath.hex16;
@@ -7,39 +10,39 @@ import static spec.WordMath.hex8;
 
 public class KeyLogger {
 
-    private static final boolean FOR_TEST = false;
-
     private Supplier<Integer> getTick;
+    private File logFile;
     private int precision;
     private int tick;
 
-    public KeyLogger(int precision, Supplier<Integer> getTick) {
+    public KeyLogger(File file, int precision, Supplier<Integer> getTick) {
+        logFile = file;
         this.precision = precision;
         this.getTick = getTick;
         reset();
-        if (FOR_TEST) {
-            Logger.info("KeyRecord.Action action = app.record();");
-        }
     }
 
     public void process(Key key, Integer point) {
-        if (FOR_TEST) {
-            logForTest(key, point);
-        } else {
-            logForCondole(key, point);
+        logInFile(key);
+        logForConsole(key, point);
+    }
+
+    private void logInFile(Key key) {
+        int delta = getTick.get() - tick;
+        tick = getTick.get();
+
+        try (FileWriter writer = new FileWriter(logFile.getAbsolutePath(), true)) {
+            writer.write(String.format(
+                    "after(%s).%s(0x%s);\n",
+                    (delta / precision == 0) ? 1 : delta / precision,
+                    key.pressed() ? "down" : "up",
+                    hex8(key.code())));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private void logForTest(Key key, Integer point) {
-        int delta = getTick.get() - tick;
-        tick = getTick.get();
-        Logger.info("action = action.after(%s).%s(0x%s);",
-                (delta / precision == 0) ? 1 : delta / precision,
-                key.pressed() ? "down" : "up",
-                hex8(key.code()));
-    }
-
-    private void logForCondole(Key key, Integer point) {
+    private void logForConsole(Key key, Integer point) {
         char ch = (char) key.code();
         Logger.debug("Key %s at tick [%s]: ch:'%s' " +
                         "code:0x%s joint:0x%s point:0x%s" +

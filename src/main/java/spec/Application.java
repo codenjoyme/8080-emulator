@@ -4,6 +4,7 @@ import spec.platforms.Lik;
 import spec.platforms.Specialist;
 
 import java.awt.*;
+import java.io.File;
 import java.net.URL;
 
 import static spec.Constants.*;
@@ -35,6 +36,7 @@ public class Application {
         graphic = new Graphic(WIDTH, HEIGHT, BORDER_WIDTH, parent);
 
         hard = new Hardware(WIDTH, HEIGHT) {
+
             @Override
             protected void out8(int port, int bite) {
                 printIO(port, bite);
@@ -48,6 +50,13 @@ public class Application {
             @Override
             protected void drawPixel(Point point, Color color) {
                 graphic.drawPixel(point, color);
+            }
+
+            @Override
+            protected File logFile() {
+                File file = super.logFile();
+                file.delete();
+                return file;
             }
         };
 

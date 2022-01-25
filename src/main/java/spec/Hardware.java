@@ -1,9 +1,10 @@
 package spec;
 
 import java.awt.*;
+import java.io.File;
 import java.net.URL;
 
-import static spec.Constants.x10000;
+import static spec.Constants.*;
 
 public class Hardware {
 
@@ -20,7 +21,7 @@ public class Hardware {
 
     public Hardware(int screenWidth, int screenHeight) {
         memory = createMemory();
-        keyLogger = createKeyLogger(recordPrecision());
+        keyLogger = createKeyLogger(logFile(), recordPrecision());
         ports = createIoPorts();
         record = createKeyRecord(recordPrecision());
         data = createHardwareData();
@@ -60,8 +61,8 @@ public class Hardware {
         return new IOPorts(memory, new Layout(), keyLogger::process);
     }
 
-    protected KeyLogger createKeyLogger(int precision) {
-        return new KeyLogger(precision, () -> cpu.tick());
+    protected KeyLogger createKeyLogger(File logFile, int precision) {
+        return new KeyLogger(logFile, precision, () -> cpu.tick());
     }
 
     protected Memory createMemory() {
@@ -93,7 +94,11 @@ public class Hardware {
 
     protected int recordPrecision() {
         // запись происходит с точностью до 1 тика cpu
-        return 1;
+        return RECORD_PRECISION;
+    }
+
+    protected File logFile() {
+        return new File(RECORD_LOG_FILE);
     }
 
     public void reset() {
