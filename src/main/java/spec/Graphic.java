@@ -3,12 +3,10 @@ package spec;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static spec.Application.BORDER_WIDTH;
-import static spec.Video.HEIGHT;
-import static spec.Video.WIDTH;
-
 public class Graphic {
 
+    private int width;
+    private int height;
     private int borderWidth;
 
     private Color currentBorder = null; // null mean update screen
@@ -23,13 +21,15 @@ public class Graphic {
     private Image bufferImage;
     private Graphics buffer;
 
-    public Graphic(int borderWidth, Container parent) {
+    public Graphic(int width, int height, int borderWidth, Container parent) {
+        this.width = width;
+        this.height = height;
         this.borderWidth = borderWidth;
         container = parent;
 
         // мы рисуем на канве, чтобы не мерцало изображение
         canvas = new Canvas();
-        canvas.setSize(WIDTH, HEIGHT);
+        canvas.setSize(width, height);
         // переопределяем лиснер только для Swing приложения,
         // иначе не будут отлавливаться там клавиши так как canvas перекрывает
         if (container.getKeyListeners().length > 0) {
@@ -41,7 +41,7 @@ public class Graphic {
         container.add(canvas);
 
         // тут мы кешируем уже отрисованное из видеопамяти изображение
-        bufferImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        bufferImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         // через него мы рисуем на cache-image пиксели
         buffer = bufferImage.getGraphics();
         // на нем мы рисуем рамку, это фон под canvas
@@ -56,12 +56,6 @@ public class Graphic {
         } catch (InterruptedException e) {
             // do nothing
         }
-    }
-
-    public static Dimension getMinimumSize(int dx, int dy) {
-        return new Dimension(
-                Video.WIDTH + BORDER_WIDTH * 2 + dx,
-                Video.HEIGHT + BORDER_WIDTH * 2 + dy);
     }
 
     public void drawPixel(Point pt, Color color) {

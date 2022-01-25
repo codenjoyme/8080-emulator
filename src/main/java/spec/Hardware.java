@@ -18,14 +18,14 @@ public class Hardware {
 
     private boolean cpuEnabled;
 
-    public Hardware() {
+    public Hardware(int screenWidth, int screenHeight) {
         memory = createMemory();
         keyLogger = createKeyLogger(recordPrecision());
         ports = createIoPorts();
         record = createKeyRecord(recordPrecision());
         data = createHardwareData();
         cpu = createCpu(1.6); // runs at 3.5Mhz;
-        video = createVideo();
+        video = createVideo(screenWidth, screenHeight);
         roms = createRomLoader();
     }
 
@@ -35,8 +35,8 @@ public class Hardware {
         return new RomLoader(memory, cpu);
     }
 
-    protected Video createVideo() {
-        return new Video(this::drawPixel);
+    protected Video createVideo(int width, int height) {
+        return new Video(width, height, this::drawPixel);
     }
 
     protected Cpu createCpu(double clock) {

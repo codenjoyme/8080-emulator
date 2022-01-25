@@ -10,6 +10,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static spec.Constants.BORDER_WIDTH;
+
 public class Main extends JFrame implements KeyListener {
 
     private Application app;
@@ -21,7 +23,9 @@ public class Main extends JFrame implements KeyListener {
 
     public Main(String base) {
         super("i8080 emulator");
-        setMinimumSize(Graphic.getMinimumSize(15, 40));
+        setMinimumSize(new Dimension(
+                WIDTH + BORDER_WIDTH * 2 + 15,
+                HEIGHT + BORDER_WIDTH * 2 + 40));
         setVisible(true);
         setFocusable(true);
         setResizable(false);

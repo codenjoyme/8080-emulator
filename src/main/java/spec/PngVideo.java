@@ -6,25 +6,26 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static spec.Constants.SCREEN;
-import static spec.Video.HEIGHT;
-import static spec.Video.WIDTH;
 
 public class PngVideo {
 
+    private Graphics graphics;
     private BufferedImage image;
     private Video video;
     private Memory memory;
 
-    public PngVideo(Memory memory) {
+    public PngVideo(int width, int height, Memory memory) {
         this.memory = memory;
+        image = new BufferedImage(width, height, TYPE_INT_ARGB);
+        graphics = image.getGraphics();
+        video = new Video(width, height, this::draw);
+    }
 
-        image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-        Graphics graphics = image.getGraphics();
-        video = new Video((pt, color) -> {
-            graphics.setColor(color);
-            graphics.fillRect(pt.x, pt.y, 1, 1);
-        });
+    private void draw(Point pt, Color color) {
+        graphics.setColor(color);
+        graphics.fillRect(pt.x, pt.y, 1, 1);
     }
 
     public void drawToFile(String name) {

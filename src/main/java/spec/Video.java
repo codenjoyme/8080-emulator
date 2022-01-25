@@ -32,21 +32,22 @@ public class Video {
             new Color(str, str, str) // 0F ярко-белый
     };
 
-    // TODO make this not static
-    public static final int WIDTH = 384;
-    public static final int HEIGHT = 256;
-
+    private final int width;
+    private final int height;
     private BiConsumer<Point, Color> drawer;
-    private Color[][] colors = new Color[WIDTH][HEIGHT];
+    private Color[][] colors;
 
-    public Video(BiConsumer<Point, Color> drawer) {
+    public Video(int width, int height, BiConsumer<Point, Color> drawer) {
+        this.width = width;
+        this.height = height;
         this.drawer = drawer;
+        colors = new Color[width][height];
         clean();
     }
 
     private void clean() {
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 colors[x][y] = BLACK;
             }
         }
@@ -63,8 +64,8 @@ public class Video {
     }
 
     public void screenPaint() {
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 if (colors[x][y] == null) continue;
 
                 Color color = colors[x][y];

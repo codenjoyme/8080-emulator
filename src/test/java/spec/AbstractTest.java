@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import spec.assembler.Assembler;
 
-import static spec.Constants.x10000;
+import static spec.Constants.*;
 import static spec.SmartAssert.assertEquals;
 import static spec.WordMath.hex8;
 
@@ -24,7 +24,7 @@ public abstract class AbstractTest {
 
     @Before
     public void before() throws Exception {
-        hardware = new Hardware() {
+        hardware = new Hardware(WIDTH, HEIGHT) {
 
             @Override
             protected Memory createMemory() {
