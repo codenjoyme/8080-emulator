@@ -97,7 +97,7 @@ public class IntegrationTest extends AbstractTest {
                 .shoot("basic", it -> it.enter("B").press(ENTER).after(10))
                 .stopCpu();
 
-        cpu().PC(START_POINT);
+        cpu.PC(START_POINT);
         start();
     }
 
@@ -126,7 +126,7 @@ public class IntegrationTest extends AbstractTest {
                 .after(28).up(0x26).shoot("")
                 .stopCpu();
 
-        cpu().PC(START_POINT);
+        cpu.PC(START_POINT);
         start();
     }
 
@@ -142,7 +142,7 @@ public class IntegrationTest extends AbstractTest {
                 .shoot("speed", it -> it.after(50))
                 .stopCpu();
 
-        cpu().PC(0x0000);
+        cpu.PC(0x0000);
         start();
 
         int LEVELS = 32;
@@ -161,7 +161,7 @@ public class IntegrationTest extends AbstractTest {
                     .stopCpu();
 
             // этот хак позволяет запускать игру со следующим уровенем
-            cpu().PC(0x4567);
+            cpu.PC(0x4567);
             start();
         }
     }
@@ -172,7 +172,7 @@ public class IntegrationTest extends AbstractTest {
         Specialist.loadRom(base, roms());
 
         // when
-        cpu().PC(START_POINT);
+        cpu.PC(START_POINT);
         start();
 
         // then
@@ -217,7 +217,7 @@ public class IntegrationTest extends AbstractTest {
         Specialist.loadGame(base, roms(), "blobcop");
 
         // when
-        cpu().PC(0x0000);
+        cpu.PC(0x0000);
         start();
 
         // then
@@ -262,7 +262,7 @@ public class IntegrationTest extends AbstractTest {
         Specialist.loadGame(base, roms(), "babnik");
 
         // when
-        cpu().PC(0x0000);
+        cpu.PC(0x0000);
         start();
 
         // then
@@ -311,7 +311,7 @@ public class IntegrationTest extends AbstractTest {
         record().after(ticks).stopCpu();
 
         // when
-        cpu().PC(0x0000);
+        cpu.PC(0x0000);
         start();
 
         // then
@@ -357,7 +357,7 @@ public class IntegrationTest extends AbstractTest {
         record().after(ticks).stopCpu();
 
         // when
-        cpu().PC(0x0000);
+        cpu.PC(0x0000);
         start();
 
         // then
@@ -406,7 +406,7 @@ public class IntegrationTest extends AbstractTest {
         roms().loadROM(base, "test/8080EX1.COM", 0x0100);
 
         // when
-        cpu().PC(0x0100);
+        cpu.PC(0x0100);
         start();
 
         // then
@@ -455,7 +455,7 @@ public class IntegrationTest extends AbstractTest {
         roms().loadROM(base, "test/8080PRE.COM", 0x0100);
 
         // when
-        cpu().PC(0x0100);
+        cpu.PC(0x0100);
         start();
 
         // then
@@ -503,7 +503,7 @@ public class IntegrationTest extends AbstractTest {
         roms().loadROM(base, "test/CPUTEST.COM", 0x0100);
 
         // when
-        cpu().PC(0x0100);
+        cpu.PC(0x0100);
         start();
 
         // then

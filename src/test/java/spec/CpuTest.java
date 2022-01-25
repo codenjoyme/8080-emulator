@@ -744,8 +744,8 @@ public class CpuTest extends AbstractTest {
         // when then
         for (int tick = 0; tick < ticks; tick++) {
             hardware.reset();
-            cpu().PC(0x0000);
-            cpu().execute();
+            cpu.PC(0x0000);
+            cpu.execute();
         }
     }
 
@@ -759,7 +759,7 @@ public class CpuTest extends AbstractTest {
                 "STAX B\n" +      // copy (BC)=A
                 "NOP\n");
 
-        cpu().A(0x24);
+        cpu.A(0x24);
 
         givenMm("01 03 00\n" +
                 "11 11 11\n" +
@@ -818,7 +818,7 @@ public class CpuTest extends AbstractTest {
                 "STAX D\n" +      // copy (DE)=A
                 "NOP\n");
 
-        cpu().A(0x24);
+        cpu.A(0x24);
 
         givenMm("01 11 11\n" +
                 "11 03 00\n" +
@@ -877,7 +877,7 @@ public class CpuTest extends AbstractTest {
                 "LDAX B\n" +      // copy A=(BC)
                 "NOP\n");
 
-        cpu().A(0x24);
+        cpu.A(0x24);
 
         givenMm("01 03 00\n" +
                 "11 11 11\n" +
@@ -936,7 +936,7 @@ public class CpuTest extends AbstractTest {
                 "LDAX D\n" +      // copy A=(DE)
                 "NOP\n");
 
-        cpu().A(0x24);
+        cpu.A(0x24);
 
         givenMm("01 11 11\n" +
                 "11 03 00\n" +
@@ -1109,7 +1109,7 @@ public class CpuTest extends AbstractTest {
                 "STA 1234\n" +    // copy (1234)=A
                 "NOP\n");
 
-        cpu().A(0x24);
+        cpu.A(0x24);
 
         givenMm("01 11 11\n" +
                 "11 22 22\n" +
@@ -1168,7 +1168,7 @@ public class CpuTest extends AbstractTest {
                 "LDA 0001\n" +    // copy A=(0001)
                 "NOP\n");
 
-        cpu().A(0x00);
+        cpu.A(0x00);
 
         givenMm("01 34 12\n" +
                 "11 22 22\n" +

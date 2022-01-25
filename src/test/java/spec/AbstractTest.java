@@ -14,7 +14,8 @@ public abstract class AbstractTest {
 
     private boolean init;
     protected Hardware hardware;
-    private TestMemory memory;
+    protected TestMemory memory;
+    protected Cpu cpu;
 
     @Before
     public void before() throws Exception {
@@ -27,13 +28,14 @@ public abstract class AbstractTest {
             @Override
             protected Cpu createCpu(double clock) {
                 // interrupt будет проходить каждый тик
-                return super.createCpu(50.1 * 1e-6);
+                clock = 50.1 * 1e-6;
+                return cpu = super.createCpu(clock);
             }
         };
 
         memory.clear();
         init = false;
-        cpu().PC(START);
+        cpu.PC(START);
     }
 
     @After
@@ -52,7 +54,7 @@ public abstract class AbstractTest {
     public void givenMm(String bites) {
         if (!init) {
             init = true;
-            memory().write8str(START, bites.replace("\n", " "));
+            memory.write8str(START, bites.replace("\n", " "));
         }
         String split = asm().split(memory.changes());
         assertEquals(bites, split);
@@ -61,30 +63,26 @@ public abstract class AbstractTest {
     }
 
     public void asrtCpu(String expected) {
-        assertEquals(expected, cpu().toStringDetails());
+        assertEquals(expected, cpu.toStringDetails());
     }
 
     public void cpuShort(String expected) {
-        assertEquals(expected, cpu().toString());
+        assertEquals(expected, cpu.toString());
     }
 
     public void assertMem(int addr, String expected) {
-        assertEquals(expected, hex8(cpu().data.read8(addr)));
+        assertEquals(expected, hex8(cpu.data.read8(addr)));
     }
 
     public void assertMem(int begin, int endOrLength, String expected) {
         int end = (begin < endOrLength)
                 ? endOrLength
                 : begin + endOrLength - 1;
-        assertEquals(expected, memory().read8srt(new Range(begin, end)));
+        assertEquals(expected, memory.read8srt(new Range(begin, end)));
     }
 
     public void start() {
         hardware.start();
-    }
-
-    public Cpu cpu() {
-        return hardware.cpu();
     }
 
     public RomLoader roms() {
@@ -93,10 +91,6 @@ public abstract class AbstractTest {
 
     public KeyRecord record() {
         return hardware.record();
-    }
-
-    public Memory memory() {
-        return memory;
     }
 
     private Assembler asm() {
