@@ -3,7 +3,7 @@ package spec;
 import java.awt.*;
 import java.net.URL;
 
-import static spec.Constants.*;
+import static spec.Constants.x10000;
 
 public class Hardware {
 
@@ -12,6 +12,7 @@ public class Hardware {
     private Memory memory;
     private Cpu cpu;
     protected RomLoader roms;
+    private HardwareData data;
     protected IOPorts ports;
     protected Video video;
     private KeyLogger keyLogger;
@@ -28,26 +29,16 @@ public class Hardware {
 
         record = new KeyRecord(ports, this::stop);
 
-        cpu = new Cpu(CLOCK, new Data() {
-
+        data = new HardwareData(this) {
             @Override
             public void out8(int port, int bite) {
                 Hardware.this.out8(port, bite);
             }
+        };
 
-            @Override
-            public int read8(int addr) {
-                return Hardware.this.read8(addr);
-            }
+        cpu = new Cpu(CLOCK, data, this::cpuInterrupt, record::accept);
 
-            @Override
-            public void write8(int addr, int bite) {
-                Hardware.this.write8(addr, bite);
-            }
-
-        }, this::cpuInterrupt, record::accept);
-
-        video = new Video(Hardware.this::drawPixel);
+        video = new Video(this::drawPixel);
 
         roms = new RomLoader(memory, cpu);
     }
@@ -89,33 +80,6 @@ public class Hardware {
         cpu.execute();
     }
 
-    private int read8(int addr) {
-        if (PORTS.includes(addr)) {
-            return ports.read8(addr);
-        }
-        return memory.read8(addr);
-    }
-
-    private void write8(int addr, int bite) {
-        if (ROM.includes(addr)) {
-            // в ПЗУ не пишем
-            return;
-        }
-
-        if (SCREEN.includes(addr)) {
-            if (memory.read8(addr) != bite) {
-                // было изменение ячейки видеопамяти
-                video.plot(addr, bite);
-            }
-        }
-
-        if (PORTS.includes(addr)) {
-            ports.write8(addr, bite);
-        }
-
-        memory.write8(addr, bite);
-    }
-
     public RomLoader roms() {
         return roms;
     }
@@ -135,5 +99,13 @@ public class Hardware {
 
     public Memory memory() {
         return memory;
+    }
+
+    public IOPorts ports() {
+        return ports;
+    }
+
+    public Video video() {
+        return video;
     }
 }
