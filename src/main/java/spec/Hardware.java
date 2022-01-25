@@ -9,10 +9,10 @@ public class Hardware {
 
     private Memory memory;
     private Cpu cpu;
-    protected RomLoader roms;
+    private RomLoader roms;
     private HardwareData data;
-    protected IOPorts ports;
-    protected Video video;
+    private IOPorts ports;
+    private Video video;
     private KeyLogger keyLogger;
     private KeyRecord record;
 

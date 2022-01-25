@@ -114,7 +114,7 @@ public class Application {
 
         // Обновлять экран каждое прерывание по умолчанию
         if ((interruptCounter % refreshRate) == 0) {
-            hard.video.screenPaint();
+            hard.video().screenPaint();
             graphic.paintBuffer();
         }
         // возвращает текущее системное время в виде миллисекунд,
@@ -145,17 +145,17 @@ public class Application {
     public void lostFocus() {
         Logger.debug("Lost focus");
         printIO(BORDER_PORT, 0x06);
-        hard.ports.resetKeyboard();
+        hard.ports().resetKeyboard();
     }
 
     public void gotFocus() {
         Logger.debug("Got focus");
         printIO(BORDER_PORT, 0x02);
-        hard.ports.resetKeyboard();
+        hard.ports().resetKeyboard();
     }
 
     public void handleKey(Key key) {
-        hard.ports.processKey(key);
+        hard.ports().processKey(key);
 
         if (key.pause() && key.pressed()) {
             resetAtNextInterrupt = true;
