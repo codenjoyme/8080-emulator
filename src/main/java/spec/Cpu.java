@@ -8,6 +8,7 @@ import spec.assembler.Assembler;
 import spec.assembler.Command;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static spec.Constants.*;
 import static spec.WordMath.*;
@@ -27,15 +28,17 @@ public class Cpu extends Registry {
     }
 
     private Consumer<Integer> onTick;
+    private Supplier<Boolean> onInterrupt;
     private int interrupt;
     private int tick;
     private Assembler asm;
 
-    public Cpu(double clockFrequencyInMHz, Data data, Consumer<Integer> onTick) {
+    public Cpu(double clockFrequencyInMHz, Data data, Supplier<Boolean> onInterrupt, Consumer<Integer> onTick) {
         super(data);
         // Количество тактов на 1 прерывание, которое происходит 50 раз в секунду.
         // 1000000/50 раз в секунду
         interrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);
+        this.onInterrupt = onInterrupt;
         asm = new Assembler();
         this.onTick = onTick;
     }
@@ -127,7 +130,7 @@ public class Cpu extends Registry {
             tick++;
 
             if (interruptNeeded(ticks)) {
-                if (!data.interrupt()) {
+                if (!onInterrupt.get()) {
                     break;
                 }
                 ticks -= interrupt;

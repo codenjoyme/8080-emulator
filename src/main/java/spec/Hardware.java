@@ -31,12 +31,6 @@ public class Hardware {
         cpu = new Cpu(CLOCK, new Data() {
 
             @Override
-            public boolean interrupt() {
-                Hardware.this.update();
-                return cpuEnabled;
-            }
-
-            @Override
             public void out8(int port, int bite) {
                 Hardware.this.out8(port, bite);
             }
@@ -51,11 +45,16 @@ public class Hardware {
                 Hardware.this.write8(addr, bite);
             }
 
-        }, record::accept);
+        }, this::cpuInterrupt, record::accept);
 
         video = new Video(Hardware.this::drawPixel);
 
         roms = new RomLoader(memory, cpu);
+    }
+
+    private boolean cpuInterrupt() {
+        update();
+        return cpuEnabled;
     }
 
     public void stop() {
