@@ -18,15 +18,16 @@ public abstract class AbstractTest {
 
     @Before
     public void before() throws Exception {
-        memory = new TestMemory(x10000);
-
-        // interrupt будет проходить каждый тик
-        Hardware.CLOCK = 50.1 * 1e-6;
-
         hardware = new Hardware() {
             @Override
             protected Memory createMemory() {
-                return memory;
+                return memory = new TestMemory(x10000);
+            }
+
+            @Override
+            protected Cpu createCpu(double clock) {
+                // interrupt будет проходить каждый тик
+                return super.createCpu(50.1 * 1e-6);
             }
         };
 

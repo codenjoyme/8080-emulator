@@ -7,8 +7,6 @@ import static spec.Constants.x10000;
 
 public class Hardware {
 
-    public static double CLOCK = 1.6; // Specialist runs at 3.5Mhz;
-
     private Memory memory;
     private Cpu cpu;
     protected RomLoader roms;
@@ -22,26 +20,55 @@ public class Hardware {
 
     public Hardware() {
         memory = createMemory();
+        keyLogger = createKeyLogger();
+        ports = createIoPorts();
+        record = createKeyRecord();
+        data = createHardwareData();
+        cpu = createCpu(1.6); // Specialist runs at 3.5Mhz;
+        video = createVideo();
+        roms = createRomLoader();
+    }
 
-        keyLogger = new KeyLogger(() -> cpu.tick());
+    // components
 
-        ports = new IOPorts(memory, new Layout(), keyLogger::process);
+    protected RomLoader createRomLoader() {
+        return new RomLoader(memory, cpu);
+    }
 
-        record = new KeyRecord(ports, this::stop);
+    protected Video createVideo() {
+        return new Video(this::drawPixel);
+    }
 
-        data = new HardwareData(this) {
+    protected Cpu createCpu(double clock) {
+        return new Cpu(clock, data, this::cpuInterrupt, record::accept);
+    }
+
+    protected HardwareData createHardwareData() {
+        return new HardwareData(this) {
             @Override
             public void out8(int port, int bite) {
                 Hardware.this.out8(port, bite);
             }
         };
-
-        cpu = new Cpu(CLOCK, data, this::cpuInterrupt, record::accept);
-
-        video = new Video(this::drawPixel);
-
-        roms = new RomLoader(memory, cpu);
     }
+
+    protected KeyRecord createKeyRecord() {
+        return new KeyRecord(ports, this::stop);
+    }
+
+    protected IOPorts createIoPorts() {
+        return new IOPorts(memory, new Layout(), keyLogger::process);
+    }
+
+    protected KeyLogger createKeyLogger() {
+        return new KeyLogger(() -> cpu.tick());
+    }
+
+    protected Memory createMemory() {
+        return new Memory(x10000);
+    }
+
+    // logic
 
     private boolean cpuInterrupt() {
         update();
@@ -50,10 +77,6 @@ public class Hardware {
 
     public void stop() {
         cpuEnabled = false;
-    }
-
-    protected Memory createMemory() {
-        return new Memory(x10000);
     }
 
     protected void out8(int port, int bite) {
@@ -80,13 +103,15 @@ public class Hardware {
         cpu.execute();
     }
 
-    public RomLoader roms() {
-        return roms;
-    }
-
     public void loadSnapshot(URL base, String snapshot) {
         roms.loadSnapshot(base, snapshot);
         ports.resetKeyboard();
+    }
+
+    // components getters
+
+    public RomLoader roms() {
+        return roms;
     }
 
     public KeyRecord record() {
