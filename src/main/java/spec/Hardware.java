@@ -5,7 +5,7 @@ import java.net.URL;
 
 import static spec.Constants.*;
 
-public abstract class Hardware {
+public class Hardware {
 
     public static double CLOCK = 1.6; // Specialist runs at 3.5Mhz;
 
@@ -29,14 +29,16 @@ public abstract class Hardware {
         record = new KeyRecord(ports, this::stop);
 
         cpu = new Cpu(CLOCK, new Data() {
+
             @Override
             public boolean interrupt() {
-                return Hardware.this.interrupt();
+                Hardware.this.update();
+                return cpuEnabled;
             }
 
             @Override
             public void out8(int port, int bite) {
-                Hardware.this.outb(port, bite);
+                Hardware.this.out8(port, bite);
             }
 
             @Override
@@ -48,6 +50,7 @@ public abstract class Hardware {
             public void write8(int addr, int bite) {
                 Hardware.this.write8(addr, bite);
             }
+
         }, record::accept);
 
         video = new Video(Hardware.this::drawPixel);
@@ -63,13 +66,17 @@ public abstract class Hardware {
         return new Memory(x10000);
     }
 
-    protected abstract void outb(int port, int bite);
-
-    protected boolean interrupt() {
-        return cpuEnabled;
+    protected void out8(int port, int bite) {
+        // please override if needed
     }
 
-    protected abstract void drawPixel(Point point, Color color);
+    protected void update() {
+        // please override if needed
+    }
+
+    protected void drawPixel(Point point, Color color) {
+        // please override if needed
+    }
 
     public void reset() {
         cpuEnabled = true;

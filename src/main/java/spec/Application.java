@@ -37,23 +37,30 @@ public class Application {
 
         hard = new Hardware() {
             @Override
-            protected void outb(int port, int bite) {
-                Application.this.outb(port, bite);
+            protected void out8(int port, int bite) {
+                printIO(port, bite);
             }
 
             @Override
-            protected boolean interrupt() {
-                Application.this.interrupt();
-                return super.interrupt();
+            protected void update() {
+                updateState();
             }
 
             @Override
             protected void drawPixel(Point point, Color color) {
-                Application.this.graphic.drawPixel(point, color);
+                graphic.drawPixel(point, color);
             }
         };
 
         loadRoms(base);
+    }
+
+    private void printIO(int port, int bite) {
+        // port xx.FEh
+        if ((port & 0x0001) == 0) {
+            // 0000.0111 бордюр & 0x07
+            graphic.changeColor(COLORS[bite & 0x000F]);
+        }
     }
 
     private void loadRoms(URL base) {
@@ -75,15 +82,7 @@ public class Application {
         }
     }
 
-    private void outb(int port, int outByte) {
-        // port xx.FEh
-        if ((port & 0x0001) == 0) {
-            // 0000.0111 бордюр & 0x07
-            graphic.changeColor(COLORS[outByte & 0x000F]);
-        }
-    }
-
-    private void interrupt() {
+    private void updateState() {
         if (pauseAtNextInterrupt) {
             while (pauseAtNextInterrupt) {
                 if (refreshNextInterrupt) {
@@ -145,13 +144,13 @@ public class Application {
 
     public void lostFocus() {
         Logger.debug("Lost focus");
-        outb(BORDER_PORT, 0x06);
+        printIO(BORDER_PORT, 0x06);
         hard.ports.resetKeyboard();
     }
 
     public void gotFocus() {
         Logger.debug("Got focus");
-        outb(BORDER_PORT, 0x02);
+        printIO(BORDER_PORT, 0x02);
         hard.ports.resetKeyboard();
     }
 

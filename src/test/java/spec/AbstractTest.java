@@ -4,8 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import spec.assembler.Assembler;
 
-import java.awt.*;
-
 import static spec.Constants.x10000;
 import static spec.SmartAssert.assertEquals;
 import static spec.WordMath.hex8;
@@ -26,16 +24,6 @@ public abstract class AbstractTest {
         Hardware.CLOCK = 50.1 * 1e-6;
 
         hardware = new Hardware() {
-            @Override
-            protected void outb(int port, int bite) {
-                // do nothing
-            }
-
-            @Override
-            protected void drawPixel(Point point, Color color) {
-                // do nothing
-            }
-
             @Override
             protected Memory createMemory() {
                 return memory;
