@@ -11,6 +11,7 @@ import static spec.Video.COLORS;
 public class Application {
 
     private static final int BORDER_PORT = 254;
+    public static final int BORDER_WIDTH = 20;
 
     private int refreshRate = 1;  // refresh every 'n' interrupts
 
@@ -33,7 +34,7 @@ public class Application {
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
     public Application(Container parent, URL base) {
-        graphic = new Graphic(parent);
+        graphic = new Graphic(BORDER_WIDTH, parent);
 
         hard = new Hardware() {
             @Override

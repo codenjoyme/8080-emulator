@@ -3,12 +3,13 @@ package spec;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static spec.Application.BORDER_WIDTH;
 import static spec.Video.HEIGHT;
 import static spec.Video.WIDTH;
 
 public class Graphic {
 
-    private static int BORDER_WIDTH = 20;
+    private int borderWidth;
 
     private Color currentBorder = null; // null mean update screen
     private Color newBorder = Color.YELLOW;
@@ -22,7 +23,8 @@ public class Graphic {
     private Image bufferImage;
     private Graphics buffer;
 
-    public Graphic(Container parent) {
+    public Graphic(int borderWidth, Container parent) {
+        this.borderWidth = borderWidth;
         container = parent;
 
         // мы рисуем на канве, чтобы не мерцало изображение
@@ -33,7 +35,7 @@ public class Graphic {
         if (container.getKeyListeners().length > 0) {
             canvas.addKeyListener(container.getKeyListeners()[0]);
         }
-        setBorderWidth(BORDER_WIDTH);
+        setBorderWidth(borderWidth);
         canvas.setVisible(true);
         sleep(50);
         container.add(canvas);
@@ -57,10 +59,9 @@ public class Graphic {
     }
 
     public static Dimension getMinimumSize(int dx, int dy) {
-        int border = BORDER_WIDTH;
         return new Dimension(
-                Video.WIDTH + border * 2 + dx,
-                Video.HEIGHT + border * 2 + dy);
+                Video.WIDTH + BORDER_WIDTH * 2 + dx,
+                Video.HEIGHT + BORDER_WIDTH * 2 + dy);
     }
 
     public void drawPixel(Point pt, Color color) {
@@ -69,8 +70,8 @@ public class Graphic {
     }
 
     private void setBorderWidth(int width) {
-        BORDER_WIDTH = width;
-        canvas.setLocation(BORDER_WIDTH, BORDER_WIDTH);
+        borderWidth = width;
+        canvas.setLocation(borderWidth, borderWidth);
     }
 
     public void changeColor(Color color) {
@@ -82,7 +83,7 @@ public class Graphic {
     }
 
     private void borderPaint() {
-        if (BORDER_WIDTH == 0) { // если бордюра нет - ничего не делать!
+        if (borderWidth == 0) { // если бордюра нет - ничего не делать!
             return;
         }
         if (currentBorder == newBorder) { // цвет не менялся

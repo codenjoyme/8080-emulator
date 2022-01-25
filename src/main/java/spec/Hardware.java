@@ -24,7 +24,7 @@ public class Hardware {
         ports = createIoPorts();
         record = createKeyRecord(recordPrecision());
         data = createHardwareData();
-        cpu = createCpu(1.6); // Specialist runs at 3.5Mhz;
+        cpu = createCpu(1.6); // runs at 3.5Mhz;
         video = createVideo();
         roms = createRomLoader();
     }
