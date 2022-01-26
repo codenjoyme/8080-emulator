@@ -367,8 +367,7 @@ public class IntegrationTest extends AbstractTest {
 
         // given
         Lik.loadRom(base, roms);
-        int ticks = roms.loadROM(base, "test/test.com", 0x0000) * 10;
-        record.after(ticks * K10).stopCpu();
+        roms.loadROM(base, "test/test.com", 0x0000);
 
         // when
         cpu.PC(0x0000);
