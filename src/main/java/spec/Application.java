@@ -119,6 +119,7 @@ public class Application {
     }
 
     private void sleep() {
+        int mills = 100;
         // Trying to slow to 100%, browsers resolution on the system
         // time is not accurate enough to check every interrurpt. So
         // we check every 4 interrupts.
@@ -127,9 +128,9 @@ public class Application {
             long duration = time - last;
             last = time;
             // запомним текущее время, как предыдущее.
-            if (duration < 40) {
+            if (duration < mills) {
                 try {
-                    Thread.sleep(50 - duration);
+                    Thread.sleep(mills - duration);
                 } catch (Exception ignored) {
                     // do nothing
                 }
