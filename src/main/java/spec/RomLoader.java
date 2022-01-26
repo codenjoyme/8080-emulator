@@ -46,7 +46,8 @@ public class RomLoader {
             Range range = new Range(offset, - length);
             logLoading(url.toString(), range);
             cpu.PC(offset);
-            return readBytes(is, memory.all(), range);
+            readBytes(is, memory.all(), range);
+            return cpu.PC();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -72,7 +73,8 @@ public class RomLoader {
 
             logLoading(url.toString(), range);
             cpu.PC(range.begin());
-            return readBytes(is, memory.all(), range);
+            readBytes(is, memory.all(), range);
+            return cpu.PC();
             // int[] data = read8arr(is, 4); // TODO в конце еще два байта, зачем?
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -120,23 +122,23 @@ public class RomLoader {
         }
     }
 
-    public void load(String path) {
+    public int load(String path) {
         try {
             File file = new File(path);
             URL url = file.getParentFile().toURI().toURL();
             switch (substringAfter(file.getName(), ".")) {
                 case "com": {
-                    loadROM(url, file.getName(), 0x0100);
-                    break;
+                    return loadROM(url, file.getName(), 0x0100);
                 }
                 case "rom":
                 case "bin": {
-                    loadROM(url, file.getName(), 0xC000);
-                    break;
+                    return loadROM(url, file.getName(), 0xC000);
                 }
                 case "rks": {
-                    loadRKS(url, file.getName());
-                    break;
+                    return loadRKS(url, file.getName());
+                }
+                default: {
+                    return loadROM(url, file.getName(), 0x0000);
                 }
             }
         } catch (Exception e) {

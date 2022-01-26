@@ -6,6 +6,9 @@ import java.net.URL;
 
 import static spec.Constants.RECORD_LOG_FILE;
 import static spec.Constants.x10000;
+import static spec.KeyCode.END;
+import static spec.KeyCode.ENTER;
+import static spec.WordMath.hex16;
 
 public class Hardware {
 
@@ -154,9 +157,13 @@ public class Hardware {
 
     public void loadData(String path) {
         pause();
-        justReset();
-        roms.load(path);
-        resume();
+        int offset = roms.load(path);
+        record.reset().after(200_000)
+                .press(END).after(200_000)
+                .press(ENTER).after(50_000)
+                // TODO а что если specialis а не лик?
+                .enter("J" + hex16(offset)).press(ENTER).after(200_000);
+        reset();
     }
 
     // components getters
