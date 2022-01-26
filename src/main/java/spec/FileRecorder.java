@@ -24,12 +24,16 @@ public class FileRecorder {
     public void write(int delta, Key key) {
         if (!writing) return;
 
+        writeLine(String.format(
+                "after(%s).%s(0x%s);",
+                (delta == 0) ? 1 : delta,
+                key.pressed() ? "down" : "up",
+                hex8(key.code())));
+    }
+
+    private void writeLine(String string) {
         try (FileWriter writer = new FileWriter(file.getAbsolutePath(), true)) {
-            writer.write(String.format(
-                    "after(%s).%s(0x%s);\n",
-                    (delta == 0) ? 1 : delta,
-                    key.pressed() ? "down" : "up",
-                    hex8(key.code())));
+            writer.write(string + "\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -48,6 +52,8 @@ public class FileRecorder {
             int index = 0;
             for (String line : Files.readAllLines(file.toPath())) {
                 index++;
+                if (line.startsWith("//")) continue;
+
                 Matcher matcher = RECORD_LINE.matcher(line);
                 if (!matcher.matches() || matcher.groupCount() != 3) {
                     throw new IllegalArgumentException(String.format(
@@ -66,5 +72,9 @@ public class FileRecorder {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void writeNew() {
+        writeLine("// new run");
     }
 }

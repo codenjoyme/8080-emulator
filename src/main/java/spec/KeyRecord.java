@@ -67,6 +67,7 @@ public class KeyRecord {
         lastRecordedTick = scenario.keySet().stream()
                 .max(Integer::compareTo)
                 .orElse(0);
+        fileRecorder.writeNew();
     }
 
     public class Action {
