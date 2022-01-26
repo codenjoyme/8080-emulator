@@ -4,7 +4,8 @@ import java.awt.*;
 import java.io.File;
 import java.net.URL;
 
-import static spec.Constants.*;
+import static spec.Constants.RECORD_LOG_FILE;
+import static spec.Constants.x10000;
 
 public class Hardware {
 
@@ -24,9 +25,9 @@ public class Hardware {
     public Hardware(int screenWidth, int screenHeight) {
         memory = createMemory();
         fileRecorder = createFileRecorder(logFile());
-        keyLogger = createKeyLogger(recordPrecision());
+        keyLogger = createKeyLogger();
         ports = createIoPorts();
-        record = createKeyRecord(recordPrecision());
+        record = createKeyRecord();
         data = createHardwareData();
         cpu = createCpu(1.6); // runs at 3.5Mhz;
         video = createVideo(screenWidth, screenHeight);
@@ -61,16 +62,16 @@ public class Hardware {
         return new FileRecorder(logFile);
     }
 
-    protected KeyRecord createKeyRecord(int precision) {
-        return new KeyRecord(fileRecorder, precision, ports, this::stop);
+    protected KeyRecord createKeyRecord() {
+        return new KeyRecord(fileRecorder, ports, this::stop);
     }
 
     protected IOPorts createIoPorts() {
         return new IOPorts(memory, new Layout(), keyLogger::process);
     }
 
-    protected KeyLogger createKeyLogger(int precision) {
-        return new KeyLogger(fileRecorder, precision, () -> cpu.tick());
+    protected KeyLogger createKeyLogger() {
+        return new KeyLogger(fileRecorder, () -> cpu.tick());
     }
 
     protected Memory createMemory() {
@@ -109,11 +110,6 @@ public class Hardware {
 
     protected void drawPixel(Point point, Color color) {
         // please override if needed
-    }
-
-    protected int recordPrecision() {
-        // запись происходит с точностью до 1 тика cpu
-        return RECORD_PRECISION;
     }
 
     protected File logFile() {

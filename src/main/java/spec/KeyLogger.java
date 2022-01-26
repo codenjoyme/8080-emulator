@@ -8,13 +8,11 @@ import static spec.WordMath.hex8;
 public class KeyLogger {
 
     private Supplier<Integer> getTick;
-    private int precision;
     private int tick;
     private FileRecorder recorder;
 
-    public KeyLogger(FileRecorder recorder, int precision, Supplier<Integer> getTick) {
+    public KeyLogger(FileRecorder recorder, Supplier<Integer> getTick) {
         this.recorder = recorder;
-        this.precision = precision;
         this.getTick = getTick;
         reset();
     }
@@ -28,7 +26,6 @@ public class KeyLogger {
         int nextTick = getTick.get();
         int delta = nextTick - tick;
         tick = nextTick;
-        delta = delta / precision;
 
         recorder.write(delta, key);
     }

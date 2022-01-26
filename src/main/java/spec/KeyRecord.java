@@ -10,18 +10,17 @@ import static spec.Key.MOD_NONE;
 
 public class KeyRecord {
 
+    public static final int KEY_PRESS_DELTA = 20_000;
     private Map<Integer, Action> scenario;
     private FileRecorder fileRecorder;
-    private int precision;
     private IOPorts ports;
     private Consumer<String> screenShoot;
     private Runnable stopCpu;
     private int shootIndex; // индекс сделанного скриншота
     private Integer lastRecordedTick;
 
-    public KeyRecord(FileRecorder fileRecorder, int precision, IOPorts ports, Runnable stopCpu) {
+    public KeyRecord(FileRecorder fileRecorder, IOPorts ports, Runnable stopCpu) {
         this.fileRecorder = fileRecorder;
-        this.precision = precision;
         this.ports = ports;
         this.stopCpu = stopCpu;
         this.shootIndex = 0;
@@ -100,7 +99,7 @@ public class KeyRecord {
         public Action enter(String text) {
             Action action = this;
             for (char ch : text.toCharArray()) {
-                action = action.press(ch).after(2);
+                action = action.press(ch).after(KEY_PRESS_DELTA);
             }
             return action;
         }
@@ -113,7 +112,7 @@ public class KeyRecord {
             // жмем кнопку в этом тике
             down(code, mode);
             // а это уже другой Action через 20k тиков, в котором отпускаем кнопку
-            return after(2).up(code, mode);
+            return after(KEY_PRESS_DELTA).up(code, mode);
         }
 
         public Action down(int code) {
@@ -155,11 +154,7 @@ public class KeyRecord {
     public void accept(int tick) {
         if (scenario == null) return;
 
-        // нам интересны каждые precision тиков, реже смотреть нет смысла
-        if (tick % precision != 0) return;
-
-        int kiloTick = tick / precision;
-        Action action = scenario.get(kiloTick);
+        Action action = scenario.get(tick);
 
         if (action != null) {
             if (action.shoot != null && screenShoot != null) {
@@ -173,7 +168,7 @@ public class KeyRecord {
             }
         }
 
-        if (lastRecordedTick != null && lastRecordedTick == kiloTick) {
+        if (lastRecordedTick != null && lastRecordedTick == tick) {
             lastRecordedTick = null;
             fileRecorder.startWriting();
         }

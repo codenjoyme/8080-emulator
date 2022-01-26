@@ -16,7 +16,9 @@ import static spec.KeyCode.*;
 
 public class IntegrationTest extends AbstractTest {
 
-    private static final int TICKS = 1_000;
+    private static final int K10 = 10_000;
+    private static final int TICKS = 10_000_000;
+
     private static final String TEST_RESOURCES = "src/test/resources/";
     private static final String APP_RESOURCES = "src/main/resources/";
 
@@ -28,11 +30,6 @@ public class IntegrationTest extends AbstractTest {
 
     @Before
     public void before() throws Exception {
-        setup(10_000);
-    }
-
-    private void setup(int precision) throws Exception {
-        RECORD_PRECISION = precision;
         super.before();
 
         video = new PngVideo(hard.video(), hard.memory());
@@ -91,14 +88,14 @@ public class IntegrationTest extends AbstractTest {
 
         // when
         record.reset()
-                .shoot("runcom", it -> it.after(2))
-                .shoot("stop", it -> it.press(END).after(2))
-                .shoot("monitor", it -> it.press(ENTER).after(5))
-                .shoot("assembler", it -> it.enter("AC000").press(ENTER).after(20))
-                .shoot("exit", it -> it.down(ENTER).after(5).press(END).after(5).up(ENTER).after(15))
-                .shoot("memory", it -> it.enter("D9000").press(ENTER).after(30))
-                .shoot("exit", it -> it.press(ESC).after(5))
-                .shoot("basic", it -> it.enter("B").press(ENTER).after(10))
+                .shoot("runcom", it -> it.after(2 * K10))
+                .shoot("stop", it -> it.press(END).after(2 * K10))
+                .shoot("monitor", it -> it.press(ENTER).after(5 * K10))
+                .shoot("assembler", it -> it.enter("AC000").press(ENTER).after(20 * K10))
+                .shoot("exit", it -> it.down(ENTER).after(5 * K10).press(END).after(5 * K10).up(ENTER).after(15 * K10))
+                .shoot("memory", it -> it.enter("D9000").press(ENTER).after(30 * K10))
+                .shoot("exit", it -> it.press(ESC).after(5 * K10))
+                .shoot("basic", it -> it.enter("B").press(ENTER).after(10 * K10))
                 .stopCpu();
 
         cpu.PC(START_POINT);
@@ -112,22 +109,22 @@ public class IntegrationTest extends AbstractTest {
         Lik.loadGame(base, roms, "klad");
 
         // when
-        record.after(12).down(0x23)
-                .after(5).up(0x23).shoot("")
-                .after(10).down(0x0A)
-                .after(5).up(0x0A).shoot("")
-                .after(34).down(0x4A)
-                .after(4).up(0x4A).shoot("")
-                .after(4).down(0x0A)
-                .after(10).up(0x0A).shoot("")
-                .after(400).down(0x27)
-                .after(59).up(0x27).shoot("")
-                .after(1).down(0x26)
-                .after(24).up(0x26).shoot("")
-                .after(127).down(0x27)
-                .after(53).up(0x27).shoot("")
-                .after(1).down(0x26)
-                .after(28).up(0x26).shoot("")
+        record.after(12 * K10).down(0x23)
+                .after(5 * K10).up(0x23).shoot("")
+                .after(10 * K10).down(0x0A)
+                .after(5 * K10).up(0x0A).shoot("")
+                .after(34 * K10).down(0x4A)
+                .after(4 * K10).up(0x4A).shoot("")
+                .after(4 * K10).down(0x0A)
+                .after(10 * K10).up(0x0A).shoot("")
+                .after(400 * K10).down(0x27)
+                .after(59 * K10).up(0x27).shoot("")
+                .after(1 * K10).down(0x26)
+                .after(24 * K10).up(0x26).shoot("")
+                .after(127 * K10).down(0x27)
+                .after(53 * K10).up(0x27).shoot("")
+                .after(1 * K10).down(0x26)
+                .after(28 * K10).up(0x26).shoot("")
                 .stopCpu();
 
         cpu.PC(START_POINT);
@@ -141,9 +138,9 @@ public class IntegrationTest extends AbstractTest {
         Lik.loadGame(base, roms, "klad");
 
         // when then
-        record.shoot("logo", it -> it.after(200))
-                .shoot("logo", it -> it.after(170))
-                .shoot("speed", it -> it.after(50))
+        record.shoot("logo", it -> it.after(200 * K10))
+                .shoot("logo", it -> it.after(170 * K10))
+                .shoot("speed", it -> it.after(50 * K10))
                 .stopCpu();
 
         cpu.PC(0x0000);
@@ -155,13 +152,13 @@ public class IntegrationTest extends AbstractTest {
             reset();
 
             // скорость выбранная в первый раз поменяла тайминги
-            int speed = (level == 1) ? 60 : 60 + 13;
+            int speed = (level == 1) ? 60 * K10 : 60 * K10 + 13 * K10;
             record.shoot(null,
-                            it -> it.after(50))
+                            it -> it.after(50 * K10))
                     .shoot(null,
-                            it -> it.down(RIGHT).after(speed).up(RIGHT).after(1))
+                            it -> it.down(RIGHT).after(speed).up(RIGHT).after(1 * K10))
                     .shoot("level[" + level + "]",
-                            it -> it.down(UP).after(30).up(UP).after(100))
+                            it -> it.down(UP).after(30 * K10).up(UP).after(100 * K10))
                     .stopCpu();
 
             // этот хак позволяет запускать игру со следующим уровенем
@@ -173,8 +170,6 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testLik_klad_recording() throws Exception {
         // given
-        setup(1);
-
         Lik.loadRom(base, roms);
         Lik.loadGame(base, roms, "klad");
 
@@ -331,7 +326,7 @@ public class IntegrationTest extends AbstractTest {
         // given
         Lik.loadRom(base, roms);
         int ticks = roms.loadROM(base, "test/test.com", 0x0000) * 10;
-        record.after(ticks).stopCpu();
+        record.after(ticks * K10).stopCpu();
 
         // when
         cpu.PC(0x0000);
@@ -376,8 +371,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_helloWorld() {
         // given
         Lik.loadRom(base, roms);
-        int ticks = roms.loadROM(base, "test/hello_world.com", 0x0000) * 1000;
-        record.after(ticks).stopCpu();
+        roms.loadROM(base, "test/hello_world.com", 0x0000);
 
         // when
         cpu.PC(0x0000);

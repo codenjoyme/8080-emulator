@@ -12,7 +12,6 @@ import static spec.WordMath.hex8;
 
 public abstract class AbstractTest {
 
-    public static int RECORD_PRECISION = 1;
     public static int START = 0x0000;
 
     private boolean memoryInit;
@@ -45,12 +44,6 @@ public abstract class AbstractTest {
             protected FileRecorder createFileRecorder(File logFile) {
                 return fileRecorder = super.createFileRecorder(logFile);
             }
-
-            @Override
-            protected int recordPrecision() {
-                return RECORD_PRECISION;
-            }
-
         };
 
         fileRecorder.stopWriting();
