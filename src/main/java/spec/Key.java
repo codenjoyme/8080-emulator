@@ -16,10 +16,10 @@ public class Key {
     public static final int MOD_CTRL =   0b0000_0000_1000_0000;
 
     // наши кастомные флаги, для изменения key code
-    public static final int SHIFT_MASK = 0b0000_0001_0000_0000;
-    public static final int ALT_MASK =   0b0000_0010_0000_0000;
-    public static final int CTRL_MASK =  0b0000_0100_0000_0000;
-
+    public static final int SHIFT_MASK =    0x8000000;
+    public static final int ALT_MASK =      0x4000000;
+    public static final int CTRL_MASK =     0x2000000;
+    // а это реально приходит из фреймворка
     public static final int CYRILLIC_MASK = 0x1000000;
 
     private int code;
