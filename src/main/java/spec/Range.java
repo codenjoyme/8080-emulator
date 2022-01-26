@@ -59,4 +59,8 @@ public class Range {
                 hex16(begin),
                 hex16(end));
     }
+
+    public boolean isInvalid() {
+        return length() <= 0;
+    }
 }

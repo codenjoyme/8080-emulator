@@ -63,6 +63,10 @@ public class RomLoader {
             Range range = new Range(
                     merge(header[1], header[0]),
                     merge(header[3], header[2]));
+            if (range.isInvalid()) {
+                throw new IllegalArgumentException(String.format(
+                        "Rage %s is invalid for: %s", range, path));
+            }
 
             logLoading(url.toString(), range);
             cpu.PC(range.begin());
