@@ -165,6 +165,9 @@ public class Application {
     public void handleKey(Key key) {
         if (key.numSlash()) {
             if (key.pressed()) {
+                // TODO как сделать рабочим в веб версии?
+                if (base.getFile().startsWith("http")) return;
+
                 openFileDialog(file -> hard.loadRecord(file.getAbsolutePath()),
                         ".",
                         "Recording file",
@@ -175,13 +178,12 @@ public class Application {
 
         if (key.numComma()) {
             if (key.pressed()) {
-                // TODO а что если спецалист, а не лик?
-                File directory = new File("./src/main/resources/lik/apps");
-                if (!directory.exists()) {
-                    directory = new File("./lik/apps");
-                }
+                // TODO как сделать рабочим в веб версии?
+                if (base.getFile().startsWith("http")) return;
+
                 openFileDialog(file -> hard.loadData(file.getAbsolutePath()),
-                        directory.getAbsolutePath(),
+                        // TODO а что если спецалист, а не лик?
+                        base.getFile() + "/lik/apps",
                         "Data file",
                         "com", "rom", "rks", "bin");
             }
