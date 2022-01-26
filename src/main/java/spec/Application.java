@@ -3,8 +3,12 @@ package spec;
 import spec.platforms.Lik;
 import spec.platforms.Specialist;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
+import java.io.File;
 import java.net.URL;
+import java.util.function.Consumer;
 
 import static spec.Constants.*;
 import static spec.Video.COLORS;
@@ -24,6 +28,7 @@ public class Application {
     private int delay = 100;
     private boolean fullSpeed = false;
 
+    private Container parent;
     private Graphic graphic;
     private Hardware hard;
 
@@ -34,6 +39,7 @@ public class Application {
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
     public Application(Container parent, URL base) {
+        this.parent = parent;
         graphic = new Graphic(SCREEN_WIDTH, SCREEN_HEIGHT, BORDER_WIDTH, parent);
 
         hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT) {
@@ -159,7 +165,8 @@ public class Application {
     public void handleKey(Key key) {
         if (key.numSlash()) {
             if (key.pressed()) {
-                hard.loadRecord(RECORD_LOG_FILE);
+                openFileDealog(".rec",
+                        file -> hard.loadRecord(file.getName()));
             }
             return;
         }
@@ -207,6 +214,28 @@ public class Application {
 
 
         hard.ports().processKey(key);
+    }
+
+    private void openFileDealog(String ext, Consumer<File> onSelect) {
+        JFileChooser files = new JFileChooser();
+        files.setCurrentDirectory(new File("."));
+        files.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                return file.isDirectory()
+                        || file.getName().endsWith(ext);
+            }
+
+            @Override
+            public String getDescription() {
+                return null;
+            }
+        });
+        int option = files.showOpenDialog(parent);
+        if(option == JFileChooser.APPROVE_OPTION){
+            File file = files.getSelectedFile();
+            onSelect.accept(file);
+        }
     }
 
     private void refreshWholeScreen() {
