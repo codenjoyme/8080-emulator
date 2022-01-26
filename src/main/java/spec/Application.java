@@ -52,6 +52,7 @@ public class Application {
             }
         };
 
+        hard.fileRecorder().with(RECORD_LOG_FILE);
         loadRoms(base);
     }
 
@@ -157,10 +158,7 @@ public class Application {
     public void handleKey(Key key) {
         if (key.numSlash()) {
             if (key.pressed()) {
-                if (!hard.record().ready()) return;
-                hard.pause();
-                hard.record().loadFromFile();
-                hard.reset();
+                hard.loadRecord(RECORD_LOG_FILE);
             }
             return;
         }

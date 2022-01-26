@@ -17,7 +17,7 @@ public abstract class AbstractTest {
 
     private boolean memoryInit;
 
-    protected Hardware hardware;
+    protected Hardware hard;
     protected TestMemory memory;
     protected Cpu cpu;
     protected Assembler asm;
@@ -27,7 +27,7 @@ public abstract class AbstractTest {
 
     @Before
     public void before() throws Exception {
-        hardware = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT) {
+        hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT) {
 
             @Override
             protected Memory createMemory() {
@@ -54,9 +54,9 @@ public abstract class AbstractTest {
         };
 
         fileRecorder.stopWriting();
-        roms = hardware.roms();
-        record = hardware.record();
-        asm = hardware.cpu().asm();
+        roms = hard.roms();
+        record = hard.record();
+        asm = hard.cpu().asm();
         memory.clear();
         memoryInit = false;
         cpu.PC(START);
@@ -106,6 +106,6 @@ public abstract class AbstractTest {
     }
 
     public void start() {
-        hardware.start();
+        hard.start();
     }
 }

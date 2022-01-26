@@ -28,10 +28,14 @@ public class IntegrationTest extends AbstractTest {
 
     @Before
     public void before() throws Exception {
-        RECORD_PRECISION = 10_000;
+        setup(10_000);
+    }
+
+    private void setup(int precision) throws Exception {
+        RECORD_PRECISION = precision;
         super.before();
 
-        video = new PngVideo(hardware.video(), hardware.memory());
+        video = new PngVideo(hard.video(), hard.memory());
         base = new File(APP_RESOURCES).toURI().toURL();
         record.screenShoot(this::screenShoot);
         removeTestScreenShots();
@@ -41,7 +45,7 @@ public class IntegrationTest extends AbstractTest {
 
     private void reset() {
         record.reset();
-        hardware.reset();
+        hard.reset();
     }
 
     private void removeTestScreenShots() {
@@ -164,6 +168,25 @@ public class IntegrationTest extends AbstractTest {
             cpu.PC(0x4567);
             start();
         }
+    }
+
+    @Test
+    public void testLik_klad_recording() throws Exception {
+        // given
+        setup(1);
+
+        Lik.loadRom(base, roms);
+        Lik.loadGame(base, roms, "klad");
+
+        // when
+        fileRecorder.startWriting();
+        int lastTick = hard.loadRecord(TEST_RESOURCES + "recordings/klad.rec");
+        record.after(lastTick).stopCpu();
+        cpu.PC(0xC000);
+        hard.start();
+
+        // then
+        screenShoot();
     }
 
     @Test

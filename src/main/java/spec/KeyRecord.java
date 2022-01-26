@@ -25,7 +25,7 @@ public class KeyRecord {
         this.ports = ports;
         this.stopCpu = stopCpu;
         this.shootIndex = 0;
-        scenario = null;
+        reset();
     }
 
     public void screenShoot(Consumer<String> screenShoot) {
@@ -57,9 +57,10 @@ public class KeyRecord {
         return fileRecorder.ready();
     }
 
-    public void loadFromFile() {
+    public int load(String path) {
         AtomicReference<Action> after = new AtomicReference<>(reset().after(0));
         fileRecorder.stopWriting();
+        fileRecorder.with(path);
         fileRecorder.read((delta, key) -> {
             Action it = after.get().after(delta);
             if (key.pressed()) {
@@ -72,6 +73,7 @@ public class KeyRecord {
                 .max(Integer::compareTo)
                 .orElse(0);
         fileRecorder.writeNew();
+        return lastRecordedTick;
     }
 
     public class Action {

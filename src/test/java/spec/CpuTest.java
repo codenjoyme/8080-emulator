@@ -743,7 +743,7 @@ public class CpuTest extends AbstractTest {
 
         // when then
         for (int tick = 0; tick < ticks; tick++) {
-            hardware.reset();
+            hard.reset();
             cpu.PC(0x0000);
             cpu.execute();
         }

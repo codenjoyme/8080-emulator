@@ -139,6 +139,15 @@ public class Hardware {
         ports.resetKeyboard();
     }
 
+    public int loadRecord(String path) {
+        if (!record.ready()) return -1;
+
+        pause();
+        int lastTick = record.load(path);
+        reset();
+        return lastTick;
+    }
+
     // components getters
 
     public RomLoader roms() {
@@ -163,5 +172,9 @@ public class Hardware {
 
     public Video video() {
         return video;
+    }
+
+    public FileRecorder fileRecorder() {
+        return fileRecorder;
     }
 }

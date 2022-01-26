@@ -18,7 +18,7 @@ public class FileRecorder {
 
     public FileRecorder(File file) {
         this.file = file;
-        writing = true;
+        startWriting();
     }
 
     public void write(int delta, Key key) {
@@ -79,6 +79,10 @@ public class FileRecorder {
     }
 
     public void writeNew() {
-        writeLine("// new run");
+        // do nothing
+    }
+
+    public void with(String path) {
+        this.file = new File(path);
     }
 }
