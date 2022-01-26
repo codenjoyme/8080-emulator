@@ -14,11 +14,14 @@ public class Application {
     private int refreshRate = 1;  // refresh every 'n' interrupts
 
     private int interrupt = 0;
-    private boolean resetAtNextInterrupt = false;
-    private boolean pauseAtNextInterrupt = false;
-    private boolean refreshNextInterrupt = true;
+
+    // TODO а точно тут надо так заморачиваться с многопоточностью?
+    private boolean willReset = false;
+    private boolean willPause = false;
+    private boolean willRefresh = true;
 
     private long last = 0;
+    private int mills = 100;
     private boolean fullSpeed = false;
 
     private Graphic graphic;
@@ -83,25 +86,25 @@ public class Application {
     }
 
     private void updateState() {
-        if (pauseAtNextInterrupt) {
-            while (pauseAtNextInterrupt) {
-                if (refreshNextInterrupt) {
-                    refreshNextInterrupt = false;
+        if (willPause) {
+            while (willPause) {
+                if (willRefresh) {
+                    willRefresh = false;
                     graphic.refreshBorder();
                     graphic.paintBuffer();
                 }
             }
         }
 
-        if (refreshNextInterrupt) {
-            refreshNextInterrupt = false;
+        if (willRefresh) {
+            willRefresh = false;
             graphic.refreshBorder();
             graphic.paintBuffer();
         }
 
-        if (resetAtNextInterrupt) {
+        if (willReset) {
             Logger.info("Reset Hardware!");
-            resetAtNextInterrupt = false;
+            willReset = false;
             hard.reset();
         }
 
@@ -119,7 +122,6 @@ public class Application {
     }
 
     private void sleep() {
-        int mills = 100;
         // Trying to slow to 100%, browsers resolution on the system
         // time is not accurate enough to check every interrurpt. So
         // we check every 4 interrupts.
@@ -139,7 +141,7 @@ public class Application {
     }
 
     public void repaint() {
-        refreshNextInterrupt = true;
+        willRefresh = true;
     }
 
     public void lostFocus() {
@@ -171,7 +173,7 @@ public class Application {
 
         if (key.pause()) {
             if (key.pressed()) {
-                resetAtNextInterrupt = true;
+                willReset = true;
             }
             return;
         }
