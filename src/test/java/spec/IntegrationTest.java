@@ -193,6 +193,19 @@ public class IntegrationTest extends AbstractTest {
         screenShoot();
     }
 
+    @Test
+    public void testLik_reversi2_recording() {
+        // given
+        Lik.loadRom(base, roms);
+        Lik.loadGame(base, roms, "reversi2");
+
+        // when
+        assertRecord("reversi2.rec");
+
+        // then
+        screenShoot();
+    }
+
     private void assertRecord(String path) {
         fileRecorder.startWriting();
         int lastTick = hard.loadRecord(TEST_RESOURCES + "recordings/" + path);
