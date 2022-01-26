@@ -100,6 +100,10 @@ public class Hardware {
         cpuSuspended = true;
     }
 
+    public void resume() {
+        cpuSuspended = false;
+    }
+
     protected void out8(int port, int bite) {
         // please override if needed
     }
@@ -117,8 +121,12 @@ public class Hardware {
     }
 
     public void reset() {
+        justReset();
         cpuEnabled = true;
         cpuSuspended = false;
+    }
+
+    private void justReset() {
         cpu.reset();
         ports.reset();
         keyLogger.reset();
@@ -142,6 +150,13 @@ public class Hardware {
         int lastTick = record.load(path);
         reset();
         return lastTick;
+    }
+
+    public void loadData(String path) {
+        pause();
+        justReset();
+        roms.load(path);
+        resume();
     }
 
     // components getters

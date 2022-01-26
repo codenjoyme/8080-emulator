@@ -58,6 +58,10 @@ public class Key {
         return code == NUM_PLUS;
     }
 
+    public boolean numComma() {
+        return code == NUM_COMMA;
+    }
+
     public boolean pressed() {
         return press;
     }
@@ -93,7 +97,7 @@ public class Key {
                 new Key(code, up, MOD_SHIFT),
                 new Key(code, up, MOD_ALT),
                 new Key(code, up, MOD_CTRL),
-                
+
                 new Key(code, up, MOD_SHIFT | MOD_ALT),
                 new Key(code, up, MOD_SHIFT | MOD_CTRL),
                 new Key(code, up, MOD_ALT | MOD_CTRL),
@@ -110,6 +114,7 @@ public class Key {
                 || numSlash()
                 || numStar()
                 || numMinus()
-                || numPlus();
+                || numPlus()
+                || numComma();
     }
 }

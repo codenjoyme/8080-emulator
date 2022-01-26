@@ -1,6 +1,7 @@
 package spec;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -44,6 +45,7 @@ public class RomLoader {
             int length = is.available();
             Range range = new Range(offset, - length);
             logLoading(url.toString(), range);
+            cpu.PC(offset);
             return readBytes(is, memory.all(), range);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -116,5 +118,37 @@ public class RomLoader {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void load(String path) {
+        try {
+            File file = new File(path);
+            URL url = file.getParentFile().toURI().toURL();
+            switch (substringAfter(file.getName(), ".")) {
+                case "com": {
+                    loadROM(url, file.getName(), 0x0100);
+                    break;
+                }
+                case "rom":
+                case "bin": {
+                    loadROM(url, file.getName(), 0xC000);
+                    break;
+                }
+                case "rks": {
+                    loadRKS(url, file.getName());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String substringAfter(String name, String delimiter) {
+        int index = name.indexOf(delimiter);
+        if (index == -1) {
+            return name;
+        }
+        return name.substring(index + 1);
     }
 }
