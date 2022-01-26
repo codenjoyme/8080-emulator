@@ -166,7 +166,7 @@ public class Application {
         if (key.numSlash()) {
             if (key.pressed()) {
                 // TODO как сделать рабочим в веб версии?
-                if (base.getFile().startsWith("http")) return;
+                if (base.toString().startsWith("http")) return;
 
                 openFileDialog(file -> hard.loadRecord(file.getAbsolutePath()),
                         ".",
@@ -179,7 +179,7 @@ public class Application {
         if (key.numComma()) {
             if (key.pressed()) {
                 // TODO как сделать рабочим в веб версии?
-                if (base.getFile().startsWith("http")) return;
+                if (base.toString().startsWith("http")) return;
 
                 openFileDialog(file -> hard.loadData(file.getAbsolutePath()),
                         // TODO а что если спецалист, а не лик?
