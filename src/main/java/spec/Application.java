@@ -13,14 +13,13 @@ public class Application {
 
     private int refreshRate = 1;  // refresh every 'n' interrupts
 
-    private int interruptCounter = 0;
+    private int interrupt = 0;
     private boolean resetAtNextInterrupt = false;
     private boolean pauseAtNextInterrupt = false;
     private boolean refreshNextInterrupt = true;
 
-    private long timeOfLastInterrupt = 0;
-    private long timeOfLastSample = 0;
-    private boolean runAtFullSpeed = false;
+    private long last = 0;
+    private boolean fullSpeed = false;
 
     private Graphic graphic;
     private Hardware hard;
@@ -106,32 +105,31 @@ public class Application {
             hard.reset();
         }
 
-        interruptCounter++;
-
-        // Update speed indicator every 2 seconds of 'Spechard time'
-        if ((interruptCounter % 100) == 0) {
-            // обновить значение скорости эмуляции
-        }
+        interrupt++;
 
         // Обновлять экран каждое прерывание по умолчанию
-        if ((interruptCounter % refreshRate) == 0) {
+        if ((interrupt % refreshRate) == 0) {
             hard.video().screenPaint();
             graphic.paintBuffer();
         }
-        // возвращает текущее системное время в виде миллисекунд,
-        // прошедших с 1 января 1970 года
-        timeOfLastInterrupt = System.currentTimeMillis();
 
+        if (!fullSpeed) {
+            sleep();
+        }
+    }
+
+    private void sleep() {
         // Trying to slow to 100%, browsers resolution on the system
         // time is not accurate enough to check every interrurpt. So
         // we check every 4 interrupts.
-        if ((interruptCounter % 4) == 0) {
-            long durOfLastInterrupt = timeOfLastInterrupt - timeOfLastSample;
-            timeOfLastSample = timeOfLastInterrupt;
+        if ((interrupt % 4) == 0) {
+            long time = System.currentTimeMillis();
+            long duration = time - last;
+            last = time;
             // запомним текущее время, как предыдущее.
-            if (!runAtFullSpeed && (durOfLastInterrupt < 40)) {
+            if (duration < 40) {
                 try {
-                    Thread.sleep(50 - durOfLastInterrupt); // 50
+                    Thread.sleep(50 - duration);
                 } catch (Exception ignored) {
                     // do nothing
                 }
@@ -165,7 +163,7 @@ public class Application {
 
         if (key.numStar()) {
             if (key.pressed()) {
-                runAtFullSpeed = !runAtFullSpeed;
+                fullSpeed = !fullSpeed;
             }
             return;
         }
