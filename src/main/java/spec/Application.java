@@ -21,7 +21,7 @@ public class Application {
     private boolean willRefresh = true;
 
     private long last = 0;
-    private int mills = 100;
+    private int delay = 100;
     private boolean fullSpeed = false;
 
     private Graphic graphic;
@@ -130,9 +130,9 @@ public class Application {
             long duration = time - last;
             last = time;
             // запомним текущее время, как предыдущее.
-            if (duration < mills) {
+            if (duration < delay) {
                 try {
-                    Thread.sleep(mills - duration);
+                    Thread.sleep(delay - duration);
                 } catch (Exception ignored) {
                     // do nothing
                 }
@@ -177,6 +177,34 @@ public class Application {
             }
             return;
         }
+
+        if (key.pause()) {
+            if (key.pressed()) {
+                willReset = true;
+            }
+            return;
+        }
+
+        if (key.numMinus()) {
+            if (key.pressed()) {
+                if (delay < 10) {
+                    delay++;
+                } else {
+                    delay = (int)(delay / 0.8);
+                }
+                Logger.debug("Delay increased: " + delay);
+            }
+            return;
+        }
+
+        if (key.numPlus()) {
+            if (key.pressed()) {
+                delay = (int)(delay * 0.8);
+                Logger.debug("Delay decreased: " + delay);
+            }
+            return;
+        }
+
 
         hard.ports().processKey(key);
     }

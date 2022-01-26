@@ -50,6 +50,14 @@ public class Key {
         return code == NUM_STAR;
     }
 
+    public boolean numMinus() {
+        return code == NUM_MINUS;
+    }
+
+    public boolean numPlus() {
+        return code == NUM_PLUS;
+    }
+
     public boolean pressed() {
         return press;
     }
@@ -100,6 +108,8 @@ public class Key {
                 || code == SHIFT
                 || pause()
                 || numSlash()
-                || numStar();
+                || numStar()
+                || numMinus()
+                || numPlus();
     }
 }
