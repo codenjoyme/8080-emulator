@@ -53,6 +53,10 @@ public class KeyRecord {
         return this;
     }
 
+    public boolean ready() {
+        return fileRecorder.ready();
+    }
+
     public void loadFromFile() {
         AtomicReference<Action> after = new AtomicReference<>(reset().after(0));
         fileRecorder.stopWriting();

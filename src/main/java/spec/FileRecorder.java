@@ -43,6 +43,10 @@ public class FileRecorder {
         writing = false;
     }
 
+    public boolean ready() {
+        return writing;
+    }
+
     public void startWriting() {
         writing = true;
     }
