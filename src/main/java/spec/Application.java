@@ -175,8 +175,13 @@ public class Application {
 
         if (key.numComma()) {
             if (key.pressed()) {
+                // TODO а что если спецалист, а не лик?
+                File directory = new File("./src/main/resources/lik/apps");
+                if (!directory.exists()) {
+                    directory = new File("./lik/apps");
+                }
                 openFileDialog(file -> hard.loadData(file.getAbsolutePath()),
-                        "./src/main/resources/lik/apps", // TODO а что если спецалист?
+                        directory.getAbsolutePath(),
                         "Data file",
                         "com", "rom", "rks", "bin");
             }
