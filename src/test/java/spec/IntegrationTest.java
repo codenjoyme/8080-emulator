@@ -168,17 +168,33 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    public void testLik_klad_recording() throws Exception {
+    public void testLik_klad_recording() {
         // given
         Lik.loadRom(base, roms);
         Lik.loadGame(base, roms, "klad");
 
         // when
+        assertRecord("klad.rec");
+
+        // then
+        screenShoot();
+    }
+
+    private void assertRecord(String path) {
         fileRecorder.startWriting();
-        int lastTick = hard.loadRecord(TEST_RESOURCES + "recordings/klad.rec");
+        int lastTick = hard.loadRecord(TEST_RESOURCES + "recordings/" + path);
         record.after(lastTick).stopCpu();
         cpu.PC(0xC000);
         hard.start();
+    }
+
+    @Test
+    public void testLik_keyboard() {
+        // given
+        Lik.loadRom(base, roms);
+
+        // when
+        assertRecord("keyboard.rec");
 
         // then
         screenShoot();
