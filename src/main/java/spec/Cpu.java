@@ -1188,14 +1188,14 @@ public class Cpu extends Registry {
                     ticks += 11;
                     break;
                 }
-                case 227: {
-                    int t = HL();
-                    int sp = SP();
-                    HL(read16(sp));
-                    write16(sp, t);
-                    ticks += 19;
-                    break;
-                }
+//                case 227: {
+//                    int t = HL();
+//                    int sp = SP();
+//                    HL(read16(sp));
+//                    write16(sp, t);
+//                    ticks += 19;
+//                    break;
+//                }
                 case 235: {
                     int t = HL();
                     HL(DE());

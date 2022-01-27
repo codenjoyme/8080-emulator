@@ -33,6 +33,7 @@ public class Assembler {
 
     private static final Command[] COMMANDS; static {
         COMMANDS = new Command[0x100];
+
         add(new LDA_XXYY());
         add(new LDAX_RR());
         add(new LHLD_XXYY());
@@ -42,6 +43,7 @@ public class Assembler {
         add(new SHLD_XXYY());
         add(new STA_XXYY());
         add(new STAX_RR());
+        add(new XTHL());
 
         add(new JMP_XXYY());
         add(new JNZ_XXYY());
