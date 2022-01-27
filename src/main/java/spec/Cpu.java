@@ -12,20 +12,9 @@ import java.util.function.Supplier;
 
 import static spec.Constants.*;
 import static spec.WordMath.*;
+import static spec.assembler.command.Parity.parity;
 
 public class Cpu extends Registry {
-
-    private static final boolean[] parity = new boolean[256]; static {
-        for (int i = 0; i < 256; i++) {
-            boolean p = true;
-            for (int j = 0; j < 8; j++) {
-                if ((i & (1 << j)) != 0) {
-                    p = !p;
-                }
-            }
-            parity[i] = p;
-        }
-    }
 
     private Consumer<Integer> onTick;
     private Supplier<Boolean> onInterrupt;
@@ -317,11 +306,11 @@ public class Cpu extends Registry {
 //                    ticks += 4;
 //                    break;
 //                }
-                case 39: {
-                    daa_a();
-                    ticks += 4;
-                    break;
-                }
+//                case 39: {
+//                    daa_a();
+//                    ticks += 4;
+//                    break;
+//                }
                 case 47: {
                     cpl_a();
                     ticks += 4;
@@ -754,46 +743,46 @@ public class Cpu extends Registry {
 //                }
 
 
-                case 144: {
-                    sub_a(B());
-                    ticks += 4;
-                    break;
-                }
-                case 145: {
-                    sub_a(C());
-                    ticks += 4;
-                    break;
-                }
-                case 146: {
-                    sub_a(D());
-                    ticks += 4;
-                    break;
-                }
-                case 147: {
-                    sub_a(E());
-                    ticks += 4;
-                    break;
-                }
-                case 148: {
-                    sub_a(H());
-                    ticks += 4;
-                    break;
-                }
-                case 149: {
-                    sub_a(L());
-                    ticks += 4;
-                    break;
-                }
-                case 150: {
-                    sub_a(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
-                case 151: {
-                    sub_a(A());
-                    ticks += 4;
-                    break;
-                }
+//                case 144: {
+//                    sub_a(B());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 145: {
+//                    sub_a(C());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 146: {
+//                    sub_a(D());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 147: {
+//                    sub_a(E());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 148: {
+//                    sub_a(H());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 149: {
+//                    sub_a(L());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 150: {
+//                    sub_a(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 151: {
+//                    sub_a(A());
+//                    ticks += 4;
+//                    break;
+//                }
 
 
                 case 152: {
@@ -1368,11 +1357,11 @@ public class Cpu extends Registry {
 //                    ticks += 7;
 //                    break;
 //                }
-                case 214: {
-                    sub_a(read8PC());
-                    ticks += 7;
-                    break;
-                }
+//                case 214: {
+//                    sub_a(read8PC());
+//                    ticks += 7;
+//                    break;
+//                }
                 case 222: {
                     sbc_a(read8PC());
                     ticks += 7;
@@ -1496,19 +1485,19 @@ public class Cpu extends Registry {
         A(ans);
     }
 
-    private void sub_a(int b) {
-        int a = A();
-        int wans = a - b;
-        int ans = lo(wans);
-
-        ts((ans & T7s) != 0);
-        tz(ans == 0);
-        tc((wans & x100) != 0);
-        tp(((a ^ b) & (a ^ ans) & x80) != 0);
-        th((((a & x0F) - (b & x0F)) & T4h) != 0);
-
-        A(ans);
-    }
+//    private void sub_a(int b) {
+//        int a = A();
+//        int wans = a - b;
+//        int ans = lo(wans);
+//
+//        ts((ans & T7s) != 0);
+//        tz(ans == 0);
+//        tc((wans & x100) != 0);
+//        tp(((a ^ b) & (a ^ ans) & x80) != 0);
+//        th((((a & x0F) - (b & x0F)) & T4h) != 0);
+//
+//        A(ans);
+//    }
 
 //    private void rlc_a() {
 //        int ans = A();
@@ -1633,27 +1622,27 @@ public class Cpu extends Registry {
         A(ans);
     }
 
-    private void daa_a() {
-        int ans = A();
-        int incr = 0;
-        boolean carry = tc();
-
-        if (th() || (ans & x0F) > x09) {
-            incr |= x06;
-        }
-        if (carry || (ans > x9F) || ((ans > x8F) && ((ans & x0F) > x09))) {
-            incr |= x60;
-        }
-        if (ans > x99) {
-            carry = true;
-        }
-        sub_a(incr);
-
-        ans = A();
-
-        tc(carry);
-        tp(parity[ans]);
-    }
+//    private void daa_a() {
+//        int ans = A();
+//        int incr = 0;
+//        boolean carry = tc();
+//
+//        if (th() || (ans & x0F) > x09) {
+//            incr |= x06;
+//        }
+//        if (carry || (ans > x9F) || ((ans > x8F) && ((ans & x0F) > x09))) {
+//            incr |= x60;
+//        }
+//        if (ans > x99) {
+//            carry = true;
+//        }
+//        sub_a(incr);
+//
+//        ans = A();
+//
+//        tc(carry);
+//        tp(parity[ans]);
+//    }
 
     private void scf() {
         th(false);

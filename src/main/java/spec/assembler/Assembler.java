@@ -39,6 +39,9 @@ public class Assembler {
         add(new RRC());
         add(new RAL());
         add(new RAR());
+        add(new DAA());
+        add(new SUB_R());
+        add(new SUI_XX());
     }
 
     private static void add(Command command) {
