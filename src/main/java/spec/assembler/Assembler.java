@@ -40,6 +40,7 @@ public class Assembler {
         add(new LXI_RR_XXYY());
         add(new MOV_R_R());
         add(new MVI_R_XX());
+        add(new PCHL());
         add(new SHLD_XXYY());
         add(new STA_XXYY());
         add(new STAX_RR());

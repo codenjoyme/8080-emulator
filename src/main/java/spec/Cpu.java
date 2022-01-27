@@ -1082,11 +1082,11 @@ public class Cpu extends Registry {
 //                    ticks += 10;
 //                    break;
 //                }
-                case 233: {
-                    PC(HL());
-                    ticks += 4;
-                    break;
-                }
+//                case 233: {
+//                    PC(HL());
+//                    ticks += 4;
+//                    break;
+//                }
 //                case 241: {
 //                    AF(pop16());
 //                    ticks += 10;
