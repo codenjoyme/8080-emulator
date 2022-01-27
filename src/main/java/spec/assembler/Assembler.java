@@ -1,7 +1,23 @@
 package spec.assembler;
 
 import spec.WordMath;
-import spec.assembler.command.*;
+import spec.assembler.command.NONE;
+import spec.assembler.command.NOP;
+import spec.assembler.command.copy.*;
+import spec.assembler.command.jump.*;
+import spec.assembler.command.math.bits.RAL;
+import spec.assembler.command.math.bits.RAR;
+import spec.assembler.command.math.bits.RLC;
+import spec.assembler.command.math.bits.RRC;
+import spec.assembler.command.math.flag.*;
+import spec.assembler.command.math.incdec.DCR_R;
+import spec.assembler.command.math.incdec.DCX_RR;
+import spec.assembler.command.math.incdec.INR_R;
+import spec.assembler.command.math.incdec.INX_RR;
+import spec.assembler.command.math.logic.*;
+import spec.assembler.command.math.sum.*;
+import spec.assembler.command.stack.POP_RS;
+import spec.assembler.command.stack.PUSH_RS;
 
 import java.util.Arrays;
 import java.util.LinkedList;
