@@ -9,7 +9,7 @@ import java.util.List;
 import static spec.Constants.x10000;
 import static spec.WordMath.word;
 
-public class DAD_R extends Command {
+public class DAD_RR extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(0x09, 0x19, 0x29, 0x39);
 

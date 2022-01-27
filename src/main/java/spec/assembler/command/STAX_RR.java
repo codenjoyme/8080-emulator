@@ -1,17 +1,14 @@
 package spec.assembler.command;
 
-import spec.Reg;
 import spec.Registry;
 import spec.assembler.Command;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static spec.WordMath.inc16;
+public class STAX_RR extends Command {
 
-public class INX_R extends Command {
-
-    private static final List<Integer> CODES = Arrays.asList(0x03, 0x13, 0x23, 0x33);
+    private static final List<Integer> CODES = Arrays.asList(0x02, 0x12);
 
     @Override
     public List<Integer> codes() {
@@ -20,24 +17,22 @@ public class INX_R extends Command {
 
     @Override
     public List<String> registers() {
-        return BDHSP;
+        return BD;
     }
-    
+
     @Override
     public String pattern() {
-        return "INX (B|D|H|SP)";
+        return "STAX (B|D)";
     }
 
     @Override
     public int ticks() {
-        return 6;
+        return 7;
     }
 
     @Override
     public void apply(int command, Registry r) {
-        Reg reg = r.reg16(rindex(command));
-        int op = reg.get();
-        int word = inc16(op);
-        reg.set(word);
+        int addr = r.reg16(rindex(command)).get();
+        r.data().write8(addr, r.A());
     }
 }

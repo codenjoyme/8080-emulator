@@ -9,7 +9,7 @@ import java.util.List;
 
 import static spec.Registry.T7s;
 import static spec.WordMath.lo;
-import static spec.assembler.command.Parity.parity;
+import static spec.assembler.Parity.parity;
 
 // TODO test me
 public class XRA_R extends Command {

@@ -1,4 +1,4 @@
-package spec.assembler.command;
+package spec.assembler;
 
 public class Parity {
 

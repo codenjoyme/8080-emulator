@@ -1,38 +1,44 @@
 package spec.assembler.command;
 
+import spec.Reg;
 import spec.Registry;
 import spec.assembler.Command;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class STAX_R extends Command {
+import static spec.WordMath.dec16;
 
-    private static final List<Integer> CODES = Arrays.asList(0x02, 0x12);
+// TODO test me
+public class DCX_RR extends Command {
+
+    private static final List<Integer> CODES = Arrays.asList(0x0B, 0x1B, 0x2B, 0x3B);
 
     @Override
     public List<Integer> codes() {
         return CODES;
     }
-
+    
     @Override
     public List<String> registers() {
-        return BD;
+        return BDHSP;
     }
-
+    
     @Override
     public String pattern() {
-        return "STAX (B|D)";
+        return "DCX (B|D|H|SP)";
     }
 
     @Override
     public int ticks() {
-        return 7;
+        return 6;
     }
 
     @Override
     public void apply(int command, Registry r) {
-        int addr = r.reg16(rindex(command)).get();
-        r.data().write8(addr, r.A());
+        Reg reg = r.reg16(rindex(command));
+        int op = reg.get();
+        int word = dec16(op);
+        reg.set(word);
     }
 }

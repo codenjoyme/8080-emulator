@@ -1,14 +1,17 @@
 package spec.assembler.command;
 
+import spec.Reg;
 import spec.Registry;
 import spec.assembler.Command;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class LXI_R_XXYY extends Command  {
+import static spec.WordMath.inc16;
 
-    private static final List<Integer> CODES = Arrays.asList(0x01, 0x11, 0x21, 0x31);
+public class INX_RR extends Command {
+
+    private static final List<Integer> CODES = Arrays.asList(0x03, 0x13, 0x23, 0x33);
 
     @Override
     public List<Integer> codes() {
@@ -19,25 +22,22 @@ public class LXI_R_XXYY extends Command  {
     public List<String> registers() {
         return BDHSP;
     }
-
+    
     @Override
     public String pattern() {
-        return "LXI (B|D|H|SP),(....)";
-    }
-
-    @Override
-    public int size() {
-        return 3;
+        return "INX (B|D|H|SP)";
     }
 
     @Override
     public int ticks() {
-        return 10;
+        return 6;
     }
 
     @Override
     public void apply(int command, Registry r) {
-        int word = r.data().read16(r.rPC);
-        r.reg16(rindex(command)).set(word);
+        Reg reg = r.reg16(rindex(command));
+        int op = reg.get();
+        int word = inc16(op);
+        reg.set(word);
     }
 }

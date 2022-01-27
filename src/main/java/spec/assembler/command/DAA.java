@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static spec.Constants.*;
-import static spec.assembler.command.Parity.parity;
+import static spec.assembler.Parity.parity;
 import static spec.assembler.command.SUB_R.sub8;
 
 // TODO test me

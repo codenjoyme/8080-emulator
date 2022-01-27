@@ -652,12 +652,6 @@ public class Cpu extends Registry {
                     break;
                 }
 
-//                case 127: {
-//                    ticks += 4;
-//                    break;
-//                }
-
-
 //                case 128: {
 //                    add_a(B());
 //                    ticks += 4;

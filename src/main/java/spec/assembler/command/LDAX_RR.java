@@ -6,7 +6,7 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-public class LDAX_R extends Command {
+public class LDAX_RR extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(0x0A, 0x1A);
 

@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static spec.Registry.T7s;
-import static spec.assembler.command.Parity.parity;
+import static spec.assembler.Parity.parity;
 
 // TODO test me
 public class ORA_R extends Command {
