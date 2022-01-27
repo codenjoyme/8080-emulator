@@ -1092,11 +1092,11 @@ public class Cpu extends Registry {
 //                    ticks += 10;
 //                    break;
 //                }
-                case 249: {
-                    SP(HL());
-                    ticks += 6;
-                    break;
-                }
+//                case 249: {
+//                    SP(HL());
+//                    ticks += 6;
+//                    break;
+//                }
 
 
 //                case 194: {
