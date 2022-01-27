@@ -31,6 +31,8 @@ public class Assembler {
         add(new DCR_R());
         add(new MVI_R_XX());
         add(new MOV_R_R());
+        add(new ADD_R());
+        add(new ADI_XX());
     }
 
     private static void add(Command command) {

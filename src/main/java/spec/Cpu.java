@@ -339,45 +339,45 @@ public class Cpu extends Registry {
                 }
 
 
-                case 64: {
-                    ticks += 4;
-                    break;
-                }
-                case 65: {
-                    B(C());
-                    ticks += 4;
-                    break;
-                }
-                case 66: {
-                    B(D());
-                    ticks += 4;
-                    break;
-                }
-                case 67: {
-                    B(E());
-                    ticks += 4;
-                    break;
-                }
-                case 68: {
-                    B(H());
-                    ticks += 4;
-                    break;
-                }
-                case 69: {
-                    B(L());
-                    ticks += 4;
-                    break;
-                }
-                case 70: {
-                    B(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
-                case 71: {
-                    B(A());
-                    ticks += 4;
-                    break;
-                }
+//                case 64: {
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 65: {
+//                    B(C());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 66: {
+//                    B(D());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 67: {
+//                    B(E());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 68: {
+//                    B(H());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 69: {
+//                    B(L());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 70: {
+//                    B(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 71: {
+//                    B(A());
+//                    ticks += 4;
+//                    break;
+//                }
 
 
 //                case 72: {
@@ -670,46 +670,46 @@ public class Cpu extends Registry {
                 }
 
 
-                case 128: {
-                    add_a(B());
-                    ticks += 4;
-                    break;
-                }
-                case 129: {
-                    add_a(C());
-                    ticks += 4;
-                    break;
-                }
-                case 130: {
-                    add_a(D());
-                    ticks += 4;
-                    break;
-                }
-                case 131: {
-                    add_a(E());
-                    ticks += 4;
-                    break;
-                }
-                case 132: {
-                    add_a(H());
-                    ticks += 4;
-                    break;
-                }
-                case 133: {
-                    add_a(L());
-                    ticks += 4;
-                    break;
-                }
-                case 134: {
-                    add_a(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
-                case 135: {
-                    add_a(A());
-                    ticks += 4;
-                    break;
-                }
+//                case 128: {
+//                    add_a(B());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 129: {
+//                    add_a(C());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 130: {
+//                    add_a(D());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 131: {
+//                    add_a(E());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 132: {
+//                    add_a(H());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 133: {
+//                    add_a(L());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 134: {
+//                    add_a(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 135: {
+//                    add_a(A());
+//                    ticks += 4;
+//                    break;
+//                }
 
 
                 case 136: {
@@ -1358,11 +1358,11 @@ public class Cpu extends Registry {
                 }
 
 
-                case 198: {
-                    add_a(read8PC());
-                    ticks += 7;
-                    break;
-                }
+//                case 198: {
+//                    add_a(read8PC());
+//                    ticks += 7;
+//                    break;
+//                }
                 case 206: {
                     adc_a(read8PC());
                     ticks += 7;
@@ -1467,19 +1467,19 @@ public class Cpu extends Registry {
         A(ans);
     }
 
-    private void add_a(int b) {
-        int a = A();
-        int wans = a + b;
-        int ans = lo(wans);
-
-        ts((ans & T7s) != 0);
-        tz(ans == 0);
-        tc((wans & x100) != 0);
-        tp(((a ^ ~b) & (a ^ ans) & x80) != 0);
-        th((((a & x0F) + (b & x0F)) & T4h) != 0);
-
-        A(ans);
-    }
+//    private void add_a(int b) {
+//        int a = A();
+//        int wans = a + b;
+//        int ans = lo(wans);
+//
+//        ts((ans & T7s) != 0);
+//        tz(ans == 0);
+//        tc((wans & x100) != 0);
+//        tp(((a ^ ~b) & (a ^ ans) & x80) != 0);
+//        th((((a & x0F) + (b & x0F)) & T4h) != 0);
+//
+//        A(ans);
+//    }
 
     private void sbc_a(int b) {
         int a = A();
