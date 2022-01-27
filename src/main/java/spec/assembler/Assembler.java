@@ -45,6 +45,7 @@ public class Assembler {
         add(new SPHL());
         add(new STA_XXYY());
         add(new STAX_RR());
+        add(new XCHG());
         add(new XTHL());
 
         add(new JMP_XXYY());
