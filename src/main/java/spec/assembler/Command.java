@@ -47,9 +47,9 @@ public abstract class Command {
             return;
         }
 
-        throw new IllegalArgumentException(
-                String.format("Command codes (%s) != registers (%s) for: %s",
-                        codes, registers, this.getClass().getSimpleName()));
+//        throw new IllegalArgumentException(
+//                String.format("Command codes (%s) != registers (%s) for: %s",
+//                        codes, registers, this.getClass().getSimpleName()));
     }
 
     public Optional<String> parse(String command) {

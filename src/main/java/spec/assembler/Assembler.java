@@ -55,6 +55,7 @@ public class Assembler {
         add(new ORI_XX());
         add(new CMP_R());
         add(new CPI_XX());
+        add(new POP_RS());
     }
 
     private static void add(Command command) {

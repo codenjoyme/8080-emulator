@@ -6,6 +6,8 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
+import static spec.Registry._SP;
+
 public class LDAX_RR extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(0x0A, 0x1A);
@@ -32,7 +34,7 @@ public class LDAX_RR extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int addr = r.reg16(rindex(command)).get();
+        int addr = r.reg16(rindex(command), _SP).get();
         int bite = r.data().read8(addr);
         r.A(bite);
     }

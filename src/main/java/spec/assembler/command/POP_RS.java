@@ -6,11 +6,12 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-import static spec.Registry._SP;
+import static spec.Registry._PSW;
 
-public class LXI_RR_XXYY extends Command  {
+public class POP_RS extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(0x01, 0x11, 0x21, 0x31);
+    private static final List<Integer> CODES = Arrays.asList(
+            0xC1, 0xD1, 0xE1, 0xF1);
 
     @Override
     public List<Integer> codes() {
@@ -24,12 +25,7 @@ public class LXI_RR_XXYY extends Command  {
 
     @Override
     public String pattern() {
-        return "LXI (B|D|H|SP),(....)";
-    }
-
-    @Override
-    public int size() {
-        return 3;
+        return "POP (B|D|H|PSW)";
     }
 
     @Override
@@ -39,7 +35,7 @@ public class LXI_RR_XXYY extends Command  {
 
     @Override
     public void apply(int command, Registry r) {
-        int word = r.data().read16(r.rPC);
-        r.reg16(rindex(command), _SP).set(word);
+        int word = r.data().read16(r.rSP);
+        r.reg16(rindex(command), _PSW).set(word);
     }
 }

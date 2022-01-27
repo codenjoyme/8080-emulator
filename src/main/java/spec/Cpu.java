@@ -1062,36 +1062,36 @@ public class Cpu extends Registry {
                 }
 
 
-                case 193: {
-                    BC(pop16());
-                    ticks += 10;
-                    break;
-                }
+//                case 193: {
+//                    BC(pop16());
+//                    ticks += 10;
+//                    break;
+//                }
                 case 201: {
                     popPC();
                     ticks += 10;
                     break;
                 }
-                case 209: {
-                    DE(pop16());
-                    ticks += 10;
-                    break;
-                }
-                case 225: {
-                    HL(pop16());
-                    ticks += 10;
-                    break;
-                }
+//                case 209: {
+//                    DE(pop16());
+//                    ticks += 10;
+//                    break;
+//                }
+//                case 225: {
+//                    HL(pop16());
+//                    ticks += 10;
+//                    break;
+//                }
                 case 233: {
                     PC(HL());
                     ticks += 4;
                     break;
                 }
-                case 241: {
-                    AF(pop16());
-                    ticks += 10;
-                    break;
-                }
+//                case 241: {
+//                    AF(pop16());
+//                    ticks += 10;
+//                    break;
+//                }
                 case 249: {
                     SP(HL());
                     ticks += 6;

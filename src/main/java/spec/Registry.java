@@ -30,6 +30,24 @@ public class Registry {
     private int SP;
     private int PC;
 
+    public Reg rAF = new Reg() {
+
+        @Override
+        public int get() {
+            return AF();
+        }
+
+        @Override
+        public void set(int word) {
+            AF(word);
+        }
+
+        @Override
+        public String toString() {
+            return "AF=" + hex16(get());
+        }
+    };
+
     public Reg rBC = new Reg() {
 
         @Override
@@ -175,12 +193,15 @@ public class Registry {
         HL(0);
     }
 
-    public Reg reg16(int index) {
+    public static boolean _SP = true;
+    public static boolean _PSW = !_SP;
+
+    public Reg reg16(int index, boolean spOrPsw) {
         switch (index) {
             case 0: return rBC;
             case 1: return rDE;
             case 2: return rHL;
-            case 3: return rSP;
+            case 3: return (spOrPsw == _SP) ? rSP : rAF;
         }
         throw new UnsupportedOperationException("Unexpected registry index: " + index);
     }
