@@ -96,6 +96,8 @@ public class Assembler {
         add(new CP_XXYY());
         add(new CM_XXYY());
 
+        add(new RET());
+
         add(new POP_RS());
         add(new PUSH_RS());
 
