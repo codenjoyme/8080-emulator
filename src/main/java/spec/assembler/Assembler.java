@@ -48,15 +48,15 @@ public class Assembler {
         add(new XCHG());
         add(new XTHL());
 
-        add(new JMP_XXYY());
-        add(new JNZ_XXYY());
-        add(new JZ_XXYY());
-        add(new JNC_XXYY());
         add(new JC_XXYY());
-        add(new JPO_XXYY());
-        add(new JPE_XXYY());
-        add(new JP_XXYY());
         add(new JM_XXYY());
+        add(new JMP_XXYY());
+        add(new JNC_XXYY());
+        add(new JNZ_XXYY());
+        add(new JP_XXYY());
+        add(new JPE_XXYY());
+        add(new JPO_XXYY());
+        add(new JZ_XXYY());
 
         add(new RLC());
         add(new RRC());
@@ -93,24 +93,25 @@ public class Assembler {
         add(new SUI_XX());
 
         add(new CALL_XXYY());
-        add(new CNZ_XXYY());
-        add(new CZ_XXYY());
-        add(new CNC_XXYY());
         add(new CC_XXYY());
-        add(new CPO_XXYY());
-        add(new CPE_XXYY());
-        add(new CP_XXYY());
         add(new CM_XXYY());
+        add(new CNC_XXYY());
+        add(new CNZ_XXYY());
+        add(new CP_XXYY());
+        add(new CPE_XXYY());
+        add(new CPO_XXYY());
+        add(new CZ_XXYY());
+        add(new RST_N());
 
-        add(new RET());
-        add(new RNZ());
-        add(new RZ());
-        add(new RNC());
         add(new RC());
-        add(new RPO());
-        add(new RPE());
-        add(new RP());
+        add(new RET());
         add(new RM());
+        add(new RNC());
+        add(new RNZ());
+        add(new RP());
+        add(new RPE());
+        add(new RPO());
+        add(new RZ());
 
         add(new POP_RS());
         add(new PUSH_RS());

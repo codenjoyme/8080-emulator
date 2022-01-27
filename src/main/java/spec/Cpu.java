@@ -1381,55 +1381,55 @@ public class Cpu extends Registry {
 //                    break;
 //                }
 
-
-                case 199: {
-                    pushPC();
-                    PC(0);
-                    ticks += 11;
-                    break;
-                }
-                case 207: {
-                    pushPC();
-                    PC(8);
-                    ticks += 11;
-                    break;
-                }
-                case 215: {
-                    pushPC();
-                    PC(16);
-                    ticks += 11;
-                    break;
-                }
-                case 223: {
-                    pushPC();
-                    PC(24);
-                    ticks += 11;
-                    break;
-                }
-                case 231: {
-                    pushPC();
-                    PC(32);
-                    ticks += 11;
-                    break;
-                }
-                case 239: {
-                    pushPC();
-                    PC(40);
-                    ticks += 11;
-                    break;
-                }
-                case 247: {
-                    pushPC();
-                    PC(48);
-                    ticks += 11;
-                    break;
-                }
-                case 255: {
-                    pushPC();
-                    PC(56);
-                    ticks += 11;
-                    break;
-                }
+//
+//                case 199: {
+//                    pushPC();
+//                    PC(0);
+//                    ticks += 11;
+//                    break;
+//                }
+//                case 207: {
+//                    pushPC();
+//                    PC(8);
+//                    ticks += 11;
+//                    break;
+//                }
+//                case 215: {
+//                    pushPC();
+//                    PC(16);
+//                    ticks += 11;
+//                    break;
+//                }
+//                case 223: {
+//                    pushPC();
+//                    PC(24);
+//                    ticks += 11;
+//                    break;
+//                }
+//                case 231: {
+//                    pushPC();
+//                    PC(32);
+//                    ticks += 11;
+//                    break;
+//                }
+//                case 239: {
+//                    pushPC();
+//                    PC(40);
+//                    ticks += 11;
+//                    break;
+//                }
+//                case 247: {
+//                    pushPC();
+//                    PC(48);
+//                    ticks += 11;
+//                    break;
+//                }
+//                case 255: {
+//                    pushPC();
+//                    PC(56);
+//                    ticks += 11;
+//                    break;
+//                }
             }
         }
     }
