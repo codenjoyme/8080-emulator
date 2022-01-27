@@ -1173,11 +1173,11 @@ public class Cpu extends Registry {
                 }
                 
 
-                case 195: {
-                    PC(read16(PC()));
-                    ticks += 10;
-                    break;
-                }
+//                case 195: {
+//                    PC(read16(PC()));
+//                    ticks += 10;
+//                    break;
+//                }
                 case 211: {
                     data.out8(read8PC(), A());
                     ticks += 11;
