@@ -11,7 +11,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static spec.Constants.*;
-import static spec.WordMath.*;
+import static spec.WordMath.lo;
+import static spec.WordMath.word;
 import static spec.assembler.command.Parity.parity;
 
 public class Cpu extends Registry {
@@ -311,11 +312,11 @@ public class Cpu extends Registry {
 //                    ticks += 4;
 //                    break;
 //                }
-                case 47: {
-                    cpl_a();
-                    ticks += 4;
-                    break;
-                }
+//                case 47: {
+//                    cpl_a();
+//                    ticks += 4;
+//                    break;
+//                }
                 case 55: {
                     scf();
                     ticks += 4;
@@ -1614,13 +1615,13 @@ public class Cpu extends Registry {
         A(ans);
     }
 
-    private void cpl_a() {
-        int ans = A() ^ BITE;
-
-        th(true);
-
-        A(ans);
-    }
+//    private void cpl_a() {
+//        int ans = A() ^ BITE;
+//
+//        th(true);
+//
+//        A(ans);
+//    }
 
 //    private void daa_a() {
 //        int ans = A();

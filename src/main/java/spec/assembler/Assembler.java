@@ -44,6 +44,7 @@ public class Assembler {
         add(new SUI_XX());
         add(new SBB_R());
         add(new SBI_XX());
+        add(new CMA());
     }
 
     private static void add(Command command) {
