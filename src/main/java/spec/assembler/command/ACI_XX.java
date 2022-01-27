@@ -30,6 +30,11 @@ public class ACI_XX extends Command {
     }
 
     @Override
+    public int size() {
+        return 2;
+    }
+
+    @Override
     public int ticks() {
         return 7;
     }
