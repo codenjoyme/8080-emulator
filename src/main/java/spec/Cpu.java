@@ -41,9 +41,9 @@ public class Cpu extends Registry {
         return tick;
     }
 
-    private int read8(int addr) {
-        return data.read8(addr);
-    }
+//    private int read8(int addr) {
+//        return data.read8(addr);
+//    }
 
     private int read16(int addr) {
         return data.read16(addr);
@@ -53,9 +53,9 @@ public class Cpu extends Registry {
         data.write16(addr, word);
     }
 
-    private void write8(int addr, int bite) {
-        data.write8(addr, bite);
-    }
+//    private void write8(int addr, int bite) {
+//        data.write8(addr, bite);
+//    }
 
     private void push16(int word) {
         SP(word(SP() - 2));
@@ -1311,11 +1311,11 @@ public class Cpu extends Registry {
                 }
 
 
-                case 197: {
-                    push16(BC());
-                    ticks += 11;
-                    break;
-                }
+//                case 197: {
+//                    push16(BC());
+//                    ticks += 11;
+//                    break;
+//                }
                 case 205: {
                     int t = read16PC();
                     pushPC();
@@ -1323,21 +1323,21 @@ public class Cpu extends Registry {
                     ticks += 17;
                     break;
                 }
-                case 213: {
-                    push16(DE());
-                    ticks += 11;
-                    break;
-                }
-                case 229: {
-                    push16(HL());
-                    ticks += 11;
-                    break;
-                }
-                case 245: {
-                    push16(AF());
-                    ticks += 11;
-                    break;
-                }
+//                case 213: {
+//                    push16(DE());
+//                    ticks += 11;
+//                    break;
+//                }
+//                case 229: {
+//                    push16(HL());
+//                    ticks += 11;
+//                    break;
+//                }
+//                case 245: {
+//                    push16(AF());
+//                    ticks += 11;
+//                    break;
+//                }
 
 
 //                case 198: {
