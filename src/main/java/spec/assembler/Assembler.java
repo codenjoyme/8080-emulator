@@ -51,6 +51,8 @@ public class Assembler {
         add(new ANI_XX());
         add(new XRA_R());
         add(new XRI_XX());
+        add(new ORA_R());
+        add(new ORI_XX());
     }
 
     private static void add(Command command) {

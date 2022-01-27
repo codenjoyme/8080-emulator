@@ -13,7 +13,6 @@ import java.util.function.Supplier;
 import static spec.Constants.*;
 import static spec.WordMath.lo;
 import static spec.WordMath.word;
-import static spec.assembler.command.Parity.parity;
 
 public class Cpu extends Registry {
 
@@ -912,46 +911,46 @@ public class Cpu extends Registry {
 //                }
 
 
-                case 176: {
-                    or_a(B());
-                    ticks += 4;
-                    break;
-                }
-                case 177: {
-                    or_a(C());
-                    ticks += 4;
-                    break;
-                }
-                case 178: {
-                    or_a(D());
-                    ticks += 4;
-                    break;
-                }
-                case 179: {
-                    or_a(E());
-                    ticks += 4;
-                    break;
-                }
-                case 180: {
-                    or_a(H());
-                    ticks += 4;
-                    break;
-                }
-                case 181: {
-                    or_a(L());
-                    ticks += 4;
-                    break;
-                }
-                case 182: {
-                    or_a(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
-                case 183: {
-                    or_a(A());
-                    ticks += 4;
-                    break;
-                }
+//                case 176: {
+//                    or_a(B());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 177: {
+//                    or_a(C());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 178: {
+//                    or_a(D());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 179: {
+//                    or_a(E());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 180: {
+//                    or_a(H());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 181: {
+//                    or_a(L());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 182: {
+//                    or_a(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 183: {
+//                    or_a(A());
+//                    ticks += 4;
+//                    break;
+//                }
 
 
                 case 184: {
@@ -1378,11 +1377,11 @@ public class Cpu extends Registry {
 //                    ticks += 7;
 //                    break;
 //                }
-                case 246: {
-                    or_a(read8PC());
-                    ticks += 7;
-                    break;
-                }
+//                case 246: {
+//                    or_a(read8PC());
+//                    ticks += 7;
+//                    break;
+//                }
                 case 254: {
                     cp_a(read8PC());
                     ticks += 7;
@@ -1591,17 +1590,17 @@ public class Cpu extends Registry {
 //        A(ans);
 //    }
 
-    private void or_a(int b) {
-        int ans = A() | b;
-
-        ts((ans & T7s) != 0);
-        th(false);
-        tp(parity[ans]);
-        tz(ans == 0);
-        tc(false);
-
-        A(ans);
-    }
+//    private void or_a(int b) {
+//        int ans = A() | b;
+//
+//        ts((ans & T7s) != 0);
+//        th(false);
+//        tp(parity[ans]);
+//        tz(ans == 0);
+//        tc(false);
+//
+//        A(ans);
+//    }
 
 //    private void xor_a(int b) {
 //        int ans = lo(A() ^ b);
