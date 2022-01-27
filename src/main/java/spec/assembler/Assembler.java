@@ -38,6 +38,7 @@ public class Assembler {
         add(new RLC());
         add(new RRC());
         add(new RAL());
+        add(new RAR());
     }
 
     private static void add(Command command) {

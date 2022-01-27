@@ -312,11 +312,11 @@ public class Cpu extends Registry {
 //                    ticks += 4;
 //                    break;
 //                }
-                case 31: {
-                    rr_a();
-                    ticks += 4;
-                    break;
-                }
+//                case 31: {
+//                    rr_a();
+//                    ticks += 4;
+//                    break;
+//                }
                 case 39: {
                     daa_a();
                     ticks += 4;
@@ -1561,21 +1561,21 @@ public class Cpu extends Registry {
 //        A(ans);
 //    }
 
-    private void rr_a() {
-        int ans = A();
-        boolean c = (ans & x01) != 0;
-
-        if (tc()) {
-            ans = (ans >> 1) | x80;
-        } else {
-            ans >>= 1;
-        }
-
-        th(false);
-        tc(c);
-
-        A(ans);
-    }
+//    private void rr_a() {
+//        int ans = A();
+//        boolean c = (ans & x01) != 0;
+//
+//        if (tc()) {
+//            ans = (ans >> 1) | x80;
+//        } else {
+//            ans >>= 1;
+//        }
+//
+//        th(false);
+//        tc(c);
+//
+//        A(ans);
+//    }
 
     private void cp_a(int b) {
         int a = A();
