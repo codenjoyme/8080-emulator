@@ -60,6 +60,8 @@ public class Assembler {
         add(new JMP_XXYY());
         add(new JNZ_XXYY());
         add(new JZ_XXYY());
+        add(new JNC_XXYY());
+        add(new JC_XXYY());
     }
 
     private static void add(Command command) {

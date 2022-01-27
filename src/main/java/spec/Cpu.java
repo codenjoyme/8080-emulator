@@ -1117,24 +1117,24 @@ public class Cpu extends Registry {
 //                    ticks += 10;
 //                    break;
 //                }
-                case 210: {
-                    if (!tc()) {
-                        PC(read16PC());
-                    } else {
-                        PC(word(PC() + 2));
-                    }
-                    ticks += 10;
-                    break;
-                }
-                case 218: {
-                    if (tc()) {
-                        PC(read16PC());
-                    } else {
-                        PC(word(PC() + 2));
-                    }
-                    ticks += 10;
-                    break;
-                }
+//                case 210: {
+//                    if (!tc()) {
+//                        PC(read16PC());
+//                    } else {
+//                        PC(word(PC() + 2));
+//                    }
+//                    ticks += 10;
+//                    break;
+//                }
+//                case 218: {
+//                    if (tc()) {
+//                        PC(read16PC());
+//                    } else {
+//                        PC(word(PC() + 2));
+//                    }
+//                    ticks += 10;
+//                    break;
+//                }
                 case 226: {
                     if (!tp()) {
                         PC(read16PC());
