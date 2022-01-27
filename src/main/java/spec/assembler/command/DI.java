@@ -6,10 +6,10 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-public class NOP extends Command {
+public class DI extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
-            0x00);
+            0xF3);
 
     @Override
     public List<Integer> codes() {
@@ -18,7 +18,7 @@ public class NOP extends Command {
 
     @Override
     public String pattern() {
-        return "NOP";
+        return "DI";
     }
 
     @Override
@@ -28,6 +28,6 @@ public class NOP extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        // do nothing
+        // TODO понять что делает команда
     }
 }

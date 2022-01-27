@@ -10,8 +10,6 @@ import spec.assembler.Command;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static spec.WordMath.word;
-
 public class Cpu extends Registry {
 
     private Consumer<Integer> onTick;
@@ -44,46 +42,46 @@ public class Cpu extends Registry {
 //        return data.read8(addr);
 //    }
 
-    private int read16(int addr) {
-        return data.read16(addr);
-    }
+//    private int read16(int addr) {
+//        return data.read16(addr);
+//    }
 
-    private void write16(int addr, int word) {
-        data.write16(addr, word);
-    }
+//    private void write16(int addr, int word) {
+//        data.write16(addr, word);
+//    }
 
 //    private void write8(int addr, int bite) {
 //        data.write8(addr, bite);
 //    }
 
-    private void push16(int word) {
-        SP(word(SP() - 2));
-        write16(SP(), word);
-    }
+//    private void push16(int word) {
+//        SP(word(SP() - 2));
+//        write16(SP(), word);
+//    }
 
 //    private int read16(Reg reg) {
 //        return data.read16(reg);
 //    }
 
-    private int read8(Reg reg) {
-        return data.read8(reg);
-    }
+//    private int read8(Reg reg) {
+//        return data.read8(reg);
+//    }
 
 //    private int pop16() {
 //        return read16(rSP);
 //    }
 
-    private void pushPC() {
-        push16(PC());
-    }
+//    private void pushPC() {
+//        push16(PC());
+//    }
 
 //    private void popPC() {
 //        PC(pop16());
 //    }
 
-    private int read8PC() {
-        return read8(rPC);
-    }
+//    private int read8PC() {
+//        return read8(rPC);
+//    }
 
 //    private int read16PC() {
 //        return read16(rPC);
@@ -123,7 +121,7 @@ public class Cpu extends Registry {
                 ticks -= interrupt;
             }
 
-            int bite = read8PC();
+            int bite = data.read8(rPC);
             Command command = asm.find(bite);
             if (command != null) {
                 command.apply(bite, this);
@@ -131,6 +129,12 @@ public class Cpu extends Registry {
                 // прерывание на свою длительность в тактах
                 ticks += command.ticks();
                 continue;
+            }
+
+            if (bite == 0x76) { // TODO понять как устроена эта команда и выделить ее тоже
+                int haltsToInterrupt = (-ticks - 1) / 4 + 1;
+                ticks += haltsToInterrupt * 4;
+                break;
             }
             
             switch (bite) {
@@ -643,13 +647,6 @@ public class Cpu extends Registry {
 //                    ticks += 7;
 //                    break;
 //                }
-
-
-                case 118: {
-                    int haltsToInterrupt = (-ticks - 1) / 4 + 1;
-                    ticks += haltsToInterrupt * 4;
-                    break;
-                }
 
 //                case 128: {
 //                    add_a(B());
@@ -1202,15 +1199,6 @@ public class Cpu extends Registry {
 //                    ticks += 4;
 //                    break;
 //                }
-                case 243: {
-                    ticks += 4;
-                    break;
-                }
-                case 251: {
-                    ticks += 4;
-                    break;
-                }
-
 
 //                case 196: {
 //                    if (!tz()) {

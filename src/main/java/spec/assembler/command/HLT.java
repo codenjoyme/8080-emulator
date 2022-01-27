@@ -6,10 +6,10 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-public class NOP extends Command {
+public class HLT extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
-            0x00);
+            0x76);
 
     @Override
     public List<Integer> codes() {
@@ -18,16 +18,16 @@ public class NOP extends Command {
 
     @Override
     public String pattern() {
-        return "NOP";
+        return "HLT";
     }
 
     @Override
     public int ticks() {
-        return 4;
+        return 4; // TODO не верное значение
     }
 
     @Override
     public void apply(int command, Registry r) {
-        // do nothing
+        // TODO надо как-то остановить процессор
     }
 }

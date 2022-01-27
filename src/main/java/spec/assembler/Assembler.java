@@ -1,6 +1,8 @@
 package spec.assembler;
 
 import spec.WordMath;
+import spec.assembler.command.DI;
+import spec.assembler.command.EI;
 import spec.assembler.command.NONE;
 import spec.assembler.command.NOP;
 import spec.assembler.command.copy.*;
@@ -121,6 +123,9 @@ public class Assembler {
         add(new POP_RS());
         add(new PUSH_RS());
 
+        add(new DI());
+        add(new EI());
+        // add(new HLT()); // TODO добавить команду
         add(new NONE());
         add(new NOP());
     }
