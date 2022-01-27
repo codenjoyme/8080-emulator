@@ -62,25 +62,25 @@ public class Cpu extends Registry {
         write16(SP(), word);
     }
 
-    private int read16(Reg reg) {
-        return data.read16(reg);
-    }
+//    private int read16(Reg reg) {
+//        return data.read16(reg);
+//    }
 
     private int read8(Reg reg) {
         return data.read8(reg);
     }
 
-    private int pop16() {
-        return read16(rSP);
-    }
+//    private int pop16() {
+//        return read16(rSP);
+//    }
 
     private void pushPC() {
         push16(PC());
     }
 
-    private void popPC() {
-        PC(pop16());
-    }
+//    private void popPC() {
+//        PC(pop16());
+//    }
 
     private int read8PC() {
         return read8(rPC);
@@ -988,78 +988,78 @@ public class Cpu extends Registry {
 //                }
 
 
-                case 192: {
-                    if (!tz()) {
-                        popPC();
-                        ticks += 11;
-                    } else {
-                        ticks += 15;
-                    }
-                    break;
-                }
-                case 200: {
-                    if (tz()) {
-                        popPC();
-                        ticks += 11;
-                    } else {
-                        ticks += 15;
-                    }
-                    break;
-                }
-                case 208: {
-                    if (!tc()) {
-                        popPC();
-                        ticks += 11;
-                    } else {
-                        ticks += 15;
-                    }
-                    break;
-                }
-                case 216: {
-                    if (tc()) {
-                        popPC();
-                        ticks += 11;
-                    } else {
-                        ticks += 15;
-                    }
-                    break;
-                }
-                case 224: {
-                    if (!tp()) {
-                        popPC();
-                        ticks += 11;
-                    } else {
-                        ticks += 15;
-                    }
-                    break;
-                }
-                case 232: {
-                    if (tp()) {
-                        popPC();
-                        ticks += 11;
-                    } else {
-                        ticks += 15;
-                    }
-                    break;
-                }
-                case 240: {
-                    if (!ts()) {
-                        popPC();
-                        ticks += 11;
-                    } else {
-                        ticks += 15;
-                    }
-                    break;
-                }
-                case 248: {
-                    if (ts()) {
-                        popPC();
-                        ticks += 11;
-                    } else {
-                        ticks += 15;
-                    }
-                    break;
-                }
+//                case 192: {
+//                    if (!tz()) {
+//                        popPC();
+//                        ticks += 11;
+//                    } else {
+//                        ticks += 15;
+//                    }
+//                    break;
+//                }
+//                case 200: {
+//                    if (tz()) {
+//                        popPC();
+//                        ticks += 11;
+//                    } else {
+//                        ticks += 15;
+//                    }
+//                    break;
+//                }
+//                case 208: {
+//                    if (!tc()) {
+//                        popPC();
+//                        ticks += 11;
+//                    } else {
+//                        ticks += 15;
+//                    }
+//                    break;
+//                }
+//                case 216: {
+//                    if (tc()) {
+//                        popPC();
+//                        ticks += 11;
+//                    } else {
+//                        ticks += 15;
+//                    }
+//                    break;
+//                }
+//                case 224: {
+//                    if (!tp()) {
+//                        popPC();
+//                        ticks += 11;
+//                    } else {
+//                        ticks += 15;
+//                    }
+//                    break;
+//                }
+//                case 232: {
+//                    if (tp()) {
+//                        popPC();
+//                        ticks += 11;
+//                    } else {
+//                        ticks += 15;
+//                    }
+//                    break;
+//                }
+//                case 240: {
+//                    if (!ts()) {
+//                        popPC();
+//                        ticks += 11;
+//                    } else {
+//                        ticks += 15;
+//                    }
+//                    break;
+//                }
+//                case 248: {
+//                    if (ts()) {
+//                        popPC();
+//                        ticks += 11;
+//                    } else {
+//                        ticks += 15;
+//                    }
+//                    break;
+//                }
 
 
 //                case 193: {
