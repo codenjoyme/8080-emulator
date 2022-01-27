@@ -59,6 +59,7 @@ public class Assembler {
         add(new PUSH_RS());
         add(new JMP_XXYY());
         add(new JNZ_XXYY());
+        add(new JZ_XXYY());
     }
 
     private static void add(Command command) {
