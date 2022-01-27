@@ -317,16 +317,16 @@ public class Cpu extends Registry {
 //                    ticks += 4;
 //                    break;
 //                }
-                case 55: {
-                    scf();
-                    ticks += 4;
-                    break;
-                }
-                case 63: {
-                    ccf();
-                    ticks += 4;
-                    break;
-                }
+//                case 55: {
+//                    scf();
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 63: {
+//                    ccf();
+//                    ticks += 4;
+//                    break;
+//                }
 
 
 //                case 64: {
@@ -1645,14 +1645,14 @@ public class Cpu extends Registry {
 //        tp(parity[ans]);
 //    }
 
-    private void scf() {
-        th(false);
-        tc(true);
-    }
+//    private void scf() {
+//        th(false);
+//        tc(true);
+//    }
 
-    private void ccf() {
-        tc(!tc());
-    }
+//    private void ccf() {
+//        tc(!tc());
+//    }
 
     public Assembler asm() {
         return asm;
