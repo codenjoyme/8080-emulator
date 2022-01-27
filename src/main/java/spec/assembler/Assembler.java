@@ -32,48 +32,16 @@ public class Assembler {
 
     private static final Command[] COMMANDS; static {
         COMMANDS = new Command[0x100];
-        add(new NONE());
-        add(new NOP());
-        add(new LXI_RR_XXYY());
-        add(new DAD_RR());
-        add(new STAX_RR());
-        add(new LDAX_RR());
-        add(new SHLD_XXYY());
-        add(new LHLD_XXYY());
-        add(new STA_XXYY());
         add(new LDA_XXYY());
-        add(new INX_RR());
-        add(new DCX_RR());
-        add(new INR_R());
-        add(new DCR_R());
-        add(new MVI_R_XX());
+        add(new LDAX_RR());
+        add(new LHLD_XXYY());
+        add(new LXI_RR_XXYY());
         add(new MOV_R_R());
-        add(new ADD_R());
-        add(new ADI_XX());
-        add(new ADC_R());
-        add(new ACI_XX());
-        add(new RLC());
-        add(new RRC());
-        add(new RAL());
-        add(new RAR());
-        add(new DAA());
-        add(new SUB_R());
-        add(new SUI_XX());
-        add(new SBB_R());
-        add(new SBI_XX());
-        add(new CMA());
-        add(new STC());
-        add(new CMC());
-        add(new ANA_R());
-        add(new ANI_XX());
-        add(new XRA_R());
-        add(new XRI_XX());
-        add(new ORA_R());
-        add(new ORI_XX());
-        add(new CMP_R());
-        add(new CPI_XX());
-        add(new POP_RS());
-        add(new PUSH_RS());
+        add(new MVI_R_XX());
+        add(new SHLD_XXYY());
+        add(new STA_XXYY());
+        add(new STAX_RR());
+
         add(new JMP_XXYY());
         add(new JNZ_XXYY());
         add(new JZ_XXYY());
@@ -83,7 +51,56 @@ public class Assembler {
         add(new JPE_XXYY());
         add(new JP_XXYY());
         add(new JM_XXYY());
+
+        add(new RLC());
+        add(new RRC());
+        add(new RAL());
+        add(new RAR());
+
+        add(new CMA());
+        add(new CMC());
+        add(new CMP_R());
+        add(new CPI_XX());
+        add(new DAA());
+        add(new STC());
+
+        add(new DCR_R());
+        add(new DCX_RR());
+        add(new INR_R());
+        add(new INX_RR());
+
+        add(new ANA_R());
+        add(new ANI_XX());
+        add(new ORA_R());
+        add(new ORI_XX());
+        add(new XRA_R());
+        add(new XRI_XX());
+
+        add(new ACI_XX());
+        add(new ADC_R());
+        add(new ADD_R());
+        add(new ADI_XX());
+        add(new DAD_RR());
+        add(new SBB_R());
+        add(new SBI_XX());
+        add(new SUB_R());
+        add(new SUI_XX());
+
         add(new CALL_XXYY());
+//        add(new CNZ_XXYY());
+//        add(new CZ_XXYY());
+//        add(new CNC_XXYY());
+//        add(new CC_XXYY());
+//        add(new CPO_XXYY());
+//        add(new CPE_XXYY());
+//        add(new CP_XXYY());
+//        add(new CM_XXYY());
+
+        add(new POP_RS());
+        add(new PUSH_RS());
+
+        add(new NONE());
+        add(new NOP());
     }
 
     private static void add(Command command) {
