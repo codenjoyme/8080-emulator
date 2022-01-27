@@ -37,6 +37,7 @@ public class Assembler {
         add(new ACI_XX());
         add(new RLC());
         add(new RRC());
+        add(new RAL());
     }
 
     private static void add(Command command) {
