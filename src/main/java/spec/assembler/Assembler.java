@@ -42,6 +42,8 @@ public class Assembler {
         add(new DAA());
         add(new SUB_R());
         add(new SUI_XX());
+        add(new SBB_R());
+        add(new SBI_XX());
     }
 
     private static void add(Command command) {
