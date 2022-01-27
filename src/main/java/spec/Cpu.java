@@ -1316,13 +1316,13 @@ public class Cpu extends Registry {
 //                    ticks += 11;
 //                    break;
 //                }
-                case 205: {
-                    int t = read16PC();
-                    pushPC();
-                    PC(t);
-                    ticks += 17;
-                    break;
-                }
+//                case 205: {
+//                    int t = read16PC();
+//                    pushPC();
+//                    PC(t);
+//                    ticks += 17;
+//                    break;
+//                }
 //                case 213: {
 //                    push16(DE());
 //                    ticks += 11;

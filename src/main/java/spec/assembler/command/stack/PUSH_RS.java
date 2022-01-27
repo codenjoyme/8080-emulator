@@ -1,7 +1,6 @@
 package spec.assembler.command.stack;
 
 import spec.Registry;
-import spec.WordMath;
 import spec.assembler.Command;
 
 import java.util.Arrays;
@@ -35,8 +34,6 @@ public class PUSH_RS extends Command {
     @Override
     public void apply(int command, Registry r) {
         int word = rRS(command, r).get();
-        int addr = WordMath.word(r.rSP.get() - 2);
-        r.rSP.set(addr);
-        r.data().write16(addr, word);
+        r.data().push16(r.rSP, word);
     }
 }

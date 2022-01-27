@@ -16,6 +16,11 @@ public interface Data {
         write8(addr, hi(word));
     }
 
+    default void push16(Reg reg, int word) {
+        reg.set(word(reg.get() - 2));
+        write16(reg.get(), word);
+    }
+
     default int read16(int addr) {
         int lo = read8(addr);
         addr = inc16(addr);

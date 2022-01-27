@@ -16,6 +16,7 @@ import spec.assembler.command.math.incdec.INR_R;
 import spec.assembler.command.math.incdec.INX_RR;
 import spec.assembler.command.math.logic.*;
 import spec.assembler.command.math.sum.*;
+import spec.assembler.command.procedure.CALL_XXYY;
 import spec.assembler.command.stack.POP_RS;
 import spec.assembler.command.stack.PUSH_RS;
 
@@ -82,6 +83,7 @@ public class Assembler {
         add(new JPE_XXYY());
         add(new JP_XXYY());
         add(new JM_XXYY());
+        add(new CALL_XXYY());
     }
 
     private static void add(Command command) {

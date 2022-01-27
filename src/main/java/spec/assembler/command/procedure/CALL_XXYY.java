@@ -1,4 +1,4 @@
-package spec.assembler.command.jump;
+package spec.assembler.command.procedure;
 
 import spec.Registry;
 import spec.assembler.Command;
@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class JMP_XXYY extends Command {
+public class CALL_XXYY extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
-            0xC3);
+            0xCD);
 
     @Override
     public List<Integer> codes() {
@@ -19,7 +19,7 @@ public class JMP_XXYY extends Command {
 
     @Override
     public String pattern() {
-        return "JMP (....)";
+        return "CALL (....)";
     }
 
     @Override
@@ -29,17 +29,18 @@ public class JMP_XXYY extends Command {
 
     @Override
     public int ticks() {
-        return 10;
+        return 17;
     }
 
     @Override
     public void apply(int command, Registry r) {
-        jmp_if(r, reg -> true);
+        call_if(r, reg -> true);
     }
 
-    public static void jmp_if(Registry r, Predicate<Registry> predicate) {
+    public static void call_if(Registry r, Predicate<Registry> predicate) {
         int addr = r.data().read16(r.rPC);
         if (predicate.test(r)) {
+            r.data().push16(r.rSP, r.PC());
             r.PC(addr);
         }
     }
