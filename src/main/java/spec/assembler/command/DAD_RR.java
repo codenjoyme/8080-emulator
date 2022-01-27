@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static spec.Constants.x10000;
-import static spec.Registry._SP;
 import static spec.WordMath.word;
 
 public class DAD_RR extends Command {
@@ -36,7 +35,7 @@ public class DAD_RR extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int op2 = r.reg16(rindex(command), _SP).get();
+        int op2 = rRR(command, r).get();
         int res = sum16(r, r.HL(), op2);
         r.HL(res);
     }

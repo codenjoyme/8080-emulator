@@ -30,7 +30,7 @@ public class Registry {
     private int SP;
     private int PC;
 
-    public Reg rAF = new Reg() {
+    public Reg rPSW = new Reg() {
 
         @Override
         public int get() {
@@ -201,7 +201,7 @@ public class Registry {
             case 0: return rBC;
             case 1: return rDE;
             case 2: return rHL;
-            case 3: return (spOrPsw == _SP) ? rSP : rAF;
+            case 3: return (spOrPsw == _SP) ? rSP : rPSW;
         }
         throw new UnsupportedOperationException("Unexpected registry index: " + index);
     }

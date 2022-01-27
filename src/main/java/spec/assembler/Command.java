@@ -1,5 +1,6 @@
 package spec.assembler;
 
+import spec.Reg;
 import spec.Registry;
 import spec.WordMath;
 import spec.assembler.command.NONE;
@@ -9,6 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.joining;
+import static spec.Registry._PSW;
+import static spec.Registry._SP;
 import static spec.WordMath.hex8;
 import static spec.WordMath.reverse;
 
@@ -122,5 +125,19 @@ public abstract class Command {
 
     public int rindex(int command) {
         return indexes[command];
+    }
+
+    /**
+     * 0 - BC, 1 - DE, 2 - HL, 3 - SP
+     */
+    public Reg rRR(int command, Registry r) {
+        return r.reg16(rindex(command), _SP);
+    }
+
+    /**
+     * 0 - BC, 1 - DE, 2 - HL, 3 - PSW(AF)
+     */
+    public Reg rRS(int command, Registry r) {
+        return r.reg16(rindex(command), _PSW);
     }
 }

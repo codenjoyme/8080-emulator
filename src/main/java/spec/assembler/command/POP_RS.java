@@ -6,8 +6,6 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-import static spec.Registry._PSW;
-
 public class POP_RS extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
@@ -36,6 +34,6 @@ public class POP_RS extends Command {
     @Override
     public void apply(int command, Registry r) {
         int word = r.data().read16(r.rSP);
-        r.reg16(rindex(command), _PSW).set(word);
+        rRS(command, r).set(word);
     }
 }

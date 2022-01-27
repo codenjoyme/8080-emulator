@@ -6,8 +6,6 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-import static spec.Registry._SP;
-
 public class STAX_RR extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(0x02, 0x12);
@@ -34,7 +32,7 @@ public class STAX_RR extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int addr = r.reg16(rindex(command), _SP).get();
+        int addr = rRR(command, r).get();
         r.data().write8(addr, r.A());
     }
 }

@@ -6,8 +6,6 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-import static spec.Registry._SP;
-
 public class LXI_RR_XXYY extends Command  {
 
     private static final List<Integer> CODES = Arrays.asList(0x01, 0x11, 0x21, 0x31);
@@ -40,6 +38,6 @@ public class LXI_RR_XXYY extends Command  {
     @Override
     public void apply(int command, Registry r) {
         int word = r.data().read16(r.rPC);
-        r.reg16(rindex(command), _SP).set(word);
+        rRR(command, r).set(word);
     }
 }

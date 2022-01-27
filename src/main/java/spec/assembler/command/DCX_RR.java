@@ -7,7 +7,6 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-import static spec.Registry._SP;
 import static spec.WordMath.dec16;
 
 // TODO test me
@@ -37,7 +36,7 @@ public class DCX_RR extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        Reg reg = r.reg16(rindex(command), _SP);
+        Reg reg = rRR(command, r);
         int op = reg.get();
         int word = dec16(op);
         reg.set(word);
