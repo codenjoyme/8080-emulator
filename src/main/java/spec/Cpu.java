@@ -1099,15 +1099,15 @@ public class Cpu extends Registry {
                 }
 
 
-                case 194: {
-                    if (!tz()) {
-                        PC(read16PC());
-                    } else {
-                        PC(word(PC() + 2));
-                    }
-                    ticks += 10;
-                    break;
-                }
+//                case 194: {
+//                    if (!tz()) {
+//                        PC(read16PC());
+//                    } else {
+//                        PC(word(PC() + 2));
+//                    }
+//                    ticks += 10;
+//                    break;
+//                }
                 case 202: {
                     if (tz()) {
                         PC(read16PC());

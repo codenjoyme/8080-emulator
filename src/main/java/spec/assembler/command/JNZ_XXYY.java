@@ -5,12 +5,13 @@ import spec.assembler.Command;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 
-public class JMP_XXYY extends Command {
+import static spec.assembler.command.JMP_XXYY.jmp_if;
+
+public class JNZ_XXYY extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
-            0xC3);
+            0xC2);
 
     @Override
     public List<Integer> codes() {
@@ -19,7 +20,7 @@ public class JMP_XXYY extends Command {
 
     @Override
     public String pattern() {
-        return "JMP (....)";
+        return "JNZ (....)";
     }
 
     @Override
@@ -34,13 +35,6 @@ public class JMP_XXYY extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        jmp_if(r, reg -> true);
-    }
-
-    public static void jmp_if(Registry r, Predicate<Registry> predicate) {
-        int addr = r.data().read16(r.rPC);
-        if (predicate.test(r)) {
-            r.rPC.set(addr);
-        }
+        jmp_if(r, reg -> !reg.tz());
     }
 }
