@@ -10,8 +10,7 @@ import spec.assembler.Command;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static spec.Constants.*;
-import static spec.WordMath.lo;
+import static spec.Constants.xFF;
 import static spec.WordMath.word;
 
 public class Cpu extends Registry {
@@ -953,46 +952,46 @@ public class Cpu extends Registry {
 //                }
 
 
-                case 184: {
-                    cp_a(B());
-                    ticks += 4;
-                    break;
-                }
-                case 185: {
-                    cp_a(C());
-                    ticks += 4;
-                    break;
-                }
-                case 186: {
-                    cp_a(D());
-                    ticks += 4;
-                    break;
-                }
-                case 187: {
-                    cp_a(E());
-                    ticks += 4;
-                    break;
-                }
-                case 188: {
-                    cp_a(H());
-                    ticks += 4;
-                    break;
-                }
-                case 189: {
-                    cp_a(L());
-                    ticks += 4;
-                    break;
-                }
-                case 190: {
-                    cp_a(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
-                case 191: {
-                    cp_a(A());
-                    ticks += 4;
-                    break;
-                }
+//                case 184: {
+//                    cp_a(B());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 185: {
+//                    cp_a(C());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 186: {
+//                    cp_a(D());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 187: {
+//                    cp_a(E());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 188: {
+//                    cp_a(H());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 189: {
+//                    cp_a(L());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 190: {
+//                    cp_a(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 191: {
+//                    cp_a(A());
+//                    ticks += 4;
+//                    break;
+//                }
 
 
                 case 192: {
@@ -1382,11 +1381,11 @@ public class Cpu extends Registry {
 //                    ticks += 7;
 //                    break;
 //                }
-                case 254: {
-                    cp_a(read8PC());
-                    ticks += 7;
-                    break;
-                }
+//                case 254: {
+//                    cp_a(read8PC());
+//                    ticks += 7;
+//                    break;
+//                }
 
 
                 case 199: {
@@ -1566,17 +1565,17 @@ public class Cpu extends Registry {
 //        A(ans);
 //    }
 
-    private void cp_a(int b) {
-        int a = A();
-        int wans = a - b;
-        int ans = lo(wans);
-
-        ts((ans & T7s) != 0);
-        tz(ans == 0);
-        tc((wans & x100) != 0);
-        th((((a & x0F) - (b & x0F)) & T4h) != 0);
-        tp(((a ^ b) & (a ^ ans) & x80) != 0);
-    }
+//    private void cp_a(int b) {
+//        int a = A();
+//        int wans = a - b;
+//        int ans = lo(wans);
+//
+//        ts((ans & T7s) != 0);
+//        tz(ans == 0);
+//        tc((wans & x100) != 0);
+//        th((((a & x0F) - (b & x0F)) & T4h) != 0);
+//        tp(((a ^ b) & (a ^ ans) & x80) != 0);
+//    }
 
 //    private void and_a(int b) {
 //        int ans = A() & b;
