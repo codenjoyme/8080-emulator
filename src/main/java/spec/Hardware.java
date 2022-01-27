@@ -54,6 +54,12 @@ public class Hardware {
 
     protected HardwareData createHardwareData() {
         return new HardwareData(this) {
+
+            @Override
+            public int in8(int port) {
+                return Hardware.this.in8(port);
+            }
+
             @Override
             public void out8(int port, int bite) {
                 Hardware.this.out8(port, bite);
@@ -109,6 +115,11 @@ public class Hardware {
 
     protected void out8(int port, int bite) {
         // please override if needed
+    }
+
+    protected int in8(int port) {
+        // please override if needed
+        return 0xFF;
     }
 
     protected void update() {

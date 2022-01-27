@@ -10,7 +10,6 @@ import spec.assembler.Command;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static spec.Constants.xFF;
 import static spec.WordMath.word;
 
 public class Cpu extends Registry {
@@ -98,9 +97,9 @@ public class Cpu extends Registry {
     // КЛАВИША_ОТПУЩЕНА_. Эти события вызывают doKey( true/false, e.key, e.modifiers ), где
     // код клавиши (e.key) и служебные клавиши (e.modifiers) превращаются в значения переменных
     // _B_SPC..._CAPS_V.
-    private int inb(int port) {
-        return xFF;
-    }
+//    private int in8(int port) {
+//        return data.in8(port);
+//    }
 
     private static boolean interruptNeeded(int tick) {
         return tick >= 0;  
@@ -1178,16 +1177,16 @@ public class Cpu extends Registry {
 //                    ticks += 10;
 //                    break;
 //                }
-                case 211: {
-                    data.out8(read8PC(), A());
-                    ticks += 11;
-                    break;
-                }
-                case 219: {
-                    A(inb((A() << 8) | read8PC()));
-                    ticks += 11;
-                    break;
-                }
+//                case 211: {
+//                    data.out8(read8PC(), A());
+//                    ticks += 11;
+//                    break;
+//                }
+//                case 219: {
+//                    A(in8((A() << 8) | read8PC()));
+//                    ticks += 11;
+//                    break;
+//                }
 //                case 227: {
 //                    int t = HL();
 //                    int sp = SP();

@@ -4,6 +4,8 @@ import static spec.WordMath.*;
 
 public interface Data {
 
+    int in8(int port);
+
     void out8(int port, int bite);
 
     int read8(int addr);

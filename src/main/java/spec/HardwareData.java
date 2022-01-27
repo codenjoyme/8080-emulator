@@ -11,6 +11,9 @@ public abstract class HardwareData implements Data {
     }
 
     @Override
+    public abstract int in8(int port);
+
+    @Override
     public abstract void out8(int port, int bite);
 
     @Override

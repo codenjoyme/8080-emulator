@@ -16,6 +16,8 @@ import spec.assembler.command.math.incdec.INR_R;
 import spec.assembler.command.math.incdec.INX_RR;
 import spec.assembler.command.math.logic.*;
 import spec.assembler.command.math.sum.*;
+import spec.assembler.command.port.IN_XX;
+import spec.assembler.command.port.OUT_XX;
 import spec.assembler.command.procedure.call.*;
 import spec.assembler.command.procedure.ret.*;
 import spec.assembler.command.stack.POP_RS;
@@ -91,6 +93,9 @@ public class Assembler {
         add(new SBI_XX());
         add(new SUB_R());
         add(new SUI_XX());
+
+        add(new OUT_XX());
+        add(new IN_XX());
 
         add(new CALL_XXYY());
         add(new CC_XXYY());
