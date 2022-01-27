@@ -47,6 +47,10 @@ public class Assembler {
         add(new CMA());
         add(new STC());
         add(new CMC());
+        add(new ANA_R());
+        add(new ANI_XX());
+        add(new XRA_R());
+        add(new XRI_XX());
     }
 
     private static void add(Command command) {

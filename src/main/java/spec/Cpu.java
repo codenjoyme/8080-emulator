@@ -654,10 +654,10 @@ public class Cpu extends Registry {
                     break;
                 }
 
-                case 127: {
-                    ticks += 4;
-                    break;
-                }
+//                case 127: {
+//                    ticks += 4;
+//                    break;
+//                }
 
 
 //                case 128: {
@@ -828,88 +828,88 @@ public class Cpu extends Registry {
 //                }
 
 
-                case 160: {
-                    and_a(B());
-                    ticks += 4;
-                    break;
-                }
-                case 161: {
-                    and_a(C());
-                    ticks += 4;
-                    break;
-                }
-                case 162: {
-                    and_a(D());
-                    ticks += 4;
-                    break;
-                }
-                case 163: {
-                    and_a(E());
-                    ticks += 4;
-                    break;
-                }
-                case 164: {
-                    and_a(H());
-                    ticks += 4;
-                    break;
-                }
-                case 165: {
-                    and_a(L());
-                    ticks += 4;
-                    break;
-                }
-                case 166: {
-                    and_a(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
-                case 167: {
-                    and_a(A());
-                    ticks += 4;
-                    break;
-                }
+//                case 160: {
+//                    and_a(B());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 161: {
+//                    and_a(C());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 162: {
+//                    and_a(D());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 163: {
+//                    and_a(E());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 164: {
+//                    and_a(H());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 165: {
+//                    and_a(L());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 166: {
+//                    and_a(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 167: {
+//                    and_a(A());
+//                    ticks += 4;
+//                    break;
+//                }
 
 
-                case 168: {
-                    xor_a(B());
-                    ticks += 4;
-                    break;
-                }
-                case 169: {
-                    xor_a(C());
-                    ticks += 4;
-                    break;
-                }
-                case 170: {
-                    xor_a(D());
-                    ticks += 4;
-                    break;
-                }
-                case 171: {
-                    xor_a(E());
-                    ticks += 4;
-                    break;
-                }
-                case 172: {
-                    xor_a(H());
-                    ticks += 4;
-                    break;
-                }
-                case 173: {
-                    xor_a(L());
-                    ticks += 4;
-                    break;
-                }
-                case 174: {
-                    xor_a(read8(HL()));
-                    ticks += 7;
-                    break;
-                }
-                case 175: {
-                    xor_a(A());
-                    ticks += 4;
-                    break;
-                }
+//                case 168: {
+//                    xor_a(B());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 169: {
+//                    xor_a(C());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 170: {
+//                    xor_a(D());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 171: {
+//                    xor_a(E());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 172: {
+//                    xor_a(H());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 173: {
+//                    xor_a(L());
+//                    ticks += 4;
+//                    break;
+//                }
+//                case 174: {
+//                    xor_a(read8(HL()));
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 175: {
+//                    xor_a(A());
+//                    ticks += 4;
+//                    break;
+//                }
 
 
                 case 176: {
@@ -1368,16 +1368,16 @@ public class Cpu extends Registry {
 //                    ticks += 7;
 //                    break;
 //                }
-                case 230: {
-                    and_a(read8PC());
-                    ticks += 7;
-                    break;
-                }
-                case 238: {
-                    xor_a(read8PC());
-                    ticks += 7;
-                    break;
-                }
+//                case 230: {
+//                    and_a(read8PC());
+//                    ticks += 7;
+//                    break;
+//                }
+//                case 238: {
+//                    xor_a(read8PC());
+//                    ticks += 7;
+//                    break;
+//                }
                 case 246: {
                     or_a(read8PC());
                     ticks += 7;
@@ -1579,17 +1579,17 @@ public class Cpu extends Registry {
         tp(((a ^ b) & (a ^ ans) & x80) != 0);
     }
 
-    private void and_a(int b) {
-        int ans = A() & b;
-
-        ts((ans & T7s) != 0);
-        th(true);
-        tp(parity[ans]);
-        tz(ans == 0);
-        tc(false);
-
-        A(ans);
-    }
+//    private void and_a(int b) {
+//        int ans = A() & b;
+//
+//        ts((ans & T7s) != 0);
+//        th(true);
+//        tp(parity[ans]);
+//        tz(ans == 0);
+//        tc(false);
+//
+//        A(ans);
+//    }
 
     private void or_a(int b) {
         int ans = A() | b;
@@ -1603,17 +1603,17 @@ public class Cpu extends Registry {
         A(ans);
     }
 
-    private void xor_a(int b) {
-        int ans = lo(A() ^ b);
-
-        ts((ans & T7s) != 0);
-        th(false);
-        tp(parity[ans]);
-        tz(ans == 0);
-        tc(false);
-
-        A(ans);
-    }
+//    private void xor_a(int b) {
+//        int ans = lo(A() ^ b);
+//
+//        ts((ans & T7s) != 0);
+//        th(false);
+//        tp(parity[ans]);
+//        tz(ans == 0);
+//        tc(false);
+//
+//        A(ans);
+//    }
 
 //    private void cpl_a() {
 //        int ans = A() ^ BITE;
