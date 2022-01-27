@@ -6,6 +6,8 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
+import static spec.assembler.command.ADD_R.add8;
+
 // TODO test me
 public class ADI_XX extends Command {
 
@@ -35,6 +37,6 @@ public class ADI_XX extends Command {
     @Override
     public void apply(int command, Registry r) {
         int bite = r.data().read8(r.rPC);
-        r.A(ADD_R.add_a(r, r.A(), bite));
+        r.A(add8(r, r.A(), bite));
     }
 }

@@ -41,12 +41,10 @@ public class ADC_R extends Command {
     @Override
     public void apply(int command, Registry r) {
         Reg reg = r.reg8(rindex(command));
-        int op = reg.get();
-        int bite = adc_a(r, r.A(), op);
-        r.A(bite);
+        r.A(adc8(r, r.A(), reg.get()));
     }
 
-    public static int adc_a(Registry r, int a, int b) {
+    public static int adc8(Registry r, int a, int b) {
         int c = r.tci();
         int wans = a + b + c;
         int ans = lo(wans);

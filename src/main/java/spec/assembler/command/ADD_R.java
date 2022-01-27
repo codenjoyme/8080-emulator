@@ -41,12 +41,10 @@ public class ADD_R extends Command {
     @Override
     public void apply(int command, Registry r) {
         Reg reg = r.reg8(rindex(command));
-        int op = reg.get();
-        int bite = add_a(r, r.A(), op);
-        r.A(bite);
+        r.A(add8(r, r.A(), reg.get()));
     }
 
-    public static int add_a(Registry r, int a, int b) {
+    public static int add8(Registry r, int a, int b) {
         int wans = a + b;
         int ans = lo(wans);
 
