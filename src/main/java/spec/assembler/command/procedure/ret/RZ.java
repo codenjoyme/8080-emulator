@@ -1,4 +1,4 @@
-package spec.assembler.command.procedure;
+package spec.assembler.command.procedure.ret;
 
 import spec.Registry;
 import spec.assembler.Command;
@@ -6,12 +6,12 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-import static spec.assembler.command.procedure.RET.ret_if;
+import static spec.assembler.command.procedure.ret.RET.ret_if;
 
-public class RM extends Command {
+public class RZ extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
-            0xF8);
+            0xC8);
 
     @Override
     public List<Integer> codes() {
@@ -20,7 +20,7 @@ public class RM extends Command {
 
     @Override
     public String pattern() {
-        return "RM";
+        return "RZ";
     }
 
     @Override
@@ -30,6 +30,6 @@ public class RM extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        ret_if(r, reg -> reg.ts());
+        ret_if(r, reg -> reg.tz());
     }
 }

@@ -1,4 +1,4 @@
-package spec.assembler.command.procedure;
+package spec.assembler.command.procedure.call;
 
 import spec.Registry;
 import spec.assembler.Command;
@@ -6,12 +6,12 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-import static spec.assembler.command.procedure.RET.ret_if;
+import static spec.assembler.command.procedure.call.CALL_XXYY.call_if;
 
-public class RNZ extends Command {
+public class CC_XXYY extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
-            0xC0);
+            0xDC);
 
     @Override
     public List<Integer> codes() {
@@ -20,16 +20,21 @@ public class RNZ extends Command {
 
     @Override
     public String pattern() {
-        return "RNZ";
+        return "CC (....)";
+    }
+
+    @Override
+    public int size() {
+        return 3;
     }
 
     @Override
     public int ticks() {
-        return 15; // TODO если условие не прошло то 11
+        return 17; // TODO если условие не прошло то 10
     }
 
     @Override
     public void apply(int command, Registry r) {
-        ret_if(r, reg -> !reg.tz());
+        call_if(r, reg -> reg.tc());
     }
 }

@@ -1,4 +1,4 @@
-package spec.assembler.command.procedure;
+package spec.assembler.command.procedure.call;
 
 import spec.Registry;
 import spec.assembler.Command;
@@ -6,7 +6,7 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-import static spec.assembler.command.procedure.CALL_XXYY.call_if;
+import static spec.assembler.command.procedure.call.CALL_XXYY.call_if;
 
 public class CP_XXYY extends Command {
 

@@ -1,17 +1,16 @@
-package spec.assembler.command.procedure;
+package spec.assembler.command.procedure.ret;
 
 import spec.Registry;
 import spec.assembler.Command;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
-import static spec.assembler.command.procedure.CALL_XXYY.call_if;
-
-public class CM_XXYY extends Command {
+public class RET extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
-            0xFC);
+            0xC9);
 
     @Override
     public List<Integer> codes() {
@@ -20,21 +19,23 @@ public class CM_XXYY extends Command {
 
     @Override
     public String pattern() {
-        return "CM (....)";
-    }
-
-    @Override
-    public int size() {
-        return 3;
+        return "RET";
     }
 
     @Override
     public int ticks() {
-        return 17; // TODO если условие не прошло то 10
+        return 10;
     }
 
     @Override
     public void apply(int command, Registry r) {
-        call_if(r, reg -> reg.ts());
+        ret_if(r, reg -> true);
+    }
+
+    public static void ret_if(Registry r, Predicate<Registry> predicate) {
+        if (predicate.test(r)) {
+            int addr = r.data().read16(r.rSP);
+            r.PC(addr);
+        }
     }
 }

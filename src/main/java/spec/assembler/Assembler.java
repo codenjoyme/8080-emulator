@@ -16,7 +16,8 @@ import spec.assembler.command.math.incdec.INR_R;
 import spec.assembler.command.math.incdec.INX_RR;
 import spec.assembler.command.math.logic.*;
 import spec.assembler.command.math.sum.*;
-import spec.assembler.command.procedure.*;
+import spec.assembler.command.procedure.call.*;
+import spec.assembler.command.procedure.ret.*;
 import spec.assembler.command.stack.POP_RS;
 import spec.assembler.command.stack.PUSH_RS;
 
