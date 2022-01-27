@@ -16,7 +16,7 @@ import spec.assembler.command.math.incdec.INR_R;
 import spec.assembler.command.math.incdec.INX_RR;
 import spec.assembler.command.math.logic.*;
 import spec.assembler.command.math.sum.*;
-import spec.assembler.command.procedure.CALL_XXYY;
+import spec.assembler.command.procedure.*;
 import spec.assembler.command.stack.POP_RS;
 import spec.assembler.command.stack.PUSH_RS;
 
@@ -87,14 +87,14 @@ public class Assembler {
         add(new SUI_XX());
 
         add(new CALL_XXYY());
-//        add(new CNZ_XXYY());
-//        add(new CZ_XXYY());
-//        add(new CNC_XXYY());
-//        add(new CC_XXYY());
-//        add(new CPO_XXYY());
-//        add(new CPE_XXYY());
-//        add(new CP_XXYY());
-//        add(new CM_XXYY());
+        add(new CNZ_XXYY());
+        add(new CZ_XXYY());
+        add(new CNC_XXYY());
+        add(new CC_XXYY());
+        add(new CPO_XXYY());
+        add(new CPE_XXYY());
+        add(new CP_XXYY());
+        add(new CM_XXYY());
 
         add(new POP_RS());
         add(new PUSH_RS());

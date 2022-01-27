@@ -86,9 +86,9 @@ public class Cpu extends Registry {
         return read8(rPC);
     }
 
-    private int read16PC() {
-        return read16(rPC);
-    }
+//    private int read16PC() {
+//        return read16(rPC);
+//    }
 
     // ввод из порта
     // при вводе из порта клавиатуры записываем в ответ состояние переменных _B_SPC..._CAPS_V.
@@ -1213,102 +1213,102 @@ public class Cpu extends Registry {
                 }
 
 
-                case 196: {
-                    if (!tz()) {
-                        int t = read16PC();
-                        pushPC();
-                        PC(t);
-                        ticks += 17;
-                    } else {
-                        PC(word(PC() + 2));
-                        ticks += 10;
-                    }
-                    break;
-                }
-                case 204: {
-                    if (tz()) {
-                        int t = read16PC();
-                        pushPC();
-                        PC(t);
-                        ticks += 17;
-                    } else {
-                        PC(word(PC() + 2));
-                        ticks += 10;
-                    }
-                    break;
-                }
-                case 212: {
-                    if (!tc()) {
-                        int t = read16PC();
-                        pushPC();
-                        PC(t);
-                        ticks += 17;
-                    } else {
-                        PC(word(PC() + 2));
-                        ticks += 10;
-                    }
-                    break;
-                }
-                case 220: {
-                    if (tc()) {
-                        int t = read16PC();
-                        pushPC();
-                        PC(t);
-                        ticks += 17;
-                    } else {
-                        PC(word(PC() + 2));
-                        ticks += 10;
-                    }
-                    break;
-                }
-                case 228: {
-                    if (!tp()) {
-                        int t = read16PC();
-                        pushPC();
-                        PC(t);
-                        ticks += 17;
-                    } else {
-                        PC(word(PC() + 2));
-                        ticks += 10;
-                    }
-                    break;
-                }
-                case 236: {
-                    if (tp()) {
-                        int t = read16PC();
-                        pushPC();
-                        PC(t);
-                        ticks += 17;
-                    } else {
-                        PC(word(PC() + 2));
-                        ticks += 10;
-                    }
-                    break;
-                }
-                case 244: {
-                    if (!ts()) {
-                        int t = read16PC();
-                        pushPC();
-                        PC(t);
-                        ticks += 17;
-                    } else {
-                        PC(word(PC() + 2));
-                        ticks += 10;
-                    }
-                    break;
-                }
-                case 252: {
-                    if (ts()) {
-                        int t = read16PC();
-                        pushPC();
-                        PC(t);
-                        ticks += 17;
-                    } else {
-                        PC(word(PC() + 2));
-                        ticks += 10;
-                    }
-                    break;
-                }
+//                case 196: {
+//                    if (!tz()) {
+//                        int t = read16PC();
+//                        pushPC();
+//                        PC(t);
+//                        ticks += 17;
+//                    } else {
+//                        PC(word(PC() + 2));
+//                        ticks += 10;
+//                    }
+//                    break;
+//                }
+//                case 204: {
+//                    if (tz()) {
+//                        int t = read16PC();
+//                        pushPC();
+//                        PC(t);
+//                        ticks += 17;
+//                    } else {
+//                        PC(word(PC() + 2));
+//                        ticks += 10;
+//                    }
+//                    break;
+//                }
+//                case 212: {
+//                    if (!tc()) {
+//                        int t = read16PC();
+//                        pushPC();
+//                        PC(t);
+//                        ticks += 17;
+//                    } else {
+//                        PC(word(PC() + 2));
+//                        ticks += 10;
+//                    }
+//                    break;
+//                }
+//                case 220: {
+//                    if (tc()) {
+//                        int t = read16PC();
+//                        pushPC();
+//                        PC(t);
+//                        ticks += 17;
+//                    } else {
+//                        PC(word(PC() + 2));
+//                        ticks += 10;
+//                    }
+//                    break;
+//                }
+//                case 228: {
+//                    if (!tp()) {
+//                        int t = read16PC();
+//                        pushPC();
+//                        PC(t);
+//                        ticks += 17;
+//                    } else {
+//                        PC(word(PC() + 2));
+//                        ticks += 10;
+//                    }
+//                    break;
+//                }
+//                case 236: {
+//                    if (tp()) {
+//                        int t = read16PC();
+//                        pushPC();
+//                        PC(t);
+//                        ticks += 17;
+//                    } else {
+//                        PC(word(PC() + 2));
+//                        ticks += 10;
+//                    }
+//                    break;
+//                }
+//                case 244: {
+//                    if (!ts()) {
+//                        int t = read16PC();
+//                        pushPC();
+//                        PC(t);
+//                        ticks += 17;
+//                    } else {
+//                        PC(word(PC() + 2));
+//                        ticks += 10;
+//                    }
+//                    break;
+//                }
+//                case 252: {
+//                    if (ts()) {
+//                        int t = read16PC();
+//                        pushPC();
+//                        PC(t);
+//                        ticks += 17;
+//                    } else {
+//                        PC(word(PC() + 2));
+//                        ticks += 10;
+//                    }
+//                    break;
+//                }
 
 
 //                case 197: {
