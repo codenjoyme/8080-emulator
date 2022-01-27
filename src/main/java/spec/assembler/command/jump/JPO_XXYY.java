@@ -8,7 +8,7 @@ import java.util.List;
 
 import static spec.assembler.command.jump.JMP_XXYY.jmp_if;
 
-public class JP0_XXYY extends Command {
+public class JPO_XXYY extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
             0xE2);
@@ -20,7 +20,7 @@ public class JP0_XXYY extends Command {
 
     @Override
     public String pattern() {
-        return "JP0 (....)";
+        return "JPO (....)";
     }
 
     @Override

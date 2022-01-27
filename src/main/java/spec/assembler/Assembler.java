@@ -78,7 +78,7 @@ public class Assembler {
         add(new JZ_XXYY());
         add(new JNC_XXYY());
         add(new JC_XXYY());
-        add(new JP0_XXYY());
+        add(new JPO_XXYY());
         add(new JPE_XXYY());
         add(new JP_XXYY());
         add(new JM_XXYY());
