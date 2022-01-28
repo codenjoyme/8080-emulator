@@ -29,11 +29,11 @@ public class PngVideo {
         graphics.fillRect(pt.x, pt.y, 1, 1);
     }
 
-    public void drawToFile(String name) {
+    public void drawToFile(File file) {
         draw();
 
         try {
-            ImageIO.write(image, "PNG", new File(name));
+            ImageIO.write(image, "PNG", file);
         } catch (IOException e) {
             e.printStackTrace();
         }

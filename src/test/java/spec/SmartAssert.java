@@ -36,6 +36,14 @@ public class SmartAssert {
         }
     }
 
+    public static void fail(String message) {
+        try {
+            Assert.fail(message);
+        } catch (AssertionError e) {
+            failures.add(e);
+        }
+    }
+
     public static void checkResult() throws Exception {
         if (failures.isEmpty()) return;
 

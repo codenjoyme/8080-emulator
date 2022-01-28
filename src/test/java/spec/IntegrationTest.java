@@ -10,9 +10,13 @@ import spec.platforms.Specialist;
 
 import java.io.File;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
+import static spec.SmartAssert.fail;
 
 public class IntegrationTest extends AbstractTest {
 
@@ -27,6 +31,7 @@ public class IntegrationTest extends AbstractTest {
     private URL base;
 
     private PngVideo video;
+    private Map<String, String> pngHashes = new HashMap<>();
 
     @Before
     public void before() throws Exception {
@@ -54,6 +59,8 @@ public class IntegrationTest extends AbstractTest {
 
         for (File file : files) {
             if (file.getName().endsWith(".png")) { // на всякий случай
+                // перед удалением сохраним хеш, потом сравним
+                pngHashes.put(file.getAbsolutePath(), hash(file));
                 file.delete();
             }
         }
@@ -70,7 +77,20 @@ public class IntegrationTest extends AbstractTest {
     }
 
     private void screenShoot(String name) {
-        video.drawToFile(testDir().getAbsolutePath() + "/" + name + ".png");
+        File file = new File(testDir().getAbsolutePath() + "/" + name + ".png");
+        String hash = pngHashes.get(file.getAbsolutePath());
+
+        video.drawToFile(file);
+
+        if (!Objects.equals(hash, hash(file))) {
+            fail("Screenshots was changed.\n"
+                    + file.getAbsolutePath() + "\n"
+                    + "Please check git diff to see differences.\n");
+        }
+    }
+
+    private String hash(File file) {
+        return HashUtils.hashFile(file, "MD5");
     }
 
     private File testDir() {
