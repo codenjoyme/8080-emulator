@@ -14,9 +14,9 @@
 
         .project test.rks
         CPU     8080
-        ORG     00000H
-        DB 00h, 00h     ; RKS HEADER/START MEMORY 
-        DB 0C0h, 05h    ; RKS HEADER/END MEMORY
+        ORG     0000H
+        DB 04h, 00h     ; RKS HEADER/START MEMORY
+        DB 0C4h, 05h    ; RKS HEADER/END MEMORY
         
         LXI     H, LOLZ
         CALL    MSG
