@@ -24,17 +24,17 @@
 ;
 LOLZ:   DB      "MICROCOSM ASSOCIATES 8080/8085 CPU DIAGNOSTIC VERSION 1.0  (C) 1980", 0dh, 0ah, 24h
 ;
-BDOS    EQU     0C037H    ;BDOS ENTRY TO CP/M
+BDOS    EQU     0C037H  ;LIK PRINT CHAR PROCEDURE
 WBOOT:  JMP     0
 ;
 ;MESSAGE OUTPUT ROUTINE
 ;
-MSG:    MOV     A,M ; Get data
-        CPI     '$' ; End?
+MSG:    MOV     A,M     ; Get data
+        CPI     '$'     ; End?
         RZ
         CALL    PCHAR   ; Output
-        INX     H	; Next
-        JMP     MSG	; Do all
+        INX     H	    ; Next
+        JMP     MSG	    ; Do all
 ;
 ;
 ;CHARACTER OUTPUT ROUTINE
