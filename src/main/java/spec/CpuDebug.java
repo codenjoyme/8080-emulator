@@ -18,6 +18,7 @@ public class CpuDebug {
     private List<String> lines;
     private boolean enabled;
     private int maxDeepCall;
+    private Range range;
 
     public CpuDebug(Assembler asm, Data data, Registry registry) {
         this.data = data;
@@ -30,6 +31,7 @@ public class CpuDebug {
 
     public void log(int addr) {
         if (!enabled) return;
+        if (!range.includes(addr)) return;
 
         int callDeep = registry.mod(CallDeep.class).callDeep();
         if (callDeep >= maxDeepCall) return;
@@ -59,6 +61,11 @@ public class CpuDebug {
     }
 
     public void enable() {
+        enable(new Range(0x0000, 0xFFFF));
+    }
+
+    public void enable(Range range) {
+        this.range = range;
         enabled = true;
         registry.modAdd(new CallDeep());
     }
