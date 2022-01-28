@@ -6,7 +6,6 @@ import spec.assembler.Command;
 import java.util.LinkedList;
 import java.util.List;
 
-import static spec.Constants.CPU_TRACE;
 import static spec.WordMath.hex;
 import static spec.WordMath.hex16;
 
@@ -16,16 +15,18 @@ public class CpuDebug {
     private Assembler asm;
     private Registry registry;
     private List<String> lines;
+    private boolean enabled;
 
     public CpuDebug(Assembler asm, Data data, Registry registry) {
         this.data = data;
         this.asm = asm;
         this.registry = registry;
         lines = new LinkedList<>();
+        disable();
     }
 
     public void log(int addr) {
-        if (!CPU_TRACE) return;
+        if (!enabled) return;
 
         List<Integer> bites = data.read3x8(addr);
         Command command = asm.find(bites.get(0));
@@ -49,5 +50,13 @@ public class CpuDebug {
 
     public List<String> lines() {
         return lines;
+    }
+
+    public void enable() {
+        enabled = true;
+    }
+
+    public void disable() {
+        enabled = false;
     }
 }

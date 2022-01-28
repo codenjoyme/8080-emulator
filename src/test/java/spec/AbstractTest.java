@@ -28,8 +28,6 @@ public abstract class AbstractTest {
 
     @Before
     public void before() throws Exception {
-        Constants.CPU_TRACE = false;
-
         hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT) {
 
             @Override
@@ -56,6 +54,7 @@ public abstract class AbstractTest {
         asm = hard.cpu().asm();
         memory.clear();
         debug = cpu.debug();
+        debug.disable();
         memoryInit = false;
         cpu.PC(START);
     }

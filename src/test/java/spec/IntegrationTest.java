@@ -366,7 +366,7 @@ public class IntegrationTest extends AbstractTest {
         Lik.loadRom(base, roms);
         int start = roms.loadRKS(base, "test/test.rks");
         record.reset().after(20).stopCpu();
-        Constants.CPU_TRACE = true;
+        debug.enable();
 
         // when
         cpu.SP(0x7FFF); // мы не запускаем C000, а потому надо самим указать, где стек
@@ -467,7 +467,7 @@ public class IntegrationTest extends AbstractTest {
         Lik.loadRom(base, roms);
         int start = roms.loadRKS(base, "test/hello_world.rks");
         record.reset().after(300).stopCpu();
-        Constants.CPU_TRACE = true;
+        debug.enable();
 
         // when
         cpu.SP(0x7FFF); // мы не запускаем C000, а потому надо самим указать, где стек
