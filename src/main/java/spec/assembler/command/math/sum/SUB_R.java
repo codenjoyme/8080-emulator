@@ -52,6 +52,8 @@ public class SUB_R extends Command {
         r.tz(ans == 0);
         r.tc((wans & x100) != 0);
         r.tp(((a ^ b) & (a ^ ans) & x80) != 0);
+        // TODO #01 вероятно тут надо пофиксить
+        //  r.tp(parity[ans]);
         r.th((((a & x0F) - (b & x0F)) & T4h) != 0);
 
         return ans;

@@ -6,6 +6,7 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
+import static spec.assembler.Parity.parity;
 import static spec.assembler.command.math.sum.ADD_R.add8;
 
 // TODO test me
@@ -43,5 +44,9 @@ public class ADI_XX extends Command {
     public void apply(int command, Registry r) {
         int bite = r.data().read8(r.rPC);
         r.A(add8(r, r.A(), bite));
+
+        // TODO #01 это хотфикс команды, я не уверен что можно
+        //  менять add8 - он используется много где
+        r.tp(parity[r.A()]);
     }
 }
