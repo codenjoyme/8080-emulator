@@ -53,11 +53,11 @@ PCHAR:  PUSH	PSW
 ;
 BYTEO:  PUSH	PSW
         CALL    BYTO1
-        MOV     E,A
+        MOV     M,A
         CALL    PCHAR
         POP     PSW
         CALL    BYTO2
-        MOV     E,A
+        MOV     M,A
         JMP     PCHAR
 BYTO1:  RRC
         RRC
