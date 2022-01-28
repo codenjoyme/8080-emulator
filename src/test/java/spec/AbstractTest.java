@@ -24,9 +24,12 @@ public abstract class AbstractTest {
     protected KeyRecord record;
     protected RomLoader roms;
     protected FileRecorder fileRecorder;
+    protected CpuDebug debug;
 
     @Before
     public void before() throws Exception {
+        Constants.CPU_TRACE = false;
+
         hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT) {
 
             @Override
@@ -52,6 +55,7 @@ public abstract class AbstractTest {
         record = hard.record();
         asm = hard.cpu().asm();
         memory.clear();
+        debug = cpu.debug();
         memoryInit = false;
         cpu.PC(START);
     }
@@ -99,6 +103,10 @@ public abstract class AbstractTest {
                 ? endOrLength
                 : begin + endOrLength - 1;
         assertEquals(expected, memory.read8srt(new Range(begin, end)));
+    }
+
+    public void assertCpuDebug(String expected) {
+        assertEquals(expected, String.join("\n", debug.lines()));
     }
 
     public void start() {

@@ -129,13 +129,13 @@ public abstract class Command {
         String result = pattern();
         switch (size()) {
             case 3: {
-                result = result.replace("(....)",
-                        hex16(merge(bites.get(2), bites.get(1))));
+                String word = hex16(merge(bites.get(2), bites.get(1)));
+                result = result.replace("(....)", word);
                 break;
             }
             case 2: {
-                result = result.replace("(..)",
-                        hex8(bites.get(1)));
+                String bite = hex8(bites.get(1));
+                result = result.replace("(..)", bite);
                 break;
             }
             default: {

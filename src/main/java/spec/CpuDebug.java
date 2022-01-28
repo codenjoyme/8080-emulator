@@ -3,6 +3,7 @@ package spec;
 import spec.assembler.Assembler;
 import spec.assembler.Command;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static spec.Constants.CPU_TRACE;
@@ -13,10 +14,12 @@ public class CpuDebug {
 
     private Data data;
     private Assembler asm;
+    private List<String> lines;
 
     public CpuDebug(Assembler asm, Data data) {
         this.data = data;
         this.asm = asm;
+        lines = new LinkedList<>();
     }
 
     public void log(int addr) {
@@ -25,11 +28,12 @@ public class CpuDebug {
         List<Integer> bites = data.read3x8(addr);
         Command command = asm.find(bites.get(0));
         bites = bites.subList(0, command.size());
-        Logger.debug("%s  %s  %s",
+        String out = String.format("%s  %s  %s",
                 hex16(addr),
                 pad(hex(bites), 9),
-                asm.dizAssembly(bites)
-        );
+                asm.dizAssembly(bites));
+        lines.add(out);
+        Logger.debug(out);
     }
 
     private String pad(String string, int length) {
@@ -37,5 +41,9 @@ public class CpuDebug {
             string += " ";
         }
         return string;
+    }
+
+    public List<String> lines() {
+        return lines;
     }
 }

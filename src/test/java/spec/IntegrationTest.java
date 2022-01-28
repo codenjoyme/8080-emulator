@@ -413,42 +413,345 @@ public class IntegrationTest extends AbstractTest {
         // given
         Lik.loadRom(base, roms);
         int start = roms.loadRKS(base, "test/hello_world.rks");
-        record.reset().after(1000_000).stopCpu();
+        record.reset().after(300).stopCpu();
+        Constants.CPU_TRACE = true;
 
         // when
         cpu.PC(start);
         start();
 
         // then
-        asrtCpu("BC:  9000\n" +
-                "DE:  FF01\n" +
-                "HL:  C49C\n" +
-                "AF:  FF02\n" +
-                "SP:  7FF7\n" +
-                "PC:  C38C\n" +
-                "B,C: 90 00\n" +
-                "D,E: FF 01\n" +
-                "H,L: C4 9C\n" +
+        assertCpuDebug(
+                "0004  21 0D 00   LXI H,000D\n" +
+                "0007  CD 1B 00   CALL 001B\n" +
+                "001B  7E         MOV A,M\n" +
+                "001C  FE 24      CPI 24\n" +
+                "001E  C8         RZ\n" +
+                "001F  CD 26 00   CALL 0026\n" +
+                "0026  F5         PUSH SP\n" +
+                "0027  D5         PUSH D\n" +
+                "0028  E5         PUSH H\n" +
+                "0029  4E         MOV C,M\n" +
+                "002A  CD 37 C0   CALL C037\n" +
+                "C037  E5         PUSH H\n" +
+                "C038  D5         PUSH D\n" +
+                "C039  C5         PUSH B\n" +
+                "C03A  F5         PUSH SP\n" +
+                "C03B  79         MOV A,C\n" +
+                "C03C  FE 21      CPI 21\n" +
+                "C03E  DA D4 C0   JC C0D4\n" +
+                "C041  2A FC 8F   LHLD 8FFC\n" +
+                "C044  7C         MOV A,H\n" +
+                "C045  FE BE      CPI BE\n" +
+                "C047  D2 B2 C0   JNC C0B2\n" +
+                "C04A  C6 03      ADI 03\n" +
+                "C04C  32 FD 8F   STA 8FFD\n" +
+                "C04F  EB         XCHG\n" +
+                "C050  79         MOV A,C\n" +
+                "C051  32 E9 8F   STA 8FE9\n" +
+                "C054  D6 20      SUI 20\n" +
+                "C056  2A E7 8F   LHLD 8FE7\n" +
+                "C059  85         ADD L\n" +
+                "C05A  6F         MOV L,A\n" +
+                "C05B  29         DAD H\n" +
+                "C05C  29         DAD H\n" +
+                "C05D  29         DAD H\n" +
+                "C05E  EB         XCHG\n" +
+                "C05F  00         NOP\n" +
+                "C060  7C         MOV A,H\n" +
+                "C061  E6 03      ANI 03\n" +
+                "C063  4F         MOV C,A\n" +
+                "C064  3E 05      MVI A,05\n" +
+                "C066  91         SUB C\n" +
+                "C067  4F         MOV C,A\n" +
+                "C068  7C         MOV A,H\n" +
+                "C069  E6 FC      ANI FC\n" +
+                "C06B  0F         RLC\n" +
+                "C06C  0F         RLC\n" +
+                "C06D  C6 90      ADI 90\n" +
+                "C06F  67         MOV H,A\n" +
+                "C070  22 F8 8F   SHLD 8FF8\n" +
+                "C073  06 08      MVI B,08\n" +
+                "C075  00         NOP\n" +
+                "C076  1A         LDAX D\n" +
+                "C077  6F         MOV L,A\n" +
+                "C078  26 00      MVI H,00\n" +
+                "C07A  79         MOV A,C\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C081  E5         PUSH H\n" +
+                "C082  13         INX D\n" +
+                "C083  05         DCR B\n" +
+                "C084  C2 76 C0   JNZ C076\n" +
+                "C076  1A         LDAX D\n" +
+                "C077  6F         MOV L,A\n" +
+                "C078  26 00      MVI H,00\n" +
+                "C07A  79         MOV A,C\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C081  E5         PUSH H\n" +
+                "C082  13         INX D\n" +
+                "C083  05         DCR B\n" +
+                "C084  C2 76 C0   JNZ C076\n" +
+                "C076  1A         LDAX D\n" +
+                "C077  6F         MOV L,A\n" +
+                "C078  26 00      MVI H,00\n" +
+                "C07A  79         MOV A,C\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C081  E5         PUSH H\n" +
+                "C082  13         INX D\n" +
+                "C083  05         DCR B\n" +
+                "C084  C2 76 C0   JNZ C076\n" +
+                "C076  1A         LDAX D\n" +
+                "C077  6F         MOV L,A\n" +
+                "C078  26 00      MVI H,00\n" +
+                "C07A  79         MOV A,C\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C081  E5         PUSH H\n" +
+                "C082  13         INX D\n" +
+                "C083  05         DCR B\n" +
+                "C084  C2 76 C0   JNZ C076\n" +
+                "C076  1A         LDAX D\n" +
+                "C077  6F         MOV L,A\n" +
+                "C078  26 00      MVI H,00\n" +
+                "C07A  79         MOV A,C\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C081  E5         PUSH H\n" +
+                "C082  13         INX D\n" +
+                "C083  05         DCR B\n" +
+                "C084  C2 76 C0   JNZ C076\n" +
+                "C076  1A         LDAX D\n" +
+                "C077  6F         MOV L,A\n" +
+                "C078  26 00      MVI H,00\n" +
+                "C07A  79         MOV A,C\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C081  E5         PUSH H\n" +
+                "C082  13         INX D\n" +
+                "C083  05         DCR B\n" +
+                "C084  C2 76 C0   JNZ C076\n" +
+                "C076  1A         LDAX D\n" +
+                "C077  6F         MOV L,A\n" +
+                "C078  26 00      MVI H,00\n" +
+                "C07A  79         MOV A,C\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C081  E5         PUSH H\n" +
+                "C082  13         INX D\n" +
+                "C083  05         DCR B\n" +
+                "C084  C2 76 C0   JNZ C076\n" +
+                "C076  1A         LDAX D\n" +
+                "C077  6F         MOV L,A\n" +
+                "C078  26 00      MVI H,00\n" +
+                "C07A  79         MOV A,C\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C07B  29         DAD H\n" +
+                "C07C  29         DAD H\n" +
+                "C07D  3D         DCR A\n" +
+                "C07E  C2 7B C0   JNZ C07B\n" +
+                "C081  E5         PUSH H\n" +
+                "C082  13         INX D\n" +
+                "C083  05         DCR B\n" +
+                "C084  C2 76 C0   JNZ C076\n" +
+                "C087  06 08      MVI B,08\n" +
+                "C089  2A F8 8F   LHLD 8FF8\n" +
+                "C08C  D1         POP D\n" +
+                "C08D  7A         MOV A,D\n" +
+                "C08E  CD 63 C1   CALL C163\n" +
+                "C163  4F         MOV C,A\n" +
+                "C164  3A E9 8F   LDA 8FE9\n" +
+                "C167  FE 7F      CPI 7F\n" +
+                "C169  79         MOV A,C\n" +
+                "C16A  CA A3 C0   JZ C0A3\n" +
+                "C16D  AE         XRA M\n" +
+                "C16E  C9         RET\n" +
+                "FF91  FF         RST 7\n" +
+                "0038  00         NOP\n" +
+                "0039  00         NOP\n" +
+                "003A  00         NOP\n" +
+                "003B  00         NOP\n" +
+                "003C  00         NOP\n" +
+                "003D  00         NOP\n" +
+                "003E  00         NOP\n" +
+                "003F  00         NOP\n" +
+                "0040  00         NOP\n" +
+                "0041  00         NOP\n" +
+                "0042  00         NOP\n" +
+                "0043  00         NOP");
+
+        asrtCpu("BC:  08FF\n" +
+                "DE:  FF00\n" +
+                "HL:  9000\n" +
+                "AF:  FF86\n" +
+                "SP:  FFDC\n" +
+                "PC:  0044\n" +
+                "B,C: 08 FF\n" +
+                "D,E: FF 00\n" +
+                "H,L: 90 00\n" +
                 "M:   00\n" +
-                "A,F: FF 02\n" +
+                "A,F: FF 86\n" +
                 "     76543210 76543210\n" +
-                "SP:  01111111 11110111\n" +
-                "PC:  11000011 10001100\n" +
+                "SP:  11111111 11011100\n" +
+                "PC:  00000000 01000100\n" +
                 "     76543210\n" +
-                "B:   10010000\n" +
-                "C:   00000000\n" +
+                "B:   00001000\n" +
+                "C:   11111111\n" +
                 "D:   11111111\n" +
-                "E:   00000001\n" +
-                "H:   11000100\n" +
-                "L:   10011100\n" +
+                "E:   00000000\n" +
+                "H:   10010000\n" +
+                "L:   00000000\n" +
                 "M:   00000000\n" +
                 "A:   11111111\n" +
                 "     sz0h0p1c\n" +
-                "F:   00000010\n" +
-                "ts:  false\n" +
+                "F:   10000110\n" +
+                "ts:  true\n" +
                 "tz:  false\n" +
                 "th:  false\n" +
-                "tp:  false\n" +
+                "tp:  true\n" +
                 "tc:  false\n");
 
         screenShoot();

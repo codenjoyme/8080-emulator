@@ -1666,4 +1666,8 @@ public class Cpu extends Registry {
 //
 //        return ans;
 //    }
+
+    public CpuDebug debug() {
+        return debug;
+    }
 }
