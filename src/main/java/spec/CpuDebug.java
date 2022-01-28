@@ -16,6 +16,7 @@ public class CpuDebug {
     private Registry registry;
     private List<String> lines;
     private boolean enabled;
+    private int maxDeepCall;
 
     public CpuDebug(Assembler asm, Data data, Registry registry) {
         this.data = data;
@@ -23,10 +24,13 @@ public class CpuDebug {
         this.registry = registry;
         lines = new LinkedList<>();
         disable();
+        showCallBellow(Integer.MAX_VALUE);
     }
 
     public void log(int addr) {
         if (!enabled) return;
+
+        if (registry.callDeep() >= maxDeepCall) return;
 
         List<Integer> bites = data.read3x8(addr);
         Command command = asm.find(bites.get(0));
@@ -58,5 +62,9 @@ public class CpuDebug {
 
     public void disable() {
         enabled = false;
+    }
+
+    public void showCallBellow(int deepCall) {
+        this.maxDeepCall = deepCall;
     }
 }
