@@ -6,6 +6,8 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
+import static spec.assembler.command.procedure.call.CALL_XXYY.call;
+
 public class RST_N extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
@@ -33,8 +35,7 @@ public class RST_N extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        r.data().push16(r.rSP, r.PC());
         int addr = rindex(command) * 8;
-        r.PC(addr);
+        call(r, addr);
     }
 }

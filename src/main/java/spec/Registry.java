@@ -16,6 +16,8 @@ public class Registry {
 
     protected Data data;
 
+    private int callDeep;
+
     private int A;
     private int HL;
     private int BC;
@@ -184,6 +186,7 @@ public class Registry {
     }
 
     public void reset() {
+        callDeep = 0;
         PC(START_POINT);
         SP(0);
         A(0);
@@ -476,5 +479,17 @@ public class Registry {
 
     public Data data() {
         return data;
+    }
+
+    public void on(String event) {
+        if (event.equals("call")) {
+            callDeep++;
+        } else if (event.equals("ret")) {
+            callDeep--;
+        }
+    }
+
+    public int callDeep() {
+        return callDeep;
     }
 }

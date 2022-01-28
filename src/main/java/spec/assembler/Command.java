@@ -174,4 +174,8 @@ public abstract class Command {
     public Reg rRS(int command, Registry r) {
         return r.reg16(rindex(command), _PSW);
     }
+
+    private String name() {
+        return pattern().split(" ")[0];
+    }
 }

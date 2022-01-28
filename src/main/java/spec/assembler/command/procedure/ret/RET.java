@@ -34,8 +34,13 @@ public class RET extends Command {
 
     public static void ret_if(Registry r, Predicate<Registry> predicate) {
         if (predicate.test(r)) {
-            int addr = r.data().read16(r.rSP);
-            r.PC(addr);
+            ret(r);
         }
+    }
+
+    public static void ret(Registry r) {
+        int addr = r.data().read16(r.rSP);
+        r.PC(addr);
+        r.on("ret");
     }
 }
