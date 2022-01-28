@@ -1,9 +1,11 @@
 package spec;
 
+import spec.mods.Modifiable;
+
 import static spec.Constants.*;
 import static spec.WordMath.*;
 
-public class Registry {
+public class Registry extends Modifiable<Registry> {
 
     public static final int T0c = x01; // Разряд Tc = 1, если был перенос или заем
     public static final int T11 = x02; // Всегда 1
@@ -15,8 +17,6 @@ public class Registry {
     public static final int T7s = x80; // Разряд Ts = 1, если результат отрицательный (первый бит результата = 1)
 
     protected Data data;
-
-    private int callDeep;
 
     private int A;
     private int HL;
@@ -186,7 +186,9 @@ public class Registry {
     }
 
     public void reset() {
-        callDeep = 0;
+        if (mod != null) {
+            mod.reset();
+        }
         PC(START_POINT);
         SP(0);
         A(0);
@@ -479,17 +481,5 @@ public class Registry {
 
     public Data data() {
         return data;
-    }
-
-    public void on(String event) {
-        if (event.equals("call")) {
-            callDeep++;
-        } else if (event.equals("ret")) {
-            callDeep--;
-        }
-    }
-
-    public int callDeep() {
-        return callDeep;
     }
 }

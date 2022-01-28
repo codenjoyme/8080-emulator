@@ -2,6 +2,7 @@ package spec;
 
 import spec.assembler.Assembler;
 import spec.assembler.Command;
+import spec.mods.CallDeep;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +31,8 @@ public class CpuDebug {
     public void log(int addr) {
         if (!enabled) return;
 
-        if (registry.callDeep() >= maxDeepCall) return;
+        int callDeep = registry.mod(CallDeep.class).callDeep();
+        if (callDeep >= maxDeepCall) return;
 
         List<Integer> bites = data.read3x8(addr);
         Command command = asm.find(bites.get(0));
@@ -39,7 +41,7 @@ public class CpuDebug {
                 pad(hex16(addr), 6),
                 pad(hex(bites), 10),
                 pad(asm.dizAssembly(bites), 12),
-                pad("(" + registry.callDeep() + ")", 5),
+                pad("(" + callDeep + ")", 5),
                 pad(registry.toString().replace("\n", "  ").replace(": ", ":"), 55));
         lines.add(out);
         Logger.debug(out);
@@ -58,6 +60,7 @@ public class CpuDebug {
 
     public void enable() {
         enabled = true;
+        registry.mod(new CallDeep());
     }
 
     public void disable() {
