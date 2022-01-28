@@ -144,7 +144,23 @@ public class Assembler {
         }
     }
 
-    public String parse(String program) {
+    public String dizAssembly(String programBites) {
+        List<String> result = new LinkedList<>();
+        programBites = programBites.replace("\n", " ");
+        for (List<Integer> commandBites : split(programBites)) {
+            for (Command command : COMMANDS) {
+                if (command == null) continue;
+
+                if (command.itsMe(commandBites)) {
+                    result.add(command.print(commandBites));
+                    break;
+                }
+            }
+        }
+        return String.join("\n", result) + "\n";
+    }
+
+    public String assembly(String program) {
         StringBuilder result = new StringBuilder();
         boolean first = true;
         for (String command : program.split("\n")) {
@@ -171,12 +187,12 @@ public class Assembler {
         throw new UnsupportedOperationException("Unsupported command: " + input);
     }
 
-    public String split(String input) {
+    public List<List<Integer>> split(String input) {
         List<Integer> bites = Arrays.stream(input.split(" "))
                 .map(bite -> Integer.parseInt(bite, 16))
                 .collect(toList());
 
-        List<String> result = new LinkedList<>();
+        List<List<Integer>> result = new LinkedList<>();
         while (!bites.isEmpty()) {
             for (Command command : COMMANDS) {
                 if (command == null) continue;
@@ -186,11 +202,20 @@ public class Assembler {
                     continue;
                 }
 
-                result.add(commandBits.stream()
-                        .map(WordMath::hex8)
-                        .collect(joining(" ")));
+                result.add(commandBits);
                 break;
             }
+        }
+        return result;
+    }
+
+    public static String asString(List<List<Integer>> bites) {
+        List<String> result = new LinkedList<>();
+
+        for (List<Integer> command : bites) {
+            result.add(command.stream()
+                    .map(WordMath::hex8)
+                    .collect(joining(" ")));
         }
         return String.join("\n", result);
     }

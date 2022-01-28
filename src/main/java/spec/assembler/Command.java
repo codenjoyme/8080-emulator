@@ -12,8 +12,7 @@ import java.util.regex.Pattern;
 import static java.util.stream.Collectors.joining;
 import static spec.Registry._PSW;
 import static spec.Registry._SP;
-import static spec.WordMath.hex8;
-import static spec.WordMath.reverse;
+import static spec.WordMath.*;
 
 public abstract class Command {
 
@@ -105,6 +104,11 @@ public abstract class Command {
         return false;
     }
 
+    public boolean itsMe(List<Integer> bites) {
+        // TODO сделать оптимальнее
+        return !take(new ArrayList<>(bites)).isEmpty();
+    }
+
     public List<Integer> take(List<Integer> bites) {
         return new LinkedList<Integer>(){{
             if (!bites.isEmpty()) {
@@ -119,6 +123,35 @@ public abstract class Command {
                 }
             }
         }};
+    }
+
+    public String print(List<Integer> bites) {
+        String result = pattern();
+        switch (size()) {
+            case 3: {
+                result = result.replace("(....)",
+                        hex16(merge(bites.get(2), bites.get(1))));
+                break;
+            }
+            case 2: {
+                result = result.replace("(..)",
+                        hex8(bites.get(1)));
+                break;
+            }
+            default: {
+                // do nothing;
+            }
+        }
+        if (!registers().isEmpty()) {
+            String reg = registers().get(rindex(bites.get(0)));
+            result = result
+                    .replaceFirst(Pattern.quote("(B|D)"), reg)
+                    .replaceFirst(Pattern.quote("(B|C|D|E|H|L|M|A)"), reg)
+                    .replaceFirst(Pattern.quote("(B|D|H|SP)"), reg)
+                    .replaceFirst(Pattern.quote("(B|D|H|PSW)"), reg)
+                    .replaceFirst(Pattern.quote("(B|D)"), reg);
+        }
+        return result;
     }
 
     public abstract void apply(int command, Registry r);

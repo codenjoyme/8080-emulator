@@ -5,6 +5,7 @@ import spec.assembler.Command;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 // TODO continue with tests
 public class MOV_R_R extends Command  {
@@ -27,8 +28,8 @@ public class MOV_R_R extends Command  {
         indexes2 = new int[0x100];
         for (int i = 0; i < codes.size(); i++) {
             int code = codes.get(i);
-            indexes[code] = (code & 0b0000_0111);
-            indexes2[code] = (code & 0b0011_1000) >> 3;
+            indexes[code] = (code & 0b0011_1000) >> 3;
+            indexes2[code] = (code & 0b0000_0111);
         }
     }
 
@@ -55,14 +56,21 @@ public class MOV_R_R extends Command  {
     }
 
     @Override
+    public String print(List<Integer> bites) {
+        return super.print(bites)
+                .replaceFirst(Pattern.quote("(B|C|D|E|H|L|M|A)"),
+                        registers().get(rindex2(bites.get(0))));
+    }
+
+    @Override
     public int ticks() {
         return 7;
     }
 
     @Override
     public void apply(int command, Registry r) {
-        int bite = r.reg8(rindex(command)).get();
-        r.reg8(rindex2(command)).set(bite);
+        int bite = r.reg8(rindex2(command)).get();
+        r.reg8(rindex(command)).set(bite);
     }
 
     private int rindex2(int command) {

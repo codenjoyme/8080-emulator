@@ -9,6 +9,7 @@ import java.io.File;
 import static spec.Constants.*;
 import static spec.SmartAssert.assertEquals;
 import static spec.WordMath.hex8;
+import static spec.assembler.Assembler.asString;
 
 public abstract class AbstractTest {
 
@@ -61,7 +62,9 @@ public abstract class AbstractTest {
     }
 
     public void givenPr(String program) {
-        givenMm(asm.split(asm.parse(program)));
+        String bites = asString(asm.split(asm.assembly(program)));
+        givenMm(bites);
+        assertEquals(program, asm.dizAssembly(bites));
     }
 
     /**
@@ -73,7 +76,7 @@ public abstract class AbstractTest {
             memoryInit = true;
             memory.write8str(START, bites.replace("\n", " "));
         }
-        String split = asm.split(memory.changes());
+        String split = asString(asm.split(memory.changes()));
         assertEquals(bites, split);
         int ticks = split.split("\n").length;
         record.after(ticks).stopCpu();
