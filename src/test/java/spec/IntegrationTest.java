@@ -367,40 +367,41 @@ public class IntegrationTest extends AbstractTest {
 
         // given
         Lik.loadRom(base, roms);
-        int start = roms.loadRKS(base, "test/test.rks");
+        hard.loadData(APP_RESOURCES + "test/test.rks");
+        record.after(500_000).stopCpu();
 
         // when
-        cpu.PC(start);
-        start();
+        hard.reset();
+        hard.start();
 
         // then
-        asrtCpu("BC:  9000\n" +
-                "DE:  FF01\n" +
-                "HL:  C49C\n" +
-                "AF:  FF42\n" +
-                "SP:  7FF7\n" +
-                "PC:  C38A\n" +
-                "B,C: 90 00\n" +
-                "D,E: FF 01\n" +
-                "H,L: C4 9C\n" +
+        asrtCpu("BC:  0500\n" +
+                "DE:  0040\n" +
+                "HL:  B891\n" +
+                "AF:  5302\n" +
+                "SP:  069C\n" +
+                "PC:  C167\n" +
+                "B,C: 05 00\n" +
+                "D,E: 00 40\n" +
+                "H,L: B8 91\n" +
                 "M:   00\n" +
-                "A,F: FF 42\n" +
+                "A,F: 53 02\n" +
                 "     76543210 76543210\n" +
-                "SP:  01111111 11110111\n" +
-                "PC:  11000011 10001010\n" +
+                "SP:  00000110 10011100\n" +
+                "PC:  11000001 01100111\n" +
                 "     76543210\n" +
-                "B:   10010000\n" +
+                "B:   00000101\n" +
                 "C:   00000000\n" +
-                "D:   11111111\n" +
-                "E:   00000001\n" +
-                "H:   11000100\n" +
-                "L:   10011100\n" +
+                "D:   00000000\n" +
+                "E:   01000000\n" +
+                "H:   10111000\n" +
+                "L:   10010001\n" +
                 "M:   00000000\n" +
-                "A:   11111111\n" +
+                "A:   01010011\n" +
                 "     sz0h0p1c\n" +
-                "F:   01000010\n" +
+                "F:   00000010\n" +
                 "ts:  false\n" +
-                "tz:  true\n" +
+                "tz:  false\n" +
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
