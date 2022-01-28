@@ -1,4 +1,4 @@
-        .project hello_worls.rks
+        .project hello_world.rks
         CPU     8080
         .ORG    0000h
         DB      04h, 00h    ; RKS HEADER/START MEMORY 

@@ -367,55 +367,10 @@ public class IntegrationTest extends AbstractTest {
 
         // given
         Lik.loadRom(base, roms);
-        roms.loadROM(base, "test/test.com", 0x0000);
+        int start = roms.loadRKS(base, "test/test.rks");
 
         // when
-        cpu.PC(0x0000);
-        start();
-
-        // then
-        asrtCpu("BC:  0048\n" +
-                "DE:  0032\n" +
-                "HL:  0000\n" +
-                "AF:  4806\n" +
-                "SP:  9470\n" +
-                "PC:  C02A\n" +
-                "B,C: 00 48\n" +
-                "D,E: 00 32\n" +
-                "H,L: 00 00\n" +
-                "M:   21\n" +
-                "A,F: 48 06\n" +
-                "     76543210 76543210\n" +
-                "SP:  10010100 01110000\n" +
-                "PC:  11000000 00101010\n" +
-                "     76543210\n" +
-                "B:   00000000\n" +
-                "C:   01001000\n" +
-                "D:   00000000\n" +
-                "E:   00110010\n" +
-                "H:   00000000\n" +
-                "L:   00000000\n" +
-                "M:   00100001\n" +
-                "A:   01001000\n" +
-                "     sz0h0p1c\n" +
-                "F:   00000110\n" +
-                "ts:  false\n" +
-                "tz:  false\n" +
-                "th:  false\n" +
-                "tp:  true\n" +
-                "tc:  false\n");
-
-        screenShoot();
-    }
-
-    @Test
-    public void testLik_helloWorld() {
-        // given
-        Lik.loadRom(base, roms);
-        roms.loadROM(base, "test/hello_world.com", 0x0000);
-
-        // when
-        cpu.PC(0x0000);
+        cpu.PC(start);
         start();
 
         // then
@@ -446,6 +401,52 @@ public class IntegrationTest extends AbstractTest {
                 "F:   01000010\n" +
                 "ts:  false\n" +
                 "tz:  true\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+
+        screenShoot();
+    }
+
+    @Test
+    public void testLik_helloWorld() {
+        // given
+        Lik.loadRom(base, roms);
+        int start = roms.loadRKS(base, "test/hello_world.rks");
+        record.reset().after(1000_000).stopCpu();
+
+        // when
+        cpu.PC(start);
+        start();
+
+        // then
+        asrtCpu("BC:  9000\n" +
+                "DE:  FF01\n" +
+                "HL:  C49C\n" +
+                "AF:  FF02\n" +
+                "SP:  7FF7\n" +
+                "PC:  C38C\n" +
+                "B,C: 90 00\n" +
+                "D,E: FF 01\n" +
+                "H,L: C4 9C\n" +
+                "M:   00\n" +
+                "A,F: FF 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111111 11110111\n" +
+                "PC:  11000011 10001100\n" +
+                "     76543210\n" +
+                "B:   10010000\n" +
+                "C:   00000000\n" +
+                "D:   11111111\n" +
+                "E:   00000001\n" +
+                "H:   11000100\n" +
+                "L:   10011100\n" +
+                "M:   00000000\n" +
+                "A:   11111111\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");

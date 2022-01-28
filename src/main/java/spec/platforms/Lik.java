@@ -20,6 +20,10 @@ public class Lik {
     }
 
     public static void loadTest(URL base, RomLoader roms, String name) {
-        roms.loadROM(base, "test/" + name + ".com", 0x0000);
+        if (name.endsWith(".com")) {
+            roms.loadROM(base, "test/" + name, 0x0000);
+        } else {
+            roms.loadRKS(base, "test/" + name);
+        }
     }
 }
