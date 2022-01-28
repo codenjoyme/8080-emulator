@@ -2,14 +2,14 @@
         CPU     8080
         .ORG    0000h
         DB      04h, 00h    ; RKS HEADER/START MEMORY 
-        DB      30h, 00h    ; RKS HEADER/END MEMORY
+        DB      32h, 00h    ; RKS HEADER/END MEMORY
         
         LXI     H, STRING
         CALL    MSG
-        JMP     0004h
+        JMP     0C800h      ; LIK MONITOR-1M
 
 ;
-STRING: DB      "HELLO WORLD", 0dh, 0ah, '$'
+STRING: DB      0dh, 0ah, "HELLO WORLD", 0dh, 0ah, '$'
 
 ;
 BDOS    EQU     0C037H  ;LIK PRINT CHAR PROCEDURE
