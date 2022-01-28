@@ -125,6 +125,7 @@ public class Cpu extends Registry {
                 ticks -= interrupt;
             }
 
+            on("PC");
             debug.log(PC());
             int bite = data.read8(rPC);
             Command command = asm.find(bite);

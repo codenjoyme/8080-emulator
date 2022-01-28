@@ -270,7 +270,6 @@ public class Registry extends Modifiable<Cpu> {
     }
 
     public void PC(int word) {
-        on("PC");
         PC = word;
     }
 
