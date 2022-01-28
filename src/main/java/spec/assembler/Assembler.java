@@ -1,6 +1,5 @@
 package spec.assembler;
 
-import spec.WordMath;
 import spec.assembler.command.copy.*;
 import spec.assembler.command.jump.*;
 import spec.assembler.command.math.bits.RAL;
@@ -30,8 +29,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
+import static spec.WordMath.hex;
 
 public class Assembler {
 
@@ -148,23 +147,30 @@ public class Assembler {
         List<String> result = new LinkedList<>();
         programBites = programBites.replace("\n", " ");
         for (List<Integer> commandBites : split(programBites)) {
-            for (Command command : COMMANDS) {
-                if (command == null) continue;
-
-                if (command.itsMe(commandBites)) {
-                    result.add(command.print(commandBites));
-                    break;
-                }
+            String command = dizAssembly(commandBites);
+            if (command != null) {
+                result.add(command);
             }
         }
         return String.join("\n", result) + "\n";
     }
 
-    public String assembly(String program) {
+    public String dizAssembly(List<Integer> commandBites) {
+        for (Command command : COMMANDS) {
+            if (command == null) continue;
+
+            if (command.itsMe(commandBites)) {
+                return command.print(commandBites);
+            }
+        }
+        return null;
+    }
+
+    public String assembly(String programBites) {
         StringBuilder result = new StringBuilder();
         boolean first = true;
-        for (String command : program.split("\n")) {
-            String bites = parseCommand(command);
+        for (String commandBites : programBites.split("\n")) {
+            String bites = parseCommand(commandBites);
             if (first) {
                 first = false;
             } else {
@@ -175,16 +181,16 @@ public class Assembler {
         return result.toString();
     }
 
-    private String parseCommand(String input) {
+    public String parseCommand(String bites) {
         for (Command command : COMMANDS) {
             if (command == null) continue;
 
-            Optional<String> result = command.parse(input);
+            Optional<String> result = command.parse(bites);
             if (result.isPresent()) {
                 return result.get();
             }
         }
-        throw new UnsupportedOperationException("Unsupported command: " + input);
+        throw new UnsupportedOperationException("Unsupported command: " + bites);
     }
 
     public List<List<Integer>> split(String input) {
@@ -213,9 +219,7 @@ public class Assembler {
         List<String> result = new LinkedList<>();
 
         for (List<Integer> command : bites) {
-            result.add(command.stream()
-                    .map(WordMath::hex8)
-                    .collect(joining(" ")));
+            result.add(hex(command));
         }
         return String.join("\n", result);
     }

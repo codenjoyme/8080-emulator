@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import static java.util.stream.Collectors.joining;
+
 public class WordMath {
 
     public static final int WORD = 0xFFFF;
@@ -56,5 +58,11 @@ public class WordMath {
 
     public static int dec16(int word) {
         return word(--word);
+    }
+
+    public static String hex(List<Integer> command) {
+        return command.stream()
+                .map(WordMath::hex8)
+                .collect(joining(" "));
     }
 }

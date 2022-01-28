@@ -17,6 +17,7 @@ public class Cpu extends Registry {
     private int interrupt;
     private int tick;
     private Assembler asm;
+    private CpuDebug debug;
 
     public Cpu(double clockFrequencyInMHz, Data data, Supplier<Boolean> onInterrupt, Consumer<Integer> onTick) {
         super(data);
@@ -26,6 +27,7 @@ public class Cpu extends Registry {
         this.onInterrupt = onInterrupt;
         asm = new Assembler();
         this.onTick = onTick;
+        debug = new CpuDebug(asm, data);
     }
 
     @Override
@@ -121,6 +123,7 @@ public class Cpu extends Registry {
                 ticks -= interrupt;
             }
 
+            debug.log(PC());
             int bite = data.read8(rPC);
             Command command = asm.find(bite);
             if (command != null) {

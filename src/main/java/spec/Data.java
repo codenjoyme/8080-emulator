@@ -1,5 +1,8 @@
 package spec;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static spec.WordMath.*;
 
 public interface Data {
@@ -41,5 +44,17 @@ public interface Data {
         int lo = read8(r);
         int hi = read8(r) << 8;
         return hi | lo;
+    }
+
+    default List<Integer> read3x8(int addr) {
+        List<Integer> result = new LinkedList<>();
+        result.add(read8(addr));
+
+        addr = inc16(addr);
+        result.add(read8(addr));
+
+        addr = inc16(addr);
+        result.add(read8(addr));
+        return result;
     }
 }

@@ -51,4 +51,6 @@ public class Constants {
     public static final int SCREEN_HEIGHT = 256;
 
     public static final String RECORD_LOG_FILE = "./keys.rec";
+
+    public static boolean CPU_TRACE = false;
 }
