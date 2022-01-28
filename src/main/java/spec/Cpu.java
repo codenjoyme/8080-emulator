@@ -27,7 +27,7 @@ public class Cpu extends Registry {
         this.onInterrupt = onInterrupt;
         asm = new Assembler();
         this.onTick = onTick;
-        debug = new CpuDebug(asm, data);
+        debug = new CpuDebug(asm, data, this);
     }
 
     @Override

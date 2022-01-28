@@ -14,11 +14,13 @@ public class CpuDebug {
 
     private Data data;
     private Assembler asm;
+    private Registry registry;
     private List<String> lines;
 
-    public CpuDebug(Assembler asm, Data data) {
+    public CpuDebug(Assembler asm, Data data, Registry registry) {
         this.data = data;
         this.asm = asm;
+        this.registry = registry;
         lines = new LinkedList<>();
     }
 
@@ -28,10 +30,11 @@ public class CpuDebug {
         List<Integer> bites = data.read3x8(addr);
         Command command = asm.find(bites.get(0));
         bites = bites.subList(0, command.size());
-        String out = String.format("%s  %s  %s",
-                hex16(addr),
-                pad(hex(bites), 9),
-                asm.dizAssembly(bites));
+        String out = String.format("%s%s%s%s",
+                pad(hex16(addr), 6),
+                pad(hex(bites), 10),
+                pad(asm.dizAssembly(bites), 12),
+                pad(registry.toString().replace("\n", "  ").replace(": ", ":"), 55));
         lines.add(out);
         Logger.debug(out);
     }
