@@ -169,11 +169,12 @@ public class Hardware {
     public void loadData(String path) {
         pause();
         int offset = roms.load(path);
-        record.reset().after(200_000)
-                .press(END).after(200_000)
-                .press(ENTER).after(50_000)
+        int delta = 25_000;
+        record.reset().after(delta)
+                .press(END).after(delta)
+                .press(ENTER).after(delta)
                 // TODO а что если specialis а не лик?
-                .enter("J" + hex16(offset)).press(ENTER).after(200_000);
+                .enter("J" + hex16(offset)).press(ENTER).after(delta);
         reset();
     }
 

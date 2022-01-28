@@ -412,6 +412,21 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_helloWorld() {
         // given
         Lik.loadRom(base, roms);
+        hard.loadData(APP_RESOURCES + "test/hello_world.rks");
+        record.after(400_000).stopCpu();
+
+        // when
+        hard.reset();
+        hard.start();
+
+        // then
+        screenShoot();
+    }
+
+    @Test
+    public void testLik_helloWorld_trace() {
+        // given
+        Lik.loadRom(base, roms);
         int start = roms.loadRKS(base, "test/hello_world.rks");
         record.reset().after(300).stopCpu();
         Constants.CPU_TRACE = true;
@@ -754,8 +769,6 @@ public class IntegrationTest extends AbstractTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
-
-        screenShoot();
     }
 
     @Test
