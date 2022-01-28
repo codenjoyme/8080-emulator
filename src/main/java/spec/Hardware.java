@@ -174,7 +174,8 @@ public class Hardware {
                 .press(END).after(delta)
                 .press(ENTER).after(delta)
                 // TODO а что если specialis а не лик?
-                .enter("J" + hex16(offset)).press(ENTER).after(delta);
+                .enter("J" + hex16(offset)).press(ENTER).after(delta)
+                .reset();
         reset();
     }
 

@@ -80,6 +80,7 @@ public class KeyRecord {
         int tick;
         String shoot;
         boolean stopCpu;
+        boolean resetRecord;
 
         Integer keyCode;
         boolean press;
@@ -149,6 +150,10 @@ public class KeyRecord {
         public Action shoot(String name, Function<Action, Action> actions) {
             return KeyRecord.this.shoot(this, name, actions);
         }
+
+        public void reset() {
+            resetRecord = true;
+        }
     }
 
     public void accept(int tick) {
@@ -165,6 +170,9 @@ public class KeyRecord {
             }
             if (action.stopCpu) {
                 stopCpu.run();
+            }
+            if (action.resetRecord) {
+                reset();
             }
         }
 
