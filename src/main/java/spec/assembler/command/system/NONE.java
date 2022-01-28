@@ -1,4 +1,4 @@
-package spec.assembler.command;
+package spec.assembler.command.system;
 
 import java.util.Arrays;
 import java.util.List;

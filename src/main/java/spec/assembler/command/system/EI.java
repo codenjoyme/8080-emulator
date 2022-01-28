@@ -1,4 +1,4 @@
-package spec.assembler.command;
+package spec.assembler.command.system;
 
 import spec.Registry;
 import spec.assembler.Command;
@@ -6,10 +6,10 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-public class DI extends Command {
+public class EI extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
-            0xF3);
+            0xFB);
 
     @Override
     public List<Integer> codes() {
@@ -18,7 +18,7 @@ public class DI extends Command {
 
     @Override
     public String pattern() {
-        return "DI";
+        return "EI";
     }
 
     @Override

@@ -1,4 +1,4 @@
-package spec.assembler.command;
+package spec.assembler.command.system;
 
 import spec.Registry;
 import spec.assembler.Command;

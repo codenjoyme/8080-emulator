@@ -1,10 +1,6 @@
 package spec.assembler;
 
 import spec.WordMath;
-import spec.assembler.command.DI;
-import spec.assembler.command.EI;
-import spec.assembler.command.NONE;
-import spec.assembler.command.NOP;
 import spec.assembler.command.copy.*;
 import spec.assembler.command.jump.*;
 import spec.assembler.command.math.bits.RAL;
@@ -24,6 +20,10 @@ import spec.assembler.command.procedure.call.*;
 import spec.assembler.command.procedure.ret.*;
 import spec.assembler.command.stack.POP_RS;
 import spec.assembler.command.stack.PUSH_RS;
+import spec.assembler.command.system.DI;
+import spec.assembler.command.system.EI;
+import spec.assembler.command.system.NONE;
+import spec.assembler.command.system.NOP;
 
 import java.util.Arrays;
 import java.util.LinkedList;

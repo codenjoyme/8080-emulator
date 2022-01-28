@@ -3,7 +3,7 @@ package spec.assembler;
 import spec.Reg;
 import spec.Registry;
 import spec.WordMath;
-import spec.assembler.command.NONE;
+import spec.assembler.command.system.NONE;
 
 import java.util.*;
 import java.util.regex.Matcher;
