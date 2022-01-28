@@ -7,10 +7,12 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-import static spec.Constants.*;
+import static spec.Constants.x0F;
+import static spec.Constants.x100;
 import static spec.Registry.T4h;
 import static spec.Registry.T7s;
 import static spec.WordMath.lo;
+import static spec.assembler.Parity.parity;
 
 // TODO test me
 public class SBB_R extends Command {
@@ -52,9 +54,7 @@ public class SBB_R extends Command {
         r.ts((ans & T7s) != 0);
         r.tz(ans == 0);
         r.tc((wans & x100) != 0);
-        r.tp(((a ^ b) & (a ^ ans) & x80) != 0);
-        // TODO #01 вероятно тут надо пофиксить
-        //  r.tp(parity[ans]);
+        r.tp(parity[ans]);
         r.th((((a & x0F) - (b & x0F) - c) & T4h) != 0);
 
         return ans;
