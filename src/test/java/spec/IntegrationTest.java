@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import spec.mods.DebugWhen;
 import spec.mods.StopWhen;
 import spec.platforms.Lik;
 import spec.platforms.Specialist;
@@ -387,6 +388,9 @@ public class IntegrationTest extends AbstractTest {
         Lik.loadRom(base, roms);
         int start = roms.loadRKS(base, "test/test.rks");
         cpu.modAdd(new StopWhen(0x0055));
+        cpu.modAdd(new DebugWhen(0x00C8, () -> {
+            System.out.println(cpu.toStringDetails());
+        }));
         debug.enable();
         debug.showCallBellow(1);
 
