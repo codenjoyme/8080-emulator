@@ -1,13 +1,13 @@
 package spec.mods;
 
-import spec.Registry;
+import spec.Cpu;
 
-public class CallDeep implements CpuMod<Registry> {
+public class CallDeep implements CpuMod<Cpu> {
 
     private int callDeep;
 
     @Override
-    public void on(String event, Registry registry) {
+    public void on(String event, Cpu cpu) {
         if (event.equals("call")) {
             callDeep++;
         } else if (event.equals("ret")) {

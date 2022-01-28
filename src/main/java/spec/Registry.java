@@ -5,7 +5,7 @@ import spec.mods.Modifiable;
 import static spec.Constants.*;
 import static spec.WordMath.*;
 
-public class Registry extends Modifiable<Registry> {
+public class Registry extends Modifiable<Cpu> {
 
     public static final int T0c = x01; // Разряд Tc = 1, если был перенос или заем
     public static final int T11 = x02; // Всегда 1
@@ -186,9 +186,8 @@ public class Registry extends Modifiable<Registry> {
     }
 
     public void reset() {
-        if (mod != null) {
-            mod.reset();
-        }
+        super.reset();
+
         PC(START_POINT);
         SP(0);
         A(0);
@@ -271,6 +270,7 @@ public class Registry extends Modifiable<Registry> {
     }
 
     public void PC(int word) {
+        on("PC");
         PC = word;
     }
 

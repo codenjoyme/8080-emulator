@@ -1,20 +1,31 @@
 package spec.mods;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class Modifiable<T> {
 
-    protected CpuMod<T> mod;
+    protected Map<Class<CpuMod<T>>, CpuMod<T>> mods = new HashMap<>();
 
     public void on(String event) {
-        if (mod != null) {
-            mod.on(event, (T) this);
-        }
+        mods.entrySet().forEach(entry ->
+                entry.getValue().on(event, (T) this));
     }
 
-    public void mod(CpuMod<T> mod) {
-        this.mod = mod;
+    public void modAdd(CpuMod<T> mod) {
+        mods.put((Class) mod.getClass(), mod);
     }
 
     public <M extends CpuMod<T>> M mod(Class<M> clazz) {
-        return (M) mod;
+        return (M) mods.get(clazz);
+    }
+
+    public <M extends CpuMod<T>> void modRemove(Class<M> clazz) {
+        mods.remove(clazz);
+    }
+
+    public void reset() {
+        mods.entrySet().forEach(entry ->
+                entry.getValue().reset());
     }
 }

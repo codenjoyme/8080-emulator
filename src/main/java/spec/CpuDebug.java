@@ -60,11 +60,12 @@ public class CpuDebug {
 
     public void enable() {
         enabled = true;
-        registry.mod(new CallDeep());
+        registry.modAdd(new CallDeep());
     }
 
     public void disable() {
         enabled = false;
+        registry.modRemove(CallDeep.class);
     }
 
     public void showCallBellow(int deepCall) {

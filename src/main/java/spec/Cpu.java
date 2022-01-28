@@ -18,6 +18,7 @@ public class Cpu extends Registry {
     private int tick;
     private Assembler asm;
     private CpuDebug debug;
+    private boolean enabled;
 
     public Cpu(double clockFrequencyInMHz, Data data, Supplier<Boolean> onInterrupt, Consumer<Integer> onTick) {
         super(data);
@@ -33,6 +34,7 @@ public class Cpu extends Registry {
     @Override
     public void reset() {
         super.reset();
+        enabled();
         tick = 0;
     }
 
@@ -110,7 +112,7 @@ public class Cpu extends Registry {
         int ticks = -interrupt;
 
         // цикл выборки/выполнения
-        while (true) {
+        while (enabled) {
             if (onTick != null) {
                 onTick.accept(tick);
             }
@@ -137,7 +139,8 @@ public class Cpu extends Registry {
             if (bite == 0x76) { // TODO понять как устроена эта команда и выделить ее тоже
                 int haltsToInterrupt = (-ticks - 1) / 4 + 1;
                 ticks += haltsToInterrupt * 4;
-                break;
+                enabled = false;
+                continue;
             }
             
             switch (bite) {
@@ -1422,6 +1425,8 @@ public class Cpu extends Registry {
 //                }
             }
         }
+
+        enabled();
     }
 
 //    private void adc_a(int b) {
@@ -1669,5 +1674,13 @@ public class Cpu extends Registry {
 
     public CpuDebug debug() {
         return debug;
+    }
+
+    public void disabled() {
+        enabled = false;
+    }
+
+    public void enabled() {
+        enabled = true;
     }
 }
