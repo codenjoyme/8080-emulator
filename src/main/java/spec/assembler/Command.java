@@ -139,7 +139,8 @@ public abstract class Command {
                 break;
             }
             default: {
-                // do nothing;
+                result = result.replace("(.)",  // 1 byte RST command
+                        String.valueOf(rindex(bites.get(0))));
             }
         }
         if (!registers().isEmpty()) {
