@@ -1,6 +1,5 @@
 package spec;
 
-import java.awt.*;
 import java.io.File;
 import java.net.URL;
 
@@ -21,11 +20,13 @@ public class Hardware {
     private KeyLogger keyLogger;
     private KeyRecord record;
     private FileRecorder fileRecorder;
+    private Video.Drawer drawer;
 
     private boolean cpuEnabled;
     private boolean cpuSuspended;
 
-    public Hardware(int screenWidth, int screenHeight) {
+    public Hardware(int screenWidth, int screenHeight, Video.Drawer drawer) {
+        this.drawer = drawer;
         memory = createMemory();
         fileRecorder = createFileRecorder(logFile());
         keyLogger = createKeyLogger();
@@ -44,7 +45,7 @@ public class Hardware {
 
     protected Video createVideo(int width, int height) {
         Video video = new Video(width, height);
-        video.drawer(this::drawPixel);
+        video.drawer(drawer);
         return video;
     }
 
@@ -123,10 +124,6 @@ public class Hardware {
     }
 
     protected void update() {
-        // please override if needed
-    }
-
-    protected void drawPixel(Point point, Color color) {
         // please override if needed
     }
 

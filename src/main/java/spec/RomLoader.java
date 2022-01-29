@@ -103,7 +103,7 @@ public class RomLoader {
                 toRead -= nRead;
             }
 
-            for (int i = 0; i < n; i++) { // буффер "byte" превращаем в буффер "int"
+            for (int i = 0; i < n; i++) { // буфер "byte" превращаем в буффер "int"
                 a[i + off] = (buff[i] + 256) & BITE;
             }
             return n;

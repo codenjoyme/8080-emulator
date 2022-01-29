@@ -9,7 +9,7 @@ import java.io.IOException;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static spec.Constants.SCREEN;
 
-public class PngVideo {
+public class PngVideo implements Video.Drawer {
 
     private Graphics graphics;
     private BufferedImage image;
@@ -24,9 +24,9 @@ public class PngVideo {
         graphics = image.getGraphics();
     }
 
-    private void draw(Point pt, Color color) {
-        graphics.setColor(color);
-        graphics.fillRect(pt.x, pt.y, 1, 1);
+    @Override
+    public void draw(int x, int y, Image pattern) {
+        graphics.drawImage(pattern, x, y, null);
     }
 
     public void drawToFile(File file) {

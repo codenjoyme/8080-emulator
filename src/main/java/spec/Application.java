@@ -48,7 +48,7 @@ public class Application {
         this.base = base;
         graphic = new Graphic(SCREEN_WIDTH, SCREEN_HEIGHT, BORDER_WIDTH, parent);
 
-        hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT) {
+        hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, graphic) {
 
             @Override
             protected void out8(int port, int bite) {
@@ -58,11 +58,6 @@ public class Application {
             @Override
             protected void update() {
                 updateState();
-            }
-
-            @Override
-            protected void drawPixel(Point point, Color color) {
-                graphic.drawPixel(point, color);
             }
         };
 

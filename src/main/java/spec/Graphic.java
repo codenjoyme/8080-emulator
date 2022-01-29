@@ -3,10 +3,10 @@ package spec;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Graphic {
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
-    private int width;
-    private int height;
+public class Graphic implements Video.Drawer {
+
     private int borderWidth;
 
     private Color currentBorder = null; // null mean update screen
@@ -22,8 +22,6 @@ public class Graphic {
     private Graphics buffer;
 
     public Graphic(int width, int height, int borderWidth, Container parent) {
-        this.width = width;
-        this.height = height;
         this.borderWidth = borderWidth;
         container = parent;
 
@@ -41,7 +39,7 @@ public class Graphic {
         container.add(canvas);
 
         // тут мы кешируем уже отрисованное из видеопамяти изображение
-        bufferImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        bufferImage = new BufferedImage(width, height, TYPE_INT_ARGB);
         // через него мы рисуем на cache-image пиксели
         buffer = bufferImage.getGraphics();
         // на нем мы рисуем рамку, это фон под canvas
@@ -58,9 +56,9 @@ public class Graphic {
         }
     }
 
-    public void drawPixel(Point pt, Color color) {
-        buffer.setColor(color);
-        buffer.fillRect(pt.x, pt.y, 1, 1);
+    @Override
+    public void draw(int x, int y, Image pattern) {
+        buffer.drawImage(pattern, x, y, null);
     }
 
     private void setBorderWidth(int width) {

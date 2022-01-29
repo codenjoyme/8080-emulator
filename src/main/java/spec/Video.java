@@ -1,10 +1,11 @@
 package spec;
 
 import java.awt.*;
-import java.util.function.BiConsumer;
+import java.awt.image.BufferedImage;
 
 import static java.awt.Color.BLACK;
 import static java.awt.Color.WHITE;
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static spec.Constants.SCREEN;
 
 public class Video {
@@ -31,39 +32,72 @@ public class Video {
             new Color(str, str, 0),  // 0E желтый
             new Color(str, str, str) // 0F ярко-белый
     };
+    public static final int PATTERN_WIDTH = 8;
 
     private int width;
     private int height;
-    private BiConsumer<Point, Color> drawer;
-    private Color[][] colors;
+    private Drawer drawer;
+    private Pattern[][] colors;
+    private Pattern[] patterns;
 
     public Video(int width, int height) {
-        this.width = width;
+        this.width = width / PATTERN_WIDTH;
         this.height = height;
-        colors = new Color[width][height];
+        colors = new Pattern[width][height];
+        patterns = new Pattern[0x100];
         clean();
     }
 
-    public void drawer(BiConsumer<Point, Color> drawer) {
+    @FunctionalInterface
+    public interface Drawer {
+        void draw(int x, int y, Image pattern);
+    }
+
+    public static class Pattern {
+
+        private Graphics buffer;
+        private BufferedImage image;
+
+        public Pattern(int pattern) {
+            image = new BufferedImage(PATTERN_WIDTH, 1, TYPE_INT_ARGB);
+            buffer = image.getGraphics();
+            for (int x = 0; x < PATTERN_WIDTH; x++) {
+                Color color = ((pattern & (1 << x)) == 0) ? BLACK : WHITE;
+                buffer.setColor(color);
+                buffer.fillRect(PATTERN_WIDTH - 1 - x, 0, 1, 1);
+            }
+        }
+
+        public Image image() {
+            return image;
+        }
+    }
+
+    public void drawer(Drawer drawer) {
         this.drawer = drawer;
     }
 
-    private void clean() {
-        for (int x = 0; x < width; x++) {
+    public void clean() {
+        for (int px = 0; px < width; px++) {
             for (int y = 0; y < height; y++) {
-                colors[x][y] = BLACK;
+                colors[px][y] = pattern(0);
             }
         }
     }
 
+    private Pattern pattern(int bite) {
+        Pattern result = patterns[bite];
+        if (result == null) {
+            result = patterns[bite] = new Pattern(bite);
+        }
+        return result;
+    }
+
     public void plot(int addr, int pattern) {
         int offset = addr - SCREEN.begin();
-        int x = (offset & 0x3F00) >> 5;
+        int x = ((offset & 0x3F00) >> 5) / PATTERN_WIDTH;
         int y = offset & 0x00FF;
-        for (int i = 0; i < 8; i++) {
-            Color col = ((pattern & (1 << i)) == 0) ? BLACK : WHITE;
-            colors[x + (7 - i)][y] = col;
-        }
+        colors[x][y] = pattern(pattern);
     }
 
     public void screenPaint() {
@@ -71,9 +105,9 @@ public class Video {
             for (int y = 0; y < height; y++) {
                 if (colors[x][y] == null) continue;
 
-                Color color = colors[x][y];
+                Pattern pattern = colors[x][y];
                 if (drawer != null){
-                    drawer.accept(new Point(x, y), color);
+                    drawer.draw(x * PATTERN_WIDTH, y, pattern.image());
                 }
                 colors[x][y] = null;
             }
@@ -81,7 +115,7 @@ public class Video {
     }
 
     public int width() {
-        return width;
+        return width * PATTERN_WIDTH;
     }
 
     public int height() {
