@@ -356,14 +356,14 @@ public class IntegrationTest extends AbstractTest {
         asrtCpu("BC:  125C\n" +
                 "DE:  0000\n" +
                 "HL:  201F\n" +
-                "AF:  0052\n" +
+                "AF:  0056\n" +
                 "SP:  3FFB\n" +
                 "PC:  04FE\n" +
                 "B,C: 12 5C\n" +
                 "D,E: 00 00\n" +
                 "H,L: 20 1F\n" +
                 "M:   20\n" +
-                "A,F: 00 52\n" +
+                "A,F: 00 56\n" +
                 "     76543210 76543210\n" +
                 "SP:  00111111 11111011\n" +
                 "PC:  00000100 11111110\n" +
@@ -377,11 +377,11 @@ public class IntegrationTest extends AbstractTest {
                 "M:   00100000\n" +
                 "A:   00000000\n" +
                 "     sz0h0p1c\n" +
-                "F:   01010010\n" +
+                "F:   01010110\n" +
                 "ts:  false\n" +
                 "tz:  true\n" +
                 "th:  true\n" +
-                "tp:  false\n" +
+                "tp:  true\n" +
                 "tc:  false\n");
 
         screenShoot();
@@ -490,8 +490,8 @@ public class IntegrationTest extends AbstractTest {
                 "01D4  CA 37 02  JZ 0237     (0)  BC:000A  DE:0000  HL:0054  AF:D946  SP:06BE  PC:01D4   \n" +
                 "0237  3E 77     MVI A,77    (0)  BC:000A  DE:0000  HL:0054  AF:D946  SP:06BE  PC:0237   \n" +
                 "0239  3C        INR A       (0)  BC:000A  DE:0000  HL:0054  AF:7746  SP:06BE  PC:0239   \n" +
-                "023A  47        MOV B,A     (0)  BC:000A  DE:0000  HL:0054  AF:7802  SP:06BE  PC:023A   \n" +
-                "023B  04        INR B       (0)  BC:780A  DE:0000  HL:0054  AF:7802  SP:06BE  PC:023B   \n" +
+                "023A  47        MOV B,A     (0)  BC:000A  DE:0000  HL:0054  AF:7806  SP:06BE  PC:023A   \n" +
+                "023B  04        INR B       (0)  BC:780A  DE:0000  HL:0054  AF:7806  SP:06BE  PC:023B   \n" +
                 "023C  48        MOV C,B     (0)  BC:790A  DE:0000  HL:0054  AF:7802  SP:06BE  PC:023C   \n" +
                 "023D  0D        DCR C       (0)  BC:7979  DE:0000  HL:0054  AF:7802  SP:06BE  PC:023D   \n" +
                 "023E  51        MOV D,C     (0)  BC:7978  DE:0000  HL:0054  AF:7816  SP:06BE  PC:023E   \n" +
@@ -509,9 +509,9 @@ public class IntegrationTest extends AbstractTest {
                 "024A  7C        MOV A,H     (0)  BC:7777  DE:7777  HL:7777  AF:7716  SP:06BE  PC:024A   \n" +
                 "024B  57        MOV D,A     (0)  BC:7777  DE:7777  HL:7777  AF:7716  SP:06BE  PC:024B   \n" +
                 "024C  14        INR D       (0)  BC:7777  DE:7777  HL:7777  AF:7716  SP:06BE  PC:024C   \n" +
-                "024D  6A        MOV L,D     (0)  BC:7777  DE:7877  HL:7777  AF:7702  SP:06BE  PC:024D   \n" +
-                "024E  4D        MOV C,L     (0)  BC:7777  DE:7877  HL:7778  AF:7702  SP:06BE  PC:024E   \n" +
-                "024F  0C        INR C       (0)  BC:7778  DE:7877  HL:7778  AF:7702  SP:06BE  PC:024F   \n" +
+                "024D  6A        MOV L,D     (0)  BC:7777  DE:7877  HL:7777  AF:7706  SP:06BE  PC:024D   \n" +
+                "024E  4D        MOV C,L     (0)  BC:7777  DE:7877  HL:7778  AF:7706  SP:06BE  PC:024E   \n" +
+                "024F  0C        INR C       (0)  BC:7778  DE:7877  HL:7778  AF:7706  SP:06BE  PC:024F   \n" +
                 "0250  61        MOV H,C     (0)  BC:7779  DE:7877  HL:7778  AF:7702  SP:06BE  PC:0250   \n" +
                 "0251  44        MOV B,H     (0)  BC:7779  DE:7877  HL:7978  AF:7702  SP:06BE  PC:0251   \n" +
                 "0252  05        DCR B       (0)  BC:7979  DE:7877  HL:7978  AF:7702  SP:06BE  PC:0252   \n" +
@@ -747,7 +747,7 @@ public class IntegrationTest extends AbstractTest {
                 "03B3  C4 A3 05  CNZ 05A3    (0)  BC:4445  DE:4647  HL:05C0  AF:0546  SP:06BE  PC:03B3   \n" +
                 "03B6  36 55     MVI M,55    (0)  BC:4445  DE:4647  HL:05C0  AF:0546  SP:06BE  PC:03B6   \n" +
                 "03B8  34        INR M       (0)  BC:4445  DE:4647  HL:05C0  AF:0546  SP:06BE  PC:03B8   \n" +
-                "03B9  35        DCR M       (0)  BC:4445  DE:4647  HL:05C0  AF:0502  SP:06BE  PC:03B9   \n" +
+                "03B9  35        DCR M       (0)  BC:4445  DE:4647  HL:05C0  AF:0506  SP:06BE  PC:03B9   \n" +
                 "03BA  86        ADD M       (0)  BC:4445  DE:4647  HL:05C0  AF:0516  SP:06BE  PC:03BA   \n" +
                 "03BB  FE 5A     CPI 5A      (0)  BC:4445  DE:4647  HL:05C0  AF:5A06  SP:06BE  PC:03BB   \n" +
                 "03BD  C4 A3 05  CNZ 05A3    (0)  BC:4445  DE:4647  HL:05C0  AF:5A46  SP:06BE  PC:03BD   \n" +
@@ -1456,17 +1456,17 @@ public class IntegrationTest extends AbstractTest {
         asrtCpu("BC:  0002\n" +
                 "DE:  0000\n" +
                 "HL:  0080\n" +
-                "AF:  0D97\n" +
-                "SP:  2FEF\n" +
-                "PC:  004E\n" +
+                "AF:  0307\n" +
+                "SP:  2FF5\n" +
+                "PC:  2153\n" +
                 "B,C: 00 02\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 80\n" +
                 "M:   00\n" +
-                "A,F: 0D 97\n" +
+                "A,F: 03 07\n" +
                 "     76543210 76543210\n" +
-                "SP:  00101111 11101111\n" +
-                "PC:  00000000 01001110\n" +
+                "SP:  00101111 11110101\n" +
+                "PC:  00100001 01010011\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
                 "C:   00000010\n" +
@@ -1475,12 +1475,12 @@ public class IntegrationTest extends AbstractTest {
                 "H:   00000000\n" +
                 "L:   10000000\n" +
                 "M:   00000000\n" +
-                "A:   00001101\n" +
+                "A:   00000011\n" +
                 "     sz0h0p1c\n" +
-                "F:   10010111\n" +
-                "ts:  true\n" +
+                "F:   00000111\n" +
+                "ts:  false\n" +
                 "tz:  false\n" +
-                "th:  true\n" +
+                "th:  false\n" +
                 "tp:  true\n" +
                 "tc:  true\n");
 
