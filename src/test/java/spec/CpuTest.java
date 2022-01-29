@@ -720,20 +720,6 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void performance_assemble() {
-        // given
-
-        // about 2.1 sec / 1000
-        int ticks = 1000;
-
-        // when then
-        for (int tick = 0; tick < ticks; tick++) {
-            memoryInit = false;
-            smoke_assemble();
-        }
-    }
-
-    @Test
     public void smoke_assemble() {
         // given when
         givenPr("LDA 1234\n" +
@@ -752,7 +738,7 @@ public class CpuTest extends AbstractTest {
                 "NOP\n" +
                 "LXI SP,1234\n" +
                 "NOP\n" +
-                
+
                 "MOV B,B\n" +
                 "NOP\n" +
                 "MOV B,C\n" +
@@ -769,7 +755,7 @@ public class CpuTest extends AbstractTest {
                 "NOP\n" +
                 "MOV B,A\n" +
                 "NOP\n" +
-                
+
                 "MOV C,B\n" +
                 "NOP\n" +
                 "MOV C,C\n" +
@@ -786,7 +772,7 @@ public class CpuTest extends AbstractTest {
                 "NOP\n" +
                 "MOV C,A\n" +
                 "NOP\n" +
-                
+
                 "MOV D,B\n" +
                 "NOP\n" +
                 "MOV D,C\n" +
@@ -803,7 +789,7 @@ public class CpuTest extends AbstractTest {
                 "NOP\n" +
                 "MOV D,A\n" +
                 "NOP\n" +
-                
+
                 "MOV E,B\n" +
                 "NOP\n" +
                 "MOV E,C\n" +
@@ -820,7 +806,7 @@ public class CpuTest extends AbstractTest {
                 "NOP\n" +
                 "MOV E,A\n" +
                 "NOP\n" +
-                
+
                 "MOV H,B\n" +
                 "NOP\n" +
                 "MOV H,C\n" +
@@ -837,7 +823,7 @@ public class CpuTest extends AbstractTest {
                 "NOP\n" +
                 "MOV H,A\n" +
                 "NOP\n" +
-                
+
                 "MOV L,B\n" +
                 "NOP\n" +
                 "MOV L,C\n" +
@@ -854,7 +840,7 @@ public class CpuTest extends AbstractTest {
                 "NOP\n" +
                 "MOV L,A\n" +
                 "NOP\n" +
-                
+
                 "MOV M,B\n" +
                 "NOP\n" +
                 "MOV M,C\n" +
@@ -871,7 +857,7 @@ public class CpuTest extends AbstractTest {
                 //"NOP\n" +
                 "MOV M,A\n" +
                 "NOP\n" +
-                
+
                 "MVI B,12\n" +
                 "NOP\n" +
                 "MVI C,12\n" +
@@ -888,7 +874,7 @@ public class CpuTest extends AbstractTest {
                 "NOP\n" +
                 "MVI A,12\n" +
                 "NOP\n" +
-                
+
                 "PCHL\n" +
                 "NOP\n" +
                 "SHLD 1234\n" +
@@ -923,7 +909,7 @@ public class CpuTest extends AbstractTest {
                 "NOP\n" +
                 "JZ 1234\n" +
                 "NOP\n" +
-                
+
                 "RAL\n" +
                 "NOP\n" +
                 "RAR\n" +
@@ -932,12 +918,12 @@ public class CpuTest extends AbstractTest {
                 "NOP\n" +
                 "RRC\n" +
                 "NOP\n" +
-                
+
                 "CMA\n" +
                 "NOP\n" +
                 "CMC\n" +
                 "NOP\n" +
-                
+
                 "CMP B\n" +
                 "NOP\n" +
                 "CMP C\n" +
@@ -957,12 +943,12 @@ public class CpuTest extends AbstractTest {
 
                 "CPI 12\n" +
                 "NOP\n" +
-                
+
                 "DAA\n" +
                 "NOP\n" +
                 "STC\n" +
                 "NOP\n" +
-                
+
                 "DCR B\n" +
                 "NOP\n" +
                 "DCR C\n" +
@@ -988,7 +974,7 @@ public class CpuTest extends AbstractTest {
                 "NOP\n" +
                 "DCX SP\n" +
                 "NOP\n" +
-                
+
                 "INR B\n" +
                 "NOP\n" +
                 "INR C\n" +
@@ -1014,7 +1000,7 @@ public class CpuTest extends AbstractTest {
                 "NOP\n" +
                 "INX SP\n" +
                 "NOP\n" +
-                
+
                 "ANA B\n" +
                 "NOP\n" +
                 "ANA C\n" +
@@ -1034,7 +1020,7 @@ public class CpuTest extends AbstractTest {
 
                 "ANI 12\n" +
                 "NOP\n" +
-                
+
                 "ORA B\n" +
                 "NOP\n" +
                 "ORA C\n" +
@@ -1054,7 +1040,7 @@ public class CpuTest extends AbstractTest {
 
                 "ORI 12\n" +
                 "NOP\n" +
-                
+
                 "XRA B\n" +
                 "NOP\n" +
                 "XRA C\n" +
@@ -1114,7 +1100,7 @@ public class CpuTest extends AbstractTest {
 
                 "ADI 12\n" +
                 "NOP\n" +
-                
+
                 "DAD B\n" +
                 "NOP\n" +
                 "DAD D\n" +
@@ -1163,7 +1149,7 @@ public class CpuTest extends AbstractTest {
 
                 "SUI 12\n" +
                 "NOP\n" +
-                
+
                 "IN 12\n" +
                 "NOP\n" +
                 "OUT 12\n" +
@@ -1690,6 +1676,20 @@ public class CpuTest extends AbstractTest {
                 "FB\n" +
                 "00\n" +
                 "00");
+    }
+
+    @Test
+    public void performance_assemble() {
+        // given
+
+        // about 2.1 sec / 1000
+        int ticks = 1000;
+
+        // when then
+        for (int tick = 0; tick < ticks; tick++) {
+            memoryInit = false;
+            smoke_assemble();
+        }
     }
 
     @Test
