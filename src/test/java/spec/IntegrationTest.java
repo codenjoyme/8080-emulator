@@ -454,8 +454,8 @@ public class IntegrationTest extends AbstractTest {
                 "0163  FE 0B     CPI 0B      (0)  BC:000A  DE:0000  HL:0054  AF:0B02  SP:06BE  PC:0163   \n" +
                 "0165  CA 6B 01  JZ 016B     (0)  BC:000A  DE:0000  HL:0054  AF:0B46  SP:06BE  PC:0165   \n" +
                 "016B  D6 0C     SUI 0C      (0)  BC:000A  DE:0000  HL:0054  AF:0B46  SP:06BE  PC:016B   \n" +
-                "016D  D6 0F     SUI 0F      (0)  BC:000A  DE:0000  HL:0054  AF:FF93  SP:06BE  PC:016D   \n" +
-                "016F  FE F0     CPI F0      (0)  BC:000A  DE:0000  HL:0054  AF:F082  SP:06BE  PC:016F   \n" +
+                "016D  D6 0F     SUI 0F      (0)  BC:000A  DE:0000  HL:0054  AF:FF97  SP:06BE  PC:016D   \n" +
+                "016F  FE F0     CPI F0      (0)  BC:000A  DE:0000  HL:0054  AF:F086  SP:06BE  PC:016F   \n" +
                 "0171  CA 77 01  JZ 0177     (0)  BC:000A  DE:0000  HL:0054  AF:F046  SP:06BE  PC:0171   \n" +
                 "0177  DE F1     SBI F1      (0)  BC:000A  DE:0000  HL:0054  AF:F046  SP:06BE  PC:0177   \n" +
                 "0179  DE 0E     SBI 0E      (0)  BC:000A  DE:0000  HL:0054  AF:FF97  SP:06BE  PC:0179   \n" +
@@ -568,13 +568,13 @@ public class IntegrationTest extends AbstractTest {
                 "0291  92        SUB D       (0)  BC:0103  DE:070F  HL:1F3F  AF:EC82  SP:06BE  PC:0291   \n" +
                 "0292  93        SUB E       (0)  BC:0103  DE:070F  HL:1F3F  AF:E582  SP:06BE  PC:0292   \n" +
                 "0293  94        SUB H       (0)  BC:0103  DE:070F  HL:1F3F  AF:D692  SP:06BE  PC:0293   \n" +
-                "0294  95        SUB L       (0)  BC:0103  DE:070F  HL:1F3F  AF:B792  SP:06BE  PC:0294   \n" +
+                "0294  95        SUB L       (0)  BC:0103  DE:070F  HL:1F3F  AF:B796  SP:06BE  PC:0294   \n" +
                 "0295  FE 78     CPI 78      (0)  BC:0103  DE:070F  HL:1F3F  AF:7816  SP:06BE  PC:0295   \n" +
                 "0297  C4 A3 05  CNZ 05A3    (0)  BC:0103  DE:070F  HL:1F3F  AF:7846  SP:06BE  PC:0297   \n" +
                 "029A  97        SUB A       (0)  BC:0103  DE:070F  HL:1F3F  AF:7846  SP:06BE  PC:029A   \n" +
-                "029B  C4 A3 05  CNZ 05A3    (0)  BC:0103  DE:070F  HL:1F3F  AF:0042  SP:06BE  PC:029B   \n" +
-                "029E  3E 80     MVI A,80    (0)  BC:0103  DE:070F  HL:1F3F  AF:0042  SP:06BE  PC:029E   \n" +
-                "02A0  87        ADD A       (0)  BC:0103  DE:070F  HL:1F3F  AF:8042  SP:06BE  PC:02A0   \n" +
+                "029B  C4 A3 05  CNZ 05A3    (0)  BC:0103  DE:070F  HL:1F3F  AF:0046  SP:06BE  PC:029B   \n" +
+                "029E  3E 80     MVI A,80    (0)  BC:0103  DE:070F  HL:1F3F  AF:0046  SP:06BE  PC:029E   \n" +
+                "02A0  87        ADD A       (0)  BC:0103  DE:070F  HL:1F3F  AF:8046  SP:06BE  PC:02A0   \n" +
                 "02A1  06 01     MVI B,01    (0)  BC:0103  DE:070F  HL:1F3F  AF:0047  SP:06BE  PC:02A1   \n" +
                 "02A3  0E 02     MVI C,02    (0)  BC:0103  DE:070F  HL:1F3F  AF:0047  SP:06BE  PC:02A3   \n" +
                 "02A5  16 03     MVI D,03    (0)  BC:0102  DE:070F  HL:1F3F  AF:0047  SP:06BE  PC:02A5   \n" +
@@ -725,9 +725,9 @@ public class IntegrationTest extends AbstractTest {
                 "038B  2E C0     MVI L,C0    (0)  BC:4445  DE:4647  HL:05C0  AF:3246  SP:06BE  PC:038B   \n" +
                 "038D  7E        MOV A,M     (0)  BC:4445  DE:4647  HL:05C0  AF:3246  SP:06BE  PC:038D   \n" +
                 "038E  96        SUB M       (0)  BC:4445  DE:4647  HL:05C0  AF:3246  SP:06BE  PC:038E   \n" +
-                "038F  C4 A3 05  CNZ 05A3    (0)  BC:4445  DE:4647  HL:05C0  AF:0042  SP:06BE  PC:038F   \n" +
-                "0392  3E 80     MVI A,80    (0)  BC:4445  DE:4647  HL:05C0  AF:0042  SP:06BE  PC:0392   \n" +
-                "0394  87        ADD A       (0)  BC:4445  DE:4647  HL:05C0  AF:8042  SP:06BE  PC:0394   \n" +
+                "038F  C4 A3 05  CNZ 05A3    (0)  BC:4445  DE:4647  HL:05C0  AF:0046  SP:06BE  PC:038F   \n" +
+                "0392  3E 80     MVI A,80    (0)  BC:4445  DE:4647  HL:05C0  AF:0046  SP:06BE  PC:0392   \n" +
+                "0394  87        ADD A       (0)  BC:4445  DE:4647  HL:05C0  AF:8046  SP:06BE  PC:0394   \n" +
                 "0395  8E        ADC M       (0)  BC:4445  DE:4647  HL:05C0  AF:0047  SP:06BE  PC:0395   \n" +
                 "0396  FE 33     CPI 33      (0)  BC:4445  DE:4647  HL:05C0  AF:3306  SP:06BE  PC:0396   \n" +
                 "0398  C4 A3 05  CNZ 05A3    (0)  BC:4445  DE:4647  HL:05C0  AF:3346  SP:06BE  PC:0398   \n" +
