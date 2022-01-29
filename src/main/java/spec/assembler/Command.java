@@ -175,31 +175,31 @@ public abstract class Command {
         switch (size()) {
             case 3: {
                 String word = hex16(merge(bites.get(2), bites.get(1)));
-                result = result.replace("(....)", word);
+                result = replace(result, "(....)", word);
                 break;
             }
             case 2: {
                 String bite = hex8(bites.get(1));
-                result = result.replace("(..)", bite);
+                result = replace(result, "(..)", bite);
                 break;
             }
             default: {
-                result = result.replace("(.)",  // 1 byte RST command
+                result = replace(result, "(.)",  // 1 byte RST command
                         String.valueOf(rindex(bites.get(0))));
             }
         }
         if (!registers().isEmpty()) {
             String reg = registers().get(rindex(bites.get(0)));
-            result = replaceFirst(result, "(B|D)", reg);
-            result = replaceFirst(result, "(B|C|D|E|H|L|M|A)", reg);
-            result = replaceFirst(result, "(B|D|H|SP)", reg);
-            result = replaceFirst(result, "(B|D|H|PSW)", reg);
-            result = replaceFirst(result, "(B|D)", reg);
+            result = replace(result, "(B|D)", reg);
+            result = replace(result, "(B|C|D|E|H|L|M|A)", reg);
+            result = replace(result, "(B|D|H|SP)", reg);
+            result = replace(result, "(B|D|H|PSW)", reg);
+            result = replace(result, "(B|D)", reg);
         }
         return result;
     }
 
-    private String replaceFirst(String source, String search, String replacement) {
+    private String replace(String source, String search, String replacement) {
         int index = source.indexOf(search);
         if (index == -1) {
             return source;
