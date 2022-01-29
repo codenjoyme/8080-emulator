@@ -282,7 +282,6 @@ public class Application {
     private void loadSnapshot(URL base, String snapshot) {
         hard.loadSnapshot(base, snapshot);
         refreshWholeScreen();
-        graphic.requestFocus();
     }
 
     public void start() {

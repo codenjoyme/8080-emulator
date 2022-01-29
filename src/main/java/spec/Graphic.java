@@ -7,63 +7,43 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 public class Graphic implements Video.Drawer {
 
-    private int borderWidth;
+    private int width;
+    private int height;
+    private int border;
 
     private Color currentBorder = null; // null mean update screen
     private Color newBorder = Color.YELLOW;
 
-    private Container container;
-    private Graphics background;
-
-    private Canvas canvas;
     private Graphics scene;
-
     private Image bufferImage;
     private Graphics buffer;
 
-    public Graphic(int width, int height, int borderWidth, Container parent) {
-        this.borderWidth = borderWidth;
-        container = parent;
+    public Graphic(int width, int height, int border, Container parent) {
+        this.width = width;
+        this.height = height;
+        this.border = border;
 
-        // мы рисуем на канве, чтобы не мерцало изображение
-        canvas = new Canvas();
-        canvas.setSize(width, height);
+        Canvas canvas = new Canvas();
         // переопределяем лиснер только для Swing приложения,
         // иначе не будут отлавливаться там клавиши так как canvas перекрывает
-        if (container.getKeyListeners().length > 0) {
-            canvas.addKeyListener(container.getKeyListeners()[0]);
+        if (parent.getKeyListeners().length > 0) {
+            canvas.addKeyListener(parent.getKeyListeners()[0]);
         }
-        setBorderWidth(borderWidth);
         canvas.setVisible(true);
-        sleep(50);
-        container.add(canvas);
+        canvas.setSize(width + 2 * border, height + 2 * border);
+        parent.add(canvas);
 
         // тут мы кешируем уже отрисованное из видеопамяти изображение
-        bufferImage = new BufferedImage(width, height, TYPE_INT_ARGB);
+        bufferImage = new BufferedImage(canvas.getWidth(), canvas.getHeight(), TYPE_INT_ARGB);
         // через него мы рисуем на cache-image пиксели
         buffer = bufferImage.getGraphics();
-        // на нем мы рисуем рамку, это фон под canvas
-        background = container.getGraphics();
-        // а через это мы рисуем на канве
+        // тут мы рисуем результат, когда потребуется обновить часть окна
         scene = canvas.getGraphics();
-    }
-
-    private void sleep(int mills) {
-        try {
-            Thread.sleep(mills);
-        } catch (InterruptedException e) {
-            // do nothing
-        }
     }
 
     @Override
     public void draw(int x, int y, Image pattern) {
-        buffer.drawImage(pattern, x, y, null);
-    }
-
-    private void setBorderWidth(int width) {
-        borderWidth = width;
-        canvas.setLocation(borderWidth, borderWidth);
+        buffer.drawImage(pattern, border + x, border + y, null);
     }
 
     public void changeColor(Color color) {
@@ -75,25 +55,38 @@ public class Graphic implements Video.Drawer {
     }
 
     private void borderPaint() {
-        if (borderWidth == 0) { // если бордюра нет - ничего не делать!
+        if (border == 0) { // если бордюра нет - ничего не делать!
             return;
         }
         if (currentBorder == newBorder) { // цвет не менялся
             return;
         }
         currentBorder = newBorder;
-        background.setColor(currentBorder);
-        background.fillRect(0, 0,
-                container.getWidth(),
-                container.getHeight());
+        buffer.setColor(currentBorder);
+        buffer.fillRect(
+                0,
+                0,
+                width + 2 * border,
+                border);
+        buffer.fillRect(
+                0,
+                0,
+                border,
+                height + 2 * border);
+        buffer.fillRect(
+                width + border,
+                0,
+                border,
+                height + 2 * border);
+        buffer.fillRect(
+                0,
+                height + border,
+                width + 2 * border,
+                border);
     }
 
     public void paintBuffer() {
-        scene.drawImage(bufferImage, 0, 0, null);
         borderPaint();
-    }
-
-    public void requestFocus() {
-        canvas.requestFocus();
+        scene.drawImage(bufferImage, 0, 0, null);
     }
 }
