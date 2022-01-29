@@ -1,31 +1,36 @@
 package spec.mods;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class Modifiable<T> {
 
-    protected Map<Class<CpuMod<T>>, CpuMod<T>> mods = new HashMap<>();
+    protected List<CpuMod<T>> mods = new LinkedList<>();
 
     public void on(String event) {
-        mods.forEach((key, value) ->
-                value.on(event, (T) this));
+        mods.forEach(mod ->
+                mod.on(event, (T) this));
     }
 
     public void modAdd(CpuMod<T> mod) {
-        mods.put((Class) mod.getClass(), mod);
+        mods.add(mod);
     }
 
     public <M extends CpuMod<T>> M mod(Class<M> clazz) {
-        return (M) mods.get(clazz);
+        for (CpuMod<T> mod : mods) {
+            if (mod.itsMe(clazz)) {
+                return (M) mod;
+            }
+        }
+        throw new IllegalArgumentException("Mod not found: " + clazz);
     }
 
     public <M extends CpuMod<T>> void modRemove(Class<M> clazz) {
-        mods.remove(clazz);
+        mods.removeIf(mod ->
+                mod.itsMe(clazz));
     }
 
     public void reset() {
-        mods.forEach((key, value) ->
-                value.reset());
+        mods.forEach(CpuMod::reset);
     }
 }
