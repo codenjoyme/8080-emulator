@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 public class Cpu extends Registry {
 
-    private Consumer<Integer> onTick;
+    private Consumer<Cpu> onTick;
     private Supplier<Boolean> onInterrupt;
     private int interrupt;
     private int tick;
@@ -16,7 +16,7 @@ public class Cpu extends Registry {
     private CpuDebug debug;
     private boolean enabled;
 
-    public Cpu(double clockFrequencyInMHz, Data data, Supplier<Boolean> onInterrupt, Consumer<Integer> onTick) {
+    public Cpu(double clockFrequencyInMHz, Data data, Supplier<Boolean> onInterrupt, Consumer<Cpu> onTick) {
         super(data);
         // Количество тактов на 1 прерывание, которое происходит 50 раз в секунду.
         // 1000000/50 раз в секунду
@@ -49,7 +49,7 @@ public class Cpu extends Registry {
         // цикл выборки/выполнения
         while (enabled) {
             if (onTick != null) {
-                onTick.accept(tick);
+                onTick.accept(this);
             }
             tick++;
 

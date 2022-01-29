@@ -1697,7 +1697,7 @@ public class CpuTest extends AbstractTest {
     public void performance_execute() {
         // given
 
-        // about 3.4 sec / 100_000
+        // about 2.8 sec / 100_000
         int ticks = 100_000;
 
         givenPr("LDA 1234\n" +

@@ -156,8 +156,9 @@ public class KeyRecord {
         }
     }
 
-    public void accept(int tick) {
+    public void accept(Cpu cpu) {
         if (scenario == null) return;
+        int tick = cpu.tick();
 
         Action action = scenario.get(tick);
 
