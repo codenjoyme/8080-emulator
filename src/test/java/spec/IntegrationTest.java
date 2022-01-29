@@ -118,11 +118,11 @@ public class IntegrationTest extends AbstractTest {
                 .shoot("memory", it -> it.enter("D9000").press(ENTER).after(30 * K10))
                 .shoot("exit", it -> it.press(ESC).after(5 * K10))
                 .shoot("basic", it -> it.enter("B").press(ENTER).after(20 * K10))
-                .shoot("line1", it -> it.enter("10 CLS 2").press(ENTER).after(10 * K10))
-                .shoot("line2", it -> it.enter("20 CLS 1").press(ENTER).after(10 * K10))
-                .shoot("line2", it -> it.enter("30 GOTO 10").press(ENTER).after(10 * K10))
-                .shoot("list", it -> it.enter("LIST").press(ENTER).after(50 * K10))
-                .shoot("run", it -> it.enter("RUN").press(ENTER).after(50 * K10))
+                .shoot("line1", it -> it.enter("10 CLS2").press(ENTER).after(10 * K10))
+                .shoot("line2", it -> it.enter("20 CLS1").press(ENTER).after(10 * K10))
+                .shoot("line2", it -> it.enter("30 GOTO10").press(ENTER).after(10 * K10))
+                .shoot("list", it -> it.enter("LIST").press(ENTER).after(10 * K10))
+                .shoot("run", it -> it.enter("RUN").press(ENTER).after(1 * K10))
                 .stopCpu();
 
         cpu.PC(START_POINT);
