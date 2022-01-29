@@ -104,7 +104,7 @@ public abstract class AbstractTest {
         assertEquals(expected, memory.read8srt(new Range(begin, end)));
     }
 
-    public void assertCpuDebug(String expected) {
+    public void assertTrace(String expected) {
         assertEquals(expected, String.join("\n", debug.lines()));
     }
 

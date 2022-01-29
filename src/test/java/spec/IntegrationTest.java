@@ -405,7 +405,7 @@ public class IntegrationTest extends AbstractTest {
         start();
 
         // then
-        assertCpuDebug(
+        assertTrace("" +
                 "0004  21 0D 00  LXI H,000D  (0)  BC:0000  DE:0000  HL:0000  AF:0002  SP:7FFF  PC:0004   \n" +
                 "0007  CD 58 00  CALL 0058   (0)  BC:0000  DE:0000  HL:000D  AF:0002  SP:7FFF  PC:0007   \n" +
                 "000A  C3 C5 00  JMP 00C5    (0)  BC:000A  DE:0000  HL:0054  AF:2442  SP:7FFF  PC:000A   \n" +
@@ -559,8 +559,8 @@ public class IntegrationTest extends AbstractTest {
                 "0285  82        ADD D       (0)  BC:0103  DE:070F  HL:1F3F  AF:0402  SP:06BE  PC:0285   \n" +
                 "0286  83        ADD E       (0)  BC:0103  DE:070F  HL:1F3F  AF:0B02  SP:06BE  PC:0286   \n" +
                 "0287  84        ADD H       (0)  BC:0103  DE:070F  HL:1F3F  AF:1A12  SP:06BE  PC:0287   \n" +
-                "0288  85        ADD L       (0)  BC:0103  DE:070F  HL:1F3F  AF:3912  SP:06BE  PC:0288   \n" +
-                "0289  87        ADD A       (0)  BC:0103  DE:070F  HL:1F3F  AF:7812  SP:06BE  PC:0289   \n" +
+                "0288  85        ADD L       (0)  BC:0103  DE:070F  HL:1F3F  AF:3916  SP:06BE  PC:0288   \n" +
+                "0289  87        ADD A       (0)  BC:0103  DE:070F  HL:1F3F  AF:7816  SP:06BE  PC:0289   \n" +
                 "028A  FE F0     CPI F0      (0)  BC:0103  DE:070F  HL:1F3F  AF:F096  SP:06BE  PC:028A   \n" +
                 "028C  C4 A3 05  CNZ 05A3    (0)  BC:0103  DE:070F  HL:1F3F  AF:F042  SP:06BE  PC:028C   \n" +
                 "028F  90        SUB B       (0)  BC:0103  DE:070F  HL:1F3F  AF:F042  SP:06BE  PC:028F   \n" +
@@ -584,8 +584,8 @@ public class IntegrationTest extends AbstractTest {
                 "02AD  88        ADC B       (0)  BC:0102  DE:0304  HL:0506  AF:0047  SP:06BE  PC:02AD   \n" +
                 "02AE  06 80     MVI B,80    (0)  BC:0102  DE:0304  HL:0506  AF:0202  SP:06BE  PC:02AE   \n" +
                 "02B0  80        ADD B       (0)  BC:8002  DE:0304  HL:0506  AF:0202  SP:06BE  PC:02B0   \n" +
-                "02B1  80        ADD B       (0)  BC:8002  DE:0304  HL:0506  AF:8282  SP:06BE  PC:02B1   \n" +
-                "02B2  89        ADC C       (0)  BC:8002  DE:0304  HL:0506  AF:0207  SP:06BE  PC:02B2   \n" +
+                "02B1  80        ADD B       (0)  BC:8002  DE:0304  HL:0506  AF:8286  SP:06BE  PC:02B1   \n" +
+                "02B2  89        ADC C       (0)  BC:8002  DE:0304  HL:0506  AF:0203  SP:06BE  PC:02B2   \n" +
                 "02B3  80        ADD B       (0)  BC:8002  DE:0304  HL:0506  AF:0506  SP:06BE  PC:02B3   \n" +
                 "02B4  80        ADD B       (0)  BC:8002  DE:0304  HL:0506  AF:8582  SP:06BE  PC:02B4   \n" +
                 "02B5  8A        ADC D       (0)  BC:8002  DE:0304  HL:0506  AF:0507  SP:06BE  PC:02B5   \n" +
@@ -593,8 +593,8 @@ public class IntegrationTest extends AbstractTest {
                 "02B7  80        ADD B       (0)  BC:8002  DE:0304  HL:0506  AF:8982  SP:06BE  PC:02B7   \n" +
                 "02B8  8B        ADC E       (0)  BC:8002  DE:0304  HL:0506  AF:0907  SP:06BE  PC:02B8   \n" +
                 "02B9  80        ADD B       (0)  BC:8002  DE:0304  HL:0506  AF:0E02  SP:06BE  PC:02B9   \n" +
-                "02BA  80        ADD B       (0)  BC:8002  DE:0304  HL:0506  AF:8E82  SP:06BE  PC:02BA   \n" +
-                "02BB  8C        ADC H       (0)  BC:8002  DE:0304  HL:0506  AF:0E07  SP:06BE  PC:02BB   \n" +
+                "02BA  80        ADD B       (0)  BC:8002  DE:0304  HL:0506  AF:8E86  SP:06BE  PC:02BA   \n" +
+                "02BB  8C        ADC H       (0)  BC:8002  DE:0304  HL:0506  AF:0E03  SP:06BE  PC:02BB   \n" +
                 "02BC  80        ADD B       (0)  BC:8002  DE:0304  HL:0506  AF:1416  SP:06BE  PC:02BC   \n" +
                 "02BD  80        ADD B       (0)  BC:8002  DE:0304  HL:0506  AF:9482  SP:06BE  PC:02BD   \n" +
                 "02BE  8D        ADC L       (0)  BC:8002  DE:0304  HL:0506  AF:1407  SP:06BE  PC:02BE   \n" +
@@ -611,13 +611,13 @@ public class IntegrationTest extends AbstractTest {
                 "02CF  80        ADD B       (0)  BC:FF02  DE:0304  HL:0506  AF:FE93  SP:06BE  PC:02CF   \n" +
                 "02D0  99        SBB C       (0)  BC:FF02  DE:0304  HL:0506  AF:FD93  SP:06BE  PC:02D0   \n" +
                 "02D1  80        ADD B       (0)  BC:FF02  DE:0304  HL:0506  AF:FA86  SP:06BE  PC:02D1   \n" +
-                "02D2  9A        SBB D       (0)  BC:FF02  DE:0304  HL:0506  AF:F993  SP:06BE  PC:02D2   \n" +
+                "02D2  9A        SBB D       (0)  BC:FF02  DE:0304  HL:0506  AF:F997  SP:06BE  PC:02D2   \n" +
                 "02D3  80        ADD B       (0)  BC:FF02  DE:0304  HL:0506  AF:F586  SP:06BE  PC:02D3   \n" +
                 "02D4  9B        SBB E       (0)  BC:FF02  DE:0304  HL:0506  AF:F493  SP:06BE  PC:02D4   \n" +
                 "02D5  80        ADD B       (0)  BC:FF02  DE:0304  HL:0506  AF:EF92  SP:06BE  PC:02D5   \n" +
-                "02D6  9C        SBB H       (0)  BC:FF02  DE:0304  HL:0506  AF:EE93  SP:06BE  PC:02D6   \n" +
+                "02D6  9C        SBB H       (0)  BC:FF02  DE:0304  HL:0506  AF:EE97  SP:06BE  PC:02D6   \n" +
                 "02D7  80        ADD B       (0)  BC:FF02  DE:0304  HL:0506  AF:E886  SP:06BE  PC:02D7   \n" +
-                "02D8  9D        SBB L       (0)  BC:FF02  DE:0304  HL:0506  AF:E793  SP:06BE  PC:02D8   \n" +
+                "02D8  9D        SBB L       (0)  BC:FF02  DE:0304  HL:0506  AF:E797  SP:06BE  PC:02D8   \n" +
                 "02D9  FE E0     CPI E0      (0)  BC:FF02  DE:0304  HL:0506  AF:E082  SP:06BE  PC:02D9   \n" +
                 "02DB  C4 A3 05  CNZ 05A3    (0)  BC:FF02  DE:0304  HL:0506  AF:E042  SP:06BE  PC:02DB   \n" +
                 "02DE  3E 80     MVI A,80    (0)  BC:FF02  DE:0304  HL:0506  AF:E042  SP:06BE  PC:02DE   \n" +
@@ -749,7 +749,7 @@ public class IntegrationTest extends AbstractTest {
                 "03B8  34        INR M       (0)  BC:4445  DE:4647  HL:05C0  AF:0542  SP:06BE  PC:03B8   \n" +
                 "03B9  35        DCR M       (0)  BC:4445  DE:4647  HL:05C0  AF:0502  SP:06BE  PC:03B9   \n" +
                 "03BA  86        ADD M       (0)  BC:4445  DE:4647  HL:05C0  AF:0502  SP:06BE  PC:03BA   \n" +
-                "03BB  FE 5A     CPI 5A      (0)  BC:4445  DE:4647  HL:05C0  AF:5A02  SP:06BE  PC:03BB   \n" +
+                "03BB  FE 5A     CPI 5A      (0)  BC:4445  DE:4647  HL:05C0  AF:5A06  SP:06BE  PC:03BB   \n" +
                 "03BD  C4 A3 05  CNZ 05A3    (0)  BC:4445  DE:4647  HL:05C0  AF:5A42  SP:06BE  PC:03BD   \n" +
                 "03C0  01 FF 12  LXI B,12FF  (0)  BC:4445  DE:4647  HL:05C0  AF:5A42  SP:06BE  PC:03C0   \n" +
                 "03C3  11 FF 12  LXI D,12FF  (0)  BC:12FF  DE:4647  HL:05C0  AF:5A42  SP:06BE  PC:03C3   \n" +
@@ -829,12 +829,12 @@ public class IntegrationTest extends AbstractTest {
                 "0457  C4 A3 05  CNZ 05A3    (0)  BC:05C0  DE:05C0  HL:0000  AF:7742  SP:06BE  PC:0457   \n" +
                 "045A  AF        XRA A       (0)  BC:05C0  DE:05C0  HL:0000  AF:7742  SP:06BE  PC:045A   \n" +
                 "045B  84        ADD H       (0)  BC:05C0  DE:05C0  HL:0000  AF:0046  SP:06BE  PC:045B   \n" +
-                "045C  85        ADD L       (0)  BC:05C0  DE:05C0  HL:0000  AF:0042  SP:06BE  PC:045C   \n" +
-                "045D  C4 A3 05  CNZ 05A3    (0)  BC:05C0  DE:05C0  HL:0000  AF:0042  SP:06BE  PC:045D   \n" +
-                "0460  3E CC     MVI A,CC    (0)  BC:05C0  DE:05C0  HL:0000  AF:0042  SP:06BE  PC:0460   \n" +
-                "0462  12        STAX D      (0)  BC:05C0  DE:05C0  HL:0000  AF:CC42  SP:06BE  PC:0462   \n" +
-                "0463  3A C0 05  LDA 05C0    (0)  BC:05C0  DE:05C0  HL:0000  AF:CC42  SP:06BE  PC:0463   \n" +
-                "0466  FE CC     CPI CC      (0)  BC:05C0  DE:05C0  HL:0000  AF:CC42  SP:06BE  PC:0466   \n" +
+                "045C  85        ADD L       (0)  BC:05C0  DE:05C0  HL:0000  AF:0046  SP:06BE  PC:045C   \n" +
+                "045D  C4 A3 05  CNZ 05A3    (0)  BC:05C0  DE:05C0  HL:0000  AF:0046  SP:06BE  PC:045D   \n" +
+                "0460  3E CC     MVI A,CC    (0)  BC:05C0  DE:05C0  HL:0000  AF:0046  SP:06BE  PC:0460   \n" +
+                "0462  12        STAX D      (0)  BC:05C0  DE:05C0  HL:0000  AF:CC46  SP:06BE  PC:0462   \n" +
+                "0463  3A C0 05  LDA 05C0    (0)  BC:05C0  DE:05C0  HL:0000  AF:CC46  SP:06BE  PC:0463   \n" +
+                "0466  FE CC     CPI CC      (0)  BC:05C0  DE:05C0  HL:0000  AF:CC46  SP:06BE  PC:0466   \n" +
                 "0468  12        STAX D      (0)  BC:05C0  DE:05C0  HL:0000  AF:CC42  SP:06BE  PC:0468   \n" +
                 "0469  3A C0 05  LDA 05C0    (0)  BC:05C0  DE:05C0  HL:0000  AF:CC42  SP:06BE  PC:0469   \n" +
                 "046C  FE CC     CPI CC      (0)  BC:05C0  DE:05C0  HL:0000  AF:CC42  SP:06BE  PC:046C   \n" +
@@ -878,7 +878,7 @@ public class IntegrationTest extends AbstractTest {
                 "04BA  C4 A3 05  CNZ 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:5542  SP:06BE  PC:04BA   \n" +
                 "04BD  3E 88     MVI A,88    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:5542  SP:06BE  PC:04BD   \n" +
                 "04BF  87        ADD A       (0)  BC:FFFF  DE:3333  HL:DDDD  AF:8842  SP:06BE  PC:04BF   \n" +
-                "04C0  27        DAA         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:1017  SP:06BE  PC:04C0   \n" +
+                "04C0  27        DAA         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:1013  SP:06BE  PC:04C0   \n" +
                 "04C1  FE 76     CPI 76      (0)  BC:FFFF  DE:3333  HL:DDDD  AF:7603  SP:06BE  PC:04C1   \n" +
                 "04C3  C4 A3 05  CNZ 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:7642  SP:06BE  PC:04C3   \n" +
                 "04C6  AF        XRA A       (0)  BC:FFFF  DE:3333  HL:DDDD  AF:7642  SP:06BE  PC:04C6   \n" +
@@ -1076,7 +1076,7 @@ public class IntegrationTest extends AbstractTest {
         start();
 
         // then
-        assertCpuDebug(
+        assertTrace("" +
                 "0004  21 0D 00  LXI H,000D  (0)  BC:0000  DE:0000  HL:0000  AF:0002  SP:7FFF  PC:0004   \n" +
                 "0007  CD 1D 00  CALL 001D   (0)  BC:0000  DE:0000  HL:000D  AF:0002  SP:7FFF  PC:0007   \n" +
                 "001D  7E        MOV A,M     (1)  BC:0000  DE:0000  HL:000D  AF:0002  SP:7FFD  PC:001D   \n" +
