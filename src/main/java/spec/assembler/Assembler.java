@@ -211,12 +211,17 @@ public class Assembler {
     }
 
     public static String asString(List<List<Integer>> bites) {
-        List<String> result = new LinkedList<>();
-
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
         for (List<Integer> command : bites) {
-            result.add(hex(command));
+            if (first) {
+                first = false;
+            } else {
+                result.append('\n');
+            }
+            hex(result, command);
         }
-        return String.join("\n", result);
+        return result.toString();
     }
 
     public Command find(int bite) {

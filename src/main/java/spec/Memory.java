@@ -66,7 +66,7 @@ public class Memory {
             if (i != 0) {
                 result.append(' ');
             }
-            result.append(WordMath.hex8(bites[i]));
+            result.append(hex8(bites[i]));
         }
         return result.toString();
     }
