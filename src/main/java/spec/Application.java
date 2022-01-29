@@ -34,6 +34,9 @@ public class Application {
     private Graphic graphic;
     private Hardware hard;
 
+    private long time;
+    private int iterations;
+
     /**
      * Container — это абстрактный подкласс класса Component, определяющий дополнительные методы,
      * которые дают возможность помещать в него другие компоненты, что дает возможность построения
@@ -92,6 +95,10 @@ public class Application {
     }
 
     private void updateState() {
+        if (++iterations % 1000 == 0) {
+            System.out.println(now() - time);
+            time = now();
+        }
         if (willPause) {
             while (willPause) {
                 if (willRefresh) {
@@ -127,12 +134,16 @@ public class Application {
         }
     }
 
+    private long now() {
+        return System.currentTimeMillis();
+    }
+
     private void sleep() {
         // Trying to slow to 100%, browsers resolution on the system
         // time is not accurate enough to check every interrurpt. So
         // we check every 4 interrupts.
         if ((interrupt % 4) == 0) {
-            long time = System.currentTimeMillis();
+            long time = now();
             long duration = time - last;
             last = time;
             // запомним текущее время, как предыдущее.
