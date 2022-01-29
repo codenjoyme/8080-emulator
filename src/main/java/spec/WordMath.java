@@ -42,7 +42,7 @@ public class WordMath {
     }
 
     public static List<Integer> hex8(String bites) {
-        return new LinkedList<Integer>(){{
+        return new LinkedList<Integer>() {{
             for (int i = 0; i < bites.length() / 2; i++) {
                 add(Integer.parseInt(bites.substring(i * 2, (i + 1) * 2), 16));
             }
@@ -88,7 +88,7 @@ public class WordMath {
         bites = bites.replace(" ", "");
         int[] array = new int[bites.length() / 2];
         for (int i = 0; i < array.length; i++) {
-            String hex = bites.substring(i*2, (i + 1)*2);
+            String hex = bites.substring(i * 2, (i + 1) * 2);
             int bite = Integer.parseInt(hex, 16);
             array[i] = bite;
         }
