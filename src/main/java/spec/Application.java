@@ -90,10 +90,7 @@ public class Application {
     }
 
     private void updateState() {
-        if (++iterations % 1000 == 0) {
-            System.out.println(now() - time);
-            time = now();
-        }
+        profiling();
         if (willPause) {
             while (willPause) {
                 if (willRefresh) {
@@ -126,6 +123,15 @@ public class Application {
 
         if (!fullSpeed) {
             sleep();
+        }
+    }
+
+    private void profiling() {
+        if (++iterations % 1000 == 0) {
+            if (time != 0) {
+                Logger.debug("Time per 10k interrupts: %ss", 1.0D * (now() - time) / 1000);
+            }
+            time = now();
         }
     }
 
