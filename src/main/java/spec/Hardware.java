@@ -112,6 +112,10 @@ public class Hardware {
         cpuSuspended = true;
     }
 
+    public boolean isPaused() {
+        return cpuSuspended;
+    }
+
     public void resume() {
         cpuSuspended = false;
     }

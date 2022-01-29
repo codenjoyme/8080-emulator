@@ -50,6 +50,10 @@ public class Key {
         return code == NUM_0;
     }
 
+    public boolean numOne() {
+        return code == NUM_1;
+    }
+
     public boolean numStar() {
         return code == NUM_STAR;
     }
@@ -120,6 +124,7 @@ public class Key {
                 || numMinus()
                 || numPlus()
                 || numComma()
-                || numZero();
+                || numZero()
+                || numOne();
     }
 }

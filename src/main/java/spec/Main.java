@@ -95,11 +95,4 @@ public class Main extends JFrame implements KeyListener {
             }
         };
     }
-
-    @Override
-    public void paint(Graphics g) {
-        if (app != null) {
-            app.repaint();
-        }
-    }
 }

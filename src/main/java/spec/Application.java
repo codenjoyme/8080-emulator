@@ -22,8 +22,6 @@ public class Application {
 
     // TODO а точно тут надо так заморачиваться с многопоточностью?
     private boolean willReset = false;
-    private boolean willPause = false;
-    private boolean willRefresh = true;
 
     private long last = 0;
     private int delay = 100;
@@ -91,21 +89,6 @@ public class Application {
 
     private void updateState() {
         profiling();
-        if (willPause) {
-            while (willPause) {
-                if (willRefresh) {
-                    willRefresh = false;
-                    graphic.refreshBorder();
-                    graphic.paintBuffer();
-                }
-            }
-        }
-
-        if (willRefresh) {
-            willRefresh = false;
-            graphic.refreshBorder();
-            graphic.paintBuffer();
-        }
 
         if (willReset) {
             Logger.info("Reset Hardware!");
@@ -118,7 +101,7 @@ public class Application {
         // Обновлять экран каждое прерывание по умолчанию
         if ((interrupt % refreshRate) == 0) {
             hard.video().screenPaint();
-            graphic.paintBuffer();
+            graphic.repaint();
         }
 
         if (!fullSpeed) {
@@ -149,17 +132,17 @@ public class Application {
             last = time;
             // запомним текущее время, как предыдущее.
             if (duration < delay) {
-                try {
-                    Thread.sleep(delay - duration);
-                } catch (Exception ignored) {
-                    // do nothing
-                }
+                sleep(delay - duration);
             }
         }
     }
 
-    public void repaint() {
-        willRefresh = true;
+    private void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (Exception ignored) {
+            // do nothing
+        }
     }
 
     public void lostFocus() {
@@ -181,6 +164,17 @@ public class Application {
                 hard.pause();
                 loadRoms(base);
                 hard.reset();
+            }
+            return;
+        }
+
+        if (key.numOne()) {
+            if (key.pressed()) {
+                if (hard.isPaused()) {
+                    hard.resume();
+                } else {
+                    hard.pause();
+                }
             }
             return;
         }
@@ -212,17 +206,9 @@ public class Application {
             return;
         }
 
-
         if (key.numStar()) {
             if (key.pressed()) {
                 fullSpeed = !fullSpeed;
-            }
-            return;
-        }
-
-        if (key.pause()) {
-            if (key.pressed()) {
-                willReset = true;
             }
             return;
         }
@@ -275,7 +261,7 @@ public class Application {
     }
 
     private void refreshWholeScreen() {
-        graphic.refreshBorder();
+        graphic.repaint();
     }
 
     private void loadSnapshot(URL base, String snapshot) {
