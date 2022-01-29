@@ -393,9 +393,8 @@ public class IntegrationTest extends AbstractTest {
         Lik.loadRom(base, roms);
         int start = roms.loadRKS(base, "test/test.rks");
         cpu.modAdd(new StopWhen(0x0055));
-        cpu.modAdd(new DebugWhen(0x00C8, () -> {
-            System.out.println(cpu.toStringDetails());
-        }));
+        cpu.modAdd(new DebugWhen(0x00C8, () ->
+                System.out.println(cpu.toStringDetails())));
         debug.enable();
         debug.showCallBellow(1);
 
