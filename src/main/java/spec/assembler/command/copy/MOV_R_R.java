@@ -37,7 +37,12 @@ public class MOV_R_R extends Command  {
     public List<Integer> code(String... params) {
         int reg1Index = registers().indexOf(params[0]);
         int reg2Index = registers().indexOf(params[1]);
-        return Arrays.asList(0x40 | reg2Index | reg1Index << 3);
+        int code = 0x40 | reg2Index | reg1Index << 3;
+        if (code == 0x76) {
+            throw new IllegalArgumentException(
+                    "There is no MVI M,M in i8080, only HLT with this code");
+        }
+        return Arrays.asList(code);
     }
 
     @Override

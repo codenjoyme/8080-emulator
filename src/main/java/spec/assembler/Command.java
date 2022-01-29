@@ -88,7 +88,8 @@ public abstract class Command {
             result.addAll(reverse(hex8(bites)));
         }
         if (size() == 2) {
-            result.addAll(hex8(params[1]));
+            String param = registers().isEmpty() ? params[0] : params[1];
+            result.addAll(hex8(param));
         }
         return result;
     }

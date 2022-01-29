@@ -143,15 +143,15 @@ public class Assembler {
     }
 
     public String dizAssembly(String programBites) {
-        List<String> result = new LinkedList<>();
+        StringBuilder result = new StringBuilder();
         programBites = programBites.replace("\n", " ");
         for (List<Integer> commandBites : split(programBites)) {
             String command = dizAssembly(commandBites);
             if (command != null) {
-                result.add(command);
+                result.append(command).append('\n');
             }
         }
-        return String.join("\n", result) + "\n";
+        return result.toString();
     }
 
     public String dizAssembly(List<Integer> commandBites) {
@@ -162,12 +162,13 @@ public class Assembler {
         StringBuilder result = new StringBuilder();
         boolean first = true;
         for (String commandBites : programBites.split("\n")) {
-            String bites = parseCommand(commandBites);
             if (first) {
                 first = false;
             } else {
                 result.append(' ');
             }
+
+            String bites = parseCommand(commandBites);
             result.append(bites);
         }
         return result.toString();

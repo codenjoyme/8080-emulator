@@ -20,11 +20,6 @@ public class ANI_XX extends Command {
     }
 
     @Override
-    public List<String> registers() {
-        return BCDEHLMA;
-    }
-
-    @Override
     public int size() {
         return 2;
     }
