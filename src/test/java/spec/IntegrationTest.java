@@ -173,7 +173,7 @@ public class IntegrationTest extends AbstractTest {
         cpu.PC(0x0000);
         start();
 
-        int LEVELS = 32;
+        int LEVELS = 33;
         for (int level = 1; level < LEVELS; level++) {
             // when then
             reset();
