@@ -26,7 +26,11 @@ public class WordMath {
     }
 
     public static String hex8(int bite) {
-        return String.format("%02X", bite);
+        String result = Integer.toString(bite, 16).toUpperCase();
+        while (result.length() < 2) {
+            result = '0' + result;
+        }
+        return result;
     }
 
     public static String hex16(int bite) {
