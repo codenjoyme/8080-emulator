@@ -11,7 +11,6 @@ import static spec.Key.MOD_NONE;
 public class KeyRecord {
 
     public static final int KEY_PRESS_DELTA = 20_000;
-    private boolean[] ticks;
     private Map<Integer, Action> scenario;
     private FileRecorder fileRecorder;
     private IOPorts ports;
@@ -35,7 +34,7 @@ public class KeyRecord {
     public Action after(int tick) {
         scenario = (scenario == null) ? new HashMap<>() : scenario;
         Action action = new Action(tick);
-        put(tick, action);
+        scenario.put(tick, action);
         return action;
     }
 
@@ -50,7 +49,6 @@ public class KeyRecord {
 
     public KeyRecord reset() {
         scenario = null;
-        ticks = new boolean[0x10000];
         return this;
     }
 
@@ -158,25 +156,10 @@ public class KeyRecord {
         }
     }
 
-    private void put(int tick, Action action) {
-        int b = (tick & 0xFFFF0000) >> 16;
-        ticks[b] = true;
-
-        scenario.put(tick, action);
-    }
-
-    private Action get(int tick) {
-        int b = (tick & 0xFFFF0000) >> 16;
-        if (ticks[b]) {
-            return scenario.get(tick);
-        }
-        return null;
-    }
-
     public void accept(int tick) {
         if (scenario == null) return;
 
-        Action action = get(tick);
+        Action action = scenario.get(tick);
 
         if (action != null) {
             if (action.shoot != null && screenShoot != null) {
