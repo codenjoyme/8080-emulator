@@ -1004,7 +1004,7 @@ public class IntegrationTest extends AbstractTest {
 
         // given
         Lik.loadRom(base, roms);
-        hard.loadData(APP_RESOURCES + "test/test.rks");
+        hard.loadData(APP_RESOURCES + "test/test.rks", Lik.PLATFORM);
         cpu.modAdd(new StopWhen(0x0055));
 
         // when
@@ -1050,7 +1050,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_helloWorld() {
         // given
         Lik.loadRom(base, roms);
-        hard.loadData(APP_RESOURCES + "test/hello_world.rks");
+        hard.loadData(APP_RESOURCES + "test/hello_world.rks", Lik.PLATFORM);
         cpu.modAdd(new StopWhen(0x000A)); // последняя команда перед выходом в монитор
 
         // when

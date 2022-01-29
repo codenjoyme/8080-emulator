@@ -6,6 +6,8 @@ import java.net.URL;
 
 public class Lik {
 
+    public static final boolean PLATFORM = true;
+
     public static void loadRom(URL base, RomLoader roms) {
         roms.loadROM(base, "lik/roms/01_zagr.bin", 0xC000);
         roms.loadROM(base, "lik/roms/02_mon-1m.bin", 0xC800);

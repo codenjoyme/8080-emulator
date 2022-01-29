@@ -1,5 +1,7 @@
 package spec;
 
+import spec.platforms.Lik;
+
 import java.io.File;
 import java.net.URL;
 
@@ -163,16 +165,24 @@ public class Hardware {
         return lastTick;
     }
 
-    public void loadData(String path) {
+    public void loadData(String path, boolean platform) {
         pause();
+
         int offset = roms.load(path);
+
         int delta = 25_000;
-        record.reset().after(delta)
-                .press(END).after(delta)
-                .press(ENTER).after(delta)
-                // TODO а что если specialis а не лик?
-                .enter("J" + hex16(offset)).press(ENTER).after(delta)
-                .reset();
+        if (platform == Lik.PLATFORM) {
+            record.reset().after(delta)
+                    .press(END).after(delta)
+                    .press(ENTER).after(delta)
+                    .enter("J" + hex16(offset)).press(ENTER).after(delta)
+                    .reset();
+        } else {
+            record.reset().after(2 * delta)
+                    .enter("G" + hex16(offset)).press(ENTER).after(delta)
+                    .reset();
+        }
+
         reset();
     }
 

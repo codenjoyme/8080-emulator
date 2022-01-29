@@ -204,7 +204,7 @@ public class Application {
                 if (base.toString().startsWith("http")) return;
 
                 String folder = lik ? "lik" : "specialist";
-                openFileDialog(file -> hard.loadData(file.getAbsolutePath()),
+                openFileDialog(file -> hard.loadData(file.getAbsolutePath(), lik),
                         base.getFile() + "/" + folder + "/apps",
                         "Data file",
                         "com", "rom", "rks", "bin");
