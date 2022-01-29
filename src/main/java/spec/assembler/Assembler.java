@@ -24,12 +24,11 @@ import spec.assembler.command.system.EI;
 import spec.assembler.command.system.NONE;
 import spec.assembler.command.system.NOP;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
 import static spec.WordMath.hex;
+import static spec.WordMath.toArray;
 
 public class Assembler {
 
@@ -188,24 +187,16 @@ public class Assembler {
         throw new UnsupportedOperationException("Unsupported command: " + asmCommand);
     }
 
-    public List<List<Integer>> split(String input) {
-        List<Integer> bites = Arrays.stream(input.split(" "))
-                .map(bite -> Integer.parseInt(bite, 16))
-                .collect(toList());
+    public List<List<Integer>> split(String bites) {
+        int[] array = toArray(bites);
+        int index = 0;
 
         List<List<Integer>> result = new LinkedList<>();
-        while (!bites.isEmpty()) {
-            for (Command command : COMMANDS) {
-                if (command == null) continue;
-
-                List<Integer> commandBits = command.take(bites);
-                if (commandBits.isEmpty()) {
-                    continue;
-                }
-
-                result.add(commandBits);
-                break;
-            }
+        while (index < array.length) {
+            Command command = COMMANDS[array[index]];
+            List<Integer> commandBites = command.take(array, index);
+            result.add(commandBites);
+            index += commandBites.size();
         }
         return result;
     }

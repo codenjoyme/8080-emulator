@@ -154,20 +154,12 @@ public abstract class Command {
         return false;
     }
 
-    public List<Integer> take(List<Integer> bites) {
-        return new LinkedList<Integer>(){{
-            if (!bites.isEmpty()) {
-                int bite = bites.get(0);
-                for (int code : codes()) {
-                    if (bite == code) {
-                        for (int i = 0; i < Command.this.size(); i++) {
-                            add(bites.remove(0));
-                        }
-                        break;
-                    }
-                }
-            }
-        }};
+    public List<Integer> take(int[] bites, int index) {
+        List<Integer> result = new LinkedList<>();
+        for (int i = index; i < index + size(); i++) {
+            result.add(bites[i]);
+        }
+        return result;
     }
 
     public String print(List<Integer> bites) {

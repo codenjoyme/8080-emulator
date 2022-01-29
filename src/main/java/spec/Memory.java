@@ -30,15 +30,7 @@ public class Memory {
     }
 
     public void write8str(int addr, String bites) {
-        bites = bites.replace(" ", "");
-        int[] array = new int[bites.length() / 2];
-        for (int i = 0; i < array.length; i++) {
-            String hex = bites.substring(i*2, (i + 1)*2);
-            int bite = Integer.parseInt(hex, 16);
-            array[i] = bite;
-        }
-
-        write8arr(addr, array);
+        write8arr(addr, toArray(bites));
     }
 
     public void write16(int addr, int word) {

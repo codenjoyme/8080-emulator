@@ -723,7 +723,7 @@ public class CpuTest extends AbstractTest {
     public void performance_assemble() {
         // given
 
-        // about 9.6 sec / 10_000
+        // about 2.1 sec / 1000
         int ticks = 1000;
 
         // when then

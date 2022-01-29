@@ -83,4 +83,15 @@ public class WordMath {
             result.append(hex8(bite));
         }
     }
+
+    public static int[] toArray(String bites) {
+        bites = bites.replace(" ", "");
+        int[] array = new int[bites.length() / 2];
+        for (int i = 0; i < array.length; i++) {
+            String hex = bites.substring(i*2, (i + 1)*2);
+            int bite = Integer.parseInt(hex, 16);
+            array[i] = bite;
+        }
+        return array;
+    }
 }
