@@ -879,8 +879,123 @@ public class IntegrationTest extends AbstractTest {
                 "04BD  3E 88     MVI A,88    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:5542  SP:06BE  PC:04BD   \n" +
                 "04BF  87        ADD A       (0)  BC:FFFF  DE:3333  HL:DDDD  AF:8842  SP:06BE  PC:04BF   \n" +
                 "04C0  27        DAA         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:1017  SP:06BE  PC:04C0   \n" +
-                "04C1  FE 76     CPI 76      (0)  BC:FFFF  DE:3333  HL:DDDD  AF:AA97  SP:06BE  PC:04C1   \n" +
-                "04C3  C4 A3 05  CNZ 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:AA06  SP:06BE  PC:04C3   ");
+                "04C1  FE 76     CPI 76      (0)  BC:FFFF  DE:3333  HL:DDDD  AF:7603  SP:06BE  PC:04C1   \n" +
+                "04C3  C4 A3 05  CNZ 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:7642  SP:06BE  PC:04C3   \n" +
+                "04C6  AF        XRA A       (0)  BC:FFFF  DE:3333  HL:DDDD  AF:7642  SP:06BE  PC:04C6   \n" +
+                "04C7  3E AA     MVI A,AA    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0046  SP:06BE  PC:04C7   \n" +
+                "04C9  27        DAA         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:AA46  SP:06BE  PC:04C9   \n" +
+                "04CA  D4 A3 05  CNC 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:1013  SP:06BE  PC:04CA   \n" +
+                "04CD  FE 10     CPI 10      (0)  BC:FFFF  DE:3333  HL:DDDD  AF:1013  SP:06BE  PC:04CD   \n" +
+                "04CF  C4 A3 05  CNZ 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:1042  SP:06BE  PC:04CF   \n" +
+                "04D2  AF        XRA A       (0)  BC:FFFF  DE:3333  HL:DDDD  AF:1042  SP:06BE  PC:04D2   \n" +
+                "04D3  3E 9A     MVI A,9A    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0046  SP:06BE  PC:04D3   \n" +
+                "04D5  27        DAA         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:9A46  SP:06BE  PC:04D5   \n" +
+                "04D6  D4 A3 05  CNC 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0057  SP:06BE  PC:04D6   \n" +
+                "04D9  C4 A3 05  CNZ 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0057  SP:06BE  PC:04D9   \n" +
+                "04DC  37        STC         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0057  SP:06BE  PC:04DC   \n" +
+                "04DD  3E 42     MVI A,42    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0047  SP:06BE  PC:04DD   \n" +
+                "04DF  07        RLC         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:4247  SP:06BE  PC:04DF   \n" +
+                "04E0  DC A3 05  CC 05A3     (0)  BC:FFFF  DE:3333  HL:DDDD  AF:8446  SP:06BE  PC:04E0   \n" +
+                "04E3  07        RLC         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:8446  SP:06BE  PC:04E3   \n" +
+                "04E4  D4 A3 05  CNC 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0947  SP:06BE  PC:04E4   \n" +
+                "04E7  FE 09     CPI 09      (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0947  SP:06BE  PC:04E7   \n" +
+                "04E9  C4 A3 05  CNZ 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0942  SP:06BE  PC:04E9   \n" +
+                "04EC  0F        RLC         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0942  SP:06BE  PC:04EC   \n" +
+                "04ED  D4 A3 05  CNC 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:8443  SP:06BE  PC:04ED   \n" +
+                "04F0  0F        RLC         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:8443  SP:06BE  PC:04F0   \n" +
+                "04F1  FE 42     CPI 42      (0)  BC:FFFF  DE:3333  HL:DDDD  AF:4242  SP:06BE  PC:04F1   \n" +
+                "04F3  C4 A3 05  CNZ 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:4242  SP:06BE  PC:04F3   \n" +
+                "04F6  17        RAL         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:4242  SP:06BE  PC:04F6   \n" +
+                "04F7  17        RAL         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:8442  SP:06BE  PC:04F7   \n" +
+                "04F8  D4 A3 05  CNC 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0843  SP:06BE  PC:04F8   \n" +
+                "04FB  FE 08     CPI 08      (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0843  SP:06BE  PC:04FB   \n" +
+                "04FD  C4 A3 05  CNZ 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0842  SP:06BE  PC:04FD   \n" +
+                "0500  1F        RAR         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0842  SP:06BE  PC:0500   \n" +
+                "0501  1F        RAR         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0442  SP:06BE  PC:0501   \n" +
+                "0502  DC A3 05  CC 05A3     (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0242  SP:06BE  PC:0502   \n" +
+                "0505  FE 02     CPI 02      (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0242  SP:06BE  PC:0505   \n" +
+                "0507  C4 A3 05  CNZ 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0242  SP:06BE  PC:0507   \n" +
+                "050A  01 34 12  LXI B,1234  (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0242  SP:06BE  PC:050A   \n" +
+                "050D  11 AA AA  LXI D,AAAA  (0)  BC:1234  DE:3333  HL:DDDD  AF:0242  SP:06BE  PC:050D   \n" +
+                "0510  21 55 55  LXI H,5555  (0)  BC:1234  DE:AAAA  HL:DDDD  AF:0242  SP:06BE  PC:0510   \n" +
+                "0513  AF        XRA A       (0)  BC:1234  DE:AAAA  HL:5555  AF:0242  SP:06BE  PC:0513   \n" +
+                "0514  C5        PUSH B      (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06BE  PC:0514   \n" +
+                "0515  D5        PUSH D      (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06BC  PC:0515   \n" +
+                "0516  E5        PUSH H      (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06BA  PC:0516   \n" +
+                "0517  F5        PUSH SP     (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06B8  PC:0517   \n" +
+                "0518  01 00 00  LXI B,0000  (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06B6  PC:0518   \n" +
+                "051B  11 00 00  LXI D,0000  (0)  BC:0000  DE:AAAA  HL:5555  AF:0046  SP:06B6  PC:051B   \n" +
+                "051E  21 00 00  LXI H,0000  (0)  BC:0000  DE:0000  HL:5555  AF:0046  SP:06B6  PC:051E   \n" +
+                "0521  3E C0     MVI A,C0    (0)  BC:0000  DE:0000  HL:0000  AF:0046  SP:06B6  PC:0521   \n" +
+                "0523  C6 F0     ADI F0      (0)  BC:0000  DE:0000  HL:0000  AF:C046  SP:06B6  PC:0523   \n" +
+                "0525  F1        POP SP      (0)  BC:0000  DE:0000  HL:0000  AF:B083  SP:06B6  PC:0525   \n" +
+                "0526  E1        POP H       (0)  BC:0000  DE:0000  HL:0000  AF:0046  SP:06B8  PC:0526   \n" +
+                "0527  D1        POP D       (0)  BC:0000  DE:0000  HL:5555  AF:0046  SP:06BA  PC:0527   \n" +
+                "0528  C1        POP B       (0)  BC:0000  DE:AAAA  HL:5555  AF:0046  SP:06BC  PC:0528   \n" +
+                "0529  DC A3 05  CC 05A3     (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06BE  PC:0529   \n" +
+                "052C  C4 A3 05  CNZ 05A3    (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06BE  PC:052C   \n" +
+                "052F  E4 A3 05  CPO 05A3    (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06BE  PC:052F   \n" +
+                "0532  FC A3 05  CM 05A3     (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06BE  PC:0532   \n" +
+                "0535  3E 12     MVI A,12    (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06BE  PC:0535   \n" +
+                "0537  B8        CMP B       (0)  BC:1234  DE:AAAA  HL:5555  AF:1246  SP:06BE  PC:0537   \n" +
+                "0538  C4 A3 05  CNZ 05A3    (0)  BC:1234  DE:AAAA  HL:5555  AF:1242  SP:06BE  PC:0538   \n" +
+                "053B  3E 34     MVI A,34    (0)  BC:1234  DE:AAAA  HL:5555  AF:1242  SP:06BE  PC:053B   \n" +
+                "053D  B9        CMP C       (0)  BC:1234  DE:AAAA  HL:5555  AF:3442  SP:06BE  PC:053D   \n" +
+                "053E  C4 A3 05  CNZ 05A3    (0)  BC:1234  DE:AAAA  HL:5555  AF:3442  SP:06BE  PC:053E   \n" +
+                "0541  3E AA     MVI A,AA    (0)  BC:1234  DE:AAAA  HL:5555  AF:3442  SP:06BE  PC:0541   \n" +
+                "0543  BA        CMP D       (0)  BC:1234  DE:AAAA  HL:5555  AF:AA42  SP:06BE  PC:0543   \n" +
+                "0544  C4 A3 05  CNZ 05A3    (0)  BC:1234  DE:AAAA  HL:5555  AF:AA42  SP:06BE  PC:0544   \n" +
+                "0547  BB        CMP E       (0)  BC:1234  DE:AAAA  HL:5555  AF:AA42  SP:06BE  PC:0547   \n" +
+                "0548  C4 A3 05  CNZ 05A3    (0)  BC:1234  DE:AAAA  HL:5555  AF:AA42  SP:06BE  PC:0548   \n" +
+                "054B  3E 55     MVI A,55    (0)  BC:1234  DE:AAAA  HL:5555  AF:AA42  SP:06BE  PC:054B   \n" +
+                "054D  BC        CMP H       (0)  BC:1234  DE:AAAA  HL:5555  AF:5542  SP:06BE  PC:054D   \n" +
+                "054E  C4 A3 05  CNZ 05A3    (0)  BC:1234  DE:AAAA  HL:5555  AF:5542  SP:06BE  PC:054E   \n" +
+                "0551  BD        CMP L       (0)  BC:1234  DE:AAAA  HL:5555  AF:5542  SP:06BE  PC:0551   \n" +
+                "0552  C4 A3 05  CNZ 05A3    (0)  BC:1234  DE:AAAA  HL:5555  AF:5542  SP:06BE  PC:0552   \n" +
+                "0555  21 00 00  LXI H,0000  (0)  BC:1234  DE:AAAA  HL:5555  AF:5542  SP:06BE  PC:0555   \n" +
+                "0558  39        DAD SP      (0)  BC:1234  DE:AAAA  HL:0000  AF:5542  SP:06BE  PC:0558   \n" +
+                "0559  22 C5 05  SHLD 05C5   (0)  BC:1234  DE:AAAA  HL:06BE  AF:5542  SP:06BE  PC:0559   \n" +
+                "055C  31 C4 05  LXI SP,05C4 (0)  BC:1234  DE:AAAA  HL:06BE  AF:5542  SP:06BE  PC:055C   \n" +
+                "055F  3B        DCX SP      (0)  BC:1234  DE:AAAA  HL:06BE  AF:5542  SP:05C4  PC:055F   \n" +
+                "0560  3B        DCX SP      (0)  BC:1234  DE:AAAA  HL:06BE  AF:5542  SP:05C3  PC:0560   \n" +
+                "0561  33        INX SP      (0)  BC:1234  DE:AAAA  HL:06BE  AF:5542  SP:05C2  PC:0561   \n" +
+                "0562  3B        DCX SP      (0)  BC:1234  DE:AAAA  HL:06BE  AF:5542  SP:05C3  PC:0562   \n" +
+                "0563  3E 55     MVI A,55    (0)  BC:1234  DE:AAAA  HL:06BE  AF:5542  SP:05C2  PC:0563   \n" +
+                "0565  32 C2 05  STA 05C2    (0)  BC:1234  DE:AAAA  HL:06BE  AF:5542  SP:05C2  PC:0565   \n" +
+                "0568  2F        CMA         (0)  BC:1234  DE:AAAA  HL:06BE  AF:5542  SP:05C2  PC:0568   \n" +
+                "0569  32 C3 05  STA 05C3    (0)  BC:1234  DE:AAAA  HL:06BE  AF:AA52  SP:05C2  PC:0569   \n" +
+                "056C  C1        POP B       (0)  BC:1234  DE:AAAA  HL:06BE  AF:AA52  SP:05C2  PC:056C   \n" +
+                "056D  B8        CMP B       (0)  BC:AA55  DE:AAAA  HL:06BE  AF:AA52  SP:05C4  PC:056D   \n" +
+                "056E  C4 A3 05  CNZ 05A3    (0)  BC:AA55  DE:AAAA  HL:06BE  AF:AA42  SP:05C4  PC:056E   \n" +
+                "0571  2F        CMA         (0)  BC:AA55  DE:AAAA  HL:06BE  AF:AA42  SP:05C4  PC:0571   \n" +
+                "0572  B9        CMP C       (0)  BC:AA55  DE:AAAA  HL:06BE  AF:5552  SP:05C4  PC:0572   \n" +
+                "0573  C4 A3 05  CNZ 05A3    (0)  BC:AA55  DE:AAAA  HL:06BE  AF:5542  SP:05C4  PC:0573   \n" +
+                "0576  21 C4 05  LXI H,05C4  (0)  BC:AA55  DE:AAAA  HL:06BE  AF:5542  SP:05C4  PC:0576   \n" +
+                "0579  F9        SPHL        (0)  BC:AA55  DE:AAAA  HL:05C4  AF:5542  SP:05C4  PC:0579   \n" +
+                "057A  21 33 77  LXI H,7733  (0)  BC:AA55  DE:AAAA  HL:05C4  AF:5542  SP:05C4  PC:057A   \n" +
+                "057D  3B        DCX SP      (0)  BC:AA55  DE:AAAA  HL:7733  AF:5542  SP:05C4  PC:057D   \n" +
+                "057E  3B        DCX SP      (0)  BC:AA55  DE:AAAA  HL:7733  AF:5542  SP:05C3  PC:057E   \n" +
+                "057F  E3        XTHL        (0)  BC:AA55  DE:AAAA  HL:7733  AF:5542  SP:05C2  PC:057F   \n" +
+                "0580  3A C3 05  LDA 05C3    (0)  BC:AA55  DE:AAAA  HL:AA55  AF:5542  SP:05C2  PC:0580   \n" +
+                "0583  FE 77     CPI 77      (0)  BC:AA55  DE:AAAA  HL:AA55  AF:7742  SP:05C2  PC:0583   \n" +
+                "0585  C4 A3 05  CNZ 05A3    (0)  BC:AA55  DE:AAAA  HL:AA55  AF:7742  SP:05C2  PC:0585   \n" +
+                "0588  3A C2 05  LDA 05C2    (0)  BC:AA55  DE:AAAA  HL:AA55  AF:7742  SP:05C2  PC:0588   \n" +
+                "058B  FE 33     CPI 33      (0)  BC:AA55  DE:AAAA  HL:AA55  AF:3342  SP:05C2  PC:058B   \n" +
+                "058D  C4 A3 05  CNZ 05A3    (0)  BC:AA55  DE:AAAA  HL:AA55  AF:3342  SP:05C2  PC:058D   \n" +
+                "0590  3E 55     MVI A,55    (0)  BC:AA55  DE:AAAA  HL:AA55  AF:3342  SP:05C2  PC:0590   \n" +
+                "0592  BD        CMP L       (0)  BC:AA55  DE:AAAA  HL:AA55  AF:5542  SP:05C2  PC:0592   \n" +
+                "0593  C4 A3 05  CNZ 05A3    (0)  BC:AA55  DE:AAAA  HL:AA55  AF:5542  SP:05C2  PC:0593   \n" +
+                "0596  2F        CMA         (0)  BC:AA55  DE:AAAA  HL:AA55  AF:5542  SP:05C2  PC:0596   \n" +
+                "0597  BC        CMP H       (0)  BC:AA55  DE:AAAA  HL:AA55  AF:AA52  SP:05C2  PC:0597   \n" +
+                "0598  C4 A3 05  CNZ 05A3    (0)  BC:AA55  DE:AAAA  HL:AA55  AF:AA42  SP:05C2  PC:0598   \n" +
+                "059B  2A C5 05  LHLD 05C5   (0)  BC:AA55  DE:AAAA  HL:AA55  AF:AA42  SP:05C2  PC:059B   \n" +
+                "059E  F9        SPHL        (0)  BC:AA55  DE:AAAA  HL:06BE  AF:AA42  SP:05C2  PC:059E   \n" +
+                "059F  21 B5 05  LXI H,05B5  (0)  BC:AA55  DE:AAAA  HL:06BE  AF:AA42  SP:06BE  PC:059F   \n" +
+                "05A2  E9        PCHL        (0)  BC:AA55  DE:AAAA  HL:05B5  AF:AA42  SP:06BE  PC:05A2   \n" +
+                "05B5  21 8E 00  LXI H,008E  (0)  BC:AA55  DE:AAAA  HL:05B5  AF:AA42  SP:06BE  PC:05B5   \n" +
+                "05B8  CD 58 00  CALL 0058   (0)  BC:AA55  DE:AAAA  HL:008E  AF:AA42  SP:06BE  PC:05B8   \n" +
+                "05BB  C3 55 00  JMP 0055    (0)  BC:AA4C  DE:AAAA  HL:00A2  AF:2442  SP:06BE  PC:05BB   \n" +
+                "0055  C3 00 C8  JMP C800    (0)  BC:AA4C  DE:AAAA  HL:00A2  AF:2442  SP:06BE  PC:0055   ");
     }
 
     @Test
@@ -898,35 +1013,35 @@ public class IntegrationTest extends AbstractTest {
         hard.start();
 
         // then
-        asrtCpu("BC:  FF36\n" +
-                "DE:  3333\n" +
-                "HL:  04C6\n" +
-                "AF:  3606\n" +
-                "SP:  06BC\n" +
+        asrtCpu("BC:  AA4C\n" +
+                "DE:  AAAA\n" +
+                "HL:  00A2\n" +
+                "AF:  2442\n" +
+                "SP:  06BE\n" +
                 "PC:  C800\n" +
-                "B,C: FF 36\n" +
-                "D,E: 33 33\n" +
-                "H,L: 04 C6\n" +
-                "M:   36\n" +
-                "A,F: 36 06\n" +
+                "B,C: AA 4C\n" +
+                "D,E: AA AA\n" +
+                "H,L: 00 A2\n" +
+                "M:   24\n" +
+                "A,F: 24 42\n" +
                 "     76543210 76543210\n" +
-                "SP:  00000110 10111100\n" +
+                "SP:  00000110 10111110\n" +
                 "PC:  11001000 00000000\n" +
                 "     76543210\n" +
-                "B:   11111111\n" +
-                "C:   00110110\n" +
-                "D:   00110011\n" +
-                "E:   00110011\n" +
-                "H:   00000100\n" +
-                "L:   11000110\n" +
-                "M:   00110110\n" +
-                "A:   00110110\n" +
+                "B:   10101010\n" +
+                "C:   01001100\n" +
+                "D:   10101010\n" +
+                "E:   10101010\n" +
+                "H:   00000000\n" +
+                "L:   10100010\n" +
+                "M:   00100100\n" +
+                "A:   00100100\n" +
                 "     sz0h0p1c\n" +
-                "F:   00000110\n" +
+                "F:   01000010\n" +
                 "ts:  false\n" +
-                "tz:  false\n" +
+                "tz:  true\n" +
                 "th:  false\n" +
-                "tp:  true\n" +
+                "tp:  false\n" +
                 "tc:  false\n");
 
         screenShoot();

@@ -9,7 +9,7 @@ import java.util.List;
 
 import static spec.Constants.*;
 import static spec.assembler.Parity.parity;
-import static spec.assembler.command.math.sum.SUB_R.sub8;
+import static spec.assembler.command.math.sum.ADD_R.add8;
 
 // TODO test me
 public class DAA extends Command {
@@ -43,15 +43,13 @@ public class DAA extends Command {
         boolean carry = r.tc();
 
         if (r.th() || (ans & x0F) > x09) {
-            incr |= x06;
+            incr = x06;
         }
-        if (carry || (ans > x9F) || ((ans > x8F) && ((ans & x0F) > x09))) {
+        if (carry || (ans >> 4) > x09 || ((ans >> 4) >= x09 && ((ans & x0F) > x09))) {
             incr |= x60;
-        }
-        if (ans > x99) {
             carry = true;
         }
-        ans = sub8(r, reg.get(), incr);
+        ans = add8(r, reg.get(), incr);
         reg.set(ans);
 
         r.tc(carry);
