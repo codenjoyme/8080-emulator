@@ -40,6 +40,7 @@ public class FileRecorder {
     }
 
     public void stopWriting() {
+        Logger.debug("FileRecord writing disabled");
         writing = false;
     }
 
@@ -48,6 +49,7 @@ public class FileRecorder {
     }
 
     public void startWriting() {
+        Logger.debug("FileRecord writing enabled");
         writing = true;
     }
 
