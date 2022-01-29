@@ -19,11 +19,6 @@ public class CM_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "CM (....)";
-    }
-
-    @Override
     public int size() {
         return 3;
     }

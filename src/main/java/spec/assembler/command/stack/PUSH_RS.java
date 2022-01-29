@@ -18,12 +18,7 @@ public class PUSH_RS extends Command {
 
     @Override
     public List<String> registers() {
-        return BDHSP;
-    }
-
-    @Override
-    public String pattern() {
-        return "PUSH (B|D|H|PSW)";
+        return BDHPSW;
     }
 
     @Override

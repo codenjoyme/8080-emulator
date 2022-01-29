@@ -19,11 +19,6 @@ public class CNZ_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "CNZ (....)";
-    }
-
-    @Override
     public int size() {
         return 3;
     }

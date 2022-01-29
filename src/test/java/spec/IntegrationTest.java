@@ -899,9 +899,9 @@ public class IntegrationTest extends AbstractTest {
                 "04E4  D4 A3 05  CNC 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0947  SP:06BE  PC:04E4   \n" +
                 "04E7  FE 09     CPI 09      (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0947  SP:06BE  PC:04E7   \n" +
                 "04E9  C4 A3 05  CNZ 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0946  SP:06BE  PC:04E9   \n" +
-                "04EC  0F        RLC         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0946  SP:06BE  PC:04EC   \n" +
+                "04EC  0F        RRC         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:0946  SP:06BE  PC:04EC   \n" +
                 "04ED  D4 A3 05  CNC 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:8447  SP:06BE  PC:04ED   \n" +
-                "04F0  0F        RLC         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:8447  SP:06BE  PC:04F0   \n" +
+                "04F0  0F        RRC         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:8447  SP:06BE  PC:04F0   \n" +
                 "04F1  FE 42     CPI 42      (0)  BC:FFFF  DE:3333  HL:DDDD  AF:4246  SP:06BE  PC:04F1   \n" +
                 "04F3  C4 A3 05  CNZ 05A3    (0)  BC:FFFF  DE:3333  HL:DDDD  AF:4246  SP:06BE  PC:04F3   \n" +
                 "04F6  17        RAL         (0)  BC:FFFF  DE:3333  HL:DDDD  AF:4246  SP:06BE  PC:04F6   \n" +
@@ -921,13 +921,13 @@ public class IntegrationTest extends AbstractTest {
                 "0514  C5        PUSH B      (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06BE  PC:0514   \n" +
                 "0515  D5        PUSH D      (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06BC  PC:0515   \n" +
                 "0516  E5        PUSH H      (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06BA  PC:0516   \n" +
-                "0517  F5        PUSH SP     (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06B8  PC:0517   \n" +
+                "0517  F5        PUSH PSW    (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06B8  PC:0517   \n" +
                 "0518  01 00 00  LXI B,0000  (0)  BC:1234  DE:AAAA  HL:5555  AF:0046  SP:06B6  PC:0518   \n" +
                 "051B  11 00 00  LXI D,0000  (0)  BC:0000  DE:AAAA  HL:5555  AF:0046  SP:06B6  PC:051B   \n" +
                 "051E  21 00 00  LXI H,0000  (0)  BC:0000  DE:0000  HL:5555  AF:0046  SP:06B6  PC:051E   \n" +
                 "0521  3E C0     MVI A,C0    (0)  BC:0000  DE:0000  HL:0000  AF:0046  SP:06B6  PC:0521   \n" +
                 "0523  C6 F0     ADI F0      (0)  BC:0000  DE:0000  HL:0000  AF:C046  SP:06B6  PC:0523   \n" +
-                "0525  F1        POP SP      (0)  BC:0000  DE:0000  HL:0000  AF:B083  SP:06B6  PC:0525   \n" +
+                "0525  F1        POP PSW     (0)  BC:0000  DE:0000  HL:0000  AF:B083  SP:06B6  PC:0525   \n" +
                 "0526  E1        POP H       (0)  BC:0000  DE:0000  HL:0000  AF:0046  SP:06B8  PC:0526   \n" +
                 "0527  D1        POP D       (0)  BC:0000  DE:0000  HL:5555  AF:0046  SP:06BA  PC:0527   \n" +
                 "0528  C1        POP B       (0)  BC:0000  DE:AAAA  HL:5555  AF:0046  SP:06BC  PC:0528   \n" +
@@ -1082,14 +1082,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:0000  DE:0000  HL:000D  AF:0D02  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:0000  DE:0000  HL:000D  AF:0D83  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:0000  DE:0000  HL:000D  AF:0D83  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:0000  DE:0000  HL:000D  AF:0D83  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:0000  DE:0000  HL:000D  AF:0D83  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:0000  DE:0000  HL:000D  AF:0D83  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:0000  DE:0000  HL:000D  AF:0D83  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:0000  DE:0000  HL:000D  AF:0D83  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:000D  DE:0000  HL:000D  AF:0D83  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:000D  DE:0000  HL:000D  AF:0D83  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:000D  DE:0000  HL:000D  AF:0D83  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:000D  DE:0000  HL:000D  AF:0D83  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:000D  DE:0000  HL:000D  AF:0D83  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:000D  DE:0000  HL:000D  AF:0D83  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:000D  DE:0000  HL:000D  AF:0D83  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:000D  DE:0000  HL:000E  AF:0D83  SP:7FFD  PC:0025   \n" +
@@ -1097,14 +1097,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:000D  DE:0000  HL:000E  AF:0A83  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:000D  DE:0000  HL:000E  AF:0A83  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:000D  DE:0000  HL:000E  AF:0A83  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:000D  DE:0000  HL:000E  AF:0A83  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:000D  DE:0000  HL:000E  AF:0A83  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:000D  DE:0000  HL:000E  AF:0A83  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:000D  DE:0000  HL:000E  AF:0A83  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:000D  DE:0000  HL:000E  AF:0A83  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:000A  DE:0000  HL:000E  AF:0A83  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:000A  DE:0000  HL:000E  AF:0A83  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:000A  DE:0000  HL:000E  AF:0A83  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:000A  DE:0000  HL:000E  AF:0A83  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:000A  DE:0000  HL:000E  AF:0A83  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:000A  DE:0000  HL:000E  AF:0A83  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:000A  DE:0000  HL:000E  AF:0A83  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:000A  DE:0000  HL:000F  AF:0A83  SP:7FFD  PC:0025   \n" +
@@ -1112,14 +1112,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:000A  DE:0000  HL:000F  AF:4883  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:000A  DE:0000  HL:000F  AF:4806  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:000A  DE:0000  HL:000F  AF:4806  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:000A  DE:0000  HL:000F  AF:4806  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:000A  DE:0000  HL:000F  AF:4806  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:000A  DE:0000  HL:000F  AF:4806  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:000A  DE:0000  HL:000F  AF:4806  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:000A  DE:0000  HL:000F  AF:4806  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:0048  DE:0000  HL:000F  AF:4806  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:0048  DE:0000  HL:000F  AF:4806  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:0048  DE:0000  HL:000F  AF:4806  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:0048  DE:0000  HL:000F  AF:4806  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:0048  DE:0000  HL:000F  AF:4806  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:0048  DE:0000  HL:000F  AF:4806  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:0048  DE:0000  HL:000F  AF:4806  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:0048  DE:0000  HL:0010  AF:4806  SP:7FFD  PC:0025   \n" +
@@ -1127,14 +1127,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:0048  DE:0000  HL:0010  AF:4506  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:0048  DE:0000  HL:0010  AF:4506  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:0048  DE:0000  HL:0010  AF:4506  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:0048  DE:0000  HL:0010  AF:4506  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:0048  DE:0000  HL:0010  AF:4506  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:0048  DE:0000  HL:0010  AF:4506  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:0048  DE:0000  HL:0010  AF:4506  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:0048  DE:0000  HL:0010  AF:4506  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:0045  DE:0000  HL:0010  AF:4506  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:0045  DE:0000  HL:0010  AF:4506  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:0045  DE:0000  HL:0010  AF:4506  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:0045  DE:0000  HL:0010  AF:4506  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:0045  DE:0000  HL:0010  AF:4506  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:0045  DE:0000  HL:0010  AF:4506  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:0045  DE:0000  HL:0010  AF:4506  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:0045  DE:0000  HL:0011  AF:4506  SP:7FFD  PC:0025   \n" +
@@ -1142,14 +1142,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:0045  DE:0000  HL:0011  AF:4C06  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:0045  DE:0000  HL:0011  AF:4C06  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:0045  DE:0000  HL:0011  AF:4C06  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:0045  DE:0000  HL:0011  AF:4C06  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:0045  DE:0000  HL:0011  AF:4C06  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:0045  DE:0000  HL:0011  AF:4C06  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:0045  DE:0000  HL:0011  AF:4C06  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:0045  DE:0000  HL:0011  AF:4C06  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:004C  DE:0000  HL:0011  AF:4C06  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:004C  DE:0000  HL:0011  AF:4C06  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:004C  DE:0000  HL:0011  AF:4C06  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:004C  DE:0000  HL:0011  AF:4C06  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:004C  DE:0000  HL:0011  AF:4C06  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:004C  DE:0000  HL:0011  AF:4C06  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:004C  DE:0000  HL:0011  AF:4C06  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FFD  PC:0025   \n" +
@@ -1157,14 +1157,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:004C  DE:0000  HL:0012  AF:4C06  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:004C  DE:0000  HL:0013  AF:4C06  SP:7FFD  PC:0025   \n" +
@@ -1172,14 +1172,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:004C  DE:0000  HL:0013  AF:4F06  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:004C  DE:0000  HL:0013  AF:4F06  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:004C  DE:0000  HL:0013  AF:4F06  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:004C  DE:0000  HL:0013  AF:4F06  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:004C  DE:0000  HL:0013  AF:4F06  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:004C  DE:0000  HL:0013  AF:4F06  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:004C  DE:0000  HL:0013  AF:4F06  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:004C  DE:0000  HL:0013  AF:4F06  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:004F  DE:0000  HL:0013  AF:4F06  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:004F  DE:0000  HL:0013  AF:4F06  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:004F  DE:0000  HL:0013  AF:4F06  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:004F  DE:0000  HL:0013  AF:4F06  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:004F  DE:0000  HL:0013  AF:4F06  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:004F  DE:0000  HL:0013  AF:4F06  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:004F  DE:0000  HL:0013  AF:4F06  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:004F  DE:0000  HL:0014  AF:4F06  SP:7FFD  PC:0025   \n" +
@@ -1187,14 +1187,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:004F  DE:0000  HL:0014  AF:2006  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:004F  DE:0000  HL:0014  AF:2097  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:004F  DE:0000  HL:0014  AF:2097  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:004F  DE:0000  HL:0014  AF:2097  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:004F  DE:0000  HL:0014  AF:2097  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:004F  DE:0000  HL:0014  AF:2097  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:004F  DE:0000  HL:0014  AF:2097  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:004F  DE:0000  HL:0014  AF:2097  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:0020  DE:0000  HL:0014  AF:2097  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:0020  DE:0000  HL:0014  AF:2097  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:0020  DE:0000  HL:0014  AF:2097  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:0020  DE:0000  HL:0014  AF:2097  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:0020  DE:0000  HL:0014  AF:2097  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:0020  DE:0000  HL:0014  AF:2097  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:0020  DE:0000  HL:0014  AF:2097  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:0020  DE:0000  HL:0015  AF:2097  SP:7FFD  PC:0025   \n" +
@@ -1202,14 +1202,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:0020  DE:0000  HL:0015  AF:5797  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:0020  DE:0000  HL:0015  AF:5706  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:0020  DE:0000  HL:0015  AF:5706  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:0020  DE:0000  HL:0015  AF:5706  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:0020  DE:0000  HL:0015  AF:5706  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:0020  DE:0000  HL:0015  AF:5706  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:0020  DE:0000  HL:0015  AF:5706  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:0020  DE:0000  HL:0015  AF:5706  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:0057  DE:0000  HL:0015  AF:5706  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:0057  DE:0000  HL:0015  AF:5706  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:0057  DE:0000  HL:0015  AF:5706  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:0057  DE:0000  HL:0015  AF:5706  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:0057  DE:0000  HL:0015  AF:5706  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:0057  DE:0000  HL:0015  AF:5706  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:0057  DE:0000  HL:0015  AF:5706  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:0057  DE:0000  HL:0016  AF:5706  SP:7FFD  PC:0025   \n" +
@@ -1217,14 +1217,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:0057  DE:0000  HL:0016  AF:4F06  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:0057  DE:0000  HL:0016  AF:4F06  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:0057  DE:0000  HL:0016  AF:4F06  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:0057  DE:0000  HL:0016  AF:4F06  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:0057  DE:0000  HL:0016  AF:4F06  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:0057  DE:0000  HL:0016  AF:4F06  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:0057  DE:0000  HL:0016  AF:4F06  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:0057  DE:0000  HL:0016  AF:4F06  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:004F  DE:0000  HL:0016  AF:4F06  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:004F  DE:0000  HL:0016  AF:4F06  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:004F  DE:0000  HL:0016  AF:4F06  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:004F  DE:0000  HL:0016  AF:4F06  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:004F  DE:0000  HL:0016  AF:4F06  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:004F  DE:0000  HL:0016  AF:4F06  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:004F  DE:0000  HL:0016  AF:4F06  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:004F  DE:0000  HL:0017  AF:4F06  SP:7FFD  PC:0025   \n" +
@@ -1232,14 +1232,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:004F  DE:0000  HL:0017  AF:5206  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:004F  DE:0000  HL:0017  AF:5216  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:004F  DE:0000  HL:0017  AF:5216  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:004F  DE:0000  HL:0017  AF:5216  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:004F  DE:0000  HL:0017  AF:5216  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:004F  DE:0000  HL:0017  AF:5216  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:004F  DE:0000  HL:0017  AF:5216  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:004F  DE:0000  HL:0017  AF:5216  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:0052  DE:0000  HL:0017  AF:5216  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:0052  DE:0000  HL:0017  AF:5216  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:0052  DE:0000  HL:0017  AF:5216  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:0052  DE:0000  HL:0017  AF:5216  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:0052  DE:0000  HL:0017  AF:5216  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:0052  DE:0000  HL:0017  AF:5216  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:0052  DE:0000  HL:0017  AF:5216  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:0052  DE:0000  HL:0018  AF:5216  SP:7FFD  PC:0025   \n" +
@@ -1247,14 +1247,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:0052  DE:0000  HL:0018  AF:4C16  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:0052  DE:0000  HL:0018  AF:4C06  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:0052  DE:0000  HL:0018  AF:4C06  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:0052  DE:0000  HL:0018  AF:4C06  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:0052  DE:0000  HL:0018  AF:4C06  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:0052  DE:0000  HL:0018  AF:4C06  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:0052  DE:0000  HL:0018  AF:4C06  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:0052  DE:0000  HL:0018  AF:4C06  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:004C  DE:0000  HL:0018  AF:4C06  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:004C  DE:0000  HL:0018  AF:4C06  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:004C  DE:0000  HL:0018  AF:4C06  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:004C  DE:0000  HL:0018  AF:4C06  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:004C  DE:0000  HL:0018  AF:4C06  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:004C  DE:0000  HL:0018  AF:4C06  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:004C  DE:0000  HL:0018  AF:4C06  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:004C  DE:0000  HL:0019  AF:4C06  SP:7FFD  PC:0025   \n" +
@@ -1262,14 +1262,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:004C  DE:0000  HL:0019  AF:4406  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:004C  DE:0000  HL:0019  AF:4402  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:004C  DE:0000  HL:0019  AF:4402  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:004C  DE:0000  HL:0019  AF:4402  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:004C  DE:0000  HL:0019  AF:4402  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:004C  DE:0000  HL:0019  AF:4402  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:004C  DE:0000  HL:0019  AF:4402  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:004C  DE:0000  HL:0019  AF:4402  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:0044  DE:0000  HL:0019  AF:4402  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:0044  DE:0000  HL:0019  AF:4402  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:0044  DE:0000  HL:0019  AF:4402  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:0044  DE:0000  HL:0019  AF:4402  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:0044  DE:0000  HL:0019  AF:4402  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:0044  DE:0000  HL:0019  AF:4402  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:0044  DE:0000  HL:0019  AF:4402  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:0044  DE:0000  HL:001A  AF:4402  SP:7FFD  PC:0025   \n" +
@@ -1277,14 +1277,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:0044  DE:0000  HL:001A  AF:0D02  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:0044  DE:0000  HL:001A  AF:0D83  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:0044  DE:0000  HL:001A  AF:0D83  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:0044  DE:0000  HL:001A  AF:0D83  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:0044  DE:0000  HL:001A  AF:0D83  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:0044  DE:0000  HL:001A  AF:0D83  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:0044  DE:0000  HL:001A  AF:0D83  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:0044  DE:0000  HL:001A  AF:0D83  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:000D  DE:0000  HL:001A  AF:0D83  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:000D  DE:0000  HL:001A  AF:0D83  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:000D  DE:0000  HL:001A  AF:0D83  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:000D  DE:0000  HL:001A  AF:0D83  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:000D  DE:0000  HL:001A  AF:0D83  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:000D  DE:0000  HL:001A  AF:0D83  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:000D  DE:0000  HL:001A  AF:0D83  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:000D  DE:0000  HL:001B  AF:0D83  SP:7FFD  PC:0025   \n" +
@@ -1292,14 +1292,14 @@ public class IntegrationTest extends AbstractTest {
                 "001E  FE 24     CPI 24      (1)  BC:000D  DE:0000  HL:001B  AF:0A83  SP:7FFD  PC:001E   \n" +
                 "0020  C8        RZ          (1)  BC:000D  DE:0000  HL:001B  AF:0A83  SP:7FFD  PC:0020   \n" +
                 "0021  CD 28 00  CALL 0028   (1)  BC:000D  DE:0000  HL:001B  AF:0A83  SP:7FFD  PC:0021   \n" +
-                "0028  F5        PUSH SP     (2)  BC:000D  DE:0000  HL:001B  AF:0A83  SP:7FFB  PC:0028   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:000D  DE:0000  HL:001B  AF:0A83  SP:7FFB  PC:0028   \n" +
                 "0029  D5        PUSH D      (2)  BC:000D  DE:0000  HL:001B  AF:0A83  SP:7FF9  PC:0029   \n" +
                 "002A  E5        PUSH H      (2)  BC:000D  DE:0000  HL:001B  AF:0A83  SP:7FF7  PC:002A   \n" +
                 "002B  4E        MOV C,M     (2)  BC:000D  DE:0000  HL:001B  AF:0A83  SP:7FF5  PC:002B   \n" +
                 "002C  CD 37 C0  CALL C037   (2)  BC:000A  DE:0000  HL:001B  AF:0A83  SP:7FF5  PC:002C   \n" +
                 "002F  E1        POP H       (2)  BC:000A  DE:0000  HL:001B  AF:0A83  SP:7FF5  PC:002F   \n" +
                 "0030  D1        POP D       (2)  BC:000A  DE:0000  HL:001B  AF:0A83  SP:7FF7  PC:0030   \n" +
-                "0031  F1        POP SP      (2)  BC:000A  DE:0000  HL:001B  AF:0A83  SP:7FF9  PC:0031   \n" +
+                "0031  F1        POP PSW     (2)  BC:000A  DE:0000  HL:001B  AF:0A83  SP:7FF9  PC:0031   \n" +
                 "0032  C9        RET         (2)  BC:000A  DE:0000  HL:001B  AF:0A83  SP:7FFB  PC:0032   \n" +
                 "0024  23        INX H       (1)  BC:000A  DE:0000  HL:001B  AF:0A83  SP:7FFD  PC:0024   \n" +
                 "0025  C3 1D 00  JMP 001D    (1)  BC:000A  DE:0000  HL:001C  AF:0A83  SP:7FFD  PC:0025   \n" +

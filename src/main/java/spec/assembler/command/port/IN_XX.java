@@ -17,11 +17,6 @@ public class IN_XX extends Command  {
     }
 
     @Override
-    public String pattern() {
-        return "IN (..)";
-    }
-
-    @Override
     public int size() {
         return 2;
     }

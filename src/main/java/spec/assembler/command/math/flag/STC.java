@@ -16,11 +16,6 @@ public class STC extends Command {
     public List<Integer> codes() {
         return CODES;
     }
-    
-    @Override
-    public String pattern() {
-        return "STC";
-    }
 
     @Override
     public int ticks() {

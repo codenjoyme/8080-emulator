@@ -19,11 +19,6 @@ public class CPO_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "CPO (....)";
-    }
-
-    @Override
     public int size() {
         return 3;
     }

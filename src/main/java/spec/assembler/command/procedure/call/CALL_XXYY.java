@@ -18,11 +18,6 @@ public class CALL_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "CALL (....)";
-    }
-
-    @Override
     public int size() {
         return 3;
     }

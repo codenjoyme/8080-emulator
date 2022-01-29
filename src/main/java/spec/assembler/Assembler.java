@@ -38,7 +38,7 @@ public class Assembler {
         COMMANDS = new Command[0x100];
 
         add(new LDA_XXYY());
-        add(new LDAX_RR());
+        add(new LDAX_RD());
         add(new LHLD_XXYY());
         add(new LXI_RR_XXYY());
         add(new MOV_R_R());
@@ -47,7 +47,7 @@ public class Assembler {
         add(new SHLD_XXYY());
         add(new SPHL());
         add(new STA_XXYY());
-        add(new STAX_RR());
+        add(new STAX_RD());
         add(new XCHG());
         add(new XTHL());
 

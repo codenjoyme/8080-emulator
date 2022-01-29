@@ -19,11 +19,6 @@ public class JC_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "JC (....)";
-    }
-
-    @Override
     public int size() {
         return 3;
     }

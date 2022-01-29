@@ -17,11 +17,6 @@ public class OUT_XX extends Command  {
     }
 
     @Override
-    public String pattern() {
-        return "OUT (..)";
-    }
-
-    @Override
     public int size() {
         return 2;
     }

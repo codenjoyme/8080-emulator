@@ -16,11 +16,6 @@ public class CMC extends Command {
     public List<Integer> codes() {
         return CODES;
     }
-    
-    @Override
-    public String pattern() {
-        return "CMC";
-    }
 
     @Override
     public int ticks() {

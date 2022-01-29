@@ -20,11 +20,6 @@ public class RLC extends Command {
     public List<Integer> codes() {
         return CODES;
     }
-    
-    @Override
-    public String pattern() {
-        return "RLC";
-    }
 
     @Override
     public int ticks() {

@@ -23,11 +23,6 @@ public class INX_RR extends Command {
     public List<String> registers() {
         return BDHSP;
     }
-    
-    @Override
-    public String pattern() {
-        return "INX (B|D|H|SP)";
-    }
 
     @Override
     public int ticks() {

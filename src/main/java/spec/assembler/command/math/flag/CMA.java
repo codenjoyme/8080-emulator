@@ -19,11 +19,6 @@ public class CMA extends Command {
     public List<Integer> codes() {
         return CODES;
     }
-    
-    @Override
-    public String pattern() {
-        return "CMA";
-    }
 
     @Override
     public int ticks() {

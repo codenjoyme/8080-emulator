@@ -17,11 +17,6 @@ public class NOP extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "NOP";
-    }
-
-    @Override
     public int ticks() {
         return 4;
     }

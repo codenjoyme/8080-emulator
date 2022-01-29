@@ -24,11 +24,6 @@ public class DCX_RR extends Command {
     public List<String> registers() {
         return BDHSP;
     }
-    
-    @Override
-    public String pattern() {
-        return "DCX (B|D|H|SP)";
-    }
 
     @Override
     public int ticks() {

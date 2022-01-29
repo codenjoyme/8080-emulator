@@ -19,11 +19,6 @@ public class CPE_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "CPE (....)";
-    }
-
-    @Override
     public int size() {
         return 3;
     }

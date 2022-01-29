@@ -18,11 +18,6 @@ public class RET extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "RET";
-    }
-
-    @Override
     public int ticks() {
         return 10;
     }

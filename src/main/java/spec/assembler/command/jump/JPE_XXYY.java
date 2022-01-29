@@ -19,11 +19,6 @@ public class JPE_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "JPE (....)";
-    }
-
-    @Override
     public int size() {
         return 3;
     }

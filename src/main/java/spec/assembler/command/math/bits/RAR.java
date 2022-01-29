@@ -19,11 +19,6 @@ public class RAR extends Command {
     public List<Integer> codes() {
         return CODES;
     }
-    
-    @Override
-    public String pattern() {
-        return "RAR";
-    }
 
     @Override
     public int ticks() {

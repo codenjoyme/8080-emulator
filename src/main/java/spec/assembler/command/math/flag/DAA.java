@@ -21,11 +21,6 @@ public class DAA extends Command {
     public List<Integer> codes() {
         return CODES;
     }
-    
-    @Override
-    public String pattern() {
-        return "DAA";
-    }
 
     @Override
     public int ticks() {

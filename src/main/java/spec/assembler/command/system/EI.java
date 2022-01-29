@@ -17,11 +17,6 @@ public class EI extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "EI";
-    }
-
-    @Override
     public int ticks() {
         return 4;
     }

@@ -27,11 +27,6 @@ public class DCR_R extends Command {
     public List<String> registers() {
         return BCDEHLMA;
     }
-    
-    @Override
-    public String pattern() {
-        return "DCR (B|C|D|E|H|L|M|A)";
-    }
 
     @Override
     public int ticks() {

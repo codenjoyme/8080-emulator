@@ -23,11 +23,6 @@ public class SUI_XX extends Command {
     public List<String> registers() {
         return BCDEHLMA;
     }
-    
-    @Override
-    public String pattern() {
-        return "SUI (..)";
-    }
 
     @Override
     public int size() {

@@ -17,11 +17,6 @@ public class DI extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "DI";
-    }
-
-    @Override
     public int ticks() {
         return 4;
     }

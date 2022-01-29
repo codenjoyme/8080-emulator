@@ -19,11 +19,6 @@ public class RNC extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "RNC";
-    }
-
-    @Override
     public int ticks() {
         return 15; // TODO если условие не прошло то 11
     }

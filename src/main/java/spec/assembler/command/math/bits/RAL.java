@@ -20,11 +20,6 @@ public class RAL extends Command {
     public List<Integer> codes() {
         return CODES;
     }
-    
-    @Override
-    public String pattern() {
-        return "RAL";
-    }
 
     @Override
     public int ticks() {

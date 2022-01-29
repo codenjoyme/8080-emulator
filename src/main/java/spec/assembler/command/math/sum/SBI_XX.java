@@ -23,11 +23,6 @@ public class SBI_XX extends Command {
     public List<String> registers() {
         return BCDEHLMA;
     }
-    
-    @Override
-    public String pattern() {
-        return "SBI (..)";
-    }
 
     @Override
     public int size() {

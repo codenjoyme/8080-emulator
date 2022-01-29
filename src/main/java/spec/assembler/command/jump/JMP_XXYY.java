@@ -18,11 +18,6 @@ public class JMP_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "JMP (....)";
-    }
-
-    @Override
     public int size() {
         return 3;
     }

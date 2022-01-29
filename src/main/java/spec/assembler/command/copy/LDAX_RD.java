@@ -6,10 +6,10 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-public class STAX_RR extends Command {
+public class LDAX_RD extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
-            0x02, 0x12);
+            0x0A, 0x1A);
 
     @Override
     public List<Integer> codes() {
@@ -29,6 +29,7 @@ public class STAX_RR extends Command {
     @Override
     public void apply(int command, Registry r) {
         int addr = rRR(command, r).get();
-        r.data().write8(addr, r.A());
+        int bite = r.data().read8(addr);
+        r.A(bite);
     }
 }

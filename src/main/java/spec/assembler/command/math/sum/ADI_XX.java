@@ -23,11 +23,6 @@ public class ADI_XX extends Command {
     public List<String> registers() {
         return BCDEHLMA;
     }
-    
-    @Override
-    public String pattern() {
-        return "ADI (..)";
-    }
 
     @Override
     public int size() {

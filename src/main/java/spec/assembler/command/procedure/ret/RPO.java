@@ -19,11 +19,6 @@ public class RPO extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "RPO";
-    }
-
-    @Override
     public int ticks() {
         return 15; // TODO если условие не прошло то 11
     }

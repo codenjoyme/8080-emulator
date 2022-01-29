@@ -19,11 +19,6 @@ public class RC extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "RC";
-    }
-
-    @Override
     public int ticks() {
         return 15; // TODO если условие не прошло то 11
     }

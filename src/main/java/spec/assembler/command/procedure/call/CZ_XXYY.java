@@ -19,11 +19,6 @@ public class CZ_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "CZ (....)";
-    }
-
-    @Override
     public int size() {
         return 3;
     }

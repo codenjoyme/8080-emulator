@@ -25,11 +25,6 @@ public class DAD_RR extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "DAD (B|D|H|SP)";
-    }
-
-    @Override
     public int ticks() {
         return 11;
     }

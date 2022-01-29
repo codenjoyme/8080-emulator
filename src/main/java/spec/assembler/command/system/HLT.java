@@ -17,11 +17,6 @@ public class HLT extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "HLT";
-    }
-
-    @Override
     public int ticks() {
         return 4; // TODO не верное значение
     }

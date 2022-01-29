@@ -19,11 +19,6 @@ public class JNZ_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "JNZ (....)";
-    }
-
-    @Override
     public int size() {
         return 3;
     }

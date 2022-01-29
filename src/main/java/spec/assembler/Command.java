@@ -24,6 +24,9 @@ public abstract class Command {
     public static final List<String> BDHSP =
             Arrays.asList("B", "D", "H", "SP");
 
+    public static final List<String> BDHPSW =
+            Arrays.asList("B", "D", "H", "PSW");
+
     public static final List<String> BCDEHLMA =
             Arrays.asList("B", "C", "D", "E", "H", "L", "M", "A");
 
@@ -96,8 +99,20 @@ public abstract class Command {
         if (size() == 3) {
             return "4";
         }
+        if (size() == 2) {
+            return "2";
+        }
         if (registers() == BD) {
-            return "BD";
+            return "RD";
+        }
+        if (registers() == BDHSP) {
+            return "RR";
+        }
+        if (registers() == BDHPSW) {
+            return "RS";
+        }
+        if (registers() == BCDEHLMA) {
+            return "R";
         }
         return "";
     }
@@ -107,14 +122,21 @@ public abstract class Command {
     }
 
     public String pattern() {
-        return name() + " "
-                + operands()
-                        .replace("4", "(....)")
-                        .replace("2", "(..)")
-                        .replace("RR", "(B|D|H|SP)")
-                        .replace("R", "(B|C|D|E|H|L|M|A)")
-                        .replace("BD", "(B|D)");
+        return name() + replace(operands());
+    }
 
+    private String replace(String operands) {
+        if (operands.isEmpty()) {
+            return "";
+        }
+
+        return " " + operands
+                .replace("4", "(....)")
+                .replace("2", "(..)")
+                .replace("RD", "(B|D)")
+                .replace("RR", "(B|D|H|SP)")
+                .replace("RS", "(B|D|H|PSW)")
+                .replace("R", "(B|C|D|E|H|L|M|A)");
     }
 
     public int size() {

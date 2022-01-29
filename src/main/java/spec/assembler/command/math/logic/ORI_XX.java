@@ -23,11 +23,6 @@ public class ORI_XX extends Command {
     public List<String> registers() {
         return BCDEHLMA;
     }
-    
-    @Override
-    public String pattern() {
-        return "ORI (..)";
-    }
 
     @Override
     public int size() {

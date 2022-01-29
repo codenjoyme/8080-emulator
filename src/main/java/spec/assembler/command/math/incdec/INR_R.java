@@ -27,11 +27,6 @@ public class INR_R extends Command {
     public List<String> registers() {
         return BCDEHLMA;
     }
-    
-    @Override
-    public String pattern() {
-        return "INR (B|C|D|E|H|L|M|A)";
-    }
 
     @Override
     public int ticks() {
