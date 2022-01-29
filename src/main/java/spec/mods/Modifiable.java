@@ -8,8 +8,8 @@ public abstract class Modifiable<T> {
     protected Map<Class<CpuMod<T>>, CpuMod<T>> mods = new HashMap<>();
 
     public void on(String event) {
-        mods.entrySet().forEach(entry ->
-                entry.getValue().on(event, (T) this));
+        mods.forEach((key, value) ->
+                value.on(event, (T) this));
     }
 
     public void modAdd(CpuMod<T> mod) {
