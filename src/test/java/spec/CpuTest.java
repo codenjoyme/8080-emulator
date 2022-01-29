@@ -720,7 +720,34 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void performance() {
+    public void performance_assemble() {
+        // about 5.2 sec / 10_000
+        // given
+        int ticks = 10_000;
+
+        // when then
+        for (int tick = 0; tick < ticks; tick++) {
+            memoryInit = false;
+            givenPr("LXI B,1111\n" +
+                    "LXI SP,789A\n" +
+                    "DAD D\n" +
+                    "NOP\n" +
+                    "DAD D\n" +
+                    "LXI H,A987\n" +
+                    "NOP\n" +
+                    "DAD SP\n" +
+                    "LXI D,2222\n" +
+                    "NOP\n" +
+                    "DAD B\n" +
+                    "LXI H,A987\n" +
+                    "NOP\n" +
+                    "DAD H\n" +
+                    "NOP\n");
+        }
+    }
+
+    @Test
+    public void performance_execute() {
         // about 0.95 sec (vs 1.4) / 1_000_000
         // when
         givenPr("LXI B,1111\n" +

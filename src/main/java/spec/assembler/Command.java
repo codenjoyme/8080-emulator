@@ -31,11 +31,15 @@ public abstract class Command {
     public static final List<String> BCDEHLMA =
             Arrays.asList("B", "C", "D", "E", "H", "L", "M", "A");
 
+    private String name;
+
     public Command() {
         List<Integer> codes = codes();
         List<String> registers = registers();
         validate(codes.size(), registers.size());
         initIndexes(codes, registers);
+        name = getClass().getSimpleName().split("_")[0];
+        pattern = name + replace(operands());
     }
 
     public void initIndexes(List<Integer> codes, List<String> registers) {
@@ -118,14 +122,12 @@ public abstract class Command {
         return "";
     }
 
-    private String name() {
-        return getClass().getSimpleName().split("_")[0];
+    public String name() {
+        return name;
     }
 
     public String pattern() {
-        return pattern != null
-                ? pattern :
-                (pattern = name() + replace(operands()));
+        return pattern;
     }
 
     private String replace(String operands) {
@@ -188,14 +190,23 @@ public abstract class Command {
         }
         if (!registers().isEmpty()) {
             String reg = registers().get(rindex(bites.get(0)));
-            result = result
-                    .replaceFirst(Pattern.quote("(B|D)"), reg)
-                    .replaceFirst(Pattern.quote("(B|C|D|E|H|L|M|A)"), reg)
-                    .replaceFirst(Pattern.quote("(B|D|H|SP)"), reg)
-                    .replaceFirst(Pattern.quote("(B|D|H|PSW)"), reg)
-                    .replaceFirst(Pattern.quote("(B|D)"), reg);
+            result = replaceFirst(result, "(B|D)", reg);
+            result = replaceFirst(result, "(B|C|D|E|H|L|M|A)", reg);
+            result = replaceFirst(result, "(B|D|H|SP)", reg);
+            result = replaceFirst(result, "(B|D|H|PSW)", reg);
+            result = replaceFirst(result, "(B|D)", reg);
         }
         return result;
+    }
+
+    private String replaceFirst(String source, String search, String replacement) {
+        int index = source.indexOf(search);
+        if (index == -1) {
+            return source;
+        }
+        return source.substring(0, index)
+                + replacement
+                + source.substring(index + search.length());
     }
 
     public abstract void apply(int command, Registry r);

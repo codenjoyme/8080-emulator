@@ -174,16 +174,18 @@ public class Assembler {
         return result.toString();
     }
 
-    public String parseCommand(String bites) {
+    public String parseCommand(String asmCommand) {
+        String name = asmCommand.split(" ")[0];
         for (Command command : COMMANDS) {
             if (command == null) continue;
+            if (!command.name().equals(name)) continue;
 
-            Optional<String> result = command.parse(bites);
+            Optional<String> result = command.parse(asmCommand);
             if (result.isPresent()) {
                 return result.get();
             }
         }
-        throw new UnsupportedOperationException("Unsupported command: " + bites);
+        throw new UnsupportedOperationException("Unsupported command: " + asmCommand);
     }
 
     public List<List<Integer>> split(String input) {

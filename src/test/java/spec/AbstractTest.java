@@ -15,7 +15,7 @@ public abstract class AbstractTest {
 
     public static int START = 0x0000;
 
-    private boolean memoryInit;
+    protected boolean memoryInit;
 
     protected Hardware hard;
     protected TestMemory memory;
