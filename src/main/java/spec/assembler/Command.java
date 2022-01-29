@@ -17,6 +17,7 @@ import static spec.WordMath.*;
 public abstract class Command {
 
     protected int[] indexes = new int[0x100];
+    private String pattern;
 
     public static final List<String> BD =
             Arrays.asList("B", "D");
@@ -122,7 +123,9 @@ public abstract class Command {
     }
 
     public String pattern() {
-        return name() + replace(operands());
+        return pattern != null
+                ? pattern :
+                (pattern = name() + replace(operands()));
     }
 
     private String replace(String operands) {
