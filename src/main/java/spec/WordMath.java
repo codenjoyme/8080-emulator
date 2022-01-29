@@ -26,15 +26,19 @@ public class WordMath {
     }
 
     public static String hex8(int bite) {
+        return hex(bite, 2);
+    }
+
+    private static String hex(int bite, int length) {
         String result = Integer.toString(bite, 16).toUpperCase();
-        while (result.length() < 2) {
+        while (result.length() < length) {
             result = '0' + result;
         }
         return result;
     }
 
     public static String hex16(int bite) {
-        return String.format("%04X", bite);
+        return hex(bite, 4);
     }
 
     public static List<Integer> hex8(String bites) {
