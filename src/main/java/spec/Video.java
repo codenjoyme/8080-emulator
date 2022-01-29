@@ -34,16 +34,16 @@ public class Video {
     };
     public static final int PATTERN_WIDTH = 8;
 
-    private int width;
-    private int height;
+    private int pwidth; // ширина экрана в 8 байтовых паттернах
+    private int height; // высота экрана в пикселях
     private Drawer drawer;
     private Pattern[][] colors;
     private Pattern[] patterns;
 
-    public Video(int width, int height) {
-        this.width = width / PATTERN_WIDTH;
+    public Video(int pwidth, int height) {
+        this.pwidth = pwidth / PATTERN_WIDTH;
         this.height = height;
-        colors = new Pattern[width][height];
+        colors = new Pattern[pwidth][height];
         patterns = new Pattern[0x100];
         clean();
     }
@@ -78,7 +78,7 @@ public class Video {
     }
 
     public void clean() {
-        for (int px = 0; px < width; px++) {
+        for (int px = 0; px < pwidth; px++) {
             for (int y = 0; y < height; y++) {
                 colors[px][y] = pattern(0);
             }
@@ -95,27 +95,27 @@ public class Video {
 
     public void plot(int addr, int pattern) {
         int offset = addr - SCREEN.begin();
-        int x = ((offset & 0x3F00) >> 5) / PATTERN_WIDTH;
+        int px = ((offset & 0x3F00) >> 5) / PATTERN_WIDTH;
         int y = offset & 0x00FF;
-        colors[x][y] = pattern(pattern);
+        colors[px][y] = pattern(pattern);
     }
 
     public void screenPaint() {
-        for (int x = 0; x < width; x++) {
+        for (int px = 0; px < pwidth; px++) {
             for (int y = 0; y < height; y++) {
-                if (colors[x][y] == null) continue;
+                if (colors[px][y] == null) continue;
 
-                Pattern pattern = colors[x][y];
+                Pattern pattern = colors[px][y];
                 if (drawer != null){
-                    drawer.draw(x * PATTERN_WIDTH, y, pattern.image());
+                    drawer.draw(px * PATTERN_WIDTH, y, pattern.image());
                 }
-                colors[x][y] = null;
+                colors[px][y] = null;
             }
         }
     }
 
     public int width() {
-        return width * PATTERN_WIDTH;
+        return pwidth * PATTERN_WIDTH;
     }
 
     public int height() {
