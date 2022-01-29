@@ -93,6 +93,9 @@ public abstract class Command {
     public abstract List<Integer> codes();
 
     public String operands() {
+        if (size() == 3) {
+            return "4";
+        }
         return "";
     }
 

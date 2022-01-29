@@ -17,11 +17,6 @@ public class LDA_XXYY extends Command {
     }
 
     @Override
-    public String operands() {
-        return "4";
-    }
-
-    @Override
     public int size() {
         return 3;
     }
