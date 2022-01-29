@@ -8,10 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static spec.Constants.x0F;
-import static spec.Constants.x80;
-import static spec.Registry.T4h;
 import static spec.Registry.T7s;
 import static spec.WordMath.lo;
+import static spec.assembler.Parity.parity;
 
 // TODO test me
 public class DCR_R extends Command {
@@ -48,16 +47,12 @@ public class DCR_R extends Command {
     }
 
     private int dec8(Registry r, int ans) {
-        boolean p = (ans == x80);
-        boolean h = (((ans & x0F) - 1) & T4h) != 0;
         ans = lo(ans - 1);
 
         r.ts((ans & T7s) != 0);
         r.tz(ans == 0);
-        r.tp(p);
-        // TODO #01 вероятно тут надо пофиксить
-        // r.tp(parity[ans]);
-        r.th(h);
+        r.tp(parity[ans]);
+        r.th((ans & x0F) != x0F);
 
         return ans;
     }
