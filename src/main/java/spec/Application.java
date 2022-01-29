@@ -28,6 +28,7 @@ public class Application {
     private long last = 0;
     private int delay = 100;
     private boolean fullSpeed = false;
+    private boolean lik = true;
 
     private URL base;
     private Container parent;
@@ -74,7 +75,6 @@ public class Application {
     }
 
     private void loadRoms(URL base) {
-        boolean lik = true;
         if (lik) {
             Lik.loadRom(base, hard.roms());
         } else {
@@ -175,6 +175,16 @@ public class Application {
     }
 
     public void handleKey(Key key) {
+        if (key.numZero()) {
+            if (key.pressed()) {
+                lik = !lik;
+                hard.pause();
+                loadRoms(base);
+                hard.reset();
+            }
+            return;
+        }
+
         if (key.numSlash()) {
             if (key.pressed()) {
                 // TODO как сделать рабочим в веб версии?

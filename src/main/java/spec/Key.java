@@ -46,6 +46,10 @@ public class Key {
         return code == NUM_SLASH;
     }
 
+    public boolean numZero() {
+        return code == NUM_0;
+    }
+
     public boolean numStar() {
         return code == NUM_STAR;
     }
@@ -115,6 +119,7 @@ public class Key {
                 || numStar()
                 || numMinus()
                 || numPlus()
-                || numComma();
+                || numComma()
+                || numZero();
     }
 }
