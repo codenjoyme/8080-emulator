@@ -152,11 +152,6 @@ public abstract class Command {
         return false;
     }
 
-    public boolean itsMe(List<Integer> bites) {
-        // TODO сделать оптимальнее
-        return !take(new ArrayList<>(bites)).isEmpty();
-    }
-
     public List<Integer> take(List<Integer> bites) {
         return new LinkedList<Integer>(){{
             if (!bites.isEmpty()) {

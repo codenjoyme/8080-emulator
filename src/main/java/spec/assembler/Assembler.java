@@ -156,14 +156,7 @@ public class Assembler {
     }
 
     public String dizAssembly(List<Integer> commandBites) {
-        for (Command command : COMMANDS) {
-            if (command == null) continue;
-
-            if (command.itsMe(commandBites)) {
-                return command.print(commandBites);
-            }
-        }
-        return null;
+        return COMMANDS[commandBites.get(0)].print(commandBites);
     }
 
     public String assembly(String programBites) {
