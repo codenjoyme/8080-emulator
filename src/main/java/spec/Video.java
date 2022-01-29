@@ -37,13 +37,13 @@ public class Video {
     private int pwidth; // ширина экрана в 8 байтовых паттернах
     private int height; // высота экрана в пикселях
     private Drawer drawer;
-    private Pattern[][] colors;
+    private Pattern[][] changes;
     private Pattern[] patterns;
 
-    public Video(int pwidth, int height) {
-        this.pwidth = pwidth / PATTERN_WIDTH;
+    public Video(int width, int height) {
+        this.pwidth = width / PATTERN_WIDTH;
         this.height = height;
-        colors = new Pattern[pwidth][height];
+        changes = new Pattern[pwidth][height];
         patterns = new Pattern[0x100];
         clean();
     }
@@ -58,11 +58,11 @@ public class Video {
         private Graphics buffer;
         private BufferedImage image;
 
-        public Pattern(int pattern) {
+        public Pattern(int bite) {
             image = new BufferedImage(PATTERN_WIDTH, 1, TYPE_INT_ARGB);
             buffer = image.getGraphics();
             for (int x = 0; x < PATTERN_WIDTH; x++) {
-                Color color = ((pattern & (1 << x)) == 0) ? BLACK : WHITE;
+                Color color = ((bite & (1 << x)) == 0) ? BLACK : WHITE;
                 buffer.setColor(color);
                 buffer.fillRect(PATTERN_WIDTH - 1 - x, 0, 1, 1);
             }
@@ -80,7 +80,7 @@ public class Video {
     public void clean() {
         for (int px = 0; px < pwidth; px++) {
             for (int y = 0; y < height; y++) {
-                colors[px][y] = pattern(0);
+                changes[px][y] = pattern(0);
             }
         }
     }
@@ -97,19 +97,19 @@ public class Video {
         int offset = addr - SCREEN.begin();
         int px = ((offset & 0x3F00) >> 5) / PATTERN_WIDTH;
         int y = offset & 0x00FF;
-        colors[px][y] = pattern(pattern);
+        changes[px][y] = pattern(pattern);
     }
 
     public void screenPaint() {
         for (int px = 0; px < pwidth; px++) {
             for (int y = 0; y < height; y++) {
-                if (colors[px][y] == null) continue;
+                if (changes[px][y] == null) continue;
 
-                Pattern pattern = colors[px][y];
+                Pattern pattern = changes[px][y];
                 if (drawer != null){
                     drawer.draw(px * PATTERN_WIDTH, y, pattern.image());
                 }
-                colors[px][y] = null;
+                changes[px][y] = null;
             }
         }
     }
