@@ -54,7 +54,7 @@ public class FileRecorder {
     }
 
     public void read(BiConsumer<Integer, Key> onLine) {
-        try  {
+        try {
             int index = 0;
             for (String line : Files.readAllLines(file.toPath())) {
                 index++;

@@ -38,7 +38,7 @@ public class Constants {
     public static final int xFF = 0xFF;
     public static final int x100 = 0x100;
     public static final int x10000 = 0x10000;
-    
+
     public static final int START_POINT = 0xC000;  // старт процессора после перезапуска
     public static final Range SCREEN = new Range(0x9000, 0xBFFF); // область экрана
     public static final Range ROM = new Range(0xC000, 0xF7FF);    // ПЗУ

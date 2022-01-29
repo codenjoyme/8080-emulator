@@ -63,7 +63,7 @@ public class IOPorts {
                             // по битам порта B от 2 до 7
                             for (int i = 0; i < 6; i++) {
                                 // по битам порта A от 0 до 7
-                                for (int j = 0; j < 8; j++)  {
+                                for (int j = 0; j < 8; j++) {
                                     // если такая нажата  и  такой бит порта B = 0, ставим бит A = 0
                                     if (keyStatus[j][i] && (B() & msk[i + 2]) == 0) {
                                         result &= bit[j];
@@ -88,7 +88,7 @@ public class IOPorts {
                             // по битам порта A от 0 до 7
                             for (int i = 0; i < 8; i++) {
                                 // по битам порта В от 2 до 7
-                                for (int j = 0; j < 6; j++)  {
+                                for (int j = 0; j < 6; j++) {
                                     // если такая нажата  и  такой бит порта A = 0, ставим бит В = 0
                                     if (keyStatus[i][j] && (A() & msk[i]) == 0) {
                                         result &= bit[j + 2];

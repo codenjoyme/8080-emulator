@@ -6,7 +6,7 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-public class MVI_R_XX extends Command  {
+public class MVI_R_XX extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
             0x06, 0x0E, 0x16, 0x1E, 0x26, 0x2E, 0x36, 0x3E);

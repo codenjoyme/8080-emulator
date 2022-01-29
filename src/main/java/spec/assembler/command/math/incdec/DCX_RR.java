@@ -19,7 +19,7 @@ public class DCX_RR extends Command {
     public List<Integer> codes() {
         return CODES;
     }
-    
+
     @Override
     public List<String> registers() {
         return BDHSP;

@@ -39,7 +39,7 @@ public class Cpu extends Registry {
     }
 
     private boolean interruptNeeded(int tick) {
-        return tick >= 0;  
+        return tick >= 0;
     }
 
     public void execute() {

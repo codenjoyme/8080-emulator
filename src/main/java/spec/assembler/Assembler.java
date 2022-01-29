@@ -32,7 +32,9 @@ import static spec.WordMath.toArray;
 
 public class Assembler {
 
-    private static final Command[] COMMANDS; static {
+    private static final Command[] COMMANDS;
+
+    static {
         COMMANDS = new Command[0x100];
 
         add(new LDA_XXYY());
@@ -132,7 +134,7 @@ public class Assembler {
             if (COMMANDS[code] != null) {
                 throw new IllegalArgumentException(String.format(
                         "There is already such a command '%s' with code %s " +
-                        "instead of new '%s'",
+                                "instead of new '%s'",
                         COMMANDS[code].pattern(),
                         code,
                         command.pattern()));

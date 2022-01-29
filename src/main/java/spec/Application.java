@@ -239,7 +239,7 @@ public class Application {
                 if (delay < 10) {
                     delay++;
                 } else {
-                    delay = (int)(delay / 0.8);
+                    delay = (int) (delay / 0.8);
                 }
                 Logger.debug("Delay increased: " + delay);
             }
@@ -248,7 +248,7 @@ public class Application {
 
         if (key.numPlus()) {
             if (key.pressed()) {
-                delay = (int)(delay * 0.8);
+                delay = (int) (delay * 0.8);
                 Logger.debug("Delay decreased: " + delay);
             }
             return;
@@ -261,15 +261,14 @@ public class Application {
     private void openFileDialog(Consumer<File> onSelect,
                                 String directory,
                                 String fileType,
-                                String... ext)
-    {
+                                String... ext) {
         JFileChooser files = new JFileChooser();
         files.setCurrentDirectory(new File(directory));
         files.setDialogTitle("Select " + fileType);
         files.setFileFilter(new FileNameExtensionFilter(String.format(
                 "%s %s", fileType, Arrays.asList(ext)), ext));
         int option = files.showOpenDialog(parent);
-        if(option == JFileChooser.APPROVE_OPTION){
+        if (option == JFileChooser.APPROVE_OPTION) {
             File file = files.getSelectedFile();
             onSelect.accept(file);
         }

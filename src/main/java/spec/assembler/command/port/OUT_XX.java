@@ -6,7 +6,7 @@ import spec.assembler.Command;
 import java.util.Arrays;
 import java.util.List;
 
-public class OUT_XX extends Command  {
+public class OUT_XX extends Command {
 
     private static final List<Integer> CODES = Arrays.asList(
             0xD3);

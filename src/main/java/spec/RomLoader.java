@@ -43,7 +43,7 @@ public class RomLoader {
             URL url = new URL(base, path);
             InputStream is = url.openStream();
             int length = is.available();
-            Range range = new Range(offset, - length);
+            Range range = new Range(offset, -length);
             logLoading(url.toString(), range);
             cpu.PC(offset);
             readBytes(is, memory.all(), range);

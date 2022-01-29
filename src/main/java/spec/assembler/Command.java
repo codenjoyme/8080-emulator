@@ -53,9 +53,9 @@ public abstract class Command {
 
     public void validate(int codes, int registers) {
         if (this instanceof NONE
-            || codes == 1                               // <COMMAND>
-            || codes == registers                       // <COMMAND> R
-            || (codes + 1) == registers * registers) {  // MOV R,R
+                || codes == 1                               // <COMMAND>
+                || codes == registers                       // <COMMAND> R
+                || (codes + 1) == registers * registers) {  // MOV R,R
             return;
         }
 
@@ -78,7 +78,7 @@ public abstract class Command {
 
     public List<Integer> code(String... params) {
         List<Integer> result = new ArrayList<>(3);
-        if (registers().isEmpty()){
+        if (registers().isEmpty()) {
             result.addAll(codes());
         } else {
             result.add(codes().get(registers().indexOf(params[0])));

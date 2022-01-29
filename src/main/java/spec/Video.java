@@ -106,7 +106,7 @@ public class Video {
                 if (changes[px][y] == null) continue;
 
                 Pattern pattern = changes[px][y];
-                if (drawer != null){
+                if (drawer != null) {
                     drawer.draw(toWidth(px), y, pattern.image());
                 }
                 changes[px][y] = null;
