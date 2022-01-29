@@ -56,7 +56,7 @@ public class DCR_R extends Command {
         r.tz(ans == 0);
         r.tp(p);
         // TODO #01 вероятно тут надо пофиксить
-        //  r.tp(parity[ans]);
+        // r.tp(parity[ans]);
         r.th(h);
 
         return ans;

@@ -54,6 +54,6 @@ public class CMP_R extends Command {
         r.th((((a & x0F) - (b & x0F)) & T4h) != 0);
         r.tp(((a ^ b) & (a ^ ans) & x80) != 0);
         // TODO #01 вероятно тут надо пофиксить
-        //  r.tp(parity[ans]);
+        // r.tp(parity[ans]);
     }
 }
