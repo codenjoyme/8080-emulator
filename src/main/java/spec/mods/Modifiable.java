@@ -1,15 +1,16 @@
 package spec.mods;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Modifiable<T> {
 
-    protected List<CpuMod<T>> mods = new LinkedList<>();
+    protected List<CpuMod<T>> mods = new ArrayList<>(10);
 
     public void on(String event) {
-        mods.forEach(mod ->
-                mod.on(event, (T) this));
+        for (int i = 0; i < mods.size(); i++) {
+            mods.get(i).on(event, (T) this);
+        }
     }
 
     public void modAdd(CpuMod<T> mod) {
