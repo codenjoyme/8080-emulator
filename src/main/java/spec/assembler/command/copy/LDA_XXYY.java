@@ -17,8 +17,8 @@ public class LDA_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "LDA (....)";
+    public String operands() {
+        return "4";
     }
 
     @Override

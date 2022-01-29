@@ -92,7 +92,18 @@ public abstract class Command {
 
     public abstract List<Integer> codes();
 
-    public abstract String pattern();
+    public String operands() {
+        return "";
+    }
+
+    private String name() {
+        return getClass().getSimpleName().split("_")[0];
+    }
+
+    public String pattern() {
+        return name() + " "
+                + operands().replace("4", "(....)");
+    }
 
     public int size() {
         return 1;
@@ -175,7 +186,4 @@ public abstract class Command {
         return r.reg16(rindex(command), _PSW);
     }
 
-    private String name() {
-        return pattern().split(" ")[0];
-    }
 }
