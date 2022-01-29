@@ -22,11 +22,6 @@ public class LDAX_RR extends Command {
     }
 
     @Override
-    public String operands() {
-        return "BD";
-    }
-
-    @Override
     public int ticks() {
         return 7;
     }

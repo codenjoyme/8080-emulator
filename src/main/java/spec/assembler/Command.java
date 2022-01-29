@@ -96,6 +96,9 @@ public abstract class Command {
         if (size() == 3) {
             return "4";
         }
+        if (registers() == BD) {
+            return "BD";
+        }
         return "";
     }
 
