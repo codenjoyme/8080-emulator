@@ -34,9 +34,9 @@ public class Hardware {
         keyLogger = createKeyLogger();
         ports = createIoPorts();
         record = createKeyRecord();
+        video = createVideo(screenWidth, screenHeight);
         data = createHardwareData();
         cpu = createCpu(1.6); // runs at 3.5Mhz;
-        video = createVideo(screenWidth, screenHeight);
         roms = createRomLoader();
     }
 

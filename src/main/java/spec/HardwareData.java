@@ -4,10 +4,14 @@ import static spec.Constants.*;
 
 public abstract class HardwareData implements Data {
 
-    private Hardware hard;
+    private Memory memory;
+    private IOPorts ports;
+    private Video video;
 
     public HardwareData(Hardware hard) {
-        this.hard = hard;
+        memory = hard.memory();
+        ports = hard.ports();
+        video = hard.video();
     }
 
     @Override
@@ -19,9 +23,9 @@ public abstract class HardwareData implements Data {
     @Override
     public int read8(int addr) {
         if (PORTS.includes(addr)) {
-            return hard.ports().read8(addr);
+            return ports.read8(addr);
         }
-        return hard.memory().read8(addr);
+        return memory.read8(addr);
     }
 
     @Override
@@ -32,17 +36,16 @@ public abstract class HardwareData implements Data {
         }
 
         if (SCREEN.includes(addr)) {
-            if (hard.memory().read8(addr) != bite) {
+            if (memory.read8(addr) != bite) {
                 // было изменение ячейки видеопамяти
-                hard.video().plot(addr, bite);
+                video.plot(addr, bite);
             }
         }
 
         if (PORTS.includes(addr)) {
-            hard.ports().write8(addr, bite);
+            ports.write8(addr, bite);
         }
 
-        hard.memory().write8(addr, bite);
+        memory.write8(addr, bite);
     }
-
 }
