@@ -27,7 +27,6 @@ import spec.assembler.command.system.NOP;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 import static spec.WordMath.hex;
@@ -180,9 +179,9 @@ public class Assembler {
             if (command == null) continue;
             if (!command.name().equals(name)) continue;
 
-            Optional<String> result = command.parse(asmCommand);
-            if (result.isPresent()) {
-                return result.get();
+            String result = command.parse(asmCommand);
+            if (result != null) {
+                return result;
             }
         }
         throw new UnsupportedOperationException("Unsupported command: " + asmCommand);

@@ -2,22 +2,20 @@ package spec.assembler;
 
 import spec.Reg;
 import spec.Registry;
-import spec.WordMath;
 import spec.assembler.command.system.NONE;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.stream.Collectors.joining;
 import static spec.Registry._PSW;
 import static spec.Registry._SP;
 import static spec.WordMath.*;
 
 public abstract class Command {
-
-    protected int[] indexes = new int[0x100];
-    private String pattern;
 
     public static final List<String> BD =
             Arrays.asList("B", "D");
@@ -31,6 +29,9 @@ public abstract class Command {
     public static final List<String> BCDEHLMA =
             Arrays.asList("B", "C", "D", "E", "H", "L", "M", "A");
 
+    protected int[] indexes = new int[0x100];
+    private Pattern regexp;
+    private String pattern;
     private String name;
 
     public Command() {
@@ -39,7 +40,8 @@ public abstract class Command {
         validate(codes.size(), registers.size());
         initIndexes(codes, registers);
         name = getClass().getSimpleName().split("_")[0];
-        pattern = name + replace(operands());
+        pattern = name() + replace(operands());
+        regexp = Pattern.compile(pattern());
     }
 
     public void initIndexes(List<Integer> codes, List<String> registers) {
@@ -62,19 +64,16 @@ public abstract class Command {
                         codes, registers, this.getClass().getSimpleName()));
     }
 
-    public Optional<String> parse(String command) {
-        Pattern pattern = Pattern.compile(pattern());
-        Matcher matcher = pattern.matcher(command);
+    public String parse(String command) {
+        Matcher matcher = regexp.matcher(command);
         if (!matcher.matches()) {
-            return Optional.empty();
+            return null;
         }
         String[] params = new String[matcher.groupCount()];
         for (int i = 0; i < params.length; i++) {
             params[i] = matcher.group(i + 1);
         }
-        return Optional.of(code(params).stream()
-                .map(WordMath::hex8)
-                .collect(joining(" ")));
+        return hex(code(params));
     }
 
     public List<Integer> code(String... params) {
