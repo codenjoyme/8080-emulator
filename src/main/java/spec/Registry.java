@@ -200,28 +200,27 @@ public class Registry extends Modifiable<Cpu> {
     public static boolean _SP = true;
     public static boolean _PSW = !_SP;
 
+    public final Reg[] reg16SP = new Reg[]{
+            rBC, rDE, rHL, rSP
+    };
+
+    public final Reg[] reg16PSW = new Reg[]{
+            rBC, rDE, rHL, rPSW
+    };
+
+    public final Reg[] reg8PSW = new Reg[]{
+            rBC.hi(), rBC.lo(),
+            rDE.hi(), rDE.lo(),
+            rHL.hi(), rHL.lo(),
+            rM, rA
+    };
+
     public Reg reg16(int index, boolean spOrPsw) {
-        switch (index) {
-            case 0: return rBC;
-            case 1: return rDE;
-            case 2: return rHL;
-            case 3: return (spOrPsw == _SP) ? rSP : rPSW;
-        }
-        throw new UnsupportedOperationException("Unexpected registry index: " + index);
+        return spOrPsw ? reg16SP[index] : reg16PSW[index];
     }
 
     public Reg reg8(int index) {
-        switch (index) {
-            case 0: return rBC.hi();
-            case 1: return rBC.lo();
-            case 2: return rDE.hi();
-            case 3: return rDE.lo();
-            case 4: return rHL.hi();
-            case 5: return rHL.lo();
-            case 6: return rM;
-            case 7: return rA;
-        }
-        throw new UnsupportedOperationException("Unexpected registry index: " + index);
+        return reg8PSW[index];
     }
 
     public int AF() {
