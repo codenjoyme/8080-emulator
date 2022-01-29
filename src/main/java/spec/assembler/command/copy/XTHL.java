@@ -17,11 +17,6 @@ public class XTHL extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "XTHL";
-    }
-
-    @Override
     public int ticks() {
         return 19;
     }

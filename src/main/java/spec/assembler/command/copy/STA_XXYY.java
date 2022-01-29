@@ -17,8 +17,8 @@ public class STA_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "STA (....)";
+    public String operands() {
+        return "4";
     }
 
     @Override

@@ -17,8 +17,8 @@ public class SHLD_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "SHLD (....)";
+    public String operands() {
+        return "4";
     }
 
     @Override

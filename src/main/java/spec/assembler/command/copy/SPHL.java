@@ -17,11 +17,6 @@ public class SPHL extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "SPHL";
-    }
-
-    @Override
     public int ticks() {
         return 6;
     }

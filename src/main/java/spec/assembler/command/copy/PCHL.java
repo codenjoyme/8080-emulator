@@ -17,11 +17,6 @@ public class PCHL extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "PCHL";
-    }
-
-    @Override
     public int ticks() {
         return 4;
     }

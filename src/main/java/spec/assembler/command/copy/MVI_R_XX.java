@@ -22,8 +22,8 @@ public class MVI_R_XX extends Command  {
     }
 
     @Override
-    public String pattern() {
-        return "MVI (B|C|D|E|H|L|M|A),(..)";
+    public String operands() {
+        return "R,2";
     }
 
     @Override

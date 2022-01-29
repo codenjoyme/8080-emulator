@@ -51,8 +51,8 @@ public class MOV_R_R extends Command  {
     }
 
     @Override
-    public String pattern() {
-        return "MOV (B|C|D|E|H|L|M|A),(B|C|D|E|H|L|M|A)";
+    public String operands() {
+        return "R,R";
     }
 
     @Override

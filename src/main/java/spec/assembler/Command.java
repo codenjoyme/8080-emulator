@@ -102,7 +102,13 @@ public abstract class Command {
 
     public String pattern() {
         return name() + " "
-                + operands().replace("4", "(....)");
+                + operands()
+                        .replace("4", "(....)")
+                        .replace("2", "(..)")
+                        .replace("RR", "(B|D|H|SP)")
+                        .replace("R", "(B|C|D|E|H|L|M|A)")
+                        .replace("BD", "(B|D)");
+
     }
 
     public int size() {

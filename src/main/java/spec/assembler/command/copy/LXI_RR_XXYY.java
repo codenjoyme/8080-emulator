@@ -22,8 +22,8 @@ public class LXI_RR_XXYY extends Command  {
     }
 
     @Override
-    public String pattern() {
-        return "LXI (B|D|H|SP),(....)";
+    public String operands() {
+        return "RR,4";
     }
 
     @Override

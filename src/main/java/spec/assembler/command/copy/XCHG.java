@@ -17,11 +17,6 @@ public class XCHG extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "XCHG";
-    }
-
-    @Override
     public int ticks() {
         return 4;
     }

@@ -22,8 +22,8 @@ public class STAX_RR extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "STAX (B|D)";
+    public String operands() {
+        return "BD";
     }
 
     @Override

@@ -17,8 +17,8 @@ public class LHLD_XXYY extends Command {
     }
 
     @Override
-    public String pattern() {
-        return "LHLD (....)";
+    public String operands() {
+        return "4";
     }
 
     @Override
