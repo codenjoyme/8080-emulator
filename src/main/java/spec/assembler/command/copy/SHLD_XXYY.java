@@ -8,7 +8,8 @@ import java.util.List;
 
 public class SHLD_XXYY extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(0x22);
+    private static final List<Integer> CODES = Arrays.asList(
+            0x22);
 
     @Override
     public List<Integer> codes() {

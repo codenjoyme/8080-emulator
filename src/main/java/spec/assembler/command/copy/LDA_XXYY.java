@@ -8,7 +8,8 @@ import java.util.List;
 
 public class LDA_XXYY extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(0x3A);
+    private static final List<Integer> CODES = Arrays.asList(
+            0x3A);
 
     @Override
     public List<Integer> codes() {

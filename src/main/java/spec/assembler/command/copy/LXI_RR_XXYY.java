@@ -8,7 +8,8 @@ import java.util.List;
 
 public class LXI_RR_XXYY extends Command  {
 
-    private static final List<Integer> CODES = Arrays.asList(0x01, 0x11, 0x21, 0x31);
+    private static final List<Integer> CODES = Arrays.asList(
+            0x01, 0x11, 0x21, 0x31);
 
     @Override
     public List<Integer> codes() {

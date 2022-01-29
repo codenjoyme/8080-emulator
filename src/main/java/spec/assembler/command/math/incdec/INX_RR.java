@@ -11,7 +11,8 @@ import static spec.WordMath.inc16;
 
 public class INX_RR extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(0x03, 0x13, 0x23, 0x33);
+    private static final List<Integer> CODES = Arrays.asList(
+            0x03, 0x13, 0x23, 0x33);
 
     @Override
     public List<Integer> codes() {

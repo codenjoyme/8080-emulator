@@ -8,7 +8,8 @@ import java.util.List;
 
 public class LDAX_RR extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(0x0A, 0x1A);
+    private static final List<Integer> CODES = Arrays.asList(
+            0x0A, 0x1A);
 
     @Override
     public List<Integer> codes() {

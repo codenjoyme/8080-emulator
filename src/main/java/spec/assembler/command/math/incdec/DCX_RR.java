@@ -12,7 +12,8 @@ import static spec.WordMath.dec16;
 // TODO test me
 public class DCX_RR extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(0x0B, 0x1B, 0x2B, 0x3B);
+    private static final List<Integer> CODES = Arrays.asList(
+            0x0B, 0x1B, 0x2B, 0x3B);
 
     @Override
     public List<Integer> codes() {
