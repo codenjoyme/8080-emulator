@@ -203,9 +203,9 @@ public class Application {
                 // TODO как сделать рабочим в веб версии?
                 if (base.toString().startsWith("http")) return;
 
+                String folder = lik ? "lik" : "specialist";
                 openFileDialog(file -> hard.loadData(file.getAbsolutePath()),
-                        // TODO а что если спецалист, а не лик?
-                        base.getFile() + "/lik/apps",
+                        base.getFile() + "/" + folder + "/apps",
                         "Data file",
                         "com", "rom", "rks", "bin");
             }
