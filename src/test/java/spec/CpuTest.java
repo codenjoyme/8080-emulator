@@ -1754,14 +1754,14 @@ public class CpuTest extends AbstractTest {
         asrtCpu("BC:  1122\n" +
                 "DE:  3344\n" +
                 "HL:  5566\n" +
-                "AF:  FF92\n" +
+                "AF:  FF86\n" +
                 "SP:  7889\n" +
                 "PC:  0015\n" +
                 "B,C: 11 22\n" +
                 "D,E: 33 44\n" +
                 "H,L: 55 66\n" +
                 "M:   FF\n" +
-                "A,F: FF 92\n" +
+                "A,F: FF 86\n" +
                 "     76543210 76543210\n" +
                 "SP:  01111000 10001001\n" +
                 "PC:  00000000 00010101\n" +
@@ -1775,11 +1775,11 @@ public class CpuTest extends AbstractTest {
                 "M:   11111111\n" +
                 "A:   11111111\n" +
                 "     sz0h0p1c\n" +
-                "F:   10010010\n" +
+                "F:   10000110\n" +
                 "ts:  true\n" +
                 "tz:  false\n" +
-                "th:  true\n" +
-                "tp:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
                 "tc:  false\n");
     }
 

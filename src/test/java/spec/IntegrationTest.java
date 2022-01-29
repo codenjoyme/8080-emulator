@@ -266,14 +266,14 @@ public class IntegrationTest extends AbstractTest {
         asrtCpu("BC:  0E80\n" +
                 "DE:  8F60\n" +
                 "HL:  C196\n" +
-                "AF:  FF02\n" +
+                "AF:  FF12\n" +
                 "SP:  8F30\n" +
                 "PC:  C191\n" +
                 "B,C: 0E 80\n" +
                 "D,E: 8F 60\n" +
                 "H,L: C1 96\n" +
                 "M:   C5\n" +
-                "A,F: FF 02\n" +
+                "A,F: FF 12\n" +
                 "     76543210 76543210\n" +
                 "SP:  10001111 00110000\n" +
                 "PC:  11000001 10010001\n" +
@@ -287,10 +287,10 @@ public class IntegrationTest extends AbstractTest {
                 "M:   11000101\n" +
                 "A:   11111111\n" +
                 "     sz0h0p1c\n" +
-                "F:   00000010\n" +
+                "F:   00010010\n" +
                 "ts:  false\n" +
                 "tz:  false\n" +
-                "th:  false\n" +
+                "th:  true\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
 
@@ -494,31 +494,31 @@ public class IntegrationTest extends AbstractTest {
                 "023B  04        INR B       (0)  BC:780A  DE:0000  HL:0054  AF:7802  SP:06BE  PC:023B   \n" +
                 "023C  48        MOV C,B     (0)  BC:790A  DE:0000  HL:0054  AF:7802  SP:06BE  PC:023C   \n" +
                 "023D  0D        DCR C       (0)  BC:7979  DE:0000  HL:0054  AF:7802  SP:06BE  PC:023D   \n" +
-                "023E  51        MOV D,C     (0)  BC:7978  DE:0000  HL:0054  AF:7802  SP:06BE  PC:023E   \n" +
-                "023F  5A        MOV E,D     (0)  BC:7978  DE:7800  HL:0054  AF:7802  SP:06BE  PC:023F   \n" +
-                "0240  63        MOV H,E     (0)  BC:7978  DE:7878  HL:0054  AF:7802  SP:06BE  PC:0240   \n" +
-                "0241  6C        MOV L,H     (0)  BC:7978  DE:7878  HL:7854  AF:7802  SP:06BE  PC:0241   \n" +
-                "0242  7D        MOV A,L     (0)  BC:7978  DE:7878  HL:7878  AF:7802  SP:06BE  PC:0242   \n" +
-                "0243  3D        DCR A       (0)  BC:7978  DE:7878  HL:7878  AF:7802  SP:06BE  PC:0243   \n" +
-                "0244  4F        MOV C,A     (0)  BC:7978  DE:7878  HL:7878  AF:7702  SP:06BE  PC:0244   \n" +
-                "0245  59        MOV E,C     (0)  BC:7977  DE:7878  HL:7878  AF:7702  SP:06BE  PC:0245   \n" +
-                "0246  6B        MOV L,E     (0)  BC:7977  DE:7877  HL:7878  AF:7702  SP:06BE  PC:0246   \n" +
-                "0247  45        MOV B,L     (0)  BC:7977  DE:7877  HL:7877  AF:7702  SP:06BE  PC:0247   \n" +
-                "0248  50        MOV D,B     (0)  BC:7777  DE:7877  HL:7877  AF:7702  SP:06BE  PC:0248   \n" +
-                "0249  62        MOV H,D     (0)  BC:7777  DE:7777  HL:7877  AF:7702  SP:06BE  PC:0249   \n" +
-                "024A  7C        MOV A,H     (0)  BC:7777  DE:7777  HL:7777  AF:7702  SP:06BE  PC:024A   \n" +
-                "024B  57        MOV D,A     (0)  BC:7777  DE:7777  HL:7777  AF:7702  SP:06BE  PC:024B   \n" +
-                "024C  14        INR D       (0)  BC:7777  DE:7777  HL:7777  AF:7702  SP:06BE  PC:024C   \n" +
+                "023E  51        MOV D,C     (0)  BC:7978  DE:0000  HL:0054  AF:7816  SP:06BE  PC:023E   \n" +
+                "023F  5A        MOV E,D     (0)  BC:7978  DE:7800  HL:0054  AF:7816  SP:06BE  PC:023F   \n" +
+                "0240  63        MOV H,E     (0)  BC:7978  DE:7878  HL:0054  AF:7816  SP:06BE  PC:0240   \n" +
+                "0241  6C        MOV L,H     (0)  BC:7978  DE:7878  HL:7854  AF:7816  SP:06BE  PC:0241   \n" +
+                "0242  7D        MOV A,L     (0)  BC:7978  DE:7878  HL:7878  AF:7816  SP:06BE  PC:0242   \n" +
+                "0243  3D        DCR A       (0)  BC:7978  DE:7878  HL:7878  AF:7816  SP:06BE  PC:0243   \n" +
+                "0244  4F        MOV C,A     (0)  BC:7978  DE:7878  HL:7878  AF:7716  SP:06BE  PC:0244   \n" +
+                "0245  59        MOV E,C     (0)  BC:7977  DE:7878  HL:7878  AF:7716  SP:06BE  PC:0245   \n" +
+                "0246  6B        MOV L,E     (0)  BC:7977  DE:7877  HL:7878  AF:7716  SP:06BE  PC:0246   \n" +
+                "0247  45        MOV B,L     (0)  BC:7977  DE:7877  HL:7877  AF:7716  SP:06BE  PC:0247   \n" +
+                "0248  50        MOV D,B     (0)  BC:7777  DE:7877  HL:7877  AF:7716  SP:06BE  PC:0248   \n" +
+                "0249  62        MOV H,D     (0)  BC:7777  DE:7777  HL:7877  AF:7716  SP:06BE  PC:0249   \n" +
+                "024A  7C        MOV A,H     (0)  BC:7777  DE:7777  HL:7777  AF:7716  SP:06BE  PC:024A   \n" +
+                "024B  57        MOV D,A     (0)  BC:7777  DE:7777  HL:7777  AF:7716  SP:06BE  PC:024B   \n" +
+                "024C  14        INR D       (0)  BC:7777  DE:7777  HL:7777  AF:7716  SP:06BE  PC:024C   \n" +
                 "024D  6A        MOV L,D     (0)  BC:7777  DE:7877  HL:7777  AF:7702  SP:06BE  PC:024D   \n" +
                 "024E  4D        MOV C,L     (0)  BC:7777  DE:7877  HL:7778  AF:7702  SP:06BE  PC:024E   \n" +
                 "024F  0C        INR C       (0)  BC:7778  DE:7877  HL:7778  AF:7702  SP:06BE  PC:024F   \n" +
                 "0250  61        MOV H,C     (0)  BC:7779  DE:7877  HL:7778  AF:7702  SP:06BE  PC:0250   \n" +
                 "0251  44        MOV B,H     (0)  BC:7779  DE:7877  HL:7978  AF:7702  SP:06BE  PC:0251   \n" +
                 "0252  05        DCR B       (0)  BC:7979  DE:7877  HL:7978  AF:7702  SP:06BE  PC:0252   \n" +
-                "0253  58        MOV E,B     (0)  BC:7879  DE:7877  HL:7978  AF:7702  SP:06BE  PC:0253   \n" +
-                "0254  7B        MOV A,E     (0)  BC:7879  DE:7878  HL:7978  AF:7702  SP:06BE  PC:0254   \n" +
-                "0255  5F        MOV E,A     (0)  BC:7879  DE:7878  HL:7978  AF:7802  SP:06BE  PC:0255   \n" +
-                "0256  1C        INR E       (0)  BC:7879  DE:7878  HL:7978  AF:7802  SP:06BE  PC:0256   \n" +
+                "0253  58        MOV E,B     (0)  BC:7879  DE:7877  HL:7978  AF:7716  SP:06BE  PC:0253   \n" +
+                "0254  7B        MOV A,E     (0)  BC:7879  DE:7878  HL:7978  AF:7716  SP:06BE  PC:0254   \n" +
+                "0255  5F        MOV E,A     (0)  BC:7879  DE:7878  HL:7978  AF:7816  SP:06BE  PC:0255   \n" +
+                "0256  1C        INR E       (0)  BC:7879  DE:7878  HL:7978  AF:7816  SP:06BE  PC:0256   \n" +
                 "0257  43        MOV B,E     (0)  BC:7879  DE:7879  HL:7978  AF:7802  SP:06BE  PC:0257   \n" +
                 "0258  60        MOV H,B     (0)  BC:7979  DE:7879  HL:7978  AF:7802  SP:06BE  PC:0258   \n" +
                 "0259  24        INR H       (0)  BC:7979  DE:7879  HL:7978  AF:7802  SP:06BE  PC:0259   \n" +
@@ -526,26 +526,26 @@ public class IntegrationTest extends AbstractTest {
                 "025B  69        MOV L,C     (0)  BC:797A  DE:7879  HL:7A78  AF:7802  SP:06BE  PC:025B   \n" +
                 "025C  55        MOV D,L     (0)  BC:797A  DE:7879  HL:7A7A  AF:7802  SP:06BE  PC:025C   \n" +
                 "025D  15        DCR D       (0)  BC:797A  DE:7A79  HL:7A7A  AF:7802  SP:06BE  PC:025D   \n" +
-                "025E  7A        MOV A,D     (0)  BC:797A  DE:7979  HL:7A7A  AF:7802  SP:06BE  PC:025E   \n" +
-                "025F  67        MOV H,A     (0)  BC:797A  DE:7979  HL:7A7A  AF:7902  SP:06BE  PC:025F   \n" +
-                "0260  25        DCR H       (0)  BC:797A  DE:7979  HL:797A  AF:7902  SP:06BE  PC:0260   \n" +
-                "0261  54        MOV D,H     (0)  BC:797A  DE:7979  HL:787A  AF:7902  SP:06BE  PC:0261   \n" +
-                "0262  42        MOV B,D     (0)  BC:797A  DE:7879  HL:787A  AF:7902  SP:06BE  PC:0262   \n" +
-                "0263  68        MOV L,B     (0)  BC:787A  DE:7879  HL:787A  AF:7902  SP:06BE  PC:0263   \n" +
-                "0264  2C        INR L       (0)  BC:787A  DE:7879  HL:7878  AF:7902  SP:06BE  PC:0264   \n" +
+                "025E  7A        MOV A,D     (0)  BC:797A  DE:7979  HL:7A7A  AF:7812  SP:06BE  PC:025E   \n" +
+                "025F  67        MOV H,A     (0)  BC:797A  DE:7979  HL:7A7A  AF:7912  SP:06BE  PC:025F   \n" +
+                "0260  25        DCR H       (0)  BC:797A  DE:7979  HL:797A  AF:7912  SP:06BE  PC:0260   \n" +
+                "0261  54        MOV D,H     (0)  BC:797A  DE:7979  HL:787A  AF:7916  SP:06BE  PC:0261   \n" +
+                "0262  42        MOV B,D     (0)  BC:797A  DE:7879  HL:787A  AF:7916  SP:06BE  PC:0262   \n" +
+                "0263  68        MOV L,B     (0)  BC:787A  DE:7879  HL:787A  AF:7916  SP:06BE  PC:0263   \n" +
+                "0264  2C        INR L       (0)  BC:787A  DE:7879  HL:7878  AF:7916  SP:06BE  PC:0264   \n" +
                 "0265  5D        MOV E,L     (0)  BC:787A  DE:7879  HL:7879  AF:7902  SP:06BE  PC:0265   \n" +
                 "0266  1D        DCR E       (0)  BC:787A  DE:7879  HL:7879  AF:7902  SP:06BE  PC:0266   \n" +
-                "0267  4B        MOV C,E     (0)  BC:787A  DE:7878  HL:7879  AF:7902  SP:06BE  PC:0267   \n" +
-                "0268  79        MOV A,C     (0)  BC:7878  DE:7878  HL:7879  AF:7902  SP:06BE  PC:0268   \n" +
-                "0269  6F        MOV L,A     (0)  BC:7878  DE:7878  HL:7879  AF:7802  SP:06BE  PC:0269   \n" +
-                "026A  2D        DCR L       (0)  BC:7878  DE:7878  HL:7878  AF:7802  SP:06BE  PC:026A   \n" +
-                "026B  65        MOV H,L     (0)  BC:7878  DE:7878  HL:7877  AF:7802  SP:06BE  PC:026B   \n" +
-                "026C  5C        MOV E,H     (0)  BC:7878  DE:7878  HL:7777  AF:7802  SP:06BE  PC:026C   \n" +
-                "026D  53        MOV D,E     (0)  BC:7878  DE:7877  HL:7777  AF:7802  SP:06BE  PC:026D   \n" +
-                "026E  4A        MOV C,D     (0)  BC:7878  DE:7777  HL:7777  AF:7802  SP:06BE  PC:026E   \n" +
-                "026F  41        MOV B,C     (0)  BC:7877  DE:7777  HL:7777  AF:7802  SP:06BE  PC:026F   \n" +
-                "0270  78        MOV A,B     (0)  BC:7777  DE:7777  HL:7777  AF:7802  SP:06BE  PC:0270   \n" +
-                "0271  FE 77     CPI 77      (0)  BC:7777  DE:7777  HL:7777  AF:7702  SP:06BE  PC:0271   \n" +
+                "0267  4B        MOV C,E     (0)  BC:787A  DE:7878  HL:7879  AF:7916  SP:06BE  PC:0267   \n" +
+                "0268  79        MOV A,C     (0)  BC:7878  DE:7878  HL:7879  AF:7916  SP:06BE  PC:0268   \n" +
+                "0269  6F        MOV L,A     (0)  BC:7878  DE:7878  HL:7879  AF:7816  SP:06BE  PC:0269   \n" +
+                "026A  2D        DCR L       (0)  BC:7878  DE:7878  HL:7878  AF:7816  SP:06BE  PC:026A   \n" +
+                "026B  65        MOV H,L     (0)  BC:7878  DE:7878  HL:7877  AF:7816  SP:06BE  PC:026B   \n" +
+                "026C  5C        MOV E,H     (0)  BC:7878  DE:7878  HL:7777  AF:7816  SP:06BE  PC:026C   \n" +
+                "026D  53        MOV D,E     (0)  BC:7878  DE:7877  HL:7777  AF:7816  SP:06BE  PC:026D   \n" +
+                "026E  4A        MOV C,D     (0)  BC:7878  DE:7777  HL:7777  AF:7816  SP:06BE  PC:026E   \n" +
+                "026F  41        MOV B,C     (0)  BC:7877  DE:7777  HL:7777  AF:7816  SP:06BE  PC:026F   \n" +
+                "0270  78        MOV A,B     (0)  BC:7777  DE:7777  HL:7777  AF:7816  SP:06BE  PC:0270   \n" +
+                "0271  FE 77     CPI 77      (0)  BC:7777  DE:7777  HL:7777  AF:7716  SP:06BE  PC:0271   \n" +
                 "0273  C4 A3 05  CNZ 05A3    (0)  BC:7777  DE:7777  HL:7777  AF:7746  SP:06BE  PC:0273   \n" +
                 "0276  AF        XRA A       (0)  BC:7777  DE:7777  HL:7777  AF:7746  SP:06BE  PC:0276   \n" +
                 "0277  06 01     MVI B,01    (0)  BC:7777  DE:7777  HL:7777  AF:0046  SP:06BE  PC:0277   \n" +
@@ -748,7 +748,7 @@ public class IntegrationTest extends AbstractTest {
                 "03B6  36 55     MVI M,55    (0)  BC:4445  DE:4647  HL:05C0  AF:0546  SP:06BE  PC:03B6   \n" +
                 "03B8  34        INR M       (0)  BC:4445  DE:4647  HL:05C0  AF:0546  SP:06BE  PC:03B8   \n" +
                 "03B9  35        DCR M       (0)  BC:4445  DE:4647  HL:05C0  AF:0502  SP:06BE  PC:03B9   \n" +
-                "03BA  86        ADD M       (0)  BC:4445  DE:4647  HL:05C0  AF:0502  SP:06BE  PC:03BA   \n" +
+                "03BA  86        ADD M       (0)  BC:4445  DE:4647  HL:05C0  AF:0516  SP:06BE  PC:03BA   \n" +
                 "03BB  FE 5A     CPI 5A      (0)  BC:4445  DE:4647  HL:05C0  AF:5A06  SP:06BE  PC:03BB   \n" +
                 "03BD  C4 A3 05  CNZ 05A3    (0)  BC:4445  DE:4647  HL:05C0  AF:5A46  SP:06BE  PC:03BD   \n" +
                 "03C0  01 FF 12  LXI B,12FF  (0)  BC:4445  DE:4647  HL:05C0  AF:5A46  SP:06BE  PC:03C0   \n" +
@@ -1408,14 +1408,14 @@ public class IntegrationTest extends AbstractTest {
         asrtCpu("BC:  EC34\n" +
                 "DE:  0C0A\n" +
                 "HL:  0014\n" +
-                "AF:  6A82\n" +
+                "AF:  6A92\n" +
                 "SP:  0500\n" +
                 "PC:  0316\n" +
                 "B,C: EC 34\n" +
                 "D,E: 0C 0A\n" +
                 "H,L: 00 14\n" +
                 "M:   00\n" +
-                "A,F: 6A 82\n" +
+                "A,F: 6A 92\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000101 00000000\n" +
                 "PC:  00000011 00010110\n" +
@@ -1429,10 +1429,10 @@ public class IntegrationTest extends AbstractTest {
                 "M:   00000000\n" +
                 "A:   01101010\n" +
                 "     sz0h0p1c\n" +
-                "F:   10000010\n" +
+                "F:   10010010\n" +
                 "ts:  true\n" +
                 "tz:  false\n" +
-                "th:  false\n" +
+                "th:  true\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
 
