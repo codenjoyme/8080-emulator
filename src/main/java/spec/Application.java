@@ -101,7 +101,6 @@ public class Application {
         // Обновлять экран каждое прерывание по умолчанию
         if ((interrupt % refreshRate) == 0) {
             hard.video().screenPaint();
-            graphic.repaint();
         }
 
         if (!fullSpeed) {
@@ -137,7 +136,7 @@ public class Application {
         }
     }
 
-    private void sleep(long millis) {
+    public static void sleep(long millis) {
         try {
             Thread.sleep(millis);
         } catch (Exception ignored) {
@@ -260,13 +259,12 @@ public class Application {
         }
     }
 
-    private void refreshWholeScreen() {
+    public void refreshWholeScreen() {
         graphic.repaint();
     }
 
     private void loadSnapshot(URL base, String snapshot) {
         hard.loadSnapshot(base, snapshot);
-        refreshWholeScreen();
     }
 
     public void start() {
@@ -275,6 +273,5 @@ public class Application {
 
     private void reset() {
         hard.reset();
-        refreshWholeScreen();
     }
 }

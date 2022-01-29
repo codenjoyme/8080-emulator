@@ -10,6 +10,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static spec.Application.sleep;
 import static spec.Constants.*;
 
 public class Main extends JFrame implements KeyListener {
@@ -38,6 +39,18 @@ public class Main extends JFrame implements KeyListener {
         Logger.debug("Base url: " + baseUrl);
         app = new Application(this, baseUrl);
         app.gotFocus();
+
+        new SwingWorker<Void, Integer>() {
+            @Override
+            protected Void doInBackground() {
+                while (true) {
+                    app.refreshWholeScreen();
+                    sleep(1000 / 30);
+                    System.out.print("+");
+                }
+            }
+        }.execute();
+
         app.start();
     }
 
