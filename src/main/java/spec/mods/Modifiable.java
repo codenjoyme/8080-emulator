@@ -25,7 +25,7 @@ public abstract class Modifiable<T> {
     }
 
     public void reset() {
-        mods.entrySet().forEach(entry ->
-                entry.getValue().reset());
+        mods.forEach((key, value) ->
+                value.reset());
     }
 }
