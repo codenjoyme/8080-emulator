@@ -121,25 +121,25 @@ byto3:  ADI     030h
 ;
 test:   MVI     a,1        ; test simple compares and z/nz jumps
         CPI     2
-        JZ      0
+        JZ      error
         CPI     1
-        JNZ     0
+        JNZ     error
         JMP     lab0
         HLT                ; emergency exit
         DB      0FFh
 
 lab0:   CALL    lab2       ; does a simple call work?
-lab1:   JMP     0          ; fail
+lab1:   JMP     error      ; fail
 
 lab2:   POP     h          ; check return address
         MOV     A,H
         CPI     (lab1 / 0FFh)
         JZ      lab3
-        JMP     0
+        JMP     error
 lab3:   MOV     A,L
         CPI     (lab1 & 0FFh)
         JZ      lab4
-        JMP     0
+        JMP     error
 
 ; test presence and uniqueness of all machine registers
 ; (except ir)
@@ -156,76 +156,76 @@ lab4:   LXI     SP,regs1
 
         LDA     regs2 + 0/2
         CPI     2
-        JNZ     0
+        JNZ     error
         LDA     regs2 + 2/2
         CPI     4
-        JNZ     0
+        JNZ     error
         LDA     regs2 + 4/2
         CPI     6
-        JNZ     0
+        JNZ     error
         LDA     regs2 + 6/2
         CPI     8
-        JNZ     0
+        JNZ     error
         LDA     regs2 + 8/2
         CPI     10
-        JNZ     0
+        JNZ     error
         LDA     regs2 + 10/2
         CPI     12
-        JNZ     0
+        JNZ     error
         LDA     regs2 + 12/2
         CPI     14
-        JNZ     0
+        JNZ     error
         LDA     regs2 + 14/2
         CPI     16
-        JNZ     0
+        JNZ     error
 
 ; test access to memory via (hl)
         LXI     H,hlval
         MOV     A,M
         CPI     0A5h
-        JNZ     0
+        JNZ     error
         LXI     H,hlval+1
         MOV     A,M
         CPI     03Ch
-        JNZ     0
+        JNZ     error
 
 ; test unconditional return
         LXI     SP,stack
         LXI     H,reta
         PUSH    H
         RET
-        JMP     0
+        JMP     error
 
 ; test instructions needed for hex output
 reta:   MVI     A,0FFh
         ANI     0Fh
         CPI     0Fh
-        JNZ     0
+        JNZ     error
         MVI     A,05Ah
         ANI     0Fh
         CPI     0Ah
-        JNZ     0
+        JNZ     error
         RRC
         CPI     05h
-        JNZ     0
+        JNZ     error
         RRC
         CPI     82h
-        JNZ     0
+        JNZ     error
         RRC
         CPI     41h
-        JNZ     0
+        JNZ     error
         RRC
         CPI     0A0h
-        JNZ     0
+        JNZ     error
         LXI     H,01234h
         PUSH    H
         POP     B
         MOV     A,B
         CPI     12h
-        JNZ     0
+        JNZ     error
         MOV     A,C
         CPI     34h
-        JNZ     0
+        JNZ     error
 
 ; from now on we can report errors by displaying an address
 
