@@ -15,13 +15,13 @@
         DB      (start & 0FFh), (start / 0FFh)      ; START ADDR IN MEMORY
         DB      ((end - 1) & 0FFh), ((end - 1) / 0FFh)  ; END ADDR IN MEMORY
 
-start:  LXI     H, mssg
+start:  LXI     H,hello
         CALL    msg
         MVI     A,0FEh
         CALL    byteo      ; SHOW EXIT CODE
         JMP     wboot      ; exit
 ;
-mssg:   DB      00Dh, 00Ah, 'HELLO WORLD', 00Dh, 00Ah, '$'
+hello:  DB      00Dh, 00Ah, 'HELLO WORLD', 00Dh, 00Ah, '$'
 ;
 bdos    EQU     0C037h     ; LIK PRINT CHAR PROCEDURE
 wboot:  JMP     0C800h     ; LIK MONITOR-1M
@@ -32,13 +32,13 @@ msg:    PUSH    B          ; Push state
         PUSH    D
         PUSH    H
         PUSH    PSW
-        MOV     A,M        ; Get data
+msgs:   MOV     A,M        ; Get data
         CPI     '$'        ; End?
         JZ      msge       ; Exit
         MOV     A,M
         CALL    pchar      ; Output
         INX     H          ; Next
-        JMP     msg        ; Do all
+        JMP     msgs       ; Do all
 msge:   POP     PSW        ; Pop state
         POP     H
         POP     D

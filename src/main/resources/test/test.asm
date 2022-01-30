@@ -27,24 +27,33 @@
         DB      (start & 0FFh), (start / 0FFh)      ; START ADDR IN MEMORY
         DB      ((end - 1) & 0FFh), ((end - 1) / 0FFh)  ; END ADDR IN MEMORY
 
-start:  LXI     H, mssg
+start:  LXI     H,hello
         CALL    msg
-        JMP     cpu        ; JUMP TO 8080 CPU DIAGNOSTIC
+        JMP     test       ; JUMP TO 8080 CPU DIAGNOSTIC
 ;
-mssg:   DB      00Dh, 00Ah, "MICROCOSM ASSOCIATES 8080/8085 CPU DIAGNOSTIC VERSION 1.0  (C) 1980", 00Dh, 00Ah, '$'
+hello:  DB      00Dh, 00Ah, "MICROCOSM ASSOCIATES 8080/8085 CPU DIAGNOSTIC VERSION 1.0  (C) 1980", 00Dh, 00Ah, '$'
 ;
 bdos    EQU     0C037h     ; LIK PRINT CHAR PROCEDURE
 wboot:  JMP     0C800h     ; LIK MONITOR-1M
 ;
 ;MESSAGE OUTPUT ROUTINE
 ;
-msg:    MOV     A,M        ; Get data
+msg:    PUSH    B          ; Push state
+        PUSH    D
+        PUSH    H
+        PUSH    PSW
+msgs:   MOV     A,M        ; Get data
         CPI     '$'        ; End?
-        RZ
+        JZ      msge       ; Exit
         MOV     A,M
         CALL    pchar      ; Output
         INX     H          ; Next
-        JMP     msg        ; Do all
+        JMP     msgs       ; Do all
+msge:   POP     PSW        ; Pop state
+        POP     H
+        POP     D
+        POP     B
+        RET
 ;
 ;CHARACTER OUTPUT ROUTINE
 ;
@@ -62,12 +71,21 @@ pchar:  PUSH    B
 ;
 ;HEX BYTE OUTPUT ROUTINE
 ;
-byteo:  PUSH    PSW
+byteo:  PUSH    B
+        PUSH    D
+        PUSH    H
+        PUSH    PSW
+        PUSH    PSW
         CALL    byto1
         CALL    pchar
         POP     PSW
         CALL    byto2
-        JMP     pchar
+        CALL    pchar
+        POP     PSW
+        POP     H
+        POP     D
+        POP     B
+        RET
 byto1:  RRC
         RRC
         RRC
@@ -102,7 +120,7 @@ ngcpu:  DB      00Dh, 00Ah, " CPU HAS FAILED!    ERROR EXIT=$"
 ;
 ;TEST JUMP INSTRUCTIONS AND FLAGS
 ;
-cpu:    LXI     SP,STACK    ;SET THE STACK POINTER
+test:   LXI     SP,STACK    ;SET THE STACK POINTER
         ANI     0       ;INITIALIZE A REG. AND CLEAR ALL FLAGS
         JZ      j010    ;TEST "JZ"
         CALL    cpuer
