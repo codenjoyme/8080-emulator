@@ -45,7 +45,7 @@ public class Main extends JFrame implements KeyListener {
             protected Void doInBackground() {
                 while (true) {
                     app.refreshWholeScreen();
-                    sleep(1000 / 30);
+                    sleep(1000 / 60);
                     System.out.print("+");
                 }
             }

@@ -18,7 +18,7 @@ public class PngVideo implements Video.Drawer {
 
     public PngVideo(Video video, Memory memory) {
         this.video = video;
-        video.drawer(this::draw);
+        video.drawer(this);
         this.memory = memory;
         image = new BufferedImage(video.width(), video.height(), TYPE_INT_ARGB);
         graphics = image.getGraphics();
@@ -27,6 +27,11 @@ public class PngVideo implements Video.Drawer {
     @Override
     public void draw(int x, int y, Image pattern) {
         graphics.drawImage(pattern, x, y, null);
+    }
+
+    @Override
+    public void done() {
+        // do nothing
     }
 
     public void drawToFile(File file) {

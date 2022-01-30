@@ -48,9 +48,10 @@ public class Video {
         clean();
     }
 
-    @FunctionalInterface
     public interface Drawer {
         void draw(int x, int y, Image pattern);
+
+        void done();
     }
 
     public static class Pattern {
@@ -111,6 +112,9 @@ public class Video {
                 }
                 changes[px][y] = null;
             }
+        }
+        if (drawer != null) {
+            drawer.done();
         }
     }
 
