@@ -18,32 +18,32 @@
         DB 04h, 00h     ; RKS HEADER/START MEMORY
         DB 0C4h, 05h    ; RKS HEADER/END MEMORY
         
-        LXI     H, LOLZ
-        CALL    MSG
-        JMP     CPU     ;JUMP TO 8080 CPU DIAGNOSTIC
+        LXI     H, lolz
+        CALL    msg
+        JMP     cpu     ;JUMP TO 8080 CPU DIAGNOSTIC
 ;
-LOLZ:   DB      0dh, 0ah, "MICROCOSM ASSOCIATES 8080/8085 CPU DIAGNOSTIC VERSION 1.0  (C) 1980", 0dh, 0ah, 24h
+lolz:   DB      0dh, 0ah, "MICROCOSM ASSOCIATES 8080/8085 CPU DIAGNOSTIC VERSION 1.0  (C) 1980", 0dh, 0ah, 24h
 ;
-BDOS    EQU     0C037H  ;LIK PRINT CHAR PROCEDURE
-WBOOT:  JMP     0C800H  ;LIK MONITOR-1M
+bdos    EQU     0C037H  ;LIK PRINT CHAR PROCEDURE
+wboot:  JMP     0C800H  ;LIK MONITOR-1M
 ;
 ;MESSAGE OUTPUT ROUTINE
 ;
-MSG:    MOV     A,M     ; Get data
+msg:    MOV     A,M     ; Get data
         CPI     '$'     ; End?
         RZ
-        CALL    PCHAR   ; Output
+        CALL    pchar   ; Output
         INX     H       ; Next
-        JMP     MSG     ; Do all
+        JMP     msg     ; Do all
 ;
 ;
 ;CHARACTER OUTPUT ROUTINE
 ;
-PCHAR:  PUSH    PSW
+pchar:  PUSH    PSW
         PUSH    D
         PUSH    H
         MOV     C,M
-        CALL    BDOS
+        CALL    bdos
         POP     H
         POP     D
         POP     PSW
@@ -51,23 +51,23 @@ PCHAR:  PUSH    PSW
 ;
 ;
 ;
-BYTEO:  PUSH    PSW
-        CALL    BYTO1
+byteo:  PUSH    PSW
+        CALL    byto1
         MOV     M,A
-        CALL    PCHAR
+        CALL    pchar
         POP     PSW
-        CALL    BYTO2
+        CALL    byto2
         MOV     M,A
-        JMP     PCHAR
-BYTO1:  RRC
+        JMP     pchar
+byto1:  RRC
         RRC
         RRC
         RRC
-BYTO2:  ANI     0FH
+byto2:  ANI     0FH
         CPI     0AH
-        JM      BYTO3
+        JM      byto3
         ADI     7
-BYTO3:  ADI     30H
+byto3:  ADI     30H
         RET
 ;
 ;
@@ -76,10 +76,10 @@ BYTO3:  ADI     30H
 ;           MESSAGE TABLE FOR OPERATIONAL CPU TEST
 ;************************************************************
 ;
-OKCPU:  DB      0DH,0AH
+okcpu:  DB      0DH,0AH
         DB      "CPU IS OPERATIONAL$"
 ;
-NGCPU:  DB      0DH,0AH
+ngcpu:  DB      0DH,0AH
         DB      " CPU HAS FAILED!    ERROR EXIT=$"
 ;
 ;
@@ -97,171 +97,171 @@ NGCPU:  DB      0DH,0AH
 ;
 ;TEST JUMP INSTRUCTIONS AND FLAGS
 ;
-CPU:    LXI     SP,STACK    ;SET THE STACK POINTER
+cpu:    LXI     SP,STACK    ;SET THE STACK POINTER
         ANI     0       ;INITIALIZE A REG. AND CLEAR ALL FLAGS
-        JZ      J010    ;TEST "JZ"
-        CALL    CPUER
-J010:   JNC     J020    ;TEST "JNC"
-        CALL    CPUER
-J020:   JPE     J030    ;TEST "JPE"
-        CALL    CPUER
-J030:   JP      J040    ;TEST "JP"
-        CALL    CPUER
-J040:   JNZ     J050    ;TEST "JNZ"
-        JC      J050    ;TEST "JC"
-        JPO     J050    ;TEST "JPO"
-        JM      J050    ;TEST "JM"
-        JMP     J060    ;TEST "JMP" (IT'S A LITTLE LATE,BUT WHAT THE HELL!
-J050:   CALL    CPUER
-J060:   ADI     6       ;A=6,C=0,P=1,S=0,Z=0
-        JNZ     J070    ;TEST "JNZ"
-        CALL    CPUER
-J070:   JC      J080    ;TEST "JC"
-        JPO     J080    ;TEST "JPO"
-        JP      J090    ;TEST "JP"
-J080:   CALL    CPUER
-J090:   ADI     070H    ;A=76H,C=0,P=0,S=0,Z=0
-        JPO     J100    ;TEST "JPO"
-        CALL    CPUER
-J100:   JM      J110    ;TEST "JM"
-        JZ      J110    ;TEST "JZ"
-        JNC     J120    ;TEST "JNC"
-J110:   CALL    CPUER
-J120:   ADI     081H    ;A=F7H,C=0,P=0,S=1,Z=0
-        JM      J130    ;TEST "JM"
-        CALL    CPUER
-J130:   JZ      J140    ;TEST "JZ"
-        JC      J140    ;TEST "JC"
-        JPO     J150    ;TEST "JPO"
-J140:   CALL    CPUER
-J150:   ADI     0FEH    ;A=F5H,C=1,P=1,S=1,Z=0
-        JC      J160    ;TEST "JC"
-        CALL    CPUER
-J160:   JZ      J170    ;TEST "JZ"
-        JPO     J170    ;TEST "JPO"
-        JM      AIMM    ;TEST "JM"
-J170:   CALL    CPUER
+        JZ      j010    ;TEST "JZ"
+        CALL    cpuer
+j010:   JNC     j020    ;TEST "JNC"
+        CALL    cpuer
+j020:   JPE     j030    ;TEST "JPE"
+        CALL    cpuer
+j030:   JP      j040    ;TEST "JP"
+        CALL    cpuer
+j040:   JNZ     j050    ;TEST "JNZ"
+        JC      j050    ;TEST "JC"
+        JPO     j050    ;TEST "JPO"
+        JM      j050    ;TEST "JM"
+        JMP     j060    ;TEST "JMP" (IT'S A LITTLE LATE,BUT WHAT THE HELL!
+j050:   CALL    cpuer
+j060:   ADI     6       ;A=6,C=0,P=1,S=0,Z=0
+        JNZ     j070    ;TEST "JNZ"
+        CALL    cpuer
+j070:   JC      j080    ;TEST "JC"
+        JPO     j080    ;TEST "JPO"
+        JP      j090    ;TEST "JP"
+j080:   CALL    cpuer
+j090:   ADI     070H    ;A=76H,C=0,P=0,S=0,Z=0
+        JPO     j100    ;TEST "JPO"
+        CALL    cpuer
+j100:   JM      j110    ;TEST "JM"
+        JZ      j110    ;TEST "JZ"
+        JNC     j120    ;TEST "JNC"
+j110:   CALL    cpuer
+j120:   ADI     081H    ;A=F7H,C=0,P=0,S=1,Z=0
+        JM      j130    ;TEST "JM"
+        CALL    cpuer
+j130:   JZ      j140    ;TEST "JZ"
+        JC      j140    ;TEST "JC"
+        JPO     j150    ;TEST "JPO"
+j140:   CALL    cpuer
+j150:   ADI     0FEH    ;A=F5H,C=1,P=1,S=1,Z=0
+        JC      j160    ;TEST "JC"
+        CALL    cpuer
+j160:   JZ      j170    ;TEST "JZ"
+        JPO     j170    ;TEST "JPO"
+        JM      aimm    ;TEST "JM"
+j170:   CALL    cpuer
 ;
 ;
 ;
 ;TEST ACCUMULATOR IMMEDIATE INSTRUCTIONS
 ;
-AIMM:   CPI     0       ;A=F5H,C=0,Z=0
-        JC      CPIE    ;TEST "CPI" FOR RE-SET CARRY
-        JZ      CPIE    ;TEST "CPI" FOR RE-SET ZERO
+aimm:   CPI     0       ;A=F5H,C=0,Z=0
+        JC      cpie    ;TEST "CPI" FOR RE-SET CARRY
+        JZ      cpie    ;TEST "CPI" FOR RE-SET ZERO
         CPI     0F5H    ;A=F5H,C=0,Z=1
-        JC      CPIE    ;TEST "CPI" FOR RE-SET CARRY ("ADI")
-        JNZ     CPIE    ;TEST "CPI" FOR RE-SET ZERO
+        JC      cpie    ;TEST "CPI" FOR RE-SET CARRY ("ADI")
+        JNZ     cpie    ;TEST "CPI" FOR RE-SET ZERO
         CPI     0FFH    ;A=F5H,C=1,Z=0
-        JZ      CPIE    ;TEST "CPI" FOR RE-SET ZERO
-        JC      ACII    ;TEST "CPI" FOR SET CARRY
-CPIE:   CALL    CPUER
-ACII:   ACI     00AH    ;A=F5H+0AH+CARRY(1)=0,C=1
+        JZ      cpie    ;TEST "CPI" FOR RE-SET ZERO
+        JC      acii    ;TEST "CPI" FOR SET CARRY
+cpie:   CALL    cpuer
+acii:   ACI     00AH    ;A=F5H+0AH+CARRY(1)=0,C=1
         ACI     00AH    ;A=0+0AH+CARRY(0)=0BH,C=0
         CPI     00BH
-        JZ      SUII    ;TEST "ACI"
-        CALL    CPUER
-SUII:   SUI     00CH    ;A=FFH,C=0
+        JZ      suii    ;TEST "ACI"
+        CALL    cpuer
+suii:   SUI     00CH    ;A=FFH,C=0
         SUI     00FH    ;A=F0H,C=1
         CPI     0F0H
-        JZ      SBII    ;TEST "SUI"
-        CALL    CPUER
-SBII:   SBI     0F1H    ;A=F0H-0F1H-CARRY(0)=FFH,C=1
+        JZ      sbii    ;TEST "SUI"
+        CALL    cpuer
+sbii:   SBI     0F1H    ;A=F0H-0F1H-CARRY(0)=FFH,C=1
         SBI     00EH    ;A=FFH-OEH-CARRY(1)=F0H,C=0
         CPI     0F0H
-        JZ      ANII    ;TEST "SBI"
-        CALL    CPUER
-ANII:   ANI     055H    ;A=F0H<AND>55H=50H,C=0,P=1,S=0,Z=0
+        JZ      anii    ;TEST "SBI"
+        CALL    cpuer
+anii:   ANI     055H    ;A=F0H<AND>55H=50H,C=0,P=1,S=0,Z=0
         CPI     050H
-        JZ      ORII    ;TEST "ANI"
-        CALL    CPUER
-ORII:   ORI     03AH    ;A=50H<OR>3AH=7AH,C=0,P=0,S=0,Z=0
+        JZ      orii    ;TEST "ANI"
+        CALL    cpuer
+orii:   ORI     03AH    ;A=50H<OR>3AH=7AH,C=0,P=0,S=0,Z=0
         CPI     07AH
-        JZ      XRII    ;TEST "ORI"
-        CALL    CPUER
-XRII:   XRI     00FH    ;A=7AH<XOR>0FH=75H,C=0,P=0,S=0,Z=0
+        JZ      xrii    ;TEST "ORI"
+        CALL    cpuer
+xrii:   XRI     00FH    ;A=7AH<XOR>0FH=75H,C=0,P=0,S=0,Z=0
         CPI     075H
-        JZ      C010    ;TEST "XRI"
-        CALL    CPUER
+        JZ      c010    ;TEST "XRI"
+        CALL    cpuer
 ;
 ;
 ;
 ;TEST CALLS AND RETURNS
 ;
-C010:   ANI     000H    ;A=0,C=0,P=1,S=0,Z=1
-        CC      CPUER   ;TEST "CC"
-        CPO     CPUER   ;TEST "CPO"
-        CM      CPUER   ;TEST "CM"
-        CNZ     CPUER   ;TEST "CNZ"
+c010:   ANI     000H    ;A=0,C=0,P=1,S=0,Z=1
+        CC      cpuer   ;TEST "CC"
+        CPO     cpuer   ;TEST "CPO"
+        CM      cpuer   ;TEST "CM"
+        CNZ     cpuer   ;TEST "CNZ"
         CPI     000H
-        JZ      C020    ;A=0,C=0,P=0,S=0,Z=1
-        CALL    CPUER
-C020:   SUI     077H    ;A=89H,C=1,P=0,S=1,Z=0
-        CNC     CPUER   ;TEST "CNC"
-        CPE     CPUER   ;TEST "CPE"
-        CP      CPUER   ;TEST "CP"
-        CZ      CPUER   ;TEST "CZ"
+        JZ      c020    ;A=0,C=0,P=0,S=0,Z=1
+        CALL    cpuer
+c020:   SUI     077H    ;A=89H,C=1,P=0,S=1,Z=0
+        CNC     cpuer   ;TEST "CNC"
+        CPE     cpuer   ;TEST "CPE"
+        CP      cpuer   ;TEST "CP"
+        CZ      cpuer   ;TEST "CZ"
         CPI     089H
-        JZ      C030    ;TEST FOR "CALLS" TAKING BRANCH
-        CALL    CPUER
-C030:   ANI     0FFH    ;SET FLAGS BACK!
-        CPO     CPOI    ;TEST "CPO"
+        JZ      c030    ;TEST FOR "CALLS" TAKING BRANCH
+        CALL    cpuer
+c030:   ANI     0FFH    ;SET FLAGS BACK!
+        CPO     cpoi    ;TEST "CPO"
         CPI     0D9H
-        JZ      MOVI    ;TEST "CALL" SEQUENCE SUCCESS
-        CALL    CPUER
-CPOI:   RPE             ;TEST "RPE"
+        JZ      movi    ;TEST "CALL" SEQUENCE SUCCESS
+        CALL    cpuer
+cpoi:   RPE             ;TEST "RPE"
         ADI     010H    ;A=99H,C=0,P=0,S=1,Z=0
-        CPE     CPEI    ;TEST "CPE"
+        CPE     cpei    ;TEST "CPE"
         ADI     002H    ;A=D9H,C=0,P=0,S=1,Z=0
         RPO             ;TEST "RPO"
-        CALL    CPUER
-CPEI:   RPO             ;TEST "RPO"
+        CALL    cpuer
+cpei:   RPO             ;TEST "RPO"
         ADI     020H    ;A=B9H,C=0,P=0,S=1,Z=0
-        CM      CMI     ;TEST "CM"
+        CM      cmi     ;TEST "CM"
         ADI     004H    ;A=D7H,C=0,P=1,S=1,Z=0
         RPE             ;TEST "RPE"
-        CALL    CPUER
-CMI:    RP              ;TEST "RP"
+        CALL    cpuer
+cmi:    RP              ;TEST "RP"
         ADI     080H    ;A=39H,C=1,P=1,S=0,Z=0
-        CP      TCPI    ;TEST "CP"
+        CP      tcpi    ;TEST "CP"
         ADI     080H    ;A=D3H,C=0,P=0,S=1,Z=0
         RM              ;TEST "RM"
-        CALL    CPUER
-TCPI:   RM              ;TEST "RM"
+        CALL    cpuer
+tcpi:   RM              ;TEST "RM"
         ADI     040H    ;A=79H,C=0,P=0,S=0,Z=0
-        CNC     CNCI    ;TEST "CNC"
+        CNC     cnci    ;TEST "CNC"
         ADI     040H    ;A=53H,C=0,P=1,S=0,Z=0
         RP              ;TEST "RP"
-        CALL    CPUER
-CNCI:   RC              ;TEST "RC"
+        CALL    cpuer
+cnci:   RC              ;TEST "RC"
         ADI     08FH    ;A=08H,C=1,P=0,S=0,Z=0
-        CC      CCI     ;TEST "CC"
+        CC      cci     ;TEST "CC"
         SUI     002H    ;A=13H,C=0,P=0,S=0,Z=0
         RNC             ;TEST "RNC"
-        CALL    CPUER
-CCI:    RNC             ;TEST "RNC"
+        CALL    cpuer
+cci:    RNC             ;TEST "RNC"
         ADI     0F7H    ;A=FFH,C=0,P=1,S=1,Z=0
-        CNZ     CNZI    ;TEST "CNZ"
+        CNZ     cnzi    ;TEST "CNZ"
         ADI     0FEH    ;A=15H,C=1,P=0,S=0,Z=0
         RC              ;TEST "RC"
-        CALL    CPUER
-CNZI:   RZ              ;TEST "RZ"
+        CALL    cpuer
+cnzi:   RZ              ;TEST "RZ"
         ADI     001H    ;A=00H,C=1,P=1,S=0,Z=1
-        CZ      CZI     ;TEST "CZ"
+        CZ      czi     ;TEST "CZ"
         ADI     0D0H    ;A=17H,C=1,P=1,S=0,Z=0
         RNZ             ;TEST "RNZ"
-        CALL    CPUER
-CZI:    RNZ             ;TEST "RNZ"
+        CALL    cpuer
+czi:    RNZ             ;TEST "RNZ"
         ADI     047H    ;A=47H,C=0,P=1,S=0,Z=0
         CPI     047H    ;A=47H,C=0,P=1,S=0,Z=1
         RZ              ;TEST "RZ"
-        CALL    CPUER
+        CALL    cpuer
 ;
 ;
 ;
 ;TEST "MOV","INR",AND "DCR" INSTRUCTIONS
 ;
-MOVI:   MVI     A,077H
+movi:   MVI     A,077H
         INR     A
         MOV     B,A
         INR     B
@@ -319,7 +319,7 @@ MOVI:   MVI     A,077H
         MOV     B,C
         MOV     A,B
         CPI     077H
-        CNZ     CPUER    ;TEST "MOV" A,B,C,D,E,H,L,A
+        CNZ     cpuer    ;TEST "MOV" A,B,C,D,E,H,L,A
 ;
 ;
 ;
@@ -340,7 +340,7 @@ MOVI:   MVI     A,077H
         ADD     L
         ADD     A
         CPI     0F0H
-        CNZ     CPUER    ;TEST "ADD" B,C,D,E,H,L,A
+        CNZ     cpuer    ;TEST "ADD" B,C,D,E,H,L,A
         SUB     B
         SUB     C
         SUB     D
@@ -348,9 +348,9 @@ MOVI:   MVI     A,077H
         SUB     H
         SUB     L
         CPI     078H
-        CNZ     CPUER    ;TEST "SUB" B,C,D,E,H,L
+        CNZ     cpuer    ;TEST "SUB" B,C,D,E,H,L
         SUB     A
-        CNZ     CPUER    ;TEST "SUB" A
+        CNZ     cpuer    ;TEST "SUB" A
         MVI     A,080H
         ADD     A
         MVI     B,001H
@@ -380,7 +380,7 @@ MOVI:   MVI     A,077H
         ADD     B
         ADC     A
         CPI     037H
-        CNZ     CPUER    ;TEST "ADC" B,C,D,E,H,L,A
+        CNZ     cpuer    ;TEST "ADC" B,C,D,E,H,L,A
         MVI     A,080H
         ADD     A
         MVI     B,001H
@@ -397,12 +397,12 @@ MOVI:   MVI     A,077H
         ADD     B
         SBB     L
         CPI     0E0H
-        CNZ     CPUER    ;TEST "SBB" B,C,D,E,H,L
+        CNZ     cpuer    ;TEST "SBB" B,C,D,E,H,L
         MVI     A,080H
         ADD     A
         SBB     A
         CPI     0FFH
-        CNZ     CPUER    ;TEST "SBB" A
+        CNZ     cpuer    ;TEST "SBB" A
         MVI     A,0FFH
         MVI     B,0FEH
         MVI     C,0FCH
@@ -418,7 +418,7 @@ MOVI:   MVI     A,077H
         ANA     L
         ANA     A
         CPI     024H
-        CNZ     CPUER    ;TEST "ANA" B,C,D,E,H,L,A
+        CNZ     cpuer    ;TEST "ANA" B,C,D,E,H,L,A
         XRA     A
         MVI     B,001H
         MVI     C,002H
@@ -434,7 +434,7 @@ MOVI:   MVI     A,077H
         ORA     L
         ORA     A
         CPI     03FH
-        CNZ     CPUER    ;TEST "ORA" B,C,D,E,H,L,A
+        CNZ     cpuer    ;TEST "ORA" B,C,D,E,H,L,A
         MVI     A,000H
         MVI     H,08FH
         MVI     L,04FH
@@ -445,90 +445,90 @@ MOVI:   MVI     A,077H
         XRA     H
         XRA     L
         CPI     0CFH
-        CNZ     CPUER    ;TEST "XRA" B,C,D,E,H,L
+        CNZ     cpuer    ;TEST "XRA" B,C,D,E,H,L
         XRA     A
-        CNZ     CPUER    ;TEST "XRA" A
+        CNZ     cpuer    ;TEST "XRA" A
         MVI     B,044H
         MVI     C,045H
         MVI     D,046H
         MVI     E,047H
-        MVI     H,(TEMP0/0FFH)    ;HIGH BYTE OF TEST MEMORY LOCATION
-        MVI     L,(TEMP0&0FFH)    ;LOW BYTE OF TEST MEMORY LOCATION
+        MVI     H,(temp0/0FFH)    ;HIGH BYTE OF TEST MEMORY LOCATION
+        MVI     L,(temp0&0FFH)    ;LOW BYTE OF TEST MEMORY LOCATION
         MOV     M,B
         MVI     B,000H
         MOV     B,M
         MVI     A,044H
         CMP     B
-        CNZ     CPUER    ;TEST "MOV" M,B AND B,M
+        CNZ     cpuer    ;TEST "MOV" M,B AND B,M
         MOV     M,D
         MVI     D,000H
         MOV     D,M
         MVI     A,046H
         CMP     D
-        CNZ     CPUER    ;TEST "MOV" M,D AND D,M
+        CNZ     cpuer    ;TEST "MOV" M,D AND D,M
         MOV     M,E
         MVI     E,000H
         MOV     E,M
         MVI     A,047H
         CMP     E
-        CNZ     CPUER    ;TEST "MOV" M,E AND E,M
+        CNZ     cpuer    ;TEST "MOV" M,E AND E,M
         MOV     M,H
-        MVI     H,(TEMP0/0FFH)
-        MVI     L,(TEMP0&0FFH)
+        MVI     H,(temp0/0FFH)
+        MVI     L,(temp0&0FFH)
         MOV     H,M
-        MVI     A,(TEMP0/0FFH)
+        MVI     A,(temp0/0FFH)
         CMP     H
-        CNZ     CPUER    ;TEST "MOV" M,H AND H,M
+        CNZ     cpuer    ;TEST "MOV" M,H AND H,M
         MOV     M,L
-        MVI     H,(TEMP0/0FFH)
-        MVI     L,(TEMP0&0FFH)
+        MVI     H,(temp0/0FFH)
+        MVI     L,(temp0&0FFH)
         MOV     L,M
-        MVI     A,(TEMP0&0FFH)
+        MVI     A,(temp0&0FFH)
         CMP     L
-        CNZ     CPUER    ;TEST "MOV" M,L AND L,M
-        MVI     H,(TEMP0/0FFH)
-        MVI     L,(TEMP0&0FFH)
+        CNZ     cpuer    ;TEST "MOV" M,L AND L,M
+        MVI     H,(temp0/0FFH)
+        MVI     L,(temp0&0FFH)
         MVI     A,032H
         MOV     M,A
         CMP     M
-        CNZ     CPUER    ;TEST "MOV" M,A
+        CNZ     cpuer    ;TEST "MOV" M,A
         ADD     M
         CPI     064H
-        CNZ     CPUER    ;TEST "ADD" M
+        CNZ     cpuer    ;TEST "ADD" M
         XRA     A
         MOV     A,M
         CPI     032H
-        CNZ     CPUER    ;TEST "MOV" A,M
-        MVI     H,(TEMP0/0FFH)
-        MVI     L,(TEMP0&0FFH)
+        CNZ     cpuer    ;TEST "MOV" A,M
+        MVI     H,(temp0/0FFH)
+        MVI     L,(temp0&0FFH)
         MOV     A,M
         SUB     M
-        CNZ     CPUER    ;TEST "SUB" M
+        CNZ     cpuer    ;TEST "SUB" M
         MVI     A,080H
         ADD     A
         ADC     M
         CPI     033H
-        CNZ     CPUER    ;TEST "ADC" M
+        CNZ     cpuer    ;TEST "ADC" M
         MVI     A,080H
         ADD     A
         SBB     M
         CPI     0CDH
-        CNZ     CPUER    ;TEST "SBB" M
+        CNZ     cpuer    ;TEST "SBB" M
         ANA     M
-        CNZ     CPUER    ;TEST "ANA" M
+        CNZ     cpuer    ;TEST "ANA" M
         MVI     A,025H
         ORA     M
         CPI     037H
-        CNZ     CPUER    ;TEST "ORA" M
+        CNZ     cpuer    ;TEST "ORA" M
         XRA     M
         CPI     005H
-        CNZ     CPUER    ;TEST "XRA" M
+        CNZ     cpuer    ;TEST "XRA" M
         MVI     M,055H
         INR     M
         DCR     M
         ADD     M
         CPI     05AH
-        CNZ     CPUER    ;TEST "INR","DCR",AND "MVI" M
+        CNZ     cpuer    ;TEST "INR","DCR",AND "MVI" M
         LXI     B,12FFH
         LXI     D,12FFH
         LXI     H,12FFH
@@ -537,162 +537,162 @@ MOVI:   MVI     A,077H
         INX     H
         MVI     A,013H
         CMP     B
-        CNZ     CPUER    ;TEST "LXI" AND "INX" B
+        CNZ     cpuer    ;TEST "LXI" AND "INX" B
         CMP     D
-        CNZ     CPUER    ;TEST "LXI" AND "INX" D
+        CNZ     cpuer    ;TEST "LXI" AND "INX" D
         CMP     H
-        CNZ     CPUER    ;TEST "LXI" AND "INX" H
+        CNZ     cpuer    ;TEST "LXI" AND "INX" H
         MVI     A,000H
         CMP     C
-        CNZ     CPUER    ;TEST "LXI" AND "INX" B
+        CNZ     cpuer    ;TEST "LXI" AND "INX" B
         CMP     E
-        CNZ     CPUER    ;TEST "LXI" AND "INX" D
+        CNZ     cpuer    ;TEST "LXI" AND "INX" D
         CMP     L
-        CNZ     CPUER    ;TEST "LXI" AND "INX" H
+        CNZ     cpuer    ;TEST "LXI" AND "INX" H
         DCX     B
         DCX     D
         DCX     H
         MVI     A,012H
         CMP     B
-        CNZ     CPUER    ;TEST "DCX" B
+        CNZ     cpuer    ;TEST "DCX" B
         CMP     D
-        CNZ     CPUER    ;TEST "DCX" D
+        CNZ     cpuer    ;TEST "DCX" D
         CMP     H
-        CNZ     CPUER    ;TEST "DCX" H
+        CNZ     cpuer    ;TEST "DCX" H
         MVI     A,0FFH
         CMP     C
-        CNZ     CPUER    ;TEST "DCX" B
+        CNZ     cpuer    ;TEST "DCX" B
         CMP     E
-        CNZ     CPUER    ;TEST "DCX" D
+        CNZ     cpuer    ;TEST "DCX" D
         CMP     L
-        CNZ     CPUER    ;TEST "DCX" H
-        STA     TEMP0
+        CNZ     cpuer    ;TEST "DCX" H
+        STA     temp0
         XRA     A
-        LDA     TEMP0
+        LDA     temp0
         CPI     0FFH
-        CNZ     CPUER    ;TEST "LDA" AND "STA"
-        LHLD    TEMPP
-        SHLD    TEMP0
-        LDA     TEMPP
+        CNZ     cpuer    ;TEST "LDA" AND "STA"
+        LHLD    tempp
+        SHLD    temp0
+        LDA     tempp
         MOV     B,A
-        LDA     TEMP0
+        LDA     temp0
         CMP     B
-        CNZ     CPUER    ;TEST "LHLD" AND "SHLD"
-        LDA     TEMPP+1
+        CNZ     cpuer    ;TEST "LHLD" AND "SHLD"
+        LDA     tempp+1
         MOV     B,A
-        LDA     TEMP0+1
+        LDA     temp0+1
         CMP     B
-        CNZ     CPUER    ;TEST "LHLD" AND "SHLD"
+        CNZ     cpuer    ;TEST "LHLD" AND "SHLD"
         MVI     A,0AAH
-        STA     TEMP0
+        STA     temp0
         MOV     B,H
         MOV     C,L
         XRA     A
         LDAX    B
         CPI     0AAH
-        CNZ     CPUER    ;TEST "LDAX" B
+        CNZ     cpuer    ;TEST "LDAX" B
         INR     A
         STAX    B
-        LDA     TEMP0
+        LDA     temp0
         CPI     0ABH
-        CNZ     CPUER    ;TEST "STAX" B
+        CNZ     cpuer    ;TEST "STAX" B
         MVI     A,077H
-        STA     TEMP0
-        LHLD    TEMPP
+        STA     temp0
+        LHLD    tempp
         LXI     D,00000H
         XCHG
         XRA     A
         LDAX    D
         CPI     077H
-        CNZ     CPUER    ;TEST "LDAX" D AND "XCHG"
+        CNZ     cpuer    ;TEST "LDAX" D AND "XCHG"
         XRA     A
         ADD     H
         ADD     L
-        CNZ     CPUER    ;TEST "XCHG"
+        CNZ     cpuer    ;TEST "XCHG"
         MVI     A,0CCH
         STAX    D
-        LDA     TEMP0
+        LDA     temp0
         CPI     0CCH
         STAX    D
-        LDA     TEMP0
+        LDA     temp0
         CPI     0CCH
-        CNZ     CPUER    ;TEST "STAX" D
+        CNZ     cpuer    ;TEST "STAX" D
         LXI     H,07777H
         DAD     H
         MVI     A,0EEH
         CMP     H
-        CNZ     CPUER    ;TEST "DAD" H
+        CNZ     cpuer    ;TEST "DAD" H
         CMP     L
-        CNZ     CPUER    ;TEST "DAD" H
+        CNZ     cpuer    ;TEST "DAD" H
         LXI     H,05555H
         LXI     B,0FFFFH
         DAD     B
         MVI     A,055H
-        CNC     CPUER    ;TEST "DAD" B
+        CNC     cpuer    ;TEST "DAD" B
         CMP     H
-        CNZ     CPUER    ;TEST "DAD" B
+        CNZ     cpuer    ;TEST "DAD" B
         MVI     A,054H
         CMP     L
-        CNZ     CPUER    ;TEST "DAD" B
+        CNZ     cpuer    ;TEST "DAD" B
         LXI     H,0AAAAH
         LXI     D,03333H
         DAD     D
         MVI     A,0DDH
         CMP     H
-        CNZ     CPUER    ;TEST "DAD" D
+        CNZ     cpuer    ;TEST "DAD" D
         CMP     L
-        CNZ     CPUER    ;TEST "DAD" B
+        CNZ     cpuer    ;TEST "DAD" B
         STC
-        CNC     CPUER    ;TEST "STC"
+        CNC     cpuer    ;TEST "STC"
         CMC
-        CC      CPUER    ;TEST "CMC
+        CC      cpuer    ;TEST "CMC
         MVI     A,0AAH
         CMA
         CPI     055H
-        CNZ     CPUER    ;TEST "CMA"
+        CNZ     cpuer    ;TEST "CMA"
         ORA     A        ;RE-SET AUXILIARY CARRY
         DAA
         CPI     055H
-        CNZ     CPUER    ;TEST "DAA"
+        CNZ     cpuer    ;TEST "DAA"
         MVI     A,088H
         ADD     A
         DAA
         CPI     076H
-        CNZ     CPUER    ;TEST "DAA"
+        CNZ     cpuer    ;TEST "DAA"
         XRA     A
         MVI     A,0AAH
         DAA
-        CNC     CPUER    ;TEST "DAA"
+        CNC     cpuer    ;TEST "DAA"
         CPI     010H
-        CNZ     CPUER    ;TEST "DAA"
+        CNZ     cpuer    ;TEST "DAA"
         XRA     A
         MVI     A,09AH
         DAA
-        CNC     CPUER    ;TEST "DAA"
-        CNZ     CPUER    ;TEST "DAA"
+        CNC     cpuer    ;TEST "DAA"
+        CNZ     cpuer    ;TEST "DAA"
         STC
         MVI     A,042H
         RLC
-        CC      CPUER    ;TEST "RLC" FOR RE-SET CARRY
+        CC      cpuer    ;TEST "RLC" FOR RE-SET CARRY
         RLC
-        CNC     CPUER    ;TEST "RLC" FOR SET CARRY
+        CNC     cpuer    ;TEST "RLC" FOR SET CARRY
         CPI     009H
-        CNZ     CPUER    ;TEST "RLC" FOR ROTATION
+        CNZ     cpuer    ;TEST "RLC" FOR ROTATION
         RRC
-        CNC     CPUER    ;TEST "RRC" FOR SET CARRY
+        CNC     cpuer    ;TEST "RRC" FOR SET CARRY
         RRC
         CPI     042H
-        CNZ     CPUER    ;TEST "RRC" FOR ROTATION
+        CNZ     cpuer    ;TEST "RRC" FOR ROTATION
         RAL
         RAL
-        CNC     CPUER    ;TEST "RAL" FOR SET CARRY
+        CNC     cpuer    ;TEST "RAL" FOR SET CARRY
         CPI     008H
-        CNZ     CPUER    ;TEST "RAL" FOR ROTATION
+        CNZ     cpuer    ;TEST "RAL" FOR ROTATION
         RAR
         RAR
-        CC      CPUER    ;TEST "RAR" FOR RE-SET CARRY
+        CC      cpuer    ;TEST "RAR" FOR RE-SET CARRY
         CPI     002H
-        CNZ     CPUER    ;TEST "RAR" FOR ROTATION
+        CNZ     cpuer    ;TEST "RAR" FOR ROTATION
         LXI     B,01234H
         LXI     D,0AAAAH
         LXI     H,05555H
@@ -710,99 +710,99 @@ MOVI:   MVI     A,077H
         POP     H
         POP     D
         POP     B
-        CC      CPUER    ;TEST "PUSH PSW" AND "POP PSW"
-        CNZ     CPUER    ;TEST "PUSH PSW" AND "POP PSW"
-        CPO     CPUER    ;TEST "PUSH PSW" AND "POP PSW"
-        CM      CPUER    ;TEST "PUSH PSW" AND "POP PSW"
+        CC      cpuer    ;TEST "PUSH PSW" AND "POP PSW"
+        CNZ     cpuer    ;TEST "PUSH PSW" AND "POP PSW"
+        CPO     cpuer    ;TEST "PUSH PSW" AND "POP PSW"
+        CM      cpuer    ;TEST "PUSH PSW" AND "POP PSW"
         MVI     A,012H
         CMP     B
-        CNZ     CPUER    ;TEST "PUSH B" AND "POP B"
+        CNZ     cpuer    ;TEST "PUSH B" AND "POP B"
         MVI     A,034H
         CMP     C
-        CNZ     CPUER    ;TEST "PUSH B" AND "POP B"
+        CNZ     cpuer    ;TEST "PUSH B" AND "POP B"
         MVI     A,0AAH
         CMP     D
-        CNZ     CPUER    ;TEST "PUSH D" AND "POP D"
+        CNZ     cpuer    ;TEST "PUSH D" AND "POP D"
         CMP     E
-        CNZ     CPUER    ;TEST "PUSH D" AND "POP D"
+        CNZ     cpuer    ;TEST "PUSH D" AND "POP D"
         MVI     A,055H
         CMP     H
-        CNZ     CPUER    ;TEST "PUSH H" AND "POP H"
+        CNZ     cpuer    ;TEST "PUSH H" AND "POP H"
         CMP     L
-        CNZ     CPUER    ;TEST "PUSH H" AND "POP H"
+        CNZ     cpuer    ;TEST "PUSH H" AND "POP H"
         LXI     H,00000H
         DAD     SP
-        SHLD    SAVSTK   ;SAVE THE "OLD" STACK-POINTER!
-        LXI     SP,TEMP4
+        SHLD    savstk   ;SAVE THE "OLD" STACK-POINTER!
+        LXI     SP,temp4
         DCX     SP
         DCX     SP
         INX     SP
         DCX     SP
         MVI     A,055H
-        STA     TEMP2
+        STA     temp2
         CMA
-        STA     TEMP3
+        STA     temp3
         POP     B
         CMP     B
-        CNZ     CPUER    ;TEST "LXI","DAD","INX",AND "DCX" SP
+        CNZ     cpuer    ;TEST "LXI","DAD","INX",AND "DCX" SP
         CMA
         CMP     C
-        CNZ     CPUER    ;TEST "LXI","DAD","INX", AND "DCX" SP
-        LXI     H,TEMP4
+        CNZ     cpuer    ;TEST "LXI","DAD","INX", AND "DCX" SP
+        LXI     H,temp4
         SPHL
         LXI     H,07733H
         DCX     SP
         DCX     SP
         XTHL
-        LDA     TEMP3
+        LDA     temp3
         CPI     077H
-        CNZ     CPUER    ;TEST "SPHL" AND "XTHL"
-        LDA     TEMP2
+        CNZ     cpuer    ;TEST "SPHL" AND "XTHL"
+        LDA     temp2
         CPI     033H
-        CNZ     CPUER    ;TEST "SPHL" AND "XTHL"
+        CNZ     cpuer    ;TEST "SPHL" AND "XTHL"
         MVI     A,055H
         CMP     L
-        CNZ     CPUER    ;TEST "SPHL" AND "XTHL"
+        CNZ     cpuer    ;TEST "SPHL" AND "XTHL"
         CMA
         CMP     H
-        CNZ     CPUER    ;TEST "SPHL" AND "XTHL"
-        LHLD    SAVSTK   ;RESTORE THE "OLD" STACK-POINTER
+        CNZ     cpuer    ;TEST "SPHL" AND "XTHL"
+        LHLD    savstk   ;RESTORE THE "OLD" STACK-POINTER
         SPHL
-        LXI     H,CPUOK
+        LXI     H,cpuok
         PCHL             ;TEST "PCHL"
 ;
 ;
 ;
-CPUER:  LXI     H,NGCPU  ;OUTPUT "CPU HAS FAILED    ERROR EXIT=" TO CONSOLE
-        CALL    MSG
+cpuer:  LXI     H,ngcpu  ;OUTPUT "CPU HAS FAILED    ERROR EXIT=" TO CONSOLE
+        CALL    msg
         XTHL
         MOV     A,H
-        CALL    BYTEO    ;SHOW ERROR EXIT ADDRESS HIGH BYTE
+        CALL    byteo    ;SHOW ERROR EXIT ADDRESS HIGH BYTE
         MOV     A,L
-        CALL    BYTEO    ;SHOW ERROR EXIT ADDRESS LOW BYTE
-        JMP     WBOOT    ;EXIT TO CP/M WARM BOOT
+        CALL    byteo    ;SHOW ERROR EXIT ADDRESS LOW BYTE
+        JMP     wboot    ;EXIT TO CP/M WARM BOOT
 ;
 ;
 ;
-CPUOK:  LXI     H,OKCPU  ;OUTPUT "CPU IS OPERATIONAL" TO CONSOLE
-        CALL    MSG
-        JMP     WBOOT    ;EXIT TO CP/M WARM BOOT
+cpuok:  LXI     H,okcpu  ;OUTPUT "CPU IS OPERATIONAL" TO CONSOLE
+        CALL    msg
+        JMP     wboot    ;EXIT TO CP/M WARM BOOT
 ;
 ;
 ;
-TEMPP:  DW      TEMP0    ;POINTER USED TO TEST "LHLD","SHLD",
+tempp:  DW      temp0    ;POINTER USED TO TEST "LHLD","SHLD",
                          ; AND "LDAX" INSTRUCTIONS
 ;
-TEMP0:  DS      1        ;TEMPORARY STORAGE FOR CPU TEST MEMORY LOCATIONS
-TEMP1:  DS      1        ;TEMPORARY STORAGE FOR CPU TEST MEMORY LOCATIONS
-TEMP2   DS      1        ;TEMPORARY STORAGE FOR CPU TEST MEMORY LOCATIONS
-TEMP3:  DS      1        ;TEMPORARY STORAGE FOR CPU TEST MEMORY LOCATIONS
-TEMP4:  DS      1        ;TEMPORARY STORAGE FOR CPU TEST MEMORY LOCATIONS
-SAVSTK: DS      2        ;TEMPORARY STACK-POINTER STORAGE LOCATION
+temp0:  DS      1        ;TEMPORARY STORAGE FOR CPU TEST MEMORY LOCATIONS
+temp1:  DS      1        ;TEMPORARY STORAGE FOR CPU TEST MEMORY LOCATIONS
+temp2   DS      1        ;TEMPORARY STORAGE FOR CPU TEST MEMORY LOCATIONS
+temp3:  DS      1        ;TEMPORARY STORAGE FOR CPU TEST MEMORY LOCATIONS
+temp4:  DS      1        ;TEMPORARY STORAGE FOR CPU TEST MEMORY LOCATIONS
+savstk: DS      2        ;TEMPORARY STACK-POINTER STORAGE LOCATION
 ;
 ;
 ;
-STACK    EQU    TEMPP+256    ;DE-BUG STACK POINTER STORAGE AREA
+STACK   EQU    tempp+256    ;DE-BUG STACK POINTER STORAGE AREA
 ;
         END
 
