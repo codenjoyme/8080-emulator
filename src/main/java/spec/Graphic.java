@@ -26,6 +26,8 @@ public class Graphic implements Video.Drawer {
             @Override
             protected void paintComponent(Graphics graphics) {
                 super.paintComponent(graphics);
+                if (buffer == null) return;
+
                 refreshBorder();
                 Graphic.this.paint(graphics);
             }
