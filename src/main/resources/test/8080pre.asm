@@ -1,4 +1,5 @@
-; prelim.z80 - Preliminary Z80 tests
+;
+; Preliminary i8080 tests
 ; Copyright (C) 1994  Frank D. Cringle
 ;
 ; This program is free software; you can redistribute it and/or
@@ -14,19 +15,18 @@
 ; You should have received a copy of the GNU General Public License
 ; along with this program; if not, write to the Free Software
 ; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-
+;
 ; These tests have two goals.  To start with, we assume the worst and
 ; successively test the instructions needed to continue testing.
 ; Then we try to test all instructions which cannot be handled by
 ; zexlax - the crc-based instruction exerciser.
-
+;
 ; Initially errors are 'reported' by jumping to 0.  This should reboot
 ; cp/m, so if the program terminates without any output one of the
 ; early tests failed.  Later errors are reported by outputting an
 ; address via the bdos conout routine.  The address can be located in
 ; a listing of this program.
-
+;
 ; If the program runs to completion it displays a suitable message.
 
 ;******************************************************************************
@@ -39,12 +39,87 @@
 ;
 ;******************************************************************************
 
-        .PROJECT 8080PRE.COM
-        CPU 8080
-        ASEG
-        ORG     100h
+        .PROJECT 8080pre.rks
+        CPU     8080
+; This is such a crutch in order to generate a valid rks file.
+; This program will be launched from address 0004.
+        .ORG    00000h
+        DB      (start & 0FFh), (start / 0FFh)          ; START ADDR IN MEMORY
+        DB      ((end - 1) & 0FFh), ((end - 1) / 0FFh)  ; END ADDR IN MEMORY
 
-start:  MVI     a,1        ; test simple compares and z/nz jumps
+start:  LXI     H, mssg
+        CALL    msg
+        JMP     test       ; start test
+;
+mssg:   DB      00Dh, 00Ah, "8080 PRELIMINARY TESTS", 00Dh, 00Ah, '$'
+;
+bdos    EQU     0C037h     ; LIK PRINT CHAR PROCEDURE
+wboot:  JMP     0C800h     ; LIK MONITOR-1M
+;
+;MESSAGE OUTPUT ROUTINE
+;
+msg:    PUSH    B          ; Push state
+        PUSH    D
+        PUSH    H
+        PUSH    PSW
+msgs:   MOV     A,M        ; Get data
+        CPI     '$'        ; End?
+        JZ      msge       ; Exit
+        MOV     A,M
+        CALL    pchar      ; Output
+        INX     H          ; Next
+        JMP     msgs       ; Do all
+msge:   POP     PSW        ; Pop state
+        POP     H
+        POP     D
+        POP     B
+        RET
+;
+;CHARACTER OUTPUT ROUTINE
+;
+pchar:  PUSH    B
+        PUSH    D
+        PUSH    H
+        PUSH    PSW
+        MOV     C,A
+        CALL    bdos
+        POP     PSW
+        POP     H
+        POP     D
+        POP     B
+        RET
+;
+;HEX BYTE OUTPUT ROUTINE
+;
+byteo:  PUSH    B
+        PUSH    D
+        PUSH    H
+        PUSH    PSW
+        PUSH    PSW
+        CALL    byto1
+        CALL    pchar
+        POP     PSW
+        CALL    byto2
+        CALL    pchar
+        POP     PSW
+        POP     H
+        POP     D
+        POP     B
+        RET
+byto1:  RRC
+        RRC
+        RRC
+        RRC
+byto2:  ANI     00Fh
+        CPI     00Ah
+        JM      byto3
+        ADI     7
+byto3:  ADI     030h
+        RET
+;
+; Start testing
+;
+test:   MVI     a,1        ; test simple compares and z/nz jumps
         CPI     2
         JZ      0
         CPI     1
@@ -366,12 +441,11 @@ lab10:  INX    H
         CPI    0
         CNZ    error
 
-allok:  LXI    D,okmsg
-        MVI    C,9
-        CALL   5
-        JMP    0
+allok:  LXI    H,okmsg
+        CALL   msg
+        JMP    wboot
 
-okmsg:  DB    '8080 Preliminary tests complete$'
+okmsg:  DB    '8080 PRELIMINARY TESTS COMPLETE', 00Dh, 00Ah, '$'
 
 ; display address at top of stack and exit
 error:  POP    B
@@ -408,15 +482,13 @@ error:  POP    B
         CALL   conout
         MVI    A,10
         CALL   conout
-        JMP    0
+        JMP    wboot
 
 conout: PUSH   PSW
         PUSH   B
         PUSH   D
         PUSH   H
-        MVI    C,2
-        MOV    E,A
-        CALL   5
+        CALL   byteo
         POP    H
         POP    D
         POP    B
@@ -435,4 +507,4 @@ hextab: DB     '0123456789abcdef'
 
 stack   EQU    $
 
-        END
+end:

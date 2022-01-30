@@ -6,11 +6,11 @@
 Директивы ассемблера (не все работают в pretty-8080-assembler)
     https://pasmo.speccy.org/pasmodoc.html
 The test suite includes four tests at the moment
-    TEST.COM
+    test.rks
         8080/8085 CPU Diagnostic, version 1.0, by Microcosm Associates.
     CPUTEST.COM
         Diagnostics II, version 1.2, CPU test by Supersoft Associates.
-    8080PRE.COM
+    8080pre.rks
         8080/8085 CPU Exerciser by Ian Bartholomew and Frank Cringles.
         The preliminary test.
     8080EX1.COM
