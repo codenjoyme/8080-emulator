@@ -1,2 +1,17 @@
-Тест взят тут https://github.com/begoon/i8080-core
-Собирался тут https://svofski.github.io/pretty-8080-assembler/
+Тесты взяты тут
+    https://github.com/begoon/i8080-core
+Компилировались тут
+    https://svofski.github.io/pretty-8080-assembler/
+The test suite includes four tests at the moment
+    TEST.COM
+        8080/8085 CPU Diagnostic, version 1.0, by Microcosm Associates.
+    CPUTEST.COM
+        Diagnostics II, version 1.2, CPU test by Supersoft Associates.
+    8080PRE.COM
+        8080/8085 CPU Exerciser by Ian Bartholomew and Frank Cringles.
+        The preliminary test.
+    8080EX1.COM
+        The basic CPU Excerciser. This file is a copy of the vanilla file.
+    8080EXER.COM
+        Vanilla basic CPU Excerciser having CRCs from the real KR580VM80A
+        contributed by Alexander Timoshenko and Viacheslav Slavinsky.
