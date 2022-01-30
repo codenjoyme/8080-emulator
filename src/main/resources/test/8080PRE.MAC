@@ -50,17 +50,17 @@ start:  MVI     a,1        ; test simple compares and z/nz jumps
         JMP     lab0
         HLT                ; emergency exit
         DB      0FFh
-            
+
 lab0:   CALL    lab2       ; does a simple call work?
 lab1:   JMP     0          ; fail
-            
+
 lab2:   POP     h          ; check return address
         MOV     A,H
-        CPI     HIGH lab1
+        CPI     (lab1 / 0FFh)
         JZ      lab3
         JMP     0
 lab3:   MOV     A,L
-        CPI     LOW lab1
+        CPI     (lab1 & 0FFh)
         JZ      lab4
         JMP     0
 
@@ -85,7 +85,7 @@ v       DEFL    v+2
         JNZ     0
         ENDM
 
-; test access to memory via (hl)        
+; test access to memory via (hl)
         LXI     H,hlval
         MOV     A,M
         CPI     0A5h
@@ -95,7 +95,7 @@ v       DEFL    v+2
         CPI     03Ch
         JNZ     0
 
-; test unconditional return        
+; test unconditional return
         LXI     SP,stack
         LXI     H,reta
         PUSH    H
@@ -132,7 +132,7 @@ reta:   MVI     A,0FFh
         MOV     A,C
         CPI     34h
         JNZ     0
-        
+
 ; from now on we can report errors by displaying an address
 
 ; test conditional call, ret, jp, jr
@@ -156,7 +156,7 @@ lab2&pcond:
         LXI     H,&flag
         PUSH    H
         POP     PSW
-        r&pcond    
+        r&pcond
         CALL    error
 lab3&pcond:
         LXI     H,lab4&pcond
@@ -164,7 +164,7 @@ lab3&pcond:
         LXI     H,0D7h XOR &flag
         PUSH    H
         POP     PSW
-        r&ncond    
+        r&ncond
         CALL    error
 lab4&pcond:
         LXI     H,&flag
@@ -179,15 +179,15 @@ lab5&pcond:
         POP     PSW
         j&ncond lab6&pcond
         CALL    error
-lab6&pcond:        
+lab6&pcond:
         endm
-    
+
         tcond   1,c,nc,1
         tcond   4,pe,po,0
         tcond   040h,z,nz,1
         tcond   080h,m,p,0
 
-; test indirect jumps    
+; test indirect jumps
         LXI     H,lab7
         PCHL
         CALL    error
@@ -217,17 +217,17 @@ lab10:  INX    H
         MOV    A,l
         CPI    0
         CNZ    error
-        
+
 allok:  LXI    D,okmsg
         MVI    C,9
         CALL   5
         JMP    0
 
 okmsg:  DB    '8080 Preliminary tests complete$'
-        
+
 ; display address at top of stack and exit
 error:  POP    B
-        MVI    H,HIGH hextab
+        MVI    H,(hextab / 0FFh)
         MOV    A,B
         RRC
         RRC
@@ -274,7 +274,7 @@ conout: PUSH   PSW
         POP    B
         POP    PSW
         RET
-        
+
 v       DEFL   0
 regs1:  REPT   8
 v       DEFL   v+2
@@ -285,11 +285,11 @@ regs2:  DS     8,0
 
 hlval:  DB     0A5h,03Ch
 
-; skip to next page boundary    
+; skip to next page boundary
         ORG    (($+255)/256)*256
 hextab: DB     '0123456789abcdef'
         DS     240
 
 stack   EQU    $
-    
-        END    start
+
+        END
