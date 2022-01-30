@@ -60,7 +60,7 @@ public class Graphic implements Video.Drawer {
     public void done() {
         current++;
         buffer().drawImage(image(), 0, 0, null);
-        System.out.print("-");
+        repaint();
     }
 
     private Graphics buffer() {

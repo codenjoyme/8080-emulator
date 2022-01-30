@@ -5,8 +5,7 @@ import spec.platforms.Lik;
 import java.io.File;
 import java.net.URL;
 
-import static spec.Constants.RECORD_LOG_FILE;
-import static spec.Constants.x10000;
+import static spec.Constants.*;
 import static spec.KeyCode.END;
 import static spec.KeyCode.ENTER;
 import static spec.WordMath.hex16;
@@ -36,7 +35,7 @@ public class Hardware {
         record = createKeyRecord();
         video = createVideo(screenWidth, screenHeight);
         data = createHardwareData();
-        cpu = createCpu(1.6); // runs at 3.5Mhz;
+        cpu = createCpu(CPU_CLOCK);
         roms = createRomLoader();
     }
 

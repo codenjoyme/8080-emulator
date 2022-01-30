@@ -34,17 +34,14 @@ public class Cpu extends Registry {
         tick = 0;
     }
 
+    // TODO переименовать, это не tick а commandCount
     public int tick() {
         return tick;
     }
 
-    private boolean interruptNeeded(int tick) {
-        return tick >= 0;
-    }
-
     public void execute() {
         // закладываем время до прерывания
-        int ticks = -interrupt;
+        int ticks = 0;
 
         // цикл выборки/выполнения
         while (enabled) {
@@ -53,11 +50,13 @@ public class Cpu extends Registry {
             }
             tick++;
 
-            if (interruptNeeded(ticks)) {
+            if (ticks >= interrupt) {
+                while (ticks >= interrupt) {
+                    ticks -= interrupt;
+                }
                 if (!onInterrupt.get()) {
                     break;
                 }
-                ticks -= interrupt;
             }
 
             on("PC");
