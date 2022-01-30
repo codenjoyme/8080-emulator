@@ -1,4 +1,4 @@
-package spec;
+package spec.stuff;
 
 import org.junit.Assert;
 import org.junit.internal.runners.model.MultipleFailureException;

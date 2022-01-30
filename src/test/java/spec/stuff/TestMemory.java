@@ -1,4 +1,7 @@
-package spec;
+package spec.stuff;
+
+import spec.Memory;
+import spec.Range;
 
 public class TestMemory extends Memory {
 

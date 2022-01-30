@@ -2,6 +2,7 @@ package spec;
 
 import org.junit.Test;
 import spec.mods.StopWhen;
+import spec.stuff.AbstractTest;
 
 public class CpuTest extends AbstractTest {
 

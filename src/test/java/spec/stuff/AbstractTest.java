@@ -1,15 +1,16 @@
-package spec;
+package spec.stuff;
 
 import org.junit.After;
 import org.junit.Before;
+import spec.*;
 import spec.assembler.Assembler;
 
 import java.io.File;
 
 import static spec.Constants.*;
-import static spec.SmartAssert.assertEquals;
 import static spec.WordMath.hex8;
 import static spec.assembler.Assembler.asString;
+import static spec.stuff.SmartAssert.assertEquals;
 
 public abstract class AbstractTest {
 
@@ -97,7 +98,7 @@ public abstract class AbstractTest {
     }
 
     public void assertMem(int addr, String expected) {
-        assertEquals(expected, hex8(cpu.data.read8(addr)));
+        assertEquals(expected, hex8(cpu.data().read8(addr)));
     }
 
     public void assertMem(int begin, int endOrLength, String expected) {

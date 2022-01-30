@@ -1,4 +1,4 @@
-package spec;
+package spec.stuff;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import static spec.SmartAssert.fail;
+import static spec.stuff.SmartAssert.fail;
 
 public class FileAssert {
 

@@ -9,13 +9,15 @@ import spec.mods.DebugWhen;
 import spec.mods.StopWhen;
 import spec.platforms.Lik;
 import spec.platforms.Specialist;
+import spec.stuff.AbstractTest;
+import spec.stuff.FileAssert;
 
 import java.io.File;
 import java.net.URL;
 
 import static spec.Constants.START_POINT;
-import static spec.FileAssert.write;
 import static spec.KeyCode.*;
+import static spec.stuff.FileAssert.write;
 
 public class IntegrationTest extends AbstractTest {
 

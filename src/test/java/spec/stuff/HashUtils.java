@@ -1,4 +1,4 @@
-package spec;
+package spec.stuff;
 
 import java.io.File;
 import java.io.FileInputStream;
