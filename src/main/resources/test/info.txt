@@ -3,6 +3,8 @@
 Компилировались тут
     https://svofski.github.io/pretty-8080-assembler
     https://github.com/svofski/pretty-8080-assembler
+Директивы ассемблера (не все работают в pretty-8080-assembler)
+    https://pasmo.speccy.org/pasmodoc.html
 The test suite includes four tests at the moment
     TEST.COM
         8080/8085 CPU Diagnostic, version 1.0, by Microcosm Associates.

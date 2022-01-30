@@ -90,7 +90,7 @@ lab4:   LXI     SP,regs1
         CPI     8
         JNZ     0
         LDA     regs2 + 8/2
-        CPI     00Ah
+        CPI     10
         JNZ     0
         LDA     regs2 + 10/2
         CPI     12
@@ -153,56 +153,185 @@ reta:   MVI     A,0FFh
 ; from now on we can report errors by displaying an address
 
 ; test conditional call, ret, jp, jr
-tcond   macro   flag,pcond,ncond,rel
-        LXI     H,&flag
+; commands CC, CNC, JC, JNC, RC, RNC
+lab0_c:
+        LXI     H,001h            ; FLAG
         PUSH    H
         POP     PSW
-        c&pcond lab1&pcond
+        CC      lab1_c
         JMP     error
-lab1&pcond:
+lab1_c:
         POP     H
-        LXI     H,0D7h xor &flag
+        LXI     H,0D7h ^ 001h     ; FLAG
         PUSH    H
         POP     PSW
-        c&ncond lab2&pcond
+        CNC     lab2_c
         JMP     error
-lab2&pcond:
+lab2_c:
         POP     H
-        LXI     H,lab3&pcond
+        LXI     H,lab3_c
         PUSH    H
-        LXI     H,&flag
-        PUSH    H
-        POP     PSW
-        r&pcond
-        CALL    error
-lab3&pcond:
-        LXI     H,lab4&pcond
-        PUSH    H
-        LXI     H,0D7h XOR &flag
+        LXI     H,001h            ; FLAG
         PUSH    H
         POP     PSW
-        r&ncond
+        RC
         CALL    error
-lab4&pcond:
-        LXI     H,&flag
+lab3_c:
+        LXI     H,lab4_c
+        PUSH    H
+        LXI     H,0D7h ^ 001h     ; FLAG
         PUSH    H
         POP     PSW
-        j&pcond lab5&pcond
+        rNC
         CALL    error
-lab5&pcond:
-        LXI     H,0D7h
-        XOR     &flag
+lab4_c:
+        LXI     H,001h            ; FLAG
         PUSH    H
         POP     PSW
-        j&ncond lab6&pcond
+        JC      lab5_c
         CALL    error
-lab6&pcond:
-        endm
+lab5_c:
+        LXI     H,0D7h ^ 001h     ; FLAG
+        PUSH    H
+        POP     PSW
+        JNC     lab6_c
+        CALL    error
+lab6_c:
 
-        tcond   1,c,nc,1
-        tcond   4,pe,po,0
-        tcond   040h,z,nz,1
-        tcond   080h,m,p,0
+; commands CPE, CPO, JPE, JPO, RPE, RPO
+lab0_p:
+        LXI     H,004h            ; FLAG
+        PUSH    H
+        POP     PSW
+        CPE     lab1_p
+        JMP     error
+lab1_p:
+        POP     H
+        LXI     H,0D7h ^ 004h     ; FLAG
+        PUSH    H
+        POP     PSW
+        CPO     lab2_p
+        JMP     error
+lab2_p:
+        POP     H
+        LXI     H,lab3_p
+        PUSH    H
+        LXI     H,004h            ; FLAG
+        PUSH    H
+        POP     PSW
+        RPE
+        CALL    error
+lab3_p:
+        LXI     H,lab4_p
+        PUSH    H
+        LXI     H,0D7h ^ 004h     ; FLAG
+        PUSH    H
+        POP     PSW
+        RPO
+        CALL    error
+lab4_p:
+        LXI     H,004h            ; FLAG
+        PUSH    H
+        POP     PSW
+        JPE     lab5_p
+        CALL    error
+lab5_p:
+        LXI     H,0D7h ^ 004h     ; FLAG
+        PUSH    H
+        POP     PSW
+        JPO     lab6_p
+        CALL    error
+lab6_p:
+
+; commands CZ, CNZ, JZ, JNZ, RZ, RNZ
+lab0_z:
+        LXI     H,040h            ; FLAG
+        PUSH    H
+        POP     PSW
+        CZ      lab1_z
+        JMP     error
+lab1_z:
+        POP     H
+        LXI     H,0D7h ^ 040h     ; FLAG
+        PUSH    H
+        POP     PSW
+        CNZ     lab2_z
+        JMP     error
+lab2_z:
+        POP     H
+        LXI     H,lab3_z
+        PUSH    H
+        LXI     H,040h            ; FLAG
+        PUSH    H
+        POP     PSW
+        RZ
+        CALL    error
+lab3_z:
+        LXI     H,lab4_z
+        PUSH    H
+        LXI     H,0D7h ^ 040h     ; FLAG
+        PUSH    H
+        POP     PSW
+        RNZ
+        CALL    error
+lab4_z:
+        LXI     H,040h            ; FLAG
+        PUSH    H
+        POP     PSW
+        JZ      lab5_z
+        CALL    error
+lab5_z:
+        LXI     H,0D7h ^ 040h     ; FLAG
+        PUSH    H
+        POP     PSW
+        JNZ     lab6_z
+        CALL    error
+lab6_z:
+
+; commands CM, CP, JM, JP, RM, RP
+lab0_h:
+        LXI     H,080h            ; FLAG
+        PUSH    H
+        POP     PSW
+        CM      lab1_h
+        JMP     error
+lab1_h:
+        POP     H
+        LXI     H,0D7h ^ 080h     ; FLAG
+        PUSH    H
+        POP     PSW
+        CP      lab2_h
+        JMP     error
+lab2_h:
+        POP     H
+        LXI     H,lab3_h
+        PUSH    H
+        LXI     H,080h            ; FLAG
+        PUSH    H
+        POP     PSW
+        RM
+        CALL    error
+lab3_h:
+        LXI     H,lab4_h
+        PUSH    H
+        LXI     H,0D7h ^ 080h     ; FLAG
+        PUSH    H
+        POP     PSW
+        RP
+        CALL    error
+lab4_h:
+        LXI     H,080h            ; FLAG
+        PUSH    H
+        POP     PSW
+        JM      lab5_h
+        CALL    error
+lab5_h:
+        LXI     H,0D7h ^ 080h     ; FLAG
+        PUSH    H
+        POP     PSW
+        JP      lab6_h
+        CALL    error
+lab6_h:
 
 ; test indirect jumps
         LXI     H,lab7
@@ -294,12 +423,11 @@ conout: PUSH   PSW
 
 regs1:  DB     002h, 004h, 006h, 008h, 00Ah, 00Ch, 00Eh, 010h
 
-regs2:  DS     8,0
+regs2:  DS     0,8
 
 hlval:  DB     0A5h,03Ch
 
-; skip to next page boundary
-        ORG    (($+255)/256)*256
+        DS     0,00055h   ; next data block should be on 0x0400h
 hextab: DB     '0123456789abcdef'
         DS     240
 
