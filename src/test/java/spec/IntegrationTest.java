@@ -73,7 +73,9 @@ public class IntegrationTest extends AbstractTest {
         for (File file : files) {
             String name = file.getName();
             // на всякий случай чтобы не удалить лишнего
-            if (!name.endsWith(".png") && !name.equals("cpu.txt")) {
+            if (!name.endsWith(".png")
+                && !name.endsWith(".log"))
+            {
                 continue;
             }
 
@@ -102,7 +104,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     private void assertCpu(String name) {
-        assertFile("Cpu state", name + ".txt",
+        assertFile("Cpu state", name + ".log",
                 file -> write(file, cpu.toStringDetails()));
     }
 
@@ -111,7 +113,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     private void assertTrace() {
-        assertFile("Cpu trace", "trace.txt",
+        assertFile("Cpu trace", "trace.log",
                 file -> write(file, trace()));
     }
 
