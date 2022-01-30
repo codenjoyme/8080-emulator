@@ -14,18 +14,20 @@
 
         .PROJECT test.rks
         CPU     8080
-        ORG     00000h
-        DB      004h, 000h ; RKS HEADER/START MEMORY
-        DB      0C4h, 005h ; RKS HEADER/END MEMORY
-        
-        LXI     H, lolz
+; This is such a crutch in order to generate a valid rks file.
+; This program will be launched from address 0004.
+        .ORG    00000h
+        DB      (start & 0FFh), (start / 0FFh)      ; START ADDR IN MEMORY
+        DB      ((end - 1) & 0FFh), ((end - 1) / 0FFh)  ; END ADDR IN MEMORY
+
+start:  LXI     H, mssg
         CALL    msg
-        JMP     cpu        ;JUMP TO 8080 CPU DIAGNOSTIC
+        JMP     cpu        ; JUMP TO 8080 CPU DIAGNOSTIC
 ;
-lolz:   DB      00Dh, 00Ah, "MICROCOSM ASSOCIATES 8080/8085 CPU DIAGNOSTIC VERSION 1.0  (C) 1980", 0Dh, 0Ah, 24h
+mssg:   DB      00Dh, 00Ah, "MICROCOSM ASSOCIATES 8080/8085 CPU DIAGNOSTIC VERSION 1.0  (C) 1980", 00Dh, 00Ah, '$'
 ;
-bdos    EQU     0C037h     ;LIK PRINT CHAR PROCEDURE
-wboot:  JMP     0C800h     ;LIK MONITOR-1M
+bdos    EQU     0C037h     ; LIK PRINT CHAR PROCEDURE
+wboot:  JMP     0C800h     ; LIK MONITOR-1M
 ;
 ;MESSAGE OUTPUT ROUTINE
 ;
@@ -35,7 +37,6 @@ msg:    MOV     A,M        ; Get data
         CALL    pchar      ; Output
         INX     H          ; Next
         JMP     msg        ; Do all
-;
 ;
 ;CHARACTER OUTPUT ROUTINE
 ;
@@ -49,7 +50,7 @@ pchar:  PUSH    PSW
         POP     PSW
         RET
 ;
-;
+;HEX BYTE OUTPUT ROUTINE
 ;
 byteo:  PUSH    PSW
         CALL    byto1
@@ -69,8 +70,6 @@ byto2:  ANI     00Fh
         ADI     7
 byto3:  ADI     030h
         RET
-;
-;
 ;
 ;************************************************************
 ;           MESSAGE TABLE FOR OPERATIONAL CPU TEST
@@ -802,5 +801,5 @@ savstk: DS      2        ;TEMPORARY STACK-POINTER STORAGE LOCATION
 ;
 STACK   EQU    tempp+256    ;DE-BUG STACK POINTER STORAGE AREA
 ;
-        END
+end:    END
 
