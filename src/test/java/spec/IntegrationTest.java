@@ -11,6 +11,8 @@ import spec.platforms.Lik;
 import spec.platforms.Specialist;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +35,7 @@ public class IntegrationTest extends AbstractTest {
     private URL base;
 
     private PngVideo video;
-    private Map<String, String> pngHashes = new HashMap<>();
+    private Map<String, String> hashes = new HashMap<>();
 
     @Before
     @Override
@@ -42,7 +44,7 @@ public class IntegrationTest extends AbstractTest {
 
         video = new PngVideo(hard.video(), hard.memory());
         base = new File(APP_RESOURCES).toURI().toURL();
-        record.screenShoot(this::screenShoot);
+        record.screenShoot(this::assertScreen);
         removeTestScreenShots();
         reset();
         record.after(TICKS).stopCpu();
@@ -51,7 +53,7 @@ public class IntegrationTest extends AbstractTest {
     @After
     @Override
     public void after() throws Exception {
-        screenShoot();
+        assertScreen();
         super.after();
     }
 
@@ -70,25 +72,46 @@ public class IntegrationTest extends AbstractTest {
         for (File file : files) {
             if (file.getName().endsWith(".png")) { // на всякий случай
                 // перед удалением сохраним хеш, потом сравним
-                pngHashes.put(file.getAbsolutePath(), hash(file));
+                hashes.put(file.getAbsolutePath(), hash(file));
                 file.delete();
             }
         }
         dir.delete();
     }
 
-    private void screenShoot() {
-        screenShoot("end");
+    private void assertScreen() {
+        assertScreen("end");
     }
 
-    private void screenShoot(String name) {
+    private void assertScreen(String name) {
         File file = new File(testDir().getAbsolutePath() + "/" + name + ".png");
-        String hash = pngHashes.get(file.getAbsolutePath());
+        String hash = hashes.get(file.getAbsolutePath());
 
         video.drawToFile(file);
 
         if (!Objects.equals(hash, hash(file))) {
             fail("Screenshots was changed.\n"
+                    + file.getAbsolutePath() + "\n"
+                    + "Please check git diff to see differences.\n");
+        }
+    }
+
+    private void write(File file, String string) {
+        try (FileWriter writer = new FileWriter(file.getAbsolutePath(), true)) {
+            writer.write(string);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void assertCpu() {
+        File file = new File(testDir().getAbsolutePath() + "/cpu.txt");
+        String hash = file.exists() ? hash(file) : null;
+
+        write(file, cpu.toStringDetails());
+
+        if (!Objects.equals(hash, hash(file))) {
+            fail("Cpu state was changed.\n"
                     + file.getAbsolutePath() + "\n"
                     + "Please check git diff to see differences.\n");
         }
@@ -254,36 +277,7 @@ public class IntegrationTest extends AbstractTest {
         start();
 
         // then
-        asrtCpu("BC:  0E80\n" +
-                "DE:  8F60\n" +
-                "HL:  C196\n" +
-                "AF:  FF12\n" +
-                "SP:  8F30\n" +
-                "PC:  C191\n" +
-                "B,C: 0E 80\n" +
-                "D,E: 8F 60\n" +
-                "H,L: C1 96\n" +
-                "M:   C5\n" +
-                "A,F: FF 12\n" +
-                "     76543210 76543210\n" +
-                "SP:  10001111 00110000\n" +
-                "PC:  11000001 10010001\n" +
-                "     76543210\n" +
-                "B:   00001110\n" +
-                "C:   10000000\n" +
-                "D:   10001111\n" +
-                "E:   01100000\n" +
-                "H:   11000001\n" +
-                "L:   10010110\n" +
-                "M:   11000101\n" +
-                "A:   11111111\n" +
-                "     sz0h0p1c\n" +
-                "F:   00010010\n" +
-                "ts:  false\n" +
-                "tz:  false\n" +
-                "th:  true\n" +
-                "tp:  false\n" +
-                "tc:  false\n");
+        assertCpu();
     }
 
     @Test
@@ -297,36 +291,7 @@ public class IntegrationTest extends AbstractTest {
         start();
 
         // then
-        asrtCpu("BC:  0000\n" +
-                "DE:  9D21\n" +
-                "HL:  C4C9\n" +
-                "AF:  8987\n" +
-                "SP:  8F99\n" +
-                "PC:  0FA9\n" +
-                "B,C: 00 00\n" +
-                "D,E: 9D 21\n" +
-                "H,L: C4 C9\n" +
-                "M:   76\n" +
-                "A,F: 89 87\n" +
-                "     76543210 76543210\n" +
-                "SP:  10001111 10011001\n" +
-                "PC:  00001111 10101001\n" +
-                "     76543210\n" +
-                "B:   00000000\n" +
-                "C:   00000000\n" +
-                "D:   10011101\n" +
-                "E:   00100001\n" +
-                "H:   11000100\n" +
-                "L:   11001001\n" +
-                "M:   01110110\n" +
-                "A:   10001001\n" +
-                "     sz0h0p1c\n" +
-                "F:   10000111\n" +
-                "ts:  true\n" +
-                "tz:  false\n" +
-                "th:  false\n" +
-                "tp:  true\n" +
-                "tc:  true\n");
+        assertCpu();
     }
 
     @Test
@@ -340,36 +305,7 @@ public class IntegrationTest extends AbstractTest {
         start();
 
         // then
-        asrtCpu("BC:  125C\n" +
-                "DE:  0000\n" +
-                "HL:  201F\n" +
-                "AF:  0056\n" +
-                "SP:  3FFB\n" +
-                "PC:  04FE\n" +
-                "B,C: 12 5C\n" +
-                "D,E: 00 00\n" +
-                "H,L: 20 1F\n" +
-                "M:   20\n" +
-                "A,F: 00 56\n" +
-                "     76543210 76543210\n" +
-                "SP:  00111111 11111011\n" +
-                "PC:  00000100 11111110\n" +
-                "     76543210\n" +
-                "B:   00010010\n" +
-                "C:   01011100\n" +
-                "D:   00000000\n" +
-                "E:   00000000\n" +
-                "H:   00100000\n" +
-                "L:   00011111\n" +
-                "M:   00100000\n" +
-                "A:   00000000\n" +
-                "     sz0h0p1c\n" +
-                "F:   01010110\n" +
-                "ts:  false\n" +
-                "tz:  true\n" +
-                "th:  true\n" +
-                "tp:  true\n" +
-                "tc:  false\n");
+        assertCpu();
     }
 
     @Test
@@ -387,36 +323,7 @@ public class IntegrationTest extends AbstractTest {
         hard.start();
 
         // then
-        asrtCpu("BC:  0000\n" +
-                "DE:  0000\n" +
-                "HL:  0012\n" +
-                "AF:  FE46\n" +
-                "SP:  7FFD\n" +
-                "PC:  C800\n" +
-                "B,C: 00 00\n" +
-                "D,E: 00 00\n" +
-                "H,L: 00 12\n" +
-                "M:   0D\n" +
-                "A,F: FE 46\n" +
-                "     76543210 76543210\n" +
-                "SP:  01111111 11111101\n" +
-                "PC:  11001000 00000000\n" +
-                "     76543210\n" +
-                "B:   00000000\n" +
-                "C:   00000000\n" +
-                "D:   00000000\n" +
-                "E:   00000000\n" +
-                "H:   00000000\n" +
-                "L:   00010010\n" +
-                "M:   00001101\n" +
-                "A:   11111110\n" +
-                "     sz0h0p1c\n" +
-                "F:   01000110\n" +
-                "ts:  false\n" +
-                "tz:  true\n" +
-                "th:  false\n" +
-                "tp:  true\n" +
-                "tc:  false\n");
+        assertCpu();
 
         assertTrace("" +
                 "0004  21 12 00  LXI H,0012  (1)  BC:0000  DE:0000  HL:0004  AF:0046  SP:7FFD  PC:0004   \n" +
@@ -811,36 +718,7 @@ public class IntegrationTest extends AbstractTest {
         hard.start();
 
         // then
-        asrtCpu("BC:  AA55\n" +
-                "DE:  AAAA\n" +
-                "HL:  00A5\n" +
-                "AF:  AA46\n" +
-                "SP:  06D5\n" +
-                "PC:  C800\n" +
-                "B,C: AA 55\n" +
-                "D,E: AA AA\n" +
-                "H,L: 00 A5\n" +
-                "M:   0D\n" +
-                "A,F: AA 46\n" +
-                "     76543210 76543210\n" +
-                "SP:  00000110 11010101\n" +
-                "PC:  11001000 00000000\n" +
-                "     76543210\n" +
-                "B:   10101010\n" +
-                "C:   01010101\n" +
-                "D:   10101010\n" +
-                "E:   10101010\n" +
-                "H:   00000000\n" +
-                "L:   10100101\n" +
-                "M:   00001101\n" +
-                "A:   10101010\n" +
-                "     sz0h0p1c\n" +
-                "F:   01000110\n" +
-                "ts:  false\n" +
-                "tz:  true\n" +
-                "th:  false\n" +
-                "tp:  true\n" +
-                "tc:  false\n");
+        assertCpu();
 
         assertTrace("" +
                 "0004  21 0D 00  LXI H,000D  (1)  BC:0000  DE:0000  HL:0004  AF:0046  SP:7FFD  PC:0004   \n" +
@@ -1555,36 +1433,7 @@ public class IntegrationTest extends AbstractTest {
         hard.start();
 
         // then
-        asrtCpu("BC:  0034\n" +
-                "DE:  0C0A\n" +
-                "HL:  02E3\n" +
-                "AF:  0046\n" +
-                "SP:  0474\n" +
-                "PC:  C800\n" +
-                "B,C: 00 34\n" +
-                "D,E: 0C 0A\n" +
-                "H,L: 02 E3\n" +
-                "M:   0D\n" +
-                "A,F: 00 46\n" +
-                "     76543210 76543210\n" +
-                "SP:  00000100 01110100\n" +
-                "PC:  11001000 00000000\n" +
-                "     76543210\n" +
-                "B:   00000000\n" +
-                "C:   00110100\n" +
-                "D:   00001100\n" +
-                "E:   00001010\n" +
-                "H:   00000010\n" +
-                "L:   11100011\n" +
-                "M:   00001101\n" +
-                "A:   00000000\n" +
-                "     sz0h0p1c\n" +
-                "F:   01000110\n" +
-                "ts:  false\n" +
-                "tz:  true\n" +
-                "th:  false\n" +
-                "tp:  true\n" +
-                "tc:  false\n");
+        assertCpu();
 
         assertTrace("");
     }
