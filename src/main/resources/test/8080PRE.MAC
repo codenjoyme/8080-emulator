@@ -49,13 +49,13 @@ start:  mvi     a,1        ; test simple compares and z/nz jumps
         cpi     1
         jnz     0
         jmp     lab0
-        hlt            ; emergency exit
+        hlt                ; emergency exit
         db      0ffh
             
-lab0:   call    lab2        ; does a simple call work?
-lab1:   jmp     0        ; fail
+lab0:   call    lab2       ; does a simple call work?
+lab1:   jmp     0          ; fail
             
-lab2:   pop     h        ; check return address
+lab2:   pop     h          ; check return address
         mov     a,h
         cpi     high lab1
         jz      lab3
