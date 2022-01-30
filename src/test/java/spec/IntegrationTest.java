@@ -17,6 +17,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
@@ -45,7 +46,7 @@ public class IntegrationTest extends AbstractTest {
         video = new PngVideo(hard.video(), hard.memory());
         base = new File(APP_RESOURCES).toURI().toURL();
         record.screenShoot(this::assertScreen);
-        removeTestScreenShots();
+        removeTestsData();
         reset();
         record.after(TICKS).stopCpu();
     }
@@ -62,7 +63,7 @@ public class IntegrationTest extends AbstractTest {
         hard.reset();
     }
 
-    private void removeTestScreenShots() {
+    private void removeTestsData() {
         File dir = testDir();
         if (!dir.exists()) return;
 
@@ -70,11 +71,15 @@ public class IntegrationTest extends AbstractTest {
         if (files == null) return;
 
         for (File file : files) {
-            if (file.getName().endsWith(".png")) { // на всякий случай
-                // перед удалением сохраним хеш, потом сравним
-                hashes.put(file.getAbsolutePath(), hash(file));
-                file.delete();
+            String name = file.getName();
+            // на всякий случай чтобы не удалить лишнего
+            if (!name.endsWith(".png") && !name.equals("cpu.txt")) {
+                continue;
             }
+
+            // перед удалением сохраним хеш, потом по нему будем сравнивать
+            hashes.put(file.getAbsolutePath(), hash(file));
+            file.delete();
         }
         dir.delete();
     }
@@ -84,16 +89,8 @@ public class IntegrationTest extends AbstractTest {
     }
 
     private void assertScreen(String name) {
-        File file = new File(testDir().getAbsolutePath() + "/" + name + ".png");
-        String hash = hashes.get(file.getAbsolutePath());
-
-        video.drawToFile(file);
-
-        if (!Objects.equals(hash, hash(file))) {
-            fail("Screenshots was changed.\n"
-                    + file.getAbsolutePath() + "\n"
-                    + "Please check git diff to see differences.\n");
-        }
+        assertFile("Screenshots", name + ".png",
+                file -> video.drawToFile(file));
     }
 
     private void write(File file, String string) {
@@ -105,13 +102,18 @@ public class IntegrationTest extends AbstractTest {
     }
 
     private void assertCpu() {
-        File file = new File(testDir().getAbsolutePath() + "/cpu.txt");
-        String hash = file.exists() ? hash(file) : null;
+        assertFile("Cpu state", "cpu.txt",
+                file -> write(file, cpu.toStringDetails()));
+    }
 
-        write(file, cpu.toStringDetails());
+    private void assertFile(String info, String name, Consumer<File> save) {
+        File file = new File(testDir().getAbsolutePath() + "/" + name);
+        String hash = hashes.get(file.getAbsolutePath());
+
+        save.accept(file);
 
         if (!Objects.equals(hash, hash(file))) {
-            fail("Cpu state was changed.\n"
+            fail(info + " was changed.\n"
                     + file.getAbsolutePath() + "\n"
                     + "Please check git diff to see differences.\n");
         }
