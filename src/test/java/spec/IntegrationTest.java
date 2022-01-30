@@ -11,17 +11,11 @@ import spec.platforms.Lik;
 import spec.platforms.Specialist;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Consumer;
 
 import static spec.Constants.START_POINT;
+import static spec.FileAssert.write;
 import static spec.KeyCode.*;
-import static spec.SmartAssert.fail;
 
 public class IntegrationTest extends AbstractTest {
 
@@ -33,10 +27,10 @@ public class IntegrationTest extends AbstractTest {
 
     @Rule
     public TestName test = new TestName();
-    private URL base;
 
+    private URL base;
+    private FileAssert fileAssert;
     private PngVideo video;
-    private Map<String, String> hashes = new HashMap<>();
 
     @Before
     @Override
@@ -46,7 +40,8 @@ public class IntegrationTest extends AbstractTest {
         video = new PngVideo(hard.video(), hard.memory());
         base = new File(APP_RESOURCES).toURI().toURL();
         record.screenShoot(this::assertScreen);
-        removeTestsData();
+        fileAssert = new FileAssert(TEST_RESOURCES + test.getMethodName());
+        fileAssert.removeTestsData();
         reset();
         record.after(TICKS).stopCpu();
     }
@@ -63,48 +58,17 @@ public class IntegrationTest extends AbstractTest {
         hard.reset();
     }
 
-    private void removeTestsData() {
-        File dir = testDir();
-        if (!dir.exists()) return;
-
-        File[] files = dir.listFiles();
-        if (files == null) return;
-
-        for (File file : files) {
-            String name = file.getName();
-            // на всякий случай чтобы не удалить лишнего
-            if (!name.endsWith(".png")
-                && !name.endsWith(".log"))
-            {
-                continue;
-            }
-
-            // перед удалением сохраним хеш, потом по нему будем сравнивать
-            hashes.put(file.getAbsolutePath(), hash(file));
-            file.delete();
-        }
-        dir.delete();
-    }
-
     private void assertScreen() {
         assertScreen("end");
     }
 
     private void assertScreen(String name) {
-        assertFile("Screenshots", name + ".png",
+        fileAssert.check("Screenshots", name + ".png",
                 file -> video.drawToFile(file));
     }
 
-    private void write(File file, String string) {
-        try (FileWriter writer = new FileWriter(file.getAbsolutePath(), false)) {
-            writer.write(string);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private void assertCpu(String name) {
-        assertFile("Cpu state", name + ".log",
+        fileAssert.check("Cpu state", name + ".log",
                 file -> write(file, cpu.toStringDetails()));
     }
 
@@ -113,33 +77,8 @@ public class IntegrationTest extends AbstractTest {
     }
 
     private void assertTrace() {
-        assertFile("Cpu trace", "trace.log",
+        fileAssert.check("Cpu trace", "trace.log",
                 file -> write(file, trace()));
-    }
-
-    private void assertFile(String info, String name, Consumer<File> save) {
-        File file = new File(testDir().getAbsolutePath() + "/" + name);
-        String hash = hashes.get(file.getAbsolutePath());
-
-        save.accept(file);
-
-        if (!Objects.equals(hash, hash(file))) {
-            fail(info + " was changed.\n"
-                    + file.getAbsolutePath() + "\n"
-                    + "Please check git diff to see differences.\n");
-        }
-    }
-
-    private String hash(File file) {
-        return HashUtils.hashFile(file, "MD5");
-    }
-
-    private File testDir() {
-        File result = new File(TEST_RESOURCES + test.getMethodName());
-        if (!result.exists()) {
-            result.mkdir();
-        }
-        return result;
     }
 
     @Test
