@@ -19,7 +19,8 @@ eval_echo() {
 }
 
 eval_echo "ROOT=$(pwd)"
-eval_echo "java -jar $ROOT/emulator-1.0.jar"
+eval_echo "PARAM=$1"
+eval_echo "java -jar $ROOT/emulator-1.0.jar $PARAM"
 
 echo
 color "Press Enter to continue"

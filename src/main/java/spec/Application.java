@@ -71,6 +71,10 @@ public class Application {
         }
     }
 
+    public void load(String rom) {
+        hard.loadData(rom, lik);
+    }
+
     private void loadRoms(URL base) {
         if (lik) {
             Lik.loadRom(base, hard.roms());
@@ -196,7 +200,7 @@ public class Application {
                 if (base.toString().startsWith("http")) return;
 
                 String folder = lik ? "lik" : "specialist";
-                openFileDialog(file -> hard.loadData(file.getAbsolutePath(), lik),
+                openFileDialog(file -> load(file.getAbsolutePath()),
                         base.getFile() + "/" + folder + "/apps",
                         "Data file",
                         "com", "rom", "rks", "bin");
@@ -274,4 +278,5 @@ public class Application {
     private void reset() {
         hard.reset();
     }
+
 }

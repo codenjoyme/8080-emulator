@@ -17,11 +17,23 @@ public class Main extends JFrame implements KeyListener {
     private Application app;
 
     public static void main(String[] args) {
-        String base = (args.length == 1) ? args[0] : null;
-        new Main(base);
+        // передается или base в серверной версии,
+        // либо файл с приложением, либо вообще ничего
+        String base = null;
+        String rom = null;
+        if (args.length == 1) {
+            String param = args[0];
+            if (param.endsWith(".rks")) {
+                rom = param;
+            } else {
+                base = param;
+            }
+        }
+
+        new Main(base, rom);
     }
 
-    public Main(String base) {
+    public Main(String base, String rom) {
         super("i8080 emulator");
         setMinimumSize(new Dimension(
                 SCREEN_WIDTH + BORDER_WIDTH * 2 + 15,
@@ -37,6 +49,9 @@ public class Main extends JFrame implements KeyListener {
         URL baseUrl = getBaseUrl(base);
         Logger.debug("Base url: " + baseUrl);
         app = new Application(this, baseUrl);
+        if (rom != null) {
+            app.load(rom);
+        }
         app.gotFocus();
         app.start();
     }
