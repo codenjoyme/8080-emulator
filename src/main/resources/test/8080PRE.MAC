@@ -1,5 +1,3 @@
-    title    'Preliminary Z80 tests'
-
 ; prelim.z80 - Preliminary Z80 tests
 ; Copyright (C) 1994  Frank D. Cringle
 ;
@@ -38,148 +36,149 @@
 ; Assemble using M80
 ;
 ;******************************************************************************
-    
-        .8080
-        aseg
-        org     100h
 
-start:  mvi     a,1        ; test simple compares and z/nz jumps
-        cpi     2
-        jz      0
-        cpi     1
-        jnz     0
-        jmp     lab0
-        hlt                ; emergency exit
-        db      0ffh
+        .PROJECT 8080PRE.COM
+        CPU 8080
+        ASEG
+        ORG     100h
+
+start:  MVI     a,1        ; test simple compares and z/nz jumps
+        CPI     2
+        JZ      0
+        CPI     1
+        JNZ     0
+        JMP     lab0
+        HLT                ; emergency exit
+        DB      0FFh
             
-lab0:   call    lab2       ; does a simple call work?
-lab1:   jmp     0          ; fail
+lab0:   CALL    lab2       ; does a simple call work?
+lab1:   JMP     0          ; fail
             
-lab2:   pop     h          ; check return address
-        mov     a,h
-        cpi     high lab1
-        jz      lab3
-        jmp     0
-lab3:   mov     a,l
-        cpi     low lab1
-        jz      lab4
-        jmp     0
+lab2:   POP     h          ; check return address
+        MOV     A,H
+        CPI     HIGH lab1
+        JZ      lab3
+        JMP     0
+lab3:   MOV     A,L
+        CPI     LOW lab1
+        JZ      lab4
+        JMP     0
 
 ; test presence and uniqueness of all machine registers
 ; (except ir)
-lab4:   lxi     sp,regs1
-        pop     psw
-        pop     b
-        pop     d
-        pop     h
-        lxi     sp,regs2+8
-        push    h
-        push    d
-        push    b
-        push    psw
+lab4:   LXI     SP,regs1
+        POP     PSW
+        POP     B
+        POP     D
+        POP     H
+        LXI     SP,regs2+8
+        PUSH    H
+        PUSH    D
+        PUSH    B
+        PUSH    PSW
 
-v       defl    0
-        rept    8
-        lda     regs2+v/2
-v       defl    v+2
-        cpi     v
-        jnz     0
-        endm
+v       DEFL    0
+        REPT    8
+        LDA     regs2+v/2
+v       DEFL    v+2
+        CPI     v
+        JNZ     0
+        ENDM
 
 ; test access to memory via (hl)        
-        lxi     h,hlval
-        mov     a,m
-        cpi     0a5h
-        jnz     0
-        lxi     h,hlval+1
-        mov     a,m
-        cpi     03ch
-        jnz     0
+        LXI     H,hlval
+        MOV     A,M
+        CPI     0A5h
+        JNZ     0
+        LXI     H,hlval+1
+        MOV     A,M
+        CPI     03Ch
+        JNZ     0
 
 ; test unconditional return        
-        lxi     sp,stack
-        lxi     h,reta
-        push    h
-        ret
-        jmp     0
+        LXI     SP,stack
+        LXI     H,reta
+        PUSH    H
+        RET
+        JMP     0
 
 ; test instructions needed for hex output
-reta:   mvi     a,0ffh
-        ani     0fh
-        cpi     0fh
-        jnz     0
-        mvi     a,05ah
-        ani     0fh
-        cpi     0ah
-        jnz     0
-        rrc
-        cpi     05h
-        jnz     0
-        rrc
-        cpi     82h
-        jnz     0
-        rrc
-        cpi     41h
-        jnz     0
-        rrc
-        cpi     0a0h
-        jnz     0
-        lxi     h,01234h
-        push    h
-        pop     b
-        mov     a,b
-        cpi     12h
-        jnz     0
-        mov     a,c
-        cpi     34h
-        jnz     0
+reta:   MVI     A,0FFh
+        ANI     0Fh
+        CPI     0Fh
+        JNZ     0
+        MVI     A,05Ah
+        ANI     0Fh
+        CPI     0Ah
+        JNZ     0
+        RRC
+        CPI     05h
+        JNZ     0
+        RRC
+        CPI     82h
+        JNZ     0
+        RRC
+        CPI     41h
+        JNZ     0
+        RRC
+        CPI     0A0h
+        JNZ     0
+        LXI     H,01234h
+        PUSH    H
+        POP     B
+        MOV     A,B
+        CPI     12h
+        JNZ     0
+        MOV     A,C
+        CPI     34h
+        JNZ     0
         
 ; from now on we can report errors by displaying an address
 
 ; test conditional call, ret, jp, jr
 tcond   macro   flag,pcond,ncond,rel
-        lxi     h,&flag
-        push    h    
-        pop     psw
+        LXI     H,&flag
+        PUSH    H
+        POP     PSW
         c&pcond lab1&pcond
-        jmp     error
+        JMP     error
 lab1&pcond:
-        pop     h
-        lxi     h,0d7h xor &flag
-        push    h    
-        pop     psw
+        POP     H
+        LXI     H,0D7h xor &flag
+        PUSH    H
+        POP     PSW
         c&ncond lab2&pcond
-        jmp     error
+        JMP     error
 lab2&pcond:
-        pop     h
-        lxi     h,lab3&pcond
-        push    h    
-        lxi     h,&flag
-        push    h    
-        pop     psw
+        POP     H
+        LXI     H,lab3&pcond
+        PUSH    H
+        LXI     H,&flag
+        PUSH    H
+        POP     PSW
         r&pcond    
-        call    error
+        CALL    error
 lab3&pcond:
-        lxi     h,lab4&pcond
-        push    h    
-        lxi     h,0d7h xor &flag
-        push    h    
-        pop     psw
+        LXI     H,lab4&pcond
+        PUSH    H
+        LXI     H,0D7h XOR &flag
+        PUSH    H
+        POP     PSW
         r&ncond    
-        call    error
+        CALL    error
 lab4&pcond:
-        lxi     h,&flag
-        push    h    
-        pop     psw
+        LXI     H,&flag
+        PUSH    H
+        POP     PSW
         j&pcond lab5&pcond
-        call    error
+        CALL    error
 lab5&pcond:
-        lxi     h,0d7h
-        xor     &flag
-        push    h    
-        pop     psw
+        LXI     H,0D7h
+        XOR     &flag
+        PUSH    H
+        POP     PSW
         j&ncond lab6&pcond
-        call    error
+        CALL    error
 lab6&pcond:        
         endm
     
@@ -189,108 +188,108 @@ lab6&pcond:
         tcond   080h,m,p,0
 
 ; test indirect jumps    
-        lxi    h,lab7    
-        pchl    
-        call    error
+        LXI     H,lab7
+        PCHL
+        CALL    error
 
 ; djnz (and (partially) inc a, inc hl)
-lab7:   mvi    a,0a5h
-        mvi    b,4
-lab8:   rrc
-        dcr    b    
-        jnz    lab8    
-        cpi    05ah    
-        cnz    error    
-        mvi    b,16
-lab9:   inr    a
-        dcr    b    
-        jnz    lab9    
-        cpi    06ah    
-        cnz    error    
-        mvi    b,0    
-        lxi    h,0
-lab10:  inx    h
-        dcr    b    
-        jnz    lab10    
-        mov    a,h    
-        cpi    1    
-        cnz    error    
-        mov    a,l    
-        cpi    0    
-        cnz    error    
+lab7:   MVI    A,0A5h
+        MVI    B,4
+lab8:   RRC
+        DCR    B
+        JNZ    lab8
+        CPI    05Ah
+        CNZ    error
+        MVI    B,16
+lab9:   INR    A
+        DCR    B
+        JNZ    lab9
+        CPI    06Ah
+        CNZ    error
+        MVI    B,0
+        LXI    H,0
+lab10:  INX    H
+        DCR    B
+        JNZ    lab10
+        MOV    A,H
+        CPI    1
+        CNZ    error
+        MOV    A,l
+        CPI    0
+        CNZ    error
         
-allok:  lxi    d,okmsg
-        mvi    c,9    
-        call    5    
-        jmp    0
+allok:  LXI    D,okmsg
+        MVI    C,9
+        CALL   5
+        JMP    0
 
-okmsg:  db    '8080 Preliminary tests complete$'
+okmsg:  DB    '8080 Preliminary tests complete$'
         
 ; display address at top of stack and exit
-error:  pop    b
-        mvi    h,high hextab    
-        mov    a,b    
-        rrc    
-        rrc    
-        rrc    
-        rrc    
-        ani    15    
-        mov    l,a    
-        mov    a,m    
-        call   conout
-        mov    a,b    
-        ani    15    
-        mov    l,a    
-        mov    a,m    
-        call   conout
-        mov    a,c    
-        rrc    
-        rrc    
-        rrc    
-        rrc    
-        ani    15    
-        mov    l,a    
-        mov    a,m    
-        call   conout
-        mov    a,c    
-        ani    15    
-        mov    l,a    
-        mov    a,m    
-        call   conout
-        mvi    a,13    
-        call   conout
-        mvi    a,10    
-        call   conout
-        jmp    0
+error:  POP    B
+        MVI    H,HIGH hextab
+        MOV    A,B
+        RRC
+        RRC
+        RRC
+        RRC
+        ANI    15
+        MOV    L,A
+        MOV    A,M
+        CALL   conout
+        MOV    A,B
+        ANI    15
+        MOV    L,A
+        MOV    A,M
+        CALL   conout
+        MOV    A,C
+        RRC
+        RRC
+        RRC
+        RRC
+        ANI    15
+        MOV    L,A
+        MOV    A,M
+        CALL   conout
+        MOV    A,C
+        ANI    15
+        MOV    L,A
+        MOV    A,M
+        CALL   conout
+        MVI    A,13
+        CALL   conout
+        MVI    A,10
+        CALL   conout
+        JMP    0
 
-conout: push   psw
-        push   b
-        push   d
-        push   h
-        mvi    c,2    
-        mov    e,a    
-        call   5
-        pop    h    
-        pop    d    
-        pop    b    
-        pop    psw    
-        ret    
+conout: PUSH   PSW
+        PUSH   B
+        PUSH   D
+        PUSH   H
+        MVI    C,2
+        MOV    E,A
+        CALL   5
+        POP    H
+        POP    D
+        POP    B
+        POP    PSW
+        RET
         
-v       defl   0
-regs1:  rept   8
-v       defl   v+2
-        db     v
-        endm
+v       DEFL   0
+regs1:  REPT   8
+v       DEFL   v+2
+        DB     v
+        ENDM
 
-regs2:  ds     8,0
+regs2:  DS     8,0
 
-hlval:  db     0a5h,03ch
+hlval:  DB     0A5h,03Ch
 
 ; skip to next page boundary    
-        org    (($+255)/256)*256
-hextab: db     '0123456789abcdef'
-        ds     240
+        ORG    (($+255)/256)*256
+hextab: DB     '0123456789abcdef'
+        DS     240
 
-stack   equ    $
+stack   EQU    $
     
-        end    start
+        END    start
