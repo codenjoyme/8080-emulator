@@ -33,8 +33,9 @@
 ;
 ; Modified by Ian Bartholomew to run a preliminary test on an 8080 CPU
 ;
-; Modified by Oleksandr Baglai to be able to assemble with
+; Modified by Oleksandr Baglai to be able to work on LIK and assemble with
 ;     https://svofski.github.io/pretty-8080-assembler/
+;     https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D0%BA_(%D0%BA%D0%BE%D0%BC%D0%BF%D1%8C%D1%8E%D1%82%D0%B5%D1%80)
 ;
 ;******************************************************************************
 

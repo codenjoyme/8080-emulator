@@ -11,6 +11,13 @@
 ;(805) 527-9321 (MODEM, CP/M-NET (TM))
 ;(805) 527-0518 (VERBAL)
 ;
+;******************************************************************************
+;
+; Modified by Oleksandr Baglai to be able to work on LIK and assemble with
+;     https://svofski.github.io/pretty-8080-assembler/
+;     https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D0%BA_(%D0%BA%D0%BE%D0%BC%D0%BF%D1%8C%D1%8E%D1%82%D0%B5%D1%80)
+;
+;******************************************************************************
 
         .PROJECT test.rks
         CPU     8080
