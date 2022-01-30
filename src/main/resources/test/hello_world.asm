@@ -17,7 +17,7 @@
 
 start:  LXI     H, mssg
         CALL    msg
-        MVI     A,0FFh
+        MVI     A,0FEh
         CALL    byteo      ; SHOW EXIT CODE
         JMP     wboot      ; exit
 ;
@@ -28,13 +28,22 @@ wboot:  JMP     0C800h     ; LIK MONITOR-1M
 ;
 ;MESSAGE OUTPUT ROUTINE
 ;
-msg:    MOV     A,M        ; Get data
+msg:    PUSH    B          ; Push state
+        PUSH    D
+        PUSH    H
+        PUSH    PSW
+        MOV     A,M        ; Get data
         CPI     '$'        ; End?
-        RZ
+        JZ      msge       ; Exit
         MOV     A,M
         CALL    pchar      ; Output
         INX     H          ; Next
         JMP     msg        ; Do all
+msge:   POP     PSW        ; Pop state
+        POP     H
+        POP     D
+        POP     B
+        RET
 ;
 ;CHARACTER OUTPUT ROUTINE
 ;
@@ -52,12 +61,21 @@ pchar:  PUSH    B
 ;
 ;HEX BYTE OUTPUT ROUTINE
 ;
-byteo:  PUSH    PSW
+byteo:  PUSH    B
+        PUSH    D
+        PUSH    H
+        PUSH    PSW
+        PUSH    PSW
         CALL    byto1
         CALL    pchar
         POP     PSW
         CALL    byto2
-        JMP     pchar
+        CALL    pchar
+        POP     PSW
+        POP     H
+        POP     D
+        POP     B
+        RET
 byto1:  RRC
         RRC
         RRC
