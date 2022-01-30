@@ -2,7 +2,7 @@ package spec;
 
 public class Logger {
 
-    public static final boolean DEBUG = true;
+    public static boolean DEBUG = true;
 
     public static void debug(String message, Object... params) {
         if (!DEBUG) return;

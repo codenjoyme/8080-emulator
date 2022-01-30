@@ -30,6 +30,8 @@ public abstract class AbstractTest {
 
     @Before
     public void before() throws Exception {
+        Logger.DEBUG = false;
+
         hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, null) {
 
             @Override
