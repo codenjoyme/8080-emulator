@@ -23,7 +23,7 @@ public class Application {
     private boolean willReset = false;
 
     private long last = 0;
-    private int delay = INTERRUPT_DELAY;
+    private int delay = CPU_INTERRUPT_DELAY;
     private boolean fullSpeed = false;
     private boolean lik = true;
 

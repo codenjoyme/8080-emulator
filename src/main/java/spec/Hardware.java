@@ -35,7 +35,7 @@ public class Hardware {
         record = createKeyRecord();
         video = createVideo(screenWidth, screenHeight);
         data = createHardwareData();
-        cpu = createCpu(CPU_CLOCK);
+        cpu = createCpu(CPU_TICKS_PER_INTERRUPT);
         roms = createRomLoader();
     }
 
@@ -50,8 +50,8 @@ public class Hardware {
         return video;
     }
 
-    protected Cpu createCpu(double clock) {
-        return new Cpu(clock, data, this::cpuInterrupt, record::accept);
+    protected Cpu createCpu(int ticksPerInterrupt) {
+        return new Cpu(ticksPerInterrupt, data, this::cpuInterrupt, record::accept);
     }
 
     protected HardwareData createHardwareData() {

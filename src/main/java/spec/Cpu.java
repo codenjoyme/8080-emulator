@@ -10,17 +10,15 @@ public class Cpu extends Registry {
 
     private Consumer<Cpu> onTick;
     private Supplier<Boolean> onInterrupt;
-    private int interrupt;
+    private int interrupt; // количество тактов на 1 прерывание
     private int tick;
     private Assembler asm;
     private CpuDebug debug;
     private boolean enabled;
 
-    public Cpu(double clockFrequencyInMHz, Data data, Supplier<Boolean> onInterrupt, Consumer<Cpu> onTick) {
+    public Cpu(int ticksPerInterrupt, Data data, Supplier<Boolean> onInterrupt, Consumer<Cpu> onTick) {
         super(data);
-        // Количество тактов на 1 прерывание, которое происходит 50 раз в секунду.
-        // 1000000/50 раз в секунду
-        interrupt = (int) ((clockFrequencyInMHz * 1e6) / 50);
+        interrupt = ticksPerInterrupt;
         this.onInterrupt = onInterrupt;
         asm = new Assembler();
         this.onTick = onTick;

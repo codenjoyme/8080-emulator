@@ -36,10 +36,9 @@ public abstract class AbstractTest {
             }
 
             @Override
-            protected Cpu createCpu(double clock) {
+            protected Cpu createCpu(int ticksPerInterrupt) {
                 // interrupt будет проходить каждый тик
-                clock = 50.1 * 1e-6;
-                return cpu = super.createCpu(clock);
+                return cpu = super.createCpu(1);
             }
 
             @Override
