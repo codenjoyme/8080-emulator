@@ -1527,42 +1527,49 @@ public class IntegrationTest extends AbstractTest {
         // given
         Lik.loadRom(base, roms);
         hard.loadData(APP_RESOURCES + "test/8080pre.rks", Lik.PLATFORM);
-        cpu.modAdd(new StopWhen(0x000F));
+        // выводим trace только в этом диапазоне
+        debug.enable(new Range(0x0000, 0x0400));
+        // не показываем в trace все что относится к выводу на экран
+        debug.showCallBellow(1); // TODO тут надо 3, но получается очень длинно. Надо сохранять в файл
+        // последняя команда программы перед выходом в монитор
+        cpu.modAdd(new StopWhen(0x0028));
 
         // when
         hard.reset();
         hard.start();
 
         // then
-        asrtCpu("BC:  EC34\n" +
+        asrtCpu("BC:  0034\n" +
                 "DE:  0C0A\n" +
-                "HL:  0014\n" +
-                "AF:  6A92\n" +
-                "SP:  0500\n" +
-                "PC:  0316\n" +
-                "B,C: EC 34\n" +
+                "HL:  02A6\n" +
+                "AF:  0046\n" +
+                "SP:  0473\n" +
+                "PC:  C800\n" +
+                "B,C: 00 34\n" +
                 "D,E: 0C 0A\n" +
-                "H,L: 00 14\n" +
-                "M:   00\n" +
-                "A,F: 6A 92\n" +
+                "H,L: 02 A6\n" +
+                "M:   38\n" +
+                "A,F: 00 46\n" +
                 "     76543210 76543210\n" +
-                "SP:  00000101 00000000\n" +
-                "PC:  00000011 00010110\n" +
+                "SP:  00000100 01110011\n" +
+                "PC:  11001000 00000000\n" +
                 "     76543210\n" +
-                "B:   11101100\n" +
+                "B:   00000000\n" +
                 "C:   00110100\n" +
                 "D:   00001100\n" +
                 "E:   00001010\n" +
-                "H:   00000000\n" +
-                "L:   00010100\n" +
-                "M:   00000000\n" +
-                "A:   01101010\n" +
+                "H:   00000010\n" +
+                "L:   10100110\n" +
+                "M:   00111000\n" +
+                "A:   00000000\n" +
                 "     sz0h0p1c\n" +
-                "F:   10010010\n" +
-                "ts:  true\n" +
-                "tz:  false\n" +
-                "th:  true\n" +
-                "tp:  false\n" +
+                "F:   01000110\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
                 "tc:  false\n");
+
+        assertTrace("");
     }
 }
