@@ -11,7 +11,7 @@ public class Cpu extends Registry {
     private Consumer<Cpu> onTick;
     private Supplier<Boolean> onInterrupt;
     private int interrupt; // количество тактов на 1 прерывание
-    private int tick;
+    private int tick;      // количество операций, которые сделал процессор
     private Assembler asm;
     private CpuDebug debug;
     private boolean enabled;
@@ -32,25 +32,25 @@ public class Cpu extends Registry {
         tick = 0;
     }
 
-    // TODO переименовать, это не tick а commandCount
+    /**
+     * @return Количество операций, которые сделал cpu.
+     */
     public int tick() {
         return tick;
     }
 
     public void execute() {
-        // закладываем время до прерывания
-        int ticks = 0;
+        int tacts = 0; // счетчик тактов команд (из него будут извлекаться this.interrupt)
 
-        // цикл выборки/выполнения
         while (enabled) {
             if (onTick != null) {
                 onTick.accept(this);
             }
             tick++;
 
-            if (ticks >= interrupt) {
-                while (ticks >= interrupt) {
-                    ticks -= interrupt;
+            if (tacts >= interrupt) {
+                while (tacts >= interrupt) {
+                    tacts -= interrupt;
                 }
                 if (!onInterrupt.get()) {
                     break;
@@ -65,13 +65,13 @@ public class Cpu extends Registry {
                 command.apply(bite, this);
                 // каждая операция уменьшает число тактов на
                 // прерывание на свою длительность в тактах
-                ticks += command.ticks();
+                tacts += command.ticks();
                 continue;
             }
 
             if (bite == 0x76) { // TODO выделить эту команду
-                int haltsToInterrupt = (-ticks - 1) / 4 + 1;
-                ticks += haltsToInterrupt * 4;
+                int haltsToInterrupt = (-tacts - 1) / 4 + 1;
+                tacts += haltsToInterrupt * 4;
                 enabled = false;
                 continue;
             }
