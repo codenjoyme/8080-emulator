@@ -33,7 +33,8 @@
 ;
 ; Modified by Ian Bartholomew to run a preliminary test on an 8080 CPU
 ;
-; Assemble using M80
+; Modified by Oleksandr Baglai to be able to assemble with
+;     https://svofski.github.io/pretty-8080-assembler/
 ;
 ;******************************************************************************
 
