@@ -17,6 +17,7 @@ public class CpuDebug {
     private Registry registry;
     private List<String> lines;
     private boolean enabled;
+    private boolean console;
     private int maxDeepCall;
     private Range range;
 
@@ -26,7 +27,12 @@ public class CpuDebug {
         this.registry = registry;
         lines = new LinkedList<>();
         disable();
+        console(true);
         showCallBellow(Integer.MAX_VALUE);
+    }
+
+    public void console(boolean print) {
+        this.console = print;
     }
 
     public void log(int addr) {
@@ -46,7 +52,9 @@ public class CpuDebug {
                 pad("(" + callDeep + ")", 5),
                 pad(registry.toString().replace("\n", "  ").replace(": ", ":"), 55));
         lines.add(out);
-        Logger.debug(out);
+        if (console) {
+            Logger.debug(out);
+        }
     }
 
     private String pad(String string, int length) {

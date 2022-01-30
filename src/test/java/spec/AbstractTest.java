@@ -25,6 +25,7 @@ public abstract class AbstractTest {
     protected RomLoader roms;
     protected FileRecorder fileRecorder;
     protected CpuDebug debug;
+    protected KeyLogger keyLogger;
 
     @Before
     public void before() throws Exception {
@@ -48,12 +49,15 @@ public abstract class AbstractTest {
         };
 
         fileRecorder.stopWriting();
+        keyLogger = hard.keyLogger();
+        keyLogger.console(false);
         roms = hard.roms();
         record = hard.record();
         asm = hard.cpu().asm();
         memory.clear();
         debug = cpu.debug();
         debug.disable();
+        debug.console(false);
         memoryInit = false;
         cpu.PC(START);
     }
@@ -104,7 +108,11 @@ public abstract class AbstractTest {
     }
 
     public void assertTrace(String expected) {
-        assertEquals(expected, String.join("\n", debug.lines()));
+        assertEquals(expected, trace());
+    }
+
+    public String trace() {
+        return String.join("\n", debug.lines());
     }
 
     public void start() {

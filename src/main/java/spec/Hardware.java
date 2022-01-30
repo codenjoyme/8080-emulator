@@ -218,4 +218,8 @@ public class Hardware {
     public FileRecorder fileRecorder() {
         return fileRecorder;
     }
+
+    public KeyLogger keyLogger() {
+        return keyLogger;
+    }
 }

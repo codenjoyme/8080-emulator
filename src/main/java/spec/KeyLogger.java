@@ -10,16 +10,24 @@ public class KeyLogger {
     private Supplier<Integer> getTick;
     private int tick;
     private FileRecorder recorder;
+    private boolean console;
 
     public KeyLogger(FileRecorder recorder, Supplier<Integer> getTick) {
         this.recorder = recorder;
         this.getTick = getTick;
         reset();
+        console(true);
+    }
+
+    public void console(boolean print) {
+        console = print;
     }
 
     public void process(Key key, Integer point) {
         logInFile(key);
-        logForConsole(key, point);
+        if (console) {
+            logForConsole(key, point);
+        }
     }
 
     private void logInFile(Key key) {
