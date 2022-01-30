@@ -28,33 +28,3 @@ tz:  false
 th:  true
 tp:  false
 tc:  false
-BC:  0E80
-DE:  8F60
-HL:  C196
-AF:  FF12
-SP:  8F30
-PC:  C191
-B,C: 0E 80
-D,E: 8F 60
-H,L: C1 96
-M:   C5
-A,F: FF 12
-     76543210 76543210
-SP:  10001111 00110000
-PC:  11000001 10010001
-     76543210
-B:   00001110
-C:   10000000
-D:   10001111
-E:   01100000
-H:   11000001
-L:   10010110
-M:   11000101
-A:   11111111
-     sz0h0p1c
-F:   00010010
-ts:  false
-tz:  false
-th:  true
-tp:  false
-tc:  false

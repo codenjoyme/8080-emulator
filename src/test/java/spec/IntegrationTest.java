@@ -97,7 +97,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     private void write(File file, String string) {
-        try (FileWriter writer = new FileWriter(file.getAbsolutePath(), true)) {
+        try (FileWriter writer = new FileWriter(file.getAbsolutePath(), false)) {
             writer.write(string);
         } catch (IOException e) {
             throw new RuntimeException(e);
