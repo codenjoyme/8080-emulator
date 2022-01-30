@@ -21,7 +21,7 @@ start:  LXI     H, mssg
         CALL    byteo      ; SHOW EXIT CODE
         JMP     wboot      ; exit
 ;
-mssg:   DB      00Dh, 00Ah, "HELLO WORLD", 00Dh, 00Ah, '$'
+mssg:   DB      00Dh, 00Ah, 'HELLO WORLD', 00Dh, 00Ah, '$'
 ;
 bdos    EQU     0C037h     ; LIK PRINT CHAR PROCEDURE
 wboot:  JMP     0C800h     ; LIK MONITOR-1M
@@ -31,31 +31,32 @@ wboot:  JMP     0C800h     ; LIK MONITOR-1M
 msg:    MOV     A,M        ; Get data
         CPI     '$'        ; End?
         RZ
+        MOV     A,M
         CALL    pchar      ; Output
         INX     H          ; Next
         JMP     msg        ; Do all
 ;
 ;CHARACTER OUTPUT ROUTINE
 ;
-pchar:  PUSH    PSW
+pchar:  PUSH    B
         PUSH    D
         PUSH    H
-        MOV     C,M
+        PUSH    PSW
+        MOV     C,A
         CALL    bdos
+        POP     PSW
         POP     H
         POP     D
-        POP     PSW
+        POP     B
         RET
 ;
 ;HEX BYTE OUTPUT ROUTINE
 ;
 byteo:  PUSH    PSW
         CALL    byto1
-        MOV     M,A
         CALL    pchar
         POP     PSW
         CALL    byto2
-        MOV     M,A
         JMP     pchar
 byto1:  RRC
         RRC
