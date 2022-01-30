@@ -370,6 +370,396 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
+    public void testLik_helloWorld() {
+        // given
+        Lik.loadRom(base, roms);
+        hard.loadData(APP_RESOURCES + "test/hello_world.rks", Lik.PLATFORM);
+        // выводим trace только в этом диапазоне
+        debug.enable(new Range(0x0000, 0x0100));
+        // последняя команда перед выходом в монитор
+        cpu.modAdd(new StopWhen(0x0022));
+
+        // when
+        hard.reset();
+        hard.start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0012\n" +
+                "AF:  FE46\n" +
+                "SP:  7FFD\n" +
+                "PC:  C800\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 12\n" +
+                "M:   0D\n" +
+                "A,F: FE 46\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111111 11111101\n" +
+                "PC:  11001000 00000000\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00010010\n" +
+                "M:   00001101\n" +
+                "A:   11111110\n" +
+                "     sz0h0p1c\n" +
+                "F:   01000110\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+
+        assertTrace("" +
+                "0004  21 12 00  LXI H,0012  (1)  BC:0000  DE:0000  HL:0004  AF:0046  SP:7FFD  PC:0004   \n" +
+                "0007  CD 25 00  CALL 0025   (1)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FFD  PC:0007   \n" +
+                "0025  C5        PUSH B      (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FFB  PC:0025   \n" +
+                "0026  D5        PUSH D      (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FF9  PC:0026   \n" +
+                "0027  E5        PUSH H      (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FF7  PC:0027   \n" +
+                "0028  F5        PUSH PSW    (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FF5  PC:0028   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0012  AF:0D46  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:000D  DE:0000  HL:0012  AF:0D83  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:000D  DE:0000  HL:0012  AF:0D83  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:000D  DE:0000  HL:0012  AF:0D83  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:000D  DE:0000  HL:0012  AF:0D83  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:000D  DE:0000  HL:0012  AF:0D83  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0013  AF:0D83  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0013  AF:0D83  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:000A  DE:0000  HL:0013  AF:0A83  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:000A  DE:0000  HL:0013  AF:0A83  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:000A  DE:0000  HL:0013  AF:0A83  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:000A  DE:0000  HL:0013  AF:0A83  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:000A  DE:0000  HL:0013  AF:0A83  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0014  AF:0A83  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0014  AF:0A83  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0014  AF:4883  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:0048  DE:0000  HL:0014  AF:4806  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:0048  DE:0000  HL:0014  AF:4806  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:0048  DE:0000  HL:0014  AF:4806  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:0048  DE:0000  HL:0014  AF:4806  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:0048  DE:0000  HL:0014  AF:4806  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0015  AF:4806  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0015  AF:4806  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:0045  DE:0000  HL:0015  AF:4506  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:0045  DE:0000  HL:0015  AF:4506  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:0045  DE:0000  HL:0015  AF:4506  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:0045  DE:0000  HL:0015  AF:4506  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:0045  DE:0000  HL:0015  AF:4506  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0016  AF:4506  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0016  AF:4506  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:004C  DE:0000  HL:0016  AF:4C06  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:004C  DE:0000  HL:0016  AF:4C06  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:004C  DE:0000  HL:0016  AF:4C06  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:004C  DE:0000  HL:0016  AF:4C06  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:004C  DE:0000  HL:0016  AF:4C06  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:004C  DE:0000  HL:0017  AF:4C06  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:004C  DE:0000  HL:0017  AF:4C06  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:004C  DE:0000  HL:0017  AF:4C06  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:004C  DE:0000  HL:0017  AF:4C06  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:004C  DE:0000  HL:0017  AF:4C06  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0018  AF:4C06  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0018  AF:4C06  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:004F  DE:0000  HL:0018  AF:4F06  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:004F  DE:0000  HL:0018  AF:4F06  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:004F  DE:0000  HL:0018  AF:4F06  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:004F  DE:0000  HL:0018  AF:4F06  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:004F  DE:0000  HL:0018  AF:4F06  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0019  AF:4F06  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0019  AF:4F06  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0019  AF:2006  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:0020  DE:0000  HL:0019  AF:2097  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:0020  DE:0000  HL:0019  AF:2097  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:0020  DE:0000  HL:0019  AF:2097  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:0020  DE:0000  HL:0019  AF:2097  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:0020  DE:0000  HL:0019  AF:2097  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:001A  AF:2097  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001A  AF:2097  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:001A  AF:5797  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:0057  DE:0000  HL:001A  AF:5706  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:0057  DE:0000  HL:001A  AF:5706  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:0057  DE:0000  HL:001A  AF:5706  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:0057  DE:0000  HL:001A  AF:5706  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:0057  DE:0000  HL:001A  AF:5706  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:001B  AF:5706  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001B  AF:5706  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:004F  DE:0000  HL:001B  AF:4F06  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:004F  DE:0000  HL:001B  AF:4F06  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:004F  DE:0000  HL:001B  AF:4F06  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:004F  DE:0000  HL:001B  AF:4F06  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:004F  DE:0000  HL:001B  AF:4F06  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:001C  AF:4F06  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001C  AF:4F06  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:001C  AF:5206  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:0052  DE:0000  HL:001C  AF:5216  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:0052  DE:0000  HL:001C  AF:5216  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:0052  DE:0000  HL:001C  AF:5216  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:0052  DE:0000  HL:001C  AF:5216  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:0052  DE:0000  HL:001C  AF:5216  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:001D  AF:5216  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001D  AF:5216  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:001D  AF:4C16  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:004C  DE:0000  HL:001D  AF:4C06  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:004C  DE:0000  HL:001D  AF:4C06  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:004C  DE:0000  HL:001D  AF:4C06  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:004C  DE:0000  HL:001D  AF:4C06  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:004C  DE:0000  HL:001D  AF:4C06  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:001E  AF:4C06  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001E  AF:4C06  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:001E  AF:4406  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:0044  DE:0000  HL:001E  AF:4402  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:0044  DE:0000  HL:001E  AF:4402  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:0044  DE:0000  HL:001E  AF:4402  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:0044  DE:0000  HL:001E  AF:4402  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:0044  DE:0000  HL:001E  AF:4402  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:001F  AF:4402  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001F  AF:4402  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:001F  AF:0D02  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:000D  DE:0000  HL:001F  AF:0D83  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:000D  DE:0000  HL:001F  AF:0D83  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:000D  DE:0000  HL:001F  AF:0D83  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:000D  DE:0000  HL:001F  AF:0D83  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:000D  DE:0000  HL:001F  AF:0D83  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0020  AF:0D83  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0020  AF:0D83  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF3  PC:002C   \n" +
+                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF3  PC:002F   \n" +
+                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF3  PC:0030   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:000A  DE:0000  HL:0020  AF:0A83  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:000A  DE:0000  HL:0020  AF:0A83  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:000A  DE:0000  HL:0020  AF:0A83  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:000A  DE:0000  HL:0020  AF:0A83  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:000A  DE:0000  HL:0020  AF:0A83  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF1  PC:0048   \n" +
+                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF3  PC:0033   \n" +
+                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0021  AF:0A83  SP:7FF3  PC:0034   \n" +
+                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0021  AF:0A83  SP:7FF3  PC:0029   \n" +
+                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0021  AF:2483  SP:7FF3  PC:002A   \n" +
+                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0021  AF:2446  SP:7FF3  PC:002C   \n" +
+                "0037  F1        POP PSW     (2)  BC:0000  DE:0000  HL:0021  AF:2446  SP:7FF3  PC:0037   \n" +
+                "0038  E1        POP H       (2)  BC:0000  DE:0000  HL:0021  AF:0046  SP:7FF5  PC:0038   \n" +
+                "0039  D1        POP D       (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FF7  PC:0039   \n" +
+                "003A  C1        POP B       (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FF9  PC:003A   \n" +
+                "003B  C9        RET         (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FFB  PC:003B   \n" +
+                "000A  3E FE     MVI A,FE    (1)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FFD  PC:000A   \n" +
+                "000C  CD 49 00  CALL 0049   (1)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FFD  PC:000C   \n" +
+                "0049  C5        PUSH B      (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FFB  PC:0049   \n" +
+                "004A  D5        PUSH D      (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF9  PC:004A   \n" +
+                "004B  E5        PUSH H      (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF7  PC:004B   \n" +
+                "004C  F5        PUSH PSW    (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF5  PC:004C   \n" +
+                "004D  F5        PUSH PSW    (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF3  PC:004D   \n" +
+                "004E  CD 60 00  CALL 0060   (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF1  PC:004E   \n" +
+                "0060  0F        RRC         (3)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FEF  PC:0060   \n" +
+                "0061  0F        RRC         (3)  BC:0000  DE:0000  HL:0012  AF:7F46  SP:7FEF  PC:0061   \n" +
+                "0062  0F        RRC         (3)  BC:0000  DE:0000  HL:0012  AF:BF47  SP:7FEF  PC:0062   \n" +
+                "0063  0F        RRC         (3)  BC:0000  DE:0000  HL:0012  AF:DF47  SP:7FEF  PC:0063   \n" +
+                "0064  E6 0F     ANI 0F      (3)  BC:0000  DE:0000  HL:0012  AF:EF47  SP:7FEF  PC:0064   \n" +
+                "0066  FE 0A     CPI 0A      (3)  BC:0000  DE:0000  HL:0012  AF:0F16  SP:7FEF  PC:0066   \n" +
+                "0068  FA 6D 00  JM 006D     (3)  BC:0000  DE:0000  HL:0012  AF:0F06  SP:7FEF  PC:0068   \n" +
+                "006B  C6 07     ADI 07      (3)  BC:0000  DE:0000  HL:0012  AF:0F06  SP:7FEF  PC:006B   \n" +
+                "006D  C6 30     ADI 30      (3)  BC:0000  DE:0000  HL:0012  AF:1612  SP:7FEF  PC:006D   \n" +
+                "006F  C9        RET         (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FEF  PC:006F   \n" +
+                "0051  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FF1  PC:0051   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FEF  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FED  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FEB  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FE9  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FE7  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:0046  DE:0000  HL:0012  AF:4602  SP:7FE7  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:0046  DE:0000  HL:0012  AF:4602  SP:7FE7  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:0046  DE:0000  HL:0012  AF:4602  SP:7FE9  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:0046  DE:0000  HL:0012  AF:4602  SP:7FEB  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:0046  DE:0000  HL:0012  AF:4602  SP:7FED  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FEF  PC:0048   \n" +
+                "0054  F1        POP PSW     (2)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FF1  PC:0054   \n" +
+                "0055  CD 64 00  CALL 0064   (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF3  PC:0055   \n" +
+                "0064  E6 0F     ANI 0F      (3)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF1  PC:0064   \n" +
+                "0066  FE 0A     CPI 0A      (3)  BC:0000  DE:0000  HL:0012  AF:0E12  SP:7FF1  PC:0066   \n" +
+                "0068  FA 6D 00  JM 006D     (3)  BC:0000  DE:0000  HL:0012  AF:0E02  SP:7FF1  PC:0068   \n" +
+                "006B  C6 07     ADI 07      (3)  BC:0000  DE:0000  HL:0012  AF:0E02  SP:7FF1  PC:006B   \n" +
+                "006D  C6 30     ADI 30      (3)  BC:0000  DE:0000  HL:0012  AF:1512  SP:7FF1  PC:006D   \n" +
+                "006F  C9        RET         (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FF1  PC:006F   \n" +
+                "0058  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FF3  PC:0058   \n" +
+                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FF1  PC:003C   \n" +
+                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FEF  PC:003D   \n" +
+                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FED  PC:003E   \n" +
+                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FEB  PC:003F   \n" +
+                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FE9  PC:0040   \n" +
+                "0041  CD 37 C0  CALL C037   (3)  BC:0045  DE:0000  HL:0012  AF:4502  SP:7FE9  PC:0041   \n" +
+                "0044  F1        POP PSW     (3)  BC:0045  DE:0000  HL:0012  AF:4502  SP:7FE9  PC:0044   \n" +
+                "0045  E1        POP H       (3)  BC:0045  DE:0000  HL:0012  AF:4502  SP:7FEB  PC:0045   \n" +
+                "0046  D1        POP D       (3)  BC:0045  DE:0000  HL:0012  AF:4502  SP:7FED  PC:0046   \n" +
+                "0047  C1        POP B       (3)  BC:0045  DE:0000  HL:0012  AF:4502  SP:7FEF  PC:0047   \n" +
+                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FF1  PC:0048   \n" +
+                "005B  F1        POP PSW     (2)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FF3  PC:005B   \n" +
+                "005C  E1        POP H       (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF5  PC:005C   \n" +
+                "005D  D1        POP D       (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF7  PC:005D   \n" +
+                "005E  C1        POP B       (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF9  PC:005E   \n" +
+                "005F  C9        RET         (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FFB  PC:005F   \n" +
+                "000F  C3 22 00  JMP 0022    (1)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FFD  PC:000F   \n" +
+                "0022  C3 00 C8  JMP C800    (1)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FFD  PC:0022   ");
+    }
+
+    @Test
     public void testLik_diagnostic_microcosm() {
         // given
         Lik.loadRom(base, roms);
@@ -1125,394 +1515,6 @@ public class IntegrationTest extends AbstractTest {
                 "006D  C1        POP B       (2)  BC:AA55  DE:AAAA  HL:00A3  AF:AA46  SP:06CF  PC:006D   \n" +
                 "006E  C9        RET         (2)  BC:AA55  DE:AAAA  HL:00A3  AF:AA46  SP:06D1  PC:006E   \n" +
                 "0055  C3 00 C8  JMP C800    (1)  BC:AA55  DE:AAAA  HL:00A3  AF:AA46  SP:06D3  PC:0055   ");
-    }
-
-    @Test
-    public void testLik_helloWorld() {
-        // given
-        Lik.loadRom(base, roms);
-        hard.loadData(APP_RESOURCES + "test/hello_world.rks", Lik.PLATFORM);
-        debug.enable(new Range(0x0000, 0x0100));
-        cpu.modAdd(new StopWhen(0x0022)); // последняя команда перед выходом в монитор
-
-        // when
-        hard.reset();
-        hard.start();
-
-        // then
-        asrtCpu("BC:  0000\n" +
-                "DE:  0000\n" +
-                "HL:  0012\n" +
-                "AF:  FE46\n" +
-                "SP:  7FFD\n" +
-                "PC:  C800\n" +
-                "B,C: 00 00\n" +
-                "D,E: 00 00\n" +
-                "H,L: 00 12\n" +
-                "M:   0D\n" +
-                "A,F: FE 46\n" +
-                "     76543210 76543210\n" +
-                "SP:  01111111 11111101\n" +
-                "PC:  11001000 00000000\n" +
-                "     76543210\n" +
-                "B:   00000000\n" +
-                "C:   00000000\n" +
-                "D:   00000000\n" +
-                "E:   00000000\n" +
-                "H:   00000000\n" +
-                "L:   00010010\n" +
-                "M:   00001101\n" +
-                "A:   11111110\n" +
-                "     sz0h0p1c\n" +
-                "F:   01000110\n" +
-                "ts:  false\n" +
-                "tz:  true\n" +
-                "th:  false\n" +
-                "tp:  true\n" +
-                "tc:  false\n");
-
-        assertTrace("" +
-                "0004  21 12 00  LXI H,0012  (1)  BC:0000  DE:0000  HL:0004  AF:0046  SP:7FFD  PC:0004   \n" +
-                "0007  CD 25 00  CALL 0025   (1)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FFD  PC:0007   \n" +
-                "0025  C5        PUSH B      (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FFB  PC:0025   \n" +
-                "0026  D5        PUSH D      (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FF9  PC:0026   \n" +
-                "0027  E5        PUSH H      (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FF7  PC:0027   \n" +
-                "0028  F5        PUSH PSW    (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FF5  PC:0028   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0012  AF:0D46  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:000D  DE:0000  HL:0012  AF:0D83  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:000D  DE:0000  HL:0012  AF:0D83  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:000D  DE:0000  HL:0012  AF:0D83  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:000D  DE:0000  HL:0012  AF:0D83  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:000D  DE:0000  HL:0012  AF:0D83  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0012  AF:0D83  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0013  AF:0D83  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0013  AF:0D83  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:000A  DE:0000  HL:0013  AF:0A83  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:000A  DE:0000  HL:0013  AF:0A83  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:000A  DE:0000  HL:0013  AF:0A83  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:000A  DE:0000  HL:0013  AF:0A83  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:000A  DE:0000  HL:0013  AF:0A83  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0013  AF:0A83  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0014  AF:0A83  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0014  AF:0A83  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0014  AF:4883  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:0048  DE:0000  HL:0014  AF:4806  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:0048  DE:0000  HL:0014  AF:4806  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:0048  DE:0000  HL:0014  AF:4806  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:0048  DE:0000  HL:0014  AF:4806  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:0048  DE:0000  HL:0014  AF:4806  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0014  AF:4806  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0015  AF:4806  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0015  AF:4806  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:0045  DE:0000  HL:0015  AF:4506  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:0045  DE:0000  HL:0015  AF:4506  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:0045  DE:0000  HL:0015  AF:4506  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:0045  DE:0000  HL:0015  AF:4506  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:0045  DE:0000  HL:0015  AF:4506  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0015  AF:4506  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0016  AF:4506  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0016  AF:4506  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:004C  DE:0000  HL:0016  AF:4C06  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:004C  DE:0000  HL:0016  AF:4C06  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:004C  DE:0000  HL:0016  AF:4C06  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:004C  DE:0000  HL:0016  AF:4C06  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:004C  DE:0000  HL:0016  AF:4C06  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0016  AF:4C06  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:004C  DE:0000  HL:0017  AF:4C06  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:004C  DE:0000  HL:0017  AF:4C06  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:004C  DE:0000  HL:0017  AF:4C06  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:004C  DE:0000  HL:0017  AF:4C06  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:004C  DE:0000  HL:0017  AF:4C06  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0017  AF:4C06  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0018  AF:4C06  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0018  AF:4C06  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:004F  DE:0000  HL:0018  AF:4F06  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:004F  DE:0000  HL:0018  AF:4F06  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:004F  DE:0000  HL:0018  AF:4F06  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:004F  DE:0000  HL:0018  AF:4F06  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:004F  DE:0000  HL:0018  AF:4F06  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0018  AF:4F06  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0019  AF:4F06  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0019  AF:4F06  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0019  AF:2006  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:0020  DE:0000  HL:0019  AF:2097  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:0020  DE:0000  HL:0019  AF:2097  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:0020  DE:0000  HL:0019  AF:2097  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:0020  DE:0000  HL:0019  AF:2097  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:0020  DE:0000  HL:0019  AF:2097  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0019  AF:2097  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:001A  AF:2097  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001A  AF:2097  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:001A  AF:5797  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:0057  DE:0000  HL:001A  AF:5706  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:0057  DE:0000  HL:001A  AF:5706  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:0057  DE:0000  HL:001A  AF:5706  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:0057  DE:0000  HL:001A  AF:5706  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:0057  DE:0000  HL:001A  AF:5706  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:001A  AF:5706  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:001B  AF:5706  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001B  AF:5706  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:004F  DE:0000  HL:001B  AF:4F06  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:004F  DE:0000  HL:001B  AF:4F06  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:004F  DE:0000  HL:001B  AF:4F06  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:004F  DE:0000  HL:001B  AF:4F06  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:004F  DE:0000  HL:001B  AF:4F06  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:001B  AF:4F06  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:001C  AF:4F06  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001C  AF:4F06  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:001C  AF:5206  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:0052  DE:0000  HL:001C  AF:5216  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:0052  DE:0000  HL:001C  AF:5216  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:0052  DE:0000  HL:001C  AF:5216  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:0052  DE:0000  HL:001C  AF:5216  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:0052  DE:0000  HL:001C  AF:5216  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:001C  AF:5216  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:001D  AF:5216  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001D  AF:5216  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:001D  AF:4C16  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:004C  DE:0000  HL:001D  AF:4C06  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:004C  DE:0000  HL:001D  AF:4C06  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:004C  DE:0000  HL:001D  AF:4C06  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:004C  DE:0000  HL:001D  AF:4C06  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:004C  DE:0000  HL:001D  AF:4C06  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:001D  AF:4C06  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:001E  AF:4C06  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001E  AF:4C06  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:001E  AF:4406  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:0044  DE:0000  HL:001E  AF:4402  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:0044  DE:0000  HL:001E  AF:4402  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:0044  DE:0000  HL:001E  AF:4402  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:0044  DE:0000  HL:001E  AF:4402  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:0044  DE:0000  HL:001E  AF:4402  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:001E  AF:4402  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:001F  AF:4402  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001F  AF:4402  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:001F  AF:0D02  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:000D  DE:0000  HL:001F  AF:0D83  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:000D  DE:0000  HL:001F  AF:0D83  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:000D  DE:0000  HL:001F  AF:0D83  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:000D  DE:0000  HL:001F  AF:0D83  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:000D  DE:0000  HL:001F  AF:0D83  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:001F  AF:0D83  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0020  AF:0D83  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0020  AF:0D83  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF3  PC:002C   \n" +
-                "002F  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF3  PC:002F   \n" +
-                "0030  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF3  PC:0030   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:000A  DE:0000  HL:0020  AF:0A83  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:000A  DE:0000  HL:0020  AF:0A83  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:000A  DE:0000  HL:0020  AF:0A83  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:000A  DE:0000  HL:0020  AF:0A83  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:000A  DE:0000  HL:0020  AF:0A83  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF1  PC:0048   \n" +
-                "0033  23        INX H       (2)  BC:0000  DE:0000  HL:0020  AF:0A83  SP:7FF3  PC:0033   \n" +
-                "0034  C3 29 00  JMP 0029    (2)  BC:0000  DE:0000  HL:0021  AF:0A83  SP:7FF3  PC:0034   \n" +
-                "0029  7E        MOV A,M     (2)  BC:0000  DE:0000  HL:0021  AF:0A83  SP:7FF3  PC:0029   \n" +
-                "002A  FE 24     CPI 24      (2)  BC:0000  DE:0000  HL:0021  AF:2483  SP:7FF3  PC:002A   \n" +
-                "002C  CA 37 00  JZ 0037     (2)  BC:0000  DE:0000  HL:0021  AF:2446  SP:7FF3  PC:002C   \n" +
-                "0037  F1        POP PSW     (2)  BC:0000  DE:0000  HL:0021  AF:2446  SP:7FF3  PC:0037   \n" +
-                "0038  E1        POP H       (2)  BC:0000  DE:0000  HL:0021  AF:0046  SP:7FF5  PC:0038   \n" +
-                "0039  D1        POP D       (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FF7  PC:0039   \n" +
-                "003A  C1        POP B       (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FF9  PC:003A   \n" +
-                "003B  C9        RET         (2)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FFB  PC:003B   \n" +
-                "000A  3E FE     MVI A,FE    (1)  BC:0000  DE:0000  HL:0012  AF:0046  SP:7FFD  PC:000A   \n" +
-                "000C  CD 49 00  CALL 0049   (1)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FFD  PC:000C   \n" +
-                "0049  C5        PUSH B      (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FFB  PC:0049   \n" +
-                "004A  D5        PUSH D      (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF9  PC:004A   \n" +
-                "004B  E5        PUSH H      (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF7  PC:004B   \n" +
-                "004C  F5        PUSH PSW    (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF5  PC:004C   \n" +
-                "004D  F5        PUSH PSW    (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF3  PC:004D   \n" +
-                "004E  CD 60 00  CALL 0060   (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF1  PC:004E   \n" +
-                "0060  0F        RRC         (3)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FEF  PC:0060   \n" +
-                "0061  0F        RRC         (3)  BC:0000  DE:0000  HL:0012  AF:7F46  SP:7FEF  PC:0061   \n" +
-                "0062  0F        RRC         (3)  BC:0000  DE:0000  HL:0012  AF:BF47  SP:7FEF  PC:0062   \n" +
-                "0063  0F        RRC         (3)  BC:0000  DE:0000  HL:0012  AF:DF47  SP:7FEF  PC:0063   \n" +
-                "0064  E6 0F     ANI 0F      (3)  BC:0000  DE:0000  HL:0012  AF:EF47  SP:7FEF  PC:0064   \n" +
-                "0066  FE 0A     CPI 0A      (3)  BC:0000  DE:0000  HL:0012  AF:0F16  SP:7FEF  PC:0066   \n" +
-                "0068  FA 6D 00  JM 006D     (3)  BC:0000  DE:0000  HL:0012  AF:0F06  SP:7FEF  PC:0068   \n" +
-                "006B  C6 07     ADI 07      (3)  BC:0000  DE:0000  HL:0012  AF:0F06  SP:7FEF  PC:006B   \n" +
-                "006D  C6 30     ADI 30      (3)  BC:0000  DE:0000  HL:0012  AF:1612  SP:7FEF  PC:006D   \n" +
-                "006F  C9        RET         (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FEF  PC:006F   \n" +
-                "0051  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FF1  PC:0051   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FEF  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FED  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FEB  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FE9  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FE7  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:0046  DE:0000  HL:0012  AF:4602  SP:7FE7  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:0046  DE:0000  HL:0012  AF:4602  SP:7FE7  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:0046  DE:0000  HL:0012  AF:4602  SP:7FE9  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:0046  DE:0000  HL:0012  AF:4602  SP:7FEB  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:0046  DE:0000  HL:0012  AF:4602  SP:7FED  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FEF  PC:0048   \n" +
-                "0054  F1        POP PSW     (2)  BC:0000  DE:0000  HL:0012  AF:4602  SP:7FF1  PC:0054   \n" +
-                "0055  CD 64 00  CALL 0064   (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF3  PC:0055   \n" +
-                "0064  E6 0F     ANI 0F      (3)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF1  PC:0064   \n" +
-                "0066  FE 0A     CPI 0A      (3)  BC:0000  DE:0000  HL:0012  AF:0E12  SP:7FF1  PC:0066   \n" +
-                "0068  FA 6D 00  JM 006D     (3)  BC:0000  DE:0000  HL:0012  AF:0E02  SP:7FF1  PC:0068   \n" +
-                "006B  C6 07     ADI 07      (3)  BC:0000  DE:0000  HL:0012  AF:0E02  SP:7FF1  PC:006B   \n" +
-                "006D  C6 30     ADI 30      (3)  BC:0000  DE:0000  HL:0012  AF:1512  SP:7FF1  PC:006D   \n" +
-                "006F  C9        RET         (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FF1  PC:006F   \n" +
-                "0058  CD 3C 00  CALL 003C   (2)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FF3  PC:0058   \n" +
-                "003C  C5        PUSH B      (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FF1  PC:003C   \n" +
-                "003D  D5        PUSH D      (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FEF  PC:003D   \n" +
-                "003E  E5        PUSH H      (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FED  PC:003E   \n" +
-                "003F  F5        PUSH PSW    (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FEB  PC:003F   \n" +
-                "0040  4F        MOV C,A     (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FE9  PC:0040   \n" +
-                "0041  CD 37 C0  CALL C037   (3)  BC:0045  DE:0000  HL:0012  AF:4502  SP:7FE9  PC:0041   \n" +
-                "0044  F1        POP PSW     (3)  BC:0045  DE:0000  HL:0012  AF:4502  SP:7FE9  PC:0044   \n" +
-                "0045  E1        POP H       (3)  BC:0045  DE:0000  HL:0012  AF:4502  SP:7FEB  PC:0045   \n" +
-                "0046  D1        POP D       (3)  BC:0045  DE:0000  HL:0012  AF:4502  SP:7FED  PC:0046   \n" +
-                "0047  C1        POP B       (3)  BC:0045  DE:0000  HL:0012  AF:4502  SP:7FEF  PC:0047   \n" +
-                "0048  C9        RET         (3)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FF1  PC:0048   \n" +
-                "005B  F1        POP PSW     (2)  BC:0000  DE:0000  HL:0012  AF:4502  SP:7FF3  PC:005B   \n" +
-                "005C  E1        POP H       (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF5  PC:005C   \n" +
-                "005D  D1        POP D       (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF7  PC:005D   \n" +
-                "005E  C1        POP B       (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FF9  PC:005E   \n" +
-                "005F  C9        RET         (2)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FFB  PC:005F   \n" +
-                "000F  C3 22 00  JMP 0022    (1)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FFD  PC:000F   \n" +
-                "0022  C3 00 C8  JMP C800    (1)  BC:0000  DE:0000  HL:0012  AF:FE46  SP:7FFD  PC:0022   ");
     }
 
     @Test
