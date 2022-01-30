@@ -54,6 +54,7 @@ public class Constants {
 
     // подогнано экспериментально, чтобы в игре Клад отрисовка была максимально близкой
     public static final double CPU_CLOCK = 0.1;
-    public static final int REFRESH_RATE = 1;  // refresh screen every 'n' interrupts
+    public static final int REFRESH_RATE = 1;      // refresh screen every 'n' interrupts
+    public static final int MAX_REFRESH_RATE = 50;
     public static final int INTERRUPT_DELAY = (int)(70 * CPU_CLOCK);
 }

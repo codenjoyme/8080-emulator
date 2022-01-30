@@ -17,6 +17,7 @@ import static spec.Video.COLORS;
 public class Application {
 
     private int interrupt = 0;
+    private int refreshRate = REFRESH_RATE;
 
     // TODO а точно тут надо так заморачиваться с многопоточностью?
     private boolean willReset = false;
@@ -97,7 +98,7 @@ public class Application {
         interrupt++;
 
         // Обновлять экран каждое прерывание по умолчанию
-        if ((interrupt % REFRESH_RATE) == 0) {
+        if ((interrupt % refreshRate) == 0) {
             hard.video().screenPaint();
         }
 
@@ -206,6 +207,11 @@ public class Application {
         if (key.numStar()) {
             if (key.pressed()) {
                 fullSpeed = !fullSpeed;
+                if (fullSpeed) {
+                    refreshRate = MAX_REFRESH_RATE;
+                } else {
+                    refreshRate = REFRESH_RATE;
+                }
             }
             return;
         }
