@@ -77,13 +77,30 @@ lab4:   LXI     SP,regs1
         PUSH    B
         PUSH    PSW
 
-v       DEFL    0
-        REPT    8
-        LDA     regs2+v/2
-v       DEFL    v+2
-        CPI     v
+        LDA     regs2 + 0/2
+        CPI     2
         JNZ     0
-        ENDM
+        LDA     regs2 + 2/2
+        CPI     4
+        JNZ     0
+        LDA     regs2 + 4/2
+        CPI     6
+        JNZ     0
+        LDA     regs2 + 6/2
+        CPI     8
+        JNZ     0
+        LDA     regs2 + 8/2
+        CPI     00Ah
+        JNZ     0
+        LDA     regs2 + 10/2
+        CPI     12
+        JNZ     0
+        LDA     regs2 + 12/2
+        CPI     14
+        JNZ     0
+        LDA     regs2 + 14/2
+        CPI     16
+        JNZ     0
 
 ; test access to memory via (hl)
         LXI     H,hlval
@@ -275,11 +292,7 @@ conout: PUSH   PSW
         POP    PSW
         RET
 
-v       DEFL   0
-regs1:  REPT   8
-v       DEFL   v+2
-        DB     v
-        ENDM
+regs1:  DB     002h, 004h, 006h, 008h, 00Ah, 00Ch, 00Eh, 010h
 
 regs2:  DS     8,0
 
