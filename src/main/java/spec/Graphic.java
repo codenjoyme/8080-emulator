@@ -12,9 +12,8 @@ public class Graphic implements Video.Drawer {
     private Color currentBorder = null; // null mean update screen
     private Color newBorder = Color.YELLOW;
 
-    private int current;
-    private Image[] image;
-    private Graphics[] buffer;
+    private Image image;
+    private Graphics buffer;
 
     private JPanel panel;
 
@@ -39,36 +38,22 @@ public class Graphic implements Video.Drawer {
         panel.setVisible(true);
         panel.setSize(width + 2 * border, height + 2 * border);
         parent.add(panel);
-
-        current = 0;
-        image = new Image[2];
-        buffer = new Graphics[2];
+        
         // тут мы кешируем уже отрисованное из видеопамяти изображение
-        image[0] = parent.createImage(panel.getWidth(), panel.getHeight());
-        image[1] = parent.createImage(panel.getWidth(), panel.getHeight());
+        image = parent.createImage(panel.getWidth(), panel.getHeight());
         // через него мы рисуем на cache-image пиксели
-        buffer[0] = image[0].getGraphics();
-        buffer[1] = image[1].getGraphics();
+        buffer = image.getGraphics();
     }
 
     @Override
     public void draw(int x, int y, Image pattern) {
-        buffer().drawImage(pattern, border + x, border + y, null);
+        buffer.drawImage(pattern, border + x, border + y, null);
     }
 
     @Override
     public void done() {
-        current++;
-        buffer().drawImage(image(), 0, 0, null);
+        buffer.drawImage(image, 0, 0, null);
         repaint();
-    }
-
-    private Graphics buffer() {
-        return buffer[current % 2];
-    }
-
-    private Image image() {
-        return image[(current + 1) % 2];
     }
 
     public void changeColor(Color color) {
@@ -87,23 +72,23 @@ public class Graphic implements Video.Drawer {
             return;
         }
         currentBorder = newBorder;
-        buffer().setColor(currentBorder);
-        buffer().fillRect(
+        buffer.setColor(currentBorder);
+        buffer.fillRect(
                 0,
                 0,
                 width + 2 * border,
                 border);
-        buffer().fillRect(
+        buffer.fillRect(
                 0,
                 0,
                 border,
                 height + 2 * border);
-        buffer().fillRect(
+        buffer.fillRect(
                 width + border,
                 0,
                 border,
                 height + 2 * border);
-        buffer().fillRect(
+        buffer.fillRect(
                 0,
                 height + border,
                 width + 2 * border,
@@ -112,7 +97,7 @@ public class Graphic implements Video.Drawer {
 
     public void paint(Graphics graphics) {
         drawBorder();
-        graphics.drawImage(image(), 0, 0, null);
+        graphics.drawImage(image, 0, 0, null);
     }
 
     public void repaint() {
