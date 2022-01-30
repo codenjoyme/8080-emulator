@@ -4,34 +4,34 @@
         DB      04h, 00h    ; RKS HEADER/START MEMORY 
         DB      32h, 00h    ; RKS HEADER/END MEMORY
         
-        LXI     H, STRING
-        CALL    MSG
+        LXI     H, string
+        CALL    msg
         JMP     0C800h      ; LIK MONITOR-1M
 
 ;
-STRING: DB      0dh, 0ah, "HELLO WORLD", 0dh, 0ah, '$'
+string: DB      0dh, 0ah, "HELLO WORLD", 0dh, 0ah, '$'
 
 ;
-BDOS    EQU     0C037H  ;LIK PRINT CHAR PROCEDURE
+bdos    EQU     0C037H  ;LIK PRINT CHAR PROCEDURE
 
 ;
 ;MESSAGE OUTPUT ROUTINE
 ;
-MSG:    MOV     A,M     ; Get data
+msg:    MOV     A,M     ; Get data
         CPI     '$'     ; End?
         RZ
-        CALL    PCHAR   ; Output
+        CALL    pchar   ; Output
         INX     H       ; Next
-        JMP     MSG     ; Do all
+        JMP     msg     ; Do all
 ;
 ;
 ;CHARACTER OUTPUT ROUTINE
 ;
-PCHAR:  PUSH    PSW
+pchar:  PUSH    PSW
         PUSH    D
         PUSH    H
         MOV     C,M
-        CALL    BDOS
+        CALL    bdos
         POP     H
         POP     D
         POP     PSW
