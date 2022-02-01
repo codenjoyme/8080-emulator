@@ -6,7 +6,7 @@ import java.util.function.BiConsumer;
 
 public class When implements CpuMod<Cpu> {
 
-    private BiConsumer<String, Cpu> trigger;
+    protected BiConsumer<String, Cpu> trigger;
 
     public When(BiConsumer<String, Cpu> trigger) {
         this.trigger = trigger;

@@ -1,5 +1,6 @@
 package spec.platforms;
 
+import spec.Range;
 import spec.RomLoader;
 
 import java.net.URL;
@@ -17,15 +18,15 @@ public class Lik {
         roms.loadROM(base, "lik/roms/06_basicLik.bin", 0xE800);
     }
 
-    public static void loadGame(URL base, RomLoader roms, String name) {
-        roms.loadRKS(base, "lik/apps/" + name + ".rks");
+    public static Range loadGame(URL base, RomLoader roms, String name) {
+        return roms.loadRKS(base, "lik/apps/" + name + ".rks");
     }
 
-    public static void loadTest(URL base, RomLoader roms, String name) {
+    public static Range loadTest(URL base, RomLoader roms, String name) {
         if (name.endsWith(".com")) {
-            roms.loadROM(base, "test/" + name, 0x0000);
+            return roms.loadROM(base, "test/" + name, 0x0000);
         } else {
-            roms.loadRKS(base, "test/" + name);
+            return roms.loadRKS(base, "test/" + name);
         }
     }
 }

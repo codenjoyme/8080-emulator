@@ -19,14 +19,15 @@ public class RomLoader {
     }
 
     // чтение ПЗУ ZX Spectrum
-    public int loadROMZ(URL base, String path) {
+    public Range loadROMZ(URL base, String path) {
         try {
             URL url = new URL(base, path);
             InputStream is = url.openStream();
             int length = is.available();
             Range range = new Range(0, -length);
             logLoading(url.toString(), range);
-            return readBytes(is, memory.all(), range);
+            readBytes(is, memory.all(), range);
+            return range;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -38,7 +39,7 @@ public class RomLoader {
 
     // для ПК "Специалист"
     // чтение ПЗУ
-    public int loadROM(URL base, String path, int offset) {
+    public Range loadROM(URL base, String path, int offset) {
         try {
             URL url = new URL(base, path);
             InputStream is = url.openStream();
@@ -47,7 +48,7 @@ public class RomLoader {
             logLoading(url.toString(), range);
             cpu.PC(offset);
             readBytes(is, memory.all(), range);
-            return cpu.PC();
+            return range;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -58,7 +59,7 @@ public class RomLoader {
     // ADK: ML_B, ST_B
     // Bytes...
     // KSM: ML_B, ST_B
-    public int loadRKS(URL base, String path) {
+    public Range loadRKS(URL base, String path) {
         try {
             URL url = new URL(base, path);
             InputStream is = url.openStream();
@@ -74,7 +75,7 @@ public class RomLoader {
             logLoading(url.toString(), range);
             cpu.PC(range.begin());
             readBytes(is, memory.all(), range);
-            return cpu.PC();
+            return range;
             // int[] data = read8arr(is, 4); // TODO в конце еще два байта, зачем?
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -122,7 +123,7 @@ public class RomLoader {
         }
     }
 
-    public int load(String path) {
+    public Range load(String path) {
         try {
             File file = new File(path);
             URL url = file.getParentFile().toURI().toURL();

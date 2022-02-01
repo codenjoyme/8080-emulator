@@ -171,18 +171,18 @@ public class Hardware {
     public void loadData(String path, boolean platform) {
         pause();
 
-        int offset = roms.load(path);
+        Range range = roms.load(path);
 
         int delta = 25_000;
         if (platform == Lik.PLATFORM) {
             record.reset().after(delta)
                     .press(END).after(delta)
                     .press(ENTER).after(delta)
-                    .enter("J" + hex16(offset)).press(ENTER).after(delta)
+                    .enter("J" + hex16(range.begin())).press(ENTER).after(delta)
                     .reset();
         } else {
             record.reset().after(2 * delta)
-                    .enter("G" + hex16(offset)).press(ENTER).after(delta)
+                    .enter("G" + hex16(range.begin())).press(ENTER).after(delta)
                     .reset();
         }
 

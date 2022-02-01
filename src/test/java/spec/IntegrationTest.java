@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import spec.mods.DebugWhen;
 import spec.mods.StopWhen;
+import spec.mods.WhereIsData;
 import spec.platforms.Lik;
 import spec.platforms.Specialist;
 import spec.stuff.AbstractTest;
@@ -76,6 +77,11 @@ public class IntegrationTest extends AbstractTest {
 
     private void assertCpu() {
         assertCpu("cpu");
+    }
+
+    private void assertCpuAt(WhereIsData data) {
+        fileAssert.check("Cpu was at info", "cpuAt.log",
+                file -> write(file, data.toString()));
     }
 
     private void assertTrace() {
@@ -178,10 +184,13 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_klad_recording() {
         // given
         Lik.loadRom(base, roms);
-        Lik.loadGame(base, roms, "klad");
+        Range range = Lik.loadGame(base, roms, "klad");
+        WhereIsData data = new WhereIsData(range);
+        cpu.modAdd(data);
 
         // when
         assertRecord("klad.rec");
+        assertCpuAt(data);
     }
 
     @Test
