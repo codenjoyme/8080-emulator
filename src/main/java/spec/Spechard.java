@@ -88,6 +88,9 @@ public Spechard( Container _parent ) throws Exception
 //- warning: show() in java.awt.Component has been deprecated
 //- canvas.show();//-= setVisible(true);
     canvas.setVisible(true); //- сделали canvas видимым.
+    if (parent.getKeyListeners().length > 0) {
+        canvas.addKeyListener(parent.getKeyListeners()[0]);
+    }
 
        bufferImage = parent.createImage( nPixelsWide*pixelScale, nPixelsHigh*pixelScale );
 
