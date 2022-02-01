@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" 
+      href="application.jnlp">
+    <information>
+        <title>i8080 emulator</title>
+        <vendor>Commulity</vendor>
+    </information>
+    <resources>
+        <j2se version="1.7+"
+              href="http://java.sun.com/products/autodl/j2se"/>
+        <jar href="emulator-1.0.jar"
+             main="false"
+             java-vm-args="-Djava.security.policy=${jnlp.ip}${jnlp.port}/ed/security/java.policy"/>
+    </resources>
+    <!--security>
+        <all-permissions/>
+    </security-->
+    <application-desc
+            main-class="spec.Main"
+            name="i8080 Emulator"
+            width="424" height="296"> <!-- 424 = 384 + 2*20, 296 = 256 + 2*20  -->
+        <argument>${server.hostname}</argument>
+    </application-desc>
+</jnlp>

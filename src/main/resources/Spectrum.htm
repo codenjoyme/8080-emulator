@@ -1,6 +1,7 @@
 <html>
 <head>
 <title>Jasper - ZX Spectrum Emulator</title>
+<script src="deployJava.js"></script>
 </head>
 
 <body bgcolor="black" text="yellow" link="red" vlink="lightgreen" alink="lightblue">
@@ -17,16 +18,12 @@
 <tr>
 
 <td>
-<!--   width="304" height="239"  -->
-<applet code="Spec1987.class" width="432" height="304" align="Center">
- <param name="borderWidth" value="24">
- <param name="sleepHack" value="5">
- <param name="showStats" value="No">
-
-<p>Sorry, this browser is not Java(tm) enabled.</p>
-<p>It either cannot run Java(tm) applets, or the running of applets is currently
-disabled in your browser.</p>
-</applet>
+ <script>
+  deployJava.launchWebStartApplication("application.jnlp");
+ </script>
+ <noscript>
+  JavaScript is required for this page.
+ </noscript>
 </td>
 
 </tr>

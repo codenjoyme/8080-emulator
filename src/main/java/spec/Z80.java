@@ -12,7 +12,7 @@
  * @see Spectrum
  */
 
-public class Z80 extends Object {
+public class Z80 {
 
   public Z80( double clockFrequencyInMHz )
   { //--- число тактов на 1 прерывание, которое происходит 50 раз в секунду.
