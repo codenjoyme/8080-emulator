@@ -14,8 +14,6 @@ import static spec.Constants.*;
 
 public class Main extends JFrame implements KeyListener {
 
-    private Application app;
-
     public static void main(String[] args) {
         // передается или base в серверной версии,
         // либо файл с приложением, либо вообще ничего
@@ -47,13 +45,7 @@ public class Main extends JFrame implements KeyListener {
         addKeyListener(this);
 
         URL baseUrl = getBaseUrl(base);
-        Logger.debug("Base url: " + baseUrl);
-        app = new Application(this, baseUrl);
-        if (rom != null) {
-            app.load(rom);
-        }
-        app.gotFocus();
-        app.start();
+
     }
 
     private URL getBaseUrl(String base) {

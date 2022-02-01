@@ -1,3 +1,5 @@
+package spec;
+
 /*
  * @(#)Spec1987.java V1.0 alpha, © 21/05/2011 Sam_Computers LTD
  * Special thanks to Adam Davidson & Andrew Pollard for Jasper sources.
