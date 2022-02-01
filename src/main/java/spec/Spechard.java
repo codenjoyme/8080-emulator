@@ -25,6 +25,7 @@ package spec;
  */
 import javax.swing.*;
 import java.awt.*; //---(инструментарий для работы с абстрактными окнами).
+import java.awt.event.KeyEvent;
 import java.util.*;//---
 import java.io.*;  //---
 import java.net.*; //---
@@ -1003,7 +1004,7 @@ public void reset() {
  //----------------------------------------------------------------------------------
  // Screen stuff - метрики экрана
                                               // ширина бордюра ---
-  public              int borderWidth = 20;   // absolute, not relative to pixelScale
+  public static       int borderWidth = 20;   // absolute, not relative to pixelScale
   public static final int pixelScale  = 1;    // scales pixels in main screen, not border
 //---***
   public static final int nPixelsWide = 384;  // точек по X 384 - Спец.; 256 - ZX;
@@ -1649,79 +1650,60 @@ public void paintBuffer() {  //---------------------- вызывается из 
 //-------------------- Process events from UI - ОБРАБОТКА СОБЫТИЙ -----------------------
 
 //---------- вызывается  Spec1987.handleEvent-ом.----------
-public boolean handleEvent( Event e ) {  // По сути это переопределённый handleEvent();
+public boolean handleKey(KeyEvent event, boolean press) {  // По сути это переопределённый handleEvent();
 // System.out.println(" Spechard _ Event !");
-   if( e.target == progressBar )
-     { //------ progressBar Event
-      if ( e.id == Event.MOUSE_DOWN ) {
-
-        if ( sleepHack > 0 ) {
-             sleepHack = 0;
-             showMessage( "Sleep Cancelled" );
-        }
-         else
-        {
-          toggleSpeed();
-        }
-        canvas.requestFocus();
-        return true;
-      }
-      return false;
-    } //------ progressBar END_
-
-      //------ urlField Event - событие от поля ввода url
-    if( e.target == urlField )
-      {
-      if( e.id == Event.ACTION_EVENT ) {
-        loadFromURLFieldNextInterrupt = true;
-       return true;
-      }
-       return false;
-      }
+// TODO implement me
+//   if( .target == progressBar )
+//     { //------ progressBar Event
+//      if ( e.id == Event.MOUSE_DOWN ) {
+//
+//        if ( sleepHack > 0 ) {
+//             sleepHack = 0;
+//             showMessage( "Sleep Cancelled" );
+//        }
+//         else
+//        {
+//          toggleSpeed();
+//        }
+//        canvas.requestFocus();
+//        return true;
+//      }
+//      return false;
+//    } //------ progressBar END_
+//
+//      //------ urlField Event - событие от поля ввода url
+//    if( e.target == urlField )
+//      {
+//      if( e.id == Event.ACTION_EVENT ) {
+//        loadFromURLFieldNextInterrupt = true;
+//       return true;
+//      }
+//       return false;
+//      }
  //------ остальные события - от canvas-а Spechard (он же Z80)
- switch( e.id ){
-                case Event.MOUSE_DOWN:
-               //--- showMessage( "MOUSE_DOWN Event" );
-                     canvas.requestFocus();
-                     return true;
-
-                case Event.KEY_ACTION:
-
           //--- событие клавиатуры - КЛАВИША_НАЖАТА_: e.key - код нажатой клавиши.
           //--- Обычно является Unicode значением символа, который представлен этой клавишей.
-                case Event.KEY_PRESS:
-//--- отладка --------- код клавиши, [ символ клавиши ] , модификаторы  Integer.toHexString(i)
           //--- char se = (char)e.key; //---
           //---String s = "Key PRESSed < Code: "+ Integer.toHexString(e.key).toUpperCase() +"h = [ "+se+" ] >, "+ String.valueOf(e.modifiers);
           //---showMessage( s );
           //---urlField.setVisible(true);   //--- show();
           //---urlField.setText( s );
-//--- отладка ---------     doKey - вызываем отсюда...
-                     return doKey( true, e.key, e.modifiers ); //--- пересчет клавиатуры ---
-
-                case Event.KEY_ACTION_RELEASE:
-
-          //--- событие клавиатуры - КЛАВИША_ОТПУЩЕНА_
-                case Event.KEY_RELEASE:
-//---------------------     doKey - вызываем отсюда...
-                     return doKey( false, e.key, e.modifiers );//--- пересчет клавиатуры ---
-
-                case Event.GOT_FOCUS:
-                     showMessage( "'SPECIALIST' GOT FOCUS" );
-                     outb( 254, 0x02, 0 ); //
-                     wfocus = true;
-                     resetKeyboard();
-                     return true;
-
-                case Event.LOST_FOCUS:
-                     showMessage( "'SPECIALIST' LOST FOCUS" );
-                     outb( 254, 0x06, 0 ); //
-                     wfocus = false;
-                     resetKeyboard();
-                     return true;
-                    }
-    return false;
+         return doKey( press, event.getExtendedKeyCode(), event.getModifiersEx()); //--- пересчет клавиатуры ---
   }
+
+    public void lostFocus() {
+        showMessage( "'SPECIALIST' LOST FOCUS" );
+        outb( 254, 0x06, 0 ); //
+        wfocus = false;
+        resetKeyboard();
+    }
+
+    public void gotFocus() {
+        showMessage( "'SPECIALIST' GOT FOCUS" );
+        outb( 254, 0x02, 0 ); //
+        wfocus = true;
+        resetKeyboard();
+    }
 
 //-------------------- Handle Keyboard ----------------------------------------------------
 // линии чтения порта #xx.fe - фактически биты порта #FE.

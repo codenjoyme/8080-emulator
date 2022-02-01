@@ -10,16 +10,17 @@ package spec;
 //     В качестве параметра оператору import передается имя подключаемого класса из
 //     библиотеки классов. Если же необходимо подключить все классы данной библиотеки,
 //      вместо имени класса указывается символ "*".
-import java.applet.*;
 //     java.applet.Applet содержит классы, необходимые для создания аплетов, то есть
 //     разновидности приложений Java, встраиваемых в документы HTML и работающих под
 //     управлением браузера Internet.
 import java.awt.*;
 //     java.awt. С ее помощью аплет может выполнять в своем окне рисование различных
 //     изображений или текста.
+import java.awt.event.KeyEvent;
 import java.net.*;
 import java.io.*;
-import java.awt.AWTEvent;
+        import java.util.Map;
+
 /**
  * <p>The <a href="http://www.odie.demon.co.uk/spectrum">Spec1987</a> class wraps up
  * the Spechard class into an Applet which emulates a ZX Spechard in a Web Page.</p>
@@ -51,9 +52,18 @@ Pollard</A><br>
 //---  При этом методам класса 'Spec1987' становятся доступными все методы и данные класса,
 //---  за исключением определенных как private. Класс 'Applet' определен в библиотеке
 //---  классов java.applet.Applet, которую мы подключили оператором 'import'.
-public class Spec1987 extends Applet implements Runnable {
-  Spechard spechard = null; //--- класс Spechard.class
+public class Spec1987 implements Runnable {
+    URL baseURL;
+    private Map<String, String> params;
+    private Container parent;
+    Spechard spechard = null; //--- класс Spechard.class
     Thread thread   = null;
+
+public Spec1987(URL baseURL, Map<String, String> params, Container parent) {
+    this.baseURL = baseURL;
+    this.params = params;
+    this.parent = parent;
+}
 
   // Version and author information.
   // мы переопределили метод getAppletInfo из базового класса так, что getAppletInfo
@@ -74,18 +84,6 @@ public String[][] getParameterInfo() {
       { "showStats",   "Yes/No",   "show progress bar (default=Yes)" },
     };
     return info;
-  }
-
-// 1 ========================================================================================
-//  Метод init вызывается первым. В нем вы должны инициализировать свои переменные,
-//  Метод init вызывается только однажды — при загрузке апплета.
-  // Initailize the applet.
-  // Метод init вызывается тогда, когда браузер загружает в свое окно документ HTML с
-  // оператором <APPLET>, ссылающимся на данный аплет. В этот момент аплет может выполнять
-  // инициализацию, или, например, создавать потоки, если он работает в многопоточном режиме.
-public void init() {
-// System.out.println(" Happenned INIT !");
-    setLayout( null ); // вызов метода использован для выключения механизма режима размещения
   }
 
 // 2 ========================================================================================
@@ -138,7 +136,7 @@ public void run() {
       try {//- Конструктору класса  Spechard()передается ссылка на компонент,
            //- для которого необходимо отслеживать загрузку изображений (или что-то?).
            //- В данном случае это наш аплет, --> мы передаем конструктору значение (this)!!!
-           spechard = new Spechard( this ); //--- создан экземпляр Spechard.class
+           spechard = new Spechard(parent); //--- создан экземпляр Spechard.class
            readParameters();
           }
            catch ( Exception e )
@@ -154,15 +152,19 @@ public void run() {
        }
   }
 
-//--------------------------------------------------------------------------------------------
+    private void showStatus(String info) {
+        // TODO implement me
+    }
+
+    //--------------------------------------------------------------------------------------------
   // Parse available applet parameters.
   //  @exception Exception Problem loading ROM or snaphot.
   //  Вызывается из метода ------------------------------ RUN -------
 public void readParameters() throws Exception {
-  String rom = getParameter( "rom" );
-    if ( rom == null ) {
-         rom = "ramfos.rom";
-    }
+//  String rom = getParameter( "rom" );
+//    if ( rom == null ) {
+//         rom = "ramfos.rom";
+//    }
     spechard.setBorderWidth( getIntParameter( "borderWidth",
     spechard.borderWidth*spechard.pixelScale, 0, 100 ) );
 
@@ -188,7 +190,6 @@ public void readParameters() throws Exception {
       }
     }
 
-    URL baseURL = getDocumentBase();      //  path/
     spechard.urlField.setText( baseURL.toString() );
 //---***---------------------------------------------------------------------------------
 //---***    URL romZURL = new URL( baseURL, rom ); // "ramfos.rom"
@@ -223,7 +224,15 @@ if( snapshot != null )
     }
   }
 
-//--------------------------------------------------------------------------------------------
+    private void resize(Dimension size) {
+        // TODO implement me
+    }
+
+    private String getParameter(String name) {
+        return params.get(name);
+    }
+
+    //--------------------------------------------------------------------------------------------
   // Handle integer parameters in a range with defaults.
   // Вызывается из метода -------------------------------- readParameters()
 public int getIntParameter( String name, int ifUndef, int min, int max ) {
@@ -286,16 +295,6 @@ public void paint( Graphics g ) {
   // Наиболее часто используемые события, например, те, что связаны с мышью и клавиатурой,
   // диспетчеризируются другим методам класса Component.
 
-  // приложение может переопределить метод handleEvent и обрабатывать события самостоятельно
-//-- boolean handleEvent(Event)   replaced by void processEvent(AWTEvent e).
-public boolean handleEvent(Event e) {
-// showStatus(" Happenned Event !" + e );
-  if( spechard != null )
-    {
-      return spechard.handleEvent( e ); // Вызывает handleEvent( e ) класса Spechard.
-    }
-    return super.handleEvent( e ); // Если класса Spechard нет вызовем super.handleEvent( e ).
-  }
 //--------------------------------------------------------------------------------------------
   // Applet size.
 public Dimension minimumSize() {
@@ -312,5 +311,34 @@ public Dimension minimumSize() {
 public Dimension preferredSize() {
     return minimumSize();
   }
+
+    public void loadRKS(String rom) {
+        try {
+            URL url = new URL(baseURL, rom);
+            URLConnection snap = url.openConnection();
+            InputStream input = snap.getInputStream();
+            spechard.loadRKS(url.toString(), input);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void gotFocus() {
+        if (spechard != null) {
+            spechard.gotFocus();
+        }
+    }
+
+    public void lostFocus() {
+        if (spechard != null) {
+            spechard.lostFocus();
+        }
+    }
+
+    public void handleKey(KeyEvent event, boolean press) {
+        if (spechard != null) {
+            spechard.handleKey(event, press);
+        }
+    }
 }
 //----------------------------------------- END ----------------------------------------------

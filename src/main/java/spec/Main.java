@@ -9,10 +9,13 @@ import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
-import static spec.Constants.*;
+import static spec.Spechard.*;
 
 public class Main extends JFrame implements KeyListener {
+
+    private Spec1987 app;
 
     public static void main(String[] args) {
         // передается или base в серверной версии,
@@ -34,8 +37,8 @@ public class Main extends JFrame implements KeyListener {
     public Main(String base, String rom) {
         super("i8080 emulator");
         setMinimumSize(new Dimension(
-                SCREEN_WIDTH + BORDER_WIDTH * 2 + 15,
-                SCREEN_HEIGHT + BORDER_WIDTH * 2 + 40));
+                nPixelsWide + borderWidth * 2 + 15,
+                nPixelsHigh + borderWidth * 2 + 40));
         setVisible(true);
         setFocusable(true);
         setResizable(false);
@@ -45,7 +48,11 @@ public class Main extends JFrame implements KeyListener {
         addKeyListener(this);
 
         URL baseUrl = getBaseUrl(base);
-
+        app = new Spec1987(baseUrl, new HashMap<>(), this);
+        if (rom != null) {
+            app.loadRKS(rom);
+        }
+        app.start();
     }
 
     private URL getBaseUrl(String base) {
@@ -74,14 +81,14 @@ public class Main extends JFrame implements KeyListener {
     @Override
     public void keyPressed(KeyEvent event) {
         if (app != null) {
-            app.handleKey(new Key(event, true));
+            app.handleKey(event, true);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent event) {
         if (app != null) {
-            app.handleKey(new Key(event, false));
+            app.handleKey(event, false);
         }
     }
 
