@@ -7,7 +7,7 @@ public abstract class Modifiable {
 
     protected List<CpuMod> mods = new ArrayList<>(10);
 
-    public void on(String event, Object... params) {
+    public void on(Event event, Object... params) {
         for (int i = 0; i < mods.size(); i++) {
             mods.get(i).on(event, params);
         }

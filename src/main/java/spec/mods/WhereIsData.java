@@ -4,6 +4,7 @@ import spec.Cpu;
 import spec.Range;
 
 import static spec.WordMath.*;
+import static spec.mods.Event.CHANGE_PC;
 
 public class WhereIsData extends When {
 
@@ -14,7 +15,7 @@ public class WhereIsData extends When {
         super(null);
         this.range = range;
         trigger = (event, params) -> {
-            if (event.equals("pc")) {
+            if (event == CHANGE_PC) {
                 Cpu cpu = (Cpu)(params[0]);
                 access[cpu.PC()]++;
             }

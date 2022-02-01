@@ -2,9 +2,12 @@ package spec;
 
 import spec.assembler.Assembler;
 import spec.assembler.Command;
+import spec.mods.Event;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import static spec.mods.Event.CHANGE_PC;
 
 public class Cpu extends Registry {
 
@@ -57,7 +60,7 @@ public class Cpu extends Registry {
                 }
             }
 
-            on("pc", this);
+            on(CHANGE_PC, this);
             debug.log(PC());
             int bite = data.read8(rPC);
             Command command = asm.find(bite);

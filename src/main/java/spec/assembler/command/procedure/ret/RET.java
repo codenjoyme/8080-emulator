@@ -2,10 +2,13 @@ package spec.assembler.command.procedure.ret;
 
 import spec.Registry;
 import spec.assembler.Command;
+import spec.mods.Event;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
+
+import static spec.mods.Event.RUN_RET;
 
 public class RET extends Command {
 
@@ -36,6 +39,6 @@ public class RET extends Command {
     public static void ret(Registry r) {
         int addr = r.data().read16(r.rSP);
         r.PC(addr);
-        r.on("ret");
+        r.on(RUN_RET);
     }
 }

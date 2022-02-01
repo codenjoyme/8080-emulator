@@ -2,7 +2,7 @@ package spec.mods;
 
 public interface CpuMod {
 
-    void on(String event, Object... params);
+    void on(Event event, Object... params);
 
     void reset();
 
