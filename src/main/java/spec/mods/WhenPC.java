@@ -11,8 +11,9 @@ public class WhenPC extends When {
     public WhenPC(int addr, Consumer<Cpu> trigger) {
         super((event, params) -> {
             if (event == CHANGE_PC) {
-                Cpu cpu = (Cpu)(params[0]);
-                if (cpu.PC() == addr) {
+                int pc = (int)(params[0]);
+                Cpu cpu = (Cpu)(params[2]);
+                if (pc == addr) {
                     trigger.accept(cpu);
                 }
             }

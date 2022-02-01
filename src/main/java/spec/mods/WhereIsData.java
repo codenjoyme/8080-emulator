@@ -1,7 +1,7 @@
 package spec.mods;
 
-import spec.Cpu;
 import spec.Range;
+import spec.assembler.Command;
 
 import static spec.WordMath.*;
 import static spec.mods.Event.CHANGE_PC;
@@ -16,8 +16,12 @@ public class WhereIsData extends When {
         this.range = range;
         trigger = (event, params) -> {
             if (event == CHANGE_PC) {
-                Cpu cpu = (Cpu)(params[0]);
-                access[cpu.PC()]++;
+                int pc = (int)(params[0]);
+                Command command = (Command)(params[1]);
+                for (int i = 0; i < command.size(); i++) {
+                    // все коды команды инкризим
+                    access[pc + i]++;
+                }
             }
         };
     }

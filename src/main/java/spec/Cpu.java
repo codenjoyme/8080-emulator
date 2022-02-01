@@ -60,10 +60,11 @@ public class Cpu extends Registry {
                 }
             }
 
-            on(CHANGE_PC, this);
-            debug.log(PC());
+            int pc = PC();
+            debug.log(pc);
             int bite = data.read8(rPC);
             Command command = asm.find(bite);
+            on(CHANGE_PC, pc, command, this);
             if (command != null) {
                 command.apply(bite, this);
                 // каждая операция уменьшает число тактов на
