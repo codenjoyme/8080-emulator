@@ -57,7 +57,7 @@ public class Cpu extends Registry {
                 }
             }
 
-            on("PC");
+            on("pc", this);
             debug.log(PC());
             int bite = data.read8(rPC);
             Command command = asm.find(bite);

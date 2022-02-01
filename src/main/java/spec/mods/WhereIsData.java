@@ -1,5 +1,6 @@
 package spec.mods;
 
+import spec.Cpu;
 import spec.Range;
 
 import static spec.WordMath.*;
@@ -12,8 +13,9 @@ public class WhereIsData extends When {
     public WhereIsData(Range range) {
         super(null);
         this.range = range;
-        trigger = (event, cpu) -> {
-            if (event.equals("PC")) {
+        trigger = (event, params) -> {
+            if (event.equals("pc")) {
+                Cpu cpu = (Cpu)(params[0]);
                 access[cpu.PC()]++;
             }
         };

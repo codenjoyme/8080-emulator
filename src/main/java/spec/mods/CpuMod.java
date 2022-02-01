@@ -1,12 +1,12 @@
 package spec.mods;
 
-public interface CpuMod<T> {
+public interface CpuMod {
 
-    void on(String event, T data);
+    void on(String event, Object... params);
 
     void reset();
 
-    default <M extends CpuMod<T>> boolean itsMe(Class<M> clazz) {
+    default <M extends CpuMod> boolean itsMe(Class<M> clazz) {
         return getClass().equals(clazz);
     }
 }

@@ -5,7 +5,7 @@ import spec.mods.Modifiable;
 import static spec.Constants.*;
 import static spec.WordMath.*;
 
-public class Registry extends Modifiable<Cpu> {
+public class Registry extends Modifiable {
 
     public static final int T0c = x01; // Разряд Tc = 1, если был перенос или заем
     public static final int T11 = x02; // Всегда 1
