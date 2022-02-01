@@ -23,8 +23,17 @@ public class WhereIsData extends When {
     public String toString() {
         StringBuilder result = new StringBuilder();
         int length = maxLength();
-        result.append("     00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F\n");
+
+        // заголовок
+        result.append("    ");
+        for (int x = 0; x < 0x10; x++) {
+            result.append(padLeft(hex8(x), length + 1, ' '));
+        }
+        result.append("\n");
+
+        // данные
         for (int y = range.begin() / 0x10; y <= range.end() / 0x10; y++) {
+
             int dy = y * 0x10;
             result.append(hex16(dy));
             for (int x = 0; x < 0x10; x++) {
