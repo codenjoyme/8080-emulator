@@ -7,8 +7,7 @@ import spec.mods.CallDeep;
 import java.util.LinkedList;
 import java.util.List;
 
-import static spec.WordMath.hex;
-import static spec.WordMath.hex16;
+import static spec.WordMath.*;
 
 public class CpuDebug {
 
@@ -46,22 +45,15 @@ public class CpuDebug {
         Command command = asm.find(bites.get(0));
         bites = bites.subList(0, command.size());
         String out = String.format("%s%s%s%s%s",
-                pad(hex16(addr), 6),
-                pad(hex(bites), 10),
-                pad(asm.dizAssembly(bites), 12),
-                pad("(" + callDeep + ")", 5),
-                pad(registry.toString().replace("\n", "  ").replace(": ", ":"), 55));
+                padRight(hex16(addr), 6, ' '),
+                padRight(hex(bites), 10, ' '),
+                padRight(asm.dizAssembly(bites), 12, ' '),
+                padRight("(" + callDeep + ")", 5, ' '),
+                padRight(registry.toString().replace("\n", "  ").replace(": ", ":"), 55, ' '));
         lines.add(out);
         if (console) {
             Logger.debug(out);
         }
-    }
-
-    private String pad(String string, int length) {
-        while (string.length() < length) {
-            string += " ";
-        }
-        return string;
     }
 
     public List<String> lines() {

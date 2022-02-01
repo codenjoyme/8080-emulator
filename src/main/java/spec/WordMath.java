@@ -30,11 +30,7 @@ public class WordMath {
     }
 
     private static String hex(int bite, int length) {
-        String result = Integer.toString(bite, 16).toUpperCase();
-        while (result.length() < length) {
-            result = '0' + result;
-        }
-        return result;
+        return padLeft(Integer.toString(bite, 16).toUpperCase(), length, '0');
     }
 
     public static String hex16(int bite) {
@@ -93,5 +89,24 @@ public class WordMath {
             array[i] = bite;
         }
         return array;
+    }
+
+    public static String padRight(String string, int length, char ch) {
+        return pad(string, length, ch, false);
+    }
+
+    public static String padLeft(String string, int length, char ch) {
+        return pad(string, length, ch, true);
+    }
+
+    public static String pad(String string, int length, char ch, boolean leftOtRight) {
+        while (string.length() < length) {
+            if (leftOtRight) {
+                string = ch + string;
+            } else {
+                string = string + ch;
+            }
+        }
+        return string;
     }
 }
