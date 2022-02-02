@@ -203,7 +203,7 @@ public class Application {
                 openFileDialog(file -> load(file.getAbsolutePath()),
                         base.getFile() + "/" + folder + "/apps",
                         "Data file",
-                        "com", "rom", "rks", "bin");
+                        "com", "rom", "rks", "bin", "mem");
             }
             return;
         }

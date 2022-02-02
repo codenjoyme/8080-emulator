@@ -138,6 +138,7 @@ public class RomLoader {
                 case "rks": {
                     return loadRKS(url, file.getName());
                 }
+                case "mem":
                 default: {
                     return loadROM(url, file.getName(), 0x0000);
                 }
