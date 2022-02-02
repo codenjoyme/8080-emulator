@@ -4,6 +4,8 @@ package spec;
  * @(#)AMDProgressBar.java    0.90 12/09/96 Adam Doppelt
  */
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * A ProgressBar is a widget which indicates how close a task is to
@@ -23,11 +25,11 @@ import java.awt.*;
  * <B>Author:</B> <A HREF="http://www.cs.brown.edu/people/amd/">Adam Doppelt</A><BR>
  **/
 
-public class AMDProgressBar extends Canvas {
-    
+public class AMDProgressBar extends Canvas implements MouseListener {
+
     /////////////////////////////////////
     // things the user can set
-    
+
     int width_, height_;
 
     Color outerBorderColor_ = Color.blue; // black
@@ -35,7 +37,7 @@ public class AMDProgressBar extends Canvas {
 
     Color boxColorA_ = new Color(244, 224, 32);
     Color boxColorB_ = new Color(120, 80, 4);
-    
+
     Color barColor_ = new Color(52, 112, 4);
 
     Color backTopColor_ = new Color(40, 40, 40);
@@ -49,26 +51,30 @@ public class AMDProgressBar extends Canvas {
 
     int sinePeriod_ = 87;
     int colorSegment_ = 7;
-    
+
     /////////////////////////////////////
     // things stored for quick drawing
 
     Graphics graphics_;
     Image image_;
-     
+
     double percent_;
     boolean updateTrim_, updateLocations_, updateBar_;
-    
+
     // state variables
     int lastDigits_, halfY_, textX_, textY_;
-    
+
+    Runnable onClick;
+
 /**
  * Constructs a progress bar.
  */
-    public AMDProgressBar() {
+    public AMDProgressBar(Runnable onClick) {
+        this.onClick = onClick;
+        addMouseListener(this);
         lastDigits_ = 1;
         setPercent(0);
-        
+
         updateTrim_ = true;
         updateLocations_ = true;
         updateBar_ = true;
@@ -423,5 +429,30 @@ public class AMDProgressBar extends Canvas {
         colorSegment_ = segmentSize;
         updateTrim_ = true;
         repaint();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        onClick.run();
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // do nothing
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // do nothing
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // do nothing
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // do nothing
     }
 }

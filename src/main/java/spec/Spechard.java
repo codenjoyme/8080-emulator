@@ -92,14 +92,14 @@ public Spechard( Container _parent ) throws Exception
         canvas.addKeyListener(parent.getKeyListeners()[0]);
     }
 
-       bufferImage = parent.createImage( nPixelsWide*pixelScale, nPixelsHigh*pixelScale );
+    bufferImage = parent.createImage( nPixelsWide*pixelScale, nPixelsHigh*pixelScale );
 
     bufferGraphics = bufferImage.getGraphics(); //- контенты графики
     parentGraphics = parent.getGraphics();      //-
     canvasGraphics = canvas.getGraphics();      //-
 
 //- добавили к class Z80 AMDProgressBar
-    parent.add( progressBar = new AMDProgressBar() );
+    parent.add( progressBar = new AMDProgressBar(this::sleep) );
     progressBar.setBarColor( new Color(192, 52, 4) ); //  192, 52, 4
                                   //--- R   G   B
     progressBar.setVisible(true); //--- show();
@@ -1653,26 +1653,19 @@ public void paintBuffer() {  //---------------------- вызывается из 
 //-------------------- Process events from UI - ОБРАБОТКА СОБЫТИЙ -----------------------
 
 //---------- вызывается  Spec1987.handleEvent-ом.----------
+public void sleep() {
+    if (sleepHack > 0) {
+         sleepHack = 0;
+         showMessage( "Sleep Cancelled" );
+    } else {
+      toggleSpeed();
+    }
+    canvas.requestFocus();
+}
+
 public boolean handleKey(KeyEvent event, boolean press) {  // По сути это переопределённый handleEvent();
 // System.out.println(" Spechard _ Event !");
 // TODO implement me
-//   if( .target == progressBar )
-//     { //------ progressBar Event
-//      if ( e.id == Event.MOUSE_DOWN ) {
-//
-//        if ( sleepHack > 0 ) {
-//             sleepHack = 0;
-//             showMessage( "Sleep Cancelled" );
-//        }
-//         else
-//        {
-//          toggleSpeed();
-//        }
-//        canvas.requestFocus();
-//        return true;
-//      }
-//      return false;
-//    } //------ progressBar END_
 //
 //      //------ urlField Event - событие от поля ввода url
 //    if( e.target == urlField )
