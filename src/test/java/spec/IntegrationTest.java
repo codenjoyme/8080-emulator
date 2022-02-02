@@ -84,6 +84,11 @@ public class IntegrationTest extends AbstractTest {
                 file -> write(file, data.toString()));
     }
 
+    private void assertDizAssembly(WhereIsData data) {
+        fileAssert.check("DizAssembled program", "program.log",
+                file -> write(file, data.program()));
+    }
+
     private void assertTrace() {
         fileAssert.check("Cpu trace", "trace.log",
                 file -> write(file, trace()));
@@ -182,6 +187,9 @@ public class IntegrationTest extends AbstractTest {
 
     @Test
     public void testLik_klad_recording() {
+        // about 23 sec
+        // minimum 13 sec without WhereIsData
+
         // given
         Lik.loadRom(base, roms);
         Range range = Lik.loadGame(base, roms, "klad");
@@ -191,6 +199,7 @@ public class IntegrationTest extends AbstractTest {
         // when
         assertRecord("klad.rec");
         assertCpuAt(data);
+        assertDizAssembly(data);
     }
 
     @Test

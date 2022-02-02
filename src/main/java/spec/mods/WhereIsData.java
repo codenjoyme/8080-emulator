@@ -1,7 +1,13 @@
 package spec.mods;
 
+import spec.Cpu;
+import spec.Data;
 import spec.Range;
+import spec.assembler.Assembler;
 import spec.assembler.Command;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static spec.WordMath.*;
 import static spec.mods.Event.CHANGE_PC;
@@ -9,6 +15,7 @@ import static spec.mods.WhereIsData.Type.*;
 
 public class WhereIsData extends When {
 
+    private Cpu cpu;
     private Info[] info;
     private Range range;
 
@@ -18,11 +25,14 @@ public class WhereIsData extends When {
         this.range = range;
         trigger = (event, params) -> {
             if (event == CHANGE_PC) {
-                int pc = (int)(params[0]);
-                Command command = (Command)(params[1]);
+                int pc = (int)params[0];
+                Command command = (Command)params[1];
+                if (cpu == null) {
+                    cpu = (Cpu)params[2];
+                }
                 for (int i = 0; i < command.size(); i++) {
                     Type type = (i == 0) ? COMMAND : COMMAND_DATA;
-                    info[pc + i].type(type).increase();
+                    info[pc + i].command(command).type(type).increase();
                 }
             }
         };
@@ -33,6 +43,49 @@ public class WhereIsData extends When {
         for (int addr = 0; addr < info.length; addr++) {
             info[addr] = new Info(0, Type.DATA, null);
         }
+    }
+
+    public String program() {
+        Data data = cpu.data();
+        Assembler asm = new Assembler();
+        StringBuilder result = new StringBuilder();
+        int count = 0;
+        boolean first = false;
+        for (int addr = range.begin(); addr < range.end(); addr++) {
+            Info info = this.info[addr];
+
+            // если у нас данные
+            if (info.type == DATA) {
+                if (count == 10) {
+                    count = 0;
+                    first = false;
+                    result.append('\n');
+                }
+                if (first) {
+                    first = false;
+                    result.append("DB ");
+                } else {
+                    result.append(", ");
+                }
+                result.append(hex8(data.read8(addr)));
+                count++;
+                continue;
+            }
+            if (count != 0) {
+                result.append('\n');
+                count = 0;
+            }
+
+            // если у нас команды
+            if (info.type == COMMAND) {
+                List<Integer> bites = new LinkedList<>();
+                for (int i = 0; i < info.command.size(); i++) {
+                    bites.add(data.read8(addr + i));
+                }
+                result.append(asm.dizAssembly(bites)).append('\n');
+            }
+        }
+        return result.toString();
     }
 
     public enum Type {
@@ -62,6 +115,11 @@ public class WhereIsData extends When {
 
         public Info type(Type type) {
             this.type = type;
+            return this;
+        }
+
+        public Info command(Command command) {
+            this.command = command;
             return this;
         }
     }
