@@ -154,7 +154,7 @@ public void run() {
   }
 
     private void showStatus(String info) {
-        // TODO implement me
+        System.out.println(info);
     }
 
     //--------------------------------------------------------------------------------------------
