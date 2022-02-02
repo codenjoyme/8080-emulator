@@ -226,7 +226,7 @@ if( snapshot != null )
   }
 
     private void resize(Dimension size) {
-        // TODO implement me
+        parent.setSize(size);
     }
 
     private String getParameter(String name) {
@@ -304,8 +304,8 @@ public Dimension minimumSize() {
         //                          ^---- тернарный оператор if-then-else
 
     return new Dimension(
-      spechard.nPixelsWide * scale + border*2,
-      spechard.nPixelsHigh * scale + border*2);
+      spechard.nPixelsWide * scale + border*2 + 15,
+      spechard.nPixelsHigh * scale + border*2 + 40);
   }
 //--------------------------------------------------------------------------------------------
   // Returns Spec1987.minimumSize().

@@ -35,10 +35,7 @@ public class Main extends JFrame implements KeyListener {
     }
 
     public Main(String base, String rom) {
-        super("i8080 emulator");
-        setMinimumSize(new Dimension(
-                nPixelsWide + borderWidth * 2 + 15,
-                nPixelsHigh + borderWidth * 2 + 40));
+        super("Spec1987 emulator");
         setVisible(true);
         setFocusable(true);
         setResizable(false);
