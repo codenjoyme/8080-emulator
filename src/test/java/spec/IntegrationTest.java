@@ -85,7 +85,11 @@ public class IntegrationTest extends AbstractTest {
     }
 
     private void assertDizAssembly(WhereIsData data) {
-        fileAssert.check("DizAssembled program", "program.log",
+        assertDizAssembly(data, "program");
+    }
+
+    private void assertDizAssembly(WhereIsData data, String name) {
+        fileAssert.check("DizAssembled program", name + ".log",
                 file -> write(file, data.program()));
     }
 
@@ -196,10 +200,14 @@ public class IntegrationTest extends AbstractTest {
         WhereIsData data = new WhereIsData(range);
         cpu.modAdd(data);
 
-        // when
+        // when then
         assertRecord("klad.rec");
         assertCpuAt(data);
-        assertDizAssembly(data);
+        assertDizAssembly(data, "launchedProgram");
+
+        // when then
+        Lik.loadGame(base, roms, "klad");
+        assertDizAssembly(data, "newProgram");
     }
 
     @Test
