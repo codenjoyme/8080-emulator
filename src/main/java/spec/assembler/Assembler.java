@@ -156,7 +156,12 @@ public class Assembler {
     }
 
     public String dizAssembly(List<Integer> commandBites) {
-        return COMMANDS[commandBites.get(0)].print(commandBites);
+        return dizAssembly(commandBites, false);
+    }
+
+    public String dizAssembly(List<Integer> commandBites, boolean canonical) {
+        return COMMANDS[commandBites.get(0)]
+                .print(commandBites, canonical);
     }
 
     public String assembly(String programBites) {

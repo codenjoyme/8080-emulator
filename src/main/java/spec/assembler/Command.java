@@ -162,16 +162,22 @@ public abstract class Command {
         return result;
     }
 
-    public String print(List<Integer> bites) {
+    public String print(List<Integer> bites, boolean canonical) {
         String result = pattern();
         switch (size()) {
             case 3: {
                 String word = hex16(merge(bites.get(2), bites.get(1)));
+                if (canonical) {
+                    word = '0' + word + 'h';
+                }
                 result = replace(result, "(....)", word);
                 break;
             }
             case 2: {
                 String bite = hex8(bites.get(1));
+                if (canonical) {
+                    bite = '0' + bite + 'h';
+                }
                 result = replace(result, "(..)", bite);
                 break;
             }

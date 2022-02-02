@@ -45,12 +45,12 @@ public class WhereIsData extends When {
         }
     }
 
-    public String program() {
+    public String program(boolean canonicalData) {
         Data data = cpu.data();
         Assembler asm = new Assembler();
         StringBuilder result = new StringBuilder();
         int count = 0;
-        boolean first = false;
+        boolean first = true;
         for (int addr = range.begin(); addr < range.end(); addr++) {
             Info info = this.info[addr];
 
@@ -58,7 +58,7 @@ public class WhereIsData extends When {
             if (info.type == DATA) {
                 if (count == 10) {
                     count = 0;
-                    first = false;
+                    first = true;
                     result.append('\n');
                 }
                 if (first) {
@@ -67,13 +67,20 @@ public class WhereIsData extends When {
                 } else {
                     result.append(", ");
                 }
+                if (canonicalData) {
+                    result.append('0');
+                }
                 result.append(hex8(data.read8(addr)));
+                if (canonicalData) {
+                    result.append('h');
+                }
                 count++;
                 continue;
             }
             if (count != 0) {
                 result.append('\n');
                 count = 0;
+                first = true;
             }
 
             // если у нас команды
@@ -82,9 +89,10 @@ public class WhereIsData extends When {
                 for (int i = 0; i < info.command.size(); i++) {
                     bites.add(data.read8(addr + i));
                 }
-                result.append(asm.dizAssembly(bites)).append('\n');
+                result.append(asm.dizAssembly(bites, canonicalData)).append('\n');
             }
         }
+        result.append("\nEND");
         return result.toString();
     }
 
