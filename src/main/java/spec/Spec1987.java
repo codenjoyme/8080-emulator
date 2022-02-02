@@ -147,6 +147,7 @@ public void run() {
      if ( spechard != null )
        {
 //  showStatus(" Spechard.execute !");
+        spechard.gotFocus();
         spechard.execute(); // ---> Z80.class > public final void execute()
         // class Spechard extends Z80 -> все методы Z80.class доступны Spechard.class-у
        }
