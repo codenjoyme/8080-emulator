@@ -25,6 +25,8 @@ package spec;
  */
 import javax.swing.*;
 import java.awt.*; //---(инструментарий для работы с абстрактными окнами).
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.*;//---
 import java.io.*;  //---
@@ -109,6 +111,8 @@ public Spechard( Container _parent ) throws Exception
     parent.add( urlField = new TextField() );
     urlField.setVisible(true);   //--- show();
     urlField.setVisible(false);  //--- hide();
+    urlField.addActionListener(e -> loadFromURLFieldNextInterrupt = true);
+
     autor =  bytesToMes();
   }
 
@@ -122,8 +126,8 @@ public void setBorderWidth( int width ) {
 
 //- reshape() = setBounds(int, int, int, int)
 //- parent.preferredSize().width = getPreferredSize(). установить границы.
-    urlField.setBounds( 0, 0, parent.getPreferredSize().width,
-                            urlField.getPreferredSize().height );
+    urlField.setBounds( 0, 0, 423,
+                             20 );
 
     progressBar.setBounds(1, (borderWidth + nPixelsHigh * pixelScale) + 2,
                              nPixelsWide * pixelScale + borderWidth * 2 - 2, borderWidth - 2 );
@@ -795,8 +799,9 @@ private void loadFromURLField() {
   try{
       pauseOrResume();
 
+      oldBorder = -1;//--- обновить Border ---
       urlField.setVisible(false);//---  hide();
-      URL  url = new URL( urlField.getText() );
+      URL url = new URL( urlField.getText() );
       URLConnection snap = url.openConnection();
 
       InputStream input = snap.getInputStream();
@@ -853,6 +858,7 @@ public final int interrupt() {
       }
       pausedThread = null;
    // поле ввода url --------------
+      oldBorder = -1;//--- обновить Border ---
       urlField.setVisible(false);//---  hide();
 //---***
       if (!pbaron){
@@ -1665,17 +1671,6 @@ public void sleep() {
 
 public boolean handleKey(KeyEvent event, boolean press) {  // По сути это переопределённый handleEvent();
 // System.out.println(" Spechard _ Event !");
-// TODO implement me
-//
-//      //------ urlField Event - событие от поля ввода url
-//    if( e.target == urlField )
-//      {
-//      if( e.id == Event.ACTION_EVENT ) {
-//        loadFromURLFieldNextInterrupt = true;
-//       return true;
-//      }
-//       return false;
-//      }
  //------ остальные события - от canvas-а Spechard (он же Z80)
           //--- событие клавиатуры - КЛАВИША_НАЖАТА_: e.key - код нажатой клавиши.
           //--- Обычно является Unicode значением символа, который представлен этой клавишей.
@@ -2107,18 +2102,17 @@ public final boolean doKey( boolean down, int ascii, int mods )
 
 // ESC - не будет работать в "СПЕЦИАЛИСТЕ"!!!
 //---*** case Event.HOME:
-    case '\033':     {// ESC  '\' - восьмиричная система = 0x1b - HEX.
-            if( down )  {
-                        if( pauseAtNextInterrupt )
-                          {
-                           pauseOrResume();
-                          }
-                        }
-                      break;
-                     }
+    case '\033': {// ESC  '\' - восьмиричная система = 0x1b - HEX.
+        if (down) {
+            if( pauseAtNextInterrupt ) {
+                pauseOrResume();
+            }
+            break;
+        }
+    }
 
-    case Event.F1:   {
-         if(ALT && CTRL)
+    case 112:   {  // F1
+         if(mods == 640) // ALT + CTRL
                      {
             if( down )  {
           JOptionPane.showMessageDialog(null, autor, " About",
@@ -2129,7 +2123,7 @@ public final boolean doKey( boolean down, int ascii, int mods )
                         }
                      }// ALT && CTRL
                       else{
-                        if( ALT  )  {
+                        if(mods == 512)  { // ALT
                           if( down )  {
                              if( !pauseAtNextInterrupt )  {
                               pauseOrResume();
@@ -2140,7 +2134,7 @@ public final boolean doKey( boolean down, int ascii, int mods )
                       break;
                      }
 //---***  case Event.END:
-    case 0x0400:    { // <Pause>
+    case 19:    { // <Pause>
          if( down ) {
                      resetAtNextInterrupt = true;
                     }
