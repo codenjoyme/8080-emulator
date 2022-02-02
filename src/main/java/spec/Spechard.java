@@ -137,7 +137,7 @@ public void setBorderWidth( int width ) {
 
 //-------------------------- Z80 hardware interface --------------------------------------
 //--- для ПК "Специалист" ---------------------------------
-   public boolean pbaron = false;//--- progbar - невидим.
+   public boolean pbaron = true; //--- progbar - видим.
   private boolean wfocus = false;//--- фокус окном не получен
   private boolean invfoc = false;//--- моргание бордюром
   private boolean PrtAIN = true; //--- порт A - на ввод
@@ -799,8 +799,8 @@ private void loadFromURLField() {
   try{
       pauseOrResume();
 
-      oldBorder = -1;//--- обновить Border ---
-      urlField.setVisible(false);//---  hide();
+      hideUrlField();
+
       URL url = new URL( urlField.getText() );
       URLConnection snap = url.openConnection();
 
@@ -856,10 +856,9 @@ public final int interrupt() {
                       }
                 }
       }
-      pausedThread = null;
-   // поле ввода url --------------
-      oldBorder = -1;//--- обновить Border ---
-      urlField.setVisible(false);//---  hide();
+        pausedThread = null;
+        // поле ввода url --------------
+          hideUrlField();
 //---***
       if (!pbaron){
           showStats=false;
@@ -959,7 +958,18 @@ public final int interrupt() {
    return super.interrupt(); //--- вернули что-то int
   }
 
-//------------------------------------------------------------------------------------------
+    private void hideUrlField() {
+        urlField.setVisible(false);//---  hide();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        oldBorder = -1;//--- обновить Border ---
+        paintBuffer();
+    }
+
+    //------------------------------------------------------------------------------------------
 public void pauseOrResume() {
       // Pause
     if( pausedThread == null ) {
