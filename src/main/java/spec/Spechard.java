@@ -1219,8 +1219,8 @@ public final void borderPaint()//----- может понадобиться в С
      parentGraphics.setColor( SpecMXColors[ newBorder ] );
 
   //   обновить Border - это нагло нарисовать прямоугольник цвета newBorder?!!!  Font.PLAIN|Font.BOLD
-     parentGraphics.fillRect( 0, 0, (nPixelsWide*pixelScale) + borderWidth * 2,
-                                    (nPixelsHigh*pixelScale) + borderWidth * 2 );
+     parentGraphics.fillRect( 0, 0, parent.getWidth(),
+                                    parent.getHeight());
    if(wfocus) {
      parentGraphics.setFont( urlField.getFont()); //-  установить шрифт.
      parentGraphics.setColor( SpecMXColors[ 0x01 ] );
