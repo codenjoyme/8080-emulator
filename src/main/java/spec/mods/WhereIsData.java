@@ -30,12 +30,21 @@ public class WhereIsData extends When {
                 if (cpu == null) {
                     cpu = (Cpu)params[2];
                 }
-                for (int i = 0; i < command.size(); i++) {
-                    Type type = (i == 0) ? COMMAND : COMMAND_DATA;
-                    info[pc + i].command(command).type(type).increase();
-                }
+                markCommand(info, pc, command, false);
             }
         };
+    }
+
+    public static void markCommand(Info[] infos, int addr, Command command, boolean check) {
+        for (int i = 0; i < command.size(); i++) {
+            Type type = (i == 0) ? COMMAND : COMMAND_DATA;
+            Info info = infos[addr + i];
+            if (check && info.type != null && info.type != DATA) {
+                throw new IllegalArgumentException("Try to mask as command not data: " +
+                        info.type.name() + ">" + type.name() + " " + hex16(addr + i));
+            }
+            info.command(command).type(type).increase();
+        }
     }
 
     private void init() {
@@ -71,6 +80,10 @@ public class WhereIsData extends When {
             this.access = access;
             this.type = type;
             this.command = command;
+        }
+
+        public Info(Info info) {
+            this(info.access, info.type, info.command);
         }
 
         public Info increase() {

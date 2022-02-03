@@ -227,4 +227,11 @@ public abstract class Command {
         return r.reg16(rindex(command), _PSW);
     }
 
+    public boolean isJump() {
+        return getClass().getPackage().getName().contains("jump");
+    }
+
+    public boolean isCall() {
+        return getClass().getPackage().getName().contains("call");
+    }
 }
