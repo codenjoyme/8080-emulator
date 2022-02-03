@@ -18,7 +18,10 @@ import java.net.URL;
 
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
+import static spec.WordMath.hex16;
+import static spec.WordMath.hex8;
 import static spec.stuff.FileAssert.write;
+import static spec.stuff.SmartAssert.assertEquals;
 
 public class IntegrationTest extends AbstractTest {
 
@@ -204,7 +207,31 @@ public class IntegrationTest extends AbstractTest {
         // when then
         Lik.loadGame(base, roms, "klad");
         assertDizAssembly(data, "newProgram");
+
+        // when then
+        assertMemory(range, "recompiled.mem");
     }
+
+    private void assertMemory(Range range, String romFileName) {
+        String diff = "";
+        int[] source = new int[0x10000];
+        try {
+            URL base = new File(TEST_RESOURCES).toURI().toURL();
+            roms.loadROM(base, test.getMethodName() + "/" + romFileName, source, 0x0000);
+        } catch (Exception e) {
+            // do nothing
+        }
+        for (int addr = range.begin(); addr <= range.end(); addr++) {
+            int bite1 = memory.read8(addr);
+            int bite2 = source[addr];
+            if (bite1 != bite2) {
+                diff += String.format("%s: %s != %s",
+                        hex16(addr), hex8(bite1), hex8(bite2));
+            }
+        }
+        assertEquals("", diff);
+    }
+
 
     @Test
     public void testLik_reversi_recording() {

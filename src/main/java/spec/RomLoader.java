@@ -40,6 +40,10 @@ public class RomLoader {
     // для ПК "Специалист"
     // чтение ПЗУ
     public Range loadROM(URL base, String path, int offset) {
+        return loadROM(base, path, memory.all(), offset);
+    }
+
+    public Range loadROM(URL base, String path, int[] all, int offset) {
         try {
             URL url = new URL(base, path);
             InputStream is = url.openStream();
@@ -47,7 +51,7 @@ public class RomLoader {
             Range range = new Range(offset, -length);
             logLoading(url.toString(), range);
             cpu.PC(offset);
-            readBytes(is, memory.all(), range);
+            readBytes(is, all, range);
             return range;
         } catch (Exception e) {
             throw new RuntimeException(e);

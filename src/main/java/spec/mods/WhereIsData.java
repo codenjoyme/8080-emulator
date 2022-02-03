@@ -51,7 +51,7 @@ public class WhereIsData extends When {
         StringBuilder result = new StringBuilder();
         int count = 0;
         boolean first = true;
-        for (int addr = range.begin(); addr < range.end(); addr++) {
+        for (int addr = range.begin(); addr <= range.end(); addr++) {
             Info info = this.info[addr];
 
             // если у нас данные
