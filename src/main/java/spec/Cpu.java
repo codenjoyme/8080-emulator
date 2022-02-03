@@ -2,11 +2,11 @@ package spec;
 
 import spec.assembler.Assembler;
 import spec.assembler.Command;
-import spec.mods.Event;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import static spec.WordMath.hex8;
 import static spec.mods.Event.CHANGE_PC;
 
 public class Cpu extends Registry {
@@ -15,6 +15,7 @@ public class Cpu extends Registry {
     private Supplier<Boolean> onInterrupt;
     private int interrupt; // количество тактов на 1 прерывание
     private int tick;      // количество операций, которые сделал процессор
+    private int tact;
     private Assembler asm;
     private CpuDebug debug;
     private boolean enabled;
@@ -42,8 +43,16 @@ public class Cpu extends Registry {
         return tick;
     }
 
+    public int tact() {
+        return tact;
+    }
+
+    public void tact(int value) {
+        tact = value;
+    }
+
     public void execute() {
-        int tacts = 0; // счетчик тактов команд (из него будут извлекаться this.interrupt)
+        tact = 0; // счетчик тактов команд (из него будут извлекаться this.interrupt)
 
         while (enabled) {
             if (onTick != null) {
@@ -51,9 +60,9 @@ public class Cpu extends Registry {
             }
             tick++;
 
-            if (tacts >= interrupt) {
-                while (tacts >= interrupt) {
-                    tacts -= interrupt;
+            if (tact >= interrupt) {
+                while (tact >= interrupt) {
+                    tact -= interrupt;
                 }
                 if (!onInterrupt.get()) {
                     break;
@@ -65,20 +74,13 @@ public class Cpu extends Registry {
             int bite = data.read8(rPC);
             Command command = asm.find(bite);
             on(CHANGE_PC, pc, command, this);
-            if (command != null) {
-                command.apply(bite, this);
-                // каждая операция уменьшает число тактов на
-                // прерывание на свою длительность в тактах
-                tacts += command.ticks();
-                continue;
+            if (command == null) {
+                throw new IllegalArgumentException("Unknown command: " + hex8(bite));
             }
-
-            if (bite == 0x76) { // TODO выделить эту команду
-                int haltsToInterrupt = (-tacts - 1) / 4 + 1;
-                tacts += haltsToInterrupt * 4;
-                enabled = false;
-                continue;
-            }
+            command.apply(bite, this);
+            // каждая операция уменьшает число тактов на
+            // прерывание на свою длительность в тактах
+            tact += command.ticks();
         }
 
         enabled();

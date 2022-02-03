@@ -1,5 +1,6 @@
 package spec.assembler.command.system;
 
+import spec.Cpu;
 import spec.Registry;
 import spec.assembler.Command;
 
@@ -18,11 +19,15 @@ public class HLT extends Command {
 
     @Override
     public int ticks() {
-        return 4; // TODO не верное значение
+        return 0; // расчет идет в apply
     }
 
     @Override
     public void apply(int command, Registry r) {
-        // TODO надо как-то остановить процессор
+        Cpu cpu = (Cpu) r;
+        int tacts = cpu.tact();
+        int haltsToInterrupt = (-tacts - 1) / 4 + 1;
+        cpu.tact(tacts + haltsToInterrupt * 4);
+        cpu.disabled();
     }
 }

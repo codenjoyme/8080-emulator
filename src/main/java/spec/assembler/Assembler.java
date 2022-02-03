@@ -19,10 +19,7 @@ import spec.assembler.command.procedure.call.*;
 import spec.assembler.command.procedure.ret.*;
 import spec.assembler.command.stack.POP_RS;
 import spec.assembler.command.stack.PUSH_RS;
-import spec.assembler.command.system.DI;
-import spec.assembler.command.system.EI;
-import spec.assembler.command.system.NONE;
-import spec.assembler.command.system.NOP;
+import spec.assembler.command.system.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -124,7 +121,7 @@ public class Assembler {
 
         add(new DI());
         add(new EI());
-        // add(new HLT()); // TODO добавить команду
+        add(new HLT());
         add(new NONE());
         add(new NOP());
     }
