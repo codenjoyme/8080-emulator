@@ -24,65 +24,32 @@ public class DizAssembler {
         this.asm = new Assembler();
     }
 
-    private int c = 1;
-
     public void clarifyInfo() {
+        List<Integer> processed = new LinkedList<>();
         Queue<Integer> toProcess = new LinkedList<>();
-        for (int addr = range.begin(); addr <= range.end(); addr++) {
-            WhereIsData.Info info = infoData[addr];
-            if (info.type == COMMAND
-                    && (info.command.isJump()
-                        || info.command.isCall()))
-            {
-                int nextAddr = data.read16(addr + 1);
-                if (processingNeeded(nextAddr)) {
-                    System.out.println(hex16(addr) + " " + c + "> " + hex16(nextAddr));
-                    toProcess.add(nextAddr);
-                }
-            }
-        }
-        c++;
-        toProcess = process(toProcess);
-        c++;
-        toProcess = process(toProcess);
-        c++;
-        toProcess = process(toProcess);
-        c++;
-        toProcess = process(toProcess);
-    }
-
-    private Queue<Integer> process(Queue<Integer> toProcess) {
-        Queue<Integer> result = new LinkedList<>();
+        toProcess.add(range.begin());
         while (!toProcess.isEmpty()) {
             int addr = toProcess.remove();
-            if (!processingNeeded(addr)) {
+            if (processed.contains(addr)) {
                 continue;
             }
+            processed.add(addr);
             do {
                 Command command = asm.find(data.read8(addr));
                 markCommand(infoData, addr, command, true);
                 if (command.isJump() || command.isCall()) {
                     int nextAddr = data.read16(addr + 1);
-                    if (processingNeeded(nextAddr)) {
-                        System.out.println(hex16(addr) + " " + c + "> " + hex16(nextAddr));
-                        result.add(nextAddr);
-                    }
+                    toProcess.add(nextAddr);
                 }
                 if (command.name().startsWith("RET")
-                    || command.name().startsWith("JMP")
-                    || command.name().startsWith("PCHL"))
-                {
+                        || command.name().startsWith("JMP")
+                        || command.name().startsWith("PCHL")) {
                     break;
                 }
 
                 addr += command.size();
             } while (true);
         }
-        return result;
-    }
-
-    private boolean processingNeeded(int nextAddr) {
-        return range.includes(nextAddr) && infoData[nextAddr].type == DATA;
     }
 
     public String program(Range range, WhereIsData.Info[] inputInfo, boolean canonicalData) {

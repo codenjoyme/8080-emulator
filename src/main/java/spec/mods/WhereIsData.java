@@ -39,8 +39,8 @@ public class WhereIsData extends When {
         for (int i = 0; i < command.size(); i++) {
             Type type = (i == 0) ? COMMAND : COMMAND_DATA;
             Info info = infos[addr + i];
-            if (check && info.type != null && info.type != DATA) {
-                throw new IllegalArgumentException("Try to mask as command not data: " +
+            if (check && info.type != DATA && info.type != type) {
+                throw new IllegalArgumentException("Mark error: " +
                         info.type.name() + ">" + type.name() + " " + hex16(addr + i));
             }
             info.command(command).type(type).increase();
