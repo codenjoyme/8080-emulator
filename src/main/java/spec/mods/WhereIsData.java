@@ -45,55 +45,12 @@ public class WhereIsData extends When {
         }
     }
 
-    public String program(boolean canonicalData) {
-        Data data = cpu.data();
-        Assembler asm = new Assembler();
-        StringBuilder result = new StringBuilder();
-        int count = 0;
-        boolean first = true;
-        for (int addr = range.begin(); addr <= range.end(); addr++) {
-            Info info = this.info[addr];
+    public Range range() {
+        return range;
+    }
 
-            // если у нас данные
-            if (info.type == DATA) {
-                if (count == 10) {
-                    count = 0;
-                    first = true;
-                    result.append('\n');
-                }
-                if (first) {
-                    first = false;
-                    result.append("DB ");
-                } else {
-                    result.append(", ");
-                }
-                if (canonicalData) {
-                    result.append('0');
-                }
-                result.append(hex8(data.read8(addr)));
-                if (canonicalData) {
-                    result.append('h');
-                }
-                count++;
-                continue;
-            }
-            if (count != 0) {
-                result.append('\n');
-                count = 0;
-                first = true;
-            }
-
-            // если у нас команды
-            if (info.type == COMMAND) {
-                List<Integer> bites = new LinkedList<>();
-                for (int i = 0; i < info.command.size(); i++) {
-                    bites.add(data.read8(addr + i));
-                }
-                result.append(asm.dizAssembly(bites, canonicalData)).append('\n');
-            }
-        }
-        result.append("\nEND");
-        return result.toString();
+    public Info[] info() {
+        return info;
     }
 
     public enum Type {

@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import spec.assembler.DizAssembler;
 import spec.mods.DebugWhen;
 import spec.mods.StopWhen;
 import spec.mods.WhereIsData;
@@ -37,6 +38,7 @@ public class IntegrationTest extends AbstractTest {
     private URL base;
     private FileAssert fileAssert;
     private PngVideo video;
+    private DizAssembler dizAssembler;
 
     @Before
     @Override
@@ -48,6 +50,7 @@ public class IntegrationTest extends AbstractTest {
         record.screenShoot(this::assertScreen);
         fileAssert = new FileAssert(TEST_RESOURCES + test.getMethodName());
         fileAssert.removeTestsData();
+        dizAssembler = new DizAssembler(cpu.data());
         reset();
         record.after(TICKS).stopCpu();
     }
@@ -89,7 +92,7 @@ public class IntegrationTest extends AbstractTest {
 
     private void assertDizAssembly(WhereIsData data, String name) {
         fileAssert.check("DizAssembled program", name + ".log",
-                file -> write(file, data.program(true)));
+                file -> write(file, dizAssembler.program(data.range(), data.info(), true)));
     }
 
     private void assertTrace() {
