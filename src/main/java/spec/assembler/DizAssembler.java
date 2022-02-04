@@ -17,6 +17,7 @@ public class DizAssembler {
     private Range range;
     private WhereIsData.Info[] infoData;
     private Map<Integer, String> labels;
+    private int pad;
 
     public DizAssembler(Data data) {
         this.data = data;
@@ -104,24 +105,29 @@ public class DizAssembler {
     private String buildProgram(Range range, boolean canonicalData) {
         StringBuilder result = new StringBuilder();
 
+        pad = "lab: ".length() + String.valueOf(labels.size()).length();
+
+        // настройка ассемблера
         String start = hex16(range.begin());
         start = canonicalData ? canonical(start) : start;
-        result.append("     CPU  8080\n")
-              .append("     .ORG ").append(start).append('\n');
+        result.append(pad("")).append("CPU  8080\n")
+              .append(pad("")).append(".ORG ").append(start).append('\n');
 
+        // константы адресов памяти за пределами программы
         for (Map.Entry<Integer, String> entry : labels.entrySet()) {
             int addr = entry.getKey();
             String label = entry.getValue();
             if (!range.includes(addr)) {
                 String hex = hex16(addr);
                 hex = canonicalData ? canonical(hex) : hex;
-                result.append(label)
-                        .append("  EQU ")
+                result.append(pad(label))
+                        .append("EQU ")
                         .append(hex)
                         .append('\n');
             }
         }
 
+        // текст программы
         int count = 0;
         boolean first = true;
         for (int addr = range.begin(); addr <= range.end(); addr++) {
@@ -136,7 +142,8 @@ public class DizAssembler {
                 }
                 if (first) {
                     first = false;
-                    result.append(info.asm);
+                    result.append(pad(""))
+                          .append(info.asm);
                 } else {
                     result.append(", ")
                           .append(info.asm.replace("DB ", ""));
@@ -153,10 +160,9 @@ public class DizAssembler {
             // если у нас команды
             if (info.type == COMMAND) {
                 if (info.label != null) {
-                    result.append(info.label)
-                          .append(": ");
+                    result.append(pad(info.label + ":"));
                 } else {
-                    result.append("        ");
+                    result.append(pad(""));
                 }
                 if (info.labelTo != null) {
                     String data = canonical((info.command.size() == 3) ? hex16(info.data) : hex8(info.data));
@@ -169,6 +175,10 @@ public class DizAssembler {
         }
         result.append("\nEND");
         return result.toString();
+    }
+
+    private String pad(String string) {
+        return padRight(string, pad, ' ');
     }
 
     private WhereIsData.Info[] clone(WhereIsData.Info[] info) {
