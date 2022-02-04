@@ -88,22 +88,18 @@ public class DizAssembler {
         }
     }
 
-    private void dizAssembly(Range range, boolean canonicalData) {
+    private void dizAssembly(Range range, boolean canonical) {
         for (int addr = range.begin(); addr <= range.end(); addr++) {
             WhereIsData.Info info = infoData[addr];
 
             if (info.type == DATA) {
                 // если у нас данные
                 String hex = hex8(data.read8(addr));
-                hex = canonicalData ? canonical(hex) : hex;
+                hex = canonical ? canonical(hex) : hex;
                 info.asm("DB " + hex);
             } else if (info.type == COMMAND) {
                 // если у нас команды
-                List<Integer> bites = new LinkedList<>();
-                for (int i = 0; i < info.command.size(); i++) {
-                    bites.add(data.read8(addr + i));
-                }
-                info.asm(asm.dizAssembly(bites, canonicalData));
+                info.asm(canonical);
             }
         }
     }
@@ -175,8 +171,7 @@ public class DizAssembler {
                     result.append(pad(""));
                 }
                 if (info.labelTo != null) {
-                    String data = canonical((info.command.size() == 3) ? hex16(info.data) : hex8(info.data));
-                    result.append(info.asm.replace(data, info.labelTo));
+                    result.append(info.asm.replace(info.data(true), info.labelTo));
                 } else {
                     result.append(info.asm);
                 }

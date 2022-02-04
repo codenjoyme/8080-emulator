@@ -197,6 +197,9 @@ public class IntegrationTest extends AbstractTest {
         // about 36 sec
 
         // given
+        Logger.DEBUG = true;
+        WhereIsData.PRINT_RW = true;
+
         Lik.loadRom(base, roms);
         Range range = Lik.loadGame(base, roms, "klad");
         WhereIsData data = new WhereIsData(range);

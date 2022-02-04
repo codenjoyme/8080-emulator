@@ -2,18 +2,25 @@ package spec.mods;
 
 import spec.Cpu;
 import spec.Data;
+import spec.Logger;
 import spec.Range;
 import spec.assembler.Command;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static spec.WordMath.*;
-import static spec.mods.Event.CHANGE_PC;
+import static spec.mods.Event.*;
 import static spec.mods.WhereIsData.Type.*;
 
 public class WhereIsData implements CpuMod {
 
+    public static boolean PRINT_RW = false;
+
     private Cpu cpu;
-    private Info[] info;
+    private Info[] infos;
     private Range range;
+    private int pc;
 
     public WhereIsData(Range range) {
         init();
@@ -23,12 +30,38 @@ public class WhereIsData implements CpuMod {
     @Override
     public void on(Event event, Object... params) {
         if (event == CHANGE_PC) {
-            int pc = (int)params[0];
-            Command command = (Command)params[1];
+            pc = (int)params[0];
             if (cpu == null) {
                 cpu = (Cpu)params[2];
             }
-            markCommand(info, pc, cpu.data(), command, false);
+
+            if (!range.includes(pc)) return;
+            Command command = (Command)params[1];
+            markCommand(infos, pc, cpu.data(), command, false);
+        }
+
+        if (!PRINT_RW) return;
+
+        if (event == WRITE_MEM) {
+            if (!range.includes(pc)) return;
+
+            int addr = (int)params[0];
+            int bite = (int)params[1];
+            Info info = infos[pc];
+
+            Logger.debug("Written in memory at [%s] byte [%s] by command '%s: %s'",
+                    hex16(addr), hex8(bite), hex16(pc), info.asm(false));
+        }
+
+        if (event == READ_MEM) {
+            if (!range.includes(pc)) return;
+
+            int addr = (int)params[0];
+            int bite = (int)params[1];
+            Info info = infos[pc];
+
+            Logger.debug("Read from memory at [%s] byte [%s] by command '%s: %s'",
+                    hex16(addr), hex8(bite), hex16(pc), info.asm(false));
         }
     }
 
@@ -42,14 +75,15 @@ public class WhereIsData implements CpuMod {
             }
             info.command(command).type(type).increase();
         }
+        infos[addr].code(data.read8(addr));
         infos[addr].data(data.read16(addr + 1));
         return infos[addr];
     }
 
     private void init() {
-         info = new Info[0x10000];
-        for (int addr = 0; addr < info.length; addr++) {
-            info[addr] = new Info(0, Type.DATA, null);
+         infos = new Info[0x10000];
+        for (int addr = 0; addr < infos.length; addr++) {
+            infos[addr] = new Info(0, Type.DATA, null);
         }
     }
 
@@ -58,7 +92,7 @@ public class WhereIsData implements CpuMod {
     }
 
     public Info[] info() {
-        return info;
+        return infos;
     }
 
     public enum Type {
@@ -76,6 +110,7 @@ public class WhereIsData implements CpuMod {
         public Command command;
         public String asm;
         public int data;
+        public int code;
         public String labelTo;
         public String label;
 
@@ -113,6 +148,38 @@ public class WhereIsData implements CpuMod {
             data = word;
             return this;
         }
+
+        public Info code(int bite) {
+            code = bite;
+            return this;
+        }
+
+        public String data(boolean canonical) {
+            String hex = command.size() == 3
+                    ? hex16(data)
+                    : hex8(data);
+            return canonical
+                    ? canonical(hex)
+                    : hex;
+        }
+
+        public String printCommand(boolean canonical) {
+            List<Integer> bites = new LinkedList<>();
+            bites.add(code);
+            if (command.size() == 3) {
+                bites.add(lo(data));
+                bites.add(hi(data));
+            } else if (command.size() == 2) {
+                bites.add(lo(data));
+            }
+            return command.print(bites, canonical);
+        }
+
+        public String asm(boolean canonical) {
+            return asm == null
+                    ? asm = printCommand(canonical)
+                    : asm;
+        }
     }
 
     @Override
@@ -134,7 +201,7 @@ public class WhereIsData implements CpuMod {
             result.append(hex16(dy));
             for (int x = 0; x < 0x10; x++) {
                 if (range.includes(x + dy)) {
-                    Info i = info[dy + x];
+                    Info i = infos[dy + x];
                     String count = (i.type == DATA) ? ".." : hex8(i.access);
                     result.append(padLeft(count, length + 1, ' '));
                 } else {
@@ -149,7 +216,7 @@ public class WhereIsData implements CpuMod {
     private int maxLength() {
         int max = 0;
         for (int i = range.begin(); i <= range.end(); i++) {
-            max = Math.max(max, info[i].access);
+            max = Math.max(max, infos[i].access);
         }
         return hex8(max).length();
     }
