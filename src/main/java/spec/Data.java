@@ -26,6 +26,10 @@ public interface Data {
         write16(reg.get(), word);
     }
 
+    default int pop16(Reg reg) {
+        return read16(reg);
+    }
+
     default int read16(int addr) {
         int lo = read8(addr);
         addr = inc16(addr);
@@ -33,16 +37,16 @@ public interface Data {
         return hi | lo;
     }
 
-    default int read8(Reg r) {
-        int addr = r.get();
+    default int read8(Reg reg) {
+        int addr = reg.get();
         int bite = read8(addr);
-        r.set(inc16(addr));
+        reg.set(inc16(addr));
         return bite;
     }
 
-    default int read16(Reg r) {
-        int lo = read8(r);
-        int hi = read8(r) << 8;
+    default int read16(Reg reg) {
+        int lo = read8(reg);
+        int hi = read8(reg) << 8;
         return hi | lo;
     }
 

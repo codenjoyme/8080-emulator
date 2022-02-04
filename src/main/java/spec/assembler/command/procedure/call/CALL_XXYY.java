@@ -42,7 +42,7 @@ public class CALL_XXYY extends Command {
     }
 
     public static void call(Registry r, int addr) {
-        r.push16(r.rSP, r.PC());
+        r.data().push16(r.rSP, r.PC());
         r.PC(addr);
         r.on(RUN_CALL);
     }

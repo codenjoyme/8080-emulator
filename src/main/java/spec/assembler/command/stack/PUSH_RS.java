@@ -29,6 +29,6 @@ public class PUSH_RS extends Command {
     @Override
     public void apply(int command, Registry r) {
         int word = rRS(command, r).get();
-        r.push16(r.rSP, word);
+        r.data().push16(r.rSP, word);
     }
 }

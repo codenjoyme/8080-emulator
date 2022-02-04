@@ -37,7 +37,7 @@ public class RET extends Command {
     }
 
     public static void ret(Registry r) {
-        int addr = r.read16(r.rSP);
+        int addr = r.data().pop16(r.rSP);
         r.PC(addr);
         r.on(RUN_RET);
     }
