@@ -97,11 +97,11 @@ public class DizAssembler {
                 }
                 if (first) {
                     first = false;
-                    result.append("DB ");
+                    result.append(info.asm);
                 } else {
-                    result.append(", ");
+                    result.append(", ")
+                          .append(info.asm.replace("DB ", ""));
                 }
-                result.append(info.asm.replace("DB ", ""));
                 count++;
                 continue;
             }
@@ -113,7 +113,8 @@ public class DizAssembler {
 
             // если у нас команды
             if (info.type == COMMAND) {
-                result.append(info.asm).append('\n');
+                result.append(info.asm)
+                      .append('\n');
             }
         }
         result.append("\nEND");
