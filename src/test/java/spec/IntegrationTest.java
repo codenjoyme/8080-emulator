@@ -16,6 +16,7 @@ import spec.stuff.FileAssert;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
@@ -202,7 +203,22 @@ public class IntegrationTest extends AbstractTest {
         cpu.modAdd(data);
 
         // when then
-        assertRecord("klad.rec");
+        assertRecord("klad.rec",
+                () -> record.at(100).shoot("screeen1"),
+                () -> record.at(200).shoot("screeen2"),
+                () -> record.at(300).shoot("screeen3"),
+                () -> record.at(400).shoot("screeen4"),
+                () -> record.at(500).shoot("screeen5"),
+                () -> record.at(600).shoot("screeen6"),
+                () -> record.at(700).shoot("screeen7"),
+                () -> record.at(800).shoot("screeen8"),
+                () -> record.at(900).shoot("screeen9"),
+                () -> record.at(1000).shoot("screeen10"),
+                () -> record.at(1100).shoot("screeen11"),
+                () -> record.at(1200).shoot("screeen12"),
+                () -> record.at(1300).shoot("screeen13"),
+                () -> record.at(1379).shoot("screeen14")
+        );
         assertCpuAt(data);
         assertDizAssembly(data, "launchedProgram");
 
@@ -255,10 +271,11 @@ public class IntegrationTest extends AbstractTest {
         assertRecord("reversi2.rec");
     }
 
-    private void assertRecord(String path) {
+    private void assertRecord(String path, Runnable... configure) {
         fileRecorder.startWriting();
         int lastTick = hard.loadRecord(TEST_RESOURCES + "recordings/" + path);
         record.after(lastTick).stopCpu();
+        Arrays.asList(configure).forEach(Runnable::run);
         cpu.PC(0xC000);
         hard.start();
     }

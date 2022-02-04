@@ -1451,15 +1451,15 @@ lab197: MVI M,000h
 lab39:  DB 000h, 001h, 0D6h, 080h, 000h, 000h, 000h, 000h, 001h, 0ACh
         DB 000h, 001h, 000h, 000h, 080h, 091h, 05Ah, 000h, 000h, 034h
         DB 013h, 081h, 056h, 024h, 000h, 000h, 000h, 000h, 048h, 02Ch
-lab175: DB 014h, 00Ah
-lab156: DB 014h, 002h
-lab157: DB 014h, 001h
-lab47:  DB 000h
+lab175: DB 009h, 015h
+lab156: DB 001h, 002h
+lab157: DB 001h, 001h
+lab47:  DB 0FFh
 lab48:  DB 000h
 lab138: DB 010h, 010h
 lab49:  DB 001h
-lab71:  DB 0FFh
-lab73:  DB 000h
+lab71:  DB 000h
+lab73:  DB 0FFh
 lab2:   DB 080h, 01Eh
 lab8:   DB 008h
 lab22:  DB 006h
@@ -1471,11 +1471,11 @@ lab82:  DB 0F7h, 00Fh
 lab83:  DB 0F9h, 00Fh
 lab84:  DB 0FAh, 00Fh
 lab149: DB 000h
-lab85:  DB 014h, 001h, 017h, 0B7h
-lab87:  DB 014h, 002h
+lab85:  DB 014h, 003h, 017h, 0B7h
+lab87:  DB 014h, 003h
 lab7:   DB 016h
-lab6:   DB 080h
-lab5:   DB 004h
+lab6:   DB 070h
+lab5:   DB 012h
 lab165: DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
@@ -1488,14 +1488,14 @@ lab165: DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-        DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 002h
-        DB 000h, 014h, 000h, 001h, 00Bh, 000h, 00Fh, 000h, 005h, 00Bh
-        DB 000h, 00Fh, 000h, 005h
-lab44:  DB 002h
-lab46:  DB 002h
+        DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 003h
+        DB 000h, 014h, 000h, 002h, 00Fh, 002h, 012h, 000h, 002h, 00Fh
+        DB 002h, 014h, 000h, 002h
+lab44:  DB 018h
+lab46:  DB 018h
 lab40:  DB 003h, 000h, 014h, 000h, 002h, 00Fh, 000h, 000h, 000h, 004h
         DB 010h, 000h, 000h, 000h, 004h, 018h
-lab15:  DB 002h, 000h, 014h, 000h, 001h, 00Fh, 000h, 000h, 000h, 004h
+lab15:  DB 003h, 000h, 014h, 000h, 002h, 00Fh, 000h, 000h, 000h, 004h
         DB 010h, 000h, 000h, 000h, 004h
 lab45:  DB 018h, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh
         DB 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 000h, 000h, 00Bh, 00Bh
@@ -2736,8 +2736,8 @@ lab208: DB 0BBh, 0BBh, 0BBh, 0BBh, 0BBh, 0BBh, 0BBh, 0BBh, 0BBh, 0BBh
         DB 011h, 011h, 011h, 011h, 011h, 011h, 011h, 011h, 011h, 011h
         DB 011h, 011h, 011h, 011h, 011h, 011h, 011h, 011h, 011h, 011h
         DB 011h, 011h, 011h, 011h, 011h, 011h, 011h, 011h, 011h, 011h
-        DB 030h, 0A8h, 000h, 010h, 014h, 0A6h, 080h, 002h, 0F6h, 00Fh
-        DB 05Fh, 002h, 0C4h, 002h, 000h, 000h, 01Ah, 001h, 000h, 003h
+        DB 030h, 09Ch, 014h, 09Dh, 014h, 09Dh, 0C6h, 012h, 0F6h, 00Fh
+        DB 0D6h, 003h, 003h, 000h, 03Eh, 007h, 01Fh, 001h, 000h, 003h
         DB 00Ah, 001h, 011h
 lab0:   CALL lab198
         LXI D,09000h

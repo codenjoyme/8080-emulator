@@ -75,8 +75,18 @@ public class KeyRecord {
         return lastRecordedTick;
     }
 
+    public Action at(int index) {
+        for (Action action : scenario.values()) {
+            if (action.index == index) {
+                return action;
+            }
+        }
+        throw new IllegalArgumentException("Action with index not found: " + index);
+    }
+
     public class Action {
 
+        int index;
         int tick;
         String shoot;
         boolean stopCpu;
@@ -88,6 +98,7 @@ public class KeyRecord {
 
         public Action(int tick) {
             this.tick = tick;
+            this.index = KeyRecord.this.scenario.size();
         }
 
         public Action shoot(String name) {
@@ -167,6 +178,7 @@ public class KeyRecord {
                 screenShoot.accept(action.shoot);
             }
             if (action.keyCode != null) {
+                Logger.debugLine("[%s] ", action.index);
                 ports.processKey(new Key(action.keyCode, action.press, action.mode));
             }
             if (action.stopCpu) {
