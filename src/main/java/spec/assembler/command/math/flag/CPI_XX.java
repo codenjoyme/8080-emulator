@@ -31,7 +31,7 @@ public class CPI_XX extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int bite = r.read8(r.rPC);
+        int bite = r.attr8();
         cmp8(r, r.A(), bite);
     }
 }

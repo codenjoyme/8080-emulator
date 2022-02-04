@@ -28,7 +28,7 @@ public class IN_XX extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int port = (r.A() << 8) | r.read8(r.rPC);
+        int port = (r.A() << 8) | r.attr8();
         int bite = r.in8(port);
         r.A(bite);
     }

@@ -1,6 +1,5 @@
 package spec;
 
-import spec.mods.Event;
 import spec.mods.Modifiable;
 
 import static spec.Constants.*;
@@ -501,6 +500,14 @@ public class Registry extends Modifiable implements Data {
     public void write8(int addr, int bite) {
         on(WRITE_MEM, addr, bite);
         data.write8(addr, bite);
+    }
+
+    public int attr16() {
+        return data.read16(rPC);
+    }
+
+    public int attr8() {
+        return data.read8(rPC);
     }
 
     public Data data() {
