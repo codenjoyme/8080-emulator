@@ -68,7 +68,13 @@ public class DizAssembler {
             WhereIsData.Info info = infoData[addr];
 
             if (info.type == COMMAND) {
-                if (info.command.isCall() || info.command.isJump()) {
+                if (info.command.isCall()
+                    || info.command.isJump()
+                    || info.command.name().startsWith("SHLD")
+                    || info.command.name().startsWith("LHLD")
+                    || info.command.name().startsWith("LDA")
+                    || info.command.name().startsWith("STA"))
+                {
                     int newAddr = info.data;
                     String label = labels.get(newAddr);
                     if (label == null) {
@@ -135,15 +141,19 @@ public class DizAssembler {
 
             // если у нас данные, выстраиваем их по 10 в ряд
             if (info.type == DATA) {
-                if (count == 10) {
+                if (count == 10 || info.label != null) {
                     count = 0;
                     first = true;
                     result.append('\n');
                 }
                 if (first) {
                     first = false;
-                    result.append(pad(""))
-                          .append(info.asm);
+                    if (info.label != null) {
+                        result.append(pad(info.label + ":"));
+                    } else {
+                        result.append(pad(""));
+                    }
+                    result.append(info.asm);
                 } else {
                     result.append(", ")
                           .append(info.asm.replace("DB ", ""));
