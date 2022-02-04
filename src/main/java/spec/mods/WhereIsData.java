@@ -9,26 +9,27 @@ import static spec.WordMath.*;
 import static spec.mods.Event.CHANGE_PC;
 import static spec.mods.WhereIsData.Type.*;
 
-public class WhereIsData extends When {
+public class WhereIsData implements CpuMod {
 
     private Cpu cpu;
     private Info[] info;
     private Range range;
 
     public WhereIsData(Range range) {
-        super(null);
         init();
         this.range = range;
-        trigger = (event, params) -> {
-            if (event == CHANGE_PC) {
-                int pc = (int)params[0];
-                Command command = (Command)params[1];
-                if (cpu == null) {
-                    cpu = (Cpu)params[2];
-                }
-                markCommand(info, pc, cpu.data(), command, false);
+    }
+
+    @Override
+    public void on(Event event, Object... params) {
+        if (event == CHANGE_PC) {
+            int pc = (int)params[0];
+            Command command = (Command)params[1];
+            if (cpu == null) {
+                cpu = (Cpu)params[2];
             }
-        };
+            markCommand(info, pc, cpu.data(), command, false);
+        }
     }
 
     public static Info markCommand(Info[] infos, int addr, Data data, Command command, boolean check) {

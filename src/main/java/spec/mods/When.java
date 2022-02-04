@@ -14,9 +14,4 @@ public class When implements CpuMod {
     public void on(Event event, Object... params) {
         trigger.accept(event, params);
     }
-
-    @Override
-    public void reset() {
-        // do nothing
-    }
 }
