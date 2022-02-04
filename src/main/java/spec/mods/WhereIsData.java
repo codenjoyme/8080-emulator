@@ -3,11 +3,7 @@ package spec.mods;
 import spec.Cpu;
 import spec.Data;
 import spec.Range;
-import spec.assembler.Assembler;
 import spec.assembler.Command;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import static spec.WordMath.*;
 import static spec.mods.Event.CHANGE_PC;
@@ -30,12 +26,12 @@ public class WhereIsData extends When {
                 if (cpu == null) {
                     cpu = (Cpu)params[2];
                 }
-                markCommand(info, pc, command, false);
+                markCommand(info, pc, cpu.data(), command, false);
             }
         };
     }
 
-    public static void markCommand(Info[] infos, int addr, Command command, boolean check) {
+    public static Info markCommand(Info[] infos, int addr, Data data, Command command, boolean check) {
         for (int i = 0; i < command.size(); i++) {
             Type type = (i == 0) ? COMMAND : COMMAND_DATA;
             Info info = infos[addr + i];
@@ -45,6 +41,8 @@ public class WhereIsData extends When {
             }
             info.command(command).type(type).increase();
         }
+        infos[addr].data(data.read16(addr + 1));
+        return infos[addr];
     }
 
     private void init() {
@@ -76,6 +74,7 @@ public class WhereIsData extends When {
         public Type type;
         public Command command;
         public String asm;
+        public int data;
 
         public Info(int access, Type type, Command command) {
             this.access = access;
@@ -104,6 +103,11 @@ public class WhereIsData extends When {
 
         public Info asm(String asm) {
             this.asm = asm;
+            return this;
+        }
+
+        public Info data(int word) {
+            data = word;
             return this;
         }
     }

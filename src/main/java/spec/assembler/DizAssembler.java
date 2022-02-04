@@ -36,10 +36,9 @@ public class DizAssembler {
             processed.add(addr);
             do {
                 Command command = asm.find(data.read8(addr));
-                markCommand(infoData, addr, command, true);
+                WhereIsData.Info info = markCommand(infoData, addr, data, command, true);
                 if (command.isJump() || command.isCall()) {
-                    int nextAddr = data.read16(addr + 1);
-                    toProcess.add(nextAddr);
+                    toProcess.add(info.data);
                 }
                 if (command.name().startsWith("RET")
                         || command.name().startsWith("JMP")
@@ -62,7 +61,6 @@ public class DizAssembler {
     }
 
     private void dizAssembly(Range range, boolean canonicalData) {
-        Assembler asm = new Assembler();
         for (int addr = range.begin(); addr <= range.end(); addr++) {
             WhereIsData.Info info = infoData[addr];
 
