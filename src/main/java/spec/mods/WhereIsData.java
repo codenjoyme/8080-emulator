@@ -75,6 +75,7 @@ public class WhereIsData extends When {
         public int access;
         public Type type;
         public Command command;
+        public String asm;
 
         public Info(int access, Type type, Command command) {
             this.access = access;
@@ -98,6 +99,11 @@ public class WhereIsData extends When {
 
         public Info command(Command command) {
             this.command = command;
+            return this;
+        }
+
+        public Info asm(String asm) {
+            this.asm = asm;
             return this;
         }
     }
