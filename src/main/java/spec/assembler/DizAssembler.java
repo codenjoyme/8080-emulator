@@ -73,7 +73,8 @@ public class DizAssembler {
                     || info.command.name().startsWith("SHLD")
                     || info.command.name().startsWith("LHLD")
                     || info.command.name().startsWith("LDA")
-                    || info.command.name().startsWith("STA"))
+                    || info.command.name().startsWith("STA")
+                    || (info.command.name().startsWith("LXI") && infoData[info.data].type == DATA))
                 {
                     int newAddr = info.data;
                     String label = labels.get(newAddr);
