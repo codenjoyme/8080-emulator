@@ -66,23 +66,12 @@ public class DizAssembler {
         for (int addr = range.begin(); addr <= range.end(); addr++) {
             WhereIsData.Info info = infoData[addr];
 
-            // если у нас данные
             if (info.type == DATA) {
-                StringBuilder result = new StringBuilder();
-                result.append("DB ");
-                if (canonicalData) {
-                    result.append('0');
-                }
-                result.append(hex8(data.read8(addr)));
-                if (canonicalData) {
-                    result.append('h');
-                }
-                info.asm(result.toString());
-                continue;
-            }
-
-            // если у нас команды
-            if (info.type == COMMAND) {
+                // если у нас данные
+                String hex = hex8(data.read8(addr));
+                info.asm("DB " + (canonicalData ? canonical(hex) : hex));
+            } else if (info.type == COMMAND) {
+                // если у нас команды
                 List<Integer> bites = new LinkedList<>();
                 for (int i = 0; i < info.command.size(); i++) {
                     bites.add(data.read8(addr + i));

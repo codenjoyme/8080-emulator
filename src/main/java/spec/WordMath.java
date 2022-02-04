@@ -29,6 +29,10 @@ public class WordMath {
         return hex(bite, 2);
     }
 
+    public static String canonical(String biteOrWord) {
+        return "0" + biteOrWord + "h";
+    }
+
     private static String hex(int bite, int length) {
         return padLeft(Integer.toString(bite, 16).toUpperCase(), length, '0');
     }
