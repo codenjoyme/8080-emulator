@@ -58,7 +58,7 @@ public class DizAssembler {
 
         clarifyInfo();
         dizAssembly(range, canonicalData);
-        return buildProgram(range, canonicalData);
+        return buildProgram(range);
     }
 
     private void dizAssembly(Range range, boolean canonicalData) {
@@ -92,14 +92,14 @@ public class DizAssembler {
         }
     }
 
-    private String buildProgram(Range range, boolean canonicalData) {
+    private String buildProgram(Range range) {
         StringBuilder result = new StringBuilder();
         int count = 0;
         boolean first = true;
         for (int addr = range.begin(); addr <= range.end(); addr++) {
             WhereIsData.Info info = infoData[addr];
 
-            // если у нас данные
+            // если у нас данные, выстраиваем их по 10 в ряд
             if (info.type == DATA) {
                 if (count == 10) {
                     count = 0;
@@ -112,13 +112,7 @@ public class DizAssembler {
                 } else {
                     result.append(", ");
                 }
-                if (canonicalData) {
-                    result.append('0');
-                }
-                result.append(hex8(data.read8(addr)));
-                if (canonicalData) {
-                    result.append('h');
-                }
+                result.append(info.asm.replace("DB ", ""));
                 count++;
                 continue;
             }
@@ -130,10 +124,6 @@ public class DizAssembler {
 
             // если у нас команды
             if (info.type == COMMAND) {
-                List<Integer> bites = new LinkedList<>();
-                for (int i = 0; i < info.command.size(); i++) {
-                    bites.add(data.read8(addr + i));
-                }
                 result.append(info.asm).append('\n');
             }
         }
