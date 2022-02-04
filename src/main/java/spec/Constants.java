@@ -47,5 +47,5 @@ public class Constants {
     public static final int CPU_TICKS_PER_INTERRUPT = 2000;
     public static final int CPU_INTERRUPT_DELAY = 35 * CPU_TICKS_PER_INTERRUPT / 10000;
     public static final int REFRESH_RATE = 1;      // refresh screen every 'n' interrupts
-    public static final int MAX_REFRESH_RATE = 50;
+    public static final int MAX_REFRESH_RATE = 100;
 }

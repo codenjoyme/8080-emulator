@@ -193,8 +193,7 @@ public class IntegrationTest extends AbstractTest {
 
     @Test
     public void testLik_klad_recording() {
-        // about 23 sec
-        // minimum 13 sec without WhereIsData
+        // about 36 sec
 
         // given
         Lik.loadRom(base, roms);
