@@ -38,7 +38,7 @@ public class MVI_R_XX extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int bite = r.data().read8(r.rPC);
+        int bite = r.read8(r.rPC);
         r.reg8(rindex(command)).set(bite);
     }
 }

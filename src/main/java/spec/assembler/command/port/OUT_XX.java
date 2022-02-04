@@ -28,7 +28,7 @@ public class OUT_XX extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int port = r.data().read8(r.rPC);
-        r.data().out8(port, r.A());
+        int port = r.read8(r.rPC);
+        r.out8(port, r.A());
     }
 }

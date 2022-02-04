@@ -29,6 +29,6 @@ public class STAX_RD extends Command {
     @Override
     public void apply(int command, Registry r) {
         int addr = rRR(command, r).get();
-        r.data().write8(addr, r.A());
+        r.write8(addr, r.A());
     }
 }

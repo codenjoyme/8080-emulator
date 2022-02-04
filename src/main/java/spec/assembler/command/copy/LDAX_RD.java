@@ -29,7 +29,7 @@ public class LDAX_RD extends Command {
     @Override
     public void apply(int command, Registry r) {
         int addr = rRR(command, r).get();
-        int bite = r.data().read8(addr);
+        int bite = r.read8(addr);
         r.A(bite);
     }
 }

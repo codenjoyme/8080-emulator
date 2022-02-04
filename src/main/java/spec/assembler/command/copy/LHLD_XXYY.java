@@ -28,8 +28,8 @@ public class LHLD_XXYY extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int addr = r.data().read16(r.rPC);
-        int word = r.data().read16(addr);
+        int addr = r.read16(r.rPC);
+        int word = r.read16(addr);
         r.HL(word);
     }
 }

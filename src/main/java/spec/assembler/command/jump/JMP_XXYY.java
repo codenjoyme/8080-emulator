@@ -33,7 +33,7 @@ public class JMP_XXYY extends Command {
     }
 
     public static void jmp_if(Registry r, Predicate<Registry> predicate) {
-        int addr = r.data().read16(r.rPC);
+        int addr = r.read16(r.rPC);
         if (predicate.test(r)) {
             r.PC(addr);
         }

@@ -28,7 +28,7 @@ public class STA_XXYY extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int addr = r.data().read16(r.rPC);
-        r.data().write8(addr, r.A());
+        int addr = r.read16(r.rPC);
+        r.write8(addr, r.A());
     }
 }

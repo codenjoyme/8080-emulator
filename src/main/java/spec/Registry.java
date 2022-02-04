@@ -1,11 +1,14 @@
 package spec;
 
+import spec.mods.Event;
 import spec.mods.Modifiable;
 
 import static spec.Constants.*;
 import static spec.WordMath.*;
+import static spec.mods.Event.READ_MEM;
+import static spec.mods.Event.WRITE_MEM;
 
-public class Registry extends Modifiable {
+public class Registry extends Modifiable implements Data {
 
     public static final int T0c = x01; // Разряд Tc = 1, если был перенос или заем
     public static final int T11 = x02; // Всегда 1
@@ -475,6 +478,29 @@ public class Registry extends Modifiable {
                 th(),
                 tp(),
                 tc());
+    }
+
+    @Override
+    public int in8(int port) {
+        return data.in8(port);
+    }
+
+    @Override
+    public void out8(int port, int bite) {
+        data.out8(port, bite);
+    }
+
+    @Override
+    public int read8(int addr) {
+        int bite = data.read8(addr);
+        on(READ_MEM, addr, bite);
+        return bite;
+    }
+
+    @Override
+    public void write8(int addr, int bite) {
+        on(WRITE_MEM, addr, bite);
+        data.write8(addr, bite);
     }
 
     public Data data() {

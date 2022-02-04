@@ -31,7 +31,7 @@ public class SUI_XX extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int bite = r.data().read8(r.rPC);
+        int bite = r.read8(r.rPC);
         r.A(sub8(r, r.A(), bite));
     }
 }

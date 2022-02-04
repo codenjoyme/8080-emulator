@@ -35,14 +35,14 @@ public class CALL_XXYY extends Command {
     }
 
     public static void call_if(Registry r, Predicate<Registry> predicate) {
-        int addr = r.data().read16(r.rPC);
+        int addr = r.read16(r.rPC);
         if (predicate.test(r)) {
             call(r, addr);
         }
     }
 
     public static void call(Registry r, int addr) {
-        r.data().push16(r.rSP, r.PC());
+        r.push16(r.rSP, r.PC());
         r.PC(addr);
         r.on(RUN_CALL);
     }

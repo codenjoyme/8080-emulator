@@ -28,7 +28,7 @@ public class SHLD_XXYY extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int addr = r.data().read16(r.rPC);
-        r.data().write16(addr, r.HL());
+        int addr = r.read16(r.rPC);
+        r.write16(addr, r.HL());
     }
 }

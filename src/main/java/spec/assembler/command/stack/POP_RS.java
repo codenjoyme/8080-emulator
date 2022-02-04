@@ -28,7 +28,7 @@ public class POP_RS extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        int word = r.data().read16(r.rSP);
+        int word = r.read16(r.rSP);
         rRS(command, r).set(word);
     }
 }
