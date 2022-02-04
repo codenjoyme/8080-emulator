@@ -92,7 +92,7 @@ public class IntegrationTest extends AbstractTest {
 
     private void assertDizAssembly(WhereIsData data, String name) {
         fileAssert.check("DizAssembled program", name + ".log",
-                file -> write(file, dizAssembler.program(data.range(), data.info(), true)));
+                file -> write(file, dizAssembler.program(data.range(), data.info())));
     }
 
     private void assertTrace() {

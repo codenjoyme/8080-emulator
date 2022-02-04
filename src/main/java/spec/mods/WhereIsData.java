@@ -75,6 +75,8 @@ public class WhereIsData extends When {
         public Command command;
         public String asm;
         public int data;
+        public String labelTo;
+        public String label;
 
         public Info(int access, Type type, Command command) {
             this.access = access;

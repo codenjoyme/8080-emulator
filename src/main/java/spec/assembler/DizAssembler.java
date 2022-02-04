@@ -4,9 +4,7 @@ import spec.Data;
 import spec.Range;
 import spec.mods.WhereIsData;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 import static spec.WordMath.*;
 import static spec.mods.WhereIsData.Type.*;
@@ -18,6 +16,7 @@ public class DizAssembler {
     private Data data;
     private Range range;
     private WhereIsData.Info[] infoData;
+    private Map<Integer, String> labels;
 
     public DizAssembler(Data data) {
         this.data = data;
@@ -51,13 +50,35 @@ public class DizAssembler {
         }
     }
 
-    public String program(Range range, WhereIsData.Info[] inputInfo, boolean canonicalData) {
+    public String program(Range range, WhereIsData.Info[] inputInfo) {
         this.range = range;
         this.infoData = clone(inputInfo);
+        boolean canonicalData = true;
 
         clarifyInfo();
+        arrangeLabels(range);
         dizAssembly(range, canonicalData);
-        return buildProgram(range);
+        return buildProgram(range, canonicalData);
+    }
+
+    private void arrangeLabels(Range range) {
+        labels = new HashMap<>();
+        for (int addr = range.begin(); addr <= range.end(); addr++) {
+            WhereIsData.Info info = infoData[addr];
+
+            if (info.type == COMMAND) {
+                if (info.command.isCall() || info.command.isJump()) {
+                    int newAddr = info.data;
+                    String label = labels.get(newAddr);
+                    if (label == null) {
+                        label = "lab" + labels.size();
+                        labels.put(newAddr, label);
+                        infoData[newAddr].label = label;
+                    }
+                    info.labelTo = label;
+                }
+            }
+        }
     }
 
     private void dizAssembly(Range range, boolean canonicalData) {
@@ -67,7 +88,8 @@ public class DizAssembler {
             if (info.type == DATA) {
                 // если у нас данные
                 String hex = hex8(data.read8(addr));
-                info.asm("DB " + (canonicalData ? canonical(hex) : hex));
+                hex = canonicalData ? canonical(hex) : hex;
+                info.asm("DB " + hex);
             } else if (info.type == COMMAND) {
                 // если у нас команды
                 List<Integer> bites = new LinkedList<>();
@@ -79,8 +101,27 @@ public class DizAssembler {
         }
     }
 
-    private String buildProgram(Range range) {
+    private String buildProgram(Range range, boolean canonicalData) {
         StringBuilder result = new StringBuilder();
+
+        String start = hex16(range.begin());
+        start = canonicalData ? canonical(start) : start;
+        result.append("     CPU  8080\n")
+              .append("     .ORG ").append(start).append('\n');
+
+        for (Map.Entry<Integer, String> entry : labels.entrySet()) {
+            int addr = entry.getKey();
+            String label = entry.getValue();
+            if (!range.includes(addr)) {
+                String hex = hex16(addr);
+                hex = canonicalData ? canonical(hex) : hex;
+                result.append(label)
+                        .append("  EQU ")
+                        .append(hex)
+                        .append('\n');
+            }
+        }
+
         int count = 0;
         boolean first = true;
         for (int addr = range.begin(); addr <= range.end(); addr++) {
@@ -111,8 +152,19 @@ public class DizAssembler {
 
             // если у нас команды
             if (info.type == COMMAND) {
-                result.append(info.asm)
-                      .append('\n');
+                if (info.label != null) {
+                    result.append(info.label)
+                          .append(": ");
+                } else {
+                    result.append("        ");
+                }
+                if (info.labelTo != null) {
+                    String data = canonical((info.command.size() == 3) ? hex16(info.data) : hex8(info.data));
+                    result.append(info.asm.replace(data, info.labelTo));
+                } else {
+                    result.append(info.asm);
+                }
+                result.append('\n');
             }
         }
         result.append("\nEND");
