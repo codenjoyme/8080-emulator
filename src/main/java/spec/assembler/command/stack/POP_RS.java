@@ -21,7 +21,7 @@ public class POP_RS extends Command {
     }
 
     @Override
-    public int ticks() {
+    public int ticks(int command) {
         return 10;
     }
 

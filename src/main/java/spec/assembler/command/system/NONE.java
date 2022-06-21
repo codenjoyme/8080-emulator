@@ -14,7 +14,7 @@ public class NONE extends NOP {
     }
 
     @Override
-    public int ticks() {
+    public int ticks(int command) {
         return 1; // TODO если тут поставить 0, тогда PC счетчик будет неправильно бегать, на 1 больше
     }
 }

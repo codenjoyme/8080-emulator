@@ -16,7 +16,7 @@ public class XTHL extends Command {
     }
 
     @Override
-    public int ticks() {
+    public int ticks(int command) {
         return 19;
     }
 

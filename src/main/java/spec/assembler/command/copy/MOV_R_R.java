@@ -68,7 +68,7 @@ public class MOV_R_R extends Command {
     }
 
     @Override
-    public int ticks() {
+    public int ticks(int command) {
         return 7;
     }
 

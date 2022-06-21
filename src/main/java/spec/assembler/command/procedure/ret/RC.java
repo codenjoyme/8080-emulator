@@ -18,7 +18,7 @@ public class RC extends Command {
     }
 
     @Override
-    public int ticks() {
+    public int ticks(int command) {
         return 15; // TODO если условие не прошло то 11
     }
 

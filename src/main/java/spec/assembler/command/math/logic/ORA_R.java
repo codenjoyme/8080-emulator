@@ -26,8 +26,8 @@ public class ORA_R extends Command {
     }
 
     @Override
-    public int ticks() {
-        return 4; // TODO для M регистра 7 тиков
+    public int ticks(int command) {
+        return rindex(command) == iM ? 7 : 4;
     }
 
     @Override

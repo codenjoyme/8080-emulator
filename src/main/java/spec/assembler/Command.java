@@ -152,7 +152,7 @@ public abstract class Command {
         return 1;
     }
 
-    public abstract int ticks();
+    public abstract int ticks(int command);
 
     protected boolean disabled() {
         return false;
@@ -216,6 +216,21 @@ public abstract class Command {
     public int rindex(int command) {
         return indexes[command];
     }
+
+    public static final int iB = 0;
+    public static final int iC = 1;
+    public static final int iD = 2;
+    public static final int iE = 3;
+    public static final int iH = 4;
+    public static final int iL = 5;
+    public static final int iM = 6;
+    public static final int iA = 7;
+
+    public static final int iBC = 0;
+    public static final int iDE = 1;
+    public static final int iHL = 2;
+    public static final int iSP = 3;
+    public static final int iPSW = 3;
 
     /**
      * 0 - BC, 1 - DE, 2 - HL, 3 - SP

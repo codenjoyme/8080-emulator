@@ -16,7 +16,7 @@ public class EI extends Command {
     }
 
     @Override
-    public int ticks() {
+    public int ticks(int command) {
         return 4;
     }
 

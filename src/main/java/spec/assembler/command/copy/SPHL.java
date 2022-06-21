@@ -16,7 +16,7 @@ public class SPHL extends Command {
     }
 
     @Override
-    public int ticks() {
+    public int ticks(int command) {
         return 6;
     }
 

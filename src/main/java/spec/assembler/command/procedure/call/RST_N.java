@@ -29,7 +29,7 @@ public class RST_N extends Command {
     }
 
     @Override
-    public int ticks() {
+    public int ticks(int command) {
         return 11;
     }
 

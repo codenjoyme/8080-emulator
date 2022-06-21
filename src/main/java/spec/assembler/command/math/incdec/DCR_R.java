@@ -28,8 +28,8 @@ public class DCR_R extends Command {
     }
 
     @Override
-    public int ticks() {
-        return 4; // TODO для M регистра 11 тиков
+    public int ticks(int command) {
+        return rindex(command) == iM ? 11 : 4;
     }
 
     @Override

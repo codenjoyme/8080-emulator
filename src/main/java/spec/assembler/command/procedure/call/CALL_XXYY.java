@@ -24,7 +24,7 @@ public class CALL_XXYY extends Command {
     }
 
     @Override
-    public int ticks() {
+    public int ticks(int command) {
         return 17;
     }
 

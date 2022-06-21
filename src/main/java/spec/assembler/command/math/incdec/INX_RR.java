@@ -24,7 +24,7 @@ public class INX_RR extends Command {
     }
 
     @Override
-    public int ticks() {
+    public int ticks(int command) {
         return 6;
     }
 

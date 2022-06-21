@@ -21,7 +21,7 @@ public class STAX_RD extends Command {
     }
 
     @Override
-    public int ticks() {
+    public int ticks(int command) {
         return 7;
     }
 

@@ -21,7 +21,7 @@ public class RLC extends Command {
     }
 
     @Override
-    public int ticks() {
+    public int ticks(int command) {
         return 4;
     }
 

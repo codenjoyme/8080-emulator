@@ -23,7 +23,7 @@ public class CNC_XXYY extends Command {
     }
 
     @Override
-    public int ticks() {
+    public int ticks(int command) {
         return 17; // TODO если условие не прошло то 10
     }
 

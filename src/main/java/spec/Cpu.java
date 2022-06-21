@@ -80,7 +80,7 @@ public class Cpu extends Registry {
             command.apply(bite, this);
             // каждая операция уменьшает число тактов на
             // прерывание на свою длительность в тактах
-            tact += command.ticks();
+            tact += command.ticks(bite);
         }
 
         enabled();
