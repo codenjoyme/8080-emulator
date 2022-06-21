@@ -28,6 +28,6 @@ public class CMC extends Command {
     }
 
     private void cmc(Registry r) {
-        r.tc(!r.tc());
+        r.tc(r.tnc());
     }
 }

@@ -30,6 +30,6 @@ public class CNC_XXYY extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        call_if(r, reg -> !reg.tc());
+        call_if(r, Registry::tnc);
     }
 }

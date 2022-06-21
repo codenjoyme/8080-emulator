@@ -25,6 +25,6 @@ public class RNZ extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        ret_if(r, reg -> !reg.tz());
+        ret_if(r, Registry::tnz);
     }
 }

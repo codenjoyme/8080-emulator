@@ -30,6 +30,6 @@ public class CP_XXYY extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        call_if(r, reg -> !reg.ts());
+        call_if(r, Registry::tns);
     }
 }

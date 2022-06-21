@@ -25,6 +25,6 @@ public class RM extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        ret_if(r, reg -> reg.ts());
+        ret_if(r, Registry::ts);
     }
 }

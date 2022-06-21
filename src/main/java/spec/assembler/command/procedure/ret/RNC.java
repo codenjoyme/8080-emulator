@@ -25,6 +25,6 @@ public class RNC extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        ret_if(r, reg -> !reg.tc());
+        ret_if(r, Registry::tnc);
     }
 }

@@ -30,6 +30,6 @@ public class CNZ_XXYY extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        call_if(r, reg -> !reg.tz());
+        call_if(r, Registry::tnz);
     }
 }

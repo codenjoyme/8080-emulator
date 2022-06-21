@@ -186,7 +186,7 @@ public class IntegrationTest extends AbstractTest {
                             it -> it.down(UP).after(30 * K10).up(UP).after(100 * K10))
                     .stopCpu();
 
-            // этот хак позволяет запускать игру со следующим уровенем
+            // этот хак позволяет запускать игру со следующим уровнем
             cpu.PC(0x4567);
             start();
         }

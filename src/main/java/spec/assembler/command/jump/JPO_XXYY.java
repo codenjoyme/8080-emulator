@@ -30,6 +30,6 @@ public class JPO_XXYY extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        jmp_if(r, reg -> !reg.tp());
+        jmp_if(r, Registry::tnp);
     }
 }

@@ -30,6 +30,6 @@ public class JZ_XXYY extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        jmp_if(r, reg -> reg.tz());
+        jmp_if(r, Registry::tz);
     }
 }

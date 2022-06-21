@@ -30,6 +30,6 @@ public class CPO_XXYY extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        call_if(r, reg -> !reg.tp());
+        call_if(r, Registry::tnp);
     }
 }

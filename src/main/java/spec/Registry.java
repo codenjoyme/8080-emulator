@@ -362,12 +362,20 @@ public class Registry extends Modifiable implements Data {
         return tc() ? 1 : 0;
     }
 
+    public boolean tnc() {
+        return !tc();
+    }
+
     public boolean tc() {
         return tc;
     }
 
     public void tc(boolean value) {
         tc = value;
+    }
+
+    public boolean tns() {
+        return !ts();
     }
 
     public boolean ts() {
@@ -378,6 +386,10 @@ public class Registry extends Modifiable implements Data {
         ts = value;
     }
 
+    public boolean tnz() {
+        return !tz();
+    }
+
     public boolean tz() {
         return tz;
     }
@@ -386,12 +398,21 @@ public class Registry extends Modifiable implements Data {
         tz = value;
     }
 
+    public boolean tnh() {
+        return !th();
+    }
+
+
     public boolean th() {
         return th;
     }
 
     public void th(boolean value) {
         th = value;
+    }
+
+    public boolean tnp() {
+        return !tp();
     }
 
     public boolean tp() {
