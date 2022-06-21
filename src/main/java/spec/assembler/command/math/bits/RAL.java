@@ -3,7 +3,6 @@ package spec.assembler.command.math.bits;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static spec.Constants.x01;
@@ -13,7 +12,7 @@ import static spec.WordMath.lo;
 // TODO test me
 public class RAL extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0x17);
 
     @Override

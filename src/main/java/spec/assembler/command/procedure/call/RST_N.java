@@ -10,7 +10,7 @@ import static spec.assembler.command.procedure.call.CALL_XXYY.call;
 
 public class RST_N extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0xC7, 0xCF, 0xD7, 0xDF, 0xE7, 0xEF, 0xF7, 0xFF);
 
     @Override

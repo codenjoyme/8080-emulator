@@ -4,7 +4,6 @@ import spec.Reg;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static spec.Constants.x0F;
@@ -15,7 +14,7 @@ import static spec.assembler.Parity.parity;
 // TODO test me
 public class DCR_R extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0x05, 0x0D, 0x15, 0x1D, 0x25, 0x2D, 0x35, 0x3D);
 
     @Override

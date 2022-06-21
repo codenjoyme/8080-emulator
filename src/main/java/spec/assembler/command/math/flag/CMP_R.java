@@ -4,7 +4,6 @@ import spec.Reg;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static spec.Constants.x0F;
@@ -17,7 +16,7 @@ import static spec.assembler.Parity.parity;
 // TODO test me
 public class CMP_R extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0xB8, 0xB9, 0xBA, 0xBB, 0xBC, 0xBD, 0xBE, 0xBF);
 
     @Override

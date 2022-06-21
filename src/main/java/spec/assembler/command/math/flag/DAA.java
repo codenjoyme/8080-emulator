@@ -4,7 +4,6 @@ import spec.Reg;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static spec.Constants.*;
@@ -14,7 +13,7 @@ import static spec.assembler.command.math.sum.ADD_R.add8;
 // TODO test me
 public class DAA extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0x27);
 
     @Override

@@ -44,6 +44,10 @@ public abstract class Command {
         regexp = Pattern.compile(pattern());
     }
 
+    public static List<Integer> from(Integer... input) {
+        return Arrays.asList(input);
+    }
+
     public void initIndexes(List<Integer> codes, List<String> registers) {
         for (int i = 0; i < codes.size(); i++) {
             int div = (registers.size() == 0) ? 1 : registers.size();

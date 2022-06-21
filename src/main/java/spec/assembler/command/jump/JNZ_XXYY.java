@@ -3,14 +3,13 @@ package spec.assembler.command.jump;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static spec.assembler.command.jump.JMP_XXYY.jmp_if;
 
 public class JNZ_XXYY extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0xC2);
 
     @Override

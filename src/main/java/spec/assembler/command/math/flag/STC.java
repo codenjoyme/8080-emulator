@@ -3,13 +3,12 @@ package spec.assembler.command.math.flag;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 
 // TODO test me
 public class STC extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0x37);
 
     @Override

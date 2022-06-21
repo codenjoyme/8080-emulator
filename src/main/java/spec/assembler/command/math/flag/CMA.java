@@ -4,7 +4,6 @@ import spec.Reg;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static spec.WordMath.BITE;
@@ -12,7 +11,7 @@ import static spec.WordMath.BITE;
 // TODO test me
 public class CMA extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0x2F);
 
     @Override

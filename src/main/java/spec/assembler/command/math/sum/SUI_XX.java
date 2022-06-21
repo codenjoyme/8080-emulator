@@ -3,7 +3,6 @@ package spec.assembler.command.math.sum;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static spec.assembler.command.math.sum.SUB_R.sub8;
@@ -11,7 +10,7 @@ import static spec.assembler.command.math.sum.SUB_R.sub8;
 // TODO test me
 public class SUI_XX extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0xD6);
 
     @Override

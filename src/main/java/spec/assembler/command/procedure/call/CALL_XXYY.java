@@ -3,7 +3,6 @@ package spec.assembler.command.procedure.call;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -11,7 +10,7 @@ import static spec.mods.Event.RUN_CALL;
 
 public class CALL_XXYY extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0xCD);
 
     @Override

@@ -3,13 +3,12 @@ package spec.assembler.command.jump;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
 public class JMP_XXYY extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0xC3);
 
     @Override

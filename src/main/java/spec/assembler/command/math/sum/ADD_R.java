@@ -4,7 +4,6 @@ import spec.Reg;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static spec.Constants.x0F;
@@ -17,7 +16,7 @@ import static spec.assembler.Parity.parity;
 // TODO test me
 public class ADD_R extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87);
 
     @Override

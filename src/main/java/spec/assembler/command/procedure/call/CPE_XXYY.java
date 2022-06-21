@@ -3,14 +3,13 @@ package spec.assembler.command.procedure.call;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static spec.assembler.command.procedure.call.CALL_XXYY.call_if;
 
 public class CPE_XXYY extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0xEC);
 
     @Override

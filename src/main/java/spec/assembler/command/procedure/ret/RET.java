@@ -2,9 +2,7 @@ package spec.assembler.command.procedure.ret;
 
 import spec.Registry;
 import spec.assembler.Command;
-import spec.mods.Event;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -12,7 +10,7 @@ import static spec.mods.Event.RUN_RET;
 
 public class RET extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0xC9);
 
     @Override

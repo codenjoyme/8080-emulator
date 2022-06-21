@@ -3,12 +3,11 @@ package spec.assembler.command.copy;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class LDAX_RD extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0x0A, 0x1A);
 
     @Override

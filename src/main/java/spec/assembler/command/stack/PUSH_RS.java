@@ -3,12 +3,11 @@ package spec.assembler.command.stack;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class PUSH_RS extends Command {
 
-    private static final List<Integer> CODES = Arrays.asList(
+    private static final List<Integer> CODES = from(
             0xC5, 0xD5, 0xE5, 0xF5);
 
     @Override
