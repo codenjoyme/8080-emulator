@@ -17,11 +17,11 @@ public class IOPorts {
     private boolean alt;
     private boolean ctrl;
 
-    private static final int PortA = 0xFFE0; // Порт А ППА
-    private static final int PortB = 0xFFE1; // Порт В ППА
-    private static final int PortC = 0xFFE2; // Порт С ППА
-    private static final int RgRYS = 0xFFE3; // рег. Упр.Слова ППА
-    public static final int RgRGB = 0xFFF8;  // порт контроллера цвета
+    private final int PortA = 0xFFE0; // Порт А ППА
+    private final int PortB = 0xFFE1; // Порт В ППА
+    private final int PortC = 0xFFE2; // Порт С ППА
+    private final int RgRYS = 0xFFE3; // рег. Упр.Слова ППА
+    public final int RgRGB = 0xFFF8;  // порт контроллера цвета
 
     // маски битов
     private final int[] bit = {0x00FE, 0x00FD, 0x00FB, 0x00F7, 0x00EF, 0x00DF, 0x00BF, 0x007F};
