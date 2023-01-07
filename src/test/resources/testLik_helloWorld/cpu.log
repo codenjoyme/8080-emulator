@@ -1,14 +1,14 @@
 BC:  0000
 DE:  0000
 HL:  0012
-AF:  FE46
+AF:  FE56
 SP:  7FFD
 PC:  C800
 B,C: 00 00
 D,E: 00 00
 H,L: 00 12
 M:   0D
-A,F: FE 46
+A,F: FE 56
      76543210 76543210
 SP:  01111111 11111101
 PC:  11001000 00000000
@@ -22,9 +22,9 @@ L:   00010010
 M:   00001101
 A:   11111110
      sz0h0p1c
-F:   01000110
+F:   01010110
 ts:  false
 tz:  true
-th:  false
+th:  true
 tp:  true
 tc:  false
