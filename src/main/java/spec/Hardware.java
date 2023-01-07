@@ -81,9 +81,27 @@ public class Hardware {
         return new IOPorts(memory, new Layout(), keyLogger::process){
 
             @Override
-            public synchronized void write8(int addr, int bite) {
-                Hardware.this.outPort8(addr, bite);
-                super.write8(addr, bite);
+            protected void A(int bite) {
+                super.A(bite);
+                Hardware.this.outPort8(IOPorts.PortA, bite);
+            }
+
+            @Override
+            protected void B(int bite) {
+                super.B(bite);
+                Hardware.this.outPort8(IOPorts.PortB, bite);
+            }
+
+            @Override
+            protected void C(int bite) {
+                super.C(bite);
+                Hardware.this.outPort8(IOPorts.PortC, bite);
+            }
+
+            @Override
+            protected void R(int bite) {
+                super.R(bite);
+                Hardware.this.outPort8(IOPorts.RgRGB, bite);
             }
         };
     }

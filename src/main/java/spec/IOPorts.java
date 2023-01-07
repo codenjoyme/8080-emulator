@@ -21,6 +21,8 @@ public class IOPorts {
     public static final int PortB = 0xFFE1; // Порт В ППА
     public static final int PortC = 0xFFE2; // Порт С ППА
     public static final int RgRYS = 0xFFE3; // рег. Упр.Слова ППА
+    public static final Range INTERFACE = new Range(PortA, RgRYS);
+
     public static final int RgRGB = 0xFFF8;  // порт контроллера цвета
 
     // маски битов
@@ -167,82 +169,97 @@ public class IOPorts {
         // все порты ППА перенесём в область 0xFFE0 - 0xFFE3
         addr = shiftPortAddress(addr);
 
+        if (!INTERFACE.includes(addr)) {
+            memory.write8(addr, bite);
+            return;
+        }
+
+        if (PortA == addr) {
+            A(bite);
+            return;
+        }
+
+        if (PortB == addr) {
+            B(bite);
+            return;
+        }
+
+        if (PortC == addr) {
+            C(bite);
+            return;
+        }
+
         // Разбор управляющего слова ППА 580ВВ55
         // РУС
-        if (addr == RgRYS) {
-            // управляющие слова 1-старший бит
-            if ((bite & 0b1000_0000) != 0) {
-                // КАНАЛ_С(МЛ.)(РС0-РС3)
-                C0in = (bite & 0b0000_0001) != 0;
-                if (!C0in) {
-                    C(C() & 0b1111_0000);
-                }
-                // КАНАЛ_В(РВ0-РВ7)
-                Bin = (bite & 0b0000_0010) != 0;
-                if (!Bin) {
-                    B(0);
-                }
-                // КАНАЛ_С(СТ.)(РС4-РС7)
-                C1in = (bite & 0b0000_1000) != 0;
-                if (!C1in) {
-                    C(C() & 0b0000_1111);
-                }
-                // КАНАЛ_A(РА0-РА7)
-                Ain = (bite & 0b0001_0000) != 0;
-                if (!Ain) {
-                    A(0);
-                }
-                // в ПОРТ RYC запишем YC ПОРТЫ 0xFFE3
-                memory.write8(addr, bite);
-                return;
-            } else {
-                // побитное управление портом 0xFFE3
-                // если порт C0- на вывод
-                if (!C0in) {
-                    if ((bite & 0b0000_0001) == 1) {
-                        // биты 0-3
-                        // уст. в 1
-                        if (((bite & 0b0000_1110) >> 1) < 4) {
-                            C(C() | msk[((bite & 0b0000_1110) >> 1)]);
-                        }
-                    } else {
-                        // биты 0-3
-                        // уст. в 0
-                        if (((bite & 0b0000_1110) >> 1) < 4) {
-                            C(C() & bit[((bite & 0b0000_1110) >> 1)]);
-                        }
+        // управляющие слова 1-старший бит
+        if ((bite & 0b1000_0000) != 0) {
+            // КАНАЛ_С(МЛ.)(РС0-РС3)
+            C0in = (bite & 0b0000_0001) != 0;
+            if (!C0in) {
+                C(C() & 0b1111_0000);
+            }
+            // КАНАЛ_В(РВ0-РВ7)
+            Bin = (bite & 0b0000_0010) != 0;
+            if (!Bin) {
+                B(0);
+            }
+            // КАНАЛ_С(СТ.)(РС4-РС7)
+            C1in = (bite & 0b0000_1000) != 0;
+            if (!C1in) {
+                C(C() & 0b0000_1111);
+            }
+            // КАНАЛ_A(РА0-РА7)
+            Ain = (bite & 0b0001_0000) != 0;
+            if (!Ain) {
+                A(0);
+            }
+        } else {
+            // побитное управление портом 0xFFE3
+            // если порт C0- на вывод
+            if (!C0in) {
+                if ((bite & 0b0000_0001) == 1) {
+                    // биты 0-3
+                    // уст. в 1
+                    if (((bite & 0b0000_1110) >> 1) < 4) {
+                        C(C() | msk[((bite & 0b0000_1110) >> 1)]);
+                    }
+                } else {
+                    // биты 0-3
+                    // уст. в 0
+                    if (((bite & 0b0000_1110) >> 1) < 4) {
+                        C(C() & bit[((bite & 0b0000_1110) >> 1)]);
                     }
                 }
-                // если порт C1- на вывод
-                if (!C1in) {
-                    if ((bite & 0b0000_0001) == 1) {
-                        // биты 4-7
-                        // уст. в 1
-                        if (((bite & 0b0000_1110) >> 1) > 3) {
-                            int b = C();
-                            C(b | msk[((b & 0b0000_1110) >> 1)]);
-                        }
-                    } else {
-                        // биты 4-7
-                        // уст. в 0
-                        if (((bite & 0b0000_1110) >> 1) > 3) {
-                            int b = C();
-                            C(b & bit[((b & 0b0000_1110) >> 1)]);
-                        }
+            }
+            // если порт C1- на вывод
+            if (!C1in) {
+                if ((bite & 0b0000_0001) == 1) {
+                    // биты 4-7
+                    // уст. в 1
+                    if (((bite & 0b0000_1110) >> 1) > 3) {
+                        int b = C();
+                        C(b | msk[((b & 0b0000_1110) >> 1)]);
+                    }
+                } else {
+                    // биты 4-7
+                    // уст. в 0
+                    if (((bite & 0b0000_1110) >> 1) > 3) {
+                        int b = C();
+                        C(b & bit[((b & 0b0000_1110) >> 1)]);
                     }
                 }
             }
         }
-        // в остальные ПОРТЫ : в том числе и 0xFFF8 - цвет
-        // пишем в память: 0xC000 < ПОРТЫ < 0xFFFF
-        memory.write8(addr, bite);
+        // в ПОРТ RYC запишем YC ПОРТЫ 0xFFE3
+        R(bite);
+
     }
 
     public int A() {
         return memory.read8(PortA);
     }
 
-    private void A(int bite) {
+    protected void A(int bite) {
         memory.write8(PortA, bite);
     }
 
@@ -250,7 +267,7 @@ public class IOPorts {
         return memory.read8(PortB);
     }
 
-    private void B(int bite) {
+    protected void B(int bite) {
         memory.write8(PortB, bite);
     }
 
@@ -258,7 +275,7 @@ public class IOPorts {
         return memory.read8(PortC);
     }
 
-    private void C(int bite) {
+    protected void C(int bite) {
         memory.write8(PortC, bite);
     }
 
@@ -266,17 +283,17 @@ public class IOPorts {
         return memory.read8(RgRYS);
     }
 
-    private void R(int bite) {
+    protected void R(int bite) {
         memory.write8(RgRYS, bite);
     }
 
     private int shiftPortAddress(int addr) {
         if (addr > RgRYS) {
-            // адреса 0xFFF9...0xFFFE не трогаем
+            // адреса 0xFFE4...0xFFFF не трогаем
             return addr;
         }
 
-        // для всех портов ППА из диапазона 0xF800...0xFFF8
+        // для всех портов ППА из диапазона 0xF800...0xFFE3
         // берем первые два бита 0x0000...0x0003
         // превращаем их в 0xFFE0...0xFFE3
         // короче там циклическое дублирование во все диапазоне

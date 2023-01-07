@@ -84,19 +84,27 @@ public class Application {
             } break;
 
             case 1 : {
-                bite = hard.ports().A();
+                if (port != IOPorts.PortA) {
+                    return;
+                }
             } break;
 
             case 2 : {
-                bite = hard.ports().B();
+                if (port != IOPorts.PortB) {
+                    return;
+                }
             } break;
 
             case 3 : {
-                bite = hard.ports().C();
+                if (port != IOPorts.PortC) {
+                    return;
+                }
             } break;
 
             case 4 : {
-                bite = hard.ports().R();
+                if (port != IOPorts.RgRGB) {
+                    return;
+                }
             } break;
 
         }
