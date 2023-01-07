@@ -64,10 +64,8 @@ public class Application {
     }
 
     private void printIO(int port, int bite) {
-        // port xx.FEh
-        if ((port & 0x0001) == 0) {
-            // 0000.0111 бордюр & 0x07
-            graphic.changeColor(COLORS[bite & 0x000F]);
+        if (port == BORDER_PORT) {
+            graphic.changeColor(COLORS[bite]);
         }
     }
 
@@ -149,13 +147,13 @@ public class Application {
 
     public void lostFocus() {
         Logger.debug("Lost focus");
-        printIO(BORDER_PORT, 0x06);
+        printIO(BORDER_PORT, 0x50);
         hard.ports().resetKeyboard();
     }
 
     public void gotFocus() {
         Logger.debug("Got focus");
-        printIO(BORDER_PORT, 0x02);
+        printIO(BORDER_PORT, 0x30);
         hard.ports().resetKeyboard();
     }
 

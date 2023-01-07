@@ -7,31 +7,12 @@ import static java.awt.Color.BLACK;
 import static java.awt.Color.WHITE;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static spec.Constants.SCREEN;
+import static spec.WordMath.BITE;
 
 public class Video {
 
-    // 16 цветов - массив цветов "Специалист"
-    private static final int str = 238;
-    public static final Color[] COLORS = {
-            Color.black,             // 00-черный
-            // тусклые цвета
-            Color.blue,              // 01 синий
-            Color.green,             // 02 зелёный
-            Color.cyan,              // 03 бирюзовый
-            Color.red,               // 04 красный
-            Color.magenta,           // 05 фиолетовый
-            Color.yellow,            // 06 коричневый
-            Color.white,             // 07 белый
-            new Color(0, 0, 0),      // 08 серый
-            // яркие цвета
-            new Color(0, 0, str),    // 09 голубой
-            new Color(0, str, 0),    // 0A светло-зелёный
-            new Color(0, str, str),  // 0B светло-бирюзовый
-            new Color(str, 0, 0),    // 0C розовый
-            new Color(str, 0, str),  // 0D светло-фиолетовый
-            new Color(str, str, 0),  // 0E желтый
-            new Color(str, str, str) // 0F ярко-белый
-    };
+    public static Color[] COLORS = new Color[BITE];
+
     public static final int PATTERN = 0x08;
 
     private int pwidth; // ширина экрана в 8 байтовых паттернах
@@ -46,6 +27,16 @@ public class Video {
         changes = new Pattern[pwidth][height];
         patterns = new Pattern[0x100];
         clean();
+        setupColors();
+    }
+
+    private void setupColors() {
+        for (int bite = 0; bite < 0xFF; bite++) {
+            COLORS[bite] = new Color(
+                    (bite & 0b1100_0000),
+                    (bite & 0b0011_1000) << 2,
+                    (bite & 0b0000_0111) << 5);
+        }
     }
 
     public interface Drawer {
