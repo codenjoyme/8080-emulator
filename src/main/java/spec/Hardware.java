@@ -78,7 +78,14 @@ public class Hardware {
     }
 
     protected IOPorts createIoPorts() {
-        return new IOPorts(memory, new Layout(), keyLogger::process);
+        return new IOPorts(memory, new Layout(), keyLogger::process){
+
+            @Override
+            public synchronized void write8(int addr, int bite) {
+                Hardware.this.outPort8(addr, bite);
+                super.write8(addr, bite);
+            }
+        };
     }
 
     protected KeyLogger createKeyLogger() {
@@ -119,7 +126,13 @@ public class Hardware {
         cpuSuspended = false;
     }
 
+    // OUT команда процессора
     protected void out8(int port, int bite) {
+        // please override if needed
+    }
+
+    // запись в порты КР580ВВ55
+    protected void outPort8(int port, int bite) {
         // please override if needed
     }
 

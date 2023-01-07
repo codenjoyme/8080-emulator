@@ -17,11 +17,11 @@ public class IOPorts {
     private boolean alt;
     private boolean ctrl;
 
-    private final int PortA = 0xFFE0; // Порт А ППА
-    private final int PortB = 0xFFE1; // Порт В ППА
-    private final int PortC = 0xFFE2; // Порт С ППА
-    private final int RgRYS = 0xFFE3; // рег. Упр.Слова ППА
-    private final int RgRGB = 0xFFF8;  // порт контроллера цвета
+    public static final int PortA = 0xFFE0; // Порт А ППА
+    public static final int PortB = 0xFFE1; // Порт В ППА
+    public static final int PortC = 0xFFE2; // Порт С ППА
+    public static final int RgRYS = 0xFFE3; // рег. Упр.Слова ППА
+    public static final int RgRGB = 0xFFF8;  // порт контроллера цвета
 
     // маски битов
     private final int[] bit = {0x00FE, 0x00FD, 0x00FB, 0x00F7, 0x00EF, 0x00DF, 0x00BF, 0x007F};
@@ -238,7 +238,7 @@ public class IOPorts {
         memory.write8(addr, bite);
     }
 
-    private int A() {
+    public int A() {
         return memory.read8(PortA);
     }
 
@@ -246,7 +246,7 @@ public class IOPorts {
         memory.write8(PortA, bite);
     }
 
-    private int B() {
+    public int B() {
         return memory.read8(PortB);
     }
 
@@ -254,12 +254,20 @@ public class IOPorts {
         memory.write8(PortB, bite);
     }
 
-    private int C() {
+    public int C() {
         return memory.read8(PortC);
     }
 
     private void C(int bite) {
         memory.write8(PortC, bite);
+    }
+
+    public int R() {
+        return memory.read8(RgRYS);
+    }
+
+    private void R(int bite) {
+        memory.write8(RgRYS, bite);
     }
 
     private int shiftPortAddress(int addr) {

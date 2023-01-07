@@ -54,6 +54,10 @@ public class Key {
         return code == NUM_1;
     }
 
+    public boolean numTwo() {
+        return code == NUM_2;
+    }
+
     public boolean numStar() {
         return code == NUM_STAR;
     }

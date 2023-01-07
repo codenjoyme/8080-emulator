@@ -27,6 +27,13 @@ public class Application {
     private boolean fullSpeed = false;
     private boolean lik = true;
 
+    // 0 - бордюр подсвечивает активно ли окно
+    // 1 - бордюр подсвечивает запись байта в порт А
+    // 2 - бордюр подсвечивает запись байта в порт B
+    // 3 - бордюр подсвечивает запись байта в порт C
+    // 4 - бордюр подсвечивает запись байта в порт RgSYS
+    private int ioDrawMode = 0;
+
     private URL base;
     private Container parent;
     private Graphic graphic;
@@ -54,6 +61,11 @@ public class Application {
             }
 
             @Override
+            protected void outPort8(int port, int bite) {
+                printIO(port, bite);
+            }
+
+            @Override
             protected void update() {
                 updateState();
             }
@@ -64,9 +76,33 @@ public class Application {
     }
 
     private void printIO(int port, int bite) {
-        if (port == BORDER_PORT) {
-            graphic.changeColor(COLORS[bite]);
+        switch (ioDrawMode) {
+            case 0 : {
+                if (port != BORDER_PORT) {
+                    return;
+                }
+            } break;
+
+            case 1 : {
+                bite = hard.ports().A();
+            } break;
+
+            case 2 : {
+                bite = hard.ports().B();
+            } break;
+
+            case 3 : {
+                bite = hard.ports().C();
+            } break;
+
+            case 4 : {
+                bite = hard.ports().R();
+            } break;
+
         }
+
+        graphic.refreshBorder();
+        graphic.changeColor(COLORS[bite]);
     }
 
     public void load(String rom) {
@@ -175,6 +211,21 @@ public class Application {
                 } else {
                     hard.pause();
                 }
+            }
+            return;
+        }
+
+        if (key.numTwo()) {
+            if (key.pressed()) {
+                ioDrawMode++;
+                if (ioDrawMode == 5) {
+                    ioDrawMode = 0;
+                    printIO(BORDER_PORT, 0x30);
+                } else {
+                    printIO(BORDER_PORT, 0x00);
+                }
+                graphic.refreshBorder();
+                Logger.debug("IO Draw Mode: " + ioDrawMode);
             }
             return;
         }
