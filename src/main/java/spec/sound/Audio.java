@@ -1,17 +1,18 @@
 package spec.sound;
 import javax.sound.sampled.*;
-import java.util.Random;
 
 // Thanks to the https://stackoverflow.com/a/32891220
 public class Audio {
 
-    private byte[] buffer = new byte[100];
+    public static final int CPU_SAMPLE_RATE = 2500;
+
+    private byte[] buffer = new byte[10000];
     private int index = 0;
 
     public void play() {
         try {
             // select audio format parameters
-            AudioFormat af = new AudioFormat(2000, 8, 1, false, false);
+            AudioFormat af = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, false, false);
             DataLine.Info info = new DataLine.Info(SourceDataLine.class, af);
             SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
 

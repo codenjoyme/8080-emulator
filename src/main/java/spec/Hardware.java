@@ -108,17 +108,16 @@ public class Hardware {
             @Override
             protected void R(int bite) {
                 super.R(bite);
-                String hex = WordMath.hex8(bite);
-                if (!hex.equals("82") && !hex.equals("91") &&  // непонятное
-                    !hex.equals("0E") && !hex.equals("0F"))    // запись на магнитофон
-                    // hex.equals("0A") || hex.equals("0B")    // вывод звука на динамик
+                if (bite == 0x82 || bite == 0x91 ||  // непонятное
+                    bite == 0x0E || bite == 0x0F ||  // запись на магнитофон
+                    bite == 0x0A || bite == 0x0B)    // вывод звука на динамик
                 {
-                    if (hex.equals("0A")) {
+                    if (bite == 0x0E) {
                         audio.write(0x00);
-                    } else if (hex.equals("0B")) {
+                    } else if (bite == 0x0F) {
                         audio.write(0xFF);
                     }
-//                    System.out.println(hex);
+//                    System.out.println(WordMath.hex8(bite));
                 }
                 Hardware.this.outPort8(IOPorts.RgRGB, bite);
             }
