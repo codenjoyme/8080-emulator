@@ -6,29 +6,24 @@ public class Audio {
 
     public static final int CPU_SAMPLE_RATE = 2500;
 
-    private byte[] buffer = new byte[10000];
+    private final SourceDataLine line;
+    private final AudioFormat format;
+
+    private byte[] buffer = new byte[100];
     private int index = 0;
 
-    public void play() {
+
+    public Audio() {
         try {
             // select audio format parameters
-            AudioFormat af = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, false, false);
-            DataLine.Info info = new DataLine.Info(SourceDataLine.class, af);
-            SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
-
+            format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, false, false);
+            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+            line = (SourceDataLine) AudioSystem.getLine(info);
             // prepare audio output
-            line.open(af, buffer.length);
+            line.open(format, buffer.length);
             line.start();
-
-            // output wave form repeatedly
-            line.write(buffer, 0, buffer.length);
-
-            // shut down audio
-            line.drain();
-            line.stop();
-            line.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -38,6 +33,10 @@ public class Audio {
             index = 0;
             play();
         }
+    }
 
+    public void play() {
+        // output wave form repeatedly
+        line.write(buffer, 0, buffer.length);
     }
 }
