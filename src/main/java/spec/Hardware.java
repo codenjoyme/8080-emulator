@@ -112,9 +112,9 @@ public class Hardware {
                     bite == 0x0E || bite == 0x0F ||  // запись на магнитофон
                     bite == 0x0A || bite == 0x0B)    // вывод звука на динамик
                 {
-                    if (bite == 0x0E) {
+                    if (bite == 0x0A) {
                         audio.write(0x00);
-                    } else if (bite == 0x0F) {
+                    } else if (bite == 0x0B) {
                         audio.write(0xFF);
                     }
 //                    System.out.println(WordMath.hex8(bite));
