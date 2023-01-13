@@ -108,7 +108,11 @@ public class Hardware {
             @Override
             protected void R(int bite) {
                 super.R(bite);
-                audio.write(bite);
+                String hex = WordMath.hex8(bite);
+                if (!hex.equals("82") && !hex.equals("91")) {
+                    audio.write(bite);
+                    System.out.println(hex);
+                }
                 Hardware.this.outPort8(IOPorts.RgRGB, bite);
             }
         };
