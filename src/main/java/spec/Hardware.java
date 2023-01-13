@@ -109,9 +109,16 @@ public class Hardware {
             protected void R(int bite) {
                 super.R(bite);
                 String hex = WordMath.hex8(bite);
-                if (!hex.equals("82") && !hex.equals("91")) {
-                    audio.write(bite);
-                    System.out.println(hex);
+                if (!hex.equals("82") && !hex.equals("91") &&  // непонятное
+                    !hex.equals("0E") && !hex.equals("0F"))    // запись на магнитофон
+                    // hex.equals("0A") || hex.equals("0B")    // вывод звука на динамик
+                {
+                    if (hex.equals("0A")) {
+                        audio.write(0x00);
+                    } else if (hex.equals("0B")) {
+                        audio.write(0xFF);
+                    }
+//                    System.out.println(hex);
                 }
                 Hardware.this.outPort8(IOPorts.RgRGB, bite);
             }
