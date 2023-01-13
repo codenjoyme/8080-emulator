@@ -1,6 +1,7 @@
 package spec;
 
 import spec.platforms.Lik;
+import spec.sound.Audio;
 
 import java.io.File;
 import java.net.URL;
@@ -18,6 +19,7 @@ public class Hardware {
     private HardwareData data;
     private IOPorts ports;
     private Video video;
+    private Audio audio;
     private KeyLogger keyLogger;
     private KeyRecord record;
     private FileRecorder fileRecorder;
@@ -34,9 +36,14 @@ public class Hardware {
         ports = createIoPorts();
         record = createKeyRecord();
         video = createVideo(screenWidth, screenHeight);
+        audio = createAudio();
         data = createHardwareData();
         cpu = createCpu(CPU_TICKS_PER_INTERRUPT);
         roms = createRomLoader();
+    }
+
+    private Audio createAudio() {
+        return audio = new Audio();
     }
 
     // components
@@ -101,6 +108,7 @@ public class Hardware {
             @Override
             protected void R(int bite) {
                 super.R(bite);
+                audio.write(bite);
                 Hardware.this.outPort8(IOPorts.RgRGB, bite);
             }
         };
