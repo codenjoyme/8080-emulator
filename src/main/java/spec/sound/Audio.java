@@ -13,7 +13,6 @@ public class Audio implements Runnable {
 
     private byte[] buffer = new byte[100];
     private int index = 0;
-    private AtomicBoolean set = new AtomicBoolean();
     private AtomicInteger state = new AtomicInteger();
 
     public Audio() {
@@ -31,10 +30,6 @@ public class Audio implements Runnable {
     @Override
     public void run() {
         try {
-//            if (set.get()) {
-//                set.set(false);
-//                return;
-//            }
             tick();
             System.out.print("!");
         } catch (Exception e) {
@@ -43,9 +38,7 @@ public class Audio implements Runnable {
     }
 
     public void write(int bite) {
-        set.set(true);
         state.set(bite);
-        tick();
     }
 
     public void tick() {
