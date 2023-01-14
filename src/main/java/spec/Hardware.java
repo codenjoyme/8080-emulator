@@ -114,10 +114,11 @@ public class Hardware {
                 {
                     if (bite == 0x0A) {
                         audio.write(0x00);
+                        System.out.println(WordMath.hex8(bite));
                     } else if (bite == 0x0B) {
                         audio.write(0xFF);
+                        System.out.println(WordMath.hex8(bite));
                     }
-//                    System.out.println(WordMath.hex8(bite));
                 }
                 Hardware.this.outPort8(IOPorts.RgRGB, bite);
             }
