@@ -148,6 +148,8 @@ public class Application {
             hard.video().screenPaint();
         }
 
+        hard.audio().tick();
+
         if (!fullSpeed) {
             sleep();
         }

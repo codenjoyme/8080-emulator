@@ -18,8 +18,6 @@ public class Audio implements Runnable {
 
     public Audio() {
         try {
-            // Thanks to the https://stackoverflow.com/a/32891220
-            // select audio format parameters
             format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, false, false);
             DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
             line = (SourceDataLine) AudioSystem.getLine(info);
