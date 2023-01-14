@@ -1,19 +1,20 @@
 package spec.sound;
 
 import javax.sound.sampled.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class Audio implements Runnable {
 
     public static final int CPU_SAMPLE_RATE = 2500;
 
-    private final SourceDataLine line;
-    private final AudioFormat format;
+    private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+    private SourceDataLine line;
+    private AudioFormat format;
 
     private byte[] buffer = new byte[100];
     private int index = 0;
-    private AtomicInteger state = new AtomicInteger();
+    private int state = 0;
 
     public Audio() {
         try {
@@ -27,39 +28,32 @@ public class Audio implements Runnable {
         }
     }
 
-    @Override
-    public void run() {
-        try {
-            tick();
-            System.out.print("!");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void write(int bite) {
-        state.set(bite);
+        state = bite;
     }
 
     public void tick() {
-        buffer[index++] = state.byteValue();
+        buffer[index++] = (byte) state;
         if (index >= buffer.length) {
             index = 0;
             play();
         }
     }
 
-    public void play() {
-        // prepare audio output
+    @Override
+    public void run() {
         try {
             line.open(format, buffer.length);
             line.start();
-            // output wave form repeatedly
             line.write(buffer, 0, buffer.length);
             line.drain();
             line.stop();
         } catch (LineUnavailableException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void play() {
+        executor.submit(this);
     }
 }
