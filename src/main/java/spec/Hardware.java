@@ -137,6 +137,7 @@ public class Hardware {
 
     private boolean cpuInterrupt() {
         update();
+        audio.tick();
         while (cpuSuspended) {
             try {
                 Thread.sleep(100);
