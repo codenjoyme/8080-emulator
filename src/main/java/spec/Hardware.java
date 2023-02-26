@@ -2,6 +2,8 @@ package spec;
 
 import spec.platforms.Lik;
 import spec.sound.Audio;
+import spec.sound.NewAudio;
+import spec.sound.OldAudio;
 
 import java.io.File;
 import java.net.URL;
@@ -25,10 +27,12 @@ public class Hardware {
     private FileRecorder fileRecorder;
     private Video.Drawer drawer;
 
+    private boolean lineOut;
     private boolean cpuEnabled;
     private boolean cpuSuspended;
 
     public Hardware(int screenWidth, int screenHeight, Video.Drawer drawer) {
+        lineOut = true;
         this.drawer = drawer;
         memory = createMemory();
         fileRecorder = createFileRecorder(logFile());
@@ -43,7 +47,11 @@ public class Hardware {
     }
 
     private Audio createAudio() {
-        return audio = new Audio();
+        if (lineOut) {
+            return audio = new OldAudio();
+        } else {
+            return audio = new NewAudio();
+        }
     }
 
     // components
@@ -112,10 +120,18 @@ public class Hardware {
                     bite == 0x0E || bite == 0x0F ||  // запись на магнитофон
                     bite == 0x0A || bite == 0x0B)    // вывод звука на динамик
                 {
-                    if (bite == 0x0A) {
-                        audio.write(0x00);
-                    } else if (bite == 0x0B) {
-                        audio.write(0xFF);
+                    if (lineOut) { // звучит запись на магнитофон
+                        if (bite == 0x0E) {
+                            audio.write(0x00);
+                        } else if (bite == 0x0F) {
+                            audio.write(0xFF);
+                        }
+                    } else { // звучит вівод на динамик
+                        if (bite == 0x0A) {
+                            audio.write(0x00);
+                        } else if (bite == 0x0B) {
+                            audio.write(0xFF);
+                        }
                     }
                     // System.out.println(WordMath.hex8(bite));
                 }
