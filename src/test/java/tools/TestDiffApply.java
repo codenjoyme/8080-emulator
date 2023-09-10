@@ -7,6 +7,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.util.Arrays;
 
 public class TestDiffApply {
     public static void main(String[] args) {
@@ -44,12 +45,24 @@ public class TestDiffApply {
     }
 
     public static String convertToJavaFilePath(String input) {
-        // Удалите префикс "java:test://"
-        input = input.replace("java:test://", "");
+        // Удаляем начальную часть "java:test://"
+        String trimmedPath = input.replace("java:test://", "");
 
-        // Замените "." на "/" и добавьте ".java" в конце
-        input = "/src/test/java/" + input.replace(".", "/") + ".java";
+        // Разбиваем оставшуюся часть по символу '/'
+        String[] parts = trimmedPath.split("/");
 
-        return input;
+        // Получаем имя теста (последний элемент массива)
+        String testName = parts[parts.length - 1];
+
+        // Удаляем название теста из массива
+        parts = Arrays.copyOf(parts, parts.length - 1);
+
+        // Преобразуем массив в путь
+        String javaPath = String.join("/", parts);
+
+        // Соединяем путь и имя класса Java
+        String javaFilePath = "/src/test/java/" + javaPath + ".java";
+
+        return javaFilePath;
     }
 }
