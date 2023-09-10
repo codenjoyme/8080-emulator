@@ -4174,6 +4174,61 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
+    public void code50__MOV_D_B() {
+        // when
+        givenPr("LXI B,1234\n" +  // data
+                "LXI D,5678\n" +  // data
+                "LXI H,9ABC\n" +  // data
+                "LXI SP,DEF0\n" + // data
+                "MVI A,01\n" +    // data
+                "MOV D,B\n" +     // copy D=B
+                "NOP\n");
+
+        givenMm("01 34 12\n" +
+                "11 78 56\n" +
+                "21 BC 9A\n" +
+                "31 F0 DE\n" +
+                "3E 01\n" +
+                "50\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1234\n" +
+                "DE:  1278\n" +
+                "HL:  9ABC\n" +
+                "AF:  0102\n" +
+                "SP:  DEF0\n" +
+                "PC:  0010\n" +
+                "B,C: 12 34\n" +
+                "D,E: 12 78\n" +
+                "H,L: 9A BC\n" +
+                "M:   00\n" +
+                "A,F: 01 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11011110 11110000\n" +
+                "PC:  00000000 00010000\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00110100\n" +
+                "D:   00010010\n" +
+                "E:   01111000\n" +
+                "H:   10011010\n" +
+                "L:   10111100\n" +
+                "M:   00000000\n" +
+                "A:   00000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
     public void testAssertMem() {
         // given
         givenMm("01 02 03\n" +
