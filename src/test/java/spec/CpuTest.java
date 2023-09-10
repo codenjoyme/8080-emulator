@@ -1614,20 +1614,13 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__INR_R__c0() { // TODO разделить этот тест
+    public void codeXX__INR_B__c0() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
                 "LXI SP,7889\n" + // data
                 "INR B\n" +       // increase B=B+1, [c=0]
-                "INR C\n" +       // increase C=C+1, [c=0]
-                "INR D\n" +       // increase D=D+1, [c=0]
-                "INR E\n" +       // increase E=E+1, [c=0]
-                "INR H\n" +       // increase H=H+1, [c=0]
-                "INR L\n" +       // increase L=L+1, [c=0]
-                "INR M\n" +       // increase M=M+1, [c=0]
-                "INR A\n" +       // increase A=A+1, [c=0]
                 "NOP\n");
 
         givenMm("01 23 12\n" +
@@ -1635,45 +1628,437 @@ public class CpuTest extends AbstractTest {
                 "21 67 56\n" +
                 "31 89 78\n" +
                 "04\n" +
-                "0C\n" +
-                "14\n" +
-                "1C\n" +
-                "24\n" +
-                "2C\n" +
-                "34\n" +
-                "3C\n" +
                 "00");
 
-        assertMem(0x5768, "00");
+        assertMem(0x5667, "00");
 
         // when
         start();
 
         // then
-        assertMem(0x5768, "01");
+        assertMem(0x5667, "00");
 
-        asrtCpu("BC:  1324\n" +
-                "DE:  3546\n" +
-                "HL:  5768\n" +
+        asrtCpu("BC:  1323\n" +
+                "DE:  3445\n" +
+                "HL:  5667\n" +
+                "AF:  0002\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 13 23\n" +
+                "D,E: 34 45\n" +
+                "H,L: 56 67\n" +
+                "M:   00\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010011\n" +
+                "C:   00100011\n" +
+                "D:   00110100\n" +
+                "E:   01000101\n" +
+                "H:   01010110\n" +
+                "L:   01100111\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__INR_C__c0() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "INR C\n" +       // increase C=C+1, [c=0]
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
+                "0C\n" +
+                "00");
+
+        assertMem(0x5667, "00");
+
+        // when
+        start();
+
+        // then
+        assertMem(0x5667, "00");
+
+        asrtCpu("BC:  1224\n" +
+                "DE:  3445\n" +
+                "HL:  5667\n" +
+                "AF:  0006\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 12 24\n" +
+                "D,E: 34 45\n" +
+                "H,L: 56 67\n" +
+                "M:   00\n" +
+                "A,F: 00 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00100100\n" +
+                "D:   00110100\n" +
+                "E:   01000101\n" +
+                "H:   01010110\n" +
+                "L:   01100111\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__INR_D__c0() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "INR D\n" +       // increase D=D+1, [c=0]
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
+                "14\n" +
+                "00");
+
+        assertMem(0x5667, "00");
+
+        // when
+        start();
+
+        // then
+        assertMem(0x5667, "00");
+
+        asrtCpu("BC:  1223\n" +
+                "DE:  3545\n" +
+                "HL:  5667\n" +
+                "AF:  0006\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 12 23\n" +
+                "D,E: 35 45\n" +
+                "H,L: 56 67\n" +
+                "M:   00\n" +
+                "A,F: 00 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00100011\n" +
+                "D:   00110101\n" +
+                "E:   01000101\n" +
+                "H:   01010110\n" +
+                "L:   01100111\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__INR_E__c0() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "INR E\n" +       // increase E=E+1, [c=0]
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
+                "1C\n" +
+                "00");
+
+        assertMem(0x5667, "00");
+
+        // when
+        start();
+
+        // then
+        assertMem(0x5667, "00");
+
+        asrtCpu("BC:  1223\n" +
+                "DE:  3446\n" +
+                "HL:  5667\n" +
+                "AF:  0002\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 12 23\n" +
+                "D,E: 34 46\n" +
+                "H,L: 56 67\n" +
+                "M:   00\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00100011\n" +
+                "D:   00110100\n" +
+                "E:   01000110\n" +
+                "H:   01010110\n" +
+                "L:   01100111\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__INR_H__c0() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "INR H\n" +       // increase H=H+1, [c=0]
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
+                "24\n" +
+                "00");
+
+        assertMem(0x5767, "00");
+
+        // when
+        start();
+
+        // then
+        assertMem(0x5767, "00");
+
+        asrtCpu("BC:  1223\n" +
+                "DE:  3445\n" +
+                "HL:  5767\n" +
+                "AF:  0002\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 12 23\n" +
+                "D,E: 34 45\n" +
+                "H,L: 57 67\n" +
+                "M:   00\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00100011\n" +
+                "D:   00110100\n" +
+                "E:   01000101\n" +
+                "H:   01010111\n" +
+                "L:   01100111\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__INR_L__c0() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "INR L\n" +       // increase L=L+1, [c=0]
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
+                "2C\n" +
+                "00");
+
+        assertMem(0x5668, "00");
+
+        // when
+        start();
+
+        // then
+        assertMem(0x5668, "00");
+
+        asrtCpu("BC:  1223\n" +
+                "DE:  3445\n" +
+                "HL:  5668\n" +
+                "AF:  0002\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 12 23\n" +
+                "D,E: 34 45\n" +
+                "H,L: 56 68\n" +
+                "M:   00\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00100011\n" +
+                "D:   00110100\n" +
+                "E:   01000101\n" +
+                "H:   01010110\n" +
+                "L:   01101000\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__INR_M__c0() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "INR M\n" +       // increase M=M+1, [c=0]
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
+                "34\n" +
+                "00");
+
+        assertMem(0x5667, "00");
+
+        // when
+        start();
+
+        // then
+        assertMem(0x5667, "01");
+
+        asrtCpu("BC:  1223\n" +
+                "DE:  3445\n" +
+                "HL:  5667\n" +
+                "AF:  0002\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 12 23\n" +
+                "D,E: 34 45\n" +
+                "H,L: 56 67\n" +
+                "M:   01\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00100011\n" +
+                "D:   00110100\n" +
+                "E:   01000101\n" +
+                "H:   01010110\n" +
+                "L:   01100111\n" +
+                "M:   00000001\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__INR_A__c0() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "INR A\n" +       // increase A=A+1, [c=0]
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
+                "3C\n" +
+                "00");
+
+        assertMem(0x5667, "00");
+
+        // when
+        start();
+
+        // then
+        assertMem(0x5667, "00");
+
+        asrtCpu("BC:  1223\n" +
+                "DE:  3445\n" +
+                "HL:  5667\n" +
                 "AF:  0102\n" +
                 "SP:  7889\n" +
-                "PC:  0015\n" +
-                "B,C: 13 24\n" +
-                "D,E: 35 46\n" +
-                "H,L: 57 68\n" +
-                "M:   01\n" +
+                "PC:  000E\n" +
+                "B,C: 12 23\n" +
+                "D,E: 34 45\n" +
+                "H,L: 56 67\n" +
+                "M:   00\n" +
                 "A,F: 01 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  01111000 10001001\n" +
-                "PC:  00000000 00010101\n" +
+                "PC:  00000000 00001110\n" +
                 "     76543210\n" +
-                "B:   00010011\n" +
-                "C:   00100100\n" +
-                "D:   00110101\n" +
-                "E:   01000110\n" +
-                "H:   01010111\n" +
-                "L:   01101000\n" +
-                "M:   00000001\n" +
+                "B:   00010010\n" +
+                "C:   00100011\n" +
+                "D:   00110100\n" +
+                "E:   01000101\n" +
+                "H:   01010110\n" +
+                "L:   01100111\n" +
+                "M:   00000000\n" +
                 "A:   00000001\n" +
                 "     sz0h0p1c\n" +
                 "F:   00000010\n" +
