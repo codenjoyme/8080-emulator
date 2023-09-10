@@ -3210,9 +3210,9 @@ public class CpuTest extends AbstractTest {
         // when
         givenPr("LXI B,1111\n" +  // data
                 "LXI D,2222\n" +  // data
-                "LXI H,3333\n" +  // data
+                "LXI H,3333\n" +  // working with memory 3333
                 "LXI SP,4444\n" + // data
-                "MVI M,78\n" +    // set M=XX
+                "MVI M,78\n" +    // set data in memory M=XX  (9ABC)=46
                 "NOP\n");
 
         givenMm("01 11 11\n" +
@@ -4508,11 +4508,11 @@ public class CpuTest extends AbstractTest {
         // when
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
-                "LXI H,9ABC\n" +  // data
+                "LXI H,9ABC\n" +  // working with memory 9ABC
                 "LXI SP,DEF0\n" + // data
                 "MVI A,01\n" +    // data
-                "MVI M,46\n" +    // data
-                "MOV D,M\n" +     // copy D=M
+                "MVI M,46\n" +    // set data in memory (9ABC)=46
+                "MOV D,M\n" +     // copy D=M  =(HL)=(9ABC)
                 "NOP\n");
 
         givenMm("01 34 12\n" +
