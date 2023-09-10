@@ -61,7 +61,9 @@ public class TestDiffApply {
 
             // Выводим атрибут locationUrl после преобразования
             Pair<String, String> path = convertToJavaFilePath(locationUrl);
-            System.out.printf("%s %s\n", path.first, path.second);
+            String clazz = path.first;
+            String testName = path.second;
+            System.out.printf("%s %s\n", clazz, testName);
 
             // Получаем элемент <diff>
             Element diffElement = (Element) testElement.getElementsByTagName("diff").item(0);
@@ -81,7 +83,13 @@ public class TestDiffApply {
             // Ищем номер строки в тексте output
             String lineNumber = extractLineNumber(outputText);
             System.out.println("Line number: " + lineNumber);
+
+            replaceAssertInJavaTestClass(clazz, testName, lineNumber, actual, expected);
         }
+    }
+
+    private static void replaceAssertInJavaTestClass(String clazz, String testName, String lineNumber, String actual, String expected) {
+
     }
 
     private static String extractLineNumber(String outputText) {
