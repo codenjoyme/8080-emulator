@@ -46,7 +46,7 @@ public class TestDiffApply {
 
     public static String convertToJavaFilePath(String input) {
         // Удаляем начальную часть "java:test://"
-        String trimmedPath = input.replace("java:test://", "");
+        String trimmedPath = input.replace("java:test://", "").replace(".", "/");
 
         // Разбиваем оставшуюся часть по символу '/'
         String[] parts = trimmedPath.split("/");
@@ -61,8 +61,6 @@ public class TestDiffApply {
         String javaPath = String.join("/", parts);
 
         // Соединяем путь и имя класса Java
-        String javaFilePath = "/src/test/java/" + javaPath + ".java";
-
-        return javaFilePath;
+        return "/src/test/java/" + javaPath + ".java";
     }
 }
