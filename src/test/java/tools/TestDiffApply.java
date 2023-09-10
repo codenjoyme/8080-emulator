@@ -115,7 +115,7 @@ public class TestDiffApply {
         formattedString.delete(formattedString.length() - 22, formattedString.length());
 
         // Завершаем строку кавычками и точкой с запятой
-        formattedString.append("\");");
+        formattedString.append("n\");");
 
         return formattedString.toString();
     }
