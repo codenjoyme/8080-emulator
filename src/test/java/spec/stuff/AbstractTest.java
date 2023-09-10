@@ -99,11 +99,11 @@ public abstract class AbstractTest {
         assertEquals(expected, cpu.toString());
     }
 
-    public void assertMem(int addr, String expected) {
+    public void asrtMem(int addr, String expected) {
         assertEquals(expected, hex8(cpu.data().read8(addr)));
     }
 
-    public void assertMem(int begin, int endOrLength, String expected) {
+    public void asrtMem(int begin, int endOrLength, String expected) {
         int end = (begin < endOrLength)
                 ? endOrLength
                 : begin + endOrLength - 1;

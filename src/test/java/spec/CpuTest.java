@@ -3036,11 +3036,11 @@ public class CpuTest extends AbstractTest {
                 "18");
 
         // when then
-        assertMem(0x0000, "01");
-        assertMem(0x0001, "02");
-        assertMem(0x0004, 3, "05 06 07");
-        assertMem(0x0001, 0x000A, "02 03 04 05 06 07 08 09 10 11");
-        assertMem(0xC000, 10, "00 00 00 00 00 00 00 00 00 00");
-        assertMem(0xC000, 0xC00A, "00 00 00 00 00 00 00 00 00 00 00");
+        asrtMem(0x0000, "01");
+        asrtMem(0x0001, "02");
+        asrtMem(0x0004, 3, "05 06 07");
+        asrtMem(0x0001, 0x000A, "02 03 04 05 06 07 08 09 10 11");
+        asrtMem(0xC000, 10, "00 00 00 00 00 00 00 00 00 00");
+        asrtMem(0xC000, 0xC00A, "00 00 00 00 00 00 00 00 00 00 00");
     }
 }
