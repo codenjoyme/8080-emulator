@@ -55,12 +55,22 @@ public class TestDiffApply {
             String status = testElement.getAttribute("status");
 
             // Проверяем, что статус равен "failed"
-            if ("failed".equals(status)) {
-                // Выводим атрибут locationUrl после преобразования
-                Pair<String, String> path = convertToJavaFilePath(locationUrl);
-
-                System.out.printf("%s %s\n", path.first, path.second);
+            if (!"failed".equals(status)) {
+                continue;
             }
+
+            // Выводим атрибут locationUrl после преобразования
+            Pair<String, String> path = convertToJavaFilePath(locationUrl);
+            System.out.printf("%s %s\n", path.first, path.second);
+
+            // Получаем элемент <diff>
+            Element diffElement = (Element) testElement.getElementsByTagName("diff").item(0);
+
+            // Получаем атрибуты actual и expected
+            String actual = diffElement.getAttribute("actual");
+            String expected = diffElement.getAttribute("expected");
+
+            System.out.printf("%s\n%s\n", actual, expected);
         }
     }
 
