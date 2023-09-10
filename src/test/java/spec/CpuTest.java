@@ -3018,4 +3018,29 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
     }
+
+    @Test
+    public void testAssertMem() {
+        // given
+        givenMm("01 02 03\n" +
+                "04\n" +
+                "05\n" +
+                "06 07\n" +
+                "08\n" +
+                "09\n" +
+                "10\n" +
+                "11 12 13\n" +
+                "14\n" +
+                "15\n" +
+                "16 17\n" +
+                "18");
+
+        // when then
+        assertMem(0x0000, "01");
+        assertMem(0x0001, "02");
+        assertMem(0x0004, 3, "05 06 07");
+        assertMem(0x0001, 0x000A, "02 03 04 05 06 07 08 09 10 11");
+        assertMem(0xC000, 10, "00 00 00 00 00 00 00 00 00 00");
+        assertMem(0xC000, 0xC00A, "00 00 00 00 00 00 00 00 00 00 00");
+    }
 }
