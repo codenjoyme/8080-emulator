@@ -13,7 +13,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class TestDiffApply {
@@ -78,6 +82,9 @@ public class TestDiffApply {
             String actual = diffElement.getAttribute("expected");
             String expected = diffElement.getAttribute("actual");
 
+            actual = formatStringForJava(actual);
+            expected = formatStringForJava(expected);
+
             // Получаем элемент <output>
             Element outputElement = (Element) testElement.getElementsByTagName("output").item(0);
 
@@ -88,9 +95,7 @@ public class TestDiffApply {
             String lineNumber = extractLineNumber(outputText);
 
             System.out.printf("%s:%s %s\n", clazz, lineNumber, testName);
-            System.out.printf("%s\n\n%s\n",
-                    formatStringForJava(expected),
-                    formatStringForJava(actual));
+            System.out.printf("%s\n\n%s\n", expected, actual);
 
             replaceAssertInJavaTestClass(clazz, testName, lineNumber, expected, actual);
         }
@@ -121,10 +126,58 @@ public class TestDiffApply {
     }
 
     private static void replaceAssertInJavaTestClass(String clazz, String testName,
-                                                     String lineNumber, String actual,
-                                                     String expected) throws Exception
-    {
+                                                     String lineNumber, String[] expectedLines,
+                                                     String[] actualLines) throws Exception {
+        int lineNum = Integer.parseInt(lineNumber);
+        Path filePath = Paths.get(clazz);
 
+        // Читаем содержимое файла в список строк
+        List<String> lines = Files.readAllLines(filePath);
+
+        // Проверяем, что номер строки не превышает количество строк в файле
+        if (lineNum > lines.size()) {
+            System.out.println("Номер строки превышает количество строк в файле.");
+            return;
+        }
+
+        // Заменяем все вхождения expected на actual, начиная с указанной строки
+        for (int i = lineNum - 1; i < lines.size(); i++) {
+            String line = lines.get(i);
+            if (containsAllLines(line, expectedLines)) {
+                // Удаляем строки expected
+                for (int j = 0; j < expectedLines.length; j++) {
+                    lines.remove(i);
+                }
+
+                // Вставляем строки actual
+                for (int j = actualLines.length - 1; j >= 0; j--) {
+                    lines.add(i, actualLines[j]);
+                }
+
+                break; // Замена выполнена, выходим из цикла
+            }
+        }
+
+        // Записываем обновленные строки обратно в файл
+        Files.write(filePath, lines);
+    }
+
+
+    private static boolean containsAllLines(String line, String[] expectedLines) {
+        for (String expectedLine : expectedLines) {
+            if (!line.contains(expectedLine)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static void replaceAssertInJavaTestClass(String clazz, String testName,
+                                                     String lineNumber, String expected,
+                                                     String actual) throws Exception
+    {
+        replaceAssertInJavaTestClass(clazz, testName, lineNumber,
+                expected.split("\n"), actual.split("\n"));
     }
 
     private static String extractLineNumber(String outputText) {
