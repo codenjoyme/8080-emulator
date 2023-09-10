@@ -27,44 +27,40 @@ public class TestDiffApply {
         }
     }
 
-    public static void main(String[] args) {
-        try {
-            // Путь к вашему XML-файлу
-            File xmlFile = new File("target/Test Results - CpuTest.xml");
+    public static void main(String[] args) throws Exception {
+        // Путь к вашему XML-файлу
+        File xmlFile = new File("target/Test Results - CpuTest.xml");
 
-            // Создаем фабрику для создания парсера
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
+        // Создаем фабрику для создания парсера
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
 
-            // Создаем объект Document из XML-файла
-            Document document = builder.parse(xmlFile);
+        // Создаем объект Document из XML-файла
+        Document document = builder.parse(xmlFile);
 
-            // Получаем корневой элемент
-            Element rootElement = document.getDocumentElement();
+        // Получаем корневой элемент
+        Element rootElement = document.getDocumentElement();
 
-            // Получаем список всех элементов <test>
-            NodeList testElements = rootElement.getElementsByTagName("test");
+        // Получаем список всех элементов <test>
+        NodeList testElements = rootElement.getElementsByTagName("test");
 
-            // Перебираем элементы <test>
-            for (int i = 0; i < testElements.getLength(); i++) {
-                Element testElement = (Element) testElements.item(i);
+        // Перебираем элементы <test>
+        for (int i = 0; i < testElements.getLength(); i++) {
+            Element testElement = (Element) testElements.item(i);
 
-                // Получаем атрибут locationUrl
-                String locationUrl = testElement.getAttribute("locationUrl");
+            // Получаем атрибут locationUrl
+            String locationUrl = testElement.getAttribute("locationUrl");
 
-                // Получаем атрибут status
-                String status = testElement.getAttribute("status");
+            // Получаем атрибут status
+            String status = testElement.getAttribute("status");
 
-                // Проверяем, что статус равен "failed"
-                if ("failed".equals(status)) {
-                    // Выводим атрибут locationUrl после преобразования
-                    Pair<String, String> path = convertToJavaFilePath(locationUrl);
+            // Проверяем, что статус равен "failed"
+            if ("failed".equals(status)) {
+                // Выводим атрибут locationUrl после преобразования
+                Pair<String, String> path = convertToJavaFilePath(locationUrl);
 
-                    System.out.printf("%s %s\n", path.first, path.second);
-                }
+                System.out.printf("%s %s\n", path.first, path.second);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
