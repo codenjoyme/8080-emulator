@@ -1,5 +1,6 @@
 package spec.stuff;
 
+import spec.Memory;
 import spec.Range;
 
 import java.util.LinkedList;
@@ -7,7 +8,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.joining;
 
-public class TrackUpdatedMemory extends UpdatedMemory {
+public class TrackUpdatedMemory extends Memory {
 
     private List<UpdatedBite> updated;
 
@@ -16,7 +17,6 @@ public class TrackUpdatedMemory extends UpdatedMemory {
         resetChanges();
     }
 
-    @Override
     public void resetChanges() {
         updated = new LinkedList<>();
     }
@@ -28,14 +28,12 @@ public class TrackUpdatedMemory extends UpdatedMemory {
         super.write8(addr, bite);
     }
 
-    @Override
     public String details() {
         return updated.stream()
                 .map(UpdatedBite::toString)
                 .collect(joining("\n"));
     }
 
-    @Override
     public String changedBites() {
         int start = updated.stream()
                 .mapToInt(UpdatedBite::addr)

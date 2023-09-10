@@ -2,15 +2,8 @@ package spec;
 
 import org.junit.Test;
 import spec.stuff.AbstractTest;
-import spec.stuff.TrackUpdatedMemory;
-import spec.stuff.UpdatedMemory;
 
 public class CpuTest extends AbstractTest {
-
-    @Override
-    protected UpdatedMemory memory() {
-        return new TrackUpdatedMemory(0x10000);
-    }
 
     @Override
     public void after() throws Exception {

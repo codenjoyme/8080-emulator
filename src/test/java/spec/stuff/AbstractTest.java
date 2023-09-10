@@ -19,7 +19,7 @@ public abstract class AbstractTest {
     protected boolean memoryInit;
 
     protected Hardware hard;
-    protected UpdatedMemory memory;
+    protected TrackUpdatedMemory memory;
     protected Cpu cpu;
     protected Assembler asm;
     protected KeyRecord record;
@@ -36,7 +36,7 @@ public abstract class AbstractTest {
 
             @Override
             protected Memory createMemory() {
-                return memory = AbstractTest.this.memory();
+                return memory = new TrackUpdatedMemory(x10000);
             }
 
             @Override
@@ -63,10 +63,6 @@ public abstract class AbstractTest {
         debug.console(false);
         memoryInit = false;
         cpu.PC(START);
-    }
-
-    protected UpdatedMemory memory() {
-        return new TrackUpdatedRangeMemory(x10000);
     }
 
     @After
