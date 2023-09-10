@@ -1,5 +1,9 @@
 package tools;
 
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.stmt.Statement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -7,7 +11,10 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.Arrays;
+import java.util.Optional;
 
 public class TestDiffApply {
 
@@ -61,7 +68,7 @@ public class TestDiffApply {
 
             // Выводим атрибут locationUrl после преобразования
             Pair<String, String> path = convertToJavaFilePath(locationUrl);
-            String clazz = path.first;
+            String clazz = new File("./" + path.first).getAbsolutePath();
             String testName = path.second;
             System.out.printf("%s %s\n", clazz, testName);
 
@@ -88,8 +95,38 @@ public class TestDiffApply {
         }
     }
 
-    private static void replaceAssertInJavaTestClass(String clazz, String testName, String lineNumber, String actual, String expected) {
+    private static void replaceAssertInJavaTestClass(String clazz, String testName,
+                                                     String lineNumber, String actual,
+                                                     String expected) throws Exception {
+        // Загружаем Java-файл с помощью JavaParser
+        FileInputStream in = new FileInputStream(clazz);
+        CompilationUnit cu = StaticJavaParser.parse(in);
+        in.close();
 
+        // Находим метод с именем testName
+        Optional<MethodDeclaration> testMethod = cu.findFirst(MethodDeclaration.class, md -> md.getNameAsString().equals(testName));
+
+        if (testMethod.isPresent()) {
+            MethodDeclaration method = testMethod.get();
+
+            // Создаем новый Statement для замены ассерта
+            String assertStatement = "assertEquals(\"" + expected + "\", " + actual + ");";
+            Statement newStatement = StaticJavaParser.parseStatement(assertStatement);
+
+            // Находим все Statements в методе
+            com.github.javaparser.ast.NodeList<Statement> statements = method.getBody().get().getStatements();
+
+            // Заменяем ассерт на новый Statement
+            int lineNumberInt = Integer.parseInt(lineNumber);
+            statements.set(lineNumberInt - 1, newStatement);
+
+            // Сохраняем изменения обратно в файл
+            FileOutputStream out = new FileOutputStream(clazz);
+            out.write(cu.toString().getBytes());
+            out.close();
+        } else {
+            System.out.println("Метод с именем " + testName + " не найден.");
+        }
     }
 
     private static String extractLineNumber(String outputText) {

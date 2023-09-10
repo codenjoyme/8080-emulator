@@ -58,7 +58,12 @@
             <version>${dom.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.javaparser</groupId>
+            <artifactId>javaparser-core</artifactId>
+            <version>3.25.5</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <profiles>
