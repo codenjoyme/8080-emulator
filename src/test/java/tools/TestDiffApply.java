@@ -1,9 +1,5 @@
 package tools;
 
-import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.stmt.Statement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -11,14 +7,11 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public class TestDiffApply {
 
@@ -40,7 +33,7 @@ public class TestDiffApply {
 
     public static void main(String[] args) throws Exception {
         // Путь к вашему XML-файлу
-        File xmlFile = new File("target/Test Results - CpuTest.xml");
+        File xmlFile = new File("target/test-result.xml");
 
         // Создаем фабрику для создания парсера
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -79,8 +72,8 @@ public class TestDiffApply {
             Element diffElement = (Element) testElement.getElementsByTagName("diff").item(0);
 
             // Получаем атрибуты actual и expected
-            String actual = diffElement.getAttribute("expected");
-            String expected = diffElement.getAttribute("actual");
+            String actual = diffElement.getAttribute("actual");
+            String expected = diffElement.getAttribute("expected");
 
             actual = formatStringForJava(actual);
             expected = formatStringForJava(expected);
@@ -95,7 +88,7 @@ public class TestDiffApply {
             String lineNumber = extractLineNumber(outputText);
 
             System.out.printf("%s:%s %s\n", clazz, lineNumber, testName);
-            System.out.printf("%s\n\n%s\n", expected, actual);
+            System.out.printf("Expected:\n%s\n\nActual:\n%s\n", expected, actual);
 
             replaceAssertInJavaTestClass(clazz, testName, lineNumber, expected, actual);
         }
@@ -141,27 +134,21 @@ public class TestDiffApply {
         }
 
         // Заменяем все вхождения expected на actual, начиная с указанной строки
-        for (int i = lineNum - 1; i < lines.size(); i++) {
-            String line = lines.get(i);
-            if (containsAllLines(line, expectedLines)) {
-                // Удаляем строки expected
-                for (int j = 0; j < expectedLines.length; j++) {
-                    lines.remove(i);
-                }
+        int i = lineNum - 1;
 
-                // Вставляем строки actual
-                for (int j = actualLines.length - 1; j >= 0; j--) {
-                    lines.add(i, actualLines[j]);
-                }
+        // Удаляем строки expected
+        for (int j = 0; j < expectedLines.length; j++) {
+            lines.remove(i);
+        }
 
-                break; // Замена выполнена, выходим из цикла
-            }
+        // Вставляем строки actual
+        for (int j = actualLines.length - 1; j >= 0; j--) {
+            lines.add(i, actualLines[j]);
         }
 
         // Записываем обновленные строки обратно в файл
         Files.write(filePath, lines);
     }
-
 
     private static boolean containsAllLines(String line, String[] expectedLines) {
         for (String expectedLine : expectedLines) {
