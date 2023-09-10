@@ -10,6 +10,23 @@ import java.io.File;
 import java.util.Arrays;
 
 public class TestDiffApply {
+
+    public static class Pair<T, U> {
+
+        public Pair(T first, U second) {
+            this.second = second;
+            this.first = first;
+        }
+
+        public final T first;
+        public final U second;
+
+        @Override
+        public String toString() {
+            return "(" + first + ", " + second + ")";
+        }
+    }
+
     public static void main(String[] args) {
         try {
             // Путь к вашему XML-файлу
@@ -41,8 +58,9 @@ public class TestDiffApply {
                 // Проверяем, что статус равен "failed"
                 if ("failed".equals(status)) {
                     // Выводим атрибут locationUrl после преобразования
-                    System.out.println("Путь к файлу Java с проваленным тестом: " +
-                            convertToJavaFilePath(locationUrl));
+                    Pair<String, String> path = convertToJavaFilePath(locationUrl);
+
+                    System.out.printf("%s %s\n", path.first, path.second);
                 }
             }
         } catch (Exception e) {
@@ -50,7 +68,7 @@ public class TestDiffApply {
         }
     }
 
-    public static String convertToJavaFilePath(String input) {
+    public static Pair<String, String> convertToJavaFilePath(String input) {
         // Удаляем начальную часть "java:test://"
         String trimmedPath = input.replace("java:test://", "").replace(".", "/");
 
@@ -67,6 +85,6 @@ public class TestDiffApply {
         String javaPath = String.join("/", parts);
 
         // Соединяем путь и имя класса Java
-        return "/src/test/java/" + javaPath + ".java";
+        return new Pair<>("/src/test/java/" + javaPath + ".java", testName);
     }
 }
