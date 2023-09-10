@@ -3689,7 +3689,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void code47__MOV_B_L() {
+    public void code47__MOV_B_A() {
         // when
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
@@ -4119,7 +4119,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void code4F__MOV_C_L() {
+    public void code4F__MOV_C_A() {
         // when
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
