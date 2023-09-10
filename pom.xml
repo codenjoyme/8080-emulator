@@ -24,6 +24,7 @@
         <!-- Testing -->
         <junit.version>4.13.2</junit.version>
         <mockito.version>4.2.0</mockito.version>
+        <dom.version>2.3.0-jaxb-1.0.6</dom.version>
 
         <!-- Maven -->
         <maven-compiler.version>3.8.1</maven-compiler.version>
@@ -51,6 +52,13 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.w3c</groupId>
+            <artifactId>dom</artifactId>
+            <version>${dom.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <profiles>
