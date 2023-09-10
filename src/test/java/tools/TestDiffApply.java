@@ -70,18 +70,13 @@ public class TestDiffApply {
             Pair<String, String> path = convertToJavaFilePath(locationUrl);
             String clazz = new File("./" + path.first).getAbsolutePath();
             String testName = path.second;
-            System.out.printf("%s %s\n", clazz, testName);
 
             // Получаем элемент <diff>
             Element diffElement = (Element) testElement.getElementsByTagName("diff").item(0);
 
             // Получаем атрибуты actual и expected
-            String actual = diffElement.getAttribute("actual");
-            String expected = diffElement.getAttribute("expected");
-
-            System.out.printf("%s\n%s\n",
-                    formatStringForJava(actual),
-                    formatStringForJava(expected));
+            String actual = diffElement.getAttribute("expected");
+            String expected = diffElement.getAttribute("actual");
 
             // Получаем элемент <output>
             Element outputElement = (Element) testElement.getElementsByTagName("output").item(0);
@@ -91,9 +86,13 @@ public class TestDiffApply {
 
             // Ищем номер строки в тексте output
             String lineNumber = extractLineNumber(outputText);
-            System.out.println("Line number: " + lineNumber);
 
-            replaceAssertInJavaTestClass(clazz, testName, lineNumber, actual, expected);
+            System.out.printf("%s:%s %s\n", clazz, lineNumber, testName);
+            System.out.printf("%s\n\n%s\n",
+                    formatStringForJava(expected),
+                    formatStringForJava(actual));
+
+            replaceAssertInJavaTestClass(clazz, testName, lineNumber, expected, actual);
         }
     }
 
