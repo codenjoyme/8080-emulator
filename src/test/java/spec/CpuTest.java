@@ -2022,20 +2022,13 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__DCR_R() { // TODO разделить этот тест
+    public void codeXX__DCR_B() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
                 "LXI SP,7889\n" + // data
                 "DCR B\n" +       // decrease B=B-1
-                "DCR C\n" +       // decrease C=C-1
-                "DCR D\n" +       // decrease D=D-1
-                "DCR E\n" +       // decrease E=E-1
-                "DCR H\n" +       // decrease H=H-1
-                "DCR L\n" +       // decrease L=L-1
-                "DCR M\n" +       // decrease M=M-1
-                "DCR A\n" +       // decrease A=A-1
                 "NOP\n");
 
         givenMm("01 23 12\n" +
@@ -2043,12 +2036,378 @@ public class CpuTest extends AbstractTest {
                 "21 67 56\n" +
                 "31 89 78\n" +
                 "05\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1123\n" +
+                "DE:  3445\n" +
+                "HL:  5667\n" +
+                "AF:  0016\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 11 23\n" +
+                "D,E: 34 45\n" +
+                "H,L: 56 67\n" +
+                "M:   00\n" +
+                "A,F: 00 16\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010001\n" +
+                "C:   00100011\n" +
+                "D:   00110100\n" +
+                "E:   01000101\n" +
+                "H:   01010110\n" +
+                "L:   01100111\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__DCR_C() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "DCR C\n" +       // decrease C=C-1
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
                 "0D\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1222\n" +
+                "DE:  3445\n" +
+                "HL:  5667\n" +
+                "AF:  0016\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 12 22\n" +
+                "D,E: 34 45\n" +
+                "H,L: 56 67\n" +
+                "M:   00\n" +
+                "A,F: 00 16\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00100010\n" +
+                "D:   00110100\n" +
+                "E:   01000101\n" +
+                "H:   01010110\n" +
+                "L:   01100111\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__DCR_D() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "DCR D\n" +       // decrease D=D-1
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
                 "15\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1223\n" +
+                "DE:  3345\n" +
+                "HL:  5667\n" +
+                "AF:  0016\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 12 23\n" +
+                "D,E: 33 45\n" +
+                "H,L: 56 67\n" +
+                "M:   00\n" +
+                "A,F: 00 16\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00100011\n" +
+                "D:   00110011\n" +
+                "E:   01000101\n" +
+                "H:   01010110\n" +
+                "L:   01100111\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__DCR_E() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "DCR E\n" +       // decrease E=E-1
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
                 "1D\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1223\n" +
+                "DE:  3444\n" +
+                "HL:  5667\n" +
+                "AF:  0016\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 12 23\n" +
+                "D,E: 34 44\n" +
+                "H,L: 56 67\n" +
+                "M:   00\n" +
+                "A,F: 00 16\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00100011\n" +
+                "D:   00110100\n" +
+                "E:   01000100\n" +
+                "H:   01010110\n" +
+                "L:   01100111\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__DCR_H() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "DCR H\n" +       // decrease H=H-1
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
                 "25\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1223\n" +
+                "DE:  3445\n" +
+                "HL:  5567\n" +
+                "AF:  0016\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 12 23\n" +
+                "D,E: 34 45\n" +
+                "H,L: 55 67\n" +
+                "M:   00\n" +
+                "A,F: 00 16\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00100011\n" +
+                "D:   00110100\n" +
+                "E:   01000101\n" +
+                "H:   01010101\n" +
+                "L:   01100111\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__DCR_L() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "DCR L\n" +       // decrease L=L-1
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
                 "2D\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1223\n" +
+                "DE:  3445\n" +
+                "HL:  5666\n" +
+                "AF:  0016\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 12 23\n" +
+                "D,E: 34 45\n" +
+                "H,L: 56 66\n" +
+                "M:   00\n" +
+                "A,F: 00 16\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00100011\n" +
+                "D:   00110100\n" +
+                "E:   01000101\n" +
+                "H:   01010110\n" +
+                "L:   01100110\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__DCR_M() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "DCR M\n" +       // decrease M=M-1
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
                 "35\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtMem("5667: 00 -> FF");
+
+        asrtCpu("BC:  1223\n" +
+                "DE:  3445\n" +
+                "HL:  5667\n" +
+                "AF:  0086\n" +
+                "SP:  7889\n" +
+                "PC:  000E\n" +
+                "B,C: 12 23\n" +
+                "D,E: 34 45\n" +
+                "H,L: 56 67\n" +
+                "M:   FF\n" +
+                "A,F: 00 86\n" +
+                "     76543210 76543210\n" +
+                "SP:  01111000 10001001\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00100011\n" +
+                "D:   00110100\n" +
+                "E:   01000101\n" +
+                "H:   01010110\n" +
+                "L:   01100111\n" +
+                "M:   11111111\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeXX__DCR_A() {
+        // when
+        givenPr("LXI B,1223\n" +  // data
+                "LXI D,3445\n" +  // data
+                "LXI H,5667\n" +  // data
+                "LXI SP,7889\n" + // data
+                "DCR A\n" +       // decrease A=A-1
+                "NOP\n");
+
+        givenMm("01 23 12\n" +
+                "11 45 34\n" +
+                "21 67 56\n" +
+                "31 89 78\n" +
                 "3D\n" +
                 "00");
 
@@ -2056,30 +2415,28 @@ public class CpuTest extends AbstractTest {
         start();
 
         // then
-        asrtMem("5566: 00 -> FF");
-
-        asrtCpu("BC:  1122\n" +
-                "DE:  3344\n" +
-                "HL:  5566\n" +
+        asrtCpu("BC:  1223\n" +
+                "DE:  3445\n" +
+                "HL:  5667\n" +
                 "AF:  FF86\n" +
                 "SP:  7889\n" +
-                "PC:  0015\n" +
-                "B,C: 11 22\n" +
-                "D,E: 33 44\n" +
-                "H,L: 55 66\n" +
-                "M:   FF\n" +
+                "PC:  000E\n" +
+                "B,C: 12 23\n" +
+                "D,E: 34 45\n" +
+                "H,L: 56 67\n" +
+                "M:   00\n" +
                 "A,F: FF 86\n" +
                 "     76543210 76543210\n" +
                 "SP:  01111000 10001001\n" +
-                "PC:  00000000 00010101\n" +
+                "PC:  00000000 00001110\n" +
                 "     76543210\n" +
-                "B:   00010001\n" +
-                "C:   00100010\n" +
-                "D:   00110011\n" +
-                "E:   01000100\n" +
-                "H:   01010101\n" +
-                "L:   01100110\n" +
-                "M:   11111111\n" +
+                "B:   00010010\n" +
+                "C:   00100011\n" +
+                "D:   00110100\n" +
+                "E:   01000101\n" +
+                "H:   01010110\n" +
+                "L:   01100111\n" +
+                "M:   00000000\n" +
                 "A:   11111111\n" +
                 "     sz0h0p1c\n" +
                 "F:   10000110\n" +
