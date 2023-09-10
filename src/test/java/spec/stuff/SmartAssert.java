@@ -26,9 +26,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class SmartAssert {
 
-    private static List<AssertionError> failures = new CopyOnWriteArrayList<>();
+    private static List<AssertionError> failures;
+
+    static {
+        setup();
+    }
+
+    public static void setup() {
+        failures = new CopyOnWriteArrayList<>();
+    }
 
     public static void assertEquals(Object expected, Object actual) {
+        failNotInitialized();
         try {
             Assert.assertEquals(expected, actual);
         } catch (AssertionError e) {
@@ -36,7 +45,14 @@ public class SmartAssert {
         }
     }
 
+    private static void failNotInitialized() {
+        if (failures == null) {
+            Assert.fail("Do not use SmartAssert.assertEquals() after tearDown(). Use SmartAssert.setup() in setup().");
+        }
+    }
+
     public static void fail(String message) {
+        failNotInitialized();
         try {
             Assert.fail(message);
         } catch (AssertionError e) {
@@ -45,10 +61,11 @@ public class SmartAssert {
     }
 
     public static void checkResult() throws Exception {
-        if (failures.isEmpty()) return;
+        List<AssertionError> toProcess = failures;
+        failures = null;
+        if (toProcess.isEmpty()) return;
 
-        List<Throwable> errors = new LinkedList<>(failures);
-        failures.clear();
+        List<Throwable> errors = new LinkedList<>(toProcess);
         throw new MultipleFailureException(errors);
     }
 }

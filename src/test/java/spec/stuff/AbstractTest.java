@@ -30,6 +30,8 @@ public abstract class AbstractTest {
 
     @Before
     public void before() throws Exception {
+        SmartAssert.setup();
+
         Logger.DEBUG = false;
 
         hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, null) {

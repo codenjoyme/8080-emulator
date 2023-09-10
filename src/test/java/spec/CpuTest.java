@@ -7,8 +7,8 @@ public class CpuTest extends AbstractTest {
 
     @Override
     public void after() throws Exception {
-        super.after();
         asrtMem("");
+        super.after();
     }
 
     @Test
@@ -3391,6 +3391,8 @@ public class CpuTest extends AbstractTest {
                 "15\n" +
                 "16 17\n" +
                 "18");
+
+        memory.resetChanges();
 
         // when then
         asrtMem(0x0000, "01");
