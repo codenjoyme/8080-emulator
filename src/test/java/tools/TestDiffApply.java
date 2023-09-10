@@ -79,7 +79,9 @@ public class TestDiffApply {
             String actual = diffElement.getAttribute("actual");
             String expected = diffElement.getAttribute("expected");
 
-            System.out.printf("%s\n%s\n", actual, expected);
+            System.out.printf("%s\n%s\n",
+                    formatStringForJava(actual),
+                    formatStringForJava(expected));
 
             // Получаем элемент <output>
             Element outputElement = (Element) testElement.getElementsByTagName("output").item(0);
@@ -95,38 +97,35 @@ public class TestDiffApply {
         }
     }
 
+    public static String formatStringForJava(String input) {
+        // Заменяем все двойные кавычки на экранированные двойные кавычки
+        String escapedInput = input.replace("\"", "\\\"");
+
+        // Разбиваем строку на строки по символу новой строки
+        String[] lines = escapedInput.split("\\n");
+
+        // Формируем новую строку с префиксом и конкатенируем строки с переводами строки
+        StringBuilder formattedString = new StringBuilder();
+        formattedString.append("        asrtCpu(\"");
+        for (String line : lines) {
+            formattedString.append(line);
+            formattedString.append("\\n\" +\n                \"");
+        }
+
+        // Удаляем последний добавленный конкатенатор
+        formattedString.delete(formattedString.length() - 22, formattedString.length());
+
+        // Завершаем строку кавычками и точкой с запятой
+        formattedString.append("\");");
+
+        return formattedString.toString();
+    }
+
     private static void replaceAssertInJavaTestClass(String clazz, String testName,
                                                      String lineNumber, String actual,
-                                                     String expected) throws Exception {
-        // Загружаем Java-файл с помощью JavaParser
-        FileInputStream in = new FileInputStream(clazz);
-        CompilationUnit cu = StaticJavaParser.parse(in);
-        in.close();
+                                                     String expected) throws Exception
+    {
 
-        // Находим метод с именем testName
-        Optional<MethodDeclaration> testMethod = cu.findFirst(MethodDeclaration.class, md -> md.getNameAsString().equals(testName));
-
-        if (testMethod.isPresent()) {
-            MethodDeclaration method = testMethod.get();
-
-            // Создаем новый Statement для замены ассерта
-            String assertStatement = "assertEquals(\"" + expected + "\", " + actual + ");";
-            Statement newStatement = StaticJavaParser.parseStatement(assertStatement);
-
-            // Находим все Statements в методе
-            com.github.javaparser.ast.NodeList<Statement> statements = method.getBody().get().getStatements();
-
-            // Заменяем ассерт на новый Statement
-            int lineNumberInt = Integer.parseInt(lineNumber);
-            statements.set(lineNumberInt - 1, newStatement);
-
-            // Сохраняем изменения обратно в файл
-            FileOutputStream out = new FileOutputStream(clazz);
-            out.write(cu.toString().getBytes());
-            out.close();
-        } else {
-            System.out.println("Метод с именем " + testName + " не найден.");
-        }
     }
 
     private static String extractLineNumber(String outputText) {
