@@ -2036,7 +2036,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__INR_B__c0() {
+    public void code04__INR_B__c0() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2089,7 +2089,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__INR_C__c0() {
+    public void code0C__INR_C__c0() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2142,7 +2142,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__INR_D__c0() {
+    public void code14__INR_D__c0() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2195,7 +2195,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__INR_E__c0() {
+    public void code1C__INR_E__c0() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2248,7 +2248,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__INR_H__c0() {
+    public void code24__INR_H__c0() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2301,7 +2301,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__INR_L__c0() {
+    public void code2C__INR_L__c0() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2354,7 +2354,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__INR_M__c0() {
+    public void code34__INR_M__c0() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2409,7 +2409,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__INR_A__c0() {
+    public void code3C__INR_A__c0() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2462,7 +2462,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__DCR_B() {
+    public void code05__DCR_B() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2515,7 +2515,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__DCR_C() {
+    public void code0D__DCR_C() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2568,7 +2568,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__DCR_D() {
+    public void code15__DCR_D() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2621,7 +2621,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__DCR_E() {
+    public void code1D__DCR_E() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2674,7 +2674,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__DCR_H() {
+    public void code25__DCR_H() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2727,7 +2727,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__DCR_L() {
+    public void code2D__DCR_L() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2780,7 +2780,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__DCR_M() {
+    public void code35__DCR_M() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
@@ -2835,7 +2835,7 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
-    public void codeXX__DCR_A() {
+    public void code3D__DCR_A() {
         // when
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
