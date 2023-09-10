@@ -1,10 +1,22 @@
 package spec;
 
 import org.junit.Test;
-import spec.mods.StopWhen;
 import spec.stuff.AbstractTest;
+import spec.stuff.TrackUpdatedMemory;
+import spec.stuff.UpdatedMemory;
 
 public class CpuTest extends AbstractTest {
+
+    @Override
+    protected UpdatedMemory memory() {
+        return new TrackUpdatedMemory(0x10000);
+    }
+
+    @Override
+    public void after() throws Exception {
+        super.after();
+        asrtMem("");
+    }
 
     @Test
     public void code00__NOP() {
@@ -740,13 +752,11 @@ public class CpuTest extends AbstractTest {
                 "02\n" +
                 "00");
 
-        assertMem(0x0003, "11");
-
         // when
         start();
 
         // then
-        assertMem(0x0003, "24");
+        asrtMem("0003: 11 -> 24");
 
         asrtCpu("BC:  0003\n" +
                 "DE:  1111\n" +
@@ -799,13 +809,11 @@ public class CpuTest extends AbstractTest {
                 "12\n" +
                 "00");
 
-        assertMem(0x0003, "11");
-
         // when
         start();
 
         // then
-        assertMem(0x0003, "24");
+        asrtMem("0003: 11 -> 24");
 
         asrtCpu("BC:  1111\n" +
                 "DE:  0003\n" +
@@ -858,14 +866,10 @@ public class CpuTest extends AbstractTest {
                 "0A\n" +
                 "00");
 
-        assertMem(0x0003, "11");
-
         // when
         start();
 
         // then
-        assertMem(0x0003, "11");
-
         asrtCpu("BC:  0003\n" +
                 "DE:  1111\n" +
                 "HL:  0003\n" +
@@ -917,14 +921,10 @@ public class CpuTest extends AbstractTest {
                 "1A\n" +
                 "00");
 
-        assertMem(0x0003, "11");
-
         // when
         start();
 
         // then
-        assertMem(0x0003, "11");
-
         asrtCpu("BC:  1111\n" +
                 "DE:  0003\n" +
                 "HL:  0003\n" +
@@ -974,13 +974,12 @@ public class CpuTest extends AbstractTest {
                 "22 78 56\n" +
                 "00");
 
-        assertMem(0x5678, 2, "00 00");
-
         // when
         start();
 
         // then
-        assertMem(0x5678, 0x5679, "34 12");
+        asrtMem("5678: 00 -> 34\n" +
+                "5679: 00 -> 12");
 
         asrtCpu("BC:  1111\n" +
                 "DE:  2222\n" +
@@ -1031,14 +1030,10 @@ public class CpuTest extends AbstractTest {
                 "2A 01 00\n" +
                 "00");
 
-        assertMem(0x0001, 2, "34 12");
-
         // when
         start();
 
         // then
-        assertMem(0x0001, 2, "34 12");
-
         asrtCpu("BC:  1234\n" +
                 "DE:  2222\n" +
                 "HL:  1234\n" +
@@ -1090,13 +1085,11 @@ public class CpuTest extends AbstractTest {
                 "32 34 12\n" +
                 "00");
 
-        assertMem(0x1234, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x1234, "24");
+        asrtMem("1234: 00 -> 24");
 
         asrtCpu("BC:  1111\n" +
                 "DE:  2222\n" +
@@ -1149,14 +1142,10 @@ public class CpuTest extends AbstractTest {
                 "3A 01 00\n" +
                 "00");
 
-        assertMem(0x0001, "34");
-
         // when
         start();
 
         // then
-        assertMem(0x0001, "34");
-
         asrtCpu("BC:  1234\n" +
                 "DE:  2222\n" +
                 "HL:  4444\n" +
@@ -1630,14 +1619,10 @@ public class CpuTest extends AbstractTest {
                 "04\n" +
                 "00");
 
-        assertMem(0x5667, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x5667, "00");
-
         asrtCpu("BC:  1323\n" +
                 "DE:  3445\n" +
                 "HL:  5667\n" +
@@ -1687,14 +1672,10 @@ public class CpuTest extends AbstractTest {
                 "0C\n" +
                 "00");
 
-        assertMem(0x5667, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x5667, "00");
-
         asrtCpu("BC:  1224\n" +
                 "DE:  3445\n" +
                 "HL:  5667\n" +
@@ -1744,14 +1725,10 @@ public class CpuTest extends AbstractTest {
                 "14\n" +
                 "00");
 
-        assertMem(0x5667, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x5667, "00");
-
         asrtCpu("BC:  1223\n" +
                 "DE:  3545\n" +
                 "HL:  5667\n" +
@@ -1801,14 +1778,10 @@ public class CpuTest extends AbstractTest {
                 "1C\n" +
                 "00");
 
-        assertMem(0x5667, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x5667, "00");
-
         asrtCpu("BC:  1223\n" +
                 "DE:  3446\n" +
                 "HL:  5667\n" +
@@ -1858,14 +1831,10 @@ public class CpuTest extends AbstractTest {
                 "24\n" +
                 "00");
 
-        assertMem(0x5767, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x5767, "00");
-
         asrtCpu("BC:  1223\n" +
                 "DE:  3445\n" +
                 "HL:  5767\n" +
@@ -1915,14 +1884,10 @@ public class CpuTest extends AbstractTest {
                 "2C\n" +
                 "00");
 
-        assertMem(0x5668, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x5668, "00");
-
         asrtCpu("BC:  1223\n" +
                 "DE:  3445\n" +
                 "HL:  5668\n" +
@@ -1972,13 +1937,11 @@ public class CpuTest extends AbstractTest {
                 "34\n" +
                 "00");
 
-        assertMem(0x5667, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x5667, "01");
+        asrtMem("5667: 00 -> 01");
 
         asrtCpu("BC:  1223\n" +
                 "DE:  3445\n" +
@@ -2029,14 +1992,10 @@ public class CpuTest extends AbstractTest {
                 "3C\n" +
                 "00");
 
-        assertMem(0x5667, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x5667, "00");
-
         asrtCpu("BC:  1223\n" +
                 "DE:  3445\n" +
                 "HL:  5667\n" +
@@ -2100,13 +2059,11 @@ public class CpuTest extends AbstractTest {
                 "3D\n" +
                 "00");
 
-        assertMem(0x5566, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x5566, "FF");
+        asrtMem("5566: 00 -> FF");
 
         asrtCpu("BC:  1122\n" +
                 "DE:  3344\n" +
@@ -2171,13 +2128,11 @@ public class CpuTest extends AbstractTest {
                 "3E 89\n" +
                 "00");
 
-        assertMem(0x5667, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x5667, "78");
+        asrtMem("5667: 00 -> 78");
 
         asrtCpu("BC:  1223\n" +
                 "DE:  3445\n" +
@@ -2228,14 +2183,10 @@ public class CpuTest extends AbstractTest {
                 "40\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  1234\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +
@@ -2285,14 +2236,10 @@ public class CpuTest extends AbstractTest {
                 "41\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  3434\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +
@@ -2342,14 +2289,10 @@ public class CpuTest extends AbstractTest {
                 "42\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  5634\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +
@@ -2399,14 +2342,10 @@ public class CpuTest extends AbstractTest {
                 "43\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  7834\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +
@@ -2456,14 +2395,10 @@ public class CpuTest extends AbstractTest {
                 "44\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  9A34\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +
@@ -2513,14 +2448,10 @@ public class CpuTest extends AbstractTest {
                 "45\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  BC34\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +
@@ -2572,13 +2503,11 @@ public class CpuTest extends AbstractTest {
                 "46\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "46");
+        asrtMem("9ABC: 00 -> 46");
 
         asrtCpu("BC:  4634\n" +
                 "DE:  5678\n" +
@@ -2631,14 +2560,10 @@ public class CpuTest extends AbstractTest {
                 "47\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  0134\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +
@@ -2688,14 +2613,10 @@ public class CpuTest extends AbstractTest {
                 "48\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  1212\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +
@@ -2745,14 +2666,10 @@ public class CpuTest extends AbstractTest {
                 "49\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  1234\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +
@@ -2802,14 +2719,10 @@ public class CpuTest extends AbstractTest {
                 "4A\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  1256\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +
@@ -2859,14 +2772,10 @@ public class CpuTest extends AbstractTest {
                 "4B\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  1278\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +
@@ -2916,14 +2825,10 @@ public class CpuTest extends AbstractTest {
                 "4C\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  129A\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +
@@ -2973,14 +2878,10 @@ public class CpuTest extends AbstractTest {
                 "4D\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  12BC\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +
@@ -3032,13 +2933,11 @@ public class CpuTest extends AbstractTest {
                 "4E\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "46");
+        asrtMem("9ABC: 00 -> 46");
 
         asrtCpu("BC:  1246\n" +
                 "DE:  5678\n" +
@@ -3091,14 +2990,10 @@ public class CpuTest extends AbstractTest {
                 "4F\n" +
                 "00");
 
-        assertMem(0x9ABC, "00");
-
         // when
         start();
 
         // then
-        assertMem(0x9ABC, "00");
-
         asrtCpu("BC:  1201\n" +
                 "DE:  5678\n" +
                 "HL:  9ABC\n" +

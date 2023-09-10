@@ -19,7 +19,7 @@ public abstract class AbstractTest {
     protected boolean memoryInit;
 
     protected Hardware hard;
-    protected TestMemory memory;
+    protected UpdatedMemory memory;
     protected Cpu cpu;
     protected Assembler asm;
     protected KeyRecord record;
@@ -36,7 +36,7 @@ public abstract class AbstractTest {
 
             @Override
             protected Memory createMemory() {
-                return memory = new TestMemory(x10000);
+                return memory = AbstractTest.this.memory();
             }
 
             @Override
@@ -57,12 +57,16 @@ public abstract class AbstractTest {
         roms = hard.roms();
         record = hard.record();
         asm = hard.cpu().asm();
-        memory.clear();
+        memory.resetChanges();
         debug = cpu.debug();
         debug.disable();
         debug.console(false);
         memoryInit = false;
         cpu.PC(START);
+    }
+
+    protected UpdatedMemory memory() {
+        return new TrackUpdatedRangeMemory(x10000);
     }
 
     @After
@@ -85,7 +89,7 @@ public abstract class AbstractTest {
             memoryInit = true;
             memory.write8str(START, bites.replace("\n", " "));
         }
-        String split = asString(asm.split(memory.changes()));
+        String split = asString(asm.split(memory.changedBites()));
         assertEquals(bites, split);
         int ticks = split.split("\n").length;
         record.after(ticks).stopCpu();
@@ -119,6 +123,12 @@ public abstract class AbstractTest {
     }
 
     public void start() {
+        memory.resetChanges();
         hard.start();
+    }
+
+    public void asrtMem(String expected) {
+        assertEquals(expected, memory.details());
+        memory.resetChanges();
     }
 }

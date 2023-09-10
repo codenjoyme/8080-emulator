@@ -4,7 +4,7 @@ import org.junit.Test;
 import spec.stuff.AbstractTest;
 
 /**
- * Служит для бістрой проверки всех команд
+ * Служит для быстрой проверки всех команд
  */
 public class CpuSmokeTest extends AbstractTest {
 
