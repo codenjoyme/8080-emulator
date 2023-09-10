@@ -35,10 +35,21 @@ public class TestDiffApply {
                 String locationUrl = testElement.getAttribute("locationUrl");
 
                 // Выводим атрибут locationUrl
-                System.out.println("Путь к файлу Java с тестом: " + locationUrl);
+                System.out.println("Путь к файлу Java с тестом: " +
+                        convertToJavaFilePath(locationUrl));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static String convertToJavaFilePath(String input) {
+        // Удалите префикс "java:test://"
+        input = input.replace("java:test://", "");
+
+        // Замените "." на "/" и добавьте ".java" в конце
+        input = "/src/test/java/" + input.replace(".", "/") + ".java";
+
+        return input;
     }
 }
