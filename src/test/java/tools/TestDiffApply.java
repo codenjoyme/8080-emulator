@@ -71,8 +71,36 @@ public class TestDiffApply {
             String expected = diffElement.getAttribute("expected");
 
             System.out.printf("%s\n%s\n", actual, expected);
+
+            // Получаем элемент <output>
+            Element outputElement = (Element) testElement.getElementsByTagName("output").item(0);
+
+            // Получаем текст из элемента output
+            String outputText = outputElement.getTextContent();
+
+            // Ищем номер строки в тексте output
+            String lineNumber = extractLineNumber(outputText);
+            System.out.println("Line number: " + lineNumber);
         }
     }
+
+    private static String extractLineNumber(String outputText) {
+        String[] lines = outputText.split("\n");
+
+        for (String line : lines) {
+            if (line.contains("at spec.CpuTest.code")) {
+                // Извлекаем номер строки из строки с кодом
+                int startIndex = line.lastIndexOf(':') + 1;
+                int endIndex = line.lastIndexOf(')');
+                if (startIndex >= 0 && endIndex >= 0) {
+                    return line.substring(startIndex, endIndex);
+                }
+            }
+        }
+
+        return "Номер строки не найден";
+    }
+
 
     public static Pair<String, String> convertToJavaFilePath(String input) {
         // Удаляем начальную часть "java:test://"
