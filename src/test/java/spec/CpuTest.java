@@ -4618,6 +4618,446 @@ public class CpuTest extends AbstractTest {
     }
 
     @Test
+    public void code58__MOV_E_B() {
+        // when
+        givenPr("LXI B,1234\n" +  // data
+                "LXI D,5678\n" +  // data
+                "LXI H,9ABC\n" +  // data
+                "LXI SP,DEF0\n" + // data
+                "MVI A,01\n" +    // data
+                "MOV E,B\n" +     // copy E=B
+                "NOP\n");
+
+        givenMm("01 34 12\n" +
+                "11 78 56\n" +
+                "21 BC 9A\n" +
+                "31 F0 DE\n" +
+                "3E 01\n" +
+                "58\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1234\n" +
+                "DE:  5612\n" +
+                "HL:  9ABC\n" +
+                "AF:  0102\n" +
+                "SP:  DEF0\n" +
+                "PC:  0010\n" +
+                "B,C: 12 34\n" +
+                "D,E: 56 12\n" +
+                "H,L: 9A BC\n" +
+                "M:   00\n" +
+                "A,F: 01 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11011110 11110000\n" +
+                "PC:  00000000 00010000\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00110100\n" +
+                "D:   01010110\n" +
+                "E:   00010010\n" +
+                "H:   10011010\n" +
+                "L:   10111100\n" +
+                "M:   00000000\n" +
+                "A:   00000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code59__MOV_E_C() {
+        // when
+        givenPr("LXI B,1234\n" +  // data
+                "LXI D,5678\n" +  // data
+                "LXI H,9ABC\n" +  // data
+                "LXI SP,DEF0\n" + // data
+                "MVI A,01\n" +    // data
+                "MOV E,C\n" +     // copy E=C
+                "NOP\n");
+
+        givenMm("01 34 12\n" +
+                "11 78 56\n" +
+                "21 BC 9A\n" +
+                "31 F0 DE\n" +
+                "3E 01\n" +
+                "59\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1234\n" +
+                "DE:  5634\n" +
+                "HL:  9ABC\n" +
+                "AF:  0102\n" +
+                "SP:  DEF0\n" +
+                "PC:  0010\n" +
+                "B,C: 12 34\n" +
+                "D,E: 56 34\n" +
+                "H,L: 9A BC\n" +
+                "M:   00\n" +
+                "A,F: 01 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11011110 11110000\n" +
+                "PC:  00000000 00010000\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00110100\n" +
+                "D:   01010110\n" +
+                "E:   00110100\n" +
+                "H:   10011010\n" +
+                "L:   10111100\n" +
+                "M:   00000000\n" +
+                "A:   00000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code5A__MOV_E_D() {
+        // when
+        givenPr("LXI B,1234\n" +  // data
+                "LXI D,5678\n" +  // data
+                "LXI H,9ABC\n" +  // data
+                "LXI SP,DEF0\n" + // data
+                "MVI A,01\n" +    // data
+                "MOV E,D\n" +     // copy E=D
+                "NOP\n");
+
+        givenMm("01 34 12\n" +
+                "11 78 56\n" +
+                "21 BC 9A\n" +
+                "31 F0 DE\n" +
+                "3E 01\n" +
+                "5A\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1234\n" +
+                "DE:  5656\n" +
+                "HL:  9ABC\n" +
+                "AF:  0102\n" +
+                "SP:  DEF0\n" +
+                "PC:  0010\n" +
+                "B,C: 12 34\n" +
+                "D,E: 56 56\n" +
+                "H,L: 9A BC\n" +
+                "M:   00\n" +
+                "A,F: 01 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11011110 11110000\n" +
+                "PC:  00000000 00010000\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00110100\n" +
+                "D:   01010110\n" +
+                "E:   01010110\n" +
+                "H:   10011010\n" +
+                "L:   10111100\n" +
+                "M:   00000000\n" +
+                "A:   00000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code5B__MOV_E_E() {
+        // when
+        givenPr("LXI B,1234\n" +  // data
+                "LXI D,5678\n" +  // data
+                "LXI H,9ABC\n" +  // data
+                "LXI SP,DEF0\n" + // data
+                "MVI A,01\n" +    // data
+                "MOV E,E\n" +     // copy E=E
+                "NOP\n");
+
+        givenMm("01 34 12\n" +
+                "11 78 56\n" +
+                "21 BC 9A\n" +
+                "31 F0 DE\n" +
+                "3E 01\n" +
+                "5B\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1234\n" +
+                "DE:  5678\n" +
+                "HL:  9ABC\n" +
+                "AF:  0102\n" +
+                "SP:  DEF0\n" +
+                "PC:  0010\n" +
+                "B,C: 12 34\n" +
+                "D,E: 56 78\n" +
+                "H,L: 9A BC\n" +
+                "M:   00\n" +
+                "A,F: 01 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11011110 11110000\n" +
+                "PC:  00000000 00010000\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00110100\n" +
+                "D:   01010110\n" +
+                "E:   01111000\n" +
+                "H:   10011010\n" +
+                "L:   10111100\n" +
+                "M:   00000000\n" +
+                "A:   00000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code5C__MOV_E_H() {
+        // when
+        givenPr("LXI B,1234\n" +  // data
+                "LXI D,5678\n" +  // data
+                "LXI H,9ABC\n" +  // data
+                "LXI SP,DEF0\n" + // data
+                "MVI A,01\n" +    // data
+                "MOV E,H\n" +     // copy E=H
+                "NOP\n");
+
+        givenMm("01 34 12\n" +
+                "11 78 56\n" +
+                "21 BC 9A\n" +
+                "31 F0 DE\n" +
+                "3E 01\n" +
+                "5C\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1234\n" +
+                "DE:  569A\n" +
+                "HL:  9ABC\n" +
+                "AF:  0102\n" +
+                "SP:  DEF0\n" +
+                "PC:  0010\n" +
+                "B,C: 12 34\n" +
+                "D,E: 56 9A\n" +
+                "H,L: 9A BC\n" +
+                "M:   00\n" +
+                "A,F: 01 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11011110 11110000\n" +
+                "PC:  00000000 00010000\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00110100\n" +
+                "D:   01010110\n" +
+                "E:   10011010\n" +
+                "H:   10011010\n" +
+                "L:   10111100\n" +
+                "M:   00000000\n" +
+                "A:   00000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code5D__MOV_E_L() {
+        // when
+        givenPr("LXI B,1234\n" +  // data
+                "LXI D,5678\n" +  // data
+                "LXI H,9ABC\n" +  // data
+                "LXI SP,DEF0\n" + // data
+                "MVI A,01\n" +    // data
+                "MOV E,L\n" +     // copy E=L
+                "NOP\n");
+
+        givenMm("01 34 12\n" +
+                "11 78 56\n" +
+                "21 BC 9A\n" +
+                "31 F0 DE\n" +
+                "3E 01\n" +
+                "5D\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1234\n" +
+                "DE:  56BC\n" +
+                "HL:  9ABC\n" +
+                "AF:  0102\n" +
+                "SP:  DEF0\n" +
+                "PC:  0010\n" +
+                "B,C: 12 34\n" +
+                "D,E: 56 BC\n" +
+                "H,L: 9A BC\n" +
+                "M:   00\n" +
+                "A,F: 01 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11011110 11110000\n" +
+                "PC:  00000000 00010000\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00110100\n" +
+                "D:   01010110\n" +
+                "E:   10111100\n" +
+                "H:   10011010\n" +
+                "L:   10111100\n" +
+                "M:   00000000\n" +
+                "A:   00000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code5E__MOV_E_M() {
+        // when
+        givenPr("LXI B,1234\n" +  // data
+                "LXI D,5678\n" +  // data
+                "LXI H,9ABC\n" +  // working with memory 9ABC
+                "LXI SP,DEF0\n" + // data
+                "MVI A,01\n" +    // data
+                "MOV E,M\n" +     // copy E=M  =(HL)=(9ABC)
+                "NOP\n");
+
+        givenMm("01 34 12\n" +
+                "11 78 56\n" +
+                "21 BC 9A\n" +
+                "31 F0 DE\n" +
+                "3E 01\n" +
+                "5E\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1234\n" +
+                "DE:  5600\n" +
+                "HL:  9ABC\n" +
+                "AF:  0102\n" +
+                "SP:  DEF0\n" +
+                "PC:  0010\n" +
+                "B,C: 12 34\n" +
+                "D,E: 56 00\n" +
+                "H,L: 9A BC\n" +
+                "M:   00\n" +
+                "A,F: 01 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11011110 11110000\n" +
+                "PC:  00000000 00010000\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00110100\n" +
+                "D:   01010110\n" +
+                "E:   00000000\n" +
+                "H:   10011010\n" +
+                "L:   10111100\n" +
+                "M:   00000000\n" +
+                "A:   00000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code5F__MOV_E_A() {
+        // when
+        givenPr("LXI B,1234\n" +  // data
+                "LXI D,5678\n" +  // data
+                "LXI H,9ABC\n" +  // data
+                "LXI SP,DEF0\n" + // data
+                "MVI A,01\n" +    // data
+                "MOV E,A\n" +     // copy E=A
+                "NOP\n");
+
+        givenMm("01 34 12\n" +
+                "11 78 56\n" +
+                "21 BC 9A\n" +
+                "31 F0 DE\n" +
+                "3E 01\n" +
+                "5F\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1234\n" +
+                "DE:  5601\n" +
+                "HL:  9ABC\n" +
+                "AF:  0102\n" +
+                "SP:  DEF0\n" +
+                "PC:  0010\n" +
+                "B,C: 12 34\n" +
+                "D,E: 56 01\n" +
+                "H,L: 9A BC\n" +
+                "M:   00\n" +
+                "A,F: 01 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11011110 11110000\n" +
+                "PC:  00000000 00010000\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00110100\n" +
+                "D:   01010110\n" +
+                "E:   00000001\n" +
+                "H:   10011010\n" +
+                "L:   10111100\n" +
+                "M:   00000000\n" +
+                "A:   00000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
     public void testAssertMem() {
         // given
         givenMm("01 02 03\n" +
