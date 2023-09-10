@@ -4,72 +4,69 @@
 `test/java/spec/CpuTest` - интеграционный тест для тестирования всех команд процессора.
 Список команд процессора 8080 и комментарии к их тестам.
 
-Знак `*` возле кода команды означает, что тест тестирует сразу 
-несколько команд и требует разбиения на отдельные тесты.
-
 * [x] 00 - NOP
 * [x] 01 - LXI B,XXYY
 * [x] 02 - STAX B
 * [x] 03 - INX B
-* [x] 04* - INR B
-* [x] 05* - DCR B
-* [x] 06* - MVI B,XX
+* [x] 04 - INR B
+* [x] 05 - DCR B
+* [x] 06 - MVI B,XX
 * [ ] 07 - RLC
 * [x] 08  
 * [x] 09 - DAD B
 * [x] 0A - LDAX B
 * [ ] 0B - DCX B
-* [x] 0C* - INR C
-* [x] 0D* - DCR C
-* [x] 0E* - MVI C,XX
+* [x] 0C - INR C
+* [x] 0D - DCR C
+* [x] 0E - MVI C,XX
 * [ ] 0F - RRC
 * [x] 10
 * [x] 11 - LXI D,XXYY
 * [x] 12 - STAX D
 * [x] 13 - INX D
-* [x] 14* - INR D
-* [x] 15* - DCR D
-* [x] 16* - MVI D,XX
+* [x] 14 - INR D
+* [x] 15 - DCR D
+* [x] 16 - MVI D,XX
 * [ ] 17 - RAL
 * [x] 18
 * [x] 19 - DAD D
 * [x] 1A - LDAX D
 * [ ] 1B - DCX D
-* [x] 1C* - INR E
-* [x] 1D* - DCR E
-* [x] 1E* - MVI E,XX
+* [x] 1C - INR E
+* [x] 1D - DCR E
+* [x] 1E - MVI E,XX
 * [ ] 1F - RAR
 * [x] 20 
 * [x] 21 - LXI H,XXYY
 * [x] 22 - SHLD XXYY
 * [x] 23 - INX H
-* [x] 24* - INR H
-* [x] 25* - DCR H
-* [x] 26* - MVI H,XX
+* [x] 24 - INR H
+* [x] 25 - DCR H
+* [x] 26 - MVI H,XX
 * [ ] 27 - DAA
 * [x] 28 
 * [x] 29 - DAD H
 * [x] 2A - LHLD XXYY
 * [ ] 2B - DCX H
-* [x] 2C* - INR L
-* [x] 2D* - DCR L
-* [x] 2E* - MVI L,XX
+* [x] 2C - INR L
+* [x] 2D - DCR L
+* [x] 2E - MVI L,XX
 * [ ] 2F - CMA
 * [x] 30 
 * [x] 31 - LXI SP,XXYY
 * [x] 32 - STA XXYY
 * [x] 33 - INX SP
-* [x] 34* - INR M
-* [x] 35* - DCR M
-* [x] 36* - MVI M,XX
+* [x] 34 - INR M
+* [x] 35 - DCR M
+* [x] 36 - MVI M,XX
 * [ ] 37 - STC
 * [x] 38 
 * [x] 39 - DAD SP
 * [x] 3A - LDA XXYY
 * [ ] 3B - DCX SP
-* [x] 3C* - INR A
-* [x] 3D* - DCR A
-* [x] 3E* - MVI A,XX
+* [x] 3C - INR A
+* [x] 3D - DCR A
+* [x] 3E - MVI A,XX
 * [ ] 3F - CMC
 * [x] 40 - MOV B,B
 * [x] 41 - MOV B,C
