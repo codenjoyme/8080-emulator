@@ -35,9 +35,15 @@ public class TestDiffApply {
                 // Получаем атрибут locationUrl
                 String locationUrl = testElement.getAttribute("locationUrl");
 
-                // Выводим атрибут locationUrl
-                System.out.println("Путь к файлу Java с тестом: " +
-                        convertToJavaFilePath(locationUrl));
+                // Получаем атрибут status
+                String status = testElement.getAttribute("status");
+
+                // Проверяем, что статус равен "failed"
+                if ("failed".equals(status)) {
+                    // Выводим атрибут locationUrl после преобразования
+                    System.out.println("Путь к файлу Java с проваленным тестом: " +
+                            convertToJavaFilePath(locationUrl));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
