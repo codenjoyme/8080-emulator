@@ -11,7 +11,7 @@
 * [x] 04 - INR B
 * [x] 05 - DCR B
 * [x] 06 - MVI B,XX
-* [ ] 07 - RLC
+* [x] 07 - RLC
 * [x] 08  
 * [x] 09 - DAD B
 * [x] 0A - LDAX B

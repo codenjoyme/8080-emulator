@@ -9,7 +9,6 @@ import static spec.Constants.x01;
 import static spec.Constants.x80;
 import static spec.WordMath.lo;
 
-// TODO test me
 public class RLC extends Command {
 
     private static final List<Integer> CODES = from(
