@@ -33,7 +33,7 @@ public class TestDiffApply {
 
     public static void main(String[] args) throws Exception {
         // Путь к вашему XML-файлу
-        File xmlFile = new File("target/test");
+        File xmlFile = new File("target/test-result.xml");
 
         // Создаем фабрику для создания парсера
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
