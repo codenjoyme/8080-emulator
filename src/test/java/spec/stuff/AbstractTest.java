@@ -88,6 +88,12 @@ public abstract class AbstractTest {
             memory.write8str(START, bites.replace("\n", " "));
         }
         String split = asString(asm.split(memory.changedBites()));
+        if (!split.endsWith("\n")) {
+            split += "\n";
+        }
+        if (!bites.endsWith("\n")) {
+            bites += "\n";
+        }
         assertEquals(bites, split);
         int ticks = split.split("\n").length;
         record.after(ticks).stopCpu();
