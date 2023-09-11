@@ -5137,13 +5137,13 @@ public class CpuTest extends AbstractTest {
         // then
         asrtCpu("BC:  1234\n" +
                 "DE:  5678\n" +
-                "HL:  12BC\n" +
+                "HL:  34BC\n" +
                 "AF:  0102\n" +
                 "SP:  DEF0\n" +
                 "PC:  0010\n" +
                 "B,C: 12 34\n" +
                 "D,E: 56 78\n" +
-                "H,L: 12 BC\n" +
+                "H,L: 34 BC\n" +
                 "M:   00\n" +
                 "A,F: 01 02\n" +
                 "     76543210 76543210\n" +
@@ -5154,7 +5154,7 @@ public class CpuTest extends AbstractTest {
                 "C:   00110100\n" +
                 "D:   01010110\n" +
                 "E:   01111000\n" +
-                "H:   00010010\n" +
+                "H:   00110100\n" +
                 "L:   10111100\n" +
                 "M:   00000000\n" +
                 "A:   00000001\n" +
@@ -5183,7 +5183,7 @@ public class CpuTest extends AbstractTest {
                 "21 BC 9A\n" +
                 "31 F0 DE\n" +
                 "3E 01\n" +
-                "61\n" +
+                "62\n" +
                 "00\n");
 
         // when
@@ -5192,13 +5192,13 @@ public class CpuTest extends AbstractTest {
         // then
         asrtCpu("BC:  1234\n" +
                 "DE:  5678\n" +
-                "HL:  34BC\n" +
+                "HL:  56BC\n" +
                 "AF:  0102\n" +
                 "SP:  DEF0\n" +
                 "PC:  0010\n" +
                 "B,C: 12 34\n" +
                 "D,E: 56 78\n" +
-                "H,L: 34 BC\n" +
+                "H,L: 56 BC\n" +
                 "M:   00\n" +
                 "A,F: 01 02\n" +
                 "     76543210 76543210\n" +
@@ -5209,7 +5209,7 @@ public class CpuTest extends AbstractTest {
                 "C:   00110100\n" +
                 "D:   01010110\n" +
                 "E:   01111000\n" +
-                "H:   00110100\n" +
+                "H:   01010110\n" +
                 "L:   10111100\n" +
                 "M:   00000000\n" +
                 "A:   00000001\n" +
@@ -5238,7 +5238,7 @@ public class CpuTest extends AbstractTest {
                 "21 BC 9A\n" +
                 "31 F0 DE\n" +
                 "3E 01\n" +
-                "61\n" +
+                "63\n" +
                 "00\n");
 
         // when
@@ -5247,13 +5247,13 @@ public class CpuTest extends AbstractTest {
         // then
         asrtCpu("BC:  1234\n" +
                 "DE:  5678\n" +
-                "HL:  34BC\n" +
+                "HL:  78BC\n" +
                 "AF:  0102\n" +
                 "SP:  DEF0\n" +
                 "PC:  0010\n" +
                 "B,C: 12 34\n" +
                 "D,E: 56 78\n" +
-                "H,L: 34 BC\n" +
+                "H,L: 78 BC\n" +
                 "M:   00\n" +
                 "A,F: 01 02\n" +
                 "     76543210 76543210\n" +
@@ -5264,7 +5264,7 @@ public class CpuTest extends AbstractTest {
                 "C:   00110100\n" +
                 "D:   01010110\n" +
                 "E:   01111000\n" +
-                "H:   00110100\n" +
+                "H:   01111000\n" +
                 "L:   10111100\n" +
                 "M:   00000000\n" +
                 "A:   00000001\n" +
@@ -5293,7 +5293,7 @@ public class CpuTest extends AbstractTest {
                 "21 BC 9A\n" +
                 "31 F0 DE\n" +
                 "3E 01\n" +
-                "61\n" +
+                "64\n" +
                 "00\n");
 
         // when
@@ -5302,13 +5302,13 @@ public class CpuTest extends AbstractTest {
         // then
         asrtCpu("BC:  1234\n" +
                 "DE:  5678\n" +
-                "HL:  34BC\n" +
+                "HL:  9ABC\n" +
                 "AF:  0102\n" +
                 "SP:  DEF0\n" +
                 "PC:  0010\n" +
                 "B,C: 12 34\n" +
                 "D,E: 56 78\n" +
-                "H,L: 34 BC\n" +
+                "H,L: 9A BC\n" +
                 "M:   00\n" +
                 "A,F: 01 02\n" +
                 "     76543210 76543210\n" +
@@ -5319,7 +5319,7 @@ public class CpuTest extends AbstractTest {
                 "C:   00110100\n" +
                 "D:   01010110\n" +
                 "E:   01111000\n" +
-                "H:   00110100\n" +
+                "H:   10011010\n" +
                 "L:   10111100\n" +
                 "M:   00000000\n" +
                 "A:   00000001\n" +
@@ -5348,7 +5348,7 @@ public class CpuTest extends AbstractTest {
                 "21 BC 9A\n" +
                 "31 F0 DE\n" +
                 "3E 01\n" +
-                "61\n" +
+                "65\n" +
                 "00\n");
 
         // when
@@ -5357,13 +5357,13 @@ public class CpuTest extends AbstractTest {
         // then
         asrtCpu("BC:  1234\n" +
                 "DE:  5678\n" +
-                "HL:  34BC\n" +
+                "HL:  BCBC\n" +
                 "AF:  0102\n" +
                 "SP:  DEF0\n" +
                 "PC:  0010\n" +
                 "B,C: 12 34\n" +
                 "D,E: 56 78\n" +
-                "H,L: 34 BC\n" +
+                "H,L: BC BC\n" +
                 "M:   00\n" +
                 "A,F: 01 02\n" +
                 "     76543210 76543210\n" +
@@ -5374,7 +5374,7 @@ public class CpuTest extends AbstractTest {
                 "C:   00110100\n" +
                 "D:   01010110\n" +
                 "E:   01111000\n" +
-                "H:   00110100\n" +
+                "H:   10111100\n" +
                 "L:   10111100\n" +
                 "M:   00000000\n" +
                 "A:   00000001\n" +
@@ -5403,7 +5403,7 @@ public class CpuTest extends AbstractTest {
                 "21 BC 9A\n" +
                 "31 F0 DE\n" +
                 "3E 01\n" +
-                "61\n" +
+                "66\n" +
                 "00\n");
 
         // when
@@ -5412,13 +5412,13 @@ public class CpuTest extends AbstractTest {
         // then
         asrtCpu("BC:  1234\n" +
                 "DE:  5678\n" +
-                "HL:  34BC\n" +
+                "HL:  00BC\n" +
                 "AF:  0102\n" +
                 "SP:  DEF0\n" +
                 "PC:  0010\n" +
                 "B,C: 12 34\n" +
                 "D,E: 56 78\n" +
-                "H,L: 34 BC\n" +
+                "H,L: 00 BC\n" +
                 "M:   00\n" +
                 "A,F: 01 02\n" +
                 "     76543210 76543210\n" +
@@ -5429,7 +5429,7 @@ public class CpuTest extends AbstractTest {
                 "C:   00110100\n" +
                 "D:   01010110\n" +
                 "E:   01111000\n" +
-                "H:   00110100\n" +
+                "H:   00000000\n" +
                 "L:   10111100\n" +
                 "M:   00000000\n" +
                 "A:   00000001\n" +
@@ -5458,7 +5458,7 @@ public class CpuTest extends AbstractTest {
                 "21 BC 9A\n" +
                 "31 F0 DE\n" +
                 "3E 01\n" +
-                "61\n" +
+                "67\n" +
                 "00\n");
 
         // when
@@ -5467,13 +5467,13 @@ public class CpuTest extends AbstractTest {
         // then
         asrtCpu("BC:  1234\n" +
                 "DE:  5678\n" +
-                "HL:  34BC\n" +
+                "HL:  01BC\n" +
                 "AF:  0102\n" +
                 "SP:  DEF0\n" +
                 "PC:  0010\n" +
                 "B,C: 12 34\n" +
                 "D,E: 56 78\n" +
-                "H,L: 34 BC\n" +
+                "H,L: 01 BC\n" +
                 "M:   00\n" +
                 "A,F: 01 02\n" +
                 "     76543210 76543210\n" +
@@ -5484,7 +5484,7 @@ public class CpuTest extends AbstractTest {
                 "C:   00110100\n" +
                 "D:   01010110\n" +
                 "E:   01111000\n" +
-                "H:   00110100\n" +
+                "H:   00000001\n" +
                 "L:   10111100\n" +
                 "M:   00000000\n" +
                 "A:   00000001\n" +
