@@ -38,6 +38,7 @@ public class RLC extends Command {
         } else {
             ans <<= 1;
         }
+
         ans = lo(ans);
 
         r.th(false);

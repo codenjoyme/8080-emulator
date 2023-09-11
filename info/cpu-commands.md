@@ -27,7 +27,7 @@
 * [x] 14 - INR D
 * [x] 15 - DCR D
 * [x] 16 - MVI D,XX
-* [ ] 17 - RAL
+* [x] 17 - RAL
 * [x] 18
 * [x] 19 - DAD D
 * [x] 1A - LDAX D
@@ -35,7 +35,7 @@
 * [x] 1C - INR E
 * [x] 1D - DCR E
 * [x] 1E - MVI E,XX
-* [ ] 1F - RAR
+* [x] 1F - RAR
 * [x] 20 
 * [x] 21 - LXI H,XXYY
 * [x] 22 - SHLD XXYY
