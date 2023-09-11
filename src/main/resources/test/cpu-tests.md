@@ -10,18 +10,44 @@
 Спасибо [Автору](mailto:julian.notfound@gmail.com) за вклад.
 
 Список тестов и их исходных кодов:
-- `src/main/resources/test/test/test.rks`
-  * 8080/8085 CPU Diagnostic, version 1.0, by Microcosm Associates.
-- `src/main/resources/test/cputest/CPUTEST.COM`
-  * Diagnostics II, version 1.2, CPU test by Supersoft Associates.
-- `src/main/resources/test/8080pre/8080pre.rks`
-  * 8080/8085 CPU Exerciser by Ian Bartholomew and Frank Cringles.
-    The preliminary test.
 - `src/main/resources/test/8080ex1/8080EX1.COM`
   * The basic CPU Excerciser. This file is a copy of the vanilla file.
+  * [x] Есть исходники.
+  * [ ] Отлажен на эмуляторе.
+  * [ ] Добавлен как интеграционный тест.
 - `src/main/resources/test/8080exer/8080EXER.COM`
   * Vanilla basic CPU Excerciser having CRCs from the real KR580VM80A
     contributed by Alexander Timoshenko and Viacheslav Slavinsky.
+  * [ ] Есть исходники.
+  * [ ] Отлажен на эмуляторе.
+  * [ ] Добавлен как интеграционный тест.
+- `src/main/resources/test/8080pre/8080pre.rks`
+  * 8080/8085 CPU Exerciser by Ian Bartholomew and Frank Cringles.
+    The preliminary test.
+  * [x] Есть исходники.
+  * [x] Отлажен на эмуляторе.
+  * [x] Добавлен как интеграционный тест.
+- `src/main/resources/test/8085exer/8085EXER.MAC`
+  * Пока еще не изученный тест.
+  * [x] Есть исходники.
+  * [ ] Отлажен на эмуляторе.
+  * [ ] Добавлен как интеграционный тест.
+- `src/main/resources/test/cputest/CPUTEST.COM`
+  * Diagnostics II, version 1.2, CPU test by Supersoft Associates.
+  * [ ] Есть исходники.
+  * [ ] Отлажен на эмуляторе.
+  * [ ] Добавлен как интеграционный тест.
+- `src/main/resources/test/hello-world/hello_world.krs`
+  * Тест выводящий надпись `HELLO WORLD` на экран в ЛИКе.
+  * [x] Есть исходники.
+  * [x] Отлажен на эмуляторе.
+  * [x] Добавлен как интеграционный тест.
+- `src/main/resources/test/test/test.rks`
+  * 8080/8085 CPU Diagnostic, version 1.0, by Microcosm Associates.
+  * [x] Есть исходники.
+  * [ ] Отлажен на эмуляторе. В процессе отладки.
+  * [x] Добавлен как интеграционный тест.
 
 Зеркала репозиториев содержится в папке `src/main/resources/test/arch` 
 на случай потери доступа к оригинальным репозиториям. 
+
