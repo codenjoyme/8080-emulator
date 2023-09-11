@@ -116,14 +116,14 @@
 * [x] 6D - MOV L,L
 * [x] 6E - MOV L,M
 * [x] 6F - MOV L,A
-* [ ] 70 - MOV M,B
-* [ ] 71 - MOV M,C
-* [ ] 72 - MOV M,D
-* [ ] 73 - MOV M,E
-* [ ] 74 - MOV M,H
-* [ ] 75 - MOV M,L
-* [ ] 76 - HLT
-* [ ] 77 - MOV M,A
+* [x] 70 - MOV M,B
+* [x] 71 - MOV M,C
+* [x] 72 - MOV M,D
+* [x] 73 - MOV M,E
+* [x] 74 - MOV M,H
+* [x] 75 - MOV M,L
+* [x] 76 - HLT
+* [x] 77 - MOV M,A
 * [ ] 78 - MOV A,B
 * [ ] 79 - MOV A,C
 * [ ] 7A - MOV A,D
