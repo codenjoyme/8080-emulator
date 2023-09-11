@@ -48,6 +48,44 @@
   * [ ] Отлажен на эмуляторе. В процессе отладки.
   * [x] Добавлен как интеграционный тест.
 
-Зеркала репозиториев содержится в папке `src/main/resources/test/arch` 
-на случай потери доступа к оригинальным репозиториям. 
+Алгоритм компиляции:
+- Копируем исходник [сюда](https://svofski.github.io/pretty-8080-assembler/)
+- Кликаем на кнопку BIN
+- Скаченный браузером файл с расширением `*.RKS` копируем в соответствующую 
+  тесту папку `src/main/resources/test/*`.
+- В классе `IntegrationTest` создаем тест:
+```java
+public class IntegrationTest extends AbstractTest {
+    @Test
+    public void testLik_diagnostic_microcosm() {
+        // given
+        Lik.loadRom(base, roms);
+        hard.loadData(CPU_TESTS_RESOURCES + "test/test.rks", Lik.PLATFORM);
+        // выводим trace только в этом диапазоне
+        debug.enable(new Range(0x0000, 0x0100));
+        // не показываем в trace все что относится к выводу на экран
+        debug.showCallBellow(3);
+        // последняя команда программы перед выходом в монитор
+        cpu.modAdd(new StopWhen(0x0057));
+        // если хочется подебажить внутри
+        cpu.modAdd(new DebugWhen(0x0383, () ->
+                assertCpu("cpu_at_0x0383")));
 
+        // when
+        hard.reset();
+        hard.start();
+
+        // then
+        assertCpu();
+        assertTrace();
+    }
+}
+```
+- Запускаем его и смотрим результат выполнения в папке 
+  `test/resources/testLik_diagnostic_microcosm/*` - там будет:
+  * `trace.log` - трассировка выполнения программы на определенном уровне вложенности.
+  * `cpu.log` - состояние процессора на момент окончания программы.
+  * `end.png` - скриншот окна эмулятора на момент окончания программы.
+
+Зеркала репозиториев содержится в папке `src/main/resources/test/arch` 
+на случай потери доступа к оригинальным репозиториям.
