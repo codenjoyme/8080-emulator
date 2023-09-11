@@ -32,6 +32,7 @@ public class IntegrationTest extends AbstractTest {
 
     private static final String TEST_RESOURCES = "src/test/resources/";
     private static final String APP_RESOURCES = "src/main/resources/";
+    private static final String CPU_TESTS_RESOURCES = APP_RESOURCES + "test/";
 
     @Rule
     public TestName test = new TestName();
@@ -337,7 +338,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_helloWorld() {
         // given
         Lik.loadRom(base, roms);
-        hard.loadData(APP_RESOURCES + "test/hello_world.rks", Lik.PLATFORM);
+        hard.loadData(CPU_TESTS_RESOURCES + "hello-world/hello_world.rks", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
         debug.enable(new Range(0x0000, 0x0100));
         // последняя команда перед выходом в монитор
