@@ -7,6 +7,7 @@ import java.util.List;
 
 import static spec.assembler.command.procedure.ret.RET.ret_if;
 
+// TODO test me
 public class RC extends Command {
 
     private static final List<Integer> CODES = from(

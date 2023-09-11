@@ -5,6 +5,7 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+// TODO test me
 public class IN_XX extends Command {
 
     private static final List<Integer> CODES = from(

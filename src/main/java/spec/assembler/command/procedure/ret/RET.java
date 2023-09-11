@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 
 import static spec.mods.Event.RUN_RET;
 
+// TODO test me
 public class RET extends Command {
 
     private static final List<Integer> CODES = from(

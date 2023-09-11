@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-// TODO continue with tests
 public class MOV_R_R extends Command {
 
     private int[] indexes2;

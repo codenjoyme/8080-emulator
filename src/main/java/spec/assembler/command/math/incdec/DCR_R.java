@@ -11,7 +11,6 @@ import static spec.Registry.T7s;
 import static spec.WordMath.lo;
 import static spec.assembler.Parity.parity;
 
-// TODO test me
 public class DCR_R extends Command {
 
     private static final List<Integer> CODES = from(
