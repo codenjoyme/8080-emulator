@@ -8,7 +8,6 @@ import java.util.List;
 import static spec.Constants.x01;
 import static spec.Constants.x80;
 
-// TODO test me
 public class RRC extends Command {
 
     private static final List<Integer> CODES = from(

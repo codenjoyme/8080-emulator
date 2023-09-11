@@ -19,7 +19,7 @@
 * [x] 0C - INR C
 * [x] 0D - DCR C
 * [x] 0E - MVI C,XX
-* [ ] 0F - RRC
+* [x] 0F - RRC
 * [x] 10
 * [x] 11 - LXI D,XXYY
 * [x] 12 - STAX D
