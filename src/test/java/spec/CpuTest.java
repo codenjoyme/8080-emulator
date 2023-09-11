@@ -13,7 +13,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code00__NOP() {
-        // when
+        // given
         givenPr("NOP\n" +
                 "NOP\n" +
                 "NOP\n" +
@@ -563,7 +563,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code01__LXI_B_XXYY() {
-        // when
+        // given
         givenPr("LXI B,1234\n" + // set B=XX, C=YY
                 "NOP\n");
 
@@ -608,7 +608,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code11__LXI_D_XXYY() {
-        // when
+        // given
         givenPr("LXI D,1234\n" + // set D=XX, E=YY
                 "NOP\n");
 
@@ -653,7 +653,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code21__LXI_H_XXYY() {
-        // when
+        // given
         givenPr("LXI H,1234\n" + // set H=XX, L=YY
                 "NOP\n");
 
@@ -698,7 +698,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code31__LXI_SP_XXYY() {
-        // when
+        // given
         givenPr("LXI SP,1234\n" + // set SP=XXYY
                 "NOP\n");
 
@@ -743,7 +743,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code09__DAD_B__c0() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // operand 1
                 "LXI D,1111\n" +  // ignored
                 "LXI SP,2222\n" + // ignored
@@ -796,7 +796,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code09__DAD_B__c1() {
-        // when
+        // given
         givenPr("LXI B,789A\n" +  // operand 1
                 "LXI D,1111\n" +  // ignored
                 "LXI SP,2222\n" + // ignored
@@ -849,7 +849,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code19__DAD_D__c0() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,1234\n" +  // operand 1
                 "LXI SP,2222\n" + // ignored
@@ -902,7 +902,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code19__DAD_D__c1() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,789A\n" +  // operand 1
                 "LXI SP,2222\n" + // ignored
@@ -955,7 +955,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code29__DAD_H__c0() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
@@ -1008,7 +1008,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code29__DAD_H__c1() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
@@ -1061,7 +1061,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code09__DAD_SP__c0() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,1234\n" + // operand 1
@@ -1115,7 +1115,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code39__DAD_SP__c1() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,789A\n" + // operand 1
@@ -1168,7 +1168,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code02__STAX_B() {
-        // when
+        // given
         givenPr("LXI B,0003\n" +  // working with memory 0003
                 "LXI D,1111\n" +  // ignored
                 "LXI SP,2222\n" + // ignored
@@ -1225,7 +1225,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code12__STAX_D() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,0003\n" +  // working with memory 0003
                 "LXI SP,2222\n" + // ignored
@@ -1282,7 +1282,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code0A__LDAX_B() {
-        // when
+        // given
         givenPr("LXI B,0003\n" +  // working with memory 0003
                 "LXI D,1111\n" +  // ignored
                 "LXI SP,2222\n" + // ignored
@@ -1337,7 +1337,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code1A__LDAX_D() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,0003\n" +  // working with memory 0003
                 "LXI SP,2222\n" + // ignored
@@ -1392,7 +1392,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code22__SHLD_XXYY() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
@@ -1448,7 +1448,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code2A__LHLD_XXYY() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
@@ -1501,7 +1501,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code32__STA_XXYY() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
@@ -1558,7 +1558,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code3A__LDA_XXYY() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
@@ -1613,7 +1613,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code03__INX_B() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // will be increased
                 "LXI D,1111\n" +  // ignored
                 "LXI SP,2222\n" + // ignored
@@ -1666,7 +1666,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code03__INX_B__c0__ignoredOverflow() {
-        // when
+        // given
         givenPr("LXI B,FFFF\n" +  // will be increased with overflow
                 "LXI D,1111\n" +  // ignored
                 "LXI SP,2222\n" + // ignored
@@ -1719,7 +1719,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code13__INX_D() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,1234\n" +  // will be increased
                 "LXI SP,2222\n" + // ignored
@@ -1772,7 +1772,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code13__INX_D__c0__ignoredOverflow() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,FFFF\n" +  // will be increased with overflow
                 "LXI SP,2222\n" + // ignored
@@ -1825,7 +1825,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code23__INX_H() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
@@ -1878,7 +1878,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code23__INX_H__c0__ignoredOverflow() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,3333\n" + // ignored
@@ -1931,7 +1931,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code33__INX_SP() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,1234\n" + // will be increased
@@ -1984,7 +1984,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code33__INX_SP__c0__ignoredOverflow() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // ignored
                 "LXI D,2222\n" +  // ignored
                 "LXI SP,FFFF\n" + // will be increased with overflow
@@ -2037,7 +2037,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code04__INR_B__c0() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2090,7 +2090,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code0C__INR_C__c0() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2143,7 +2143,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code14__INR_D__c0() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2196,7 +2196,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code1C__INR_E__c0() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2249,7 +2249,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code24__INR_H__c0() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2302,7 +2302,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code2C__INR_L__c0() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2355,7 +2355,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code34__INR_M__c0() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2410,7 +2410,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code3C__INR_A__c0() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2463,7 +2463,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code05__DCR_B() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2516,7 +2516,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code0D__DCR_C() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2569,7 +2569,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code15__DCR_D() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2622,7 +2622,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code1D__DCR_E() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2675,7 +2675,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code25__DCR_H() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2728,7 +2728,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code2D__DCR_L() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2781,7 +2781,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code35__DCR_M() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2836,7 +2836,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code3D__DCR_A() {
-        // when
+        // given
         givenPr("LXI B,1223\n" +  // data
                 "LXI D,3445\n" +  // data
                 "LXI H,5667\n" +  // data
@@ -2889,7 +2889,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code06__MVI_B() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // data
                 "LXI D,2222\n" +  // data
                 "LXI H,3333\n" +  // data
@@ -2942,7 +2942,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code0E__MVI_C() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // data
                 "LXI D,2222\n" +  // data
                 "LXI H,3333\n" +  // data
@@ -2995,7 +2995,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code16__MVI_D() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // data
                 "LXI D,2222\n" +  // data
                 "LXI H,3333\n" +  // data
@@ -3048,7 +3048,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code1E__MVI_E() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // data
                 "LXI D,2222\n" +  // data
                 "LXI H,3333\n" +  // data
@@ -3101,7 +3101,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code26__MVI_H() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // data
                 "LXI D,2222\n" +  // data
                 "LXI H,3333\n" +  // data
@@ -3154,7 +3154,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code2E__MVI_L() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // data
                 "LXI D,2222\n" +  // data
                 "LXI H,3333\n" +  // data
@@ -3207,7 +3207,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code36__MVI_M() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // data
                 "LXI D,2222\n" +  // data
                 "LXI H,3333\n" +  // working with memory 3333
@@ -3262,7 +3262,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code3E__MVI_A() {
-        // when
+        // given
         givenPr("LXI B,1111\n" +  // data
                 "LXI D,2222\n" +  // data
                 "LXI H,3333\n" +  // data
@@ -3315,7 +3315,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code40__MOV_B_B() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -3368,7 +3368,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code41__MOV_B_C() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -3421,7 +3421,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code42__MOV_B_D() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -3474,7 +3474,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code43__MOV_B_E() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -3527,7 +3527,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code44__MOV_B_H() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -3580,7 +3580,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code45__MOV_B_L() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -3633,7 +3633,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code46__MOV_B_M() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // working with memory 9ABC
@@ -3690,7 +3690,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code47__MOV_B_A() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -3745,7 +3745,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code48__MOV_C_B() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -3798,7 +3798,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code49__MOV_C_C() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -3851,7 +3851,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code4A__MOV_C_D() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -3904,7 +3904,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code4B__MOV_C_E() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -3957,7 +3957,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code4C__MOV_C_H() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4010,7 +4010,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code4D__MOV_C_L() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4063,7 +4063,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code4E__MOV_C_M() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // working with memory 9ABC
@@ -4120,7 +4120,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code4F__MOV_C_A() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4175,7 +4175,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code50__MOV_D_B() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4230,7 +4230,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code51__MOV_D_C() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4285,7 +4285,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code52__MOV_D_D() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4340,7 +4340,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code53__MOV_D_E() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4395,7 +4395,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code54__MOV_D_H() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4450,7 +4450,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code55__MOV_D_L() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4505,7 +4505,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code56__MOV_D_M() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // working with memory 9ABC
@@ -4564,7 +4564,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code57__MOV_D_A() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4619,7 +4619,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code58__MOV_E_B() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4674,7 +4674,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code59__MOV_E_C() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4729,7 +4729,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code5A__MOV_E_D() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4784,7 +4784,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code5B__MOV_E_E() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4839,7 +4839,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code5C__MOV_E_H() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4894,7 +4894,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code5D__MOV_E_L() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -4949,7 +4949,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code5E__MOV_E_M() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // working with memory 9ABC
@@ -5004,7 +5004,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code5F__MOV_E_A() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5059,7 +5059,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code60__MOV_H_B() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5114,7 +5114,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code61__MOV_H_C() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5169,7 +5169,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code62__MOV_H_D() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5224,7 +5224,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code63__MOV_H_E() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5279,7 +5279,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code64__MOV_H_H() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5334,7 +5334,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code65__MOV_H_L() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5389,7 +5389,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code66__MOV_H_M() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5444,7 +5444,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code67__MOV_H_A() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5499,7 +5499,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code68__MOV_L_B() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5554,7 +5554,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code69__MOV_L_C() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5609,7 +5609,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code6A__MOV_L_D() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5664,7 +5664,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code6B__MOV_L_E() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5719,7 +5719,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code6C__MOV_L_H() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5774,7 +5774,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code6D__MOV_L_L() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5829,7 +5829,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code6E__MOV_L_M() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5884,7 +5884,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code6F__MOV_L_A() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5939,7 +5939,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code70__MOV_M_B() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -5996,7 +5996,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code71__MOV_M_C() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6053,7 +6053,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code72__MOV_M_D() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6110,7 +6110,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code73__MOV_M_E() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6167,7 +6167,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code74__MOV_M_H() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6224,7 +6224,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code75__MOV_M_L() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6281,7 +6281,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code76__HLT() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6336,7 +6336,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code77__MOV_M_A() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6420,7 +6420,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code78__MOV_A_B() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6475,7 +6475,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code79__MOV_A_C() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6530,7 +6530,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code7A__MOV_A_D() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6585,7 +6585,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code7B__MOV_A_E() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6640,7 +6640,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code7C__MOV_A_H() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6695,7 +6695,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code7D__MOV_A_L() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6750,7 +6750,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code7E__MOV_A_M() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
@@ -6805,7 +6805,7 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void code7F__MOV_A_A() {
-        // when
+        // given
         givenPr("LXI B,1234\n" +  // data
                 "LXI D,5678\n" +  // data
                 "LXI H,9ABC\n" +  // data
