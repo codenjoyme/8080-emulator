@@ -357,7 +357,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_diagnostic_microcosm() {
         // given
         Lik.loadRom(base, roms);
-        hard.loadData(APP_RESOURCES + "test/test.rks", Lik.PLATFORM);
+        hard.loadData(CPU_TESTS_RESOURCES + "test/test.rks", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
         debug.enable(new Range(0x0000, 0x0100));
         // не показываем в trace все что относится к выводу на экран
