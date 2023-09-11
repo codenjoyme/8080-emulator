@@ -385,7 +385,7 @@ public class IntegrationTest extends AbstractTest {
 
         // given
         Lik.loadRom(base, roms);
-        hard.loadData(APP_RESOURCES + "test/8080pre.rks", Lik.PLATFORM);
+        hard.loadData(CPU_TESTS_RESOURCES + "8080pre/8080pre.rks", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
         debug.enable(new Range(0x0000, 0x0400));
         // не показываем в trace все что относится к выводу на экран
