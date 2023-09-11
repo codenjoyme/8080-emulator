@@ -75,9 +75,6 @@ public class TestDiffApply {
             String actual = diffElement.getAttribute("actual");
             String expected = diffElement.getAttribute("expected");
 
-            actual = formatStringForJava(actual);
-            expected = formatStringForJava(expected);
-
             // Получаем элемент <output>
             Element outputElement = (Element) testElement.getElementsByTagName("output").item(0);
 
@@ -86,15 +83,19 @@ public class TestDiffApply {
 
             // Ищем номер строки в тексте output
             String lineNumber = extractLineNumber(outputText);
+            String assertName = extractAssertName(outputText);
+
+            actual = formatStringForJava(actual, assertName);
+            expected = formatStringForJava(expected, assertName);
 
             System.out.printf("%s:%s %s\n", clazz, lineNumber, testName);
             System.out.printf("Expected:\n%s\n\nActual:\n%s\n", expected, actual);
 
-            replaceAssertInJavaTestClass(clazz, testName, lineNumber, expected, actual);
+            replaceAssertInJavaTestClass(clazz, lineNumber, expected, actual);
         }
     }
 
-    public static String formatStringForJava(String input) {
+    public static String formatStringForJava(String input, String assertName) {
         // Заменяем все двойные кавычки на экранированные двойные кавычки
         String escapedInput = input.replace("\"", "\\\"");
 
@@ -103,7 +104,7 @@ public class TestDiffApply {
 
         // Формируем новую строку с префиксом и конкатенируем строки с переводами строки
         StringBuilder formattedString = new StringBuilder();
-        formattedString.append("        asrtCpu(\"");
+        formattedString.append("        " + assertName + "(\"");
         for (String line : lines) {
             formattedString.append(line);
             formattedString.append("\\n\" +\n                \"");
@@ -118,7 +119,7 @@ public class TestDiffApply {
         return formattedString.toString();
     }
 
-    private static void replaceAssertInJavaTestClass(String clazz, String testName,
+    private static void replaceAssertInJavaTestClass(String clazz,
                                                      String lineNumber, String[] expectedLines,
                                                      String[] actualLines) throws Exception {
         int lineNum = Integer.parseInt(lineNumber);
@@ -159,11 +160,11 @@ public class TestDiffApply {
         return true;
     }
 
-    private static void replaceAssertInJavaTestClass(String clazz, String testName,
+    private static void replaceAssertInJavaTestClass(String clazz,
                                                      String lineNumber, String expected,
                                                      String actual) throws Exception
     {
-        replaceAssertInJavaTestClass(clazz, testName, lineNumber,
+        replaceAssertInJavaTestClass(clazz, lineNumber,
                 expected.split("\n"), actual.split("\n"));
     }
 
@@ -184,6 +185,22 @@ public class TestDiffApply {
         return "Номер строки не найден";
     }
 
+    private static String extractAssertName(String outputText) {
+        String[] lines = outputText.split("\n");
+
+        for (String line : lines) {
+            if (line.contains("at spec.stuff.AbstractTest")) {
+                // Извлекаем номер строки из строки с кодом
+                int startIndex = line.indexOf("AbstractTest") + "AbstractTest".length() + 1;
+                int endIndex = line.lastIndexOf('(');
+                if (startIndex >= 0 && endIndex >= 0) {
+                    return line.substring(startIndex, endIndex);
+                }
+            }
+        }
+
+        return "Номер строки не найден";
+    }
 
     public static Pair<String, String> convertToJavaFilePath(String input) {
         // Удаляем начальную часть "java:test://"
