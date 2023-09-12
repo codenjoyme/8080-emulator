@@ -8,7 +8,7 @@ import java.util.List;
 
 import static spec.Constants.*;
 import static spec.assembler.Parity.parity;
-import static spec.assembler.command.math.sum.ADD_R.add8;
+import static spec.assembler.command.math.sum.ADC_R.add8;
 
 // TODO test me
 public class DAA extends Command {
@@ -43,7 +43,7 @@ public class DAA extends Command {
             incr |= x60;
             carry = true;
         }
-        ans = add8(r, reg.get(), incr);
+        ans = add8(r, reg.get(), incr, 0);
         reg.set(ans);
 
         r.tc(carry);
