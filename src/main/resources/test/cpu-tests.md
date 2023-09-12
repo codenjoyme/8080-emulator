@@ -1,19 +1,21 @@
 Тесты [взяты тут](https://github.com/begoon/i8080-core). 
-Спасибо [Автору](https://github.com/begoon) за вклад. 
+Спасибо [begoon](https://github.com/begoon) за вклад. 
 
 Тесты [компилировались тут](https://svofski.github.io/pretty-8080-assembler). 
 Исходники компилятора [лежат тут](https://github.com/svofski/pretty-8080-assembler). 
-Спасибо [Автору](https://github.com/svofski) за вклад.
+Спасибо [svofski](https://github.com/svofski) за вклад.
 
 Директивы ассемблера (не все работают в pretty-8080-assembler) 
 [описаны тут](https://pasmo.speccy.org/pasmodoc.html). 
 Спасибо [Автору](mailto:julian.notfound@gmail.com) за вклад.
 
 За реализацией некоторых команд 8080 подглядывал:
-* [тут](https://github.com/superzazu/8080). 
-  Спасибо [Автору](https://github.com/superzazu/8080) за вклад.
-* [тут](https://github.com/vpyk/emu80v4/blob/master/src/Cpu8080.cpp). 
-  Спасибо [Автору](https://github.com/vpyk) за эмулятор.
+* [Тут](https://github.com/superzazu/8080) - 
+  спасибо [superzazu](https://github.com/superzazu/8080) за вклад.
+* [Тут](https://github.com/vpyk/emu80v4/blob/master/src/Cpu8080.cpp) - 
+  спасибо [vpyk](https://github.com/vpyk) за вклад. 
+  Отдельное спасибо [за эмулятор](https://emu80.org/distr/) - он очень помог,
+  как в отладке тестов на эталонной машине.
 
 Список тестов и их исходных кодов:
 - `src/main/resources/test/8080ex1/8080EX1.COM`
