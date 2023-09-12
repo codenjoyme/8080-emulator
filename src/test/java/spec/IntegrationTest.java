@@ -415,8 +415,8 @@ public class IntegrationTest extends AbstractTest {
         // последняя команда программы перед выходом в монитор
         cpu.modAdd(new StopWhen(0x0037));
         // если хочется подебажить внутри - это адрес точки сообщения об ошибке
-         cpu.modAdd(new DebugWhen(0x0004, (cpu, pc) -> {
-             String log = cpu.debug().log(pc, 0);
+         cpu.modAdd(new DebugWhen(0x0004, cpu -> {
+             String log = cpu.debug().log(0);
              System.out.println(log);
          }));
 

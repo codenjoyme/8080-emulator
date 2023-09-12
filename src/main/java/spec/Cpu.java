@@ -69,14 +69,14 @@ public class Cpu extends Registry {
                 }
             }
 
-            int pc = PC();
-            debug.log(pc);
-            int bite = data.read8(rPC);
+            debug.log();
+            int bite = data.read8(PC());
             Command command = asm.find(bite);
-            on(CHANGE_PC, pc, command, this);
+            on(CHANGE_PC, command, this);
             if (command == null) {
                 throw new IllegalArgumentException("Unknown command: " + hex8(bite));
             }
+            rPC.inc16();
             command.apply(bite, this);
             // каждая операция уменьшает число тактов на
             // прерывание на свою длительность в тактах

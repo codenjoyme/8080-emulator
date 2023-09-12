@@ -34,21 +34,22 @@ public class CpuDebug {
         this.console = print;
     }
 
-    public void log(int addr) {
+    public void log() {
         if (!enabled) return;
-        if (!range.includes(addr)) return;
+        if (!range.includes(registry.PC())) return;
 
         int callDeep = registry.mod(CallDeep.class).callDeep();
         if (callDeep >= maxDeepCall) return;
 
-        String out = log(addr, callDeep);
+        String out = log(callDeep);
         lines.add(out);
         if (console) {
             Logger.debug(out);
         }
     }
 
-    public String log(int addr, int callDeep) {
+    public String log(int callDeep) {
+        int addr = registry.PC();
         List<Integer> bites = data.read3x8(addr);
         Command command = asm.find(bites.get(0));
         bites = bites.subList(0, command.size());

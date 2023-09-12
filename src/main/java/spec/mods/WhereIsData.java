@@ -30,13 +30,13 @@ public class WhereIsData implements CpuMod {
     @Override
     public void on(Event event, Object... params) {
         if (event == CHANGE_PC) {
-            pc = (int)params[0];
             if (cpu == null) {
-                cpu = (Cpu)params[2];
+                cpu = (Cpu)params[1];
             }
+            pc = cpu.PC();
 
             if (!range.includes(pc)) return;
-            Command command = (Command)params[1];
+            Command command = (Command)params[0];
             markCommand(infos, pc, cpu.data(), command, false);
         }
 
