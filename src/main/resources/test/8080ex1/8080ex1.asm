@@ -111,8 +111,7 @@ spbt:	ds	2
 ; hand using a binary search of the test space.
 
 
-start:
-; lhld	6
+start: lhld	6
 ; sphl
 	lxi	h,msg1
 	call	msg
