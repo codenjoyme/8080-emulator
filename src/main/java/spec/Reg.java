@@ -1,13 +1,20 @@
 package spec;
 
-import static spec.WordMath.hex8;
-import static spec.WordMath.merge;
+import static spec.WordMath.*;
 
 public interface Reg {
 
     int get();
 
     void set(int word);
+
+    default void inc16() {
+        set(WordMath.inc16(get()));
+    }
+
+    default void dec16() {
+        set(WordMath.dec16(get()));
+    }
 
     default Reg hi() {
         return new Reg() {
