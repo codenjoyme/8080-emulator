@@ -9,8 +9,11 @@
 [описаны тут](https://pasmo.speccy.org/pasmodoc.html). 
 Спасибо [Автору](mailto:julian.notfound@gmail.com) за вклад.
 
-За реализацией некоторых команд 8080 подглядывал [тут](https://github.com/superzazu/8080).
-Спасибо [Автору](https://github.com/superzazu/8080) за вклад.
+За реализацией некоторых команд 8080 подглядывал:
+* [тут](https://github.com/superzazu/8080). 
+  Спасибо [Автору](https://github.com/superzazu/8080) за вклад.
+* [тут](https://github.com/vpyk/emu80v4/blob/master/src/Cpu8080.cpp). 
+  Спасибо [Автору](https://github.com/vpyk) за эмулятор.
 
 Список тестов и их исходных кодов:
 - `src/main/resources/test/8080ex1/8080EX1.COM`
