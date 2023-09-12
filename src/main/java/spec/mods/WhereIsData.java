@@ -31,12 +31,12 @@ public class WhereIsData implements CpuMod {
     public void on(Event event, Object... params) {
         if (event == CHANGE_PC) {
             if (cpu == null) {
-                cpu = (Cpu)params[1];
+                cpu = (Cpu) params[1];
             }
             pc = cpu.PC();
 
             if (!range.includes(pc)) return;
-            Command command = (Command)params[0];
+            Command command = (Command) params[0];
             markCommand(infos, pc, cpu.data(), command, false);
         }
 
@@ -45,8 +45,8 @@ public class WhereIsData implements CpuMod {
         if (event == WRITE_MEM) {
             if (!range.includes(pc)) return;
 
-            int addr = (int)params[0];
-            int bite = (int)params[1];
+            int addr = (int) params[0];
+            int bite = (int) params[1];
             Info info = infos[pc];
 
             Logger.debug("Written in memory at [%s] byte [%s] by command '%s: %s'",
@@ -56,8 +56,8 @@ public class WhereIsData implements CpuMod {
         if (event == READ_MEM) {
             if (!range.includes(pc)) return;
 
-            int addr = (int)params[0];
-            int bite = (int)params[1];
+            int addr = (int) params[0];
+            int bite = (int) params[1];
             Info info = infos[pc];
 
             Logger.debug("Read from memory at [%s] byte [%s] by command '%s: %s'",
@@ -81,7 +81,7 @@ public class WhereIsData implements CpuMod {
     }
 
     private void init() {
-         infos = new Info[0x10000];
+        infos = new Info[0x10000];
         for (int addr = 0; addr < infos.length; addr++) {
             infos[addr] = new Info(0, Type.DATA, null);
         }
