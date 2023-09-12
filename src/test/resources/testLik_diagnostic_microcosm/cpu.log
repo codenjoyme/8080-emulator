@@ -1,14 +1,14 @@
 BC:  AA55
 DE:  AAAA
 HL:  00A5
-AF:  AA46
+AF:  AA56
 SP:  06D5
 PC:  C800
 B,C: AA 55
 D,E: AA AA
 H,L: 00 A5
 M:   0D
-A,F: AA 46
+A,F: AA 56
      76543210 76543210
 SP:  00000110 11010101
 PC:  11001000 00000000
@@ -22,9 +22,9 @@ L:   10100101
 M:   00001101
 A:   10101010
      sz0h0p1c
-F:   01000110
+F:   01010110
 ts:  false
 tz:  true
-th:  false
+th:  true
 tp:  true
 tc:  false
