@@ -6,7 +6,7 @@ import spec.assembler.Command;
 import java.util.List;
 
 import static spec.Constants.x01;
-import static spec.Constants.x80;
+import static spec.WordMath.lo;
 
 public class RRC extends Command {
 
@@ -29,18 +29,9 @@ public class RRC extends Command {
     }
 
     private int rrc(Registry r, int a) {
-        int ans = a;
-        boolean c = (ans & x01) != 0;
-
-        if (c) {
-            ans = (ans >> 1) | x80;
-        } else {
-            ans >>= 1;
-        }
-
-        r.th(false);
-        r.tc(c);
-
-        return ans;
+        int c = a & x01;
+        r.tc(c != 0);
+        int ans = (a >> 1) | (c << 7);
+        return lo(ans);
     }
 }

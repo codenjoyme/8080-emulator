@@ -27,7 +27,6 @@ public class STC extends Command {
     }
 
     private void stc(Registry r) {
-        r.th(false);
         r.tc(true);
     }
 }

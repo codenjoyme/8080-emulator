@@ -5,7 +5,6 @@ import spec.assembler.Command;
 
 import java.util.List;
 
-import static spec.Constants.x01;
 import static spec.Constants.x80;
 import static spec.WordMath.lo;
 
@@ -30,20 +29,8 @@ public class RLC extends Command {
     }
 
     private int rlc(Registry r, int a) {
-        int ans = a;
-        boolean c = (ans & x80) != 0;
-
-        if (c) {
-            ans = (ans << 1) | x01;
-        } else {
-            ans <<= 1;
-        }
-
-        ans = lo(ans);
-
-        r.th(false);
-        r.tc(c);
-
-        return ans;
+        r.tc((a & x80) != 0);
+        int ans = (a << 1) | r.tci();
+        return lo(ans);
     }
 }
