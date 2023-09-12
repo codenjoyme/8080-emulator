@@ -56,7 +56,64 @@
 
 begin:	jmp	start
 
-start:	lxi	h,msg1
+; machine state before test (needs to be at predictably constant address)
+msbt:	ds	14
+spbt:	ds	2
+
+; For the purposes of this test program, the machine state consists of:
+;	a 2 byte memory operand, followed by
+;	the registers iy,ix,hl,de,bc,af,sp
+; for a total of 16 bytes.
+
+; The program tests instructions (or groups of similar instructions)
+; by cycling through a sequence of machine states, executing the test
+; instruction for each one and running a 32-bit crc over the resulting
+; machine states.  At the end of the sequence the crc is compared to
+; an expected value that was found empirically on a real Z80.
+
+; A test case is defined by a descriptor which consists of:
+;	a flag mask byte,
+;	the base case,
+;	the incement vector,
+;	the shift vector,
+;	the expected crc,
+;	a short descriptive message.
+;
+; The flag mask byte is used to prevent undefined flag bits from
+; influencing the results.  Documented flags are as per Mostek Z80
+; Technical Manual.
+;
+; The next three parts of the descriptor are 20 byte vectors
+; corresponding to a 4 byte instruction and a 16 byte machine state.
+; The first part is the base case, which is the first test case of
+; the sequence.  This base is then modified according to the next 2
+; vectors.  Each 1 bit in the increment vector specifies a bit to be
+; cycled in the form of a binary counter.  For instance, if the byte
+; corresponding to the accumulator is set to 0ffh in the increment
+; vector, the test will be repeated for all 256 values of the
+; accumulator.  Note that 1 bits don't have to be contiguous.  The
+; number of test cases 'caused' by the increment vector is equal to
+; 2^(number of 1 bits).  The shift vector is similar, but specifies a
+; set of bits in the test case that are to be successively inverted.
+; Thus the shift vector 'causes' a number of test cases equal to the
+; number of 1 bits in it.
+
+; The total number of test cases is the product of those caused by the
+; counter and shift vectors and can easily become unweildy.  Each
+; individual test case can take a few milliseconds to execute, due to
+; the overhead of test setup and crc calculation, so test design is a
+; compromise between coverage and execution time.
+
+; This program is designed to detect differences between
+; implementations and is not ideal for diagnosing the causes of any
+; discrepancies.  However, provided a reference implementation (or
+; real system) is available, a failing test case can be isolated by
+; hand using a binary search of the test space.
+
+
+start:	lhld	6
+	sphl
+	lxi	h,msg1
 	call	msg
 
 done:	lxi	h,msg2
@@ -128,7 +185,7 @@ byto2:  ANI     00Fh
 byto3:  ADI     030h
         RET
 
-msg1:	db	00Dh, 00Ah, 'TEST', 00Dh, 00Ah, '$'
+msg1:	db	00Dh, 00Ah, '8080 INSTRUCTION EXERCISER (KR580VM80A CPU)', 00Dh, 00Ah, '$'
 msg2:	db	'TESTS COMPLETE$'
 
 end:
