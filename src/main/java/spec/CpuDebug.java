@@ -41,6 +41,14 @@ public class CpuDebug {
         int callDeep = registry.mod(CallDeep.class).callDeep();
         if (callDeep >= maxDeepCall) return;
 
+        String out = log(addr, callDeep);
+        lines.add(out);
+        if (console) {
+            Logger.debug(out);
+        }
+    }
+
+    public String log(int addr, int callDeep) {
         List<Integer> bites = data.read3x8(addr);
         Command command = asm.find(bites.get(0));
         bites = bites.subList(0, command.size());
@@ -48,12 +56,9 @@ public class CpuDebug {
                 padRight(hex16(addr), 6, ' '),
                 padRight(hex(bites), 10, ' '),
                 padRight(asm.dizAssembly(bites), 12, ' '),
-                padRight("(" + callDeep + ")", 5, ' '),
+                (callDeep > 0) ? padRight("(" + callDeep + ")", 5, ' ') : "",
                 padRight(registry.toString().replace("\n", "  ").replace(": ", ":"), 55, ' '));
-        lines.add(out);
-        if (console) {
-            Logger.debug(out);
-        }
+        return out;
     }
 
     public List<String> lines() {

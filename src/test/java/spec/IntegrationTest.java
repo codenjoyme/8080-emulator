@@ -364,9 +364,6 @@ public class IntegrationTest extends AbstractTest {
         debug.showCallBellow(3);
         // последняя команда программы перед выходом в монитор
         cpu.modAdd(new StopWhen(0x0057));
-        // если хочется подебажить внутри - это адрес точки сообщения об ошибке
-        // cpu.modAdd(new DebugWhen(0x05B7, () ->
-        //        assertCpu("cpu_at_0x05B7")));
 
         // when
         hard.reset();
@@ -417,6 +414,11 @@ public class IntegrationTest extends AbstractTest {
         debug.showCallBellow(4);
         // последняя команда программы перед выходом в монитор
         cpu.modAdd(new StopWhen(0x0037));
+        // если хочется подебажить внутри - это адрес точки сообщения об ошибке
+         cpu.modAdd(new DebugWhen(0x0004, (cpu, pc) -> {
+             String log = cpu.debug().log(pc, 0);
+             System.out.println(log);
+         }));
 
         // when
         hard.reset();

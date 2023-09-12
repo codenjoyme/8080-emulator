@@ -2,15 +2,15 @@ package spec.mods;
 
 import spec.Cpu;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class DebugWhen extends WhenPC {
 
     public DebugWhen(int addr, Runnable trigger) {
-        super(addr, cpu -> trigger.run());
+        super(addr, (cpu, pc) -> trigger.run());
     }
 
-    public DebugWhen(int addr, Consumer<Cpu> trigger) {
+    public DebugWhen(int addr, BiConsumer<Cpu, Integer> trigger) {
         super(addr, trigger::accept);
     }
 }
