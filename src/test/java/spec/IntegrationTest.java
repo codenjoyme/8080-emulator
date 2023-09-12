@@ -359,14 +359,14 @@ public class IntegrationTest extends AbstractTest {
         Lik.loadRom(base, roms);
         hard.loadData(CPU_TESTS_RESOURCES + "test/test.rks", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
-        debug.enable(new Range(0x0000, 0x0100));
+        debug.enable(new Range(0x0000, 0x0600));
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(3);
         // последняя команда программы перед выходом в монитор
         cpu.modAdd(new StopWhen(0x0057));
-        // если хочется подебажить внутри
-        cpu.modAdd(new DebugWhen(0x0383, () ->
-                assertCpu("cpu_at_0x0383")));
+        // если хочется подебажить внутри - это адрес точки сообщения об ошибке
+        cpu.modAdd(new DebugWhen(0x05B7, () ->
+                assertCpu("cpu_at_0x05B7")));
 
         // when
         hard.reset();
