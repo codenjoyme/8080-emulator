@@ -38,13 +38,17 @@ public class ANA_R extends Command {
 
     public static int and8(Registry r, int a, int b) {
         int ans = a & b;
-        flags(r, a, b, ans);
+        and_flags(r, ans, true, a, b);
         return ans;
     }
 
-    private static void flags(Registry r, int a, int b, int ans) {
+    public static void and_flags(Registry r, int ans, boolean calc_h, int a, int b) {
         r.ts((ans & T7s) != 0);
-        r.th(((a | b) & 0x08) != 0);
+        if (calc_h) {
+            r.th(((a | b) & 0x08) != 0);
+        } else {
+            r.th(false);
+        }
         r.tp(parity[ans]);
         r.tz(ans == 0);
         r.tc(false);

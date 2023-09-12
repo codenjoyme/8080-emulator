@@ -6,8 +6,7 @@ import spec.assembler.Command;
 
 import java.util.List;
 
-import static spec.assembler.Parity.parity;
-import static spec.assembler.Parity.sub_half_carry_table;
+import static spec.assembler.command.math.sum.ADC_R.add_flag;
 
 // TODO test me
 public class SBB_R extends Command {
@@ -37,16 +36,7 @@ public class SBB_R extends Command {
     }
 
     public static int sub8(Registry r, int a, int b, int c) {
-        int work16 = a - b - c;
-        int index = ((a & 0x88) >> 1) |
-                    ((b & 0x88) >> 2) |
-                    ((work16 & 0x88) >> 3);
-        int res = work16 & 0xff;
-        r.ts((res & 0x80) != 0);
-        r.tz(res == 0);
-        r.th(!sub_half_carry_table[index & 0x7]);
-        r.tp(parity[res]);
-        r.tc((work16 & 0x0100) != 0);
-        return res;
+        int ans16 = a - b - c;
+        return add_flag(r, a, b, ans16, false);
     }
 }

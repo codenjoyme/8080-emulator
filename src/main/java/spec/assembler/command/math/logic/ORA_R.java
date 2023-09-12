@@ -6,8 +6,7 @@ import spec.assembler.Command;
 
 import java.util.List;
 
-import static spec.Registry.T7s;
-import static spec.assembler.Parity.parity;
+import static spec.assembler.command.math.logic.ANA_R.and_flags;
 
 // TODO test me
 public class ORA_R extends Command {
@@ -38,15 +37,7 @@ public class ORA_R extends Command {
 
     public static int or8(Registry r, int a, int b) {
         int ans = a | b;
-        flags(r, ans);
+        and_flags(r, ans, false, a, b);
         return ans;
-    }
-
-    public static void flags(Registry r, int ans) {
-        r.ts((ans & T7s) != 0);
-        r.th(false);
-        r.tp(parity[ans]);
-        r.tz(ans == 0);
-        r.tc(false);
     }
 }

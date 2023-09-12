@@ -7,6 +7,7 @@ import spec.assembler.Command;
 import java.util.List;
 
 import static spec.WordMath.lo;
+import static spec.assembler.command.math.logic.ANA_R.and_flags;
 
 // TODO test me
 public class XRA_R extends Command {
@@ -37,7 +38,7 @@ public class XRA_R extends Command {
 
     public static int xor8(Registry r, int a, int b) {
         int ans = lo(a ^ b);
-        ORA_R.flags(r, ans);
+        and_flags(r, ans, false, a, b);
         return ans;
     }
 }
