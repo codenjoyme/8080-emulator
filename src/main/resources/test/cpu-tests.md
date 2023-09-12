@@ -53,7 +53,7 @@
 - `src/main/resources/test/test/test.rks`
   * 8080/8085 CPU Diagnostic, version 1.0, by Microcosm Associates.
   * [x] Есть исходники.
-  * [x] Отлажен на эмуляторе. В процессе отладки.
+  * [x] Отлажен на эмуляторе.
   * [x] Добавлен как интеграционный тест.
 
 Алгоритм компиляции:
