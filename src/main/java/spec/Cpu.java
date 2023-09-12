@@ -3,6 +3,7 @@ package spec;
 import spec.assembler.Assembler;
 import spec.assembler.Command;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -100,5 +101,14 @@ public class Cpu extends Registry {
 
     public void enabled() {
         enabled = true;
+    }
+
+    // TODO дублирование с CpuDebug.log(int callDeep)
+    public String command() {
+        int addr = PC();
+        List<Integer> bites = data.read3x8(addr);
+        Command command = asm.find(bites.get(0));
+        bites = bites.subList(0, command.size());
+        return asm.dizAssembly(bites);
     }
 }

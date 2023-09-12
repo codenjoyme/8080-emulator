@@ -53,13 +53,14 @@ public class CpuDebug {
         List<Integer> bites = data.read3x8(addr);
         Command command = asm.find(bites.get(0));
         bites = bites.subList(0, command.size());
-        String out = String.format("%s%s%s%s%s",
+        String assembly = asm.dizAssembly(bites);
+
+        return String.format("%s%s%s%s%s",
                 padRight(hex16(addr), 6, ' '),
                 padRight(hex(bites), 10, ' '),
-                padRight(asm.dizAssembly(bites), 12, ' '),
+                padRight(assembly, 12, ' '),
                 (callDeep > 0) ? padRight("(" + callDeep + ")", 5, ' ') : "",
                 padRight(registry.toString().replace("\n", "  ").replace(": ", ":"), 55, ' '));
-        return out;
     }
 
     public List<String> lines() {

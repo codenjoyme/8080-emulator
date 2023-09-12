@@ -6,8 +6,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import spec.assembler.DizAssembler;
-import spec.mods.DebugWhen;
 import spec.mods.StopWhen;
+import spec.mods.WhenPC;
 import spec.mods.WhereIsData;
 import spec.platforms.Lik;
 import spec.platforms.Specialist;
@@ -340,9 +340,16 @@ public class IntegrationTest extends AbstractTest {
         Lik.loadRom(base, roms);
         hard.loadData(CPU_TESTS_RESOURCES + "hello-world/hello_world.rks", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
-        debug.enable(new Range(0x0000, 0x0100));
+        Range range = new Range(0x0000, 0x0100);
+        debug.enable(range);
         // последняя команда перед выходом в монитор
-        cpu.modAdd(new StopWhen(0x0022));
+        cpu.modAdd(new StopWhen("JMP C800"));
+        // cpu.modAdd(new StopWhen(0x0022));
+        // если хочется подебажить внутри
+        // cpu.modAdd(new WhenPC(range, cpu -> {
+        //     String log = cpu.debug().log(0);
+        //     System.out.println(log);
+        // }));
 
         // when
         hard.reset();
@@ -363,7 +370,7 @@ public class IntegrationTest extends AbstractTest {
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(3);
         // последняя команда программы перед выходом в монитор
-        cpu.modAdd(new StopWhen(0x0057));
+        cpu.modAdd(new StopWhen("JMP C800"));
 
         // when
         hard.reset();
@@ -388,7 +395,7 @@ public class IntegrationTest extends AbstractTest {
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(3);
         // последняя команда программы перед выходом в монитор
-        cpu.modAdd(new StopWhen(0x004D));
+        cpu.modAdd(new StopWhen("JMP C800"));
 
         // when
         hard.reset();
@@ -409,16 +416,17 @@ public class IntegrationTest extends AbstractTest {
         Lik.loadRom(base, roms);
         hard.loadData(CPU_TESTS_RESOURCES + "8080ex1/8080ex1.rks", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
-        debug.enable(new Range(0x0000, 0x0900));
+        Range range = new Range(0x0000, 0x0900);
+        debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(4);
         // последняя команда программы перед выходом в монитор
-        cpu.modAdd(new StopWhen(0x0037));
-        // если хочется подебажить внутри - это адрес точки сообщения об ошибке
-         cpu.modAdd(new DebugWhen(0x0004, cpu -> {
-             String log = cpu.debug().log(0);
-             System.out.println(log);
-         }));
+        cpu.modAdd(new StopWhen("JMP C800"));
+        // если хочется подебажить внутри
+        cpu.modAdd(new WhenPC(range, cpu -> {
+            String log = cpu.debug().log(0);
+            System.out.println(log);
+        }));
 
         // when
         hard.reset();
