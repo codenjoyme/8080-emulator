@@ -22,7 +22,7 @@
 ; Modified to exercise an 8080 by Ian Bartholomew, February 2009
 ;
 ; CRC values for a KR580VM80A CPU
-; 
+;
 ; I have made the following changes -
 ;
 ; Converted all mnemonics to 8080 and rewritten any Z80 code used
@@ -30,7 +30,7 @@
 ; source code listing.
 ;
 ; Removed any test descriptors that are not used.
-;  
+;
 ; Changed the macro definitions to work in M80
 ;
 ; The machine state snapshot has been changed to remove the IX/IY registers.
@@ -41,10 +41,20 @@
 ; and Z80, does define the unused bits in the flag register - [S Z 0 AC 0 P 1 C]
 ;
 ;******************************************************************************
+;
+; Modified by Oleksandr Baglai to be able to work on LIK and assemble with
+;     https://svofski.github.io/pretty-8080-assembler/
+;     https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D0%BA_(%D0%BA%D0%BE%D0%BC%D0%BF%D1%8C%D1%8E%D1%82%D0%B5%D1%80)
+;
+;******************************************************************************
 
-	.8080
-	aseg
-	org	100h
+        .PROJECT 8080ex1.rks
+        CPU     8080
+; This is such a crutch in order to generate a valid rks file.
+; This program will be launched from address 0004.
+        .ORG    00000h
+        DB      (begin & 0FFh), (begin / 0FFh)      ; START ADDR IN MEMORY
+        DB      ((end - 1) & 0FFh), ((end - 1) / 0FFh)  ; END ADDR IN MEMORY
 
 begin:	jmp	start
 
@@ -117,7 +127,7 @@ loop:	mov	a,m		; end of list ?
 	dcx	h
 	call	stt
 	jmp	loop
-	
+
 done:	lxi	d,msg2
 	mvi	c,9
 	call	bdos
@@ -310,7 +320,7 @@ ld162:	db	0ffh		; flag mask
 	tstr	0,-1,0,0,0,0,0,0,0,0			; (16 cycles)
 	db	0a9h,0c3h,0d5h,0cbh			; expected crc
 	tmsg	'lhld nnnn'
-	
+
 ; ld (nnnn),hl (16 cycles)
 ld166:	db	0ffh		; flag mask
 	tstr	<022h,low msbt,high msbt>,0d003h,07772h,07f53h,03f72h,064eah,0e180h,010h,02dh,035e9h
@@ -568,7 +578,7 @@ ncb1:	mov	a,b
 	rz
 	mvi	a,1
 	ret
-	
+
 ; get next shifter bit in low bit of a
 shfbit:	ds	1
 shfbyt:	ds	2
@@ -594,7 +604,7 @@ nsb1:	mov	a,b
 	rz
 	mvi	a,1
 	ret
-	
+
 
 ; clear memory at hl, bc bytes
 clrmem:	push	psw
@@ -698,7 +708,7 @@ cntend:	pop	b
 cntlp1:	inx	h
 	inx	d
 	jmp	cntlp
-	
+
 
 ; multi-byte shifter
 shift:	push	b
@@ -754,7 +764,7 @@ test:	push	psw
 	mvi	b,16
 	lxi	h,msbt
 	call	hexstr
-      endif	
+      endif
 	di			; disable interrupts
 
 ;#idb ld (spsav),sp replaced by following code
@@ -767,7 +777,7 @@ test:	push	psw
 
 	lxi	sp,msbt+2	; point to test-case machine state
 
-;#idb pop iy	
+;#idb pop iy
 ;#idb pop ix both replaced by following code
 ;#idb Just dummy out ix/iy with copies of hl
 	pop	h		; and load all regs
@@ -908,7 +918,7 @@ phex2:	push	psw
 	rrc
 	call	phex1
 	pop	psw
-; fall through	
+; fall through
 
 ; display low nibble in a
 phex1:	push	psw
@@ -1282,5 +1292,4 @@ crctab:	db	000h,000h,000h,000h
 	db	05ah,005h,0dfh,01bh
 	db	02dh,002h,0efh,08dh
 
-	end
-
+end:
