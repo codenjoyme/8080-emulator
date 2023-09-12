@@ -38,13 +38,13 @@ public class ANA_R extends Command {
 
     public static int and8(Registry r, int a, int b) {
         int ans = a & b;
-        flags(r, ans);
+        flags(r, a, b, ans);
         return ans;
     }
 
-    public static void flags(Registry r, int ans) {
+    private static void flags(Registry r, int a, int b, int ans) {
         r.ts((ans & T7s) != 0);
-        r.th(true);
+        r.th(((a | b) & 0x08) != 0);
         r.tp(parity[ans]);
         r.tz(ans == 0);
         r.tc(false);

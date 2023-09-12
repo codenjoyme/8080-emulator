@@ -367,11 +367,6 @@ public class IntegrationTest extends AbstractTest {
         // если хочется подебажить внутри - это адрес точки сообщения об ошибке
         cpu.modAdd(new DebugWhen(0x05B7, () ->
                 assertCpu("cpu_at_0x05B7")));
-        // тут точка входа в программу, я хочу поставить тут все флаги как в оригинале
-        cpu.modAdd(new DebugWhen(0x0004, (cpu) -> {
-            cpu.F(0x46);
-            assertCpu("cpu_at_0x0004");
-        }));
 
         // when
         hard.reset();

@@ -6,10 +6,7 @@ import spec.assembler.Command;
 
 import java.util.List;
 
-import static spec.Registry.T7s;
 import static spec.WordMath.lo;
-import static spec.assembler.Parity.parity;
-import static spec.assembler.command.math.logic.ANA_R.flags;
 
 // TODO test me
 public class XRA_R extends Command {
@@ -40,7 +37,7 @@ public class XRA_R extends Command {
 
     public static int xor8(Registry r, int a, int b) {
         int ans = lo(a ^ b);
-        flags(r, ans);
+        ORA_R.flags(r, ans);
         return ans;
     }
 }
