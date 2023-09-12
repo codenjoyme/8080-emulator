@@ -6,6 +6,7 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+import static spec.Constants.x08;
 import static spec.Registry.T7s;
 import static spec.assembler.Parity.parity;
 
@@ -45,7 +46,7 @@ public class ANA_R extends Command {
     public static void and_flags(Registry r, int ans, boolean calc_h, int a, int b) {
         r.ts((ans & T7s) != 0);
         if (calc_h) {
-            r.th(((a | b) & 0x08) != 0);
+            r.th(((a | b) & x08) != 0);
         } else {
             r.th(false);
         }

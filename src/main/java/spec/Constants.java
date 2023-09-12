@@ -2,31 +2,21 @@ package spec;
 
 public class Constants {
 
-    private static final int   i1_b00000001 = 1;
-    private static final int   i2_b00000010 = 2;
-    private static final int   i4_b00000100 = 4;
-    private static final int   i6_b00000110 = 6;
-    private static final int   i8_b00001000 = 8;
-    private static final int   i9_b00001001 = 9;
-    private static final int  i15_b00001111 = 15;
-    private static final int  i16_b00010000 = 16;
-    private static final int  i32_b00100000 = 32;
-    private static final int  i64_b01000000 = 64;
-    private static final int  i96_b01100000 = 96;
-    private static final int i128_b10000000 = 128;
-
-    public static final int x01 =   i1_b00000001;
-    public static final int x02 =   i2_b00000010;
-    public static final int x04 =   i4_b00000100;
-    public static final int x06 =   i6_b00000110;
-    public static final int x08 =   i8_b00001000;
-    public static final int x09 =   i9_b00001001;
-    public static final int x0F =  i15_b00001111;
-    public static final int x10 =  i16_b00010000;
-    public static final int x20 =  i32_b00100000;
-    public static final int x40 =  i64_b01000000;
-    public static final int x60 =  i96_b01100000;
-    public static final int x80 = i128_b10000000;
+    public static final int x01 = 0b0000_0001;
+    public static final int x02 = 0b0000_0010;
+    public static final int x04 = 0b0000_0100;
+    public static final int x06 = 0b0000_0110;
+    public static final int x07 = 0b0000_0111;
+    public static final int x08 = 0b0000_1000;
+    public static final int x09 = 0b0000_1001;
+    public static final int x0F = 0b0000_1111;
+    public static final int x10 = 0b0001_0000;
+    public static final int x20 = 0b0010_0000;
+    public static final int x40 = 0b0100_0000;
+    public static final int x60 = 0b0110_0000;
+    public static final int x80 = 0b1000_0000;
+    public static final int x88 = 0b1000_1000;
+    public static final int xFF = 0b1111_1111;
     public static final int x100 = 0x100;
     public static final int x10000 = 0x10000;
 
