@@ -414,7 +414,7 @@ public class IntegrationTest extends AbstractTest {
         // выводим trace только в этом диапазоне
         debug.enable(new Range(0x0000, 0x0900));
         // не показываем в trace все что относится к выводу на экран
-        debug.showCallBellow(3);
+        debug.showCallBellow(4);
         // последняя команда программы перед выходом в монитор
         cpu.modAdd(new StopWhen(0x0037));
 

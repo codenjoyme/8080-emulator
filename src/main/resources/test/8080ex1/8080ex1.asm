@@ -961,12 +961,12 @@ byto2:  ANI     00Fh
 byto3:  ADI     030h
         RET
 
-msg1:	db	'8080 instruction exerciser (KR580VM80A CPU)',10,13,'$'
-msg2:	db	'Tests complete$'
-okmsg:	db	'  OK',10,13,'$'
-ermsg1:	db	'  ERROR **** crc expected:$'
-ermsg2:	db	' found:$'
-crlf:	db	10,13,'$'
+msg1:	db	00Dh, 00Ah, '8080 INSTRUCTION EXERCISER (KR580VM80A CPU)', 00Dh, 00Ah, '$'
+msg2:	db	'TESTS COMPLETE$'
+okmsg:	db	'  OK', 00Dh, 00Ah, '$'
+ermsg1:	db	'  ERROR **** CRC EXPECTED:$'
+ermsg2:	db	' FOUND:$'
+crlf:	db	00Dh, 00Ah, '$'
 
 ; compare crc
 ; hl points to value to compare to crcval
