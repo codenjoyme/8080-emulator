@@ -5,7 +5,7 @@ import spec.assembler.Command;
 
 import java.util.List;
 
-import static spec.assembler.command.math.flag.CMP_R.cmp8;
+import static spec.assembler.command.math.sum.SBB_R.sub8;
 
 // TODO test me
 public class CPI_XX extends Command {
@@ -31,6 +31,6 @@ public class CPI_XX extends Command {
     @Override
     public void apply(int command, Registry r) {
         int bite = r.attr8();
-        cmp8(r, r.A(), bite);
+        sub8(r, r.A(), bite, 0);
     }
 }
