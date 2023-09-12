@@ -365,8 +365,8 @@ public class IntegrationTest extends AbstractTest {
         // последняя команда программы перед выходом в монитор
         cpu.modAdd(new StopWhen(0x0057));
         // если хочется подебажить внутри - это адрес точки сообщения об ошибке
-        cpu.modAdd(new DebugWhen(0x05B7, () ->
-                assertCpu("cpu_at_0x05B7")));
+        // cpu.modAdd(new DebugWhen(0x05B7, () ->
+        //        assertCpu("cpu_at_0x05B7")));
 
         // when
         hard.reset();
@@ -392,6 +392,31 @@ public class IntegrationTest extends AbstractTest {
         debug.showCallBellow(3);
         // последняя команда программы перед выходом в монитор
         cpu.modAdd(new StopWhen(0x004D));
+
+        // when
+        hard.reset();
+        hard.start();
+
+        // then
+        assertCpu();
+        assertTrace();
+    }
+
+    @Test
+    public void testLik_diagnostic_zexlax_8080_exerciser() {
+        // zexlax.z80 - Z80 instruction set exerciser
+        // Copyright (C) 1994  Frank D. Cringle
+        // Modified to exercise an 8080 by Ian Bartholomew, February 2009
+
+        // given
+        Lik.loadRom(base, roms);
+        hard.loadData(CPU_TESTS_RESOURCES + "8080ex1/8080ex1.rks", Lik.PLATFORM);
+        // выводим trace только в этом диапазоне
+        debug.enable(new Range(0x0000, 0x0900));
+        // не показываем в trace все что относится к выводу на экран
+        debug.showCallBellow(3);
+        // последняя команда программы перед выходом в монитор
+        cpu.modAdd(new StopWhen(0x0037));
 
         // when
         hard.reset();
