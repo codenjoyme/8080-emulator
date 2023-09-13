@@ -436,4 +436,31 @@ public class IntegrationTest extends AbstractTest {
         assertCpu();
         assertTrace();
     }
+
+    @Test
+    public void testLik_diagnostic_apofig_8080_exerciser() {
+        // given
+        Lik.loadRom(base, roms);
+        hard.loadData(CPU_TESTS_RESOURCES + "8080apofig/8080apofig.rks", Lik.PLATFORM);
+        // выводим trace только в этом диапазоне
+        Range range = new Range(0x0000, 0x0900);
+        debug.enable(range);
+        // не показываем в trace все что относится к выводу на экран
+        debug.showCallBellow(4);
+        // последняя команда программы перед выходом в монитор
+        cpu.modAdd(new StopWhen("JMP C800"));
+        // если хочется подебажить внутри
+        cpu.modAdd(new WhenPC(range, cpu -> {
+            String log = cpu.debug().log(0);
+            System.out.println(log);
+        }));
+
+        // when
+        hard.reset();
+        hard.start();
+
+        // then
+        assertCpu();
+        assertTrace();
+    }
 }
