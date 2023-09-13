@@ -2,6 +2,7 @@ package spec.assembler;
 
 import spec.Reg;
 import spec.Registry;
+import spec.WordMath;
 import spec.assembler.command.system.NONE;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.util.stream.Collectors.toList;
 import static spec.Registry._PSW;
 import static spec.Registry._SP;
 import static spec.WordMath.*;
@@ -161,7 +163,14 @@ public abstract class Command {
     public List<Integer> take(int[] bites, int index) {
         List<Integer> result = new LinkedList<>();
         for (int i = index; i < index + size(); i++) {
-            result.add(bites[i]);
+            try {
+                result.add(bites[i]);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                throw new RuntimeException(
+                        String.format("Needed %s bites, but only %s found for command %s: [%s]",
+                                size(), result.size(), name,
+                                WordMath.hex(Arrays.stream(bites).boxed().collect(toList()))), e);
+            }
         }
         return result;
     }
