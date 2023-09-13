@@ -5,6 +5,10 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+/**
+ * XCHG          [EB]
+ *    HL <-> DE
+ */
 // TODO test me
 public class XCHG extends Command {
 

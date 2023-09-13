@@ -5,6 +5,10 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+/**
+ * STA XXYY      [32 YY XX]
+ *    (XXYY) <- A
+ */
 public class STA_XXYY extends Command {
 
     private static final List<Integer> CODES = from(

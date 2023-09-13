@@ -5,6 +5,11 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+/**
+ *               B  C  D  E  H  L  M  A
+ * MVI R,XX    [06,0E,16,1E,26,2E,36,3E][XX]
+ *    R <- XX
+ */
 public class MVI_R_XX extends Command {
 
     private static final List<Integer> CODES = from(

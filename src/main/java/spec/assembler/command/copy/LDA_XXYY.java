@@ -5,6 +5,10 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+/**
+ * LDA XXYY        [3A]
+ *    A = (XXYY)
+ */
 public class LDA_XXYY extends Command {
 
     private static final List<Integer> CODES = from(

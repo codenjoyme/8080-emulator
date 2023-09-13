@@ -7,6 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * MOV R,R'    [40-7F]
+ *    R <- R'
+ */
 public class MOV_R_R extends Command {
 
     private int[] indexes2;

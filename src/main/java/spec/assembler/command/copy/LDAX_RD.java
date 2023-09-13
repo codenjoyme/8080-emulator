@@ -5,6 +5,12 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+/**
+ * LDAX B         [0A]
+ *    A <- (BC)
+ * LDAX D         [1A]
+ *    A <- (DE)
+ */
 public class LDAX_RD extends Command {
 
     private static final List<Integer> CODES = from(

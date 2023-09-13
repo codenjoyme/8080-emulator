@@ -5,6 +5,10 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+/**
+ * PCHL         [E9]
+ *    PC <- HL
+ */
 // TODO test me
 public class PCHL extends Command {
 

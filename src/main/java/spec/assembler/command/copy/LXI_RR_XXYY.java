@@ -5,6 +5,19 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+/**
+ * LXI B,XXYY      [01 YY XX]
+ *    B <- (XXYY)
+ *
+ * LXI C,XXYY      [11 YY XX]
+ *    C <- (XXYY)
+ *
+ * LXI D,XXYY      [21 YY XX]
+ *    D <- (XXYY)
+ *
+ * LXI SP,XXYY     [31 YY XX]
+ *    SP <- (XXYY)
+ */
 public class LXI_RR_XXYY extends Command {
 
     private static final List<Integer> CODES = from(

@@ -5,6 +5,13 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+/**
+ * STAX B     [02]
+ *    (BC) <- A
+ *
+ * STAX D     [12]
+ *    (DE) <- A
+ */
 public class STAX_RD extends Command {
 
     private static final List<Integer> CODES = from(

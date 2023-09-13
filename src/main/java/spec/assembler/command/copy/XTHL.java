@@ -5,6 +5,11 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+/**
+ * XTHL            [E3]
+ *    H <-> (SP+1)
+ *    L <-> (SP)
+ */
 // TODO test me
 public class XTHL extends Command {
 

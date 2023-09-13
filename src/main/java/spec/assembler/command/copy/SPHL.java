@@ -5,6 +5,10 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+/**
+ * SPHL        [F9]
+ *    SP <- HL
+ */
 // TODO test me
 public class SPHL extends Command {
 

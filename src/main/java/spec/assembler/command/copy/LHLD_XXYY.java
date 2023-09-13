@@ -5,6 +5,11 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+/**
+ * LHLD XXYY        [2A YY XX]
+ *    H = (XXYY+1)
+ *    L = (XXYY)
+ */
 public class LHLD_XXYY extends Command {
 
     private static final List<Integer> CODES = from(
