@@ -20,7 +20,7 @@ bdos    EQU     0C037h     ; LIK PRINT CHAR PROCEDURE
 wboot:  JMP     0C800h     ; LIK MONITOR-1M
 
 msg1:   DB      00Dh, 00Ah, '8080 INSTRUCTION TEST (KR580VM80A CPU) BY APOFIG', 00Dh, 00Ah, '$'
-msg2:   DB      'TESTS COMPLETE$', 00Dh, 00Ah, '$'
+msg2:   DB      00Dh, 00Ah, 'TESTS COMPLETE$', 00Dh, 00Ah, '$'
 
 ; Программа работает таким образом, чтобы после выполнения каждой отдельной операции состояние
 ; всех регистров записывается в определенной области памяти. Затем из этой йобласти памяти
@@ -50,15 +50,75 @@ test_command:
         LXI     D, 0000H
         LXI     H, 0000H
 
-        ANI     0b1010_1010
+        ORI     0b0111_0111
         CALL    calc_hash
         CALL    byteo
 
-        ORI     0b0101_0101
+        RAL
         CALL    calc_hash
         CALL    byteo
 
-        XRI     0b1010_1010
+        XRI     0b1110_1000
+        CALL    calc_hash
+        CALL    byteo
+
+        RLC
+        CALL    calc_hash
+        CALL    byteo
+
+        ANI     0b1101_1110
+        CALL    calc_hash
+        CALL    byteo
+
+        RRC
+        CALL    calc_hash
+        CALL    byteo
+
+        ORI     0b0111_1001
+        CALL    calc_hash
+        CALL    byteo
+
+        RAR
+        CALL    calc_hash
+        CALL    byteo
+
+        XRI     0b1010_1100
+        CALL    calc_hash
+        CALL    byteo
+
+        RAL
+        CALL    calc_hash
+        CALL    byteo
+
+        ANI     0b1011_1010
+        CALL    calc_hash
+        CALL    byteo
+
+        RLC
+        CALL    calc_hash
+        CALL    byteo
+
+        ORI     0b0111_0101
+        CALL    calc_hash
+        CALL    byteo
+
+        RRC
+        CALL    calc_hash
+        CALL    byteo
+
+        XRI     0b1110_1010
+        CALL    calc_hash
+        CALL    byteo
+
+        RAR
+        CALL    calc_hash
+        CALL    byteo
+
+        ANI     0b1011_1110
+        CALL    calc_hash
+        CALL    byteo
+
+        RAL
         CALL    calc_hash
         CALL    byteo
 
