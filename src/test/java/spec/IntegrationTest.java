@@ -446,7 +446,7 @@ public class IntegrationTest extends AbstractTest {
         Range range = new Range(0x0000, 0x0900);
         debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
-        debug.showCallBellow(4);
+        debug.showCallBellow(6);
         // последняя команда программы перед выходом в монитор
         cpu.modAdd(new StopWhen("JMP C800"));
         // если хочется подебажить внутри
