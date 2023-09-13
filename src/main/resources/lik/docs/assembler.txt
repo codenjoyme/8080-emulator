@@ -3,7 +3,7 @@
 
 В таблице 4. приведены символы, применяемые при описании команд.
 
-    Символ  Значение
+  Символ  Значение
     =       Замена
     <=>     Обмен операндов
     ^       Логическое объединение элементов
@@ -29,68 +29,69 @@
 
 Команды загрузки и обмена приведены в таблице 5.
 
-    формат команды  Функциональное описание
-    LDA NN          A=(NN)
-    LDAX В          A=(BC)
-    LDAX D          A=(DE)
-    MVI R,N         R=N
-    MOV R,R’        R=R’
-    MOV R,M         R=(HL)
-    STA NN          (NN)=A
-    STAX В          (BC)=A
-    STAX D          (DE)=A
-    MVI M,N         (HL)=N
-    NOV M,R         (HL)=R
-    LXI RR,NN       RR=NN
-    LHLD NN         HL=(NN+1,NN)
-    SHLD NN         (NN+1,NN)=HL
-    SPHL            SP=HL
-    PUSH SS         (SP-1,SP-2)=SS
-                    SP=SP-2
-    POP SS          SS=(SP+1,SP)
-                    SP=SP+2
-    XCHG            DE <=> HL
-    XTHL            HL <=> (SP+1,SP)
+  Формат     Функциональное
+  команды    описание
+    LDA NN     A=(NN)
+    LDAX В     A=(BC)
+    LDAX D     A=(DE)
+    MVI R,N    R=N
+    MOV R,R’   R=R’
+    MOV R,M    R=(HL)
+    STA NN     (NN)=A
+    STAX В     (BC)=A
+    STAX D     (DE)=A
+    MVI M,N    (HL)=N
+    NOV M,R    (HL)=R
+    LXI RR,NN  RR=NN
+    LHLD NN    HL=(NN+1,NN)
+    SHLD NN    (NN+1,NN)=HL
+    SPHL       SP=HL
+    PUSH SS    (SP-1,SP-2)=SS
+               SP=SP-2
+    POP SS     SS=(SP+1,SP)
+               SP=SP+2
+    XCHG       DE <=> HL
+    XTHL       HL <=> (SP+1,SP)
 
 Команды арифметики приведены в таблице 6.
 
-    Формат   Функциональное   УСЛОВИЯ
-    команды  описание        C Z P A S
-    ADI N    A=A+N           + + + + +
-    ADD RM   A=A+RM          + + + + +
-    ACI N    A=A+N+C         + + + + +
-    ADC RM   A=A+RM+C        + + + + +
-    SUI N    A=A-N           + + + + +
-    SUB RM   A=A-RM          + + + + +
-    SBI N    A=A-N-C         + + + + +
-    SBВ RM   A=A-RM-C        + + + + +
-    DAA      Коррекция A     + + + + +
-    INR RM   RM=RM+1         - + + + +
-    DCR RM   RM=RM-1         - + + + +
-    DAD RR   HL=HL+RR        + - - - -
-    INX RR   RR=RR+1         - - - - -
-    DCX RR   RR=RR-1         - - - - -
+  Формат   Функциональное   УСЛОВИЯ
+  команды  описание        C Z P A S
+    ADI N    A=A+N         + + + + +
+    ADD RM   A=A+RM        + + + + +
+    ACI N    A=A+N+C       + + + + +
+    ADC RM   A=A+RM+C      + + + + +
+    SUI N    A=A-N         + + + + +
+    SUB RM   A=A-RM        + + + + +
+    SBI N    A=A-N-C       + + + + +
+    SBВ RM   A=A-RM-C      + + + + +
+    DAA      Коррекция A   + + + + +
+    INR RM   RM=RM+1       - + + + +
+    DCR RM   RM=RM-1       - + + + +
+    DAD RR   HL=HL+RR      + - - - -
+    INX RR   RR=RR+1       - - - - -
+    DCX RR   RR=RR-1       - - - - -
 
 Логические команды приведены в таблице 7.
 
-    Формат   Функциональное   УСЛОВИЯ
-    команды  описание        C Z P A S
-    ANI N    A=A<AND>N       + + + - +
-    ANA RM   A=A<AND>RM      + + + - +
-    ORI N    A=A<OR>N        + + + - +
-    ORA RM   A=A<OR>RM       + + + - +
-    XRI N    A=A<XOR>N       + + + - +
-    XRA RM   A=A<XOR>RM      + + + - +
-    CPI N    A¬N             + + + + +
-    CMP RM   A¬RM            + + + - +
-    CMA      A=<NOT>A        - - - - -
-    CMC      C=<NOT>C        + - - - -
-    STC      C=1             + - - - -
+  Формат   Функциональное   УСЛОВИЯ
+  команды  описание        C Z P A S
+    ANI N    A=A<AND>N     + + + - +
+    ANA RM   A=A<AND>RM    + + + - +
+    ORI N    A=A<OR>N      + + + - +
+    ORA RM   A=A<OR>RM     + + + - +
+    XRI N    A=A<XOR>N     + + + - +
+    XRA RM   A=A<XOR>RM    + + + - +
+    CPI N    A¬N           + + + + +
+    CMP RM   A¬RM          + + + - +
+    CMA      A=<NOT>A      - - - - -
+    CMC      C=<NOT>C      + - - - -
+    STC      C=1           + - - - -
 
 Команды управления микропроцессором приведены в таблице 8.
 
-    Формат   Функциональное
-    команды  описание
+  Формат   Функциональное
+  команды  описание
     NOP      нет операции
     HLT      останов микропроцессора
     DI       IЕ=0
@@ -98,8 +99,8 @@
 
 Команды циклического сдвига приведены в таблице 9.
 
-    Формат   Функциональное                УСЛОВИЯ
-    команды  описание                     C Z P A S
+  Формат   Функциональное                  УСЛОВИЯ
+  команды  описание                       C Z P A S
     RLC      Циклический сдвиг A влево    + - - - -
     RAL      Циклический сдвиг C-A влево  + - - - -
     RRC      Циклический сдвиг A вправо   + - - - -
@@ -107,16 +108,16 @@
 
 Команды перехода приведены в таблице 10.
 
-    Формат   Функциональное
-    команды  описание
+  Формат   Функциональное
+  команды  описание
     JMP NN   PC=NN
     JCC NN   PC=NN, если значение СС ”истина"
     PCHL     PC=HL
 
 Команды вызова и возврата приведены в таблице 11.
 
-    Формат   Функциональное
-    команды  описание
+  Формат   Функциональное
+  команды  описание
     CALL NN  (SP-1,SP-2)=РС
              SP=SP-2
              PC=NN
@@ -130,7 +131,7 @@
 
 Команды ввода – вывода приведены в таблице 12.
 
-    Формат   Функциональное
-    команды  описание
+  Формат   Функциональное
+  команды  описание
     IN N     A=[N]
     OUT N    [N]=A
