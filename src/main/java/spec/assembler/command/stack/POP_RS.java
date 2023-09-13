@@ -5,6 +5,13 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+/**
+ *                           RS=[B |D |H |PSW]
+ * POP RS                       [C1|D1|E1|F1]
+ *    R2<-(SP+1) R2=[C|E|L|A]
+ *    R1<-(SP)   R1=[B|D|H|PSW]
+ *    SP<-SP+2
+ */
 // TODO test me
 public class POP_RS extends Command {
 

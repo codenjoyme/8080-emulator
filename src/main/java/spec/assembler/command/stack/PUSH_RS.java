@@ -5,6 +5,13 @@ import spec.assembler.Command;
 
 import java.util.List;
 
+/**
+ *                            RS=[B |D |H |PSW]
+ * PUSH RS                       [C5|D5|E5|F5]
+ *    (SP-1)<-R1  R1=[B|D|H|PSW]
+ *    (SP-2)<-R2  R2=[C|E|L|A]
+ *    SP<-SP-2
+ */
 // TODO test me
 public class PUSH_RS extends Command {
 
