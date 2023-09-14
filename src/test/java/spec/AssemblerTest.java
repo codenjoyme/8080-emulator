@@ -7,6 +7,7 @@ import spec.assembler.Assembler;
 import spec.stuff.SmartAssert;
 
 import java.util.Arrays;
+import java.util.function.Function;
 
 import static java.util.stream.Collectors.joining;
 import static spec.stuff.SmartAssert.*;
@@ -18,6 +19,7 @@ public class AssemblerTest {
     @Before
     public void setup() {
         assembler = new Assembler();
+        SmartAssert.setup();
     }
 
     @After
@@ -281,22 +283,282 @@ public class AssemblerTest {
                 "FC 12 34=>CM 3412\n" +
                 "FD=>NONE\n" +
                 "FE 12=>CPI 12\n" +
-                "FF=>RST 7");
+                "FF=>RST 7",
+                assembler::dizAssembly);
     }
 
-    private void asrtAll(String data) {
+    @Test
+    public void testAssembly() {
+        asrtAll("LXI B,2312=>01 12 23\n" +
+                "STAX B=>02\n" +
+                "INX B=>03\n" +
+                "INR B=>04\n" +
+                "DCR B=>05\n" +
+                "MVI B,12=>06 12\n" +
+                "RLC=>07\n" +
+                "NONE=>08\n" +
+                "DAD B=>09\n" +
+                "LDAX B=>0A\n" +
+                "DCX B=>0B\n" +
+                "INR C=>0C\n" +
+                "DCR C=>0D\n" +
+                "MVI C,12=>0E 12\n" +
+                "RRC=>0F\n" +
+                "NONE=>10\n" +
+                "LXI D,2312=>11 12 23\n" +
+                "STAX D=>12\n" +
+                "INX D=>13\n" +
+                "INR D=>14\n" +
+                "DCR D=>15\n" +
+                "MVI D,12=>16 12\n" +
+                "RAL=>17\n" +
+                "NONE=>18\n" +
+                "DAD D=>19\n" +
+                "LDAX D=>1A\n" +
+                "DCX D=>1B\n" +
+                "INR E=>1C\n" +
+                "DCR E=>1D\n" +
+                "MVI E,12=>1E 12\n" +
+                "RAR=>1F\n" +
+                "NONE=>20\n" +
+                "LXI H,2312=>21 12 23\n" +
+                "SHLD 2312=>22 12 23\n" +
+                "INX H=>23\n" +
+                "INR H=>24\n" +
+                "DCR H=>25\n" +
+                "MVI H,12=>26 12\n" +
+                "DAA=>27\n" +
+                "NONE=>28\n" +
+                "DAD H=>29\n" +
+                "LHLD 2312=>2A 12 23\n" +
+                "DCX H=>2B\n" +
+                "INR L=>2C\n" +
+                "DCR L=>2D\n" +
+                "MVI L,12=>2E 12\n" +
+                "CMA=>2F\n" +
+                "NONE=>30\n" +
+                "LXI SP,2312=>31 12 23\n" +
+                "STA 2312=>32 12 23\n" +
+                "INX SP=>33\n" +
+                "INR M=>34\n" +
+                "DCR M=>35\n" +
+                "MVI M,12=>36 12\n" +
+                "STC=>37\n" +
+                "NONE=>38\n" +
+                "DAD SP=>39\n" +
+                "LDA 2312=>3A 12 23\n" +
+                "DCX SP=>3B\n" +
+                "INR A=>3C\n" +
+                "DCR A=>3D\n" +
+                "MVI A,12=>3E 12\n" +
+                "CMC=>3F\n" +
+                "MOV B,B=>40\n" +
+                "MOV B,C=>41\n" +
+                "MOV B,D=>42\n" +
+                "MOV B,E=>43\n" +
+                "MOV B,H=>44\n" +
+                "MOV B,L=>45\n" +
+                "MOV B,M=>46\n" +
+                "MOV B,A=>47\n" +
+                "MOV C,B=>48\n" +
+                "MOV C,C=>49\n" +
+                "MOV C,D=>4A\n" +
+                "MOV C,E=>4B\n" +
+                "MOV C,H=>4C\n" +
+                "MOV C,L=>4D\n" +
+                "MOV C,M=>4E\n" +
+                "MOV C,A=>4F\n" +
+                "MOV D,B=>50\n" +
+                "MOV D,C=>51\n" +
+                "MOV D,D=>52\n" +
+                "MOV D,E=>53\n" +
+                "MOV D,H=>54\n" +
+                "MOV D,L=>55\n" +
+                "MOV D,M=>56\n" +
+                "MOV D,A=>57\n" +
+                "MOV E,B=>58\n" +
+                "MOV E,C=>59\n" +
+                "MOV E,D=>5A\n" +
+                "MOV E,E=>5B\n" +
+                "MOV E,H=>5C\n" +
+                "MOV E,L=>5D\n" +
+                "MOV E,M=>5E\n" +
+                "MOV E,A=>5F\n" +
+                "MOV H,B=>60\n" +
+                "MOV H,C=>61\n" +
+                "MOV H,D=>62\n" +
+                "MOV H,E=>63\n" +
+                "MOV H,H=>64\n" +
+                "MOV H,L=>65\n" +
+                "MOV H,M=>66\n" +
+                "MOV H,A=>67\n" +
+                "MOV L,B=>68\n" +
+                "MOV L,C=>69\n" +
+                "MOV L,D=>6A\n" +
+                "MOV L,E=>6B\n" +
+                "MOV L,H=>6C\n" +
+                "MOV L,L=>6D\n" +
+                "MOV L,M=>6E\n" +
+                "MOV L,A=>6F\n" +
+                "MOV M,B=>70\n" +
+                "MOV M,C=>71\n" +
+                "MOV M,D=>72\n" +
+                "MOV M,E=>73\n" +
+                "MOV M,H=>74\n" +
+                "MOV M,L=>75\n" +
+                "HLT=>76\n" +
+                "MOV M,A=>77\n" +
+                "MOV A,B=>78\n" +
+                "MOV A,C=>79\n" +
+                "MOV A,D=>7A\n" +
+                "MOV A,E=>7B\n" +
+                "MOV A,H=>7C\n" +
+                "MOV A,L=>7D\n" +
+                "MOV A,M=>7E\n" +
+                "MOV A,A=>7F\n" +
+                "ADD B=>80\n" +
+                "ADD C=>81\n" +
+                "ADD D=>82\n" +
+                "ADD E=>83\n" +
+                "ADD H=>84\n" +
+                "ADD L=>85\n" +
+                "ADD M=>86\n" +
+                "ADD A=>87\n" +
+                "ADC B=>88\n" +
+                "ADC C=>89\n" +
+                "ADC D=>8A\n" +
+                "ADC E=>8B\n" +
+                "ADC H=>8C\n" +
+                "ADC L=>8D\n" +
+                "ADC M=>8E\n" +
+                "ADC A=>8F\n" +
+                "SUB B=>90\n" +
+                "SUB C=>91\n" +
+                "SUB D=>92\n" +
+                "SUB E=>93\n" +
+                "SUB H=>94\n" +
+                "SUB L=>95\n" +
+                "SUB M=>96\n" +
+                "SUB A=>97\n" +
+                "SBB B=>98\n" +
+                "SBB C=>99\n" +
+                "SBB D=>9A\n" +
+                "SBB E=>9B\n" +
+                "SBB H=>9C\n" +
+                "SBB L=>9D\n" +
+                "SBB M=>9E\n" +
+                "SBB A=>9F\n" +
+                "ANA B=>A0\n" +
+                "ANA C=>A1\n" +
+                "ANA D=>A2\n" +
+                "ANA E=>A3\n" +
+                "ANA H=>A4\n" +
+                "ANA L=>A5\n" +
+                "ANA M=>A6\n" +
+                "ANA A=>A7\n" +
+                "XRA B=>A8\n" +
+                "XRA C=>A9\n" +
+                "XRA D=>AA\n" +
+                "XRA E=>AB\n" +
+                "XRA H=>AC\n" +
+                "XRA L=>AD\n" +
+                "XRA M=>AE\n" +
+                "XRA A=>AF\n" +
+                "ORA B=>B0\n" +
+                "ORA C=>B1\n" +
+                "ORA D=>B2\n" +
+                "ORA E=>B3\n" +
+                "ORA H=>B4\n" +
+                "ORA L=>B5\n" +
+                "ORA M=>B6\n" +
+                "ORA A=>B7\n" +
+                "CMP B=>B8\n" +
+                "CMP C=>B9\n" +
+                "CMP D=>BA\n" +
+                "CMP E=>BB\n" +
+                "CMP H=>BC\n" +
+                "CMP L=>BD\n" +
+                "CMP M=>BE\n" +
+                "CMP A=>BF\n" +
+                "RNZ=>C0\n" +
+                "POP B=>C1\n" +
+                "JNZ 3412=>C2 12 34\n" +
+                "JMP 3412=>C3 12 34\n" +
+                "CNZ 3412=>C4 12 34\n" +
+                "PUSH B=>C5\n" +
+                "ADI 12=>C6 12\n" +
+                "RST 0=>C7\n" +
+                "RZ=>C8\n" +
+                "RET=>C9\n" +
+                "JZ 3412=>CA 12 34\n" +
+                "NONE=>CB\n" +
+                "CZ 3412=>CC 12 34\n" +
+                "CALL 3412=>CD 12 34\n" +
+                "ACI 12=>CE 12\n" +
+                "RST 1=>CF\n" +
+                "RNC=>D0\n" +
+                "POP D=>D1\n" +
+                "JNC 3412=>D2 12 34\n" +
+                "OUT 12=>D3 12\n" +
+                "CNC 3412=>D4 12 34\n" +
+                "PUSH D=>D5\n" +
+                "SUI 12=>D6 12\n" +
+                "RST 2=>D7\n" +
+                "RC=>D8\n" +
+                "NONE=>D9\n" +
+                "JC 3412=>DA 12 34\n" +
+                "IN 12=>DB 12\n" +
+                "CC 3412=>DC 12 34\n" +
+                "NONE=>DD\n" +
+                "SBI 12=>DE 12\n" +
+                "RST 3=>DF\n" +
+                "RPO=>E0\n" +
+                "POP H=>E1\n" +
+                "JPO 3412=>E2 12 34\n" +
+                "XTHL=>E3\n" +
+                "CPO 3412=>E4 12 34\n" +
+                "PUSH H=>E5\n" +
+                "ANI 12=>E6 12\n" +
+                "RST 4=>E7\n" +
+                "RPE=>E8\n" +
+                "PCHL=>E9\n" +
+                "JPE 3412=>EA 12 34\n" +
+                "XCHG=>EB\n" +
+                "CPE 3412=>EC 12 34\n" +
+                "NONE=>ED\n" +
+                "XRI 12=>EE 12\n" +
+                "RST 5=>EF\n" +
+                "RP=>F0\n" +
+                "POP PSW=>F1\n" +
+                "JP 3412=>F2 12 34\n" +
+                "DI=>F3\n" +
+                "CP 3412=>F4 12 34\n" +
+                "PUSH PSW=>F5\n" +
+                "ORI 12=>F6 12\n" +
+                "RST 6=>F7\n" +
+                "RM=>F8\n" +
+                "SPHL=>F9\n" +
+                "JM 3412=>FA 12 34\n" +
+                "EI=>FB\n" +
+                "CM 3412=>FC 12 34\n" +
+                "NONE=>FD\n" +
+                "CPI 12=>FE 12\n" +
+                "RST 7=>FF",
+                assembler::assembly);
+    }
+
+    private void asrtAll(String data, Function<String, String> method) {
         assertEquals(data,
                 Arrays.stream(data.split("\n"))
                         .peek(line -> System.out.printf("Processing: '%s'%n", line))
                         .map(line -> line.split("=>"))
-                        .map(array -> array[0] + "=>" + call(array[0]))
+                        .map(array -> array[0] + "=>" + call(array[0], method))
                         .collect(joining("\n")));
     }
 
-    private String call(String bites) {
+    private String call(String bites, Function<String, String> method) {
         try {
-            return assembler.dizAssembly(bites)
-                    .replace("\n", "");
+            return method.apply(bites).replace("\n", "");
         } catch (Exception e) {
             e.printStackTrace();
             return "ERROR";
