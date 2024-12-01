@@ -117,8 +117,8 @@ start:
         lxi     h,msg1
         call    msg
 
-        lxi     h,tests                ; first test case
-loop:   mov     a,m                ; end of list ?
+        lxi     h,tests              ; first test case
+loop:   mov     a,m                  ;  end of list ?
         inx     h
         ora     m
         jz      done
@@ -185,201 +185,201 @@ tests:
 ; add hl,<bc,de,hl,sp> (19,456 cycles)
 add16:  db        0ffh                ; flag mask
 ;!        tstr    9,0c4a5h,0c4c7h,0d226h,0a050h,058eah,08566h,0c6h,0deh,09bc9h
-;!        tstr    030h,0,0,0,0f821h,0,0,0,0,0                ; (512 cycles)
-;!        tstr    0,0,0,0,-1,-1,-1,0d7h,0,-1                ; (38 cycles)
-;!        db      014h, 047h, 04bh, 0a6h                        ; expected crc
+;!        tstr    030h,0,0,0,0f821h,0,0,0,0,0                  ; (512 cycles)
+;!        tstr    0,0,0,0,-1,-1,-1,0d7h,0,-1                   ; (38 cycles)
+;!        db      014h, 047h, 04bh, 0a6h                       ; expected crc
 ;!        tmsg    'dad <b,d,h,sp>'
 
 ; aluop a,nn (28,672 cycles)
 alu8i:  db        0ffh                ; flag mask
 ;!        tstr    0c6h,09140h,07e3ch,07a67h,0df6dh,05b61h,00b29h,010h,066h,085b2h
-;!        tstr    038h,0,0,0,0,0,0,0,-1,0                        ; (2048 cycles)
-;!        tstr    <0,-1>,0,0,0,0,0,0,0d7h,0,0                ; (14 cycles)
-;!        db      09eh, 092h, 02fh, 09eh                        ; expected crc
+;!        tstr    038h,0,0,0,0,0,0,0,-1,0                      ; (2048 cycles)
+;!        tstr    <0,-1>,0,0,0,0,0,0,0d7h,0,0                  ; (14 cycles)
+;!        db      09eh, 092h, 02fh, 09eh                       ; expected crc
 ;!        tmsg    'aluop nn'
 
 ; aluop a,<b,c,d,e,h,l,(hl),a> (753,664 cycles)
 alu8r:  db        0ffh                ; flag mask
 ;!        tstr    080h,0c53eh,0573ah,04c4dh,msbt,0e309h,0a666h,0d0h,03bh,0adbbh
-;!        tstr    03fh,0,0,0,0,0,0,0,-1,0                        ; (16,384 cycles)
-;!        tstr    0,0ffh,0,0,0,-1,-1,0d7h,0,0                ; (46 cycles)
-;!        db      0cfh, 076h, 02ch, 086h                        ; expected crc
+;!        tstr    03fh,0,0,0,0,0,0,0,-1,0                      ; (16,384 cycles)
+;!        tstr    0,0ffh,0,0,0,-1,-1,0d7h,0,0                  ; (46 cycles)
+;!        db      0cfh, 076h, 02ch, 086h                       ; expected crc
 ;!        tmsg    'aluop <b,c,d,e,h,l,m,a>'
 
 ; <daa,cpl,scf,ccf>
 daa:    db        0ffh                ; flag mask
 ;!        tstr    027h,02141h,009fah,01d60h,0a559h,08d5bh,09079h,004h,08eh,0299dh
-;!        tstr    018h,0,0,0,0,0,0,0d7h,-1,0                ; (65,536 cycles)
-;!        tstr    0,0,0,0,0,0,0,0,0,0                        ; (1 cycle)
-;!        db      0bbh,03fh,003h,00ch                        ; expected crc
+;!        tstr    018h,0,0,0,0,0,0,0d7h,-1,0                   ; (65,536 cycles)
+;!        tstr    0,0,0,0,0,0,0,0,0,0                          ; (1 cycle)
+;!        db      0bbh,03fh,003h,00ch                          ; expected crc
 ;!        tmsg    '<daa,cma,stc,cmc>'
 
 ; <inc,dec> a (3072 cycles)
 inca:   db        0ffh                ; flag mask
 ;!        tstr    03ch,04adfh,0d5d8h,0e598h,08a2bh,0a7b0h,0431bh,044h,05ah,0d030h
-;!        tstr    001h,0,0,0,0,0,0,0,-1,0                        ; (512 cycles)
-;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                        ; (6 cycles)
-;!        db      0adh,0b6h,046h,00eh                        ; expected crc
+;!        tstr    001h,0,0,0,0,0,0,0,-1,0                      ; (512 cycles)
+;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                       ; (6 cycles)
+;!        db      0adh,0b6h,046h,00eh                          ; expected crc
 ;!        tmsg    '<inr,dcr> a'
 
 ; <inc,dec> b (3072 cycles)
 incb:   db        0ffh                ; flag mask
 ;!        tstr    004h,0d623h,0432dh,07a61h,08180h,05a86h,01e85h,086h,058h,09bbbh
-;!        tstr    001h,0,0,0,0,0,0ff00h,0,0,0                ; (512 cycles)
-;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                        ; (6 cycles)
-;!        db      083h,0edh,013h,045h                        ; expected crc
+;!        tstr    001h,0,0,0,0,0,0ff00h,0,0,0                  ; (512 cycles)
+;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                       ; (6 cycles)
+;!        db      083h,0edh,013h,045h                          ; expected crc
 ;!        tmsg    '<inr,dcr> b'
 
 ; <inc,dec> bc (1536 cycles)
 incbc:  db        0ffh                ; flag mask
 ;!        tstr    003h,0cd97h,044abh,08dc9h,0e3e3h,011cch,0e8a4h,002h,049h,02a4dh
-;!        tstr    008h,0,0,0,0,0,0f821h,0,0,0                ; (256 cycles)
-;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                        ; (6 cycles)
-;!        db      0f7h,092h,087h,0cdh                        ; expected crc
+;!        tstr    008h,0,0,0,0,0,0f821h,0,0,0                  ; (256 cycles)
+;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                       ; (6 cycles)
+;!        db      0f7h,092h,087h,0cdh                          ; expected crc
 ;!        tmsg    '<inx,dcx> b'
 
 ; <inc,dec> c (3072 cycles)
 incc:   db        0ffh                ; flag mask
 ;!        tstr    00ch,0d789h,00935h,0055bh,09f85h,08b27h,0d208h,095h,005h,00660h
-;!        tstr    001h,0,0,0,0,0,0ffh,0,0,0                ; (512 cycles)
-;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                        ; (6 cycles)
-;!        db      0e5h,0f6h,072h,01bh                        ; expected crc
+;!        tstr    001h,0,0,0,0,0,0ffh,0,0,0                    ; (512 cycles)
+;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                       ; (6 cycles)
+;!        db      0e5h,0f6h,072h,01bh                          ; expected crc
 ;!        tmsg    '<inr,dcr> c'
 
 ; <inc,dec> d (3072 cycles)
 incd:   db        0ffh                ; flag mask
 ;!        tstr    014h,0a0eah,05fbah,065fbh,0981ch,038cch,0debch,043h,05ch,003bdh
-;!        tstr    001h,0,0,0,0,0ff00h,0,0,0,0                ; (512 cycles)
-;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                        ; (6 cycles)
-;!        db      015h,0b5h,057h,09ah                        ; expected crc
+;!        tstr    001h,0,0,0,0,0ff00h,0,0,0,0                  ; (512 cycles)
+;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                       ; (6 cycles)
+;!        db      015h,0b5h,057h,09ah                          ; expected crc
 ;!        tmsg    '<inr,dcr> d'
 
 ; <inc,dec> de (1536 cycles)
 incde:  db        0ffh                ; flag mask
 ;!        tstr    013h,0342eh,0131dh,028c9h,00acah,09967h,03a2eh,092h,0f6h,09d54h
-;!        tstr    008h,0,0,0,0,0f821h,0,0,0,0                ; (256 cycles)
-;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                        ; (6 cycles)
-;!        db      07fh,04eh,025h,001h                        ; expected crc
+;!        tstr    008h,0,0,0,0,0f821h,0,0,0,0                  ; (256 cycles)
+;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                       ; (6 cycles)
+;!        db      07fh,04eh,025h,001h                          ; expected crc
 ;!        tmsg    '<inx,dcx> d'
 
 ; <inc,dec> e (3072 cycles)
 ince:   db        0ffh                ; flag mask
 ;!        tstr    01ch,0602fh,04c0dh,02402h,0e2f5h,0a0f4h,0a10ah,013h,032h,05925h
-;!        tstr    001h,0,0,0,0,0ffh,0,0,0,0                ; (512 cycles)
-;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                        ; (6 cycles)
-;!        db      0cfh,02ah,0b3h,096h                        ; expected crc
+;!        tstr    001h,0,0,0,0,0ffh,0,0,0,0                    ; (512 cycles)
+;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                       ; (6 cycles)
+;!        db      0cfh,02ah,0b3h,096h                          ; expected crc
 ;!        tmsg    '<inr,dcr> e'
 
 ; <inc,dec> h (307 cycles)
 inch:   db        0ffh                ; flag mask
 ;!        tstr    024h,01506h,0f2ebh,0e8ddh,0262bh,011a6h,0bc1ah,017h,006h,02818h
-;!        tstr    001h,0,0,0,0ff00h,0,0,0,0,0                ; (512 cycles)
-;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                        ; (6 cycles)
-;!        db      012h,0b2h,095h,02ch                        ; expected crc
+;!        tstr    001h,0,0,0,0ff00h,0,0,0,0,0                  ; (512 cycles)
+;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                       ; (6 cycles)
+;!        db      012h,0b2h,095h,02ch                          ; expected crc
 ;!        tmsg    '<inr,dcr> h'
 
 ; <inc,dec> hl (1536 cycles)
 inchl:  db        0ffh                ; flag mask
 ;!        tstr    023h,0c3f4h,007a5h,01b6dh,04f04h,0e2c2h,0822ah,057h,0e0h,0c3e1h
-;!        tstr    008h,0,0,0,0f821h,0,0,0,0,0                ; (256 cycles)
-;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                        ; (6 cycles)
-;!        db      09fh,02bh,023h,0c0h                        ; expected crc
+;!        tstr    008h,0,0,0,0f821h,0,0,0,0,0                  ; (256 cycles)
+;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                       ; (6 cycles)
+;!        db      09fh,02bh,023h,0c0h                          ; expected crc
 ;!        tmsg    '<inx,dcx> h'
 
 ; <inc,dec> l (3072 cycles)
 incl:   db        0ffh                ; flag mask
 ;!        tstr    02ch,08031h,0a520h,04356h,0b409h,0f4c1h,0dfa2h,0d1h,03ch,03ea2h
-;!        tstr    001h,0,0,0,0ffh,0,0,0,0,0                ; (512 cycles)
-;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                        ; (6 cycles)
-;!        db      0ffh,057h,0d3h,056h                        ; expected crc
+;!        tstr    001h,0,0,0,0ffh,0,0,0,0,0                    ; (512 cycles)
+;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                       ; (6 cycles)
+;!        db      0ffh,057h,0d3h,056h                          ; expected crc
 ;!        tmsg    '<inr,dcr> l'
 
 ; <inc,dec> (hl) (3072 cycles)
 incm:   db        0ffh                ; flag mask
 ;!        tstr    034h,0b856h,00c7ch,0e53eh,msbt,0877eh,0da58h,015h,05ch,01f37h
-;!        tstr    001h,0ffh,0,0,0,0,0,0,0,0                ; (512 cycles)
-;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                        ; (6 cycles)
-;!        db      092h,0e9h,063h,0bdh                        ; expected crc
+;!        tstr    001h,0ffh,0,0,0,0,0,0,0,0                    ; (512 cycles)
+;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                       ; (6 cycles)
+;!        db      092h,0e9h,063h,0bdh                          ; expected crc
 ;!        tmsg    '<inr,dcr> m'
 
 ; <inc,dec> sp (1536 cycles)
 incsp:  db        0ffh                ; flag mask
 ;!        tstr    033h,0346fh,0d482h,0d169h,0deb6h,0a494h,0f476h,053h,002h,0855bh
-;!        tstr    008h,0,0,0,0,0,0,0,0,0f821h                ; (256 cycles)
-;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                        ; (6 cycles)
-;!        db      0d5h,070h,02fh,0abh                        ; expected crc
+;!        tstr    008h,0,0,0,0,0,0,0,0,0f821h                  ; (256 cycles)
+;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                       ; (6 cycles)
+;!        db      0d5h,070h,02fh,0abh                          ; expected crc
 ;!        tmsg    '<inx,dcx> sp'
 
 ; ld hl,(nnnn) (16 cycles)
 ld162:  db        0ffh                ; flag mask
 ;!        tstr    <02ah,low msbt,high msbt>,09863h,07830h,02077h,0b1feh,0b9fah,0abb8h,004h,006h,06015h
-;!        tstr    0,0,0,0,0,0,0,0,0,0                        ; (1 cycle)
-;!        tstr    0,-1,0,0,0,0,0,0,0,0                        ; (16 cycles)
-;!        db      0a9h,0c3h,0d5h,0cbh                        ; expected crc
+;!        tstr    0,0,0,0,0,0,0,0,0,0                          ; (1 cycle)
+;!        tstr    0,-1,0,0,0,0,0,0,0,0                         ; (16 cycles)
+;!        db      0a9h,0c3h,0d5h,0cbh                          ; expected crc
 ;!        tmsg    'lhld nnnn'
 
 ; ld (nnnn),hl (16 cycles)
 ld166:  db        0ffh                ; flag mask
 ;!        tstr    <022h,low msbt,high msbt>,0d003h,07772h,07f53h,03f72h,064eah,0e180h,010h,02dh,035e9h
-;!        tstr    0,0,0,0,0,0,0,0,0,0                        ; (1 cycle)
-;!        tstr    0,0,0,0,-1,0,0,0,0,0                        ; (16 cycles)
-;!        db      0e8h,086h,04fh,026h                        ; expected crc
+;!        tstr    0,0,0,0,0,0,0,0,0,0                          ; (1 cycle)
+;!        tstr    0,0,0,0,-1,0,0,0,0,0                         ; (16 cycles)
+;!        db      0e8h,086h,04fh,026h                          ; expected crc
 ;!        tmsg    'shld nnnn'
 
 ; ld <bc,de,hl,sp>,nnnn (64 cycles)
 ld16im: db        0ffh                ; flag mask
 ;!        tstr    1,05c1ch,02d46h,08eb9h,06078h,074b1h,0b30eh,046h,0d1h,030cch
-;!        tstr    030h,0,0,0,0,0,0,0,0,0                        ; (4 cycles)
-;!        tstr    <0,0ffh,0ffh>,0,0,0,0,0,0,0,0,0                ; (16 cycles)
-;!        db      0fch,0f4h,06eh,012h                        ; expected crc
+;!        tstr    030h,0,0,0,0,0,0,0,0,0                       ; (4 cycles)
+;!        tstr    <0,0ffh,0ffh>,0,0,0,0,0,0,0,0,0              ; (16 cycles)
+;!        db      0fch,0f4h,06eh,012h                          ; expected crc
 ;!        tmsg    'lxi <b,d,h,sp>,nnnn'
 
 ; ld a,<(bc),(de)> (44 cycles)
 ld8bd:  db        0ffh                ; flag mask
 ;!        tstr    00ah,0b3a8h,01d2ah,07f8eh,042ach,msbt,msbt,0c6h,0b1h,0ef8eh
-;!        tstr    010h,0,0,0,0,0,0,0,0,0                        ; (2 cycles)
-;!        tstr    0,0ffh,0,0,0,0,0,0d7h,-1,0                ; (22 cycles)
-;!        db      02bh,082h,01dh,05fh                        ; expected crc
+;!        tstr    010h,0,0,0,0,0,0,0,0,0                       ; (2 cycles)
+;!        tstr    0,0ffh,0,0,0,0,0,0d7h,-1,0                   ; (22 cycles)
+;!        db      02bh,082h,01dh,05fh                          ; expected crc
 ;!        tmsg    'ldax <b,d>'
 
 ; ld <b,c,d,e,h,l,(hl),a>,nn (64 cycles)
 ld8im:  db        0ffh                ; flag mask
 ;!        tstr    6,0c407h,0f49dh,0d13dh,00339h,0de89h,07455h,053h,0c0h,05509h
-;!        tstr    038h,0,0,0,0,0,0,0,0,0                        ; (8 cycles)
-;!        tstr    0,0,0,0,0,0,0,0,-1,0                        ; (8 cycles)
-;!        db      0eah,0a7h,020h,044h                        ; expected crc
+;!        tstr    038h,0,0,0,0,0,0,0,0,0                       ; (8 cycles)
+;!        tstr    0,0,0,0,0,0,0,0,-1,0                         ; (8 cycles)
+;!        db      0eah,0a7h,020h,044h                          ; expected crc
 ;!        tmsg    'mvi <b,c,d,e,h,l,m,a>,nn'
 
 ; ld <b,c,d,e,h,l,a>,<b,c,d,e,h,l,a> (3456 cycles)
 ld8rr:  db        0ffh                ; flag mask
 ;!        tstr    040h,072a4h,0a024h,061ach,msbt,082c7h,0718fh,097h,08fh,0ef8eh
-;!        tstr    03fh,0,0,0,0,0,0,0,0,0                        ; (64 cycles)
-;!        tstr    0,0ffh,0,0,0,-1,-1,0d7h,-1,0                ; (54 cycles)
-;!        db      010h,0b5h,08ch,0eeh                        ; expected crc
+;!        tstr    03fh,0,0,0,0,0,0,0,0,0                       ; (64 cycles)
+;!        tstr    0,0ffh,0,0,0,-1,-1,0d7h,-1,0                 ; (54 cycles)
+;!        db      010h,0b5h,08ch,0eeh                          ; expected crc
 ;!        tmsg    'mov <bcdehla>,<bcdehla>'
 
 ; ld a,(nnnn) / ld (nnnn),a (44 cycles)
 lda:    db        0ffh                ; flag mask
 ;!        tstr    <032h,low msbt,high msbt>,0fd68h,0f4ech,044a0h,0b543h,00653h,0cdbah,0d2h,04fh,01fd8h
-;!        tstr    008h,0,0,0,0,0,0,0,0,0                        ; (2 cycle)
-;!        tstr    0,0ffh,0,0,0,0,0,0d7h,-1,0                ; (22 cycles)
-;!        db      0edh,057h,0afh,072h                        ; expected crc
+;!        tstr    008h,0,0,0,0,0,0,0,0,0                       ; (2 cycle)
+;!        tstr    0,0ffh,0,0,0,0,0,0d7h,-1,0                   ; (22 cycles)
+;!        db      0edh,057h,0afh,072h                          ; expected crc
 ;!        tmsg    'sta nnnn / lda nnnn'
 
 ; <rlca,rrca,rla,rra> (6144 cycles)
 rot8080: db       0ffh                ; flag mask
 ;!        tstr    7,0cb92h,06d43h,00a90h,0c284h,00c53h,0f50eh,091h,0ebh,040fch
-;!        tstr    018h,0,0,0,0,0,0,0,-1,0                        ; (1024 cycles)
-;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                        ; (6 cycles)
-;!        db      0e0h,0d8h,092h,035h                        ; expected crc
+;!        tstr    018h,0,0,0,0,0,0,0,-1,0                      ; (1024 cycles)
+;!        tstr    0,0,0,0,0,0,0,0d7h,0,0                       ; (6 cycles)
+;!        db      0e0h,0d8h,092h,035h                          ; expected crc
 ;!        tmsg    '<rlc,rrc,ral,rar>'
 
 ; ld (<bc,de>),a (96 cycles)
 stabd:  db        0ffh                ; flag mask
 ;!        tstr    2,00c3bh,0b592h,06cffh,0959eh,msbt,msbt+1,0c1h,021h,0bde7h
-;!        tstr    018h,0,0,0,0,0,0,0,0,0                        ; (4 cycles)
+;!        tstr    018h,0,0,0,0,0,0,0,0,0                       ; (4 cycles)
 ;!        tstr    0,-1,0,0,0,0,0,0,-1,0                        ; (24 cycles)
-;!        db      02bh,004h,071h,0e9h                        ; expected crc
+;!        db      02bh,004h,071h,0e9h                          ; expected crc
 ;!        tmsg    'stax <b,d>'
 
 ; start test pointed to by (hl)
@@ -393,20 +393,20 @@ stt:    push    h
         inx     h
         push    h
         lxi     d,20
-        dad     d                ; point to incmask
+        dad     d                  ; point to incmask
         lxi     d,counter
         call    initmask
         pop     h
         push    h
         lxi     d,20+20
-        dad     d                ; point to scanmask
+        dad     d                  ; point to scanmask
         lxi     d,shifter
         call    initmask
         lxi     h,shifter
         mvi     m,1                ; first bit
         pop     h
         push    h
-        lxi     d,iut                ; copy initial instruction under test
+        lxi     d,iut              ; copy initial instruction under test
         lxi     b,4
 
 ;#idb ldir replaced with following code
@@ -420,7 +420,7 @@ ldir1:  mov     a,m
         jnz     ldir1
 ;#idb
 
-        lxi     d,msbt                ; copy initial machine state
+        lxi     d,msbt             ; copy initial machine state
         lxi     b,16
 
 ;#idb ldir replaced with following code
@@ -434,26 +434,26 @@ ldir2:  mov     a,m
         jnz     ldir2
 ;#idb
 
-        lxi     d,20+20+4        ; skip incmask, scanmask and expcrc
+        lxi     d,20+20+4          ; skip incmask, scanmask and expcrc
         dad     d
         call    msg                ; show test name
-        call    initcrc                ; initialise crc
+        call    initcrc            ; initialise crc
 ; test loop
 tlp:    lda     iut
-        cpi     076h                ; pragmatically avoid halt intructions
+        cpi     076h               ; pragmatically avoid halt intructions
         jz      tlp2
         ani     0dfh
         cpi     0ddh
         jnz     tlp1
         lda     iut+1
         cpi     076h
-tlp1:   cnz     test                ; execute the test instruction
-tlp2:   call    count                ; increment the counter
-        cnz     shift                ; shift the scan bit
-        pop     h                ; pointer to test case
-        jz      tlp3                ; done if shift returned NZ
+tlp1:   cnz     test               ; execute the test instruction
+tlp2:   call    count              ; increment the counter
+        cnz     shift              ; shift the scan bit
+        pop     h                  ; pointer to test case
+        jz      tlp3               ; done if shift returned NZ
         lxi     d,20+20+20
-        dad     d                ; point to expected crc
+        dad     d                  ; point to expected crc
         call    cmpcrc
         lxi     d,okmsg
         jz      tlpok
@@ -481,13 +481,13 @@ tlp3:   push    h
         shld    shfbyt
 
         mvi     b,4                ; bytes in iut field
-        pop     h                ; pointer to test case
+        pop     h                  ; pointer to test case
         push    h
         lxi     d,iut
-        call    setup                ; setup iut
-        mvi     b,16                ; bytes in machine state
+        call    setup              ; setup iut
+        mvi     b,16               ; bytes in machine state
         lxi     d,msbt
-        call    setup                ; setup machine state
+        call    setup              ; setup machine state
         jmp     tlp
 
 ; setup a field of the test case
@@ -505,7 +505,7 @@ subyte: push    b
         push    h
         mov     c,m                ; get base byte
         lxi     d,20
-        dad     d                ; point to incmask
+        dad     d                  ; point to incmask
         mov     a,m
         cpi     0
         jz      subshf
@@ -513,8 +513,8 @@ subyte: push    b
 subclp: rrc
         push    psw
         mvi     a,0
-        cc      nxtcbit        ; get next counter bit if mask bit was set
-        xra     c                ; flip bit if counter bit was set
+        cc      nxtcbit            ; get next counter bit if mask bit was set
+        xra     c                  ; flip bit if counter bit was set
         rrc
         mov     c,a
         pop     psw
@@ -522,7 +522,7 @@ subclp: rrc
         jnz     subclp
         mvi     b,8
 subshf: lxi     d,20
-        dad     d                ; point to shift mask
+        dad     d                  ; point to shift mask
         mov     a,m
         cpi     0
         jz      substr
@@ -530,8 +530,8 @@ subshf: lxi     d,20
 sbshf1: rrc
         push    psw
         mvi     a,0
-        cc      nxtsbit        ; get next shifter bit if mask bit was set
-        xra     c                ; flip bit if shifter bit was set
+        cc      nxtsbit            ; get next shifter bit if mask bit was set
+        xra     c                  ; flip bit if shifter bit was set
         rrc
         mov     c,a
         pop     psw
@@ -540,7 +540,7 @@ sbshf1: rrc
 substr: pop     h
         pop     d
         mov     a,c
-        stax    d                ; mangled byte to destination
+        stax    d                  ; mangled byte to destination
         inx     d
         pop     b
         ret
@@ -633,9 +633,9 @@ initmask:
         push    d
         xchg
         lxi     b,20+20
-        call    clrmem                ; clear work area
+        call    clrmem             ; clear work area
         xchg
-        mvi     b,20                ; byte counter
+        mvi     b,20               ; byte counter
         mvi     c,1                ; first bit
         mvi     d,0                ; bit counter
 imlp:   mov     e,m
@@ -656,11 +656,11 @@ imlp2:  mov     a,c
         ani     0f8h
         rrc
         rrc
-        rrc                     ; divide by 8 (get byte offset)
+        rrc                        ; divide by 8 (get byte offset)
         mov     l,a
         mvi     h,0
         mov     a,d
-        ani     7                ; bit offset
+        ani     7                  ; bit offset
         inr     a
         mov     b,a
         mvi     a,080h
@@ -678,18 +678,18 @@ imlp3:  rlc
 count:  push    b
         push    d
         push    h
-        lxi     h,counter        ; 20 byte counter starts here
-        lxi     d,20                ; somewhere in here is the stop bit
+        lxi     h,counter          ; 20 byte counter starts here
+        lxi     d,20               ; somewhere in here is the stop bit
         xchg
         dad     d
         xchg
 cntlp:  inr     m
         mov     a,m
         cpi     0
-        jz      cntlp1        ; overflow to next byte
+        jz      cntlp1             ; overflow to next byte
         mov     b,a
         ldax    d
-        ana     b                ; test for terminal value
+        ana     b                  ; test for terminal value
         jz      cntend
         mvi     m,0                ; reset to zero
 cntend: pop     b
@@ -706,8 +706,8 @@ cntlp1: inx     h
 shift:  push    b
         push    d
         push    h
-        lxi     h,shifter        ; 20 byte shift register starts here
-        lxi     d,20                ; somewhere in here is the stop bit
+        lxi     h,shifter          ; 20 byte shift register starts here
+        lxi     d,20               ; somewhere in here is the stop bit
         xchg
         dad     d
         xchg
@@ -726,7 +726,7 @@ shflp:  mov     a,m
         inx     h
         inx     d
 shflp2: mov     m,a
-        xra     a                ; set Z
+        xra     a                  ; set Z
 shlpe:  pop     h
         pop     d
         pop     b
@@ -755,7 +755,7 @@ test:   push    psw
         lxi     h,msbt
         call    hexstr
 ;!        endif
-        di                        ; disable interrupts
+        di                         ; disable interrupts
 
 ;#idb ld (spsav),sp replaced by following code
 ;#idb All registers and flages are immediately overwritten so
@@ -765,12 +765,12 @@ test:   push    psw
         shld    spsav
 ;#idb
 
-        lxi     sp,msbt+2        ; point to test-case machine state
+        lxi     sp,msbt+2          ; point to test-case machine state
 
 ;#idb pop iy
 ;#idb pop ix both replaced by following code
 ;#idb Just dummy out ix/iy with copies of hl
-        pop     h                ; and load all regs
+        pop     h                  ; and load all regs
         pop     h
 ;#idb
 
@@ -787,7 +787,7 @@ test:   push    psw
         lhld    temp
 ;#idb
 
-iut:    ds      4                ; max 4 byte instruction under test
+iut:    ds      4                 ; max 4 byte instruction under test
 
 ;#idb ld (spat),sp replaced with the following code
 ;#idb Must be very careful to preserve registers and flag
@@ -797,20 +797,20 @@ iut:    ds      4                ; max 4 byte instruction under test
 ;#idb Bit of a code smell, but I can't think of an easier way.
         shld    temp
         lxi     h,0
-        jc      temp1                ;jump on the state of the C flag set in the test
+        jc      temp1             ; jump on the state of the C flag set in the test
 
-        dad     sp                ;this code will clear the C flag (0 + nnnn = nc)
-        jmp     temp2                ;C flag is same state as before
+        dad     sp                ; this code will clear the C flag (0 + nnnn = nc)
+        jmp     temp2             ; C flag is same state as before
 
-temp1:  dad     sp                ;this code will clear the C flag (0 + nnnn = nc)
-        stc                     ;C flage needs re-setting to preserve state
+temp1:  dad     sp                ; this code will clear the C flag (0 + nnnn = nc)
+        stc                       ; C flage needs re-setting to preserve state
 
 temp2:  shld    spat
         lhld    temp
 ;#idb
 
         lxi     sp,spat
-        push    psw                ; save other registers
+        push    psw               ; save other registers
         push    b
         push    d
         push    h
@@ -824,23 +824,23 @@ temp2:  shld    spat
 
 ;#idb ld sp,(spsav) replaced with following code
 ;#idb No need to preserve state
-        lhld    spsav                ; restore stack pointer
+        lhld    spsav             ; restore stack pointer
         sphl
 ;#idb
 
-        ei                     ; enable interrupts
-        lhld    msbt                ; copy memory operand
+        ei                        ; enable interrupts
+        lhld    msbt              ; copy memory operand
         shld    msat
-        lxi     h,flgsat        ; flags after test
+        lxi     h,flgsat          ; flags after test
         mov     a,m
-flgmsk: ani     0ffh                ; mask-out irrelevant bits (self-modified code!)
+flgmsk: ani     0ffh              ; mask-out irrelevant bits (self-modified code!)
         mov     m,a
-        mvi     b,16                ; total of 16 bytes of state
+        mvi     b,16              ; total of 16 bytes of state
         lxi     d,msat
         lxi     h,crcval
 tcrc:   ldax    d
         inx     d
-        call    updcrc                ; accumulate crc of this test case
+        call    updcrc            ; accumulate crc of this test case
         dcr     b
         jnz     tcrc
 ;!        if      0
@@ -867,11 +867,11 @@ temp:   ds      2
 ;#idb
 
 ; machine state after test
-msat:   ds      14        ; memop,iy,ix,hl,de,bc,af
-spat:   ds      2        ; stack pointer after test
-flgsat  equ     spat-2        ; flags
+msat:   ds      14                ; memop,iy,ix,hl,de,bc,af
+spat:   ds      2                 ; stack pointer after test
+flgsat  equ     spat-2            ; flags
 
-spsav:  ds      2        ; saved stack pointer
+spsav:  ds      2                 ; saved stack pointer
 
 ; display hex string (pointer in hl, byte count in b)
 hexstr: mov     a,m
@@ -898,23 +898,23 @@ ph8lp:  mov     a,m
         ret
 
 ;
-bdos    EQU     0C037h     ; LIK PRINT CHAR PROCEDURE
-wboot:  JMP     0C800h     ; LIK MONITOR-1M
+bdos    EQU     0C037h            ; LIK PRINT CHAR PROCEDURE
+wboot:  JMP     0C800h            ; LIK MONITOR-1M
 ;
 ;MESSAGE OUTPUT ROUTINE
 ;
-msg:    PUSH    B          ; Push state
+msg:    PUSH    B                 ; Push state
         PUSH    D
         PUSH    H
         PUSH    PSW
-msgs:   MOV     A,M        ; Get data
-        CPI     '$'        ; End?
-        JZ      msge       ; Exit
+msgs:   MOV     A,M               ; Get data
+        CPI     '$'               ; End?
+        JZ      msge              ; Exit
         MOV     A,M
-        CALL    pchar      ; Output
-        INX     H          ; Next
-        JMP     msgs       ; Do all
-msge:   POP     PSW        ; Pop state
+        CALL    pchar             ; Output
+        INX     H                 ; Next
+        JMP     msgs              ; Do all
+msge:   POP     PSW               ; Pop state
         POP     H
         POP     D
         POP     B
@@ -997,18 +997,18 @@ updcrc: push    psw
         push    h
         push    h
         lxi     d,3
-        dad     d        ; point to low byte of old crc
-        xra     m        ; xor with new byte
+        dad     d                 ; point to low byte of old crc
+        xra     m                 ; xor with new byte
         mov     l,a
         mvi     h,0
-        dad     h        ; use result as index into table of 4 byte entries
+        dad     h                 ; use result as index into table of 4 byte entries
         dad     h
         xchg
         lxi     h,crctab
-        dad     d        ; point to selected entry in crctab
+        dad     d                 ; point to selected entry in crctab
         xchg
         pop     h
-        lxi     b,4        ; c = byte count, b = accumulator
+        lxi     b,4               ; c = byte count, b = accumulator
 crclp:  ldax    d
         xra     b
         mov     b,m
