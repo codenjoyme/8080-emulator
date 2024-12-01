@@ -304,7 +304,7 @@ public class AssemblerTest {
                 "DCR C=>0D\n" +
                 "MVI C,12=>0E 12\n" +
                 "RRC=>0F\n" +
-                "NONE=>10\n" +
+                "NONE=>08\n" +
                 "LXI D,2312=>11 12 23\n" +
                 "STAX D=>12\n" +
                 "INX D=>13\n" +
@@ -312,7 +312,7 @@ public class AssemblerTest {
                 "DCR D=>15\n" +
                 "MVI D,12=>16 12\n" +
                 "RAL=>17\n" +
-                "NONE=>18\n" +
+                "NONE=>08\n" +
                 "DAD D=>19\n" +
                 "LDAX D=>1A\n" +
                 "DCX D=>1B\n" +
@@ -320,7 +320,7 @@ public class AssemblerTest {
                 "DCR E=>1D\n" +
                 "MVI E,12=>1E 12\n" +
                 "RAR=>1F\n" +
-                "NONE=>20\n" +
+                "NONE=>08\n" +
                 "LXI H,2312=>21 12 23\n" +
                 "SHLD 2312=>22 12 23\n" +
                 "INX H=>23\n" +
@@ -328,7 +328,7 @@ public class AssemblerTest {
                 "DCR H=>25\n" +
                 "MVI H,12=>26 12\n" +
                 "DAA=>27\n" +
-                "NONE=>28\n" +
+                "NONE=>08\n" +
                 "DAD H=>29\n" +
                 "LHLD 2312=>2A 12 23\n" +
                 "DCX H=>2B\n" +
@@ -336,7 +336,7 @@ public class AssemblerTest {
                 "DCR L=>2D\n" +
                 "MVI L,12=>2E 12\n" +
                 "CMA=>2F\n" +
-                "NONE=>30\n" +
+                "NONE=>08\n" +
                 "LXI SP,2312=>31 12 23\n" +
                 "STA 2312=>32 12 23\n" +
                 "INX SP=>33\n" +
@@ -344,7 +344,7 @@ public class AssemblerTest {
                 "DCR M=>35\n" +
                 "MVI M,12=>36 12\n" +
                 "STC=>37\n" +
-                "NONE=>38\n" +
+                "NONE=>08\n" +
                 "DAD SP=>39\n" +
                 "LDA 2312=>3A 12 23\n" +
                 "DCX SP=>3B\n" +
@@ -491,7 +491,7 @@ public class AssemblerTest {
                 "RZ=>C8\n" +
                 "RET=>C9\n" +
                 "JZ 3412=>CA 12 34\n" +
-                "NONE=>CB\n" +
+                "NONE=>08\n" +
                 "CZ 3412=>CC 12 34\n" +
                 "CALL 3412=>CD 12 34\n" +
                 "ACI 12=>CE 12\n" +
@@ -505,11 +505,11 @@ public class AssemblerTest {
                 "SUI 12=>D6 12\n" +
                 "RST 2=>D7\n" +
                 "RC=>D8\n" +
-                "NONE=>D9\n" +
+                "NONE=>08\n" +
                 "JC 3412=>DA 12 34\n" +
                 "IN 12=>DB 12\n" +
                 "CC 3412=>DC 12 34\n" +
-                "NONE=>DD\n" +
+                "NONE=>08\n" +
                 "SBI 12=>DE 12\n" +
                 "RST 3=>DF\n" +
                 "RPO=>E0\n" +
@@ -525,7 +525,7 @@ public class AssemblerTest {
                 "JPE 3412=>EA 12 34\n" +
                 "XCHG=>EB\n" +
                 "CPE 3412=>EC 12 34\n" +
-                "NONE=>ED\n" +
+                "NONE=>08\n" +
                 "XRI 12=>EE 12\n" +
                 "RST 5=>EF\n" +
                 "RP=>F0\n" +
@@ -541,7 +541,7 @@ public class AssemblerTest {
                 "JM 3412=>FA 12 34\n" +
                 "EI=>FB\n" +
                 "CM 3412=>FC 12 34\n" +
-                "NONE=>FD\n" +
+                "NONE=>08\n" +
                 "CPI 12=>FE 12\n" +
                 "RST 7=>FF",
                 assembler::assembly);

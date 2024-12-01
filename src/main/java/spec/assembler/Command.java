@@ -85,7 +85,8 @@ public abstract class Command {
     public List<Integer> code(String... params) {
         List<Integer> result = new ArrayList<>(3);
         if (registers().isEmpty()) {
-            result.addAll(codes());
+            List<Integer> codes = codes();
+            result.add(codes.get(0));
         } else {
             result.add(codes().get(registers().indexOf(params[0])));
         }
