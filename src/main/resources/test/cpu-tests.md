@@ -18,43 +18,66 @@
   как в отладке тестов на эталонной машине.
 
 Список тестов и их исходных кодов:
-- `src/main/resources/test/8080ex1/8080EX1.COM`
+- [8080apofig.asm](../../../../src/main/resources/test/8080apofig/8080apofig.asm)
+  * Программа выполняет операции, записывает результаты в память для проверки контрольных сумм и использует 
+    XOR SHIFT для рандомизации регистров, улучшая тестовое покрытие.
+  * [x] Есть исходники.
+  * [x] Отлажен на эмуляторе.
+  * [x] Добавлен как интеграционный тест:
+    + [тут](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_apofig_8080_exerciser()`.
+    + [результаты](../../../../src/test/resources/testLik_diagnostic_apofig_8080_exerciser)
+
+- [8080ex1.asm](/src/main/resources/test/8080ex1/8080ex1.asm)
   * The basic CPU Excerciser. This file is a copy of the vanilla file.
   * [x] Есть исходники.
   * [ ] Отлажен на эмуляторе.
-  * [ ] Добавлен как интеграционный тест.
-- `src/main/resources/test/8080exer/8080EXER.COM`
+  * [x] Добавлен как интеграционный тест:
+    + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_zexlax_8080_exerciser()`
+    + [результаты](../../../../src/test/resources/testLik_diagnostic_zexlax_8080_exerciser)
+   
+- [8080EXER.COM](../../../../src/main/resources/test/8080exer/8080EXER.COM)
   * Vanilla basic CPU Excerciser having CRCs from the real KR580VM80A
     contributed by Alexander Timoshenko and Viacheslav Slavinsky.
   * [ ] Есть исходники.
   * [ ] Отлажен на эмуляторе.
   * [ ] Добавлен как интеграционный тест.
-- `src/main/resources/test/8080pre/8080pre.rks`
+  
+- [8080pre.asm](../../../../src/main/resources/test/8080pre/8080pre.asm)
   * 8080/8085 CPU Exerciser by Ian Bartholomew and Frank Cringles.
     The preliminary test.
   * [x] Есть исходники.
   * [x] Отлажен на эмуляторе.
-  * [x] Добавлен как интеграционный тест.
-- `src/main/resources/test/8085exer/8085EXER.MAC`
+  * [x] Добавлен как интеграционный тест:
+    + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_exerciser_preliminary()`
+    + [результаты](../../../../src/test/resources/testLik_diagnostic_exerciser_preliminary)
+  
+- [8085EXER.MAC](../../../../src/main/resources/test/8085exer/8085EXER.MAC)
   * Пока еще не изученный тест.
   * [x] Есть исходники.
   * [ ] Отлажен на эмуляторе.
   * [ ] Добавлен как интеграционный тест.
-- `src/main/resources/test/cputest/CPUTEST.COM`
+  
+- [CPUTEST.COM](../../../../src/main/resources/test/cputest/CPUTEST.COM)
   * Diagnostics II, version 1.2, CPU test by Supersoft Associates.
   * [ ] Есть исходники.
   * [ ] Отлажен на эмуляторе.
   * [ ] Добавлен как интеграционный тест.
-- `src/main/resources/test/hello-world/hello_world.krs`
+  
+- [hello_world.asm](../../../../src/main/resources/test/hello-world/hello_world.asm)
   * Тест выводящий надпись `HELLO WORLD` на экран в ЛИКе.
   * [x] Есть исходники.
   * [x] Отлажен на эмуляторе.
-  * [x] Добавлен как интеграционный тест.
-- `src/main/resources/test/test/test.rks`
+  * [x] Добавлен как интеграционный тест:
+    + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_helloWorld()`
+    + [результаты](../../../../src/test/resources/testLik_helloWorld)
+  
+- [test.asm](../../../../src/main/resources/test/test/test.asm)
   * 8080/8085 CPU Diagnostic, version 1.0, by Microcosm Associates.
   * [x] Есть исходники.
   * [x] Отлажен на эмуляторе.
-  * [x] Добавлен как интеграционный тест.
+  * [x] Добавлен как интеграционный тест:
+    + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_microcosm()`
+    + [результаты](../../../../src/test/resources/testLik_diagnostic_microcosm)
 
 Алгоритм компиляции:
 - Копируем исходник [сюда](https://svofski.github.io/pretty-8080-assembler/)

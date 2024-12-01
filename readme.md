@@ -152,10 +152,10 @@ Intro
 
 Дополнительная информация
 -----------------
-- [Список команд процессора](info/cpu-commands.md)
-- [Различные тесты CPU](src/main/resources/test/cpu-tests.md)
-- [Список релизов](release.md)
-- [Readme проекта (этот файл)](readme.md)
+- [Список команд процессора](./info/cpu-commands.md)
+- [Различные тесты CPU](./src/main/resources/test/cpu-tests.md)
+- [Список релизов](./release.md)
+- [Readme проекта (этот файл)](./readme.md)
 
 Предустановка окружения
 -----------------
