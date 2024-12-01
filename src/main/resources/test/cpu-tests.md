@@ -18,62 +18,62 @@
   как в отладке тестов на эталонной машине.
 
 Список тестов и их исходных кодов:
-- [8080apofig.asm](../../../../src/main/resources/test/8080apofig/8080apofig.asm)
+- [`src/main/resources/test/8080apofig`](../../../../src/main/resources/test/8080apofig)
   * Программа выполняет операции, записывает результаты в память для проверки контрольных сумм и использует 
     XOR SHIFT для рандомизации регистров, улучшая тестовое покрытие.
-  * [x] Есть исходники.
+  * [x] Есть [исходники](../../../../src/main/resources/test/8080apofig/8080apofig.asm).
   * [x] Отлажен на эмуляторе.
   * [x] Добавлен как интеграционный тест:
     + [тут](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_apofig_8080_exerciser()`.
     + [результаты](../../../../src/test/resources/testLik_diagnostic_apofig_8080_exerciser)
 
-- [8080ex1.asm](/src/main/resources/test/8080ex1/8080ex1.asm)
+- [`src/main/resources/test/8080ex1`](../../../../src/main/resources/test/8080ex1)
   * The basic CPU Excerciser. This file is a copy of the vanilla file.
-  * [x] Есть исходники.
+  * [x] Есть [исходники](../../../../src/main/resources/test/8080ex1/8080ex1.asm).
   * [ ] Отлажен на эмуляторе.
   * [x] Добавлен как интеграционный тест:
     + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_zexlax_8080_exerciser()`
     + [результаты](../../../../src/test/resources/testLik_diagnostic_zexlax_8080_exerciser)
    
-- [8080EXER.COM](../../../../src/main/resources/test/8080exer/8080EXER.COM)
+- [`src/main/resources/test/8080exer`](../../../../src/main/resources/test/8080exer)
   * Vanilla basic CPU Excerciser having CRCs from the real KR580VM80A
     contributed by Alexander Timoshenko and Viacheslav Slavinsky.
   * [ ] Есть исходники.
   * [ ] Отлажен на эмуляторе.
   * [ ] Добавлен как интеграционный тест.
   
-- [8080pre.asm](../../../../src/main/resources/test/8080pre/8080pre.asm)
+- [`src/main/resources/test/8080pre`](../../../../src/main/resources/test/8080pre)
   * 8080/8085 CPU Exerciser by Ian Bartholomew and Frank Cringles.
     The preliminary test.
-  * [x] Есть исходники.
+  * [x] Есть [исходники](../../../../src/main/resources/test/8080pre/8080pre.asm).
   * [x] Отлажен на эмуляторе.
   * [x] Добавлен как интеграционный тест:
     + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_exerciser_preliminary()`
     + [результаты](../../../../src/test/resources/testLik_diagnostic_exerciser_preliminary)
   
-- [8085EXER.MAC](../../../../src/main/resources/test/8085exer/8085EXER.MAC)
+- [`src/main/resources/test/8085exer`](../../../../src/main/resources/test/8085exer)
   * Пока еще не изученный тест.
-  * [x] Есть исходники.
+  * [x] Есть [исходники](../../../../src/main/resources/test/8085exer/8085EXER.MAC).
   * [ ] Отлажен на эмуляторе.
   * [ ] Добавлен как интеграционный тест.
   
-- [CPUTEST.COM](../../../../src/main/resources/test/cputest/CPUTEST.COM)
+- [`src/main/resources/test/cputest`](../../../../src/main/resources/test/cputest)
   * Diagnostics II, version 1.2, CPU test by Supersoft Associates.
   * [ ] Есть исходники.
   * [ ] Отлажен на эмуляторе.
   * [ ] Добавлен как интеграционный тест.
   
-- [hello_world.asm](../../../../src/main/resources/test/hello-world/hello_world.asm)
+- [`src/main/resources/test/hello-world`](../../../../src/main/resources/test/hello-world)
   * Тест выводящий надпись `HELLO WORLD` на экран в ЛИКе.
-  * [x] Есть исходники.
+  * [x] Есть [исходники](../../../../src/main/resources/test/hello-world/hello_world.asm).
   * [x] Отлажен на эмуляторе.
   * [x] Добавлен как интеграционный тест:
     + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_helloWorld()`
     + [результаты](../../../../src/test/resources/testLik_helloWorld)
   
-- [test.asm](../../../../src/main/resources/test/test/test.asm)
+- [`src/main/resources/test/test`](../../../../src/main/resources/test/test)
   * 8080/8085 CPU Diagnostic, version 1.0, by Microcosm Associates.
-  * [x] Есть исходники.
+  * [x] Есть [исходники](../../../../src/main/resources/test/test/test.asm).
   * [x] Отлажен на эмуляторе.
   * [x] Добавлен как интеграционный тест:
     + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_microcosm()`
@@ -118,5 +118,5 @@ public class IntegrationTest extends AbstractTest {
   * `cpu.log` - состояние процессора на момент окончания программы.
   * `end.png` - скриншот окна эмулятора на момент окончания программы.
 
-Зеркала репозиториев содержится в папке `src/main/resources/test/arch` 
+Зеркала репозиториев содержится в папке [`src/main/resources/test/arch`](../../../../src/main/resources/test/arch) 
 на случай потери доступа к оригинальным репозиториям.
