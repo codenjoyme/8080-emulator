@@ -15,8 +15,8 @@
 * [Тут](https://github.com/vpyk/emu80v4/blob/master/src/Cpu8080.cpp) - 
   спасибо [vpyk](https://github.com/vpyk) за вклад. 
   Отдельное спасибо [за эмулятор](https://emu80.org/distr/) - он очень помог,
-  как в отладке тестов на эталонной машине.
-
+  как в отладке тестов на эталонной машине так и в понимании работы процессора.  
+ 
 Список тестов и их исходных кодов:
 - [`src/main/resources/test/8080apofig`](../../../../src/main/resources/test/8080apofig)
   * Программа выполняет операции, записывает результаты в память для проверки контрольных сумм и использует 
@@ -80,11 +80,13 @@
     + [результаты](../../../../src/test/resources/testLik_diagnostic_microcosm)
 
 Алгоритм компиляции:
-- Копируем исходник [сюда](https://svofski.github.io/pretty-8080-assembler/)
-- Кликаем на кнопку BIN
-- Скаченный браузером файл с расширением `*.RKS` копируем в соответствующую 
-  тесту папку `src/main/resources/test/*`.
-- В классе `IntegrationTest` создаем тест:
+- На примере теста [`src/main/resources/test/test`](../../../../src/main/resources/test/test)
+- Копируем [исходник](../../../../src/main/resources/test/test/test.asm) 
+  [сюда](https://svofski.github.io/pretty-8080-assembler/)
+- Кликаем в приложении на кнопку `BIN`
+- Скаченный браузером файл с расширением `*.rks` копируем в соответствующую 
+  тесту папку [`src/main/resources/test/test`](../../../../src/main/resources/test/test).
+- В классе [`IntegrationTest`](../../../../src/test/java/spec/IntegrationTest.java) создаем тест:
 ```java
 public class IntegrationTest extends AbstractTest {
     @Test
@@ -113,10 +115,21 @@ public class IntegrationTest extends AbstractTest {
 }
 ```
 - Запускаем его и смотрим результат выполнения в папке 
-  `test/resources/testLik_diagnostic_microcosm/*` - там будет:
+  [`test/resources/testLik_diagnostic_microcosm`](../../../../src/test/resources/testLik_diagnostic_microcosm) - там будет:
   * `trace.log` - трассировка выполнения программы на определенном уровне вложенности.
   * `cpu.log` - состояние процессора на момент окончания программы.
   * `end.png` - скриншот окна эмулятора на момент окончания программы.
+
+Отладка теста на Emu80:
++ После запуска приложения и выбора платформы `ЛИК`
++ Выбираем меню `File` -> `Load` -> `Open file...`
++ Выбираем файл с тестом и нажимаем `Open`
++ Выбираем меню `Platform` -> `Debug` (или нажимаем `Alt-D`) чтобы открыть debug окно
++ Кликаем дважды по адресу команды и выбираем `0000` затем `Enter`
++ Кликаем дважды слева от адреса команды чтобы появился красный breakpoint кружок
++ Выбираем меню `Debug` -> `Run` (или нажимаем `F5`) и ждем пока программа не остановится на breakpoint
++ Исследуем состояние процессора и памяти, смотрим трассировку выполнения программы сравнивая 
+  ее с трассировкой из теста в `trace.log`
 
 Зеркала репозиториев содержится в папке [`src/main/resources/test/arch`](../../../../src/main/resources/test/arch) 
 на случай потери доступа к оригинальным репозиториям.
