@@ -631,7 +631,7 @@ ld8bd:    db      0ffh                                         ; flag mask
 
                                                                ; third (22 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0ffh,0,0,0,0,0                                    ; memop,hliy,hlix,hl,de,bc
+          dw      0ffh,0,0,0,0,0                               ; memop,hliy,hlix,hl,de,bc
           db      0d7h,-1                                      ; flags,acc
           dw      0                                            ; sp
 
@@ -750,8 +750,8 @@ stabd:    db       0ffh                                        ; flag mask
           dw      0                                            ; sp
 
                                                                ; third (24 cycles)
-          db      0,0,0,0                                     ; insn
-          dw      -1,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          db      0,0,0,0                                      ; insn
+          dw      -1,0,0,0,0,0                                 ; memop,hliy,hlix,hl,de,bc
           db      0,-1                                         ; flags,acc
           dw      0                                            ; sp
 
@@ -1251,7 +1251,7 @@ spsav:  ds      2                 ; saved stack pointer
 
 ; display hex string (pointer in hl, byte count in b)
 hexstr: mov     a,m
-        call    pchar
+        call    byteo
         inx     h
         dcr     b
         jnz     hexstr
@@ -1264,7 +1264,7 @@ phex8:  push    psw
         push    h
         mvi     b,4
 ph8lp:  mov     a,m
-        call    pchar
+        call    byteo
         inx     h
         dcr     b
         jnz     ph8lp
