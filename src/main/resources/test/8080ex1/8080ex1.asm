@@ -184,15 +184,31 @@ tests:
 ;!        endm
 
 ; add hl,<bc,de,hl,sp> (19,456 cycles)
-add16:  db        0ffh                ; flag mask
-;!        tstr    9,0c4a5h,0c4c7h,0d226h,0a050h,058eah,08566h,0c6h,0deh,09bc9h
-;!        tstr    030h,0,0,0,0f821h,0,0,0,0,0                  ; (512 cycles)
-;!        tstr    0,0,0,0,-1,-1,-1,0d7h,0,-1                   ; (38 cycles)
+add16:    db        0ffh                                       ; flag mask
+
+                                                               ; first
+          db      09h,0,0,0                                    ; insn
+          dw      0c4a5h,0c4c7h,0d226h,0a050h,058eah,08566h    ; memop,hliy,hlix,hl,de,bc
+          db      0c6h,0deh                                    ; flags,acc
+          dw      09bc9h                                       ; sp
+
+                                                               ; second (512 cycles)
+          db      030h,0,0,0                                   ; insn
+          dw      0000h, 0000h, 0000h, 0000h, 0f821h, 0000h    ; memop,hliy,hlix,hl,de,bc
+          db      0,0                                          ; flags,acc
+          dw      0000h                                        ; sp
+
+                                                               ; third (38 cycles)
+          db      0,0,0,0                                      ; insn
+          dw      0,0,0,-1,-1,-1                               ; memop,hliy,hlix,hl,de,bc
+          db      0d7h,0                                       ; flags,acc
+          dw      -1                                           ; sp
+
           db      014h, 047h, 04bh, 0a6h                       ; expected crc
-          db      'dad <b,d,h,sp>...............$'
+          db      'DAD <B,D,H,SP>...............$'
 
 ; aluop a,nn (28,672 cycles)
-alu8i:  db        0ffh                ; flag mask
+alu8i:    db        0ffh                ; flag mask
 ;!        tstr    0c6h,09140h,07e3ch,07a67h,0df6dh,05b61h,00b29h,010h,066h,085b2h
 ;!        tstr    038h,0,0,0,0,0,0,0,-1,0                      ; (2048 cycles)
 ;!        tstr    <0,-1>,0,0,0,0,0,0,0d7h,0,0                  ; (14 cycles)

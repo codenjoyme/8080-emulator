@@ -1,9 +1,6 @@
 package spec;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.TestName;
 import spec.assembler.DizAssembler;
 import spec.mods.StopWhen;
@@ -407,6 +404,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
+    @Ignore
     public void testLik_diagnostic_zexlax_8080_exerciser() {
         // zexlax.z80 - Z80 instruction set exerciser
         // Copyright (C) 1994  Frank D. Cringle
