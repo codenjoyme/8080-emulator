@@ -4,7 +4,7 @@ import spec.Cpu;
 import spec.Range;
 import spec.assembler.Command;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
@@ -34,8 +34,8 @@ public class WhenPC extends When {
                 trigger);
     }
 
-    public WhenPC(List<Integer> commandCodes, Consumer<Cpu> trigger) {
-        this((cpu, command) -> commandCodes.equals(cpu.commandBites()),
+    public WhenPC(int[] commandCodes, Consumer<Cpu> trigger) {
+        this((cpu, command) -> Arrays.equals(commandCodes, cpu.commandBites()),
                 trigger);
     }
 }

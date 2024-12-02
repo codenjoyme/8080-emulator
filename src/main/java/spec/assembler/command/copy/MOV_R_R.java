@@ -3,9 +3,7 @@ package spec.assembler.command.copy;
 import spec.Registry;
 import spec.assembler.Command;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * MOV R,R'    [40-7F]
@@ -37,7 +35,7 @@ public class MOV_R_R extends Command {
     }
 
     @Override
-    public List<Integer> code(String... params) {
+    public int[] code(String... params) {
         int reg1Index = registers().indexOf(params[0]);
         int reg2Index = registers().indexOf(params[1]);
         int code = 0x40 | reg2Index | reg1Index << 3;
@@ -45,7 +43,7 @@ public class MOV_R_R extends Command {
             throw new IllegalArgumentException(
                     "There is no MVI M,M in i8080, only HLT with this code");
         }
-        return Arrays.asList(code);
+        return new int[]{code};
     }
 
     @Override
@@ -64,9 +62,9 @@ public class MOV_R_R extends Command {
     }
 
     @Override
-    public String print(List<Integer> bites, boolean canonical) {
+    public String print(int[] bites, boolean canonical) {
         return replace(super.print(bites, canonical), "(B|C|D|E|H|L|M|A)",
-                        registers().get(rindex2(bites.get(0))));
+                        registers().get(rindex2(bites[0])));
     }
 
     @Override

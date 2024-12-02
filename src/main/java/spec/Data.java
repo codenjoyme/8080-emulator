@@ -1,8 +1,5 @@
 package spec;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static spec.WordMath.*;
 
 public interface Data {
@@ -50,15 +47,15 @@ public interface Data {
         return hi | lo;
     }
 
-    default List<Integer> read3x8(int addr) {
-        List<Integer> result = new ArrayList<>(3);
-        result.add(read8(addr));
+    default int[] read3x8(int addr) {
+        int[] result = new int[3];
+        result[0] = read8(addr);
 
         addr = inc16(addr);
-        result.add(read8(addr));
+        result[1] = read8(addr);
 
         addr = inc16(addr);
-        result.add(read8(addr));
+        result[2] = read8(addr);
         return result;
     }
 }

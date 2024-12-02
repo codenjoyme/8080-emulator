@@ -6,9 +6,6 @@ import spec.Logger;
 import spec.Range;
 import spec.assembler.Command;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import static spec.WordMath.*;
 import static spec.mods.Event.*;
 import static spec.mods.WhereIsData.Type.*;
@@ -164,13 +161,13 @@ public class WhereIsData implements CpuMod {
         }
 
         public String printCommand(boolean canonical) {
-            List<Integer> bites = new LinkedList<>();
-            bites.add(code);
+            int[] bites = new int[command.size()];
+            bites[0] = code;
+            if (command.size() >= 2) {
+                bites[1] = lo(data);
+            }
             if (command.size() == 3) {
-                bites.add(lo(data));
-                bites.add(hi(data));
-            } else if (command.size() == 2) {
-                bites.add(lo(data));
+                bites[2] = hi(data);
             }
             return command.print(bites, canonical);
         }

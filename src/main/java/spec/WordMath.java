@@ -1,7 +1,6 @@
 package spec;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 public class WordMath {
@@ -41,12 +40,12 @@ public class WordMath {
         return hex(bite, 4);
     }
 
-    public static List<Integer> hex8(String bites) {
-        return new LinkedList<Integer>() {{
-            for (int i = 0; i < bites.length() / 2; i++) {
-                add(Integer.parseInt(bites.substring(i * 2, (i + 1) * 2), 16));
-            }
-        }};
+    public static int[] hex8(String bites) {
+        int[] result = new int[bites.length() / 2];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = Integer.parseInt(bites.substring(i * 2, (i + 1) * 2), 16);
+        }
+        return result;
     }
 
     public static List<Integer> reverse(List<Integer> bites) {
@@ -72,7 +71,26 @@ public class WordMath {
         return result.toString();
     }
 
+    public static String hex(int[] bites) {
+        StringBuilder result = new StringBuilder();
+        hex(result, bites);
+        return result.toString();
+    }
+
+    // TODO remove code duplicate
     public static void hex(StringBuilder result, List<Integer> bites) {
+        boolean first = true;
+        for (Integer bite : bites) {
+            if (first) {
+                first = false;
+            } else {
+                result.append(' ');
+            }
+            result.append(hex8(bite));
+        }
+    }
+
+    public static void hex(StringBuilder result, int[] bites) {
         boolean first = true;
         for (Integer bite : bites) {
             if (first) {

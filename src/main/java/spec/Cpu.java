@@ -3,7 +3,7 @@ package spec;
 import spec.assembler.Assembler;
 import spec.assembler.Command;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -103,10 +103,10 @@ public class Cpu extends Registry {
         enabled = true;
     }
 
-    public List<Integer> commandBites() {
+    public int[] commandBites() {
         int addr = PC();
-        List<Integer> bites = data.read3x8(addr);
-        Command command = asm.find(bites.get(0));
-        return bites.subList(0, command.size());
+        int[] bites = data.read3x8(addr);
+        Command command = asm.find(bites[0]);
+        return Arrays.copyOf(bites, command.size());
     }
 }

@@ -5,14 +5,11 @@ import spec.Registry;
 import spec.WordMath;
 import spec.assembler.command.system.NONE;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.stream.Collectors.toList;
 import static spec.Registry._PSW;
 import static spec.Registry._SP;
 import static spec.WordMath.*;
@@ -70,7 +67,7 @@ public abstract class Command {
                         codes, registers, this.getClass().getSimpleName()));
     }
 
-    public List<Integer> parse(String command) {
+    public int[] parse(String command) {
         Matcher matcher = regexp.matcher(command);
         if (!matcher.matches()) {
             return null;
@@ -82,21 +79,24 @@ public abstract class Command {
         return code(params);
     }
 
-    public List<Integer> code(String... params) {
-        List<Integer> result = new ArrayList<>(3);
+    public int[] code(String... params) {
+        int[] result = new int[size()];
         if (registers().isEmpty()) {
             List<Integer> codes = codes();
-            result.add(codes.get(0));
+            result[0] = codes.get(0);
         } else {
-            result.add(codes().get(registers().indexOf(params[0])));
+            result[0] = codes().get(registers().indexOf(params[0]));
         }
         if (size() == 3) {
             String bites = params.length == 1 ? params[0] : params[1];
-            result.addAll(reverse(hex8(bites)));
+            int[] arr = hex8(bites);
+            result[2] = arr[0];
+            result[1] = arr[1];
         }
         if (size() == 2) {
             String param = registers().isEmpty() ? params[0] : params[1];
-            result.addAll(hex8(param));
+            int[] arr = hex8(param);
+            result[1] = arr[0];
         }
         return result;
     }
@@ -161,26 +161,26 @@ public abstract class Command {
         return false;
     }
 
-    public List<Integer> take(int[] bites, int index) {
-        List<Integer> result = new LinkedList<>();
+    public int[] take(int[] bites, int index) {
+        int[] result = new int[size()];
         for (int i = index; i < index + size(); i++) {
             try {
-                result.add(bites[i]);
+                result[i - index] = bites[i];
             } catch (ArrayIndexOutOfBoundsException e) {
                 throw new RuntimeException(
                         String.format("Needed %s bites, but only %s found for command %s: [%s]",
-                                size(), result.size(), name,
-                                WordMath.hex(Arrays.stream(bites).boxed().collect(toList()))), e);
+                                size(), result.length, name,
+                                WordMath.hex(bites)), e);
             }
         }
         return result;
     }
 
-    public String print(List<Integer> bites, boolean canonical) {
+    public String print(int[] bites, boolean canonical) {
         String result = pattern();
         switch (size()) {
             case 3: {
-                String word = hex16(merge(bites.get(2), bites.get(1)));
+                String word = hex16(merge(bites[2], bites[1]));
                 if (canonical) {
                     word = '0' + word + 'h';
                 }
@@ -188,7 +188,7 @@ public abstract class Command {
                 break;
             }
             case 2: {
-                String bite = hex8(bites.get(1));
+                String bite = hex8(bites[1]);
                 if (canonical) {
                     bite = '0' + bite + 'h';
                 }
@@ -197,11 +197,11 @@ public abstract class Command {
             }
             default: {
                 result = replace(result, "(.)",  // 1 byte RST command
-                        String.valueOf(rindex(bites.get(0))));
+                        String.valueOf(rindex(bites[0])));
             }
         }
         if (!registers().isEmpty()) {
-            String reg = registers().get(rindex(bites.get(0)));
+            String reg = registers().get(rindex(bites[0]));
             result = replace(result, "(B|D)", reg);
             result = replace(result, "(B|C|D|E|H|L|M|A)", reg);
             result = replace(result, "(B|D|H|SP)", reg);
