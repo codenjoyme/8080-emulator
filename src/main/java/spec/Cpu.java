@@ -106,8 +106,16 @@ public class Cpu extends Registry {
 
     public Bites commandBites() {
         int addr = PC();
-        Bites bites = data.read3x8(addr);
-        Command command = asm.find(bites.get(0));
-        return bites.subset(command.size());
+        int commandBite = data.read8(addr);
+        Command command = asm.find(commandBite);
+        if (command.size() == 1) {
+            return Bites.of(commandBite);
+        }
+        int lo = data.read8(addr + 1);
+        if (command.size() == 2) {
+            return Bites.of(commandBite, lo);
+        }
+        int hi = data.read8(addr + 2);
+        return Bites.of(commandBite, lo, hi);
     }
 }

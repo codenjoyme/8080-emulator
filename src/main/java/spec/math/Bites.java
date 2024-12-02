@@ -11,12 +11,16 @@ public class Bites implements Iterable<Integer> {
         data = new int[length];
     }
 
-    public Bites(int... value) {
-        this.data = value;
+    private Bites(int[] data) {
+        this.data = data;
     }
 
     public Bites() {
         this(0);
+    }
+
+    public static Bites of(int... data) {
+        return new Bites(data);
     }
 
     public int[] array() {

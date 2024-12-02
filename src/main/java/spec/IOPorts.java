@@ -28,10 +28,10 @@ public class IOPorts {
     public static final int RgRGB = 0xFFF8;  // порт контроллера цвета
 
     // маски битов
-    private final Bites bit = new Bites(0x00FE, 0x00FD, 0x00FB, 0x00F7, 0x00EF, 0x00DF, 0x00BF, 0x007F);
+    private final Bites bit = Bites.of(0x00FE, 0x00FD, 0x00FB, 0x00F7, 0x00EF, 0x00DF, 0x00BF, 0x007F);
 
     // биты установки
-    private final Bites msk = new Bites(0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080);
+    private final Bites msk = Bites.of(0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080);
 
     // массив матрицы клавиш "Специалиста" ( true - нажата, false - отпущена)
     // 12 x 6 + Shift + Reset
