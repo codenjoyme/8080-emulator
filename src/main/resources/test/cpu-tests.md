@@ -84,7 +84,7 @@
 - Копируем [исходник](../../../../src/main/resources/test/test/test.asm) 
   [сюда](https://svofski.github.io/pretty-8080-assembler/)
 - Кликаем в приложении на кнопку `BIN`
-- Скаченный браузером файл с расширением `*.rks` копируем в соответствующую 
+- Скаченный браузером файл с расширением `*.mem` копируем в соответствующую 
   тесту папку [`src/main/resources/test/test`](../../../../src/main/resources/test/test).
 - В классе [`IntegrationTest`](../../../../src/test/java/spec/IntegrationTest.java) создаем тест:
 ```java

@@ -19,13 +19,10 @@
 ;
 ;******************************************************************************
 
-        .PROJECT test.rks
+        .PROJECT test.mem
+        .tape специалистъ-mon
         CPU     8080
-; This is such a crutch in order to generate a valid rks file.
-; This program will be launched from address 0004.
         .ORG    00000h
-        DB      (start & 0FFh), (start >> 8)          ; START ADDR IN MEMORY
-        DB      ((end - 1) & 0FFh), ((end - 1) >> 8)  ; END ADDR IN MEMORY
 
 start:  LXI     H,hello
         CALL    msg
