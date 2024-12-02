@@ -1,6 +1,8 @@
 package spec;
 
-import static spec.WordMath.*;
+import spec.math.WordMath;
+
+import static spec.math.WordMath.*;
 
 public interface Reg {
 

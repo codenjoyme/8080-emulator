@@ -8,7 +8,7 @@ import java.util.List;
 
 import static spec.Constants.x0F;
 import static spec.Registry.T7s;
-import static spec.WordMath.lo;
+import static spec.math.WordMath.lo;
 import static spec.assembler.Parity.parity;
 
 public class INR_R extends Command {

@@ -3,7 +3,7 @@ package spec;
 import spec.mods.Modifiable;
 
 import static spec.Constants.*;
-import static spec.WordMath.*;
+import static spec.math.WordMath.*;
 import static spec.mods.Event.READ_MEM;
 import static spec.mods.Event.WRITE_MEM;
 

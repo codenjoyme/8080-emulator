@@ -7,7 +7,7 @@ import static java.awt.Color.BLACK;
 import static java.awt.Color.WHITE;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static spec.Constants.SCREEN;
-import static spec.WordMath.BITE;
+import static spec.math.WordMath.BITE;
 
 public class Video {
 

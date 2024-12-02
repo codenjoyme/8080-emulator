@@ -6,7 +6,7 @@ import spec.Logger;
 import spec.Range;
 import spec.assembler.Command;
 
-import static spec.WordMath.*;
+import static spec.math.WordMath.*;
 import static spec.mods.Event.*;
 import static spec.mods.WhereIsData.Type.*;
 

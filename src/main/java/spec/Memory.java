@@ -1,6 +1,6 @@
 package spec;
 
-import static spec.WordMath.*;
+import static spec.math.WordMath.*;
 
 public class Memory {
 

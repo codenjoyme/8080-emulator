@@ -8,7 +8,7 @@ import spec.assembler.Assembler;
 import java.io.File;
 
 import static spec.Constants.*;
-import static spec.WordMath.hex8;
+import static spec.math.WordMath.hex8;
 import static spec.assembler.Assembler.asString;
 import static spec.stuff.SmartAssert.assertEquals;
 

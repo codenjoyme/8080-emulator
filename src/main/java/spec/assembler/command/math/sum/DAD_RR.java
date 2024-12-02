@@ -6,7 +6,7 @@ import spec.assembler.Command;
 import java.util.List;
 
 import static spec.Constants.x10000;
-import static spec.WordMath.word;
+import static spec.math.WordMath.word;
 
 public class DAD_RR extends Command {
 

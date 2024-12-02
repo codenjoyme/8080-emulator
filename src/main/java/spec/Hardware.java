@@ -11,7 +11,7 @@ import java.net.URL;
 import static spec.Constants.*;
 import static spec.KeyCode.END;
 import static spec.KeyCode.ENTER;
-import static spec.WordMath.hex16;
+import static spec.math.WordMath.hex16;
 
 public class Hardware {
 

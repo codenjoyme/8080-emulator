@@ -6,7 +6,7 @@ import spec.assembler.Command;
 
 import java.util.List;
 
-import static spec.WordMath.BITE;
+import static spec.math.WordMath.BITE;
 
 // TODO test me
 public class CMA extends Command {

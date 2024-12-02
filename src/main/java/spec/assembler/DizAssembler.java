@@ -6,7 +6,7 @@ import spec.mods.WhereIsData;
 
 import java.util.*;
 
-import static spec.WordMath.*;
+import static spec.math.WordMath.*;
 import static spec.mods.WhereIsData.Type.*;
 import static spec.mods.WhereIsData.markCommand;
 

@@ -6,7 +6,7 @@ import spec.assembler.Command;
 import java.util.List;
 
 import static spec.Constants.x80;
-import static spec.WordMath.lo;
+import static spec.math.WordMath.lo;
 
 public class RLC extends Command {
 

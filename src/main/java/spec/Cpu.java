@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static spec.WordMath.hex8;
+import static spec.math.WordMath.hex8;
 import static spec.mods.Event.CHANGE_PC;
 
 public class Cpu extends Registry {

@@ -2,7 +2,7 @@ package spec.assembler;
 
 import spec.Reg;
 import spec.Registry;
-import spec.WordMath;
+import spec.math.WordMath;
 import spec.assembler.command.system.NONE;
 
 import java.util.Arrays;
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 import static spec.Registry._PSW;
 import static spec.Registry._SP;
-import static spec.WordMath.*;
+import static spec.math.WordMath.*;
 
 public abstract class Command {
 

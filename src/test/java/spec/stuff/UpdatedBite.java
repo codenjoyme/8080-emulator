@@ -1,7 +1,7 @@
 package spec.stuff;
 
-import static spec.WordMath.hex16;
-import static spec.WordMath.hex8;
+import static spec.math.WordMath.hex16;
+import static spec.math.WordMath.hex8;
 
 public class UpdatedBite {
 

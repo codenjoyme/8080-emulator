@@ -24,8 +24,8 @@ import spec.assembler.command.system.*;
 import java.util.LinkedList;
 import java.util.List;
 
-import static spec.WordMath.hex;
-import static spec.WordMath.toArray;
+import static spec.math.WordMath.hex;
+import static spec.math.WordMath.toArray;
 
 public class Assembler {
 

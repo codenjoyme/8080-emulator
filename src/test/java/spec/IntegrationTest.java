@@ -18,8 +18,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
-import static spec.WordMath.hex16;
-import static spec.WordMath.hex8;
+import static spec.math.WordMath.hex16;
+import static spec.math.WordMath.hex8;
 import static spec.stuff.FileAssert.write;
 import static spec.stuff.SmartAssert.assertEquals;
 

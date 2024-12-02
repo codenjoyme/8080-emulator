@@ -6,7 +6,7 @@ import spec.mods.CallDeep;
 import java.util.LinkedList;
 import java.util.List;
 
-import static spec.WordMath.*;
+import static spec.math.WordMath.*;
 
 public class CpuDebug {
 

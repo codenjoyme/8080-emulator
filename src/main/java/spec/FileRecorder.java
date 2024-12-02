@@ -8,7 +8,7 @@ import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static spec.WordMath.hex8;
+import static spec.math.WordMath.hex8;
 
 public class FileRecorder {
 

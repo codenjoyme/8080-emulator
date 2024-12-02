@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
-import static spec.WordMath.BITE;
-import static spec.WordMath.merge;
+import static spec.math.WordMath.BITE;
+import static spec.math.WordMath.merge;
 
 public class RomLoader {
 

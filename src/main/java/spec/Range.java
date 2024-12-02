@@ -1,7 +1,7 @@
 package spec;
 
-import static spec.WordMath.hex16;
-import static spec.WordMath.word;
+import static spec.math.WordMath.hex16;
+import static spec.math.WordMath.word;
 
 public class Range {
 
