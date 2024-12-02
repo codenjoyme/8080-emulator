@@ -27,6 +27,6 @@ public class HLT extends Command {
         int tacts = cpu.tact();
         int haltsToInterrupt = (-tacts - 1) / 4 + 1;
         cpu.tact(tacts + haltsToInterrupt * 4);
-        cpu.disabled();
+        cpu.disable();
     }
 }

@@ -33,7 +33,7 @@ public class Cpu extends Registry {
     @Override
     public void reset() {
         super.reset();
-        enabled();
+        enable();
         tick = 0;
     }
 
@@ -84,7 +84,7 @@ public class Cpu extends Registry {
             tact += command.ticks(bite);
         }
 
-        enabled();
+        enable();
     }
 
     public Assembler asm() {
@@ -95,11 +95,11 @@ public class Cpu extends Registry {
         return debug;
     }
 
-    public void disabled() {
+    public void disable() {
         enabled = false;
     }
 
-    public void enabled() {
+    public void enable() {
         enabled = true;
     }
 

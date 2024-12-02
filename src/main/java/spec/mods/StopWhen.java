@@ -5,10 +5,10 @@ import spec.Cpu;
 public class StopWhen extends WhenPC {
 
     public StopWhen(int addr) {
-        super(addr, Cpu::disabled);
+        super(addr, Cpu::disable);
     }
 
     public StopWhen(String commandName) {
-        super(commandName, Cpu::disabled);
+        super(commandName, Cpu::disable);
     }
 }
