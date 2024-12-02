@@ -419,7 +419,7 @@ public class IntegrationTest extends AbstractTest {
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(4);
         // последняя команда программы перед выходом в монитор
-        cpu.modAdd(new StopWhen(asm.parseCommand("JMP 0020")));
+        cpu.modAdd(new StopWhen(asm.parseCommand("JMP C800")));
         // если хочется подебажить внутри
         AtomicInteger counter = new AtomicInteger();
         cpu.modAdd(new WhenPC(range, cpu -> {
