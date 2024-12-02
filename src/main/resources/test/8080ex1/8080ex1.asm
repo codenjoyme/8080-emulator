@@ -180,7 +180,7 @@ add16:    DB      0FFh                                         ; flag mask
           DW      -1                                           ; SP
 
 ;crc      DB      014h, 047h, 04Bh, 0A6h                       ; original expected crc
-          DB      048h, 08Bh, 07Fh, 0DAh                       ; current expected crc
+          DB      048h, 08Bh, 07Fh, 0DAh                       ; current expected crc from emu80
           DB      'DAD <B,D,H,SP>...............$'
 
 ; ALUOP NN (28,672 cycles)
@@ -228,7 +228,8 @@ alu8r:    DB      0FFh                                         ; flag mask
           DB      0D7h,0                                       ; flags,acc
           DW      0                                            ; SP
 
-          DB      0cFh, 076h, 02Ch, 086h                       ; expected crc
+;crc      DB      0cFh, 076h, 02Ch, 086h                       ; original expected crc
+          DB      075h, 053h, 0A0h, 026h                       ; current expected crc from emu80
           DB      'ALUOP <B,C,D,E,H,L,M,A>......$'
 
 ; <DAA,CMA,STC,CMC>
