@@ -32,8 +32,6 @@ public class CMA extends Command {
     private void cma(Registry r, Reg reg) {
         int ans = reg.get() ^ BITE;
 
-        r.th(true);
-
         reg.set(ans);
     }
 }
