@@ -14,6 +14,7 @@ import spec.stuff.FileAssert;
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
@@ -416,11 +417,16 @@ public class IntegrationTest extends AbstractTest {
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(4);
         // последняя команда программы перед выходом в монитор
-        cpu.modAdd(new StopWhen("JMP 0020"));
+        cpu.modAdd(new StopWhen("JMP C800"));
         // если хочется подебажить внутри
+        AtomicInteger counter = new AtomicInteger();
         cpu.modAdd(new WhenPC(range, cpu -> {
-            String log = cpu.debug().log(0);
-            System.out.println(log);
+            // JMP на начало нового теста
+            if (cpu.rPC.get() == 0x002A) {
+                String name = "test-" + counter.incrementAndGet();
+                assertScreen(name);
+                System.out.println("Test '" + name + "' done");
+            }
         }));
 
         // when
