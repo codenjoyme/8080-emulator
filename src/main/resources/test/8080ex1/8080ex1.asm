@@ -517,7 +517,8 @@ incm:     DB      0FFh                                         ; flag mask
           DB      0D7h,0                                       ; flags,acc
           DW      0                                            ; SP
 
-          DB      092h,0e9h,063h,0bdh                          ; expected crc
+;crc      DB      092h,0e9h,063h,0bdh                          ; original expected crc
+          DB      0A0h, 04Ah, 080h, 063h                       ; current expected crc from emu80
           DB      '<INR,DCR> M..................$'
 
 ; <INX,DCX> SP (1536 cycles)
@@ -533,7 +534,7 @@ incsp:    DB      0FFh                                         ; flag mask
           DB      008h,0,0,0                                   ; insn
           DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
           DB      0,0                                          ; flags,acc
-          DW      0,0f821h                                     ; SP
+          DW      0f821h                                       ; SP
 
                                                                ; third (6 cycles)
           DB      0,0,0,0                                      ; insn
@@ -637,8 +638,10 @@ ld8bd:    DB      0FFh                                         ; flag mask
           DB      0D7h,-1                                      ; flags,acc
           DW      0                                            ; SP
 
-          DB      02Bh,082h,01Dh,05fh                          ; expected crc
-          DB      'LDAX <B,D>...................$'             ; descriptive tag
+;crc      DB      02Bh,082h,01Dh,05fh                          ; original expected crc
+          DB      033h, 0F7h, 07Ah, 039h                       ; current expected crc from emu80
+                                                               ; new line is because of new screen if there is no errors
+          DB      00Dh, 00Ah, 00Dh, 00Ah, 'LDAX <B,D>...............$'   ; descriptive tag
 
 ; MVI <B,C,D,E,H,L,M,A>,NN (64 cycles)
 ld8im:    DB      0FFh                                         ; flag mask
@@ -685,7 +688,8 @@ ld8rr:    DB      0FFh                                         ; flag mask
           DB      0D7h,-1                                      ; flags,acc
           DW      0                                            ; SP
 
-          DB      010h,0b5h,08Ch,0eeh                          ; expected crc
+;crc      DB      010h,0b5h,08Ch,0eeh                          ; original expected crc
+          DB      0E8h, 076h, 00Ch, 076h                       ; current expected crc from emu80
           DB      'MOV <BCDEHLA>,<BCDEHLA>......$'             ; descriptive tag
 
 ; STA NNNN / LDA NNNN (44 cycles)
@@ -757,7 +761,8 @@ stabd:    DB       0FFh                                        ; flag mask
           DB      0,-1                                         ; flags,acc
           DW      0                                            ; SP
 
-          DB      02Bh,004h,071h,0e9h                          ; expected crc
+;crc      DB      02Bh,004h,071h,0e9h                          ; original expected crc
+          DB      0DAh, 0DDh, 00Ah, 05Dh                       ; current expected crc from emu80
           DB      'STAX <B,D>...................$'             ; descriptive tag
 
 ; start test pointed to by (hl)
