@@ -403,7 +403,6 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    @Ignore
     public void testLik_diagnostic_zexlax_8080_exerciser() {
         // zexlax.z80 - Z80 instruction set exerciser
         // Copyright (C) 1994  Frank D. Cringle
@@ -413,7 +412,7 @@ public class IntegrationTest extends AbstractTest {
         Lik.loadRom(base, roms);
         Range range = hard.loadData(CPU_TESTS_RESOURCES + "8080ex1/8080ex1.rks", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
-        debug.enable(range);
+        // debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(4);
         // последняя команда программы перед выходом в монитор
