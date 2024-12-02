@@ -10,6 +10,7 @@
         .project hello-world.mem
         .tape специалистъ-mon
         CPU     8080
+        .ORG    00000h
 
 start:  LXI     H,hello
         CALL    msg

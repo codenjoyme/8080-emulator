@@ -9,6 +9,7 @@
         .PROJECT 8080apofig.mem
         .tape специалистъ-mon
         CPU     8080
+        .ORG    00000h
 
 begin:  JMP     start
 

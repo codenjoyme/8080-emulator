@@ -42,6 +42,7 @@
         .PROJECT 8080pre.mem
         .tape специалистъ-mon
         CPU     8080
+        .ORG    00000h
 
 start:  LXI     H, mssg
         CALL    msg
