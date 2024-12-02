@@ -335,9 +335,8 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_helloWorld() {
         // given
         Lik.loadRom(base, roms);
-        hard.loadData(CPU_TESTS_RESOURCES + "hello-world/hello_world.rks", Lik.PLATFORM);
+        Range range = hard.loadData(CPU_TESTS_RESOURCES + "hello-world/hello_world.rks", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
-        Range range = new Range(0x0000, 0x0100);
         debug.enable(range);
         // последняя команда перед выходом в монитор
         cpu.modAdd(new StopWhen("JMP C800"));
@@ -361,9 +360,9 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_diagnostic_microcosm() {
         // given
         Lik.loadRom(base, roms);
-        hard.loadData(CPU_TESTS_RESOURCES + "test/test.rks", Lik.PLATFORM);
+        Range range = hard.loadData(CPU_TESTS_RESOURCES + "test/test.rks", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
-        debug.enable(new Range(0x0000, 0x0600));
+        debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(3);
         // последняя команда программы перед выходом в монитор
@@ -386,9 +385,9 @@ public class IntegrationTest extends AbstractTest {
 
         // given
         Lik.loadRom(base, roms);
-        hard.loadData(CPU_TESTS_RESOURCES + "8080pre/8080pre.rks", Lik.PLATFORM);
+        Range range = hard.loadData(CPU_TESTS_RESOURCES + "8080pre/8080pre.rks", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
-        debug.enable(new Range(0x0000, 0x0400));
+        debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(3);
         // последняя команда программы перед выходом в монитор
@@ -412,14 +411,13 @@ public class IntegrationTest extends AbstractTest {
 
         // given
         Lik.loadRom(base, roms);
-        hard.loadData(CPU_TESTS_RESOURCES + "8080ex1/8080ex1.rks", Lik.PLATFORM);
+        Range range = hard.loadData(CPU_TESTS_RESOURCES + "8080ex1/8080ex1.rks", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
-        Range range = new Range(0x0000, 0x0900);
         debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(4);
         // последняя команда программы перед выходом в монитор
-        cpu.modAdd(new StopWhen("JMP C800"));
+        cpu.modAdd(new StopWhen("JMP 0020"));
         // если хочется подебажить внутри
         cpu.modAdd(new WhenPC(range, cpu -> {
             String log = cpu.debug().log(0);
@@ -439,9 +437,8 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_diagnostic_apofig_8080_exerciser() {
         // given
         Lik.loadRom(base, roms);
-        hard.loadData(CPU_TESTS_RESOURCES + "8080apofig/8080apofig.rks", Lik.PLATFORM);
+        Range range = hard.loadData(CPU_TESTS_RESOURCES + "8080apofig/8080apofig.rks", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
-        Range range = new Range(0x0000, 0x0900);
         debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(6);

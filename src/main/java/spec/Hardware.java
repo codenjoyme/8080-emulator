@@ -233,7 +233,7 @@ public class Hardware {
         return lastTick;
     }
 
-    public void loadData(String path, boolean platform) {
+    public Range loadData(String path, boolean platform) {
         pause();
 
         Range range = roms.load(path);
@@ -252,6 +252,7 @@ public class Hardware {
         }
 
         reset();
+        return range;
     }
 
     // components getters
