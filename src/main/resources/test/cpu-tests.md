@@ -65,7 +65,7 @@
   
 - [`src/main/resources/test/hello-world`](../../../../src/main/resources/test/hello-world)
   * Тест выводящий надпись `HELLO WORLD` на экран в ЛИКе.
-  * [x] Есть [исходники](../../../../src/main/resources/test/hello-world/hello_world.asm).
+  * [x] Есть [исходники](../../../../src/main/resources/test/hello-world/hello-world.asm).
   * [x] Отлажен на эмуляторе.
   * [x] Добавлен как интеграционный тест:
     + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_helloWorld()`

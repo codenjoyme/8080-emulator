@@ -337,7 +337,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_helloWorld() {
         // given
         Lik.loadRom(base, roms);
-        Range range = hard.loadData(CPU_TESTS_RESOURCES + "hello-world/hello_world.mem", Lik.PLATFORM);
+        Range range = hard.loadData(CPU_TESTS_RESOURCES + "hello-world/hello-world.mem", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // последняя команда перед выходом в монитор
