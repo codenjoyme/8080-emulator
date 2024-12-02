@@ -410,6 +410,7 @@ public class IntegrationTest extends AbstractTest {
         // Modified to exercise an 8080 by Ian Bartholomew, February 2009
 
         // given
+        memory.doNotTrackChanges();
         Lik.loadRom(base, roms);
         Range range = hard.loadData(CPU_TESTS_RESOURCES + "8080ex1/8080ex1.rks", Lik.PLATFORM);
         // выводим trace только в этом диапазоне

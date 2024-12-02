@@ -11,20 +11,32 @@ import static java.util.stream.Collectors.joining;
 public class TrackUpdatedMemory extends Memory {
 
     private List<UpdatedBite> updated;
+    private boolean trackChanges;
 
     public TrackUpdatedMemory(int size) {
         super(size);
         resetChanges();
+        trackChanges = true;
     }
 
     public void resetChanges() {
         updated = new LinkedList<>();
     }
 
+    public void doTrackChanges() {
+        trackChanges = true;
+    }
+
+    public void doNotTrackChanges() {
+        trackChanges = false;
+    }
+
     @Override
     public void write8(int addr, int bite) {
         int prev = super.read8(addr);
-        updated.add(new UpdatedBite(addr, prev, bite));
+        if (trackChanges) {
+            updated.add(new UpdatedBite(addr, prev, bite));
+        }
         super.write8(addr, bite);
     }
 
