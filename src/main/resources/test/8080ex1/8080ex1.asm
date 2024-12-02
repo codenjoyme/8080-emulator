@@ -163,19 +163,19 @@ add16:    db      0ffh                                         ; flag mask
 
                                                                ; first
           db      09h,0,0,0                                    ; insn
-          dw      0c4a5h,0c4c7h,0d226h,0a050h,058eah,08566h    ; memop,hliy,hlix,hl,de,bc
+          dw      0c4a5h,0c4c7h,0d226h,0a050h,058eah,08566h    ; memop,iy,ix,hl,de,bc
           db      0c6h,0deh                                    ; flags,acc
           dw      09bc9h                                       ; sp
 
                                                                ; second (512 cycles)
           db      030h,0,0,0                                   ; insn
-          dw      0,0,0,0,0f821h,0                             ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0f821h,0                             ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0000h                                        ; sp
 
                                                                ; third (38 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,-1,-1,-1                               ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,-1,-1,-1                               ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      -1                                           ; sp
 
@@ -188,19 +188,19 @@ alu8i:    db      0ffh                                         ; flag mask
 
                                                                ; first
           db      0c6h,0,0,0                                   ; insn
-          dw      09140h,07e3ch,07a67h,0df6dh,05b61h,00b29h    ; memop,hliy,hlix,hl,de,bc
+          dw      09140h,07e3ch,07a67h,0df6dh,05b61h,00b29h    ; memop,iy,ix,hl,de,bc
           db      010h,066h                                    ; flags,acc
           dw      085b2h                                       ; sp
 
                                                                ; second (2048 cycles)
           db      038h,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,-1                                         ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (14 cycles)
           db      0,-1,0,0                                     ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -212,19 +212,19 @@ alu8r:    db      0ffh                                         ; flag mask
 
                                                                ; first
           db      080h,0,0,0                                   ; insn
-          dw      0c53eh,0573ah,04c4dh,msbt,0e309h,0a666h      ; memop,hliy,hlix,hl,de,bc
+          dw      0c53eh,0573ah,04c4dh,msbt,0e309h,0a666h      ; memop,iy,ix,hl,de,bc
           db      0d0h,03bh                                    ; flags,acc
           dw      0adbbh                                       ; sp
 
                                                                ; second (16,384 cycles)
           db      03fh,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,-1                                         ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (46 cycles)
           db      0,0,0,0                                      ; insn
-          dw      -1,0,0,0,-1,-1                               ; memop,hliy,hlix,hl,de,bc
+          dw      -1,0,0,0,-1,-1                               ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -236,19 +236,19 @@ daa:      db      0ffh                                         ; flag mask
 
                                                                ; first
           db      027h,0,0,0                                   ; insn
-          dw      02141h,009fah,01d60h,0a559h,08d5bh,09079h    ; memop,hliy,hlix,hl,de,bc
+          dw      02141h,009fah,01d60h,0a559h,08d5bh,09079h    ; memop,iy,ix,hl,de,bc
           db      004h,08eh                                    ; flags,acc
           dw      0299dh                                       ; sp
 
                                                                ; second (65,536 cycles)
           db      018h,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,-1                                      ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (1 cycle)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
@@ -260,19 +260,19 @@ inca:     db      0ffh                                         ; flag mask
 
                                                                ; first
           db      03ch,0,0,0                                   ; insn
-          dw      04adfh,0d5d8h,0e598h,08a2bh,0a7b0h,0431bh    ; memop,hliy,hlix,hl,de,bc
+          dw      04adfh,0d5d8h,0e598h,08a2bh,0a7b0h,0431bh    ; memop,iy,ix,hl,de,bc
           db      044h,05ah                                    ; flags,acc
           dw      0d030h                                       ; sp
 
                                                                ; second (512 cycles)
           db      001h,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,-1                                         ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (6 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -284,19 +284,19 @@ incb:     db      0ffh                                         ; flag mask
 
                                                                ; first
           db      004h,0,0,0                                   ; insn
-          dw      0d623h,0432dh,07a61h,08180h,05a86h,01e85h    ; memop,hliy,hlix,hl,de,bc
+          dw      0d623h,0432dh,07a61h,08180h,05a86h,01e85h    ; memop,iy,ix,hl,de,bc
           db      086h,058h                                    ; flags,acc
           dw      09bbbh                                       ; sp
 
                                                                ; second (512 cycles)
           db      001h,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0ff00h                             ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0ff00h                             ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (6 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,dе,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,dе,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -308,19 +308,19 @@ incbc:    db      0ffh                                         ; flag mask
 
                                                                ; first
           db      003h,0,0,0                                   ; insn
-          dw      0cd97h,044abh,08dc9h,0e3e3h,011cch,0e8a4h    ; memop,hliy,hlix,hl,de,bc
+          dw      0cd97h,044abh,08dc9h,0e3e3h,011cch,0e8a4h    ; memop,iy,ix,hl,de,bc
           db      002h,049h                                    ; flags,acc
           dw      02a4dh                                       ; sp
 
                                                                ; second (256 cycles)
           db      008h,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0f821h                             ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0f821h                             ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (6 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -332,19 +332,19 @@ incc:     db      0ffh                                         ; flag mask
 
                                                                ; first
           db      00ch,0,0,0                                   ; insn
-          dw      0d789h,00935h,0055bh,09f85h,08b27h,0d208h    ; memop,hliy,hlix,hl,de,bc
+          dw      0d789h,00935h,0055bh,09f85h,08b27h,0d208h    ; memop,iy,ix,hl,de,bc
           db      095h,005h                                    ; flags,acc
           dw      00660h                                       ; sp
 
                                                                ; second (512 cycles)
           db      001h,0,0,0                                   ; insn
-          dw      0,0,0,0,0,000ffh                             ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,000ffh                             ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (6 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -356,19 +356,19 @@ incd:     db      0ffh                                         ; flag mask
 
                                                                ; first
           db      014h,0,0,0                                   ; insn
-          dw      0a0eah,05fbah,065fbh,0981ch,038cch,0debch    ; memop,hliy,hlix,hl,de,bc
+          dw      0a0eah,05fbah,065fbh,0981ch,038cch,0debch    ; memop,iy,ix,hl,de,bc
           db      043h,05ch                                    ; flags,acc
           dw      003bdh                                       ; sp
 
                                                                ; second (512 cycles)
           db      001h,0,0,0                                   ; insn
-          dw      0,0,0,0,0ff00h,0                             ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0ff00h,0                             ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (6 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -380,19 +380,19 @@ incde:    db      0ffh                                         ; flag mask
 
                                                                ; first
           db      013h,0,0,0                                   ; insn
-          dw      0342eh,0131dh,028c9h,00acah,09967h,03a2eh    ; memop,hliy,hlix,hl,de,bc
+          dw      0342eh,0131dh,028c9h,00acah,09967h,03a2eh    ; memop,iy,ix,hl,de,bc
           db      092h,0f6h                                    ; flags,acc
           dw      09d54h                                       ; sp
 
                                                                ; second (256 cycles)
           db      008h,0,0,0                                   ; insn
-          dw      0,0,0,0,0f821h,0                             ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0f821h,0                             ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (6 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -404,19 +404,19 @@ ince:     db      0ffh                                         ; flag mask
 
                                                                ; first
           db      01ch,0,0,0                                   ; insn
-          dw      0602fh,04c0dh,02402h,0e2f5h,0a0f4h,0a10ah    ; memop,hliy,hlix,hl,de,bc
+          dw      0602fh,04c0dh,02402h,0e2f5h,0a0f4h,0a10ah    ; memop,iy,ix,hl,de,bc
           db      013h,032h                                    ; flags,acc
           dw      05925h                                       ; sp
 
                                                                ; second (512 cycles)
           db      001h,0,0,0                                   ; insn
-          dw      0,0,0,0,000ffh,0                             ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,000ffh,0                             ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (6 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -428,19 +428,19 @@ inch:     db      0ffh                                         ; flag mask
 
                                                                ; first
           db      024h,0,0,0                                   ; insn
-          dw      01506h,0f2ebh,0e8ddh,0262bh,011a6h,0bc1ah    ; memop,hliy,hlix,hl,de,bc
+          dw      01506h,0f2ebh,0e8ddh,0262bh,011a6h,0bc1ah    ; memop,iy,ix,hl,de,bc
           db      017h,006h                                    ; flags,acc
           dw      02818h                                       ; sp
 
                                                                ; second (512 cycles)
           db      001h,0,0,0                                   ; insn
-          dw      0,0,0,0ff00h,0,0                             ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0ff00h,0,0                             ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (6 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -452,19 +452,19 @@ inchl:    db      0ffh                                         ; flag mask
 
                                                                ; first
           db      023h,0,0,0                                   ; insn
-          dw      0c3f4h,007a5h,01b6dh,04f04h,0e2c2h,0822ah    ; memop,hliy,hlix,hl,de,bc
+          dw      0c3f4h,007a5h,01b6dh,04f04h,0e2c2h,0822ah    ; memop,iy,ix,hl,de,bc
           db      057h,0e0h                                    ; flags,acc
           dw      0c3e1h                                       ; sp
 
                                                                ; second (256 cycles)
           db      008h,0,0,0                                   ; insn
-          dw      0,0,0,0f821h,0,0                             ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0f821h,0,0                             ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (6 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -476,19 +476,19 @@ incl:     db      0ffh                                         ; flag mask
 
                                                                ; first
           db      02ch,0,0,0                                   ; insn
-          dw      08031h,0a520h,04356h,0b409h,0f4c1h,0dfa2h    ; memop,hliy,hlix,hl,de,bc
+          dw      08031h,0a520h,04356h,0b409h,0f4c1h,0dfa2h    ; memop,iy,ix,hl,de,bc
           db      0d1h,03ch                                    ; flags,acc
           dw      03ea2h                                       ; sp
 
                                                                ; second (512 cycles)
           db      001h,0,0,0                                   ; insn
-          dw      0,0,0,0ffh,0,0                               ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0ffh,0,0                               ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (6 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -500,19 +500,19 @@ incm:     db      0ffh                                         ; flag mask
 
                                                                ; first
           db      034h,0,0,0                                   ; insn
-          dw      0b856h,00c7ch,0e53eh,msbt,0877eh,0da58h      ; memop,hliy,hlix,hl,de,bc
+          dw      0b856h,00c7ch,0e53eh,msbt,0877eh,0da58h      ; memop,iy,ix,hl,de,bc
           db      015h,05ch                                    ; flags,acc
           dw      01f37h                                       ; sp
 
                                                                ; second (512 cycles)
           db      001h,0ffh,0,0,0,0                            ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (6 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -524,19 +524,19 @@ incsp:    db      0ffh                                         ; flag mask
 
                                                                ; first
           db      033h,0,0,0                                   ; insn
-          dw      0346fh,0d482h,0d169h,0deb6h,0a494h,0f476h    ; memop,hliy,hlix,hl,de,bc
+          dw      0346fh,0d482h,0d169h,0deb6h,0a494h,0f476h    ; memop,iy,ix,hl,de,bc
           db      053h,002h                                    ; flags,acc
           dw      0855bh                                       ; sp
 
                                                                ; second (256 cycles)
           db      008h,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0,0f821h                                     ; sp
 
                                                                ; third (6 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -548,19 +548,19 @@ ld162:    db      0ffh                                         ; flag mask
 
                                                                ; first
           db      02ah,msbt & 0xFF,msbt >> 8,0                 ; insn
-          dw      09863h,07830h,02077h,0b1feh,0b9fah,0abb8h    ; memop,hliy,hlix,hl,de,bc
+          dw      09863h,07830h,02077h,0b1feh,0b9fah,0abb8h    ; memop,iy,ix,hl,de,bc
           db      004h,006h                                    ; flags,acc
           dw      06015h                                       ; sp
 
                                                                ; second (1 cycle)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (16 cycles)
           db      0,0,0,0                                      ; insn
-          dw      -1,0,0,0,0,0                                 ; memop,hliy,hlix,hl,de,bc
+          dw      -1,0,0,0,0,0                                 ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
@@ -572,19 +572,19 @@ ld166:   db      0ffh                                          ; flag mask
 
                                                                ; first
           db      022h,msbt & 0xFF,msbt >> 8,0                 ; insn
-          dw      0d003h,07772h,07f53h,03f72h,064eah,0e180h    ; memop,hliy,hlix,hl,de,bc
+          dw      0d003h,07772h,07f53h,03f72h,064eah,0e180h    ; memop,iy,ix,hl,de,bc
           db      010h,02dh                                    ; flags,acc
           dw      035e9h                                       ; sp
 
                                                                ; second (1 cycle)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (16 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,-1,0,0                                 ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,-1,0,0                                 ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
@@ -596,19 +596,19 @@ ld16im:   db      0ffh                                         ; flag mask
 
                                                                ; first
           db      1,0,0,0                                      ; insn
-          dw      05c1ch,02d46h,08eb9h,06078h,074b1h,0b30eh    ; memop,hliy,hlix,hl,de,bc
+          dw      05c1ch,02d46h,08eb9h,06078h,074b1h,0b30eh    ; memop,iy,ix,hl,de,bc
           db      046h,0d1h                                    ; flags,acc
           dw      030cch                                       ; sp
 
                                                                ; second (4 cycles)
           db      030h,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third setup simulating malformed data input (16 cycles)
           db      0,0ffh,0ffh,0                                ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
@@ -620,19 +620,19 @@ ld8bd:    db      0ffh                                         ; flag mask
 
                                                                ; first
           db      00ah,0,0,0                                   ; insn
-          dw      0b3a8h,01d2ah,07f8eh,042ach,msbt,msbt        ; memop,hliy,hlix,hl,de,bc
+          dw      0b3a8h,01d2ah,07f8eh,042ach,msbt,msbt        ; memop,iy,ix,hl,de,bc
           db      0c6h,0b1h                                    ; flags,acc
           dw      0ef8eh                                       ; sp
 
                                                                ; second (2 cycles)
           db      010h,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (22 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0ffh,0,0,0,0,0                               ; memop,hliy,hlix,hl,de,bc
+          dw      0ffh,0,0,0,0,0                               ; memop,iy,ix,hl,de,bc
           db      0d7h,-1                                      ; flags,acc
           dw      0                                            ; sp
 
@@ -644,19 +644,19 @@ ld8im:    db      0ffh                                         ; flag mask
 
                                                                ; first
           db      6,0,0,0                                      ; insn
-          dw      0c407h,0f49dh,0d13dh,00339h,0de89h,07455h    ; memop,hliy,hlix,hl,de,bc
+          dw      0c407h,0f49dh,0d13dh,00339h,0de89h,07455h    ; memop,iy,ix,hl,de,bc
           db      053h,0c0h                                    ; flags,acc
           dw      05509h                                       ; sp
 
                                                                ; second (8 cycles)
           db      038h,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third scenario simulating a potential fault condition (8 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,-1                                         ; flags,acc
           dw      0                                            ; sp
 
@@ -668,19 +668,19 @@ ld8rr:    db      0ffh                                         ; flag mask
 
                                                                ; first
           db      040h,0,0,0                                   ; insn
-          dw      072a4h,0a024h,061ach,msbt,082c7h,0718fh      ; memop,hliy,hlix,hl,de,bc
+          dw      072a4h,0a024h,061ach,msbt,082c7h,0718fh      ; memop,iy,ix,hl,de,bc
           db      097h,08fh                                    ; flags,acc
           dw      0ef8eh                                       ; sp
 
                                                                ; second (64 cycles)
           db      03fh,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (54 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0ffh,0,0,0,-1,-1                             ; memop,hliy,hlix,hl,de,bc
+          dw      0ffh,0,0,0,-1,-1                             ; memop,iy,ix,hl,de,bc
           db      0d7h,-1                                      ; flags,acc
           dw      0                                            ; sp
 
@@ -692,19 +692,19 @@ lda:      db       0ffh                                        ; flag mask
 
                                                                ; first
           db      032h,msbt & 0xFF,msbt >> 8,0                 ; insn
-          dw      0fd68h,0f4ech,044a0h,0b543h,00653h,0cdbah    ; memop,hliy,hlix,hl,de,bc
+          dw      0fd68h,0f4ech,044a0h,0b543h,00653h,0cdbah    ; memop,iy,ix,hl,de,bc
           db      0d2h,04fh                                    ; flags,acc
           dw      01fd8h                                       ; sp
 
                                                                ; second (2 cycles)
           db      008h,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (22 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0ffh,0,0,0,0,0                               ; memop,hliy,hlix,hl,de,bc
+          dw      0ffh,0,0,0,0,0                               ; memop,iy,ix,hl,de,bc
           db      0d7h,-1                                      ; flags,acc
           dw      0                                            ; sp
 
@@ -716,19 +716,19 @@ rot8080:  db       0ffh                                        ; flag mask
 
                                                                ; first
           db      7,0,0,0                                      ; insn
-          dw      0cb92h,06d43h,00a90h,0c284h,00c53h,0f50eh    ; memop,hliy,hlix,hl,de,bc
+          dw      0cb92h,06d43h,00a90h,0c284h,00c53h,0f50eh    ; memop,iy,ix,hl,de,bc
           db      091h,0ebh                                    ; flags,acc
           dw      040fch                                       ; sp
 
                                                                ; second (1024 cycles)
           db      018h,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,-1                                         ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (6 cycles)
           db      0,0,0,0                                      ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0d7h,0                                       ; flags,acc
           dw      0                                            ; sp
 
@@ -740,19 +740,19 @@ stabd:    db       0ffh                                        ; flag mask
 
                                                                ; first
           db      2,0,0,0                                      ; insn
-          dw      00c3bh,0b592h,06cffh,0959eh,msbt,msbt+1      ; memop,hliy,hlix,hl,de,bc
+          dw      00c3bh,0b592h,06cffh,0959eh,msbt,msbt+1      ; memop,iy,ix,hl,de,bc
           db      0c1h,021h                                    ; flags,acc
           dw      0bde7h                                       ; sp
 
                                                                ; second (4 cycles)
           db      018h,0,0,0                                   ; insn
-          dw      0,0,0,0,0,0                                  ; memop,hliy,hlix,hl,de,bc
+          dw      0,0,0,0,0,0                                  ; memop,iy,ix,hl,de,bc
           db      0,0                                          ; flags,acc
           dw      0                                            ; sp
 
                                                                ; third (24 cycles)
           db      0,0,0,0                                      ; insn
-          dw      -1,0,0,0,0,0                                 ; memop,hliy,hlix,hl,de,bc
+          dw      -1,0,0,0,0,0                                 ; memop,iy,ix,hl,de,bc
           db      0,-1                                         ; flags,acc
           dw      0                                            ; sp
 
