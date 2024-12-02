@@ -506,8 +506,8 @@ incm:     DB      0FFh                                         ; flag mask
           DW      01f37h                                       ; SP
 
                                                                ; second (512 cycles)
-          DB      001h,0FFh,0,0,0,0                            ; insn
-          DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+          DB      001h,0,0,0                                   ; insn
+          DW      0FFh,0,0,0,0,0                               ; memop,--,--,HL,DE,BC
           DB      0,0                                          ; flags,acc
           DW      0                                            ; SP
 
