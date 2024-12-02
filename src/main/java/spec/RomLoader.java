@@ -1,5 +1,7 @@
 package spec;
 
+import spec.math.Bites;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -43,7 +45,7 @@ public class RomLoader {
         return loadROM(base, path, memory.all(), offset);
     }
 
-    public Range loadROM(URL base, String path, int[] all, int offset) {
+    public Range loadROM(URL base, String path, Bites all, int offset) {
         try {
             URL url = new URL(base, path);
             InputStream is = url.openStream();
@@ -67,10 +69,10 @@ public class RomLoader {
         try {
             URL url = new URL(base, path);
             InputStream is = url.openStream();
-            int[] header = read8arr(is, 4);
+            Bites header = read8arr(is, 4);
             Range range = new Range(
-                    merge(header[1], header[0]),
-                    merge(header[3], header[2]));
+                    merge(header.get(1), header.get(0)),
+                    merge(header.get(3), header.get(2)));
             if (range.isInvalid()) {
                 throw new IllegalArgumentException(String.format(
                         "Rage %s is invalid for: %s", range, path));
@@ -80,20 +82,20 @@ public class RomLoader {
             cpu.PC(range.begin());
             readBytes(is, memory.all(), range);
             return range;
-            // int[] data = read8arr(is, 4); // TODO в конце еще два байта, зачем?
+            // Bites data = read8arr(is, 4); // TODO в конце еще два байта, зачем?
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private int[] read8arr(InputStream is, int length) throws Exception {
-        int[] header = new int[length];
+    private Bites read8arr(InputStream is, int length) throws Exception {
+        Bites header = new Bites(length);
         readBytes(is, header, new Range(0, -length));
         return header;
     }
 
     // Чтение байт из потока InputStream is
-    private int readBytes(InputStream is, int[] a, Range range) throws Exception {
+    private int readBytes(InputStream is, Bites a, Range range) throws Exception {
         try {
             int off = range.begin();
             int n = range.length();
@@ -109,7 +111,7 @@ public class RomLoader {
             }
 
             for (int i = 0; i < n; i++) { // буфер "byte" превращаем в буффер "int"
-                a[i + off] = (buff[i] + 256) & BITE;
+                a.set(i + off, (buff[i] + 256) & BITE);
             }
             return n;
         } catch (Exception e) {

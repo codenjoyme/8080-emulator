@@ -1,6 +1,7 @@
 package spec;
 
 import spec.assembler.Assembler;
+import spec.math.Bites;
 import spec.mods.CallDeep;
 
 import java.util.LinkedList;
@@ -49,7 +50,7 @@ public class CpuDebug {
 
     public String log(int callDeep) {
         int addr = registry.PC();
-        int[] bites = registry.commandBites();
+        Bites bites = registry.commandBites();
         String assembly = asm.dizAssembly(bites);
 
         return String.format("%s%s%s%s%s",

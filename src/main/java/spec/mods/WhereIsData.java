@@ -5,6 +5,7 @@ import spec.Data;
 import spec.Logger;
 import spec.Range;
 import spec.assembler.Command;
+import spec.math.Bites;
 
 import static spec.math.WordMath.*;
 import static spec.mods.Event.*;
@@ -161,13 +162,13 @@ public class WhereIsData implements CpuMod {
         }
 
         public String printCommand(boolean canonical) {
-            int[] bites = new int[command.size()];
-            bites[0] = code;
+            Bites bites = new Bites(command.size());
+            bites.set(0, code);
             if (command.size() >= 2) {
-                bites[1] = lo(data);
+                bites.set(1, lo(data));
             }
             if (command.size() == 3) {
-                bites[2] = hi(data);
+                bites.set(2, hi(data));
             }
             return command.print(bites, canonical);
         }

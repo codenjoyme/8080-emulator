@@ -1,5 +1,7 @@
 package spec;
 
+import spec.math.Bites;
+
 import java.util.function.BiConsumer;
 
 import static spec.Constants.ROM;
@@ -26,10 +28,10 @@ public class IOPorts {
     public static final int RgRGB = 0xFFF8;  // порт контроллера цвета
 
     // маски битов
-    private final int[] bit = {0x00FE, 0x00FD, 0x00FB, 0x00F7, 0x00EF, 0x00DF, 0x00BF, 0x007F};
+    private final Bites bit = new Bites(0x00FE, 0x00FD, 0x00FB, 0x00F7, 0x00EF, 0x00DF, 0x00BF, 0x007F);
 
     // биты установки
-    private final int[] msk = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080};
+    private final Bites msk = new Bites(0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080);
 
     // массив матрицы клавиш "Специалиста" ( true - нажата, false - отпущена)
     // 12 x 6 + Shift + Reset
@@ -67,8 +69,8 @@ public class IOPorts {
                                 // по битам порта A от 0 до 7
                                 for (int j = 0; j < 8; j++) {
                                     // если такая нажата  и  такой бит порта B = 0, ставим бит A = 0
-                                    if (keyStatus[j][i] && (B() & msk[i + 2]) == 0) {
-                                        result &= bit[j];
+                                    if (keyStatus[j][i] && (B() & msk.get(i + 2)) == 0) {
+                                        result &= bit.get(j);
                                     }
                                 }
                             }
@@ -92,8 +94,8 @@ public class IOPorts {
                                 // по битам порта В от 2 до 7
                                 for (int j = 0; j < 6; j++) {
                                     // если такая нажата  и  такой бит порта A = 0, ставим бит В = 0
-                                    if (keyStatus[i][j] && (A() & msk[i]) == 0) {
-                                        result &= bit[j + 2];
+                                    if (keyStatus[i][j] && (A() & msk.get(i)) == 0) {
+                                        result &= bit.get(j + 2);
                                     }
                                 }
                             }
@@ -106,8 +108,8 @@ public class IOPorts {
                                 // по битам порта В от 2 до 7
                                 for (int j = 0; j < 6; j++) {
                                     // если такая нажата  и  такой бит порта C = 0, ставим бит В = 0
-                                    if (keyStatus[i + 8][j] && (C() & msk[i]) == 0) {
-                                        result &= bit[j + 2];
+                                    if (keyStatus[i + 8][j] && (C() & msk.get(i)) == 0) {
+                                        result &= bit.get(j + 2);
                                     }
                                 }
                             }
@@ -143,8 +145,8 @@ public class IOPorts {
                                 // по битам порта CLow от 0 до 3
                                 for (int j = 0; j < 4; j++) {
                                     // если такая нажата  и  такой бит порта В = 0, ставим бит C = 0
-                                    if (keyStatus[j + 8][i] && (B() & msk[i + 2]) == 0) {
-                                        result = result & bit[j];
+                                    if (keyStatus[j + 8][i] && (B() & msk.get(i + 2)) == 0) {
+                                        result = result & bit.get(j);
                                     }
                                 }
                             }
@@ -221,13 +223,13 @@ public class IOPorts {
                     // биты 0-3
                     // уст. в 1
                     if (((bite & 0b0000_1110) >> 1) < 4) {
-                        C(C() | msk[((bite & 0b0000_1110) >> 1)]);
+                        C(C() | msk.get((bite & 0b0000_1110) >> 1));
                     }
                 } else {
                     // биты 0-3
                     // уст. в 0
                     if (((bite & 0b0000_1110) >> 1) < 4) {
-                        C(C() & bit[((bite & 0b0000_1110) >> 1)]);
+                        C(C() & bit.get((bite & 0b0000_1110) >> 1));
                     }
                 }
             }
@@ -238,14 +240,14 @@ public class IOPorts {
                     // уст. в 1
                     if (((bite & 0b0000_1110) >> 1) > 3) {
                         int b = C();
-                        C(b | msk[((b & 0b0000_1110) >> 1)]);
+                        C(b | msk.get((b & 0b0000_1110) >> 1));
                     }
                 } else {
                     // биты 4-7
                     // уст. в 0
                     if (((bite & 0b0000_1110) >> 1) > 3) {
                         int b = C();
-                        C(b & bit[((b & 0b0000_1110) >> 1)]);
+                        C(b & bit.get((b & 0b0000_1110) >> 1));
                     }
                 }
             }

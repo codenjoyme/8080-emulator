@@ -20,12 +20,13 @@ import spec.assembler.command.procedure.ret.*;
 import spec.assembler.command.stack.POP_RS;
 import spec.assembler.command.stack.PUSH_RS;
 import spec.assembler.command.system.*;
+import spec.math.Bites;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import static spec.math.WordMath.hex;
-import static spec.math.WordMath.toArray;
+import static spec.math.WordMath.toBites;
 
 public class Assembler {
 
@@ -143,7 +144,7 @@ public class Assembler {
     public String dizAssembly(String programBites) {
         StringBuilder result = new StringBuilder();
         programBites = programBites.replace("\n", " ");
-        for (int[] bites : split(programBites)) {
+        for (Bites bites : split(programBites)) {
             String command = dizAssembly(bites);
             if (command != null) {
                 result.append(command).append('\n');
@@ -152,12 +153,12 @@ public class Assembler {
         return result.toString();
     }
 
-    public String dizAssembly(int[] bites) {
+    public String dizAssembly(Bites bites) {
         return dizAssembly(bites, false);
     }
 
-    public String dizAssembly(int[] bites, boolean canonical) {
-        return COMMANDS[bites[0]]
+    public String dizAssembly(Bites bites, boolean canonical) {
+        return COMMANDS[bites.get(0)]
                 .print(bites, canonical);
     }
 
@@ -177,13 +178,13 @@ public class Assembler {
         return result.toString();
     }
 
-    public int[] parseCommand(String asmCommand) {
+    public Bites parseCommand(String asmCommand) {
         String name = asmCommand.split(" ")[0];
         for (Command command : COMMANDS) {
             if (command == null) continue;
             if (!command.name().equals(name)) continue;
 
-            int[] result = command.parse(asmCommand);
+            Bites result = command.parse(asmCommand);
             if (result != null) {
                 return result;
             }
@@ -191,24 +192,24 @@ public class Assembler {
         throw new UnsupportedOperationException("Unsupported command: " + asmCommand);
     }
 
-    public List<int[]> split(String bites) {
-        int[] array = toArray(bites);
+    public List<Bites> split(String bites) {
+        Bites array = toBites(bites);
         int index = 0;
 
-        List<int[]> result = new LinkedList<>();
-        while (index < array.length) {
-            Command command = COMMANDS[array[index]];
-            int[] bitesArr = command.take(array, index);
+        List<Bites> result = new LinkedList<>();
+        while (index < array.size()) {
+            Command command = COMMANDS[array.get(index)];
+            Bites bitesArr = command.take(array, index);
             result.add(bitesArr);
-            index += bitesArr.length;
+            index += bitesArr.size();
         }
         return result;
     }
 
-    public static String asString(List<int[]> bites) {
+    public static String asString(List<Bites> bites) {
         StringBuilder result = new StringBuilder();
         boolean first = true;
-        for (int[] command : bites) {
+        for (Bites command : bites) {
             if (first) {
                 first = false;
             } else {

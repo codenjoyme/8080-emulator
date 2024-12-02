@@ -2,6 +2,7 @@ package spec;
 
 import spec.assembler.Assembler;
 import spec.assembler.Command;
+import spec.math.Bites;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -103,10 +104,10 @@ public class Cpu extends Registry {
         enabled = true;
     }
 
-    public int[] commandBites() {
+    public Bites commandBites() {
         int addr = PC();
-        int[] bites = data.read3x8(addr);
-        Command command = asm.find(bites[0]);
-        return Arrays.copyOf(bites, command.size());
+        Bites bites = data.read3x8(addr);
+        Command command = asm.find(bites.get(0));
+        return bites.subset(command.size());
     }
 }

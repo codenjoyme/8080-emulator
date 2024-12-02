@@ -40,10 +40,10 @@ public class WordMath {
         return hex(bite, 4);
     }
 
-    public static int[] hex8(String bites) {
-        int[] result = new int[bites.length() / 2];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = Integer.parseInt(bites.substring(i * 2, (i + 1) * 2), 16);
+    public static Bites hex8(String bites) {
+        Bites result = new Bites(bites.length() / 2);
+        for (int i = 0; i < result.size(); i++) {
+            result.set(i, Integer.parseInt(bites.substring(i * 2, (i + 1) * 2), 16));
         }
         return result;
     }
@@ -65,20 +65,13 @@ public class WordMath {
         return word(--word);
     }
 
-    public static String hex(List<Integer> bites) {
+    public static String hex(Bites bites) {
         StringBuilder result = new StringBuilder();
         hex(result, bites);
         return result.toString();
     }
 
-    public static String hex(int[] bites) {
-        StringBuilder result = new StringBuilder();
-        hex(result, bites);
-        return result.toString();
-    }
-
-    // TODO remove code duplicate
-    public static void hex(StringBuilder result, List<Integer> bites) {
+    public static void hex(StringBuilder result, Bites bites) {
         boolean first = true;
         for (Integer bite : bites) {
             if (first) {
@@ -90,27 +83,15 @@ public class WordMath {
         }
     }
 
-    public static void hex(StringBuilder result, int[] bites) {
-        boolean first = true;
-        for (Integer bite : bites) {
-            if (first) {
-                first = false;
-            } else {
-                result.append(' ');
-            }
-            result.append(hex8(bite));
-        }
-    }
-
-    public static int[] toArray(String bites) {
+    public static Bites toBites(String bites) {
         bites = bites.replace(" ", "");
-        int[] array = new int[bites.length() / 2];
-        for (int i = 0; i < array.length; i++) {
+        Bites result = new Bites(bites.length() / 2);
+        for (int i = 0; i < result.size(); i++) {
             String hex = bites.substring(i * 2, (i + 1) * 2);
             int bite = Integer.parseInt(hex, 16);
-            array[i] = bite;
+            result.set(i, bite);
         }
-        return array;
+        return result;
     }
 
     public static String padRight(String string, int length, char ch) {

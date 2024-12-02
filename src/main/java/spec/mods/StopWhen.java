@@ -1,6 +1,7 @@
 package spec.mods;
 
 import spec.Cpu;
+import spec.math.Bites;
 
 public class StopWhen extends WhenPC {
 
@@ -8,7 +9,7 @@ public class StopWhen extends WhenPC {
         super(addr, Cpu::disable);
     }
 
-    public StopWhen(int[] commandCodes) {
+    public StopWhen(Bites commandCodes) {
         super(commandCodes, Cpu::disable);
     }
 }

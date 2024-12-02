@@ -3,6 +3,7 @@ package spec;
 import org.junit.*;
 import org.junit.rules.TestName;
 import spec.assembler.DizAssembler;
+import spec.math.Bites;
 import spec.mods.StopWhen;
 import spec.mods.WhenPC;
 import spec.mods.WhereIsData;
@@ -234,7 +235,7 @@ public class IntegrationTest extends AbstractTest {
 
     private void assertMemory(Range range, String romFileName) {
         String diff = "";
-        int[] source = new int[0x10000];
+        Bites source = new Bites(0x10000);
         try {
             URL base = new File(TEST_RESOURCES).toURI().toURL();
             roms.loadROM(base, test.getMethodName() + "/" + romFileName, source, 0x0000);
@@ -243,7 +244,7 @@ public class IntegrationTest extends AbstractTest {
         }
         for (int addr = range.begin(); addr <= range.end(); addr++) {
             int bite1 = memory.read8(addr);
-            int bite2 = source[addr];
+            int bite2 = source.get(addr);
             if (bite1 != bite2) {
                 diff += String.format("%s: %s != %s",
                         hex16(addr), hex8(bite1), hex8(bite2));

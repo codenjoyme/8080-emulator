@@ -2,6 +2,7 @@ package spec.assembler.command.copy;
 
 import spec.Registry;
 import spec.assembler.Command;
+import spec.math.Bites;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public class MOV_R_R extends Command {
 
-    private int[] indexes2;
+    private Bites indexes2;
 
     private static final List<Integer> CODES = from(
 //          R=B   R=C   R=D   R=E   R=H   R=L   R=M   R=A
@@ -26,16 +27,16 @@ public class MOV_R_R extends Command {
 
     @Override
     public void initIndexes(List<Integer> codes, List<String> registers) {
-        indexes2 = new int[0x100];
+        indexes2 = new Bites(0x100);
         for (int i = 0; i < codes.size(); i++) {
             int code = codes.get(i);
-            indexes[code] = (code & 0b0011_1000) >> 3;
-            indexes2[code] = (code & 0b0000_0111);
+            indexes.set(code, (code & 0b0011_1000) >> 3);
+            indexes2.set(code, (code & 0b0000_0111));
         }
     }
 
     @Override
-    public int[] code(String... params) {
+    public Bites code(String... params) {
         int reg1Index = registers().indexOf(params[0]);
         int reg2Index = registers().indexOf(params[1]);
         int code = 0x40 | reg2Index | reg1Index << 3;
@@ -43,7 +44,9 @@ public class MOV_R_R extends Command {
             throw new IllegalArgumentException(
                     "There is no MVI M,M in i8080, only HLT with this code");
         }
-        return new int[]{code};
+        Bites result = new Bites(1);
+        result.set(0, code);
+        return result;
     }
 
     @Override
@@ -62,9 +65,9 @@ public class MOV_R_R extends Command {
     }
 
     @Override
-    public String print(int[] bites, boolean canonical) {
+    public String print(Bites bites, boolean canonical) {
         return replace(super.print(bites, canonical), "(B|C|D|E|H|L|M|A)",
-                        registers().get(rindex2(bites[0])));
+                        registers().get(rindex2(bites.get(0))));
     }
 
     @Override
@@ -79,6 +82,6 @@ public class MOV_R_R extends Command {
     }
 
     private int rindex2(int command) {
-        return indexes2[command];
+        return indexes2.get(command);
     }
 }

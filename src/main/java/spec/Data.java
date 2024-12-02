@@ -1,5 +1,7 @@
 package spec;
 
+import spec.math.Bites;
+
 import static spec.math.WordMath.*;
 
 public interface Data {
@@ -47,15 +49,15 @@ public interface Data {
         return hi | lo;
     }
 
-    default int[] read3x8(int addr) {
-        int[] result = new int[3];
-        result[0] = read8(addr);
+    default Bites read3x8(int addr) {
+        Bites result = new Bites(3);
+        result.set(0, read8(addr));
 
         addr = inc16(addr);
-        result[1] = read8(addr);
+        result.set(1, read8(addr));
 
         addr = inc16(addr);
-        result[2] = read8(addr);
+        result.set(2, read8(addr));
         return result;
     }
 }

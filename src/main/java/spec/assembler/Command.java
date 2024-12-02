@@ -2,6 +2,7 @@ package spec.assembler;
 
 import spec.Reg;
 import spec.Registry;
+import spec.math.Bites;
 import spec.math.WordMath;
 import spec.assembler.command.system.NONE;
 
@@ -28,7 +29,7 @@ public abstract class Command {
     public static final List<String> BCDEHLMA =
             Arrays.asList("B", "C", "D", "E", "H", "L", "M", "A");
 
-    protected int[] indexes = new int[0x100];
+    protected Bites indexes = new Bites(0x100);
     private Pattern regexp;
     private String pattern;
     private String name;
@@ -50,7 +51,7 @@ public abstract class Command {
     public void initIndexes(List<Integer> codes, List<String> registers) {
         for (int i = 0; i < codes.size(); i++) {
             int div = (registers.size() == 0) ? 1 : registers.size();
-            indexes[codes.get(i)] = i % div;
+            indexes.set(codes.get(i), i % div);
         }
     }
 
@@ -67,7 +68,7 @@ public abstract class Command {
                         codes, registers, this.getClass().getSimpleName()));
     }
 
-    public int[] parse(String command) {
+    public Bites parse(String command) {
         Matcher matcher = regexp.matcher(command);
         if (!matcher.matches()) {
             return null;
@@ -79,24 +80,24 @@ public abstract class Command {
         return code(params);
     }
 
-    public int[] code(String... params) {
-        int[] result = new int[size()];
+    public Bites code(String... params) {
+        Bites result = new Bites(size());
         if (registers().isEmpty()) {
             List<Integer> codes = codes();
-            result[0] = codes.get(0);
+            result.set(0, codes.get(0));
         } else {
-            result[0] = codes().get(registers().indexOf(params[0]));
+            result.set(0, codes().get(registers().indexOf(params[0])));
         }
         if (size() == 3) {
             String bites = params.length == 1 ? params[0] : params[1];
-            int[] arr = hex8(bites);
-            result[2] = arr[0];
-            result[1] = arr[1];
+            Bites arr = hex8(bites);
+            result.set(2, arr.get(0));
+            result.set(1, arr.get(1));
         }
         if (size() == 2) {
             String param = registers().isEmpty() ? params[0] : params[1];
-            int[] arr = hex8(param);
-            result[1] = arr[0];
+            Bites arr = hex8(param);
+            result.set(1, arr.get(0));
         }
         return result;
     }
@@ -161,26 +162,26 @@ public abstract class Command {
         return false;
     }
 
-    public int[] take(int[] bites, int index) {
-        int[] result = new int[size()];
+    public Bites take(Bites bites, int index) {
+        Bites result = new Bites(size());
         for (int i = index; i < index + size(); i++) {
             try {
-                result[i - index] = bites[i];
+                result.set(i - index, bites.get(i));
             } catch (ArrayIndexOutOfBoundsException e) {
                 throw new RuntimeException(
                         String.format("Needed %s bites, but only %s found for command %s: [%s]",
-                                size(), result.length, name,
+                                size(), result.size(), name,
                                 WordMath.hex(bites)), e);
             }
         }
         return result;
     }
 
-    public String print(int[] bites, boolean canonical) {
+    public String print(Bites bites, boolean canonical) {
         String result = pattern();
         switch (size()) {
             case 3: {
-                String word = hex16(merge(bites[2], bites[1]));
+                String word = hex16(merge(bites.get(2), bites.get(1)));
                 if (canonical) {
                     word = '0' + word + 'h';
                 }
@@ -188,7 +189,7 @@ public abstract class Command {
                 break;
             }
             case 2: {
-                String bite = hex8(bites[1]);
+                String bite = hex8(bites.get(1));
                 if (canonical) {
                     bite = '0' + bite + 'h';
                 }
@@ -197,11 +198,11 @@ public abstract class Command {
             }
             default: {
                 result = replace(result, "(.)",  // 1 byte RST command
-                        String.valueOf(rindex(bites[0])));
+                        String.valueOf(rindex(bites.get(0))));
             }
         }
         if (!registers().isEmpty()) {
-            String reg = registers().get(rindex(bites[0]));
+            String reg = registers().get(rindex(bites.get(0)));
             result = replace(result, "(B|D)", reg);
             result = replace(result, "(B|C|D|E|H|L|M|A)", reg);
             result = replace(result, "(B|D|H|SP)", reg);
@@ -224,7 +225,7 @@ public abstract class Command {
     public abstract void apply(int command, Registry r);
 
     public int rindex(int command) {
-        return indexes[command];
+        return indexes.get(command);
     }
 
     public static final int iB = 0;

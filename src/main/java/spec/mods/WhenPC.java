@@ -3,6 +3,7 @@ package spec.mods;
 import spec.Cpu;
 import spec.Range;
 import spec.assembler.Command;
+import spec.math.Bites;
 
 import java.util.Arrays;
 import java.util.function.BiPredicate;
@@ -34,8 +35,8 @@ public class WhenPC extends When {
                 trigger);
     }
 
-    public WhenPC(int[] commandCodes, Consumer<Cpu> trigger) {
-        this((cpu, command) -> Arrays.equals(commandCodes, cpu.commandBites()),
+    public WhenPC(Bites commandCodes, Consumer<Cpu> trigger) {
+        this((cpu, command) -> commandCodes.equals(cpu.commandBites()),
                 trigger);
     }
 }
