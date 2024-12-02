@@ -103,12 +103,10 @@ public class Cpu extends Registry {
         enabled = true;
     }
 
-    // TODO дублирование с CpuDebug.log(int callDeep)
-    public String command() {
+    public List<Integer> commandBites() {
         int addr = PC();
         List<Integer> bites = data.read3x8(addr);
         Command command = asm.find(bites.get(0));
-        bites = bites.subList(0, command.size());
-        return asm.dizAssembly(bites);
+        return bites.subList(0, command.size());
     }
 }

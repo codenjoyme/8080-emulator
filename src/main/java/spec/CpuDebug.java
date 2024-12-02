@@ -13,14 +13,14 @@ public class CpuDebug {
 
     private Data data;
     private Assembler asm;
-    private Registry registry;
+    private Cpu registry;
     private List<String> lines;
     private boolean enabled;
     private boolean console;
     private int maxDeepCall;
     private Range range;
 
-    public CpuDebug(Assembler asm, Data data, Registry registry) {
+    public CpuDebug(Assembler asm, Data data, Cpu registry) {
         this.data = data;
         this.asm = asm;
         this.registry = registry;
@@ -50,9 +50,7 @@ public class CpuDebug {
 
     public String log(int callDeep) {
         int addr = registry.PC();
-        List<Integer> bites = data.read3x8(addr);
-        Command command = asm.find(bites.get(0));
-        bites = bites.subList(0, command.size());
+        List<Integer> bites = registry.commandBites();
         String assembly = asm.dizAssembly(bites);
 
         return String.format("%s%s%s%s%s",

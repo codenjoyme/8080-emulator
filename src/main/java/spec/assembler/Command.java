@@ -70,7 +70,7 @@ public abstract class Command {
                         codes, registers, this.getClass().getSimpleName()));
     }
 
-    public String parse(String command) {
+    public List<Integer> parse(String command) {
         Matcher matcher = regexp.matcher(command);
         if (!matcher.matches()) {
             return null;
@@ -79,7 +79,7 @@ public abstract class Command {
         for (int i = 0; i < params.length; i++) {
             params[i] = matcher.group(i + 1);
         }
-        return hex(code(params));
+        return code(params);
     }
 
     public List<Integer> code(String... params) {

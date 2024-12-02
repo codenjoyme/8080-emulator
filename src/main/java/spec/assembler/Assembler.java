@@ -171,19 +171,19 @@ public class Assembler {
                 result.append(' ');
             }
 
-            String bites = parseCommand(commandBites);
+            String bites = hex(parseCommand(commandBites));
             result.append(bites);
         }
         return result.toString();
     }
 
-    public String parseCommand(String asmCommand) {
+    public List<Integer> parseCommand(String asmCommand) {
         String name = asmCommand.split(" ")[0];
         for (Command command : COMMANDS) {
             if (command == null) continue;
             if (!command.name().equals(name)) continue;
 
-            String result = command.parse(asmCommand);
+            List<Integer> result = command.parse(asmCommand);
             if (result != null) {
                 return result;
             }

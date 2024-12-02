@@ -340,7 +340,7 @@ public class IntegrationTest extends AbstractTest {
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // последняя команда перед выходом в монитор
-        cpu.modAdd(new StopWhen("JMP C800"));
+        cpu.modAdd(new StopWhen(asm.parseCommand("JMP C800")));
         // cpu.modAdd(new StopWhen(0x0022));
         // если хочется подебажить внутри
         // cpu.modAdd(new WhenPC(range, cpu -> {
@@ -367,7 +367,7 @@ public class IntegrationTest extends AbstractTest {
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(3);
         // последняя команда программы перед выходом в монитор
-        cpu.modAdd(new StopWhen("JMP C800"));
+        cpu.modAdd(new StopWhen(asm.parseCommand("JMP C800")));
 
         // when
         hard.reset();
@@ -392,7 +392,7 @@ public class IntegrationTest extends AbstractTest {
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(3);
         // последняя команда программы перед выходом в монитор
-        cpu.modAdd(new StopWhen("JMP C800"));
+        cpu.modAdd(new StopWhen(asm.parseCommand("JMP C800")));
 
         // when
         hard.reset();
@@ -418,7 +418,7 @@ public class IntegrationTest extends AbstractTest {
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(4);
         // последняя команда программы перед выходом в монитор
-        cpu.modAdd(new StopWhen("JMP C800"));
+        cpu.modAdd(new StopWhen(asm.parseCommand("JMP 0020")));
         // если хочется подебажить внутри
         AtomicInteger counter = new AtomicInteger();
         cpu.modAdd(new WhenPC(range, cpu -> {
@@ -449,7 +449,7 @@ public class IntegrationTest extends AbstractTest {
         // не показываем в trace все что относится к выводу на экран
         debug.showCallBellow(6);
         // последняя команда программы перед выходом в монитор
-        cpu.modAdd(new StopWhen("JMP C800"));
+        cpu.modAdd(new StopWhen(asm.parseCommand("JMP C800")));
         // если хочется подебажить внутри
         cpu.modAdd(new WhenPC(range, cpu -> {
             String log = cpu.debug().log(0);
