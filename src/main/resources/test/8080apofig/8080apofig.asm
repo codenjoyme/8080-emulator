@@ -6,13 +6,9 @@
 ;
 ;******************************************************************************
 
-        .PROJECT 8080apofig.rks
+        .PROJECT 8080apofig.mem
+        .tape специалистъ-mon
         CPU     8080
-; This is such a crutch in order to generate a valid rks file.
-; This program will be launched from address 0004.
-        .ORG    00000h
-        DB      (begin & 0FFh), (begin >> 8)          ; START ADDR IN MEMORY
-        DB      ((end - 1) & 0FFh), ((end - 1) >> 8)  ; END ADDR IN MEMORY
 
 begin:  JMP     start
 

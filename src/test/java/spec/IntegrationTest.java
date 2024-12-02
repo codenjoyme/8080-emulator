@@ -444,7 +444,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_diagnostic_apofig_8080_exerciser() {
         // given
         Lik.loadRom(base, roms);
-        Range range = hard.loadData(CPU_TESTS_RESOURCES + "8080apofig/8080apofig.rks", Lik.PLATFORM);
+        Range range = hard.loadData(CPU_TESTS_RESOURCES + "8080apofig/8080apofig.mem", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
