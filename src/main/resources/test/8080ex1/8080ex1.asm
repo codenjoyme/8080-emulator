@@ -114,7 +114,7 @@ spbt:        ds        2
 start:
 ;!      lhld    6
 ;!      sphl
-        lxi     h,msg1
+        lxi     d,msg1
         call    msg
 
         lxi     h,tests              ; first test case
@@ -126,7 +126,7 @@ loop:   mov     a,m                  ;  end of list ?
         call    stt
         jmp     loop
 
-done:   lxi     h,msg2
+done:   lxi     d,msg2
         call    msg
         jmp     wboot                ; warm boot
 
@@ -179,7 +179,8 @@ add16:    db      0ffh                                         ; flag mask
           db      0d7h,0                                       ; flags,acc
           dw      -1                                           ; sp
 
-          db      014h, 047h, 04bh, 0a6h                       ; expected crc
+;crc      db      014h, 047h, 04bh, 0a6h                       ; original expected crc
+          db      048h, 08Bh, 07fh, 0dah                       ; current expected crc
           db      'DAD <B,D,H,SP>...............$'
 
 ; aluop a,nn (28,672 cycles)
@@ -204,7 +205,7 @@ alu8i:    db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      09eh, 092h, 02fh, 09eh                       ; expected crc
-          db      'ALUOP NN.....................$'             ; description
+          db      'ALUOP NN.....................$'
 
 ; aluop a,<b,c,d,e,h,l,(hl),a> (753,664 cycles)
 alu8r:    db      0ffh                                         ; flag mask
@@ -228,7 +229,7 @@ alu8r:    db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      0cfh, 076h, 02ch, 086h                       ; expected crc
-          db      'ALUOP <B,C,D,E,H,L,M,A>......$'             ; description
+          db      'ALUOP <B,C,D,E,H,L,M,A>......$'
 
 ; <daa,cpl,scf,ccf>
 daa:      db      0ffh                                         ; flag mask
@@ -252,7 +253,7 @@ daa:      db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      0bbh,03fh,003h,00ch                          ; expected crc
-          db      '<DAA,CMA,STC,CMC>............$'             ; description
+          db      '<DAA,CMA,STC,CMC>............$'
 
 ; <inc,dec> a (3072 cycles)
 inca:     db      0ffh                                         ; flag mask
@@ -276,7 +277,7 @@ inca:     db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      0adh,0b6h,046h,00eh                          ; expected crc
-          db      '<INR,DCR> A..................$'             ; description
+          db      '<INR,DCR> A..................$'
 
 ; <inc,dec> b (3072 cycles)
 incb:     db      0ffh                                         ; flag mask
@@ -300,7 +301,7 @@ incb:     db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      083h,0edh,013h,045h                          ; expected crc
-          db      '<INR,DCR> B..................$'             ; description
+          db      '<INR,DCR> B..................$'
 
 ; <inc,dec> bc (1536 cycles)
 incbc:    db      0ffh                                         ; flag mask
@@ -324,7 +325,7 @@ incbc:    db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      0f7h,092h,087h,0cdh                          ; expected crc
-          db      '<INX,DCX> B..................$'             ; description
+          db      '<INX,DCX> B..................$'
 
 ; <inc,dec> c (3072 cycles)
 incc:     db      0ffh                                         ; flag mask
@@ -348,7 +349,7 @@ incc:     db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      0e5h,0f6h,072h,01bh                          ; expected crc
-          db      '<INR,DCR> C..................$'             ; description
+          db      '<INR,DCR> C..................$'
 
 ; <inc,dec> d (3072 cycles)
 incd:     db      0ffh                                         ; flag mask
@@ -372,7 +373,7 @@ incd:     db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      015h,0b5h,057h,09ah                          ; expected crc
-          db      '<INR,DCR> D..................$'             ; description
+          db      '<INR,DCR> D..................$'
 
 ; <inc,dec> de (1536 cycles)
 incde:    db      0ffh                                         ; flag mask
@@ -396,7 +397,7 @@ incde:    db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      07fh,04eh,025h,001h                          ; expected crc
-          db      '<INX,DCX> D..................$'             ; description
+          db      '<INX,DCX> D..................$'
 
 ; <inc,dec> e (3072 cycles)
 ince:     db      0ffh                                         ; flag mask
@@ -420,7 +421,7 @@ ince:     db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      0cfh,02ah,0b3h,096h                          ; expected crc
-          db      '<INR,DCR> E..................$'             ; description
+          db      '<INR,DCR> E..................$'
 
 ; <inc,dec> h (307 cycles)
 inch:     db      0ffh                                         ; flag mask
@@ -444,7 +445,7 @@ inch:     db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      012h,0b2h,095h,02ch                          ; expected crc
-          db      '<INR,DCR> H..................$'             ; description
+          db      '<INR,DCR> H..................$'
 
 ; <inc,dec> hl (1536 cycles)
 inchl:    db      0ffh                                         ; flag mask
@@ -468,7 +469,7 @@ inchl:    db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      09fh,02bh,023h,0c0h                          ; expected crc
-          db      '<INX,DCX> H..................$'             ; description
+          db      '<INX,DCX> H..................$'
 
 ; <inc,dec> l (3072 cycles)
 incl:     db      0ffh                                         ; flag mask
@@ -492,7 +493,7 @@ incl:     db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      0ffh,057h,0d3h,056h                          ; expected crc
-          db      '<INR,DCR> L..................$'             ; description
+          db      '<INR,DCR> L..................$'
 
 ; <inc,dec> (hl) (3072 cycles)
 incm:     db      0ffh                                         ; flag mask
@@ -516,7 +517,7 @@ incm:     db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      092h,0e9h,063h,0bdh                          ; expected crc
-          db      '<INR,DCR> M..................$'             ; description
+          db      '<INR,DCR> M..................$'
 
 ; <inc,dec> sp (1536 cycles)
 incsp:    db      0ffh                                         ; flag mask
@@ -540,7 +541,7 @@ incsp:    db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      0d5h,070h,02fh,0abh                          ; expected crc
-          db      '<INX,DCX> SP.................$'             ; description
+          db      '<INX,DCX> SP.................$'
 
 ; ld hl,(nnnn) (16 cycles)
 ld162:    db      0ffh                                         ; flag mask
@@ -564,7 +565,7 @@ ld162:    db      0ffh                                         ; flag mask
           dw      0                                            ; sp
 
           db      0a9h,0c3h,0d5h,0cbh                          ; expected crc
-          db      'LHLD NNNN....................$'             ; description
+          db      'LHLD NNNN....................$'
 
 ; ld (nnnn),hl (16 cycles)
 ld166:   db      0ffh                                          ; flag mask
@@ -588,7 +589,7 @@ ld166:   db      0ffh                                          ; flag mask
           dw      0                                            ; sp
 
           db      0e8h,086h,04fh,026h                          ; expected crc
-          db      'SHLD NNNN....................$'             ; description
+          db      'SHLD NNNN....................$'
 
 ; ld <bc,de,hl,sp>,nnnn (64 cycles)
 ld16im:   db      0ffh                                         ; flag mask
@@ -812,6 +813,7 @@ ldir2:  mov     a,m
 
         lxi     d,20+20+4          ; skip incmask, scanmask and expcrc
         dad     d
+        xchg
         call    msg                ; show test name
         call    initcrc            ; initialise crc
 ; test loop
@@ -833,14 +835,14 @@ tlp2:   call    count              ; increment the counter
         call    cmpcrc
         lxi     d,okmsg
         jz      tlpok
-        lxi     h,ermsg1
+        lxi     d,ermsg1
         call    msg
         call    phex8
-        lxi     h,ermsg2
+        lxi     d,ermsg2
         call    msg
         lxi     h,crcval
         call    phex8
-        lxi     h,crlf
+        lxi     d,crlf
 tlpok:  call    msg
         pop     h
         inx     h
@@ -1119,17 +1121,17 @@ test:   push    psw
         push    b
         push    d
         push    h
-;!        if      0
-        lxi     h,crlf
-        call    msg
-        lxi     h,iut
-        mvi     b,4
-        call    hexstr
-        mvi     a,' '
-        call    pchar
-        mvi     b,16
-        lxi     h,msbt
-        call    hexstr
+;!        if    0
+;!        lxi     d,crlf
+;!        call    msg
+;!        lxi     h,iut
+;!        mvi     b,4
+;!        call    hexstr
+;!        mvi     a,' '
+;!        call    pchar
+;!        mvi     b,16
+;!        lxi     h,msbt
+;!        call    hexstr
 ;!        endif
         di                         ; disable interrupts
 
@@ -1220,17 +1222,17 @@ tcrc:   ldax    d
         dcr     b
         jnz     tcrc
 ;!        if      0
-        mvi     a,' '
-        call    pchar
-        lxi     h,crcval
-        call    phex8
-        lxi     h,crlf
-        call    msg
-        lxi     h,msat
-        mvi     b,16
-        call    hexstr
-        lxi     h,crlf
-        call    msg
+;!        mvi     a,' '
+;!        call    pchar
+;!        lxi     h,crcval
+;!        call    phex8
+;!        lxi     d,crlf
+;!        call    msg
+;!        lxi     h,msat
+;!        mvi     b,16
+;!        call    hexstr
+;!        lxi     d,crlf
+;!        call    msg
 ;!        endif
         pop     h
         pop     d
@@ -1283,6 +1285,7 @@ msg:    PUSH    B                 ; Push state
         PUSH    D
         PUSH    H
         PUSH    PSW
+        XCHG                      ; Swap HL and DE
 msgs:   MOV     A,M               ; Get data
         CPI     '$'               ; End?
         JZ      msge              ; Exit
@@ -1339,10 +1342,10 @@ byto3:  ADI     030h
         RET
 
 msg1:   db      00Dh, 00Ah, '8080 INSTRUCTION EXERCISER (KR580VM80A CPU)', 00Dh, 00Ah, '$'
-msg2:   db      'TESTS COMPLETE$'
+msg2:   db      'TESTS COMPLETE', 00Dh, 00Ah, '$'
 okmsg:  db      '  OK', 00Dh, 00Ah, '$'
-ermsg1: db      '  ERROR **** CRC EXPECTED:$'
-ermsg2: db      ' FOUND:$'
+ermsg1: db      '  ERROR ****', 00Dh, 00Ah, ' CRC EXPECTED: ', '$'
+ermsg2: db      00Dh, 00Ah, ' FOUND:        ', '$'
 crlf:   db      00Dh, 00Ah, '$'
 
 ; compare crc
@@ -1394,10 +1397,10 @@ crclp:  ldax    d
         dcr     c
         jnz     crclp
 ;!        if      0
-        lxi     h,crcval
-        call    phex8
-        lxi     h,crlf
-        call    msg
+;!        lxi     h,crcval
+;!        call    phex8
+;!        lxi     d,crlf
+;!        call    msg
 ;!        endif
         pop     h
         pop     d
