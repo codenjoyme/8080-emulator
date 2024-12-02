@@ -211,7 +211,7 @@ public abstract class Command {
         return result;
     }
 
-    private String replace(String source, String search, String replacement) {
+    protected String replace(String source, String search, String replacement) {
         int index = source.indexOf(search);
         if (index == -1) {
             return source;

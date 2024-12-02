@@ -65,8 +65,7 @@ public class MOV_R_R extends Command {
 
     @Override
     public String print(List<Integer> bites, boolean canonical) {
-        return super.print(bites, canonical)
-                .replaceFirst(Pattern.quote("(B|C|D|E|H|L|M|A)"),
+        return replace(super.print(bites, canonical), "(B|C|D|E|H|L|M|A)",
                         registers().get(rindex2(bites.get(0))));
     }
 
