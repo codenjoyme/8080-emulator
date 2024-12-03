@@ -21,7 +21,8 @@ public class TrackUpdatedMemory extends Memory {
     private int end;
 
     public TrackUpdatedMemory(int size) {
-        super(size);
+        super();
+        mem = new TrackUpdatedBites(size);
         resetChanges();
         trackChanges = true;
     }
@@ -32,23 +33,30 @@ public class TrackUpdatedMemory extends Memory {
         end = Integer.MIN_VALUE;
     }
 
+    public class TrackUpdatedBites extends Bites {
+
+        public TrackUpdatedBites(int size) {
+            super(size);
+        }
+
+        @Override
+        public void set(int addr, int bite) {
+            int prev = super.get(addr);
+            if (trackChanges) {
+                updated.add(new UpdatedBite(addr, prev, bite));
+                start = Math.min(start, addr);
+                end = Math.max(end, addr);
+            }
+            super.set(addr, bite);
+        }
+    }
+
     public void doTrackChanges() {
         trackChanges = true;
     }
 
     public void doNotTrackChanges() {
         trackChanges = false;
-    }
-
-    @Override
-    public void write8(int addr, int bite) {
-        int prev = super.read8(addr);
-        if (trackChanges) {
-            updated.add(new UpdatedBite(addr, prev, bite));
-            start = Math.min(start, addr);
-            end = Math.max(end, addr);
-        }
-        super.write8(addr, bite);
     }
 
     public String details() {
