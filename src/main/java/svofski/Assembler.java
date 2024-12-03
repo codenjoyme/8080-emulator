@@ -60,6 +60,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Assembler {
+
+    private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+
     public boolean debug = false;
     public String tapeFormat = "rk-bin";
     public boolean doHexDump = false;
@@ -245,7 +248,7 @@ public class Assembler {
             return test;
         }
 
-        if (identifier.matches("^[+-]?[0-9]+")) {
+        if (identifier.matches("(^[+-]?[0-9]+).*")) {
             try {
                 Integer test = Integer.valueOf(identifier);
                 return test;
@@ -540,7 +543,7 @@ public class Assembler {
 
     public int parseInstruction(String[] parts, int addr, int linenumber) {
         for (int i = 0; i < parts.length; i++) {
-            if (parts[i].charAt(0) == ';') {
+            if (!parts[i].isEmpty() && parts[i].charAt(0) == ';') {
                 parts = Arrays.copyOf(parts, i);
                 break;
             }
@@ -810,7 +813,7 @@ public class Assembler {
 
             // nothing else works, it must be a label
             if (labelTag == null) {
-                String[] splat = mnemonic.split(":");
+                String[] splat = mnemonic.split(":", -1);
                 labelTag = splat[0];
                 label_obj = this.labelResolution(labelTag, String.valueOf(addr), addr,
                         linenumber, false);
@@ -818,7 +821,6 @@ public class Assembler {
                     result = -1;
                     break;
                 }
-                parts = Arrays.copyOfRange(parts, 1, parts.length);
                 parts[0] = String.join(":", Arrays.copyOfRange(splat, 1, splat.length));
                 continue;
             }
@@ -1327,8 +1329,6 @@ public class Assembler {
 
     public Integer evalInvoke(String expr) {
         try {
-            ScriptEngineManager manager = new ScriptEngineManager();
-            ScriptEngine engine = manager.getEngineByName("JavaScript");
             return (Integer) engine.eval(expr);
         } catch (ScriptException err) {
             // System.out.println("expr was: " + expr);

@@ -56,7 +56,7 @@ public class TapeFormat {
                 this.format = "krista";
                 this.speed = 8;
                 break;
-            case "ÓÐÅÃÉÁÌÉÓÔß-rks":
+            case "специалистъ-rks":
             case "spetsialist-rks":
             case "specialist-rks":
             case "spec-rks":
