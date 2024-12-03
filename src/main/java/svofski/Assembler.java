@@ -65,17 +65,17 @@ public class Assembler {
     public String targetEncoding = "koi8-r";
     public String project = "test";
 
-    public HashMap<String, Integer> labels = new HashMap<>();
-    public HashMap<String, ArrayList<Integer>> xref = new HashMap<>();
-    public ArrayList<Integer> mem = new ArrayList<>();
+    public HashMap<String, Integer> labels = new LinkedHashMap<>();
+    public HashMap<String, ArrayList<Integer>> xref = new LinkedHashMap<>();
+    public HashMap<Integer, Integer> mem = new LinkedHashMap<>();
     public Integer org = null;
     public ArrayList<String> textlabels = new ArrayList<>();
     public ArrayList<String> references = new ArrayList<>();
-    public Map<Integer, String> errors = new HashMap<>();
+    public Map<Integer, String> errors = new LinkedHashMap<>();
     public List<Map<String, Object>> gutterContent = new ArrayList<>();
 
     private ArrayList<Expression> expressions = new ArrayList<>();
-    private HashMap<String, Map<String, Object>> label_resolutions = new HashMap<>();
+    private HashMap<String, Map<String, Object>> label_resolutions = new LinkedHashMap<>();
 
     public String objCopy;
     public String postbuild;
@@ -310,16 +310,16 @@ public class Assembler {
 
     public void setmem16(int addr, int immediate) {
         if (immediate >= 0) {
-            mem.set(addr, immediate & 0xff);
-            mem.set(addr + 1, immediate >> 8);
+            mem.put(addr, immediate & 0xff);
+            mem.put(addr + 1, immediate >> 8);
         } else {
-            mem.set(addr, immediate);
-            mem.set(addr + 1, immediate);
+            mem.put(addr, immediate);
+            mem.put(addr + 1, immediate);
         }
     }
 
     public void setmem8(int addr, int immediate) {
-        mem.set(addr, immediate < 0 ? immediate : immediate & 0xff);
+        mem.put(addr, immediate < 0 ? immediate : immediate & 0xff);
     }
 
     // Static utility methods to parse the register pair and single registers
@@ -563,7 +563,7 @@ public class Assembler {
 
             // no operands
             if ((opcs = Assembler.ops0.get(mnemonic)) != null) {
-                this.mem.set(addr, opcs);
+                this.mem.put(addr, opcs);
                 if (mnemonic.equals("xchg")) {
                     regusage = new String[]{"#", "h", "l", "d", "e"};
                 } else if (mnemonic.equals("sphl") || mnemonic.equals("xthl")) {
@@ -578,7 +578,7 @@ public class Assembler {
 
             // immediate word
             if ((opcs = Assembler.opsIm16.get(mnemonic)) != null) {
-                this.mem.set(addr, opcs);
+                this.mem.put(addr, opcs);
 
                 this.useExpression(Arrays.copyOfRange(parts, 1, parts.length), addr + 1, 2, linenumber);
 
@@ -599,7 +599,7 @@ public class Assembler {
                 int rp = Assembler.parseRegisterPair(subparts[0], false);
                 if (rp == -1) return -3;
 
-                this.mem.set(addr, opcs | (rp << 4));
+                this.mem.put(addr, opcs | (rp << 4));
 
                 this.useExpression(Arrays.copyOfRange(subparts, 1, subparts.length), addr + 1, 2, linenumber);
                 result = 3;
@@ -608,7 +608,7 @@ public class Assembler {
 
             // immediate byte
             if ((opcs = Assembler.opsIm8.get(mnemonic)) != null) {
-                this.mem.set(addr, opcs);
+                this.mem.put(addr, opcs);
                 this.useExpression(Arrays.copyOfRange(parts, 1, parts.length), addr + 1, 1, linenumber);
                 result = 2;
                 break;
@@ -628,7 +628,7 @@ public class Assembler {
                     break;
                 }
 
-                this.mem.set(addr, opcs | (reg << 3));
+                this.mem.put(addr, opcs | (reg << 3));
 
                 this.useExpression(Arrays.copyOfRange(subparts, 1, subparts.length), addr + 1, 1, linenumber);
                 result = 2;
@@ -648,7 +648,7 @@ public class Assembler {
                     result = -1;
                     break;
                 }
-                this.mem.set(addr, opcs | (reg1 << 3) | reg2);
+                this.mem.put(addr, opcs | (reg1 << 3) | reg2);
                 regusage = new String[]{subparts[0].trim(), subparts[1].trim()};
                 result = 1;
                 break;
@@ -665,7 +665,7 @@ public class Assembler {
                 if (Arrays.asList("ora", "ana", "xra", "add", "adc", "sub", "sbc", "cmp").contains(mnemonic)) {
                     reg <<= 3;
                 }
-                this.mem.set(addr, opcs | reg);
+                this.mem.put(addr, opcs | reg);
 
                 regusage = new String[]{parts[1].trim()};
                 if (Arrays.asList("ora", "ana", "xra", "add", "adc", "sub", "sbc", "cmp").contains(mnemonic)) {
@@ -688,7 +688,7 @@ public class Assembler {
                     result = -1;
                     break;
                 }
-                this.mem.set(addr, opcs | (rp << 4));
+                this.mem.put(addr, opcs | (rp << 4));
 
                 regusage = new String[]{"@" + parts[1].trim()};
                 if (mnemonic.equals("dad")) {
@@ -704,7 +704,7 @@ public class Assembler {
             if (mnemonic.equals("rst")) {
                 int n = this.resolveNumber(parts[1]);
                 if (n >= 0 && n < 8) {
-                    this.mem.set(addr, 0xC7 | (n << 3));
+                    this.mem.put(addr, 0xC7 | (n << 3));
                     result = 1;
                 } else {
                     result = -1;
@@ -823,7 +823,7 @@ public class Assembler {
                 continue;
             }
 
-            this.mem.set(addr, -2);
+            this.mem.put(addr, -2);
             result = -1; // error
             break;
         }
@@ -981,7 +981,7 @@ public class Assembler {
         return this.labels.get(l.toLowerCase());
     }
 
-    public List<Map<String, Object>> gutter(List<String> text, List<Integer> lengths, List<Integer> addresses) {
+    public List<Map<String, Object>> gutter(List<String> text, Map<Integer, Integer> lengths, Map<Integer, Integer> addresses) {
         List<Map<String, Object>> result = new ArrayList<>();
         int addr = 0;
 
@@ -1134,8 +1134,8 @@ public class Assembler {
     }
 
     public void assemble(String src, Object listobj) {
-        List<Integer> lengths = new ArrayList<>();
-        List<Integer> addresses = new ArrayList<>();
+        Map<Integer, Integer> lengths = new HashMap<>();
+        Map<Integer, Integer> addresses = new HashMap<>();
 
         String[] inputlines = src.split("\n");
 
@@ -1166,13 +1166,13 @@ public class Assembler {
                     size = 0;
                     break;
                 }
-                Integer l = lengths.get(line);
-                if (l == null) {
-                    lengths.add(line, size);
+
+                if (!lengths.containsKey(line)) {
+                    lengths.put(line, size);
                 } else {
-                    lengths.set(line, lengths.get(line) + size);
+                    lengths.put(line, lengths.get(line) + size);
                 }
-                if (sul == 0) addresses.add(line, addr);
+                if (sul == 0) addresses.put(line, addr);
                 addr += size;
             }
         }
@@ -1352,35 +1352,35 @@ public class Assembler {
                 response.put("kind", "assemble");
                 break;
             case "getmem":
-                response.put("mem", new LinkedList<>(asm.mem));
+                response.put("mem", new LinkedHashMap<>(asm.mem));
                 response.put("org", asm.org);
                 response.put("binFileName", asm.getBinFileName());
                 response.put("tapeFormat", asm.tapeFormat);
                 response.put("download", false);
                 break;
             case "getbin":
-                response.put("mem", new LinkedList<>(asm.mem));
+                response.put("mem", new LinkedHashMap<>(asm.mem));
                 response.put("org", asm.org);
                 response.put("filename", asm.getBinFileName());
                 response.put("download", "bin");
                 break;
             case "gethex":
                 asm.intelHex(); // make sure that hexText is up to date
-                response.put("mem", new LinkedList<>(asm.mem));
+                response.put("mem", new LinkedHashMap<>(asm.mem));
                 response.put("org", asm.org);
                 response.put("filename", asm.getHexFileName());
                 response.put("hex", asm.hexText);
                 response.put("download", "hex");
                 break;
             case "gettap":
-                response.put("mem", new LinkedList<>(asm.mem));
+                response.put("mem", new LinkedHashMap<>(asm.mem));
                 response.put("org", asm.org);
                 response.put("filename", asm.getTapFileName());
                 response.put("tapeFormat", asm.tapeFormat);
                 response.put("download", "tap");
                 break;
             case "getwav":
-                response.put("mem", new LinkedList<>(asm.mem));
+                response.put("mem", new LinkedHashMap<>(asm.mem));
                 response.put("org", asm.org);
                 response.put("binFileName", asm.getBinFileName());
                 response.put("tapeFormat", asm.tapeFormat);

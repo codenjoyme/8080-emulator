@@ -18,14 +18,13 @@ import static spec.stuff.FileAssert.write;
 
 public class RomLoaderTest {
 
-    private FileAssert fileAssert;
-
     private RomLoader roms;
     private TrackUpdatedMemory memory;
     private Cpu cpu;
 
     @Rule
     public TestName test = new TestName();
+    private FileAssert fileAssert;
 
     @Before
     public void setup() {
