@@ -25,7 +25,7 @@ public class AssemblerTest {
     public void setup() {
         asm = new Assembler();
 
-        fileAssert = new FileAssert(TEST_RESOURCES + test.getMethodName());
+        fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
         fileAssert.removeTestsData();
     }
 
@@ -45,8 +45,7 @@ public class AssemblerTest {
     }
 
     private void assertValue(String name, String result) {
-        String actualFile = String.format("%s/%s.log", AssemblerTest.class.getSimpleName(), name);
-        fileAssert.check(name, actualFile,
+        fileAssert.check(name, name + ".log",
                 file -> write(file, result));
     }
 
