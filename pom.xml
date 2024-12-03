@@ -16,7 +16,7 @@
         <server.port>8080</server.port>
         <server.hostname>http://${server.host}:${server.port}</server.hostname>
 
-        <java.version>8</java.version>
+        <java.version>9</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Production -->

@@ -1,8 +1,3 @@
-/*jshint sub:true*/ 		// object['prop'] is ok 
-/*jshint evil: true */ 		// eval is okay
-/*globals self: false */ 	// self is defined by worker scope
-
-"use strict";
 //
 // Pretty 8080 Assembler
 // 
@@ -50,9 +45,9 @@
 // Rev.J: Backport from offline version: register highlighting
 // Rev.K: Target encodings support
 //
-// TODO: evaluation should ignore precedence, it's all left-to-right
-//
 // -- all of the above is kept for historical reasons only --
+
+"use strict";
 
 importScripts('encodings.js');
 importScripts('util.js');
@@ -816,11 +811,13 @@ Assembler.prototype.labelList = function() {
         return result;
     };
 
-    var sorted = [];
-    for (let i in this.labels) {
-        sorted[sorted.length] = i;
-    }
-    sorted.sort();
+    // var sorted = [];
+    // for (let i in this.labels) {
+    //     sorted[sorted.length] = i;
+    // }
+    // sorted.sort();
+    // do clean code
+    var sorted = Object.keys(this.labels).sort();
 
     var result = "Labels:\n";
     var col = 1;
@@ -1102,7 +1099,7 @@ function Expression(addr, length, s, linenumber)
     this.update(s);
 }
 
-Expression.prototype.update = function(arr) 
+Expression.prototype.update = function(arr)
 {
     var ex = arr.join(' ').trim();
     if (ex[0] == '"' || ex[0] == "'") {

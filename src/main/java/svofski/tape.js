@@ -1,5 +1,3 @@
-/* Tape stuff */
-
 var TapeFormat = function(fmt, forfile) {
     this.format = null;
     this.variant = null;
