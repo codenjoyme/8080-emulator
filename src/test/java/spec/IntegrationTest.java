@@ -346,7 +346,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_helloWorld() {
         // given
         Lik.loadRom(base, roms);
-        Range range = hard.loadData(CPU_TESTS_RESOURCES + "hello-world/hello-world.mem", Lik.PLATFORM);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "hello-world/hello-world.mem", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // последняя команда перед выходом в монитор
@@ -371,7 +371,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_diagnostic_microcosm() {
         // given
         Lik.loadRom(base, roms);
-        Range range = hard.loadData(CPU_TESTS_RESOURCES + "test/test.mem", Lik.PLATFORM);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "test/test.mem", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
@@ -396,7 +396,7 @@ public class IntegrationTest extends AbstractTest {
 
         // given
         Lik.loadRom(base, roms);
-        Range range = hard.loadData(CPU_TESTS_RESOURCES + "8080pre/8080pre.mem", Lik.PLATFORM);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080pre/8080pre.mem", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
@@ -422,7 +422,7 @@ public class IntegrationTest extends AbstractTest {
         // given
         memory.doNotTrackChanges();
         Lik.loadRom(base, roms);
-        Range range = hard.loadData(CPU_TESTS_RESOURCES + "8080ex1/8080ex1.mem", Lik.PLATFORM);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080ex1/8080ex1.mem", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
         // debug.enable(range);
         // debug.console(true);
@@ -455,7 +455,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_diagnostic_apofig_8080_exerciser() {
         // given
         Lik.loadRom(base, roms);
-        Range range = hard.loadData(CPU_TESTS_RESOURCES + "8080apofig/8080apofig.mem", Lik.PLATFORM);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080apofig/8080apofig.mem", Lik.PLATFORM);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // не показываем в trace все что относится к выводу на экран

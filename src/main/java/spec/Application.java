@@ -114,7 +114,7 @@ public class Application {
     }
 
     public void load(String rom) {
-        hard.loadData(rom, lik);
+        hard.loadData(base, rom, lik);
     }
 
     private void loadRoms(URL base) {

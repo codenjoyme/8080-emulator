@@ -103,24 +103,23 @@ public class RomLoader {
         }
     }
 
-    public Range load(String path) {
+    public Range load(URL base, String path) {
         try {
             File file = new File(path);
-            URL url = file.getParentFile().toURI().toURL();
             switch (substringAfter(file.getName(), ".")) {
                 case "com": {
-                    return loadROM(url, file.getName(), 0x0100);
+                    return loadROM(base, file.getPath(), 0x0100);
                 }
                 case "rom":
                 case "bin": {
-                    return loadROM(url, file.getName(), 0xC000);
+                    return loadROM(base, file.getPath(), 0xC000);
                 }
                 case "rks": {
-                    return loadRKS(url, file.getName());
+                    return loadRKS(base, file.getPath());
                 }
                 case "mem":
                 default: {
-                    return loadROM(url, file.getName(), 0x0000);
+                    return loadROM(base, file.getPath(), 0x0000);
                 }
             }
         } catch (Exception e) {

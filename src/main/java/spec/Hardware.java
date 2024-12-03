@@ -233,10 +233,10 @@ public class Hardware {
         return lastTick;
     }
 
-    public Range loadData(String path, boolean platform) {
+    public Range loadData(URL base, String path, boolean platform) {
         pause();
 
-        Range range = roms.load(path);
+        Range range = roms.load(base, path);
 
         int delta = 25_000;
         if (platform == Lik.PLATFORM) {

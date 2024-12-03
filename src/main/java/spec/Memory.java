@@ -12,12 +12,16 @@ public class Memory {
         mem = new Bites(size);
     }
 
+    protected Memory() {
+        // do nothing
+    }
+
     public int read8(int addr) {
-        return mem.get(addr);
+        return all().get(addr);
     }
 
     public void write8(int addr, int bite) {
-        mem.set(addr, bite);
+        all().set(addr, bite);
     }
 
     public Bites all() {
