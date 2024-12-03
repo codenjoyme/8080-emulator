@@ -63,7 +63,7 @@ public class SmartAssert {
     public static void checkResult() throws Exception {
         List<AssertionError> toProcess = failures;
         failures = null;
-        if (toProcess.isEmpty()) return;
+        if (toProcess == null || toProcess.isEmpty()) return;
 
         List<Throwable> errors = new LinkedList<>(toProcess);
         throw new MultipleFailureException(errors);

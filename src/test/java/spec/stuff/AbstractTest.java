@@ -29,7 +29,7 @@ public abstract class AbstractTest {
     protected KeyLogger keyLogger;
 
     @Before
-    public void before() throws Exception {
+    public void before() {
         SmartAssert.setup();
 
         Logger.DEBUG = false;
