@@ -68,6 +68,7 @@ public class FileAssert {
     }
 
     public static void write(File file, String string) {
+        file.getParentFile().mkdirs();
         try (FileWriter writer = new FileWriter(file.getAbsolutePath(), false)) {
             writer.write(string);
         } catch (IOException e) {

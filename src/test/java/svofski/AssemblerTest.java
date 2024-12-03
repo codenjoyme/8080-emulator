@@ -41,7 +41,7 @@ public class AssemblerTest {
                 .collect(Collectors.joining("\n"));
 
         // then
-        fileAssert.check("splitParts", "splitParts.log",
+        fileAssert.check("splitParts", "AssemblerTest/splitParts.log",
                 file -> write(file, result));
     }
 
