@@ -13,6 +13,7 @@ import spec.stuff.AbstractTest;
 import spec.stuff.FileAssert;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,9 +30,9 @@ public class IntegrationTest extends AbstractTest {
     private static final int K10 = 10_000;
     private static final int TICKS = 10_000_000;
 
-    private static final String TEST_RESOURCES = "src/test/resources/";
+    public static final String TEST_RESOURCES = "src/test/resources/";
     private static final String APP_RESOURCES = "src/main/resources/";
-    private static final String CPU_TESTS_RESOURCES = APP_RESOURCES + "test/";
+    private static final String CPU_TESTS_RESOURCES = "test/";
 
     @Rule
     public TestName test = new TestName();
@@ -43,17 +44,25 @@ public class IntegrationTest extends AbstractTest {
 
     @Before
     @Override
-    public void before() throws Exception {
+    public void before() {
         super.before();
 
         video = new PngVideo(hard.video(), hard.memory());
-        base = new File(APP_RESOURCES).toURI().toURL();
+        base = getBase();
         record.screenShoot(this::assertScreen);
         fileAssert = new FileAssert(TEST_RESOURCES + test.getMethodName());
         fileAssert.removeTestsData();
         dizAssembler = new DizAssembler(cpu.data());
         reset();
         record.after(TICKS).stopCpu();
+    }
+
+    public static URL getBase()  {
+        try {
+            return new File(APP_RESOURCES).toURI().toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @After
