@@ -20,26 +20,11 @@ public class RomLoader {
         this.cpu = cpu;
     }
 
-    // чтение ПЗУ ZX Spectrum
-    public Range loadROMZ(URL base, String path) {
-        try {
-            URL url = new URL(base, path);
-            InputStream is = url.openStream();
-            int length = is.available();
-            Range range = new Range(0, -length);
-            logLoading(url.toString(), range);
-            readBytes(is, memory.all(), range);
-            return range;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private void logLoading(String name, Range range) {
         Logger.info("Loading '%s' into %s", name, range);
     }
 
-    // для ПК "Специалист"
+    // для ПК "Специалист"/"ЛИК"
     // чтение ПЗУ
     public Range loadROM(URL base, String path, int offset) {
         return loadROM(base, path, memory.all(), offset);
