@@ -45,6 +45,8 @@ public class RomLoader {
         }
     }
 
+    // TODO сделать преобразователь mem -> rks
+
     // для ПК "Специалист"
     // ADN: ML_B, ST_B
     // ADK: ML_B, ST_B
@@ -67,7 +69,7 @@ public class RomLoader {
             cpu.PC(range.begin());
             readBytes(is, memory.all(), range);
             return range;
-            // Bites data = read8arr(is, 4); // TODO в конце еще два байта, зачем?
+            // Bites data = read8arr(is, 4); // TODO в конце еще два байта, контрольная сумма - реализовать проверку
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
