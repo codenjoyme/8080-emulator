@@ -49,6 +49,8 @@ package svofski;
 //
 // -- all of the above is kept for historical reasons only --
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -463,51 +465,47 @@ public class Assembler {
         int state = 0;
         char cork = '\0';
         String remainder = s.trim();
-        boolean isContinuing = true;
 
-        while (isContinuing) {
+        for (;state != 100;) {
             switch (state) {
                 case 0:
-                    if (remainder.isEmpty()) {
-                        state = 100;
-                    } else {
+                    boolean def = remainder.isEmpty();
+                    if (!def) {
                         char firstChar = remainder.charAt(0);
-                        switch (firstChar) {
-                            case ';':
-                                parts.add(remainder);
-                                state = 100;
-                                break;
-                            case '"':
-                                cork = '"';
-                                state = 10;
-                                break;
-                            case '\'':
-                                cork = '\'';
-                                state = 10;
-                                break;
-                            case '\\':
-                                lines.add(new ArrayList<>(parts));
-                                parts.clear();
-                                remainder = remainder.substring(1).trim();
-                                break;
-                            default:
-                                int at = findDelimiter(remainder, new char[] {' ', '\\', '"', '\''});
-                                if (at >= 0) {
-                                    parts.add(remainder.substring(0, at));
-                                    remainder = remainder.substring(at).trim();
-                                } else {
-                                    parts.add(remainder);
-                                    state = 100;
-                                }
-                                break;
+                        if (firstChar == ';') {
+                            parts.add(remainder);
+                            state = 100;
+                        } else if (firstChar == '"') {
+                            cork = '"';
+                            state = 10;
+                        } else if (firstChar == '\'') {
+                            cork = '\'';
+                            state = 10;
+                        } else if (firstChar == '\\') {
+                            lines.add(new ArrayList<>(parts));
+                            parts.clear();
+                            remainder = remainder.substring(1).trim();
+                        } else {
+                            def = true;
+                        }
+                    }
+                    if (def) {
+                        int at = findDelimiter(remainder, new char[] {' ', '\\', '"', '\''});
+                        if (at >= 0) {
+                            parts.add(remainder.substring(0, at));
+                            remainder = remainder.substring(at).trim();
+                        } else {
+                            parts.add(remainder);
+                            state = 100;
                         }
                     }
                     break;
                 case 10:
-                    int n = remainder.indexOf(cork, 1);
+                    int n = remainder.substring(1).indexOf(cork);
                     if (n > 0) {
-                        parts.add(remainder.substring(0, n + 1));
-                        remainder = remainder.substring(n + 1).trim();
+                        n += 2;
+                        parts.add(remainder.substring(0, n));
+                        remainder = StringUtils.stripStart(remainder.substring(n), " ");
                         state = 0;
                     } else {
                         parts.add(remainder);
@@ -516,8 +514,10 @@ public class Assembler {
                     }
                     break;
                 case 100:
-                    isContinuing = false;
                     break;
+            }
+            if (remainder.isEmpty()) {
+                break;
             }
         }
         if (!parts.isEmpty()) {
