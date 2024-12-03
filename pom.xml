@@ -34,10 +34,16 @@
         <maven-assembly.version>3.3.0</maven-assembly.version>
 
         <jetty-webapp-folder>target/webapp-synth</jetty-webapp-folder>
+        <commons-io.version>2.18.0</commons-io.version>
     </properties>
 
     <dependencies>
         <!-- Production -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
 
         <!-- Testing -->
         <dependency>

@@ -1,8 +1,8 @@
 package spec;
 
 import spec.math.Bites;
+import org.apache.commons.io.IOUtils;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
@@ -79,31 +79,18 @@ public class RomLoader {
         return header;
     }
 
-    // Чтение байт из потока InputStream is
     private int readBytes(InputStream is, Bites a, Range range) throws Exception {
-        try {
-            int off = range.begin();
-            int n = range.length();
-            BufferedInputStream bis = new BufferedInputStream(is, n);
+        int off = range.begin();
+        int n = range.length();
 
-            int toRead = n;             // число байт для прочтения (передано int n)
-            byte[] buff = new byte[n]; // массив заданного числа int n БАЙТ!
+        byte[] buff = new byte[n];
 
-            while (toRead > 0) { // от числа байт для прочтения до 0.
-                // BufferedInputStream( is, n )
-                int nRead = bis.read(buff, n - toRead, toRead);
-                toRead -= nRead;
-            }
+        IOUtils.readFully(is, buff);
 
-            for (int i = 0; i < n; i++) { // буфер "byte" превращаем в буффер "int"
-                a.set(i + off, (buff[i] + 256) & BITE);
-            }
-            return n;
-        } catch (Exception e) {
-            System.err.println(e);
-            e.printStackTrace();
-            throw e;
+        for (int i = 0; i < n; i++) {
+            a.set(i + off, (buff[i] + 256) & BITE);
         }
+        return n;
     }
 
     public void loadSnapshot(URL base, String path) {
