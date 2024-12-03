@@ -45,7 +45,8 @@ public class AssemblerTest {
     }
 
     private void assertValue(String name, String result) {
-        fileAssert.check(name, AssemblerTest.class.getSimpleName() + "/" + name + ".log",
+        String actualFile = String.format("%s/%s.log", AssemblerTest.class.getSimpleName(), name);
+        fileAssert.check(name, actualFile,
                 file -> write(file, result));
     }
 
