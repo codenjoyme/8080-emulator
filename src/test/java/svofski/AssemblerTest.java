@@ -41,7 +41,11 @@ public class AssemblerTest {
                 .collect(Collectors.joining("\n"));
 
         // then
-        fileAssert.check("splitParts", "AssemblerTest/splitParts.log",
+        assertValue("splitParts", result);
+    }
+
+    private void assertValue(String name, String result) {
+        fileAssert.check(name, AssemblerTest.class.getSimpleName() + "/" + name + ".log",
                 file -> write(file, result));
     }
 
