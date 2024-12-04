@@ -865,34 +865,12 @@ public class AssemblerTest {
     }
 
     @Test
-    public void main() {
-        assertValue("assembleResult", process(Map.of(
-                "command", "assemble",
-                "src", PROGRAM)));
-
-        assertValue("binResult", process(Map.of(
-                "command", "getbin")));
-
-        assertValue("hexResult", process(Map.of(
-                "command", "gethex")));
-
-        assertValue("tapResult", process(Map.of(
-                "command", "gettap")));
-
-        assertValue("memResult", process(Map.of(
-                "command", "getmem")));
-
-        assertValue("wavResult", process(Map.of(
-                "command", "getwav",
-                "mode", "wav")));
-
-        assertValue("wavPlayResult", process(Map.of(
-                "command", "getwav",
-                "mode", "play")));
+    public void assemble() {
+        assertValue("assemble", process(PROGRAM));
     }
 
-    private String process(Map<String, String> command) {
-        return asString(Assembler.process(asm, command));
+    private String process(String sourceCode) {
+        return asString(asm.process(sourceCode));
     }
 
     private String asString(Map<String, Object> process) {
