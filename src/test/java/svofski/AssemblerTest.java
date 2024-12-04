@@ -1,5 +1,6 @@
 package svofski;
 
+import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -9,8 +10,8 @@ import spec.stuff.FileAssert;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
 import static spec.IntegrationTest.TEST_RESOURCES;
 import static spec.stuff.FileAssert.write;
@@ -865,29 +866,37 @@ public class AssemblerTest {
 
     @Test
     public void main() {
-        assertValue("assembleResult", Assembler.process(asm, Map.of(
+        assertValue("assembleResult", process(Map.of(
                 "command", "assemble",
-                "src", PROGRAM)).toString());
+                "src", PROGRAM)));
 
-        assertValue("binResult", Assembler.process(asm, Map.of(
-                "command", "getbin")).toString());
+        assertValue("binResult", process(Map.of(
+                "command", "getbin")));
 
-        assertValue("hexResult", Assembler.process(asm, Map.of(
-                "command", "gethex")).toString());
+        assertValue("hexResult", process(Map.of(
+                "command", "gethex")));
 
-        assertValue("tapResult", Assembler.process(asm, Map.of(
-                "command", "gettap")).toString());
+        assertValue("tapResult", process(Map.of(
+                "command", "gettap")));
 
-        assertValue("memResult", Assembler.process(asm, Map.of(
-                "command", "getmem")).toString());
+        assertValue("memResult", process(Map.of(
+                "command", "getmem")));
 
-        assertValue("wavResult", Assembler.process(asm, Map.of(
+        assertValue("wavResult", process(Map.of(
                 "command", "getwav",
-                "mode", "wav")).toString());
+                "mode", "wav")));
 
-        assertValue("wavPlayResult", Assembler.process(asm, Map.of(
+        assertValue("wavPlayResult", process(Map.of(
                 "command", "getwav",
-                "mode", "play")).toString());
+                "mode", "play")));
+    }
+
+    private String process(Map<String, String> command) {
+        return asString(Assembler.process(asm, command));
+    }
+
+    private String asString(Map<String, Object> process) {
+        return new GsonBuilder().setPrettyPrinting().create().toJson(process);
     }
 
     @Test
@@ -895,14 +904,15 @@ public class AssemblerTest {
         // given
         String[] lines = PROGRAM.split("\n");
 
-        // when
-        String result = Arrays.stream(lines)
+        // when then
+        assertValue("splitParts", splitParts(lines));
+    }
+
+    private String splitParts(String[] lines) {
+        return Arrays.stream(lines)
                 .map(asm::splitParts)
                 .map(this::asString)
-                .collect(Collectors.joining("\n"));
-
-        // then
-        assertValue("splitParts", result);
+                .collect(joining("\n"));
     }
 
     @Test
@@ -918,8 +928,8 @@ public class AssemblerTest {
         return lists.stream()
                 .map(list -> list.stream().map(
                         it -> "<" + it + ">"
-                ).collect(Collectors.joining(", ", "{", "}")))
-                .collect(Collectors.joining("; ", "[", "]"));
+                ).collect(joining(", ", "{", "}")))
+                .collect(joining("; ", "[", "]"));
     }
 
     private void assertValue(String name, String result) {
