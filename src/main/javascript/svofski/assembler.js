@@ -74,7 +74,7 @@ function Assembler() {
     this.xref = {};
     this.mem = [];
     this.org = undefined;
-    this.textlabels= [];
+    this.textlabels = [];
     this.references = [];
     this.errors = {};
     this.gutterContent = [];
@@ -1130,7 +1130,7 @@ Assembler.prototype.assemble = function(src,listobj) {
     this.labels = {};
     this.mem.length = 0;
     this.org = undefined;
-    this.errors.length = 0;
+    this.errors = {};
     this.postbuild = '';
     this.objCopy = 'gobjcopy';
     this.hexText = '';
