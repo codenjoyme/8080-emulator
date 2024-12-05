@@ -18,13 +18,16 @@ export let recorder = (() => {
         method = methodName;
         let old = object[method];
         object[method] = (...args) => {
+            let fieldsData = !fields ? null : fields.map(it => ({
+                name: it,
+                value: JSON.parse(JSON.stringify(object[it]))
+            }));
+
             let result = old.apply(object, args);
+
             collect({
                 input: args,
-                fields: !fields ? null : fields.map(it => ({
-                    name: it,
-                    value: JSON.parse(JSON.stringify(object[it]))
-                })),
+                fields: fieldsData,
                 result: typeof result == 'undefined' ? null : result,
             });
             return result;
