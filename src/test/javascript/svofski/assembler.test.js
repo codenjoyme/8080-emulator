@@ -3,49 +3,52 @@ const assembler = require('../../../main/javascript/svofski/assembler.js');
 
 export let recorder = (() => {
     var data = [];
-    return {
-        collect: (input) => {
-            if (data.indexOf(input) === -1) {
-                data.push(input);
-            }
-        },
-        result: () => {
-            return JSON.stringify(data, null, 2);
+    let collect = (input) => {
+        if (data.indexOf(input) === -1) {
+            data.push(input);
         }
     };
-})();
-
-describe("assembler", () => {
-    test("assemble", () => {
-        const dir = "../../../resources/AssemblerTest/";
-
-        // when
-        let methodName = 'evaluateExpression2';
-        let object = assembler.asm;
-
-        let old = object[methodName];
-        object[methodName] = (...args) => {
+    let decorate = (object, method) => {
+        let old = object[method];
+        object[method] = (...args) => {
             let result = old.apply(object, args);
-            recorder.collect({
+            collect({
                 input: args,
                 result: result,
             });
             return result;
         }
+    };
+    let result = () => {
+        return JSON.stringify(data, null, 2);
+    };
+    return {
+        decorate,
+        collect,
+        result
+    };
+})();
+
+describe('assembler', () => {
+    test('assemble', () => {
+        const dir = '../../../resources/AssemblerTest/';
+
+        // when
+        recorder.decorate(assembler.asm, 'evaluateExpression2');
 
         let data = assembler.assemble(PROGRAM);
 
         // then
-        common.assertCall(dir + methodName + ".json", recorder.result());
+        common.assertCall(dir + 'evaluateExpression2.json', recorder.result());
 
-        common.assertCall(dir + "memory.json", data.mem);
-        common.assertCall(dir + "hex.json", data.hex);
-        common.assertCall(dir + "gutter.json", data.gutter);
-        common.assertCall(dir + "listing.json", data.listing);
-        common.assertCall(dir + "errors.json", data.errors);
-        common.assertCall(dir + "xref.json", data.xref);
-        common.assertCall(dir + "labels.json", data.labels);
-        common.assertCall(dir + "info.json", data.info);
+        common.assertCall(dir + 'memory.json', data.mem);
+        common.assertCall(dir + 'hex.json', data.hex);
+        common.assertCall(dir + 'gutter.json', data.gutter);
+        common.assertCall(dir + 'listing.json', data.listing);
+        common.assertCall(dir + 'errors.json', data.errors);
+        common.assertCall(dir + 'xref.json', data.xref);
+        common.assertCall(dir + 'labels.json', data.labels);
+        common.assertCall(dir + 'info.json', data.info);
     });
 });
 
