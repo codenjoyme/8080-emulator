@@ -78,6 +78,7 @@ function Assembler() {
     this.references = [];
     this.errors = [];
     this.gutterContent = [];
+    this.listingText = [];
 }
 
 Assembler.prototype.getBinFileName = function()
@@ -1174,9 +1175,7 @@ Assembler.prototype.assemble = function(src,listobj) {
     }
 
     this.gutterContent = this.gutter(inputlines, lengths, addresses);
-    if (listobj) {
-        listobj.text = this.listing(inputlines, lengths, addresses);
-    }
+    this.listingText = this.listing(inputlines, lengths, addresses);
 };
 
 Assembler.prototype.addxref = function(ident, linenumber)
@@ -1392,6 +1391,7 @@ export function assemble(program) {
         'mem': asm.mem,
         'hex': asm.hexText,
         'gutter': asm.gutterContent,
+        'listing': asm.listingText,
         'errors': asm.errors,
         'xref': asm.xref,
         'labels': asm.labels,

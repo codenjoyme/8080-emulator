@@ -78,6 +78,7 @@ public class Assembler {
     public ArrayList<String> references = new ArrayList<>();
     public Map<Integer, String> errors = new HashMap<>();
     public List<Map<String, Object>> gutterContent = new ArrayList<>();
+    public String listingText;
 
     private ArrayList<Expression> expressions = new ArrayList<>();
     private Map<String, Map<String, Object>> label_resolutions = new HashMap<>();
@@ -1014,7 +1015,7 @@ public class Assembler {
         return result;
     }
 
-    public String listing(List<String> text, List<Integer> lengths, List<Integer> addresses) {
+    public String listing(List<String> text, Map<Integer, Integer> lengths, Map<Integer, Integer> addresses) {
         List<String> result = new ArrayList<>();
         int addr = 0;
         for (int i = 0, end_i = text.size(); i < end_i; i += 1) {
@@ -1189,9 +1190,7 @@ public class Assembler {
         }
 
         this.gutterContent = this.gutter(Arrays.asList(inputlines), lengths, addresses);
-//        if (listobj != null) {
-//            listobj.text = this.listing(inputlines, lengths, addresses);
-//        }
+        this.listingText = this.listing(Arrays.asList(inputlines), lengths, addresses);
     }
 
     public void addxref(String ident, int linenumber) {
@@ -1346,6 +1345,7 @@ public class Assembler {
         result.put("mem", toList(mem));
         result.put("hex", hexText);
         result.put("gutter", gutterContent);
+        result.put("listing", listingText);
         result.put("errors", errors);
         result.put("xref", xref);
         result.put("labels", labels);

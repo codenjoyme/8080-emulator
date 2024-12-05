@@ -40,6 +40,7 @@ public class AssemblerTest {
         assertValue("memory.json", asString(data.get("mem")));
         assertValue("hex.json", asString(data.get("hex")));
         assertValue("gutter.json", asString(data.get("gutter")));
+        assertValue("listing.json", asString(data.get("listing")));
         assertValue("errors.json", asString(data.get("errors")));
         assertValue("xref.json", asString(data.get("xref")));
         assertValue("labels.json", asString(data.get("labels")));

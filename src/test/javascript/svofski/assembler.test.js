@@ -12,6 +12,7 @@ describe("assembler", () => {
         common.assertCall(dir + "memory.json", data.mem);
         common.assertCall(dir + "hex.json", data.hex);
         common.assertCall(dir + "gutter.json", data.gutter);
+        common.assertCall(dir + "listing.json", data.listing);
         common.assertCall(dir + "errors.json", data.errors);
         common.assertCall(dir + "xref.json", data.xref);
         common.assertCall(dir + "labels.json", data.labels);
