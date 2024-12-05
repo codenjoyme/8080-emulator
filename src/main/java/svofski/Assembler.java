@@ -847,12 +847,12 @@ public class Assembler {
             return result;
         };
 
-        ArrayList<String> sorted = new ArrayList<>(this.labels.keySet());
+        List<String> sorted = new ArrayList<>(new TreeMap<>(labels).keySet());
 
         String result = "Labels:\n";
         int col = 1;
         for (String i : sorted) {
-            Integer label = this.labels.get(i);
+            Integer label = labels.get(i);
             if (label == null) continue;
             if (String.valueOf(i).length() == 0) continue;
 
@@ -874,15 +874,15 @@ public class Assembler {
         boolean nonempty = false;
         Function<Integer, String> conv = mode == 1 ? Util::char8 : Util::hex8;
         for (int i = org; i < org + 16; i++) {
-            if (this.mem.get(i) != null) nonempty = true;
+            if (mem.get(i) != null) nonempty = true;
             if (mode == 1) {
-                result += conv.apply(this.mem.get(i));
+                result += conv.apply(mem.get(i));
             } else {
                 result += (i > org && i % 8 == 0) ? "-" : " ";
-                if (this.mem.get(i) == null) {
+                if (mem.get(i) == null) {
                     result += "  ";
                 } else {
-                    result += conv.apply(this.mem.get(i));
+                    result += conv.apply(mem.get(i));
                 }
             }
         }
