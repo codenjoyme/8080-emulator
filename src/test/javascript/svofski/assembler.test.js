@@ -24,10 +24,10 @@ describe("assembler", () => {
         let object = assembler.asm;
 
         let old = object[methodName];
-        object[methodName] = (input, addr0, linenumber) => {
-            let result = old.call(object, input, addr0, linenumber);
+        object[methodName] = (...args) => {
+            let result = old.apply(object, args);
             recorder.collect({
-                input: [ input, addr0, linenumber ],
+                input: args,
                 result: result,
             });
             return result;
