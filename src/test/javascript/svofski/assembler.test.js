@@ -21,10 +21,11 @@ describe("assembler", () => {
 
         // when
         let methodName = 'evaluateExpression2';
+        let object = assembler.asm;
 
-        let old = assembler.asm[methodName];
-        assembler.asm[methodName] = (input, addr0, linenumber) => {
-            let result = old.call(assembler.asm, input, addr0, linenumber);
+        let old = object[methodName];
+        object[methodName] = (input, addr0, linenumber) => {
+            let result = old.call(object, input, addr0, linenumber);
             recorder.collect({
                 input: [ input, addr0, linenumber ],
                 result: result,
