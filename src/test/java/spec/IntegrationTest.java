@@ -31,7 +31,7 @@ public class IntegrationTest extends AbstractTest {
     private static final int TICKS = 10_000_000;
 
     public static final String TEST_RESOURCES = "src/test/resources/";
-    private static final String APP_RESOURCES = "src/main/resources/";
+    public static final String APP_RESOURCES = "src/main/resources/";
     private static final String CPU_TESTS_RESOURCES = "test/";
 
     @Rule
