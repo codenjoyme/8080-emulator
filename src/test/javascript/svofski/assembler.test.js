@@ -1,14 +1,16 @@
 const common = require('./common.js');
 const assembler = require('../../../main/javascript/svofski/assembler.js');
 
-export let recorder = (() => {
+export let record = (() => {
     var data = [];
+    var method = null;
     let collect = (input) => {
         if (data.indexOf(input) === -1) {
             data.push(input);
         }
     };
-    let decorate = (object, method) => {
+    let decorate = (object, methodName) => {
+        method = methodName;
         let old = object[method];
         object[method] = (...args) => {
             let result = old.apply(object, args);
@@ -25,21 +27,23 @@ export let recorder = (() => {
     return {
         decorate,
         collect,
-        result
+        result,
+        method: () => method,
     };
-})();
+});
 
 describe('assembler', () => {
     test('assemble', () => {
         const dir = '../../../resources/AssemblerTest/';
 
         // when
-        recorder.decorate(assembler.asm, 'evaluateExpression2');
+        let rec = record();
+        rec.decorate(assembler.asm, 'evaluateExpression2');
 
         let data = assembler.assemble(PROGRAM);
 
         // then
-        common.assertCall(dir + 'evaluateExpression2.json', recorder.result());
+        common.assertCall(dir + rec.method() + '.json', rec.result());
 
         common.assertCall(dir + 'memory.json', data.mem);
         common.assertCall(dir + 'hex.json', data.hex);
