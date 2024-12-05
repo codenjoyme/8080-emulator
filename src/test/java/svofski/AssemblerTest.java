@@ -18,6 +18,74 @@ import static spec.stuff.FileAssert.write;
 
 public class AssemblerTest {
 
+    private Assembler asm;
+
+    @Rule
+    public TestName test = new TestName();
+    private FileAssert fileAssert;
+
+    @Before
+    public void setup() {
+        asm = new Assembler();
+
+        fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
+    }
+
+    @Test
+    public void assemble() {
+        Map<String, Object> data = asm.process(PROGRAM);
+
+        assertValue("memory.json", asString(data.get("mem")));
+        assertValue("hex.json", asString(data.get("hex")));
+        assertValue("gutter.json", asString(data.get("gutter")));
+        assertValue("errors.json", asString(data.get("errors")));
+        assertValue("xref.json", asString(data.get("xref")));
+        assertValue("labels.json", asString(data.get("labels")));
+        assertValue("info.json", asString(data.get("info")));
+    }
+
+    private String asString(Object data) {
+        return new GsonBuilder().setPrettyPrinting().create().toJson(data);
+    }
+
+    @Test
+    public void splitParts() {
+        // given
+        String[] lines = PROGRAM.split("\n");
+
+        // when then
+        assertValue("splitParts.log", splitParts(lines));
+    }
+
+    private String splitParts(String[] lines) {
+        return Arrays.stream(lines)
+                .map(asm::splitParts)
+                .map(this::asString)
+                .collect(joining("\n"));
+    }
+
+    @Test
+    public void splitParts_cornerCases() {
+        assertEquals("[{<DB>, <00Dh,>, <00Ah,>, <'VERSION 1.0  (C) 1980'>, <,>, <00Dh,>, <00Ah,>, <'$'>}]",
+                asString(asm.splitParts("        DB      00Dh, 00Ah, 'VERSION 1.0  (C) 1980', 00Dh, 00Ah, '$'\n")));
+
+        assertEquals("[{<hello:>, <DB>, <00Dh,>, <00Ah,>, <'MICROCOSM ASSOCIATES'>}]",
+                asString(asm.splitParts("hello:  DB      00Dh, 00Ah, 'MICROCOSM ASSOCIATES'\n")));
+    }
+
+    private String asString(List<List<String>> lists) {
+        return lists.stream()
+                .map(list -> list.stream().map(
+                        it -> "<" + it + ">"
+                ).collect(joining(", ", "{", "}")))
+                .collect(joining("; ", "[", "]"));
+    }
+
+    private void assertValue(String name, String result) {
+        fileAssert.check(name, name,
+                file -> write(file, result));
+    }
+
     public static final String PROGRAM =
             ";***********************************************************************\n" +
                     "; MICROCOSM ASSOCIATES  8080/8085 CPU DIAGNOSTIC VERSION 1.0  (C) 1980\n" +
@@ -850,69 +918,5 @@ public class AssemblerTest {
                     "STACK   EQU    tempp+256    ;DE-BUG STACK POINTER STORAGE AREA\n" +
                     ";\n" +
                     "end:";
-
-    private Assembler asm;
-
-    @Rule
-    public TestName test = new TestName();
-    private FileAssert fileAssert;
-
-    @Before
-    public void setup() {
-        asm = new Assembler();
-
-        fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
-    }
-
-    @Test
-    public void assemble() {
-        assertValue("assemble", process(PROGRAM));
-    }
-
-    private String process(String sourceCode) {
-        return asString(asm.process(sourceCode));
-    }
-
-    private String asString(Map<String, Object> process) {
-        return new GsonBuilder().setPrettyPrinting().create().toJson(process);
-    }
-
-    @Test
-    public void splitParts() {
-        // given
-        String[] lines = PROGRAM.split("\n");
-
-        // when then
-        assertValue("splitParts", splitParts(lines));
-    }
-
-    private String splitParts(String[] lines) {
-        return Arrays.stream(lines)
-                .map(asm::splitParts)
-                .map(this::asString)
-                .collect(joining("\n"));
-    }
-
-    @Test
-    public void splitParts_cornerCases() {
-        assertEquals("[{<DB>, <00Dh,>, <00Ah,>, <'VERSION 1.0  (C) 1980'>, <,>, <00Dh,>, <00Ah,>, <'$'>}]",
-                asString(asm.splitParts("        DB      00Dh, 00Ah, 'VERSION 1.0  (C) 1980', 00Dh, 00Ah, '$'\n")));
-
-        assertEquals("[{<hello:>, <DB>, <00Dh,>, <00Ah,>, <'MICROCOSM ASSOCIATES'>}]",
-                asString(asm.splitParts("hello:  DB      00Dh, 00Ah, 'MICROCOSM ASSOCIATES'\n")));
-    }
-
-    private String asString(List<List<String>> lists) {
-        return lists.stream()
-                .map(list -> list.stream().map(
-                        it -> "<" + it + ">"
-                ).collect(joining(", ", "{", "}")))
-                .collect(joining("; ", "[", "]"));
-    }
-
-    private void assertValue(String name, String result) {
-        fileAssert.check(name, name + ".log",
-                file -> write(file, result));
-    }
 
 }

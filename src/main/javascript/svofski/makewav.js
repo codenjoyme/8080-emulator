@@ -1,6 +1,6 @@
 /* Thanks to asanoboy https://gist.github.com/asanoboy/3979747 */
 
-var Wav = function(opt_params){
+export var Wav = function(opt_params){
 
     this._sampleRate = opt_params && opt_params.sampleRate ? opt_params.sampleRate : 44100;
 

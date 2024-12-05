@@ -1,4 +1,4 @@
-var TapeFormat = function(fmt, forfile) {
+export var TapeFormat = function(fmt, forfile) {
     this.format = null;
     this.variant = null;
     this.speed = 12;

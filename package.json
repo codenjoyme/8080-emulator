@@ -1,0 +1,17 @@
+{
+  "name": "assembler",
+  "version": "0.0.1",
+  "description": "Testing project",
+  "private": true,
+  "author": "Apofig",
+  "license": "GPT-3",
+  "devDependencies": {
+    "@swc/jest": "^0.2.37",
+    "@types/jest": "29.5.12",
+    "jest": "29.7.0",
+    "jest-environment-jsdom": "29.7.0"
+  },
+  "dependencies": {
+    "jszip": "3.10.1"
+  }
+}

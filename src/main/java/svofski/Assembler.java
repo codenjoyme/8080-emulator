@@ -70,9 +70,9 @@ public class Assembler {
     public String targetEncoding = "koi8-r";
     public String project = "test";
 
-    public HashMap<String, Integer> labels = new LinkedHashMap<>();
-    public HashMap<String, ArrayList<Integer>> xref = new LinkedHashMap<>();
-    public HashMap<Integer, Integer> mem = new LinkedHashMap<>();
+    public Map<String, Integer> labels = new LinkedHashMap<>();
+    public Map<String, ArrayList<Integer>> xref = new LinkedHashMap<>();
+    public Map<Integer, Integer> mem = new LinkedHashMap<>();
     public Integer org = null;
     public ArrayList<String> textlabels = new ArrayList<>();
     public ArrayList<String> references = new ArrayList<>();
@@ -1338,58 +1338,36 @@ public class Assembler {
         return null;
     }
 
-    public static Map<String, Object> process(Assembler asm, Map<String, String> data) {
-        String cmd = (String) data.get("command");
-        Map<String, Object> response = new HashMap<>();
-        switch (cmd) {
-            case "assemble":
-                asm.assemble(data.get("src"), null);
-                response.put("gutter", asm.gutterContent);
-                response.put("errors", asm.errors);
-                response.put("org", asm.org);
-                response.put("xref", asm.xref);
-                response.put("labels", asm.labels);
-                response.put("kind", "assemble");
-                break;
-            case "getmem":
-                response.put("mem", new LinkedHashMap<>(asm.mem));
-                response.put("org", asm.org);
-                response.put("binFileName", asm.getBinFileName());
-                response.put("tapeFormat", asm.tapeFormat);
-                response.put("download", false);
-                break;
-            case "getbin":
-                response.put("mem", new LinkedHashMap<>(asm.mem));
-                response.put("org", asm.org);
-                response.put("filename", asm.getBinFileName());
-                response.put("download", "bin");
-                break;
-            case "gethex":
-                asm.intelHex(); // make sure that hexText is up to date
-                response.put("mem", new LinkedHashMap<>(asm.mem));
-                response.put("org", asm.org);
-                response.put("filename", asm.getHexFileName());
-                response.put("hex", asm.hexText);
-                response.put("download", "hex");
-                break;
-            case "gettap":
-                response.put("mem", new LinkedHashMap<>(asm.mem));
-                response.put("org", asm.org);
-                response.put("filename", asm.getTapFileName());
-                response.put("tapeFormat", asm.tapeFormat);
-                response.put("download", "tap");
-                break;
-            case "getwav":
-                response.put("mem", new LinkedHashMap<>(asm.mem));
-                response.put("org", asm.org);
-                response.put("binFileName", asm.getBinFileName());
-                response.put("tapeFormat", asm.tapeFormat);
-                response.put("download", data.get("mode"));
-                break;
-        }
+    public Map<String, Object> process(String sourceCode) {
+        assemble(sourceCode, null);
+        intelHex();
 
-        return response;
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("mem", toList(mem));
+        result.put("hex", hexText);
+        result.put("gutter", gutterContent);
+        result.put("errors", errors);
+        result.put("xref", xref);
+        result.put("labels", labels);
+
+        Map<String, Object> info = new LinkedHashMap<>();
+        info.put("org", org);
+        info.put("kind", "assemble");
+        info.put("binFileName", getBinFileName());
+        info.put("hexFilename", getHexFileName());
+        info.put("tapFileName", getTapFileName());
+        info.put("tapeFormat", tapeFormat);
+
+        result.put("info", info);
+        return result;
     }
 
-
+    private List<Integer> toList(Map<Integer, Integer> mem) {
+        List<Integer> result = new ArrayList<>();
+        int maxIndex = Collections.max(mem.keySet());
+        for (int i = 0; i <= maxIndex; i++) {
+            result.add(mem.getOrDefault(i, 1));
+        }
+        return result;
+    }
 }

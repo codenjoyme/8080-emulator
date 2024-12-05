@@ -1,0 +1,8 @@
+{
+  "org": 0,
+  "kind": "assemble",
+  "binFileName": "test.rks",
+  "hexFileName": "test.hex",
+  "tapFileName": "test.cas",
+  "tapeFormat": "ÓÐÅÃÉÁÌÉÓÔß-rks"
+}

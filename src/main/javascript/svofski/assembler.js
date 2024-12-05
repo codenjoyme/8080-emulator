@@ -49,6 +49,14 @@
 
 "use strict";
 
+function importScripts(script) {
+    let imp = require('./' + script);
+    // all values from imp set to global variable
+    for (let key in imp) {
+        global[key] = imp[key];
+    }
+}
+
 importScripts('encodings.js');
 importScripts('util.js');
 importScripts('tape.js');
@@ -1118,7 +1126,7 @@ Assembler.prototype.assemble = function(src,listobj) {
     var inputlines = src.split('\n');
 
     var addr = 0;
-    this.labels = [];
+    this.labels = {};
     this.mem.length = 0;
     this.org = undefined;
     this.errors.length = 0;
@@ -1375,3 +1383,26 @@ self.addEventListener('message', function(e) {
         });
     }
 }, false);
+
+
+export function assemble(program) {
+    asm.assemble(program);
+    asm.intelHex();
+    return {
+        'mem': asm.mem,
+        'hex': asm.hexText,
+        'gutter': asm.gutterContent,
+        'errors': asm.errors,
+        'xref': asm.xref,
+        'labels': asm.labels,
+        'info': {
+            'org': asm.org,
+            'kind': 'assemble',
+            'binFileName': asm.getBinFileName(),
+            'hexFileName': asm.getHexFileName(),
+            'tapFileName': asm.getTapFileName(),
+            'tapeFormat': asm.tapeFormat
+        }
+    };
+}
+

@@ -1,4 +1,4 @@
-function Util() {
+export function Util() {
 }
 
 Util.char8 = function(val) {
