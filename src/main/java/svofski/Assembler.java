@@ -666,7 +666,7 @@ public class Assembler {
                     break;
                 }
 
-                if (Arrays.asList("ora", "ana", "xra", "add", "adc", "sub", "sbc", "cmp").contains(mnemonic)) {
+                if (opsRegDst.contains(mnemonic)) {
                     reg <<= 3;
                 }
                 this.mem.put(addr, opcs | reg);
