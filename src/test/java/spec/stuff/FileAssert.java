@@ -1,5 +1,7 @@
 package spec.stuff;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -71,6 +73,14 @@ public class FileAssert {
         file.getParentFile().mkdirs();
         try (FileWriter writer = new FileWriter(file.getAbsolutePath(), false)) {
             writer.write(string);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String read(File file) {
+        try {
+            return FileUtils.readFileToString(file, "UTF-8");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

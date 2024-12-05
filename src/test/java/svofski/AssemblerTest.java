@@ -1,6 +1,7 @@
 package svofski;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import java.util.*;
 import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
 import static spec.IntegrationTest.TEST_RESOURCES;
+import static spec.stuff.FileAssert.read;
 import static spec.stuff.FileAssert.write;
 
 public class AssemblerTest {
@@ -44,10 +46,44 @@ public class AssemblerTest {
         assertValue("info.json", asString(data.get("info")));
     }
 
+    @Test
+    public void resolveNumber() {
+        String name = "method/resolveNumber.json";
+        fileAssert.check(name, name, file -> {
+            String data = read(file);
+
+            Gson gson = new Gson();
+            JsonElement jsonElement = JsonParser.parseString(data);
+
+            List<Object> values = parseJson(jsonElement, gson, List.class);
+            values.forEach(it -> {
+                Map<String, Object> map = (Map<String, Object>) it;
+                List<String> input = (List<String>) map.get("input");
+                Integer result = asm.resolveNumber(input.get(0));
+                map.put("result", result);
+            });
+
+            write(file, asString(values));
+        });
+    }
+
+    private static <T> T parseJson(JsonElement jsonElement, Gson gson, Class<T> clazz) {
+        if (jsonElement.isJsonObject()) {
+            Type type = new TypeToken<Map<String, Object>>() {}.getType();
+            return (T) gson.fromJson(jsonElement, type);
+        } else if (jsonElement.isJsonArray()) {
+            Type type = new TypeToken<List<Object>>() {}.getType();
+            return (T) gson.fromJson(jsonElement, type);
+        }
+        throw new IllegalArgumentException("Unsupported json type: " + jsonElement);
+    }
+
     private String asString(Object data) {
         boolean isJson = data instanceof Map || data instanceof List;
         if (isJson) {
             return new GsonBuilder().setPrettyPrinting()
+                    .serializeNulls()
+                    .disableHtmlEscaping()
                     .registerTypeAdapter(HashMap.class, new MapSerializer())
                     .create().toJson(data);
         } else {
