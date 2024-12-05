@@ -1,15 +1,17 @@
 package svofski;
 
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import spec.stuff.FileAssert;
 
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
@@ -45,7 +47,24 @@ public class AssemblerTest {
     }
 
     private String asString(Object data) {
-        return new GsonBuilder().setPrettyPrinting().create().toJson(data);
+        boolean isJson = data instanceof Map || data instanceof List;
+        if (isJson) {
+            return new GsonBuilder().setPrettyPrinting()
+                    .registerTypeAdapter(Map.class, new MapSerializer())
+                    .create().toJson(data);
+        } else {
+            return data.toString();
+        }
+    }
+
+    static class MapSerializer implements JsonSerializer<Map<?, ?>> {
+        @Override
+        public JsonElement serialize(Map<?, ?> src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject json = new JsonObject();
+            src = new TreeMap<>(src);
+            src.forEach((key, value) -> json.add(String.valueOf(key), context.serialize(value)));
+            return json;
+        }
     }
 
     @Test

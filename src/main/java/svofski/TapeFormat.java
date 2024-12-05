@@ -64,7 +64,7 @@ public class TapeFormat {
                 this.speed = 9;
                 this.variant = null;
                 break;
-            case "ÓÐÅÃÉÁÌÉÓÔß-mon":
+            case "специалистъ-mon":
             case "spetsialist-mon":
             case "specialist-mon":
             case "spec-mon":

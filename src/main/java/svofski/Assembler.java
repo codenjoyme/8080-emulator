@@ -70,17 +70,17 @@ public class Assembler {
     public String targetEncoding = "koi8-r";
     public String project = "test";
 
-    public Map<String, Integer> labels = new LinkedHashMap<>();
-    public Map<String, ArrayList<Integer>> xref = new LinkedHashMap<>();
-    public Map<Integer, Integer> mem = new LinkedHashMap<>();
+    public Map<String, Integer> labels = new HashMap<>();
+    public Map<String, List<Integer>> xref = new HashMap<>();
+    public Map<Integer, Integer> mem = new HashMap<>();
     public Integer org = null;
     public ArrayList<String> textlabels = new ArrayList<>();
     public ArrayList<String> references = new ArrayList<>();
-    public Map<Integer, String> errors = new LinkedHashMap<>();
+    public Map<Integer, String> errors = new HashMap<>();
     public List<Map<String, Object>> gutterContent = new ArrayList<>();
 
     private ArrayList<Expression> expressions = new ArrayList<>();
-    private HashMap<String, Map<String, Object>> label_resolutions = new LinkedHashMap<>();
+    private Map<String, Map<String, Object>> label_resolutions = new HashMap<>();
 
     public String objCopy;
     public String postbuild;
@@ -110,14 +110,14 @@ public class Assembler {
         }
     }
 
-    public static HashMap<String, String> rpmap = new HashMap<>();
+    public static Map<String, String> rpmap = new HashMap<>();
     static {
         rpmap.put("h", "l");
         rpmap.put("d", "e");
     }
 
     // Assembler instructions maps
-    public static HashMap<String, Integer> ops0 = new HashMap<>();
+    public static Map<String, Integer> ops0 = new HashMap<>();
     static {
         ops0.put("nop",   0x00);
         ops0.put("hlt",   0x76);
@@ -146,7 +146,7 @@ public class Assembler {
         ops0.put("rm",    0xf8);
     }
 
-    public static HashMap<String, Integer> opsIm16 = new HashMap<>();
+    public static Map<String, Integer> opsIm16 = new HashMap<>();
     static {
         opsIm16.put("lda",  0x3a);
         opsIm16.put("sta",  0x32);
@@ -172,12 +172,12 @@ public class Assembler {
         opsIm16.put("cm",   0xfc);
     }
 
-    public static HashMap<String, Integer> opsRpIm16 = new HashMap<>();
+    public static Map<String, Integer> opsRpIm16 = new HashMap<>();
     static {
         opsRpIm16.put("lxi", 0x01); // 00rp0001, bc=00, de=01,hl=10, sp=11
     }
 
-    public static HashMap<String, Integer> opsIm8 = new HashMap<>();
+    public static Map<String, Integer> opsIm8 = new HashMap<>();
     static {
         opsIm8.put("adi",  0xc6);
         opsIm8.put("aci",  0xce);
@@ -191,17 +191,17 @@ public class Assembler {
         opsIm8.put("out",  0xd3);
     }
 
-    public static HashMap<String, Integer> opsRegIm8 = new HashMap<>();
+    public static Map<String, Integer> opsRegIm8 = new HashMap<>();
     static {
         opsRegIm8.put("mvi", 0x06);
     }
 
-    public static HashMap<String, Integer> opsRegReg = new HashMap<>();
+    public static Map<String, Integer> opsRegReg = new HashMap<>();
     static {
         opsRegReg.put("mov", 0x40);
     }
 
-    public static HashMap<String, Integer> opsReg = new HashMap<>();
+    public static Map<String, Integer> opsReg = new HashMap<>();
     static {
         opsReg.put("add", 0x80); // regsrc
         opsReg.put("adc", 0x88);
@@ -223,7 +223,7 @@ public class Assembler {
     }
 
     // Register pair operations
-    public static HashMap<String, Integer> opsRp = new HashMap<>();
+    public static Map<String, Integer> opsRp = new HashMap<>();
     static {
         opsRp.put("ldax", 0x0a); // rp << 4 (only B, D)
         opsRp.put("stax", 0x02); // rp << 4 (only B, D)
@@ -439,7 +439,7 @@ public class Assembler {
             return null;
         }
         Integer numberwang = resolveNumber(value);
-        HashMap<String, Object> lr = new HashMap<>();
+        Map<String, Object> lr = new HashMap<>();
         if (numberwang != null) {
             lr.put("number", numberwang);
             lr.put("linenumber", lineno);
@@ -1245,7 +1245,7 @@ public class Assembler {
     }
 
     public int processLabelResolutionsOnce() {
-        HashMap<String, Map<String, Object>> lr2 = new HashMap<>();
+        Map<String, Map<String, Object>> lr2 = new HashMap<>();
         int unresolvedCount = 0;
         for (String label : this.label_resolutions.keySet()) {
             Map<String, Object> lr = this.label_resolutions.get(label);
@@ -1342,7 +1342,7 @@ public class Assembler {
         assemble(sourceCode, null);
         intelHex();
 
-        Map<String, Object> result = new LinkedHashMap<>();
+        Map<String, Object> result = new HashMap<>();
         result.put("mem", toList(mem));
         result.put("hex", hexText);
         result.put("gutter", gutterContent);
@@ -1350,11 +1350,11 @@ public class Assembler {
         result.put("xref", xref);
         result.put("labels", labels);
 
-        Map<String, Object> info = new LinkedHashMap<>();
+        Map<String, Object> info = new HashMap<>();
         info.put("org", org);
         info.put("kind", "assemble");
         info.put("binFileName", getBinFileName());
-        info.put("hexFilename", getHexFileName());
+        info.put("hexFileName", getHexFileName());
         info.put("tapFileName", getTapFileName());
         info.put("tapeFormat", tapeFormat);
 
