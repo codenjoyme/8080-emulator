@@ -74,11 +74,29 @@ public class AssemblerTest {
             String data = read(file);
 
             Gson gson = new Gson();
+
             JsonElement jsonElement = JsonParser.parseString(data);
 
             List<Object> values = parseJson(jsonElement, gson, List.class);
             values.forEach(it -> {
                 Map<String, Object> map = (Map<String, Object>) it;
+
+                List<Object> fields = (List) map.get("fields");
+                Map field = (Map) fields.stream()
+                        .filter(it2 -> ((Map) it2).get("name").equals("labels"))
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalArgumentException("No labels field"));
+                Map o = (Map) field.get("value");
+
+                o.forEach((key, value) -> {
+                    if (value instanceof Double) {
+                        o.put(key, ((Double) value).intValue());
+                    }
+                });
+
+                asm.labels = o;
+                asm.xref = new HashMap<>();
+
                 List<Object> input = (List<Object>) map.get("input");
                 Integer result = asm.evaluateExpression2((String) input.get(0), ((Double) input.get(1)).intValue(), ((Double) input.get(2)).intValue());
                 map.put("result", result);
@@ -106,9 +124,17 @@ public class AssemblerTest {
                     .serializeNulls()
                     .disableHtmlEscaping()
                     .registerTypeAdapter(HashMap.class, new MapSerializer())
+                    .registerTypeAdapter(Double.class, new NumberSerializer())
                     .create().toJson(data);
         } else {
             return data.toString();
+        }
+    }
+
+    static class NumberSerializer implements JsonSerializer<Double> {
+        @Override
+        public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.intValue());
         }
     }
 

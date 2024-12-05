@@ -1207,7 +1207,7 @@ public class Assembler {
         if (input == null) {
             return -1;
         }
-//        try {
+        try {
             String[] q = input.split("<<|>>|[+\\-*\\/()\\^\\&\\|]");
             String expr = "";
             for (int ident = 0; ident < q.length; ident++) {
@@ -1237,10 +1237,10 @@ public class Assembler {
 
             // System.out.println("expr=" + expr);
             return this.evalInvoke(expr.toLowerCase());
-//        } catch (Exception err) {
-//            this.errors.put(linenumber, err.toString());
-//            return -1;
-//        }
+        } catch (Exception err) {
+            this.errors.put(linenumber, err.toString());
+            return -1;
+        }
     }
 
     public int processLabelResolutionsOnce() {
