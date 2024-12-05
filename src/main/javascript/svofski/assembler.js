@@ -1325,7 +1325,7 @@ Assembler.prototype.evalInvoke = function(expr) {
     return undefined;
 };
 
-var asm = new Assembler();
+export var asm = new Assembler();
 self.addEventListener('message', function(e) {
     var cmd = e.data['command'];
     if (cmd == 'assemble') {

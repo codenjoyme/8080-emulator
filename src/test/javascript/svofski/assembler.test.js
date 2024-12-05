@@ -1,14 +1,40 @@
 const common = require('./common.js');
 const assembler = require('../../../main/javascript/svofski/assembler.js');
 
+export let recorder = (() => {
+    var data = [];
+    return {
+        collect: (input) => {
+            if (data.indexOf(input) === -1) {
+                data.push(input);
+            }
+        },
+        result: () => {
+            return JSON.stringify(data, null, 2);
+        }
+    };
+})();
+
 describe("assembler", () => {
     test("assemble", () => {
         const dir = "../../../resources/AssemblerTest/";
 
         // when
+        let old = assembler.asm.evaluateExpression2;
+        assembler.asm.evaluateExpression2 = (input, addr0, linenumber) => {
+            let result = old.call(assembler.asm, input, addr0, linenumber);
+            recorder.collect({
+                input: [ input, addr0, linenumber ],
+                result: result,
+            });
+            return result;
+        }
+
         let data = assembler.assemble(PROGRAM);
 
         // then
+        common.assertCall(dir + "evaluateExpression2.json", recorder.result());
+
         common.assertCall(dir + "memory.json", data.mem);
         common.assertCall(dir + "hex.json", data.hex);
         common.assertCall(dir + "gutter.json", data.gutter);

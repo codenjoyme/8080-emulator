@@ -70,18 +70,18 @@ public class Assembler {
     public String targetEncoding = "koi8-r";
     public String project = "test";
 
-    public Map<String, Integer> labels = new HashMap<>();
-    public Map<String, List<Integer>> xref = new HashMap<>();
+    public Map<String, Integer> labels;
+    public Map<String, List<Integer>> xref;
     public Map<Integer, Integer> mem = new HashMap<>();
     public Integer org = null;
     public ArrayList<String> textlabels = new ArrayList<>();
     public ArrayList<String> references = new ArrayList<>();
     public Map<Integer, String> errors = new HashMap<>();
-    public List<Map<String, Object>> gutterContent = new ArrayList<>();
+    public List<Map<String, Object>> gutterContent;
     public String listingText;
 
     private ArrayList<Expression> expressions = new ArrayList<>();
-    private Map<String, Map<String, Object>> label_resolutions = new HashMap<>();
+    private Map<String, Map<String, Object>> label_resolutions;
 
     public String objCopy;
     public String postbuild;
@@ -1153,7 +1153,7 @@ public class Assembler {
         this.xref = new HashMap<>();
 
         this.expressions = new ArrayList<>();          // expressions to evaluate after label resolution
-        this.label_resolutions = new HashMap<>();       // labels, resolved and not
+        this.label_resolutions = new LinkedHashMap<>();       // labels, resolved and not
 
         for (int line = 0, end = inputlines.length; line < end; line += 1) {
             String encodedLine = Util.toTargetEncoding(inputlines[line].trim(), this.targetEncoding);
@@ -1207,7 +1207,7 @@ public class Assembler {
         if (input == null) {
             return -1;
         }
-        try {
+//        try {
             String[] q = input.split("<<|>>|[+\\-*\\/()\\^\\&\\|]");
             String expr = "";
             for (int ident = 0; ident < q.length; ident++) {
@@ -1237,10 +1237,10 @@ public class Assembler {
 
             // System.out.println("expr=" + expr);
             return this.evalInvoke(expr.toLowerCase());
-        } catch (Exception err) {
-            this.errors.put(linenumber, err.toString());
-            return -1;
-        }
+//        } catch (Exception err) {
+//            this.errors.put(linenumber, err.toString());
+//            return -1;
+//        }
     }
 
     public int processLabelResolutionsOnce() {
