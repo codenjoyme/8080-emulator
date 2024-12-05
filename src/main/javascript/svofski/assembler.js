@@ -76,7 +76,7 @@ function Assembler() {
     this.org = undefined;
     this.textlabels= [];
     this.references = [];
-    this.errors = [];
+    this.errors = {};
     this.gutterContent = [];
     this.listingText = [];
 }
