@@ -1194,28 +1194,31 @@ Assembler.prototype.evaluateExpression2 = function(input, addr0, linenumber) {
         return -1;
     }
     try {
-    var q = input.split(/<<|>>|[+\-*\/()\^\&\|]/);
-    var expr = '';
-    for (var ident = 0; ident < q.length; ident++) {
-        var qident = q[ident].trim();
-        if (this.resolveNumber(qident) !== undefined) continue;
-        var addr = this.labels[qident.toLowerCase()];
-        if (addr !== undefined) {
-            expr += 'var _' + qident + '=' + addr +';\n';
-            var rx = new RegExp('\\b'+qident+'\\b', 'gm');
-            input = input.replace(rx, '_' + qident);
-            this.addxref(qident, linenumber);
+        var q = input.split(/<<|>>|[+\-*\/()\^\&\|]/);
+        var expr = '';
+        for (var ident = 0; ident < q.length; ident++) {
+            var qident = q[ident].trim();
+            if (this.resolveNumber(qident) !== undefined) continue;
+            var addr = this.labels[qident.toLowerCase()];
+            if (addr !== undefined) {
+                expr += 'var _' + qident + '=' + addr +';\n';
+                var rx = new RegExp('\\b'+qident+'\\b', 'gm');
+                input = input.replace(rx, '_' + qident);
+                this.addxref(qident, linenumber);
+            }
         }
-    }
-    //console.log('0 input=',  input);
-    //console.log('1 expr=', expr);
-    var that = this;
-    expr += input.replace(/\b0x[0-9a-fA-F]+\b|\b[0-9][0-9a-fA-F]*[hbqdHBQD]?\b|'.'/g,
-            function(m) {
-                return that.resolveNumber(m);
-            });
-    //console.log('expr=', expr);
-    return this.evalInvoke(expr.toLowerCase());
+        //console.log('0 input=',  input);
+        //console.log('1 expr=', expr);
+        var that = this;
+        expr += input.replace(/\b0x[0-9a-fA-F]+\b|\b[0-9][0-9a-fA-F]*[hbqdHBQD]?\b|'.'/g,
+                function(m) {
+                    return that.resolveNumber(m);
+                });
+        //console.log('expr=', expr);
+        let result = this.evalInvoke(expr.toLowerCase());
+        // round double to int
+        result = (result > 0) ? Math.floor(result) : Math.ceil(result);
+        return result;
     }
     catch(err) {
         this.errors[linenumber] = err.toString();

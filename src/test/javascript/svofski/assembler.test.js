@@ -1,5 +1,3 @@
-import {asm} from "../../../main/javascript/svofski/assembler";
-
 const common = require('./common.js');
 const assembler = require('../../../main/javascript/svofski/assembler.js');
 

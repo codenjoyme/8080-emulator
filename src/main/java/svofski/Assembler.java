@@ -1215,7 +1215,7 @@ public class Assembler {
                 if (this.resolveNumber(qident) != null) continue;
                 Integer addr = this.labels.get(qident.toLowerCase());
                 if (addr != null) {
-                    expr += "int _" + qident + " = " + addr + ";\n";
+                    expr += "var _" + qident + " = " + addr + ";\n";
                     String regex = "\\b" + qident + "\\b";
                     input = input.replaceAll(regex, "_" + qident);
                     this.addxref(qident, linenumber);
@@ -1328,7 +1328,12 @@ public class Assembler {
 
     public Integer evalInvoke(String expr) {
         try {
-            return (Integer) engine.eval(expr);
+            Object eval = engine.eval(expr);
+            if (eval instanceof Double) {
+                return ((Double) eval).intValue();
+            } else {
+                return (Integer) eval;
+            }
         } catch (ScriptException err) {
             // System.out.println("expr was: " + expr);
             // System.out.println(err);
