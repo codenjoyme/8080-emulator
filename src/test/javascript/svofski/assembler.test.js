@@ -20,8 +20,10 @@ describe("assembler", () => {
         const dir = "../../../resources/AssemblerTest/";
 
         // when
-        let old = assembler.asm.evaluateExpression2;
-        assembler.asm.evaluateExpression2 = (input, addr0, linenumber) => {
+        let methodName = 'evaluateExpression2';
+
+        let old = assembler.asm[methodName];
+        assembler.asm[methodName] = (input, addr0, linenumber) => {
             let result = old.call(assembler.asm, input, addr0, linenumber);
             recorder.collect({
                 input: [ input, addr0, linenumber ],
@@ -33,7 +35,7 @@ describe("assembler", () => {
         let data = assembler.assemble(PROGRAM);
 
         // then
-        common.assertCall(dir + "evaluateExpression2.json", recorder.result());
+        common.assertCall(dir + methodName + ".json", recorder.result());
 
         common.assertCall(dir + "memory.json", data.mem);
         common.assertCall(dir + "hex.json", data.hex);
