@@ -1,7 +1,7 @@
 const common = require('./common.js');
 const assembler = require('../../../main/javascript/svofski/assembler.js');
 
-export let record = (() => {
+export let recorder = (() => {
     var data = [];
     var method = null;
     let collect = (input) => {
@@ -32,18 +32,30 @@ export let record = (() => {
     };
 });
 
+const dir = '../../../resources/AssemblerTest/';
+
+let recs = [];
+let record = function (object, methodName) {
+    let rec = recorder();
+    rec.decorate(object, methodName);
+    recs.push(rec);
+}
+let assertAllRecords = function() {
+    recs.forEach((rec) => {
+        common.assertCall(dir + rec.method() + '.json', rec.result());
+    });
+}
+
 describe('assembler', () => {
     test('assemble', () => {
-        const dir = '../../../resources/AssemblerTest/';
 
         // when
-        let rec = record();
-        rec.decorate(assembler.asm, 'evaluateExpression2');
+        record(assembler.asm, 'evaluateExpression2');
 
         let data = assembler.assemble(PROGRAM);
 
         // then
-        common.assertCall(dir + rec.method() + '.json', rec.result());
+        assertAllRecords();
 
         common.assertCall(dir + 'memory.json', data.mem);
         common.assertCall(dir + 'hex.json', data.hex);
