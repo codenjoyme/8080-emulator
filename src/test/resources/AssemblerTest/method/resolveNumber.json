@@ -3,1302 +3,1519 @@
     "input": [
       "00000h"
     ],
+    "fields": null,
     "result": 0
   },
   {
     "input": [
       "0"
     ],
+    "fields": null,
     "result": 0
   },
   {
     "input": [
       "9"
     ],
+    "fields": null,
     "result": 9
   },
   {
     "input": [
       "83"
     ],
+    "fields": null,
     "result": 83
   },
   {
     "input": [
       "0C037h"
     ],
+    "fields": null,
     "result": 49207
   },
   {
     "input": [
       "86"
     ],
+    "fields": null,
     "result": 86
   },
   {
     "input": [
       "90"
     ],
+    "fields": null,
     "result": 90
   },
   {
     "input": [
       "104"
     ],
+    "fields": null,
     "result": 104
   },
   {
     "input": [
       "109"
     ],
+    "fields": null,
     "result": 109
   },
   {
     "input": [
       "122"
     ],
+    "fields": null,
     "result": 122
   },
   {
     "input": [
       "145"
     ],
+    "fields": null,
     "result": 145
   },
   {
     "input": [
       "149"
     ],
+    "fields": null,
     "result": 149
   },
   {
     "input": [
       "158"
     ],
+    "fields": null,
     "result": 158
   },
   {
     "input": [
       "161"
     ],
+    "fields": null,
     "result": 161
   },
   {
     "input": [
       "182"
     ],
+    "fields": null,
     "result": 182
   },
   {
     "input": [
       "213"
     ],
+    "fields": null,
     "result": 213
   },
   {
     "input": [
       "224"
     ],
+    "fields": null,
     "result": 224
   },
   {
     "input": [
       "230"
     ],
+    "fields": null,
     "result": 230
   },
   {
     "input": [
       "236"
     ],
+    "fields": null,
     "result": 236
   },
   {
     "input": [
       "242"
     ],
+    "fields": null,
     "result": 242
   },
   {
     "input": [
       "257"
     ],
+    "fields": null,
     "result": 257
   },
   {
     "input": [
       "260"
     ],
+    "fields": null,
     "result": 260
   },
   {
     "input": [
       "268"
     ],
+    "fields": null,
     "result": 268
   },
   {
     "input": [
       "277"
     ],
+    "fields": null,
     "result": 277
   },
   {
     "input": [
       "280"
     ],
+    "fields": null,
     "result": 280
   },
   {
     "input": [
       "288"
     ],
+    "fields": null,
     "result": 288
   },
   {
     "input": [
       "297"
     ],
+    "fields": null,
     "result": 297
   },
   {
     "input": [
       "300"
     ],
+    "fields": null,
     "result": 300
   },
   {
     "input": [
       "308"
     ],
+    "fields": null,
     "result": 308
   },
   {
     "input": [
       "317"
     ],
+    "fields": null,
     "result": 317
   },
   {
     "input": [
       "320"
     ],
+    "fields": null,
     "result": 320
   },
   {
     "input": [
       "328"
     ],
+    "fields": null,
     "result": 328
   },
   {
     "input": [
       "337"
     ],
+    "fields": null,
     "result": 337
   },
   {
     "input": [
       "340"
     ],
+    "fields": null,
     "result": 340
   },
   {
     "input": [
       "364"
     ],
+    "fields": null,
     "result": 364
   },
   {
     "input": [
       "367"
     ],
+    "fields": null,
     "result": 367
   },
   {
     "input": [
       "379"
     ],
+    "fields": null,
     "result": 379
   },
   {
     "input": [
       "391"
     ],
+    "fields": null,
     "result": 391
   },
   {
     "input": [
       "403"
     ],
+    "fields": null,
     "result": 403
   },
   {
     "input": [
       "413"
     ],
+    "fields": null,
     "result": 413
   },
   {
     "input": [
       "423"
     ],
+    "fields": null,
     "result": 423
   },
   {
     "input": [
       "433"
     ],
+    "fields": null,
     "result": 433
   },
   {
     "input": [
       "455"
     ],
+    "fields": null,
     "result": 455
   },
   {
     "input": [
       "477"
     ],
+    "fields": null,
     "result": 477
   },
   {
     "input": [
       "490"
     ],
+    "fields": null,
     "result": 490
   },
   {
     "input": [
       "502"
     ],
+    "fields": null,
     "result": 502
   },
   {
     "input": [
       "514"
     ],
+    "fields": null,
     "result": 514
   },
   {
     "input": [
       "526"
     ],
+    "fields": null,
     "result": 526
   },
   {
     "input": [
       "538"
     ],
+    "fields": null,
     "result": 538
   },
   {
     "input": [
       "550"
     ],
+    "fields": null,
     "result": 550
   },
   {
     "input": [
       "562"
     ],
+    "fields": null,
     "result": 562
   },
   {
     "input": [
       "574"
     ],
+    "fields": null,
     "result": 574
   },
   {
     "input": [
       "583"
     ],
+    "fields": null,
     "result": 583
   },
   {
     "input": [
       "1459"
     ],
+    "fields": null,
     "result": 1459
   },
   {
     "input": [
       "1480"
     ],
+    "fields": null,
     "result": 1480
   },
   {
     "input": [
       "1489"
     ],
+    "fields": null,
     "result": 1489
   },
   {
     "input": [
       "1491"
     ],
+    "fields": null,
     "result": 1491
   },
   {
     "input": [
       "1"
     ],
+    "fields": null,
     "result": 1
   },
   {
     "input": [
       "1492"
     ],
+    "fields": null,
     "result": 1492
   },
   {
     "input": [
       "1493"
     ],
+    "fields": null,
     "result": 1493
   },
   {
     "input": [
       "1494"
     ],
+    "fields": null,
     "result": 1494
   },
   {
     "input": [
       "1495"
     ],
+    "fields": null,
     "result": 1495
   },
   {
     "input": [
       "1496"
     ],
+    "fields": null,
     "result": 1496
   },
   {
     "input": [
       "2"
     ],
+    "fields": null,
     "result": 2
   },
   {
     "input": [
       "1498"
     ],
+    "fields": null,
     "result": 1498
   },
   {
     "input": [
       "tempp+256"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "tempp"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "256"
     ],
+    "fields": null,
     "result": 256
   },
   {
     "input": [
       "hello"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "msg"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "test"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "00Dh"
     ],
+    "fields": null,
     "result": 13
   },
   {
     "input": [
       "00Ah"
     ],
+    "fields": null,
     "result": 10
   },
   {
     "input": [
       "0C800h"
     ],
+    "fields": null,
     "result": 51200
   },
   {
     "input": [
       "'$'"
     ],
+    "fields": null,
     "result": 36
   },
   {
     "input": [
       "msge"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "pchar"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "msgs"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "bdos"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "byto1"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "byto2"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "00Fh"
     ],
+    "fields": null,
     "result": 15
   },
   {
     "input": [
       "byto3"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "7"
     ],
+    "fields": null,
     "result": 7
   },
   {
     "input": [
       "030h"
     ],
+    "fields": null,
     "result": 48
   },
   {
     "input": [
       "STACK"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "j010"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "cpuer"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "j020"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "j030"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "j040"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "j050"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "j060"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "6"
     ],
+    "fields": null,
     "result": 6
   },
   {
     "input": [
       "j070"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "j080"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "j090"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "070h"
     ],
+    "fields": null,
     "result": 112
   },
   {
     "input": [
       "j100"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "j110"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "j120"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "081h"
     ],
+    "fields": null,
     "result": 129
   },
   {
     "input": [
       "j130"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "j140"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "j150"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "0FEh"
     ],
+    "fields": null,
     "result": 254
   },
   {
     "input": [
       "j160"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "j170"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "aimm"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "cpie"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "0F5h"
     ],
+    "fields": null,
     "result": 245
   },
   {
     "input": [
       "0FFh"
     ],
+    "fields": null,
     "result": 255
   },
   {
     "input": [
       "acii"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "00Bh"
     ],
+    "fields": null,
     "result": 11
   },
   {
     "input": [
       "suii"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "00Ch"
     ],
+    "fields": null,
     "result": 12
   },
   {
     "input": [
       "0F0h"
     ],
+    "fields": null,
     "result": 240
   },
   {
     "input": [
       "sbii"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "0F1h"
     ],
+    "fields": null,
     "result": 241
   },
   {
     "input": [
       "00Eh"
     ],
+    "fields": null,
     "result": 14
   },
   {
     "input": [
       "anii"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "055h"
     ],
+    "fields": null,
     "result": 85
   },
   {
     "input": [
       "050h"
     ],
+    "fields": null,
     "result": 80
   },
   {
     "input": [
       "orii"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "03Ah"
     ],
+    "fields": null,
     "result": 58
   },
   {
     "input": [
       "07Ah"
     ],
+    "fields": null,
     "result": 122
   },
   {
     "input": [
       "xrii"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "075h"
     ],
+    "fields": null,
     "result": 117
   },
   {
     "input": [
       "c010"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "000h"
     ],
+    "fields": null,
     "result": 0
   },
   {
     "input": [
       "c020"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "077h"
     ],
+    "fields": null,
     "result": 119
   },
   {
     "input": [
       "089h"
     ],
+    "fields": null,
     "result": 137
   },
   {
     "input": [
       "c030"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "cpoi"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "0D9h"
     ],
+    "fields": null,
     "result": 217
   },
   {
     "input": [
       "movi"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "010h"
     ],
+    "fields": null,
     "result": 16
   },
   {
     "input": [
       "cpei"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "002h"
     ],
+    "fields": null,
     "result": 2
   },
   {
     "input": [
       "020h"
     ],
+    "fields": null,
     "result": 32
   },
   {
     "input": [
       "cmi"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "004h"
     ],
+    "fields": null,
     "result": 4
   },
   {
     "input": [
       "080h"
     ],
+    "fields": null,
     "result": 128
   },
   {
     "input": [
       "tcpi"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "040h"
     ],
+    "fields": null,
     "result": 64
   },
   {
     "input": [
       "cnci"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "08Fh"
     ],
+    "fields": null,
     "result": 143
   },
   {
     "input": [
       "cci"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "0F7h"
     ],
+    "fields": null,
     "result": 247
   },
   {
     "input": [
       "cnzi"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "001h"
     ],
+    "fields": null,
     "result": 1
   },
   {
     "input": [
       "czi"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "0D0h"
     ],
+    "fields": null,
     "result": 208
   },
   {
     "input": [
       "047h"
     ],
+    "fields": null,
     "result": 71
   },
   {
     "input": [
       "003h"
     ],
+    "fields": null,
     "result": 3
   },
   {
     "input": [
       "007h"
     ],
+    "fields": null,
     "result": 7
   },
   {
     "input": [
       "01Fh"
     ],
+    "fields": null,
     "result": 31
   },
   {
     "input": [
       "03Fh"
     ],
+    "fields": null,
     "result": 63
   },
   {
     "input": [
       "078h"
     ],
+    "fields": null,
     "result": 120
   },
   {
     "input": [
       "005h"
     ],
+    "fields": null,
     "result": 5
   },
   {
     "input": [
       "006h"
     ],
+    "fields": null,
     "result": 6
   },
   {
     "input": [
       "037h"
     ],
+    "fields": null,
     "result": 55
   },
   {
     "input": [
       "0E0h"
     ],
+    "fields": null,
     "result": 224
   },
   {
     "input": [
       "0FFH"
     ],
+    "fields": null,
     "result": 255
   },
   {
     "input": [
       "0FCh"
     ],
+    "fields": null,
     "result": 252
   },
   {
     "input": [
       "0EFh"
     ],
+    "fields": null,
     "result": 239
   },
   {
     "input": [
       "07Fh"
     ],
+    "fields": null,
     "result": 127
   },
   {
     "input": [
       "0F4h"
     ],
+    "fields": null,
     "result": 244
   },
   {
     "input": [
       "0BFh"
     ],
+    "fields": null,
     "result": 191
   },
   {
     "input": [
       "024h"
     ],
+    "fields": null,
     "result": 36
   },
   {
     "input": [
       "008h"
     ],
+    "fields": null,
     "result": 8
   },
   {
     "input": [
       "04Fh"
     ],
+    "fields": null,
     "result": 79
   },
   {
     "input": [
       "0CFh"
     ],
+    "fields": null,
     "result": 207
   },
   {
     "input": [
       "044h"
     ],
+    "fields": null,
     "result": 68
   },
   {
     "input": [
       "045h"
     ],
+    "fields": null,
     "result": 69
   },
   {
     "input": [
       "046h"
     ],
+    "fields": null,
     "result": 70
   },
   {
     "input": [
       ""
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "temp0"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "032h"
     ],
+    "fields": null,
     "result": 50
   },
   {
     "input": [
       "064h"
     ],
+    "fields": null,
     "result": 100
   },
   {
     "input": [
       "033h"
     ],
+    "fields": null,
     "result": 51
   },
   {
     "input": [
       "0CDh"
     ],
+    "fields": null,
     "result": 205
   },
   {
     "input": [
       "025h"
     ],
+    "fields": null,
     "result": 37
   },
   {
     "input": [
       "05Ah"
     ],
+    "fields": null,
     "result": 90
   },
   {
     "input": [
       "12FFh"
     ],
+    "fields": null,
     "result": 4863
   },
   {
     "input": [
       "013h"
     ],
+    "fields": null,
     "result": 19
   },
   {
     "input": [
       "012h"
     ],
+    "fields": null,
     "result": 18
   },
   {
     "input": [
       "0AAh"
     ],
+    "fields": null,
     "result": 170
   },
   {
     "input": [
       "0ABh"
     ],
+    "fields": null,
     "result": 171
   },
   {
     "input": [
       "0CCh"
     ],
+    "fields": null,
     "result": 204
   },
   {
     "input": [
       "07777h"
     ],
+    "fields": null,
     "result": 30583
   },
   {
     "input": [
       "0EEh"
     ],
+    "fields": null,
     "result": 238
   },
   {
     "input": [
       "05555h"
     ],
+    "fields": null,
     "result": 21845
   },
   {
     "input": [
       "0FFFFh"
     ],
+    "fields": null,
     "result": 65535
   },
   {
     "input": [
       "054h"
     ],
+    "fields": null,
     "result": 84
   },
   {
     "input": [
       "0AAAAh"
     ],
+    "fields": null,
     "result": 43690
   },
   {
     "input": [
       "03333h"
     ],
+    "fields": null,
     "result": 13107
   },
   {
     "input": [
       "0DDh"
     ],
+    "fields": null,
     "result": 221
   },
   {
     "input": [
       "088h"
     ],
+    "fields": null,
     "result": 136
   },
   {
     "input": [
       "076h"
     ],
+    "fields": null,
     "result": 118
   },
   {
     "input": [
       "09Ah"
     ],
+    "fields": null,
     "result": 154
   },
   {
     "input": [
       "042h"
     ],
+    "fields": null,
     "result": 66
   },
   {
     "input": [
       "009h"
     ],
+    "fields": null,
     "result": 9
   },
   {
     "input": [
       "01234h"
     ],
+    "fields": null,
     "result": 4660
   },
   {
     "input": [
       "0C0h"
     ],
+    "fields": null,
     "result": 192
   },
   {
     "input": [
       "034h"
     ],
+    "fields": null,
     "result": 52
   },
   {
     "input": [
       "savstk"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "temp4"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "temp2"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "temp3"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "07733h"
     ],
+    "fields": null,
     "result": 30515
   },
   {
     "input": [
       "cpuok"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "ngcpu"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "byteo"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "wboot"
     ],
+    "fields": null,
     "result": null
   },
   {
     "input": [
       "okcpu"
     ],
+    "fields": null,
     "result": null
   }
 ]

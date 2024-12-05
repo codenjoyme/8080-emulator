@@ -1,3 +1,5 @@
+import {asm} from "../../../main/javascript/svofski/assembler";
+
 const common = require('./common.js');
 const assembler = require('../../../main/javascript/svofski/assembler.js');
 
@@ -12,13 +14,17 @@ export let recorder = (() => {
             data.push(input);
         }
     };
-    let decorate = (object, methodName) => {
+    let decorate = (object, methodName, fields) => {
         method = methodName;
         let old = object[method];
         object[method] = (...args) => {
             let result = old.apply(object, args);
             collect({
                 input: args,
+                fields: !fields ? null : fields.map(it => ({
+                    name: it,
+                    value: JSON.parse(JSON.stringify(object[it]))
+                })),
                 result: typeof result == 'undefined' ? null : result,
             });
             return result;
@@ -38,9 +44,9 @@ export let recorder = (() => {
 const dir = '../../../resources/AssemblerTest/';
 
 let recs = [];
-let record = function (object, methodName) {
+let record = function (object, methodName, fields) {
     let rec = recorder();
-    rec.decorate(object, methodName);
+    rec.decorate(object, methodName, fields);
     recs.push(rec);
 }
 let assertAllRecords = function() {
@@ -53,7 +59,7 @@ describe('assembler', () => {
     test('assemble', () => {
 
         // when
-        record(assembler.asm, 'evaluateExpression2');
+        record(assembler.asm, 'evaluateExpression2', [ 'labels' ]);
         record(assembler.asm, 'resolveNumber');
 
         let data = assembler.assemble(PROGRAM);
