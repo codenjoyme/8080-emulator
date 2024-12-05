@@ -1,8 +1,8 @@
 {
-  "binFileName": "test.rks",
+  "binFileName": "test.mem",
   "hexFileName": "test.hex",
   "kind": "assemble",
   "org": 0,
   "tapFileName": "test.cas",
-  "tapeFormat": "специалистъ-rks"
+  "tapeFormat": "специалистъ-mon"
 }
