@@ -1383,11 +1383,23 @@ self.addEventListener('message', function(e) {
     }
 }, false);
 
+function sortObjectKeys(data) {
+    if (Array.isArray(data)) {
+        return data.map(sortObjectKeys);
+    } else if (data !== null && typeof data === 'object') {
+        const sortedData = {};
+        Object.keys(data).sort().forEach(key => {
+            sortedData[key] = sortObjectKeys(data[key]);
+        });
+        return sortedData;
+    }
+    return data;
+}
 
 export function assemble(program) {
     asm.assemble(program);
     asm.intelHex();
-    return {
+    return sortObjectKeys({
         'mem': asm.mem,
         'hex': asm.hexText,
         'gutter': asm.gutterContent,
@@ -1403,6 +1415,6 @@ export function assemble(program) {
             'tapFileName': asm.getTapFileName(),
             'tapeFormat': asm.tapeFormat
         }
-    };
+    });
 }
 
