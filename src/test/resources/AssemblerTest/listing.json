@@ -24,9 +24,9 @@
 	                        CPU     8080
 	                        .ORG    00000h
 	                
-0000	21 FF FF        start:  LXI     H,hello
-0003	CD FF FF                CALL    msg
-0006	C3 FF FF                JMP     test       ; JUMP TO 8080 CPU DIAGNOSTIC
+0000	21 09 00        start:  LXI     H,hello
+0003	CD 56 00                CALL    msg
+0006	C3 D5 00                JMP     test       ; JUMP TO 8080 CPU DIAGNOSTIC
 	                ;
 0009	0D 0A 4D 49     hello:  DB      00Dh, 00Ah, 'MICROCOSM ASSOCIATES'
 	. . .
@@ -52,11 +52,11 @@
 0059	F5                      PUSH    PSW
 005A	7E              msgs:   MOV     A,M        ; Get data
 005B	FE 24                   CPI     '$'        ; End?
-005D	CA FF FF                JZ      msge       ; Exit
+005D	CA 68 00                JZ      msge       ; Exit
 0060	7E                      MOV     A,M
-0061	CD FF FF                CALL    pchar      ; Output
+0061	CD 6D 00                CALL    pchar      ; Output
 0064	23                      INX     H          ; Next
-0065	C3 FF FF                JMP     msgs       ; Do all
+0065	C3 5A 00                JMP     msgs       ; Do all
 0068	F1              msge:   POP     PSW        ; Pop state
 0069	E1                      POP     H
 006A	D1                      POP     D
@@ -70,7 +70,7 @@
 006F	E5                      PUSH    H
 0070	F5                      PUSH    PSW
 0071	4F                      MOV     C,A
-0072	CD FF FF                CALL    bdos
+0072	CD 37 C0                CALL    bdos
 0075	F1                      POP     PSW
 0076	E1                      POP     H
 0077	D1                      POP     D
@@ -84,11 +84,11 @@
 007C	E5                      PUSH    H
 007D	F5                      PUSH    PSW
 007E	F5                      PUSH    PSW
-007F	CD FF FF                CALL    byto1
-0082	CD FF FF                CALL    pchar
+007F	CD 91 00                CALL    byto1
+0082	CD 6D 00                CALL    pchar
 0085	F1                      POP     PSW
-0086	CD FF FF                CALL    byto2
-0089	CD FF FF                CALL    pchar
+0086	CD 95 00                CALL    byto2
+0089	CD 6D 00                CALL    pchar
 008C	F1                      POP     PSW
 008D	E1                      POP     H
 008E	D1                      POP     D
@@ -100,7 +100,7 @@
 0094	0F                      RRC
 0095	E6 0F           byto2:  ANI     00Fh
 0097	FE 0A                   CPI     00Ah
-0099	FA FF FF                JM      byto3
+0099	FA 9E 00                JM      byto3
 009C	C6 07                   ADI     7
 009E	C6 30           byto3:  ADI     030h
 00A0	C9                      RET
@@ -133,182 +133,182 @@
 	                ;
 	                ;TEST JUMP INSTRUCTIONS AND FLAGS
 	                ;
-00D5	31 FF FF        test:   LXI     SP,STACK    ;SET THE STACK POINTER
+00D5	31 D1 06        test:   LXI     SP,STACK    ;SET THE STACK POINTER
 00D8	E6 00                   ANI     0       ;INITIALIZE A REG. AND CLEAR ALL FLAGS
-00DA	CA FF FF                JZ      j010    ;TEST 'JZ'
-00DD	CD FF FF                CALL    cpuer
-00E0	D2 FF FF        j010:   JNC     j020    ;TEST 'JNC'
-00E3	CD FF FF                CALL    cpuer
-00E6	EA FF FF        j020:   JPE     j030    ;TEST 'JPE'
-00E9	CD FF FF                CALL    cpuer
-00EC	F2 FF FF        j030:   JP      j040    ;TEST 'JP'
-00EF	CD FF FF                CALL    cpuer
-00F2	C2 FF FF        j040:   JNZ     j050    ;TEST 'JNZ'
-00F5	DA FF FF                JC      j050    ;TEST 'JC'
-00F8	E2 FF FF                JPO     j050    ;TEST 'JPO'
-00FB	FA FF FF                JM      j050    ;TEST 'JM'
-00FE	C3 FF FF                JMP     j060    ;TEST 'JMP' (IT'S A LITTLE LATE,BUT WHAT THE HELL!
-0101	CD FF FF        j050:   CALL    cpuer
+00DA	CA E0 00                JZ      j010    ;TEST 'JZ'
+00DD	CD B3 05                CALL    cpuer
+00E0	D2 E6 00        j010:   JNC     j020    ;TEST 'JNC'
+00E3	CD B3 05                CALL    cpuer
+00E6	EA EC 00        j020:   JPE     j030    ;TEST 'JPE'
+00E9	CD B3 05                CALL    cpuer
+00EC	F2 F2 00        j030:   JP      j040    ;TEST 'JP'
+00EF	CD B3 05                CALL    cpuer
+00F2	C2 01 01        j040:   JNZ     j050    ;TEST 'JNZ'
+00F5	DA 01 01                JC      j050    ;TEST 'JC'
+00F8	E2 01 01                JPO     j050    ;TEST 'JPO'
+00FB	FA 01 01                JM      j050    ;TEST 'JM'
+00FE	C3 04 01                JMP     j060    ;TEST 'JMP' (IT'S A LITTLE LATE,BUT WHAT THE HELL!
+0101	CD B3 05        j050:   CALL    cpuer
 0104	C6 06           j060:   ADI     6       ;A=6,C=0,P=1,S=0,Z=0
-0106	C2 FF FF                JNZ     j070    ;TEST 'JNZ'
-0109	CD FF FF                CALL    cpuer
-010C	DA FF FF        j070:   JC      j080    ;TEST 'JC'
-010F	E2 FF FF                JPO     j080    ;TEST 'JPO'
-0112	F2 FF FF                JP      j090    ;TEST 'JP'
-0115	CD FF FF        j080:   CALL    cpuer
+0106	C2 0C 01                JNZ     j070    ;TEST 'JNZ'
+0109	CD B3 05                CALL    cpuer
+010C	DA 15 01        j070:   JC      j080    ;TEST 'JC'
+010F	E2 15 01                JPO     j080    ;TEST 'JPO'
+0112	F2 18 01                JP      j090    ;TEST 'JP'
+0115	CD B3 05        j080:   CALL    cpuer
 0118	C6 70           j090:   ADI     070h    ;A=76H,C=0,P=0,S=0,Z=0
-011A	E2 FF FF                JPO     j100    ;TEST 'JPO'
-011D	CD FF FF                CALL    cpuer
-0120	FA FF FF        j100:   JM      j110    ;TEST 'JM'
-0123	CA FF FF                JZ      j110    ;TEST 'JZ'
-0126	D2 FF FF                JNC     j120    ;TEST 'JNC'
-0129	CD FF FF        j110:   CALL    cpuer
+011A	E2 20 01                JPO     j100    ;TEST 'JPO'
+011D	CD B3 05                CALL    cpuer
+0120	FA 29 01        j100:   JM      j110    ;TEST 'JM'
+0123	CA 29 01                JZ      j110    ;TEST 'JZ'
+0126	D2 2C 01                JNC     j120    ;TEST 'JNC'
+0129	CD B3 05        j110:   CALL    cpuer
 012C	C6 81           j120:   ADI     081h    ;A=F7H,C=0,P=0,S=1,Z=0
-012E	FA FF FF                JM      j130    ;TEST 'JM'
-0131	CD FF FF                CALL    cpuer
-0134	CA FF FF        j130:   JZ      j140    ;TEST 'JZ'
-0137	DA FF FF                JC      j140    ;TEST 'JC'
-013A	E2 FF FF                JPO     j150    ;TEST 'JPO'
-013D	CD FF FF        j140:   CALL    cpuer
+012E	FA 34 01                JM      j130    ;TEST 'JM'
+0131	CD B3 05                CALL    cpuer
+0134	CA 3D 01        j130:   JZ      j140    ;TEST 'JZ'
+0137	DA 3D 01                JC      j140    ;TEST 'JC'
+013A	E2 40 01                JPO     j150    ;TEST 'JPO'
+013D	CD B3 05        j140:   CALL    cpuer
 0140	C6 FE           j150:   ADI     0FEh    ;A=F5H,C=1,P=1,S=1,Z=0
-0142	DA FF FF                JC      j160    ;TEST 'JC'
-0145	CD FF FF                CALL    cpuer
-0148	CA FF FF        j160:   JZ      j170    ;TEST 'JZ'
-014B	E2 FF FF                JPO     j170    ;TEST 'JPO'
-014E	FA FF FF                JM      aimm    ;TEST 'JM'
-0151	CD FF FF        j170:   CALL    cpuer
+0142	DA 48 01                JC      j160    ;TEST 'JC'
+0145	CD B3 05                CALL    cpuer
+0148	CA 51 01        j160:   JZ      j170    ;TEST 'JZ'
+014B	E2 51 01                JPO     j170    ;TEST 'JPO'
+014E	FA 54 01                JM      aimm    ;TEST 'JM'
+0151	CD B3 05        j170:   CALL    cpuer
 	                ;
 	                ;
 	                ;
 	                ;TEST ACCUMULATOR IMMEDIATE INSTRUCTIONS
 	                ;
 0154	FE 00           aimm:   CPI     0       ;A=F5,C=0,Z=0
-0156	DA FF FF                JC      cpie    ;TEST 'CPI' FOR RE-SET CARRY
-0159	CA FF FF                JZ      cpie    ;TEST 'CPI' FOR RE-SET ZERO
+0156	DA 6C 01                JC      cpie    ;TEST 'CPI' FOR RE-SET CARRY
+0159	CA 6C 01                JZ      cpie    ;TEST 'CPI' FOR RE-SET ZERO
 015C	FE F5                   CPI     0F5h    ;A=F5,C=0,Z=1
-015E	DA FF FF                JC      cpie    ;TEST 'CPI' FOR RE-SET CARRY ('ADI')
-0161	C2 FF FF                JNZ     cpie    ;TEST 'CPI' FOR RE-SET ZERO
+015E	DA 6C 01                JC      cpie    ;TEST 'CPI' FOR RE-SET CARRY ('ADI')
+0161	C2 6C 01                JNZ     cpie    ;TEST 'CPI' FOR RE-SET ZERO
 0164	FE FF                   CPI     0FFh    ;A=F5,C=1,Z=0
-0166	CA FF FF                JZ      cpie    ;TEST 'CPI' FOR RE-SET ZERO
-0169	DA FF FF                JC      acii    ;TEST 'CPI' FOR SET CARRY
-016C	CD FF FF        cpie:   CALL    cpuer
+0166	CA 6C 01                JZ      cpie    ;TEST 'CPI' FOR RE-SET ZERO
+0169	DA 6F 01                JC      acii    ;TEST 'CPI' FOR SET CARRY
+016C	CD B3 05        cpie:   CALL    cpuer
 016F	CE 0A           acii:   ACI     00Ah    ;A=F5+0A+CARRY(1)=00,C=1
 0171	CE 0A                   ACI     00Ah    ;A=00+0A+CARRY(0)=0B,C=0
 0173	FE 0B                   CPI     00Bh
-0175	CA FF FF                JZ      suii    ;TEST 'ACI'
-0178	CD FF FF                CALL    cpuer
+0175	CA 7B 01                JZ      suii    ;TEST 'ACI'
+0178	CD B3 05                CALL    cpuer
 017B	D6 0C           suii:   SUI     00Ch    ;A=FF,C=0
 017D	D6 0F                   SUI     00Fh    ;A=F0,C=1
 017F	FE F0                   CPI     0F0h
-0181	CA FF FF                JZ      sbii    ;TEST 'SUI'
-0184	CD FF FF                CALL    cpuer
+0181	CA 87 01                JZ      sbii    ;TEST 'SUI'
+0184	CD B3 05                CALL    cpuer
 0187	DE F1           sbii:   SBI     0F1h    ;A=F0-F1-CARRY(0)=FF,C=1
 0189	DE 0E                   SBI     00Eh    ;A=FF-OE-CARRY(1)=F0,C=0
 018B	FE F0                   CPI     0F0h
-018D	CA FF FF                JZ      anii    ;TEST 'SBI'
-0190	CD FF FF                CALL    cpuer
+018D	CA 93 01                JZ      anii    ;TEST 'SBI'
+0190	CD B3 05                CALL    cpuer
 0193	E6 55           anii:   ANI     055h    ;A=F0<AND>55=50,C=0,P=1,S=0,Z=0
 0195	FE 50                   CPI     050h
-0197	CA FF FF                JZ      orii    ;TEST 'ANI'
-019A	CD FF FF                CALL    cpuer
+0197	CA 9D 01                JZ      orii    ;TEST 'ANI'
+019A	CD B3 05                CALL    cpuer
 019D	F6 3A           orii:   ORI     03Ah    ;A=50<OR>3A=7A,C=0,P=0,S=0,Z=0
 019F	FE 7A                   CPI     07Ah
-01A1	CA FF FF                JZ      xrii    ;TEST 'ORI'
-01A4	CD FF FF                CALL    cpuer
+01A1	CA A7 01                JZ      xrii    ;TEST 'ORI'
+01A4	CD B3 05                CALL    cpuer
 01A7	EE 0F           xrii:   XRI     00Fh    ;A=7A<XOR>0F=75,C=0,P=0,S=0,Z=0
 01A9	FE 75                   CPI     075h
-01AB	CA FF FF                JZ      c010    ;TEST 'XRI'
-01AE	CD FF FF                CALL    cpuer
+01AB	CA B1 01                JZ      c010    ;TEST 'XRI'
+01AE	CD B3 05                CALL    cpuer
 	                ;
 	                ;
 	                ;
 	                ;TEST CALLS AND RETURNS
 	                ;
 01B1	E6 00           c010:   ANI     000h    ;A=0,C=0,P=1,S=0,Z=1
-01B3	DC FF FF                CC      cpuer   ;TEST 'CC'
-01B6	E4 FF FF                CPO     cpuer   ;TEST 'CPO'
-01B9	FC FF FF                CM      cpuer   ;TEST 'CM'
-01BC	C4 FF FF                CNZ     cpuer   ;TEST 'CNZ'
+01B3	DC B3 05                CC      cpuer   ;TEST 'CC'
+01B6	E4 B3 05                CPO     cpuer   ;TEST 'CPO'
+01B9	FC B3 05                CM      cpuer   ;TEST 'CM'
+01BC	C4 B3 05                CNZ     cpuer   ;TEST 'CNZ'
 01BF	FE 00                   CPI     000h
-01C1	CA FF FF                JZ      c020    ;A=0,C=0,P=0,S=0,Z=1
-01C4	CD FF FF                CALL    cpuer
+01C1	CA C7 01                JZ      c020    ;A=0,C=0,P=0,S=0,Z=1
+01C4	CD B3 05                CALL    cpuer
 01C7	D6 77           c020:   SUI     077h    ;A=89,C=1,P=0,S=1,Z=0
-01C9	D4 FF FF                CNC     cpuer   ;TEST 'CNC'
-01CC	EC FF FF                CPE     cpuer   ;TEST 'CPE'
-01CF	F4 FF FF                CP      cpuer   ;TEST 'CP'
-01D2	CC FF FF                CZ      cpuer   ;TEST 'CZ'
+01C9	D4 B3 05                CNC     cpuer   ;TEST 'CNC'
+01CC	EC B3 05                CPE     cpuer   ;TEST 'CPE'
+01CF	F4 B3 05                CP      cpuer   ;TEST 'CP'
+01D2	CC B3 05                CZ      cpuer   ;TEST 'CZ'
 01D5	FE 89                   CPI     089h
-01D7	CA FF FF                JZ      c030    ;TEST FOR 'CALLS' TAKING BRANCH
-01DA	CD FF FF                CALL    cpuer
+01D7	CA DD 01                JZ      c030    ;TEST FOR 'CALLS' TAKING BRANCH
+01DA	CD B3 05                CALL    cpuer
 01DD	E6 FF           c030:   ANI     0FFh    ;SET FLAGS BACK!
-01DF	E4 FF FF                CPO     cpoi    ;TEST 'CPO'
+01DF	E4 EA 01                CPO     cpoi    ;TEST 'CPO'
 01E2	FE D9                   CPI     0D9h
-01E4	CA FF FF                JZ      movi    ;TEST 'CALL' SEQUENCE SUCCESS
-01E7	CD FF FF                CALL    cpuer
+01E4	CA 47 02                JZ      movi    ;TEST 'CALL' SEQUENCE SUCCESS
+01E7	CD B3 05                CALL    cpuer
 01EA	E8              cpoi:   RPE             ;TEST 'RPE'
 01EB	C6 10                   ADI     010h    ;A=99,C=0,P=0,S=1,Z=0
-01ED	EC FF FF                CPE     cpei    ;TEST 'CPE'
+01ED	EC F6 01                CPE     cpei    ;TEST 'CPE'
 01F0	C6 02                   ADI     002h    ;A=D9,C=0,P=0,S=1,Z=0
 01F2	E0                      RPO             ;TEST 'RPO'
-01F3	CD FF FF                CALL    cpuer
+01F3	CD B3 05                CALL    cpuer
 01F6	E0              cpei:   RPO             ;TEST 'RPO'
 01F7	C6 20                   ADI     020h    ;A=B9,C=0,P=0,S=1,Z=0
-01F9	FC FF FF                CM      cmi     ;TEST 'CM'
+01F9	FC 02 02                CM      cmi     ;TEST 'CM'
 01FC	C6 04                   ADI     004h    ;A=D7,C=0,P=1,S=1,Z=0
 01FE	E8                      RPE             ;TEST 'RPE'
-01FF	CD FF FF                CALL    cpuer
+01FF	CD B3 05                CALL    cpuer
 0202	F0              cmi:    RP              ;TEST 'RP'
 0203	C6 80                   ADI     080h    ;A=39,C=1,P=1,S=0,Z=0
-0205	F4 FF FF                CP      tcpi    ;TEST 'CP'
+0205	F4 0E 02                CP      tcpi    ;TEST 'CP'
 0208	C6 80                   ADI     080h    ;A=D3,C=0,P=0,S=1,Z=0
 020A	F8                      RM              ;TEST 'RM'
-020B	CD FF FF                CALL    cpuer
+020B	CD B3 05                CALL    cpuer
 020E	F8              tcpi:   RM              ;TEST 'RM'
 020F	C6 40                   ADI     040h    ;A=79,C=0,P=0,S=0,Z=0
-0211	D4 FF FF                CNC     cnci    ;TEST 'CNC'
+0211	D4 1A 02                CNC     cnci    ;TEST 'CNC'
 0214	C6 40                   ADI     040h    ;A=53,C=0,P=1,S=0,Z=0
 0216	F0                      RP              ;TEST 'RP'
-0217	CD FF FF                CALL    cpuer
+0217	CD B3 05                CALL    cpuer
 021A	D8              cnci:   RC              ;TEST 'RC'
 021B	C6 8F                   ADI     08Fh    ;A=08,C=1,P=0,S=0,Z=0
-021D	DC FF FF                CC      cci     ;TEST 'CC'
+021D	DC 26 02                CC      cci     ;TEST 'CC'
 0220	D6 02                   SUI     002h    ;A=13,C=0,P=0,S=0,Z=0
 0222	D0                      RNC             ;TEST 'RNC'
-0223	CD FF FF                CALL    cpuer
+0223	CD B3 05                CALL    cpuer
 0226	D0              cci:    RNC             ;TEST 'RNC'
 0227	C6 F7                   ADI     0F7h    ;A=FF,C=0,P=1,S=1,Z=0
-0229	C4 FF FF                CNZ     cnzi    ;TEST 'CNZ'
+0229	C4 32 02                CNZ     cnzi    ;TEST 'CNZ'
 022C	C6 FE                   ADI     0FEh    ;A=15,C=1,P=0,S=0,Z=0
 022E	D8                      RC              ;TEST 'RC'
-022F	CD FF FF                CALL    cpuer
+022F	CD B3 05                CALL    cpuer
 0232	C8              cnzi:   RZ              ;TEST 'RZ'
 0233	C6 01                   ADI     001h    ;A=00,C=1,P=1,S=0,Z=1
-0235	CC FF FF                CZ      czi     ;TEST 'CZ'
+0235	CC 3E 02                CZ      czi     ;TEST 'CZ'
 0238	C6 D0                   ADI     0D0h    ;A=17,C=1,P=1,S=0,Z=0
 023A	C0                      RNZ             ;TEST 'RNZ'
-023B	CD FF FF                CALL    cpuer
+023B	CD B3 05                CALL    cpuer
 023E	C0              czi:    RNZ             ;TEST 'RNZ'
 023F	C6 47                   ADI     047h    ;A=47,C=0,P=1,S=0,Z=0
 0241	FE 47                   CPI     047h    ;A=47,C=0,P=1,S=0,Z=1
 0243	C8                      RZ              ;TEST 'RZ'
-0244	CD FF FF                CALL    cpuer
+0244	CD B3 05                CALL    cpuer
 	                ;
 	                ;
 	                ;
 	                ;TEST 'MOV','INR',AND 'DCR' INSTRUCTIONS
 	                ;
 0247	3E 77           movi:   MVI     A,077h
-0249	07                      INR     A
+0249	3C                      INR     A
 024A	47                      MOV     B,A
 024B	04                      INR     B
 024C	48                      MOV     C,B
-024D	05                      DCR     C
+024D	0D                      DCR     C
 024E	51                      MOV     D,C
 024F	5A                      MOV     E,D
 0250	63                      MOV     H,E
 0251	6C                      MOV     L,H
 0252	7D                      MOV     A,L     ;TEST 'MOV' A,L,H,E,D,C,B,A
-0253	07                      DCR     A
+0253	3D                      DCR     A
 0254	4F                      MOV     C,A
 0255	59                      MOV     E,C
 0256	6B                      MOV     L,E
@@ -317,37 +317,37 @@
 0259	62                      MOV     H,D
 025A	7C                      MOV     A,H     ;TEST 'MOV' A,H,D,B,L,E,C,A
 025B	57                      MOV     D,A
-025C	06                      INR     D
+025C	14                      INR     D
 025D	6A                      MOV     L,D
 025E	4D                      MOV     C,L
-025F	05                      INR     C
+025F	0C                      INR     C
 0260	61                      MOV     H,C
 0261	44                      MOV     B,H
 0262	05                      DCR     B
 0263	58                      MOV     E,B
 0264	7B                      MOV     A,E     ;TEST 'MOV' A,E,B,H,C,L,D,A
 0265	5F                      MOV     E,A
-0266	07                      INR     E
+0266	1C                      INR     E
 0267	43                      MOV     B,E
 0268	60                      MOV     H,B
-0269	04                      INR     H
+0269	24                      INR     H
 026A	4C                      MOV     C,H
 026B	69                      MOV     L,C
 026C	55                      MOV     D,L
-026D	07                      DCR     D
+026D	15                      DCR     D
 026E	7A                      MOV     A,D     ;TEST 'MOV' A,D,L,C,H,B,E,A
 026F	67                      MOV     H,A
-0270	05                      DCR     H
+0270	25                      DCR     H
 0271	54                      MOV     D,H
 0272	42                      MOV     B,D
 0273	68                      MOV     L,B
-0274	05                      INR     L
+0274	2C                      INR     L
 0275	5D                      MOV     E,L
-0276	07                      DCR     E
+0276	1D                      DCR     E
 0277	4B                      MOV     C,E
 0278	79                      MOV     A,C     ;TEST 'MOV' A,C,E,L,B,D,H,A
 0279	6F                      MOV     L,A
-027A	05                      DCR     L
+027A	2D                      DCR     L
 027B	65                      MOV     H,L
 027C	5C                      MOV     E,H
 027D	53                      MOV     D,E
@@ -355,13 +355,13 @@
 027F	41                      MOV     B,C
 0280	78                      MOV     A,B
 0281	FE 77                   CPI     077h
-0283	C4 FF FF                CNZ     cpuer    ;TEST 'MOV' A,B,C,D,E,H,L,A
+0283	C4 B3 05                CNZ     cpuer    ;TEST 'MOV' A,B,C,D,E,H,L,A
 	                ;
 	                ;
 	                ;
 	                ;TEST ARITHMETIC AND LOGIC INSTRUCTIONS
 	                ;
-0286	B8                      XRA     A
+0286	AF                      XRA     A
 0287	06 01                   MVI     B,001h
 0289	0E 03                   MVI     C,003h
 028B	16 07                   MVI     D,007h
@@ -369,26 +369,26 @@
 028F	26 1F                   MVI     H,01Fh
 0291	2E 3F                   MVI     L,03Fh
 0293	80                      ADD     B
-0294	88                      ADD     C
-0295	90                      ADD     D
-0296	98                      ADD     E
-0297	A0                      ADD     H
-0298	A8                      ADD     L
-0299	B8                      ADD     A
+0294	81                      ADD     C
+0295	82                      ADD     D
+0296	83                      ADD     E
+0297	84                      ADD     H
+0298	85                      ADD     L
+0299	87                      ADD     A
 029A	FE F0                   CPI     0F0h
-029C	C4 FF FF                CNZ     cpuer    ;TEST 'ADD' B,C,D,E,H,L,A
+029C	C4 B3 05                CNZ     cpuer    ;TEST 'ADD' B,C,D,E,H,L,A
 029F	90                      SUB     B
-02A0	98                      SUB     C
-02A1	90                      SUB     D
-02A2	98                      SUB     E
-02A3	B0                      SUB     H
-02A4	B8                      SUB     L
+02A0	91                      SUB     C
+02A1	92                      SUB     D
+02A2	93                      SUB     E
+02A3	94                      SUB     H
+02A4	95                      SUB     L
 02A5	FE 78                   CPI     078h
-02A7	C4 FF FF                CNZ     cpuer    ;TEST 'SUB' B,C,D,E,H,L
-02AA	B8                      SUB     A
-02AB	C4 FF FF                CNZ     cpuer    ;TEST 'SUB' A
+02A7	C4 B3 05                CNZ     cpuer    ;TEST 'SUB' B,C,D,E,H,L
+02AA	97                      SUB     A
+02AB	C4 B3 05                CNZ     cpuer    ;TEST 'SUB' A
 02AE	3E 80                   MVI     A,080h
-02B0	B8                      ADD     A
+02B0	87                      ADD     A
 02B1	06 01                   MVI     B,001h
 02B3	0E 02                   MVI     C,002h
 02B5	16 03                   MVI     D,003h
@@ -399,26 +399,26 @@
 02BE	06 80                   MVI     B,080h
 02C0	80                      ADD     B
 02C1	80                      ADD     B
-02C2	88                      ADC     C
+02C2	89                      ADC     C
 02C3	80                      ADD     B
 02C4	80                      ADD     B
-02C5	98                      ADC     D
+02C5	8A                      ADC     D
 02C6	80                      ADD     B
 02C7	80                      ADD     B
-02C8	98                      ADC     E
+02C8	8B                      ADC     E
 02C9	80                      ADD     B
 02CA	80                      ADD     B
-02CB	A8                      ADC     H
+02CB	8C                      ADC     H
 02CC	80                      ADD     B
 02CD	80                      ADD     B
-02CE	A8                      ADC     L
+02CE	8D                      ADC     L
 02CF	80                      ADD     B
 02D0	80                      ADD     B
-02D1	B8                      ADC     A
+02D1	8F                      ADC     A
 02D2	FE 37                   CPI     037h
-02D4	C4 FF FF                CNZ     cpuer    ;TEST 'ADC' B,C,D,E,H,L,A
+02D4	C4 B3 05                CNZ     cpuer    ;TEST 'ADC' B,C,D,E,H,L,A
 02D7	3E 80                   MVI     A,080h
-02D9	B8                      ADD     A
+02D9	87                      ADD     A
 02DA	06 01                   MVI     B,001h
 02DC	98                      SBB     B
 02DD	06 FF                   MVI     B,0FFh
@@ -433,12 +433,12 @@
 02E7	80                      ADD     B
 02E8	9D                      SBB     L
 02E9	FE E0                   CPI     0E0h
-02EB	C4 FF FF                CNZ     cpuer    ;TEST 'SBB' B,C,D,E,H,L
+02EB	C4 B3 05                CNZ     cpuer    ;TEST 'SBB' B,C,D,E,H,L
 02EE	3E 80                   MVI     A,080h
-02F0	B8                      ADD     A
+02F0	87                      ADD     A
 02F1	9F                      SBB     A
 02F2	FE FF                   CPI     0FFH
-02F4	C4 FF FF                CNZ     cpuer    ;TEST 'SBB' A
+02F4	C4 B3 05                CNZ     cpuer    ;TEST 'SBB' A
 02F7	3E FF                   MVI     A,0FFh
 02F9	06 FE                   MVI     B,0FEh
 02FB	0E FC                   MVI     C,0FCh
@@ -446,16 +446,16 @@
 02FF	1E 7F                   MVI     E,07Fh
 0301	26 F4                   MVI     H,0F4h
 0303	2E BF                   MVI     L,0BFh
-0305	B8                      ANA     A
-0306	A8                      ANA     C
-0307	B0                      ANA     D
-0308	B8                      ANA     E
-0309	A0                      ANA     H
-030A	A8                      ANA     L
-030B	B8                      ANA     A
+0305	A7                      ANA     A
+0306	A1                      ANA     C
+0307	A2                      ANA     D
+0308	A3                      ANA     E
+0309	A4                      ANA     H
+030A	A5                      ANA     L
+030B	A7                      ANA     A
 030C	FE 24                   CPI     024h
-030E	C4 FF FF                CNZ     cpuer    ;TEST 'ANA' B,C,D,E,H,L,A
-0311	B8                      XRA     A
+030E	C4 B3 05                CNZ     cpuer    ;TEST 'ANA' B,C,D,E,H,L,A
+0311	AF                      XRA     A
 0312	06 01                   MVI     B,001h
 0314	0E 02                   MVI     C,002h
 0316	16 04                   MVI     D,004h
@@ -463,108 +463,108 @@
 031A	26 10                   MVI     H,010h
 031C	2E 20                   MVI     L,020h
 031E	B0                      ORA     B
-031F	B8                      ORA     C
-0320	B0                      ORA     D
-0321	B8                      ORA     E
-0322	B0                      ORA     H
-0323	B8                      ORA     L
-0324	B8                      ORA     A
+031F	B1                      ORA     C
+0320	B2                      ORA     D
+0321	B3                      ORA     E
+0322	B4                      ORA     H
+0323	B5                      ORA     L
+0324	B7                      ORA     A
 0325	FE 3F                   CPI     03Fh
-0327	C4 FF FF                CNZ     cpuer    ;TEST 'ORA' B,C,D,E,H,L,A
+0327	C4 B3 05                CNZ     cpuer    ;TEST 'ORA' B,C,D,E,H,L,A
 032A	3E 00                   MVI     A,000h
 032C	26 8F                   MVI     H,08Fh
 032E	2E 4F                   MVI     L,04Fh
 0330	A8                      XRA     B
-0331	A8                      XRA     C
-0332	B8                      XRA     D
-0333	B8                      XRA     E
-0334	A8                      XRA     H
-0335	A8                      XRA     L
+0331	A9                      XRA     C
+0332	AA                      XRA     D
+0333	AB                      XRA     E
+0334	AC                      XRA     H
+0335	AD                      XRA     L
 0336	FE CF                   CPI     0CFh
-0338	C4 FF FF                CNZ     cpuer    ;TEST 'XRA' B,C,D,E,H,L
-033B	B8                      XRA     A
-033C	C4 FF FF                CNZ     cpuer    ;TEST 'XRA' A
+0338	C4 B3 05                CNZ     cpuer    ;TEST 'XRA' B,C,D,E,H,L
+033B	AF                      XRA     A
+033C	C4 B3 05                CNZ     cpuer    ;TEST 'XRA' A
 033F	06 44                   MVI     B,044h
 0341	0E 45                   MVI     C,045h
 0343	16 46                   MVI     D,046h
 0345	1E 47                   MVI     E,047h
-0347	26 FF                   MVI     H,(temp0 / 0FFh)    ;HIGH BYTE OF TEST MEMORY LOCATION
-0349	2E FF                   MVI     L,(temp0 & 0FFh)    ;LOW BYTE OF TEST MEMORY LOCATION
+0347	26 05                   MVI     H,(temp0 / 0FFh)    ;HIGH BYTE OF TEST MEMORY LOCATION
+0349	2E D3                   MVI     L,(temp0 & 0FFh)    ;LOW BYTE OF TEST MEMORY LOCATION
 034B	70                      MOV     M,B
 034C	06 00                   MVI     B,000h
 034E	46                      MOV     B,M
 034F	3E 44                   MVI     A,044h
 0351	B8                      CMP     B
-0352	C4 FF FF                CNZ     cpuer    ;TEST 'MOV' M,B AND B,M
+0352	C4 B3 05                CNZ     cpuer    ;TEST 'MOV' M,B AND B,M
 0355	72                      MOV     M,D
 0356	16 00                   MVI     D,000h
 0358	56                      MOV     D,M
 0359	3E 46                   MVI     A,046h
-035B	B8                      CMP     D
-035C	C4 FF FF                CNZ     cpuer    ;TEST 'MOV' M,D AND D,M
+035B	BA                      CMP     D
+035C	C4 B3 05                CNZ     cpuer    ;TEST 'MOV' M,D AND D,M
 035F	73                      MOV     M,E
 0360	1E 00                   MVI     E,000h
 0362	5E                      MOV     E,M
 0363	3E 47                   MVI     A,047h
-0365	B8                      CMP     E
-0366	C4 FF FF                CNZ     cpuer    ;TEST 'MOV' M,E AND E,M
+0365	BB                      CMP     E
+0366	C4 B3 05                CNZ     cpuer    ;TEST 'MOV' M,E AND E,M
 0369	74                      MOV     M,H
-036A	26 FF                   MVI     H,(temp0 / 0FFh)
-036C	2E FF                   MVI     L,(temp0 & 0FFh)
+036A	26 05                   MVI     H,(temp0 / 0FFh)
+036C	2E D3                   MVI     L,(temp0 & 0FFh)
 036E	66                      MOV     H,M
-036F	3E FF                   MVI     A,(temp0 / 0FFh)
-0371	B8                      CMP     H
-0372	C4 FF FF                CNZ     cpuer    ;TEST 'MOV' M,H AND H,M
+036F	3E 05                   MVI     A,(temp0 / 0FFh)
+0371	BC                      CMP     H
+0372	C4 B3 05                CNZ     cpuer    ;TEST 'MOV' M,H AND H,M
 0375	75                      MOV     M,L
-0376	26 FF                   MVI     H,(temp0 / 0FFh)
-0378	2E FF                   MVI     L,(temp0 & 0FFh)
+0376	26 05                   MVI     H,(temp0 / 0FFh)
+0378	2E D3                   MVI     L,(temp0 & 0FFh)
 037A	6E                      MOV     L,M
-037B	3E FF                   MVI     A,(temp0 & 0FFh)
-037D	B8                      CMP     L
-037E	C4 FF FF                CNZ     cpuer    ;TEST 'MOV' M,L AND L,M
-0381	26 FF                   MVI     H,(temp0 / 0FFh)
-0383	2E FF                   MVI     L,(temp0 & 0FFh)
+037B	3E D3                   MVI     A,(temp0 & 0FFh)
+037D	BD                      CMP     L
+037E	C4 B3 05                CNZ     cpuer    ;TEST 'MOV' M,L AND L,M
+0381	26 05                   MVI     H,(temp0 / 0FFh)
+0383	2E D3                   MVI     L,(temp0 & 0FFh)
 0385	3E 32                   MVI     A,032h
 0387	77                      MOV     M,A
-0388	B8                      CMP     M
-0389	C4 FF FF                CNZ     cpuer    ;TEST 'MOV' M,A
-038C	B0                      ADD     M
+0388	BE                      CMP     M
+0389	C4 B3 05                CNZ     cpuer    ;TEST 'MOV' M,A
+038C	86                      ADD     M
 038D	FE 64                   CPI     064h
-038F	C4 FF FF                CNZ     cpuer    ;TEST 'ADD' M
-0392	B8                      XRA     A
+038F	C4 B3 05                CNZ     cpuer    ;TEST 'ADD' M
+0392	AF                      XRA     A
 0393	7E                      MOV     A,M
 0394	FE 32                   CPI     032h
-0396	C4 FF FF                CNZ     cpuer    ;TEST 'MOV' A,M
-0399	26 FF                   MVI     H,(temp0 / 0FFh)
-039B	2E FF                   MVI     L,(temp0 & 0FFh)
+0396	C4 B3 05                CNZ     cpuer    ;TEST 'MOV' A,M
+0399	26 05                   MVI     H,(temp0 / 0FFh)
+039B	2E D3                   MVI     L,(temp0 & 0FFh)
 039D	7E                      MOV     A,M
-039E	B0                      SUB     M
-039F	C4 FF FF                CNZ     cpuer    ;TEST 'SUB' M
+039E	96                      SUB     M
+039F	C4 B3 05                CNZ     cpuer    ;TEST 'SUB' M
 03A2	3E 80                   MVI     A,080h
-03A4	B8                      ADD     A
-03A5	B8                      ADC     M
+03A4	87                      ADD     A
+03A5	8E                      ADC     M
 03A6	FE 33                   CPI     033h
-03A8	C4 FF FF                CNZ     cpuer    ;TEST 'ADC' M
+03A8	C4 B3 05                CNZ     cpuer    ;TEST 'ADC' M
 03AB	3E 80                   MVI     A,080h
-03AD	B8                      ADD     A
+03AD	87                      ADD     A
 03AE	9E                      SBB     M
 03AF	FE CD                   CPI     0CDh
-03B1	C4 FF FF                CNZ     cpuer    ;TEST 'SBB' M
-03B4	B0                      ANA     M
-03B5	C4 FF FF                CNZ     cpuer    ;TEST 'ANA' M
+03B1	C4 B3 05                CNZ     cpuer    ;TEST 'SBB' M
+03B4	A6                      ANA     M
+03B5	C4 B3 05                CNZ     cpuer    ;TEST 'ANA' M
 03B8	3E 25                   MVI     A,025h
-03BA	B0                      ORA     M
+03BA	B6                      ORA     M
 03BB	FE 37                   CPI     037h
-03BD	C4 FF FF                CNZ     cpuer    ;TEST 'ORA' M
-03C0	B8                      XRA     M
+03BD	C4 B3 05                CNZ     cpuer    ;TEST 'ORA' M
+03C0	AE                      XRA     M
 03C1	FE 05                   CPI     005h
-03C3	C4 FF FF                CNZ     cpuer    ;TEST 'XRA' M
+03C3	C4 B3 05                CNZ     cpuer    ;TEST 'XRA' M
 03C6	36 55                   MVI     M,055h
-03C8	06                      INR     M
-03C9	07                      DCR     M
-03CA	B0                      ADD     M
+03C8	34                      INR     M
+03C9	35                      DCR     M
+03CA	86                      ADD     M
 03CB	FE 5A                   CPI     05Ah
-03CD	C4 FF FF                CNZ     cpuer    ;TEST 'INR','DCR',AND 'MVI' M
+03CD	C4 B3 05                CNZ     cpuer    ;TEST 'INR','DCR',AND 'MVI' M
 03D0	01 FF 12                LXI     B,12FFh
 03D3	11 FF 12                LXI     D,12FFh
 03D6	21 FF 12                LXI     H,12FFh
@@ -573,166 +573,166 @@
 03DB	23                      INX     H
 03DC	3E 13                   MVI     A,013h
 03DE	B8                      CMP     B
-03DF	C4 FF FF                CNZ     cpuer    ;TEST 'LXI' AND 'INX' B
-03E2	B8                      CMP     D
-03E3	C4 FF FF                CNZ     cpuer    ;TEST 'LXI' AND 'INX' D
-03E6	B8                      CMP     H
-03E7	C4 FF FF                CNZ     cpuer    ;TEST 'LXI' AND 'INX' H
+03DF	C4 B3 05                CNZ     cpuer    ;TEST 'LXI' AND 'INX' B
+03E2	BA                      CMP     D
+03E3	C4 B3 05                CNZ     cpuer    ;TEST 'LXI' AND 'INX' D
+03E6	BC                      CMP     H
+03E7	C4 B3 05                CNZ     cpuer    ;TEST 'LXI' AND 'INX' H
 03EA	3E 00                   MVI     A,000h
-03EC	B8                      CMP     C
-03ED	C4 FF FF                CNZ     cpuer    ;TEST 'LXI' AND 'INX' B
-03F0	B8                      CMP     E
-03F1	C4 FF FF                CNZ     cpuer    ;TEST 'LXI' AND 'INX' D
-03F4	B8                      CMP     L
-03F5	C4 FF FF                CNZ     cpuer    ;TEST 'LXI' AND 'INX' H
+03EC	B9                      CMP     C
+03ED	C4 B3 05                CNZ     cpuer    ;TEST 'LXI' AND 'INX' B
+03F0	BB                      CMP     E
+03F1	C4 B3 05                CNZ     cpuer    ;TEST 'LXI' AND 'INX' D
+03F4	BD                      CMP     L
+03F5	C4 B3 05                CNZ     cpuer    ;TEST 'LXI' AND 'INX' H
 03F8	0B                      DCX     B
 03F9	1B                      DCX     D
 03FA	2B                      DCX     H
 03FB	3E 12                   MVI     A,012h
 03FD	B8                      CMP     B
-03FE	C4 FF FF                CNZ     cpuer    ;TEST 'DCX' B
-0401	B8                      CMP     D
-0402	C4 FF FF                CNZ     cpuer    ;TEST 'DCX' D
-0405	B8                      CMP     H
-0406	C4 FF FF                CNZ     cpuer    ;TEST 'DCX' H
+03FE	C4 B3 05                CNZ     cpuer    ;TEST 'DCX' B
+0401	BA                      CMP     D
+0402	C4 B3 05                CNZ     cpuer    ;TEST 'DCX' D
+0405	BC                      CMP     H
+0406	C4 B3 05                CNZ     cpuer    ;TEST 'DCX' H
 0409	3E FF                   MVI     A,0FFh
-040B	B8                      CMP     C
-040C	C4 FF FF                CNZ     cpuer    ;TEST 'DCX' B
-040F	B8                      CMP     E
-0410	C4 FF FF                CNZ     cpuer    ;TEST 'DCX' D
-0413	B8                      CMP     L
-0414	C4 FF FF                CNZ     cpuer    ;TEST 'DCX' H
-0417	32 FF FF                STA     temp0
-041A	B8                      XRA     A
-041B	3A FF FF                LDA     temp0
+040B	B9                      CMP     C
+040C	C4 B3 05                CNZ     cpuer    ;TEST 'DCX' B
+040F	BB                      CMP     E
+0410	C4 B3 05                CNZ     cpuer    ;TEST 'DCX' D
+0413	BD                      CMP     L
+0414	C4 B3 05                CNZ     cpuer    ;TEST 'DCX' H
+0417	32 D3 05                STA     temp0
+041A	AF                      XRA     A
+041B	3A D3 05                LDA     temp0
 041E	FE FF                   CPI     0FFh
-0420	C4 FF FF                CNZ     cpuer    ;TEST 'LDA' AND 'STA'
-0423	2A FF FF                LHLD    tempp
-0426	22 FF FF                SHLD    temp0
-0429	3A FF FF                LDA     tempp
+0420	C4 B3 05                CNZ     cpuer    ;TEST 'LDA' AND 'STA'
+0423	2A D1 05                LHLD    tempp
+0426	22 D3 05                SHLD    temp0
+0429	3A D1 05                LDA     tempp
 042C	47                      MOV     B,A
-042D	3A FF FF                LDA     temp0
+042D	3A D3 05                LDA     temp0
 0430	B8                      CMP     B
-0431	C4 FF FF                CNZ     cpuer    ;TEST 'LHLD' AND 'SHLD'
-0434	3A FF FF                LDA     tempp+1
+0431	C4 B3 05                CNZ     cpuer    ;TEST 'LHLD' AND 'SHLD'
+0434	3A D2 05                LDA     tempp+1
 0437	47                      MOV     B,A
-0438	3A FF FF                LDA     temp0+1
+0438	3A D4 05                LDA     temp0+1
 043B	B8                      CMP     B
-043C	C4 FF FF                CNZ     cpuer    ;TEST 'LHLD' AND 'SHLD'
+043C	C4 B3 05                CNZ     cpuer    ;TEST 'LHLD' AND 'SHLD'
 043F	3E AA                   MVI     A,0AAh
-0441	32 FF FF                STA     temp0
+0441	32 D3 05                STA     temp0
 0444	44                      MOV     B,H
 0445	4D                      MOV     C,L
-0446	B8                      XRA     A
+0446	AF                      XRA     A
 0447	0A                      LDAX    B
 0448	FE AA                   CPI     0AAh
-044A	C4 FF FF                CNZ     cpuer    ;TEST 'LDAX' B
-044D	07                      INR     A
+044A	C4 B3 05                CNZ     cpuer    ;TEST 'LDAX' B
+044D	3C                      INR     A
 044E	02                      STAX    B
-044F	3A FF FF                LDA     temp0
+044F	3A D3 05                LDA     temp0
 0452	FE AB                   CPI     0ABh
-0454	C4 FF FF                CNZ     cpuer    ;TEST 'STAX' B
+0454	C4 B3 05                CNZ     cpuer    ;TEST 'STAX' B
 0457	3E 77                   MVI     A,077h
-0459	32 FF FF                STA     temp0
-045C	2A FF FF                LHLD    tempp
+0459	32 D3 05                STA     temp0
+045C	2A D1 05                LHLD    tempp
 045F	11 00 00                LXI     D,00000h
 0462	EB                      XCHG
-0463	B8                      XRA     A
+0463	AF                      XRA     A
 0464	1A                      LDAX    D
 0465	FE 77                   CPI     077h
-0467	C4 FF FF                CNZ     cpuer    ;TEST 'LDAX' D AND 'XCHG'
-046A	B8                      XRA     A
-046B	A0                      ADD     H
-046C	A8                      ADD     L
-046D	C4 FF FF                CNZ     cpuer    ;TEST 'XCHG'
+0467	C4 B3 05                CNZ     cpuer    ;TEST 'LDAX' D AND 'XCHG'
+046A	AF                      XRA     A
+046B	84                      ADD     H
+046C	85                      ADD     L
+046D	C4 B3 05                CNZ     cpuer    ;TEST 'XCHG'
 0470	3E CC                   MVI     A,0CCh
 0472	12                      STAX    D
-0473	3A FF FF                LDA     temp0
+0473	3A D3 05                LDA     temp0
 0476	FE CC                   CPI     0CCh
 0478	12                      STAX    D
-0479	3A FF FF                LDA     temp0
+0479	3A D3 05                LDA     temp0
 047C	FE CC                   CPI     0CCh
-047E	C4 FF FF                CNZ     cpuer    ;TEST 'STAX' D
+047E	C4 B3 05                CNZ     cpuer    ;TEST 'STAX' D
 0481	21 77 77                LXI     H,07777h
 0484	29                      DAD     H
 0485	3E EE                   MVI     A,0EEh
-0487	B8                      CMP     H
-0488	C4 FF FF                CNZ     cpuer    ;TEST 'DAD' H
-048B	B8                      CMP     L
-048C	C4 FF FF                CNZ     cpuer    ;TEST 'DAD' H
+0487	BC                      CMP     H
+0488	C4 B3 05                CNZ     cpuer    ;TEST 'DAD' H
+048B	BD                      CMP     L
+048C	C4 B3 05                CNZ     cpuer    ;TEST 'DAD' H
 048F	21 55 55                LXI     H,05555h
 0492	01 FF FF                LXI     B,0FFFFh
 0495	09                      DAD     B
 0496	3E 55                   MVI     A,055h
-0498	D4 FF FF                CNC     cpuer    ;TEST 'DAD' B
-049B	B8                      CMP     H
-049C	C4 FF FF                CNZ     cpuer    ;TEST 'DAD' B
+0498	D4 B3 05                CNC     cpuer    ;TEST 'DAD' B
+049B	BC                      CMP     H
+049C	C4 B3 05                CNZ     cpuer    ;TEST 'DAD' B
 049F	3E 54                   MVI     A,054h
-04A1	B8                      CMP     L
-04A2	C4 FF FF                CNZ     cpuer    ;TEST 'DAD' B
+04A1	BD                      CMP     L
+04A2	C4 B3 05                CNZ     cpuer    ;TEST 'DAD' B
 04A5	21 AA AA                LXI     H,0AAAAh
 04A8	11 33 33                LXI     D,03333h
 04AB	19                      DAD     D
 04AC	3E DD                   MVI     A,0DDh
-04AE	B8                      CMP     H
-04AF	C4 FF FF                CNZ     cpuer    ;TEST 'DAD' D
-04B2	B8                      CMP     L
-04B3	C4 FF FF                CNZ     cpuer    ;TEST 'DAD' B
+04AE	BC                      CMP     H
+04AF	C4 B3 05                CNZ     cpuer    ;TEST 'DAD' D
+04B2	BD                      CMP     L
+04B3	C4 B3 05                CNZ     cpuer    ;TEST 'DAD' B
 04B6	37                      STC
-04B7	D4 FF FF                CNC     cpuer    ;TEST 'STC'
+04B7	D4 B3 05                CNC     cpuer    ;TEST 'STC'
 04BA	3F                      CMC
-04BB	DC FF FF                CC      cpuer    ;TEST 'CMC'
+04BB	DC B3 05                CC      cpuer    ;TEST 'CMC'
 04BE	3E AA                   MVI     A,0AAh
 04C0	2F                      CMA
 04C1	FE 55                   CPI     055h
-04C3	C4 FF FF                CNZ     cpuer    ;TEST 'CMA'
-04C6	B8                      ORA     A        ;RE-SET AUXILIARY CARRY
+04C3	C4 B3 05                CNZ     cpuer    ;TEST 'CMA'
+04C6	B7                      ORA     A        ;RE-SET AUXILIARY CARRY
 04C7	27                      DAA
 04C8	FE 55                   CPI     055h
-04CA	C4 FF FF                CNZ     cpuer    ;TEST 'DAA'
+04CA	C4 B3 05                CNZ     cpuer    ;TEST 'DAA'
 04CD	3E 88                   MVI     A,088h
-04CF	B8                      ADD     A
+04CF	87                      ADD     A
 04D0	27                      DAA
 04D1	FE 76                   CPI     076h
-04D3	C4 FF FF                CNZ     cpuer    ;TEST 'DAA'
-04D6	B8                      XRA     A
+04D3	C4 B3 05                CNZ     cpuer    ;TEST 'DAA'
+04D6	AF                      XRA     A
 04D7	3E AA                   MVI     A,0AAh
 04D9	27                      DAA
-04DA	D4 FF FF                CNC     cpuer    ;TEST 'DAA'
+04DA	D4 B3 05                CNC     cpuer    ;TEST 'DAA'
 04DD	FE 10                   CPI     010h
-04DF	C4 FF FF                CNZ     cpuer    ;TEST 'DAA'
-04E2	B8                      XRA     A
+04DF	C4 B3 05                CNZ     cpuer    ;TEST 'DAA'
+04E2	AF                      XRA     A
 04E3	3E 9A                   MVI     A,09Ah
 04E5	27                      DAA
-04E6	D4 FF FF                CNC     cpuer    ;TEST 'DAA'
-04E9	C4 FF FF                CNZ     cpuer    ;TEST 'DAA'
+04E6	D4 B3 05                CNC     cpuer    ;TEST 'DAA'
+04E9	C4 B3 05                CNZ     cpuer    ;TEST 'DAA'
 04EC	37                      STC
 04ED	3E 42                   MVI     A,042h
 04EF	07                      RLC
-04F0	DC FF FF                CC      cpuer    ;TEST 'RLC' FOR RE-SET CARRY
+04F0	DC B3 05                CC      cpuer    ;TEST 'RLC' FOR RE-SET CARRY
 04F3	07                      RLC
-04F4	D4 FF FF                CNC     cpuer    ;TEST 'RLC' FOR SET CARRY
+04F4	D4 B3 05                CNC     cpuer    ;TEST 'RLC' FOR SET CARRY
 04F7	FE 09                   CPI     009h
-04F9	C4 FF FF                CNZ     cpuer    ;TEST 'RLC' FOR ROTATION
+04F9	C4 B3 05                CNZ     cpuer    ;TEST 'RLC' FOR ROTATION
 04FC	0F                      RRC
-04FD	D4 FF FF                CNC     cpuer    ;TEST 'RRC' FOR SET CARRY
+04FD	D4 B3 05                CNC     cpuer    ;TEST 'RRC' FOR SET CARRY
 0500	0F                      RRC
 0501	FE 42                   CPI     042h
-0503	C4 FF FF                CNZ     cpuer    ;TEST 'RRC' FOR ROTATION
+0503	C4 B3 05                CNZ     cpuer    ;TEST 'RRC' FOR ROTATION
 0506	17                      RAL
 0507	17                      RAL
-0508	D4 FF FF                CNC     cpuer    ;TEST 'RAL' FOR SET CARRY
+0508	D4 B3 05                CNC     cpuer    ;TEST 'RAL' FOR SET CARRY
 050B	FE 08                   CPI     008h
-050D	C4 FF FF                CNZ     cpuer    ;TEST 'RAL' FOR ROTATION
+050D	C4 B3 05                CNZ     cpuer    ;TEST 'RAL' FOR ROTATION
 0510	1F                      RAR
 0511	1F                      RAR
-0512	DC FF FF                CC      cpuer    ;TEST 'RAR' FOR RE-SET CARRY
+0512	DC B3 05                CC      cpuer    ;TEST 'RAR' FOR RE-SET CARRY
 0515	FE 02                   CPI     002h
-0517	C4 FF FF                CNZ     cpuer    ;TEST 'RAR' FOR ROTATION
+0517	C4 B3 05                CNZ     cpuer    ;TEST 'RAR' FOR ROTATION
 051A	01 34 12                LXI     B,01234h
 051D	11 AA AA                LXI     D,0AAAAh
 0520	21 55 55                LXI     H,05555h
-0523	B8                      XRA     A
+0523	AF                      XRA     A
 0524	C5                      PUSH    B
 0525	D5                      PUSH    D
 0526	E5                      PUSH    H
@@ -746,90 +746,90 @@
 0536	E1                      POP     H
 0537	D1                      POP     D
 0538	C1                      POP     B
-0539	DC FF FF                CC      cpuer    ;TEST 'PUSH PSW' AND 'POP PSW'
-053C	C4 FF FF                CNZ     cpuer    ;TEST 'PUSH PSW' AND 'POP PSW'
-053F	E4 FF FF                CPO     cpuer    ;TEST 'PUSH PSW' AND 'POP PSW'
-0542	FC FF FF                CM      cpuer    ;TEST 'PUSH PSW' AND 'POP PSW'
+0539	DC B3 05                CC      cpuer    ;TEST 'PUSH PSW' AND 'POP PSW'
+053C	C4 B3 05                CNZ     cpuer    ;TEST 'PUSH PSW' AND 'POP PSW'
+053F	E4 B3 05                CPO     cpuer    ;TEST 'PUSH PSW' AND 'POP PSW'
+0542	FC B3 05                CM      cpuer    ;TEST 'PUSH PSW' AND 'POP PSW'
 0545	3E 12                   MVI     A,012h
 0547	B8                      CMP     B
-0548	C4 FF FF                CNZ     cpuer    ;TEST 'PUSH B' AND 'POP B'
+0548	C4 B3 05                CNZ     cpuer    ;TEST 'PUSH B' AND 'POP B'
 054B	3E 34                   MVI     A,034h
-054D	B8                      CMP     C
-054E	C4 FF FF                CNZ     cpuer    ;TEST 'PUSH B' AND 'POP B'
+054D	B9                      CMP     C
+054E	C4 B3 05                CNZ     cpuer    ;TEST 'PUSH B' AND 'POP B'
 0551	3E AA                   MVI     A,0AAh
-0553	B8                      CMP     D
-0554	C4 FF FF                CNZ     cpuer    ;TEST 'PUSH D' AND 'POP D'
-0557	B8                      CMP     E
-0558	C4 FF FF                CNZ     cpuer    ;TEST 'PUSH D' AND 'POP D'
+0553	BA                      CMP     D
+0554	C4 B3 05                CNZ     cpuer    ;TEST 'PUSH D' AND 'POP D'
+0557	BB                      CMP     E
+0558	C4 B3 05                CNZ     cpuer    ;TEST 'PUSH D' AND 'POP D'
 055B	3E 55                   MVI     A,055h
-055D	B8                      CMP     H
-055E	C4 FF FF                CNZ     cpuer    ;TEST 'PUSH H' AND 'POP H'
-0561	B8                      CMP     L
-0562	C4 FF FF                CNZ     cpuer    ;TEST 'PUSH H' AND 'POP H'
+055D	BC                      CMP     H
+055E	C4 B3 05                CNZ     cpuer    ;TEST 'PUSH H' AND 'POP H'
+0561	BD                      CMP     L
+0562	C4 B3 05                CNZ     cpuer    ;TEST 'PUSH H' AND 'POP H'
 0565	21 00 00                LXI     H,00000h
 0568	39                      DAD     SP
-0569	22 FF FF                SHLD    savstk   ;SAVE THE 'OLD' STACK-POINTER!
-056C	31 FF FF                LXI     SP,temp4
+0569	22 D8 05                SHLD    savstk   ;SAVE THE 'OLD' STACK-POINTER!
+056C	31 D7 05                LXI     SP,temp4
 056F	3B                      DCX     SP
 0570	3B                      DCX     SP
 0571	33                      INX     SP
 0572	3B                      DCX     SP
 0573	3E 55                   MVI     A,055h
-0575	32 FF FF                STA     temp2
+0575	32 D5 05                STA     temp2
 0578	2F                      CMA
-0579	32 FF FF                STA     temp3
+0579	32 D6 05                STA     temp3
 057C	C1                      POP     B
 057D	B8                      CMP     B
-057E	C4 FF FF                CNZ     cpuer    ;TEST 'LXI','DAD','INX' AND 'DCX' SP
+057E	C4 B3 05                CNZ     cpuer    ;TEST 'LXI','DAD','INX' AND 'DCX' SP
 0581	2F                      CMA
-0582	B8                      CMP     C
-0583	C4 FF FF                CNZ     cpuer    ;TEST 'LXI','DAD','INX' AND 'DCX' SP
-0586	21 FF FF                LXI     H,temp4
+0582	B9                      CMP     C
+0583	C4 B3 05                CNZ     cpuer    ;TEST 'LXI','DAD','INX' AND 'DCX' SP
+0586	21 D7 05                LXI     H,temp4
 0589	F9                      SPHL
 058A	21 33 77                LXI     H,07733h
 058D	3B                      DCX     SP
 058E	3B                      DCX     SP
 058F	E3                      XTHL
-0590	3A FF FF                LDA     temp3
+0590	3A D6 05                LDA     temp3
 0593	FE 77                   CPI     077h
-0595	C4 FF FF                CNZ     cpuer    ;TEST 'SPHL' AND 'XTHL'
-0598	3A FF FF                LDA     temp2
+0595	C4 B3 05                CNZ     cpuer    ;TEST 'SPHL' AND 'XTHL'
+0598	3A D5 05                LDA     temp2
 059B	FE 33                   CPI     033h
-059D	C4 FF FF                CNZ     cpuer    ;TEST 'SPHL' AND 'XTHL'
+059D	C4 B3 05                CNZ     cpuer    ;TEST 'SPHL' AND 'XTHL'
 05A0	3E 55                   MVI     A,055h
-05A2	B8                      CMP     L
-05A3	C4 FF FF                CNZ     cpuer    ;TEST 'SPHL' AND 'XTHL'
+05A2	BD                      CMP     L
+05A3	C4 B3 05                CNZ     cpuer    ;TEST 'SPHL' AND 'XTHL'
 05A6	2F                      CMA
-05A7	B8                      CMP     H
-05A8	C4 FF FF                CNZ     cpuer    ;TEST 'SPHL' AND 'XTHL'
-05AB	2A FF FF                LHLD    savstk   ;RESTORE THE 'OLD' STACK-POINTER
+05A7	BC                      CMP     H
+05A8	C4 B3 05                CNZ     cpuer    ;TEST 'SPHL' AND 'XTHL'
+05AB	2A D8 05                LHLD    savstk   ;RESTORE THE 'OLD' STACK-POINTER
 05AE	F9                      SPHL
-05AF	21 FF FF                LXI     H,cpuok
+05AF	21 C8 05                LXI     H,cpuok
 05B2	E9                      PCHL             ;TEST 'PCHL'
 	                ;
 	                ;
 	                ;
-05B3	21 FF FF        cpuer:  LXI     H,ngcpu  ;OUTPUT ERROR MESSAGE TO CONSOLE
-05B6	CD FF FF                CALL    msg
+05B3	21 B6 00        cpuer:  LXI     H,ngcpu  ;OUTPUT ERROR MESSAGE TO CONSOLE
+05B6	CD 56 00                CALL    msg
 05B9	E3                      XTHL
 05BA	2B                      DCX     H
 05BB	2B                      DCX     H
 05BC	2B                      DCX     H
 05BD	7C                      MOV     A,H
-05BE	CD FF FF                CALL    byteo    ;SHOW ERROR EXIT ADDRESS HIGH BYTE
+05BE	CD 7A 00                CALL    byteo    ;SHOW ERROR EXIT ADDRESS HIGH BYTE
 05C1	7D                      MOV     A,L
-05C2	CD FF FF                CALL    byteo    ;SHOW ERROR EXIT ADDRESS LOW BYTE
-05C5	C3 FF FF                JMP     wboot    ;EXIT TO CP/M WARM BOOT
+05C2	CD 7A 00                CALL    byteo    ;SHOW ERROR EXIT ADDRESS LOW BYTE
+05C5	C3 53 00                JMP     wboot    ;EXIT TO CP/M WARM BOOT
 	                ;
 	                ;
 	                ;
-05C8	21 FF FF        cpuok:  LXI     H,okcpu  ;OUTPUT TEST SUCCESSFUL TO CONSOLE
-05CB	CD FF FF                CALL    msg
-05CE	C3 FF FF                JMP     wboot    ;EXIT TO CP/M WARM BOOT
+05C8	21 A1 00        cpuok:  LXI     H,okcpu  ;OUTPUT TEST SUCCESSFUL TO CONSOLE
+05CB	CD 56 00                CALL    msg
+05CE	C3 53 00                JMP     wboot    ;EXIT TO CP/M WARM BOOT
 	                ;
 	                ;
 	                ;
-05D1	FF FF           tempp:  DW      temp0    ;POINTER USED TO TEST 'LHLD','SHLD',
+05D1	D3 05           tempp:  DW      temp0    ;POINTER USED TO TEST 'LHLD','SHLD',
 	                                         ; AND 'LDAX' INSTRUCTIONS
 	                ;
 05D3	00              temp0:  DS      1        ;TEMPORARY STORAGE FOR CPU TEST MEMORY LOCATIONS
@@ -845,36 +845,36 @@
 	                ;
 	                end:
 Labels:
-msg                     0056
-okcpu                   00A1	stack                   ????
-c020                    01C7	bdos                    C037
-cci                     0226	savstk                  05D8
-tempp                   05D1	j170                    0151
-j050                    0101	j130                    0134
-j010                    00E0	sbii                    0187
-pchar                   006D	tcpi                    020E
-anii                    0193	msgs                    005A
-c010                    01B1	xrii                    01A7
-cpuok                   05C8	test                    00D5
-cpoi                    01EA	j090                    0118
-j160                    0148	j040                    00F2
-suii                    017B	j120                    012C
-msge                    0068	hello                   0009
-cmi                     0202	cnci                    021A
-byto1                   0091	temp2                   05D5
-temp3                   05D6	j080                    0115
-temp0                   05D3	temp1                   05D4
-wboot                   0053	j150                    0140
-j030                    00EC	czi                     023E
-j110                    0129	end                     05DA
-aimm                    0154	movi                    0247
-cpie                    016C	c030                    01DD
-start                   0000	j070                    010C
-acii                    016F	j060                    0104
-ngcpu                   00B6	cpuer                   05B3
-temp4                   05D7	j140                    013D
-j020                    00E6	cnzi                    0232
-j100                    0120	orii                    019D
-byteo                   007A	byto3                   009E
-byto2                   0095	cpei                    01F6
+acii                    016F
+aimm                    0154	anii                    0193
+bdos                    C037	byteo                   007A
+byto1                   0091	byto2                   0095
+byto3                   009E	c010                    01B1
+c020                    01C7	c030                    01DD
+cci                     0226	cmi                     0202
+cnci                    021A	cnzi                    0232
+cpei                    01F6	cpie                    016C
+cpoi                    01EA	cpuer                   05B3
+cpuok                   05C8	czi                     023E
+end                     05DA	hello                   0009
+j010                    00E0	j020                    00E6
+j030                    00EC	j040                    00F2
+j050                    0101	j060                    0104
+j070                    010C	j080                    0115
+j090                    0118	j100                    0120
+j110                    0129	j120                    012C
+j130                    0134	j140                    013D
+j150                    0140	j160                    0148
+j170                    0151	movi                    0247
+msg                     0056	msge                    0068
+msgs                    005A	ngcpu                   00B6
+okcpu                   00A1	orii                    019D
+pchar                   006D	savstk                  05D8
+sbii                    0187	stack                   06D1
+start                   0000	suii                    017B
+tcpi                    020E	temp0                   05D3
+temp1                   05D4	temp2                   05D5
+temp3                   05D6	temp4                   05D7
+tempp                   05D1	test                    00D5
+wboot                   0053	xrii                    01A7
 
