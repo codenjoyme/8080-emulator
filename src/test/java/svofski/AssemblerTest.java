@@ -1,21 +1,21 @@
 package svofski;
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import spec.stuff.FileAssert;
 
-import java.lang.reflect.Type;
-import java.util.*;
-import java.util.function.BiFunction;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
 import static spec.IntegrationTest.TEST_RESOURCES;
-import static spec.stuff.FileAssert.*;
+import static spec.stuff.FileAssert.asString;
+import static spec.stuff.FileAssert.write;
 
 public class AssemblerTest {
 
