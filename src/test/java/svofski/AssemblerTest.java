@@ -58,8 +58,29 @@ public class AssemblerTest {
             List<Object> values = parseJson(jsonElement, gson, List.class);
             values.forEach(it -> {
                 Map<String, Object> map = (Map<String, Object>) it;
-                List<String> input = (List<String>) map.get("input");
-                Integer result = asm.resolveNumber(input.get(0));
+                List<Object> input = (List) map.get("input");
+                Integer result = asm.resolveNumber((String) input.get(0));
+                map.put("result", result);
+            });
+
+            write(file, asString(values));
+        });
+    }
+
+    @Test
+    public void evaluateExpression2() {
+        String name = "method/evaluateExpression2.json";
+        fileAssert.check(name, name, file -> {
+            String data = read(file);
+
+            Gson gson = new Gson();
+            JsonElement jsonElement = JsonParser.parseString(data);
+
+            List<Object> values = parseJson(jsonElement, gson, List.class);
+            values.forEach(it -> {
+                Map<String, Object> map = (Map<String, Object>) it;
+                List<Object> input = (List<Object>) map.get("input");
+                Integer result = asm.evaluateExpression2((String) input.get(0), ((Double) input.get(1)).intValue(), ((Double) input.get(2)).intValue());
                 map.put("result", result);
             });
 
