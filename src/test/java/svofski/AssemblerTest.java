@@ -10,12 +10,12 @@ import spec.stuff.FileAssert;
 
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.function.BiFunction;
 
 import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
 import static spec.IntegrationTest.TEST_RESOURCES;
-import static spec.stuff.FileAssert.read;
-import static spec.stuff.FileAssert.write;
+import static spec.stuff.FileAssert.*;
 
 public class AssemblerTest {
 
@@ -49,103 +49,32 @@ public class AssemblerTest {
     @Test
     public void resolveNumber() {
         String name = "method/resolveNumber.json";
-        fileAssert.check(name, name, file -> {
-            String data = read(file);
-
-            Gson gson = new Gson();
-            JsonElement jsonElement = JsonParser.parseString(data);
-
-            List<Object> values = parseJson(jsonElement, gson, List.class);
-            values.forEach(it -> {
-                Map<String, Object> map = (Map<String, Object>) it;
-                List<Object> input = (List) map.get("input");
-                Integer result = asm.resolveNumber((String) input.get(0));
-                map.put("result", result);
-            });
-
-            write(file, asString(values));
-        });
+        fileAssert.checkJson(name,
+                (input, fields) -> asm.resolveNumber((String) input.get(0)));
     }
 
     @Test
     public void evaluateExpression2() {
         String name = "method/evaluateExpression2.json";
-        fileAssert.check(name, name, file -> {
-            String data = read(file);
+        fileAssert.checkJson(name,
+                (input, getField) -> {
+                    Map labels = getField.apply("labels");
 
-            Gson gson = new Gson();
+                    // TODO setup Gson to convert Double to Integer automatically
+                    labels.forEach((key, value) -> {
+                        if (value instanceof Double) {
+                            labels.put(key, ((Double) value).intValue());
+                        }
+                    });
 
-            JsonElement jsonElement = JsonParser.parseString(data);
+                    asm.labels = labels;
+                    asm.xref = new HashMap<>();
 
-            List<Object> values = parseJson(jsonElement, gson, List.class);
-            values.forEach(it -> {
-                Map<String, Object> map = (Map<String, Object>) it;
-
-                List<Object> fields = (List) map.get("fields");
-                Map field = (Map) fields.stream()
-                        .filter(it2 -> ((Map) it2).get("name").equals("labels"))
-                        .findFirst()
-                        .orElseThrow(() -> new IllegalArgumentException("No labels field"));
-                Map o = (Map) field.get("value");
-
-                o.forEach((key, value) -> {
-                    if (value instanceof Double) {
-                        o.put(key, ((Double) value).intValue());
-                    }
+                    return asm.evaluateExpression2(
+                            (String) input.get(0),
+                            ((Double) input.get(1)).intValue(),
+                            ((Double) input.get(2)).intValue());
                 });
-
-                asm.labels = o;
-                asm.xref = new HashMap<>();
-
-                List<Object> input = (List<Object>) map.get("input");
-                Integer result = asm.evaluateExpression2((String) input.get(0), ((Double) input.get(1)).intValue(), ((Double) input.get(2)).intValue());
-                map.put("result", result);
-            });
-
-            write(file, asString(values));
-        });
-    }
-
-    private static <T> T parseJson(JsonElement jsonElement, Gson gson, Class<T> clazz) {
-        if (jsonElement.isJsonObject()) {
-            Type type = new TypeToken<Map<String, Object>>() {}.getType();
-            return (T) gson.fromJson(jsonElement, type);
-        } else if (jsonElement.isJsonArray()) {
-            Type type = new TypeToken<List<Object>>() {}.getType();
-            return (T) gson.fromJson(jsonElement, type);
-        }
-        throw new IllegalArgumentException("Unsupported json type: " + jsonElement);
-    }
-
-    private String asString(Object data) {
-        boolean isJson = data instanceof Map || data instanceof List;
-        if (isJson) {
-            return new GsonBuilder().setPrettyPrinting()
-                    .serializeNulls()
-                    .disableHtmlEscaping()
-                    .registerTypeAdapter(HashMap.class, new MapSerializer())
-                    .registerTypeAdapter(Double.class, new NumberSerializer())
-                    .create().toJson(data);
-        } else {
-            return data.toString();
-        }
-    }
-
-    static class NumberSerializer implements JsonSerializer<Double> {
-        @Override
-        public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(src.intValue());
-        }
-    }
-
-    static class MapSerializer implements JsonSerializer<Map<?, ?>> {
-        @Override
-        public JsonElement serialize(Map<?, ?> src, Type typeOfSrc, JsonSerializationContext context) {
-            JsonObject json = new JsonObject();
-            src = new TreeMap<>(src);
-            src.forEach((key, value) -> json.add(String.valueOf(key), context.serialize(value)));
-            return json;
-        }
     }
 
     @Test
@@ -160,20 +89,20 @@ public class AssemblerTest {
     private String splitParts(String[] lines) {
         return Arrays.stream(lines)
                 .map(asm::splitParts)
-                .map(this::asString)
+                .map(this::listAsString)
                 .collect(joining("\n"));
     }
 
     @Test
     public void splitParts_cornerCases() {
         assertEquals("[{<DB>, <00Dh,>, <00Ah,>, <'VERSION 1.0  (C) 1980'>, <,>, <00Dh,>, <00Ah,>, <'$'>}]",
-                asString(asm.splitParts("        DB      00Dh, 00Ah, 'VERSION 1.0  (C) 1980', 00Dh, 00Ah, '$'\n")));
+                listAsString(asm.splitParts("        DB      00Dh, 00Ah, 'VERSION 1.0  (C) 1980', 00Dh, 00Ah, '$'\n")));
 
         assertEquals("[{<hello:>, <DB>, <00Dh,>, <00Ah,>, <'MICROCOSM ASSOCIATES'>}]",
-                asString(asm.splitParts("hello:  DB      00Dh, 00Ah, 'MICROCOSM ASSOCIATES'\n")));
+                listAsString(asm.splitParts("hello:  DB      00Dh, 00Ah, 'MICROCOSM ASSOCIATES'\n")));
     }
 
-    private String asString(List<List<String>> lists) {
+    private String listAsString(List<List<String>> lists) {
         return lists.stream()
                 .map(list -> list.stream().map(
                         it -> "<" + it + ">"
