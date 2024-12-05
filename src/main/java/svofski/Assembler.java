@@ -991,14 +991,14 @@ public class Assembler {
         for (int i = 0, end_i = text.size(); i < end_i; i += 1) {
             boolean unresolved = false;
             int width = 0;
-            int[] hexes = new int[lengths.get(i)];
+            Map<Integer, Integer> hexes = new HashMap<>(lengths.get(i));
             for (int b = 0; b < lengths.get(i); ++b) {
                 Integer bytte = this.mem.get(addresses.get(i) + b);
                 if (bytte == null || bytte < 0) {
                     unresolved = true;
-                    hexes[b] = -1;
+                    hexes.put(b, -1);
                 } else {
-                    hexes[b] = bytte;
+                    hexes.put(b, bytte);
                 }
             }
 
@@ -1022,9 +1022,9 @@ public class Assembler {
             String labeltext = "";
             String remainder = text.get(i);
             String comment = "";
-            String[] parts = text.get(i).split("[\\:\\s]");
+            String[] parts = text.get(i).split("[\\:\\s]", 1);
             if (parts.length > 1) {
-                if (this.getLabel(parts[0]) != -1 && parts[0].trim().charAt(0) != ';') {
+                if (parts[0].trim().charAt(0) != ';' && this.getLabel(parts[0]) != -1) {
                     labeltext = parts[0];
                     remainder = text.get(i).substring(labeltext.length());
                 }
@@ -1136,7 +1136,7 @@ public class Assembler {
         }
     }
 
-    public void assemble(String src, Object listobj) {
+    public void assemble(String src) {
         Map<Integer, Integer> lengths = new HashMap<>();
         Map<Integer, Integer> addresses = new HashMap<>();
 
@@ -1338,7 +1338,7 @@ public class Assembler {
     }
 
     public Map<String, Object> process(String sourceCode) {
-        assemble(sourceCode, null);
+        assemble(sourceCode);
         intelHex();
 
         Map<String, Object> result = new HashMap<>();
