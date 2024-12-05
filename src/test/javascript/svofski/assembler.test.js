@@ -45,7 +45,7 @@ let record = function (object, methodName) {
 }
 let assertAllRecords = function() {
     recs.forEach((rec) => {
-        common.assertCall(dir + rec.method() + '.json', rec.result());
+        common.assertCall(dir + 'method/' + rec.method() + '.json', rec.result());
     });
 }
 
