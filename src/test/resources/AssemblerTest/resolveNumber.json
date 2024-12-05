@@ -1,0 +1,1304 @@
+[
+  {
+    "input": [
+      "00000h"
+    ],
+    "result": 0
+  },
+  {
+    "input": [
+      "0"
+    ],
+    "result": 0
+  },
+  {
+    "input": [
+      "9"
+    ],
+    "result": 9
+  },
+  {
+    "input": [
+      "83"
+    ],
+    "result": 83
+  },
+  {
+    "input": [
+      "0C037h"
+    ],
+    "result": 49207
+  },
+  {
+    "input": [
+      "86"
+    ],
+    "result": 86
+  },
+  {
+    "input": [
+      "90"
+    ],
+    "result": 90
+  },
+  {
+    "input": [
+      "104"
+    ],
+    "result": 104
+  },
+  {
+    "input": [
+      "109"
+    ],
+    "result": 109
+  },
+  {
+    "input": [
+      "122"
+    ],
+    "result": 122
+  },
+  {
+    "input": [
+      "145"
+    ],
+    "result": 145
+  },
+  {
+    "input": [
+      "149"
+    ],
+    "result": 149
+  },
+  {
+    "input": [
+      "158"
+    ],
+    "result": 158
+  },
+  {
+    "input": [
+      "161"
+    ],
+    "result": 161
+  },
+  {
+    "input": [
+      "182"
+    ],
+    "result": 182
+  },
+  {
+    "input": [
+      "213"
+    ],
+    "result": 213
+  },
+  {
+    "input": [
+      "224"
+    ],
+    "result": 224
+  },
+  {
+    "input": [
+      "230"
+    ],
+    "result": 230
+  },
+  {
+    "input": [
+      "236"
+    ],
+    "result": 236
+  },
+  {
+    "input": [
+      "242"
+    ],
+    "result": 242
+  },
+  {
+    "input": [
+      "257"
+    ],
+    "result": 257
+  },
+  {
+    "input": [
+      "260"
+    ],
+    "result": 260
+  },
+  {
+    "input": [
+      "268"
+    ],
+    "result": 268
+  },
+  {
+    "input": [
+      "277"
+    ],
+    "result": 277
+  },
+  {
+    "input": [
+      "280"
+    ],
+    "result": 280
+  },
+  {
+    "input": [
+      "288"
+    ],
+    "result": 288
+  },
+  {
+    "input": [
+      "297"
+    ],
+    "result": 297
+  },
+  {
+    "input": [
+      "300"
+    ],
+    "result": 300
+  },
+  {
+    "input": [
+      "308"
+    ],
+    "result": 308
+  },
+  {
+    "input": [
+      "317"
+    ],
+    "result": 317
+  },
+  {
+    "input": [
+      "320"
+    ],
+    "result": 320
+  },
+  {
+    "input": [
+      "328"
+    ],
+    "result": 328
+  },
+  {
+    "input": [
+      "337"
+    ],
+    "result": 337
+  },
+  {
+    "input": [
+      "340"
+    ],
+    "result": 340
+  },
+  {
+    "input": [
+      "364"
+    ],
+    "result": 364
+  },
+  {
+    "input": [
+      "367"
+    ],
+    "result": 367
+  },
+  {
+    "input": [
+      "379"
+    ],
+    "result": 379
+  },
+  {
+    "input": [
+      "391"
+    ],
+    "result": 391
+  },
+  {
+    "input": [
+      "403"
+    ],
+    "result": 403
+  },
+  {
+    "input": [
+      "413"
+    ],
+    "result": 413
+  },
+  {
+    "input": [
+      "423"
+    ],
+    "result": 423
+  },
+  {
+    "input": [
+      "433"
+    ],
+    "result": 433
+  },
+  {
+    "input": [
+      "455"
+    ],
+    "result": 455
+  },
+  {
+    "input": [
+      "477"
+    ],
+    "result": 477
+  },
+  {
+    "input": [
+      "490"
+    ],
+    "result": 490
+  },
+  {
+    "input": [
+      "502"
+    ],
+    "result": 502
+  },
+  {
+    "input": [
+      "514"
+    ],
+    "result": 514
+  },
+  {
+    "input": [
+      "526"
+    ],
+    "result": 526
+  },
+  {
+    "input": [
+      "538"
+    ],
+    "result": 538
+  },
+  {
+    "input": [
+      "550"
+    ],
+    "result": 550
+  },
+  {
+    "input": [
+      "562"
+    ],
+    "result": 562
+  },
+  {
+    "input": [
+      "574"
+    ],
+    "result": 574
+  },
+  {
+    "input": [
+      "583"
+    ],
+    "result": 583
+  },
+  {
+    "input": [
+      "1459"
+    ],
+    "result": 1459
+  },
+  {
+    "input": [
+      "1480"
+    ],
+    "result": 1480
+  },
+  {
+    "input": [
+      "1489"
+    ],
+    "result": 1489
+  },
+  {
+    "input": [
+      "1491"
+    ],
+    "result": 1491
+  },
+  {
+    "input": [
+      "1"
+    ],
+    "result": 1
+  },
+  {
+    "input": [
+      "1492"
+    ],
+    "result": 1492
+  },
+  {
+    "input": [
+      "1493"
+    ],
+    "result": 1493
+  },
+  {
+    "input": [
+      "1494"
+    ],
+    "result": 1494
+  },
+  {
+    "input": [
+      "1495"
+    ],
+    "result": 1495
+  },
+  {
+    "input": [
+      "1496"
+    ],
+    "result": 1496
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "result": 2
+  },
+  {
+    "input": [
+      "1498"
+    ],
+    "result": 1498
+  },
+  {
+    "input": [
+      "tempp+256"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "tempp"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "256"
+    ],
+    "result": 256
+  },
+  {
+    "input": [
+      "hello"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "msg"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "test"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "result": 10
+  },
+  {
+    "input": [
+      "0C800h"
+    ],
+    "result": 51200
+  },
+  {
+    "input": [
+      "'$'"
+    ],
+    "result": 36
+  },
+  {
+    "input": [
+      "msge"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "pchar"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "msgs"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "bdos"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "byto1"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "byto2"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "00Fh"
+    ],
+    "result": 15
+  },
+  {
+    "input": [
+      "byto3"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "7"
+    ],
+    "result": 7
+  },
+  {
+    "input": [
+      "030h"
+    ],
+    "result": 48
+  },
+  {
+    "input": [
+      "STACK"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "j010"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "cpuer"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "j020"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "j030"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "j040"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "j050"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "j060"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "6"
+    ],
+    "result": 6
+  },
+  {
+    "input": [
+      "j070"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "j080"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "j090"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "070h"
+    ],
+    "result": 112
+  },
+  {
+    "input": [
+      "j100"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "j110"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "j120"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "081h"
+    ],
+    "result": 129
+  },
+  {
+    "input": [
+      "j130"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "j140"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "j150"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "0FEh"
+    ],
+    "result": 254
+  },
+  {
+    "input": [
+      "j160"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "j170"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "aimm"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "cpie"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "0F5h"
+    ],
+    "result": 245
+  },
+  {
+    "input": [
+      "0FFh"
+    ],
+    "result": 255
+  },
+  {
+    "input": [
+      "acii"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "00Bh"
+    ],
+    "result": 11
+  },
+  {
+    "input": [
+      "suii"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "00Ch"
+    ],
+    "result": 12
+  },
+  {
+    "input": [
+      "0F0h"
+    ],
+    "result": 240
+  },
+  {
+    "input": [
+      "sbii"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "0F1h"
+    ],
+    "result": 241
+  },
+  {
+    "input": [
+      "00Eh"
+    ],
+    "result": 14
+  },
+  {
+    "input": [
+      "anii"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "055h"
+    ],
+    "result": 85
+  },
+  {
+    "input": [
+      "050h"
+    ],
+    "result": 80
+  },
+  {
+    "input": [
+      "orii"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "03Ah"
+    ],
+    "result": 58
+  },
+  {
+    "input": [
+      "07Ah"
+    ],
+    "result": 122
+  },
+  {
+    "input": [
+      "xrii"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "075h"
+    ],
+    "result": 117
+  },
+  {
+    "input": [
+      "c010"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "000h"
+    ],
+    "result": 0
+  },
+  {
+    "input": [
+      "c020"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "077h"
+    ],
+    "result": 119
+  },
+  {
+    "input": [
+      "089h"
+    ],
+    "result": 137
+  },
+  {
+    "input": [
+      "c030"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "cpoi"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "0D9h"
+    ],
+    "result": 217
+  },
+  {
+    "input": [
+      "movi"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "010h"
+    ],
+    "result": 16
+  },
+  {
+    "input": [
+      "cpei"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "002h"
+    ],
+    "result": 2
+  },
+  {
+    "input": [
+      "020h"
+    ],
+    "result": 32
+  },
+  {
+    "input": [
+      "cmi"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "result": 4
+  },
+  {
+    "input": [
+      "080h"
+    ],
+    "result": 128
+  },
+  {
+    "input": [
+      "tcpi"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "040h"
+    ],
+    "result": 64
+  },
+  {
+    "input": [
+      "cnci"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "08Fh"
+    ],
+    "result": 143
+  },
+  {
+    "input": [
+      "cci"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "0F7h"
+    ],
+    "result": 247
+  },
+  {
+    "input": [
+      "cnzi"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "001h"
+    ],
+    "result": 1
+  },
+  {
+    "input": [
+      "czi"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "0D0h"
+    ],
+    "result": 208
+  },
+  {
+    "input": [
+      "047h"
+    ],
+    "result": 71
+  },
+  {
+    "input": [
+      "003h"
+    ],
+    "result": 3
+  },
+  {
+    "input": [
+      "007h"
+    ],
+    "result": 7
+  },
+  {
+    "input": [
+      "01Fh"
+    ],
+    "result": 31
+  },
+  {
+    "input": [
+      "03Fh"
+    ],
+    "result": 63
+  },
+  {
+    "input": [
+      "078h"
+    ],
+    "result": 120
+  },
+  {
+    "input": [
+      "005h"
+    ],
+    "result": 5
+  },
+  {
+    "input": [
+      "006h"
+    ],
+    "result": 6
+  },
+  {
+    "input": [
+      "037h"
+    ],
+    "result": 55
+  },
+  {
+    "input": [
+      "0E0h"
+    ],
+    "result": 224
+  },
+  {
+    "input": [
+      "0FFH"
+    ],
+    "result": 255
+  },
+  {
+    "input": [
+      "0FCh"
+    ],
+    "result": 252
+  },
+  {
+    "input": [
+      "0EFh"
+    ],
+    "result": 239
+  },
+  {
+    "input": [
+      "07Fh"
+    ],
+    "result": 127
+  },
+  {
+    "input": [
+      "0F4h"
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "0BFh"
+    ],
+    "result": 191
+  },
+  {
+    "input": [
+      "024h"
+    ],
+    "result": 36
+  },
+  {
+    "input": [
+      "008h"
+    ],
+    "result": 8
+  },
+  {
+    "input": [
+      "04Fh"
+    ],
+    "result": 79
+  },
+  {
+    "input": [
+      "0CFh"
+    ],
+    "result": 207
+  },
+  {
+    "input": [
+      "044h"
+    ],
+    "result": 68
+  },
+  {
+    "input": [
+      "045h"
+    ],
+    "result": 69
+  },
+  {
+    "input": [
+      "046h"
+    ],
+    "result": 70
+  },
+  {
+    "input": [
+      ""
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "temp0"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "032h"
+    ],
+    "result": 50
+  },
+  {
+    "input": [
+      "064h"
+    ],
+    "result": 100
+  },
+  {
+    "input": [
+      "033h"
+    ],
+    "result": 51
+  },
+  {
+    "input": [
+      "0CDh"
+    ],
+    "result": 205
+  },
+  {
+    "input": [
+      "025h"
+    ],
+    "result": 37
+  },
+  {
+    "input": [
+      "05Ah"
+    ],
+    "result": 90
+  },
+  {
+    "input": [
+      "12FFh"
+    ],
+    "result": 4863
+  },
+  {
+    "input": [
+      "013h"
+    ],
+    "result": 19
+  },
+  {
+    "input": [
+      "012h"
+    ],
+    "result": 18
+  },
+  {
+    "input": [
+      "0AAh"
+    ],
+    "result": 170
+  },
+  {
+    "input": [
+      "0ABh"
+    ],
+    "result": 171
+  },
+  {
+    "input": [
+      "0CCh"
+    ],
+    "result": 204
+  },
+  {
+    "input": [
+      "07777h"
+    ],
+    "result": 30583
+  },
+  {
+    "input": [
+      "0EEh"
+    ],
+    "result": 238
+  },
+  {
+    "input": [
+      "05555h"
+    ],
+    "result": 21845
+  },
+  {
+    "input": [
+      "0FFFFh"
+    ],
+    "result": 65535
+  },
+  {
+    "input": [
+      "054h"
+    ],
+    "result": 84
+  },
+  {
+    "input": [
+      "0AAAAh"
+    ],
+    "result": 43690
+  },
+  {
+    "input": [
+      "03333h"
+    ],
+    "result": 13107
+  },
+  {
+    "input": [
+      "0DDh"
+    ],
+    "result": 221
+  },
+  {
+    "input": [
+      "088h"
+    ],
+    "result": 136
+  },
+  {
+    "input": [
+      "076h"
+    ],
+    "result": 118
+  },
+  {
+    "input": [
+      "09Ah"
+    ],
+    "result": 154
+  },
+  {
+    "input": [
+      "042h"
+    ],
+    "result": 66
+  },
+  {
+    "input": [
+      "009h"
+    ],
+    "result": 9
+  },
+  {
+    "input": [
+      "01234h"
+    ],
+    "result": 4660
+  },
+  {
+    "input": [
+      "0C0h"
+    ],
+    "result": 192
+  },
+  {
+    "input": [
+      "034h"
+    ],
+    "result": 52
+  },
+  {
+    "input": [
+      "savstk"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "temp4"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "temp2"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "temp3"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "07733h"
+    ],
+    "result": 30515
+  },
+  {
+    "input": [
+      "cpuok"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "ngcpu"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "byteo"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "wboot"
+    ],
+    "result": null
+  },
+  {
+    "input": [
+      "okcpu"
+    ],
+    "result": null
+  }
+]

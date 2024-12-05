@@ -5,7 +5,10 @@ export let recorder = (() => {
     var data = [];
     var method = null;
     let collect = (input) => {
-        if (data.indexOf(input) === -1) {
+        let found = data.find((item) => {
+            return JSON.stringify(item) === JSON.stringify(input);
+        });
+        if (!found) {
             data.push(input);
         }
     };
@@ -16,7 +19,7 @@ export let recorder = (() => {
             let result = old.apply(object, args);
             collect({
                 input: args,
-                result: result,
+                result: typeof result == 'undefined' ? null : result,
             });
             return result;
         }
@@ -51,6 +54,7 @@ describe('assembler', () => {
 
         // when
         record(assembler.asm, 'evaluateExpression2');
+        record(assembler.asm, 'resolveNumber');
 
         let data = assembler.assemble(PROGRAM);
 
