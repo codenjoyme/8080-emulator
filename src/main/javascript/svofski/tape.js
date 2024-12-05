@@ -41,7 +41,7 @@ export var TapeFormat = function(fmt, forfile) {
             this.format = TapeFormat.prototype.krista;
             this.speed = 8;
             break;
-        case 'ÓÐÅÃÉÁÌÉÓÔß-rks': // кои-8 факъ е
+        case 'специалистъ-rks': // кои-8 факъ е
         case 'spetsialist-rks':
         case 'specialist-rks':
         case 'spec-rks':
@@ -49,7 +49,7 @@ export var TapeFormat = function(fmt, forfile) {
             this.speed = 9;
             this.variant = null;
             break;
-        case 'ÓÐÅÃÉÁÌÉÓÔß-mon': // кои-8 факъ е
+        case 'специалистъ-mon': // кои-8 факъ е
         case 'spetsialist-mon':
         case 'specialist-mon':
         case 'spec-mon':

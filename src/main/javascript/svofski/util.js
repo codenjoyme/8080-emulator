@@ -22,7 +22,8 @@ Util.isWhitespace = function(c) {
 };
 
 Util.toTargetEncoding = function(str, encoding) {
-    return toEncoding(str, encoding);
+    return str; // TODO we dont need this anymore
+    // return toEncoding(str, encoding);
 };
 
 Util.replaceExt = function(path, newext) {
