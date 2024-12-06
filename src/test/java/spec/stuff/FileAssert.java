@@ -56,7 +56,8 @@ public class FileAssert {
     }
 
     public void check(String info, String name, Consumer<File> save) {
-        File file = new File(testDir().getAbsolutePath() + "/" + name);
+        String path = (name.startsWith("src/") ? name : testDir().getAbsolutePath() + "/" + name);
+        File file = new File(path);
         String hash = hashes.get(file.getAbsolutePath());
 
         save.accept(file);
@@ -72,13 +73,17 @@ public class FileAssert {
         return HashUtils.hashFile(file, "MD5");
     }
 
-    public static void write(File file, String string) {
+    public static void write(File file, byte[] string) {
         file.getParentFile().mkdirs();
-        try (FileWriter writer = new FileWriter(file.getAbsolutePath(), false)) {
-            writer.write(string);
+        try {
+            FileUtils.writeByteArrayToFile(file, string);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void write(File file, String string) {
+        write(file, string.getBytes());
     }
 
     public static String read(File file) {

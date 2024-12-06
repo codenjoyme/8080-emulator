@@ -1351,13 +1351,26 @@ public class Assembler {
         return null;
     }
 
+    private byte[] toBin(Object data) {
+        List<Integer> mem = (List<Integer>) data;
+        byte[] bytes = new byte[mem.size()];
+        for (int i = 0; i < mem.size(); i++) {
+            bytes[i] = (byte) mem.get(i).intValue();
+        }
+        return bytes;
+    }
+
     public Map<String, Object> process(String sourceCode) {
         assemble(sourceCode);
         intelHex();
 
         Map<String, Object> result = new HashMap<>();
-        result.put("mem", toList(mem));
+
+        List<Integer> memory = toList(mem);
+        result.put("mem", memory);
         result.put("hex", hexText);
+        byte[] bin = toBin(memory);
+        result.put("bin", bin);
         result.put("gutter", gutterContent);
         result.put("listing", listingText);
         result.put("errors", errors);

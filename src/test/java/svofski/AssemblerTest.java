@@ -74,7 +74,12 @@ public class AssemblerTest {
         assertValue("errors.json", asString(data.get("errors")));
         assertValue("xref.json", asString(data.get("xref")));
         assertValue("labels.json", asString(data.get("labels")));
-        assertValue("info.json", asString(data.get("info")));
+
+        Map<String, String> info = (Map) data.get("info");
+        assertValue("info.json", asString(info));
+
+        String memFile = APP_RESOURCES + "test/" + dir + "/" + info.get("binFileName");
+        assertValue(memFile, (byte[]) data.get("bin"));
     }
 
     @Test
@@ -141,8 +146,13 @@ public class AssemblerTest {
                 .collect(joining("; ", "[", "]"));
     }
 
-    private void assertValue(String name, String result) {
-        fileAssert.check(name, dir + "/" + name,
+    private void assertValue(String name, byte[] result) {
+        String path = (name.startsWith("src/") ? name : dir + "/" + name);
+        fileAssert.check(name, path,
                 file -> write(file, result));
+    }
+
+    private void assertValue(String name, String result) {
+        assertValue(name, result.getBytes());
     }
 }
