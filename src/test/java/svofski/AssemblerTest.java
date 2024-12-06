@@ -44,13 +44,16 @@ public class AssemblerTest {
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
-        String base = APP_RESOURCES + "/test/";
+        return findAllFiles(APP_RESOURCES + "test/", ".asm");
+    }
+
+    public static List<Object[]> findAllFiles(String base, String type) {
         Path start = Paths.get(base);
         try (Stream<Path> stream = Files.walk(start)) {
             return stream
                     .filter(Files::isRegularFile)
-                    .filter(file -> file.toString().endsWith(".asm"))
-                    .map(file -> new Object[]{file.toString().substring(base.length() - 1)})
+                    .filter(file -> file.toString().endsWith(type))
+                    .map(file -> new Object[]{ file.toString().replace("\\", "/").substring(base.length()) })
                     .collect(Collectors.toList());
         } catch (IOException e) {
             return Collections.emptyList();

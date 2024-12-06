@@ -1,6 +1,9 @@
 package spec;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.TestName;
 import spec.assembler.DizAssembler;
 import spec.math.Bites;
@@ -17,14 +20,17 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static java.util.stream.Collectors.toList;
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
 import static spec.math.WordMath.hex16;
 import static spec.math.WordMath.hex8;
 import static spec.stuff.FileAssert.write;
 import static spec.stuff.SmartAssert.assertEquals;
+import static svofski.AssemblerTest.findAllFiles;
 
 public class IntegrationTest extends AbstractTest {
 
@@ -112,17 +118,26 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    public void testLik_kladWave() {
+    public void testLik_generateWave() {
+        String dir = APP_RESOURCES + "lik/apps";
+        List<String> names = findAllFiles(dir, ".rks").stream()
+                .map(it -> new File(it[0].toString()).getParentFile().getName())
+                .collect(toList());
+
+        names.forEach(this::testLik_generateWave);
+    }
+
+    private void testLik_generateWave(String name) {
         // given
-        Range range = Lik.loadGame(base, roms, "klad");
+        Range range = Lik.loadGame(base, roms, name);
 
         // when
         byte[] mem = memory.all().byteArray(range);
         Bites wave = new TapeFormat("specialist-rks", false)
-                .format(mem, 0, "klad.rks").makewav();
+                .format(mem, 0, name + ".rks").makewav();
 
         // then
-        String fileName = APP_RESOURCES + "lik/apps/klad.wav";
+        String fileName = APP_RESOURCES + "lik/apps/" + name + "/" + name + ".wav";
         fileAssert.check(fileName, fileName,
                 file -> write(file, wave.byteArray()));
     }
