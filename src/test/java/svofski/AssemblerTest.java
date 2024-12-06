@@ -80,14 +80,14 @@ public class AssemblerTest {
 
     @Test
     public void resolveNumber() {
-        String name = "method/resolveNumber.json";
+        String name = dir + "/method/resolveNumber.json";
         fileAssert.checkJson(name,
                 (input, fields) -> asm.resolveNumber((String) input.get(0)));
     }
 
     @Test
     public void evaluateExpression2() {
-        String name = "method/evaluateExpression2.json";
+        String name = dir + "/method/evaluateExpression2.json";
         fileAssert.checkJson(name,
                 (input, getField) -> {
                     Map labels = getField.apply("labels");

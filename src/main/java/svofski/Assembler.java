@@ -239,18 +239,28 @@ public class Assembler {
     public Integer resolveNumber(String identifier) {
         if (identifier == null || identifier.length() == 0) return null;
 
+        // Remove underscores
+        identifier = identifier.replace("_", "");
+
         char first = identifier.charAt(0);
         if ((first == '\'' || first == '"') && identifier.length() == 3) {
             return 0xff & identifier.charAt(1);
         }
 
-        if (identifier.matches("^\\$[0-9a-fA-F]+$")) {
-            Integer test = Integer.parseInt(identifier.substring(1), 16);
-            return test;
+        // Handling hexadecimal numbers with 0x or 0X prefix
+        if (identifier.matches("^0[xX][0-9a-fA-F]+")) {
+            return Integer.parseInt(identifier.substring(2), 16);
         }
 
-        if (identifier.matches("(^[+-]?[0-9]+).*")) {
+        // Handling binary numbers with 0b or 0B prefix
+        if (identifier.matches("^0[bB][01_]+")) {
+            return Integer.parseInt(identifier.substring(2), 2);
+        }
+
+        // Handling numbers without specific base prefix
+        if (identifier.matches("^[0-9a-fA-F][0-9a-fA-F_]*[hHbBqQdD]?")) {
             try {
+                // Default conversion in case no suffix is present
                 Integer test = Integer.valueOf(identifier);
                 return test;
             } catch (NumberFormatException e) {
@@ -260,45 +270,24 @@ public class Assembler {
             char suffix = identifier.charAt(identifier.length() - 1);
             switch (Character.toLowerCase(suffix)) {
                 case 'd':
-                    try {
-                        Integer test = Integer.parseInt(identifier.substring(0, identifier.length() - 1));
-                        return test;
-                    } catch (NumberFormatException e) {
-                        // Ignoring as returning null will handle it
-                    }
-                    break;
+                    return safeParseInt(identifier, 10);
                 case 'h':
-                    try {
-                        Integer test = Integer.parseInt(identifier.substring(0, identifier.length() - 1), 16);
-                        return test;
-                    } catch (NumberFormatException e) {
-                        // Ignoring as returning null will handle it
-                    }
-                    break;
+                    return safeParseInt(identifier, 16);
                 case 'b':
-                    try {
-                        Integer test = Integer.parseInt(identifier.substring(0, identifier.length() - 1), 2);
-                        return test;
-                    } catch (NumberFormatException e) {
-                        // Ignoring as returning null will handle it
-                    }
-                    break;
+                    return safeParseInt(identifier, 2);
                 case 'q':
-                    String oct = identifier.substring(0, identifier.length() - 1);
-                    for (int i = oct.length(); --i >= 0;) {
-                        char c = oct.charAt(i);
-                        if (c == '8' || c == '9') return null;
-                    }
-                    try {
-                        Integer octalTest = Integer.parseInt(oct, 8);
-                        return octalTest;
-                    } catch (NumberFormatException e) {
-                        // Ignoring as returning null will handle it
-                    }
-                    break;
+                    return safeParseInt(identifier, 8);
             }
         }
         return null;
+    }
+
+    private Integer safeParseInt(String identifier, int radix) {
+        try {
+            return Integer.parseInt(identifier.substring(0, identifier.length() - 1), radix);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     // Methods related to referencing labels and setting memory
@@ -1223,7 +1212,8 @@ public class Assembler {
             }
             // System.out.println("0 input=" + input);
             // System.out.println("1 expr=" + expr);
-            Pattern pattern = Pattern.compile("\\b0x[0-9a-fA-F]+\\b|\\b[0-9][0-9a-fA-F]*[hbqdHBQD]?\\b|'.'");
+            Pattern pattern = Pattern.compile(
+                    "\\b0[xX][0-9a-fA-F_]+\\b|\\b0[bB][01_]+\\b|\\b[0-9a-fA-F][0-9a-fA-F_]*[hHbBqQdD]?\\b|'.'");
             Matcher matcher = pattern.matcher(input);
             StringBuffer sb = new StringBuffer();
             while (matcher.find()) {
@@ -1335,8 +1325,9 @@ public class Assembler {
                 return (Integer) eval;
             }
         } catch (ScriptException err) {
-            // System.out.println("expr was: " + expr);
-            // System.out.println(err);
+            err.printStackTrace();
+            System.out.println("Expression was: " + expr);
+            System.out.print(err.toString());
         }
 
         return null;

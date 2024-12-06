@@ -403,7 +403,7 @@
       "0b0111_0111"
     ],
     "fields": null,
-    "result": null
+    "result": 119
   },
   {
     "input": [
@@ -438,7 +438,7 @@
       "0b1110_1000"
     ],
     "fields": null,
-    "result": null
+    "result": 232
   },
   {
     "input": [
@@ -473,7 +473,7 @@
       "0b1101_1110"
     ],
     "fields": null,
-    "result": null
+    "result": 222
   },
   {
     "input": [
@@ -508,7 +508,7 @@
       "0b0111_1001"
     ],
     "fields": null,
-    "result": null
+    "result": 121
   },
   {
     "input": [
@@ -543,7 +543,7 @@
       "0b1010_1100"
     ],
     "fields": null,
-    "result": null
+    "result": 172
   },
   {
     "input": [
@@ -578,7 +578,7 @@
       "0b1011_1010"
     ],
     "fields": null,
-    "result": null
+    "result": 186
   },
   {
     "input": [
@@ -613,7 +613,7 @@
       "0b0111_0101"
     ],
     "fields": null,
-    "result": null
+    "result": 117
   },
   {
     "input": [
@@ -648,7 +648,7 @@
       "0b1110_1010"
     ],
     "fields": null,
-    "result": null
+    "result": 234
   },
   {
     "input": [
@@ -683,7 +683,7 @@
       "0b1011_1110"
     ],
     "fields": null,
-    "result": null
+    "result": 190
   },
   {
     "input": [
