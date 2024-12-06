@@ -50,6 +50,7 @@ package svofski;
 // -- all of the above is kept for historical reasons only --
 
 import org.apache.commons.lang3.StringUtils;
+import spec.math.Bites;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -1351,11 +1352,11 @@ public class Assembler {
         return null;
     }
 
-    private byte[] toBin(Object data) {
+    private Bites toBin(Object data) {
         List<Integer> mem = (List<Integer>) data;
-        byte[] bytes = new byte[mem.size()];
+        Bites bytes = new Bites(mem.size());
         for (int i = 0; i < mem.size(); i++) {
-            bytes[i] = (byte) mem.get(i).intValue();
+            bytes.set(i, (byte) mem.get(i).intValue());
         }
         return bytes;
     }
@@ -1369,7 +1370,7 @@ public class Assembler {
         List<Integer> memory = toList(mem);
         result.put("mem", memory);
         result.put("hex", hexText);
-        byte[] bin = toBin(memory);
+        Bites bin = toBin(memory);
         result.put("bin", bin);
         result.put("gutter", gutterContent);
         result.put("listing", listingText);

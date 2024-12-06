@@ -27,6 +27,14 @@ public class Bites implements Iterable<Integer> {
         return data;
     }
 
+    public byte[] byteArray() {
+        byte[] bytes = new byte[data.length];
+        for (int i = 0; i < data.length; i++) {
+            bytes[i] = (byte) data[i];
+        }
+        return bytes;
+    }
+
     public int size() {
         return data.length;
     }

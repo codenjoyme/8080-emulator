@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import spec.math.Bites;
 import spec.stuff.FileAssert;
 
 import java.io.File;
@@ -79,7 +80,8 @@ public class AssemblerTest {
         assertValue("info.json", asString(info));
 
         String memFile = APP_RESOURCES + "test/" + dir + "/" + info.get("binFileName");
-        assertValue(memFile, (byte[]) data.get("bin"));
+        Bites bin = (Bites) data.get("bin");
+        assertValue(memFile, bin.byteArray());
     }
 
     @Test
