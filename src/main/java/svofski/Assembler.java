@@ -49,12 +49,15 @@ package svofski;
 //
 // -- all of the above is kept for historical reasons only --
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import spec.math.Bites;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -1356,7 +1359,7 @@ public class Assembler {
         List<Integer> mem = (List<Integer>) data;
         Bites bytes = new Bites(mem.size());
         for (int i = 0; i < mem.size(); i++) {
-            bytes.set(i, (byte) mem.get(i).intValue());
+            bytes.set(i, mem.get(i));
         }
         return bytes;
     }
@@ -1397,5 +1400,50 @@ public class Assembler {
             result.add(mem.getOrDefault(i, 1));
         }
         return result;
+    }
+
+    public Bites compile(String sourceCode) {
+        return toBin(process(sourceCode).get("mem"));
+    }
+
+    public static void main(String[] args) throws IOException {
+        Assembler assembler = new Assembler();
+
+        String sourceCode =
+                ";************************\n" +
+                "; Prints 'HELLO WORLD\\n'\n" +
+                ";************************\n" +
+                "\n" +
+                "        .project hello-world.mem\n" +
+                "        .tape специалистъ-mon\n" +
+                "        CPU     8080\n" +
+                "        .ORG    00000h\n" +
+                "\n" +
+                "start:  LXI     H,hello\n" +
+                "        CALL    bdos\n" +
+                "        JMP     wboot      ; exit\n" +
+                ";\n" +
+                "hello:  DB      00Dh, 00Ah, 'HELLO WORLD', 00Dh, 00Ah, '$'\n" +
+                ";\n" +
+                "bdos    EQU     0C037h     ; PRINT CHAR PROCEDURE\n" +
+                "wboot:  JMP     0C800h     ; BACK TO SYSTEM\n" +
+                "end:";
+
+        // компилируем
+        Bites result = assembler.compile(sourceCode);
+
+        // скомпилированный код
+        byte[] bytes = result.byteArray();
+
+        // сохраняем в файл
+        FileUtils.writeByteArrayToFile(new File("target/program.mem"), bytes);
+
+        // дамп памяти
+        System.out.println(result);
+
+        // напечатает
+        //       00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+        // 0000: 21 09 00 CD 37 C0 C3 19 00 0D 0A 48 45 4C 4C 4F
+        // 0010: 20 57 4F 52 4C 44 0D 0A 24 C3 00 C8
     }
 }

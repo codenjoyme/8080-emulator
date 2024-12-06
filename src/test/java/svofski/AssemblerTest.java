@@ -140,6 +140,40 @@ public class AssemblerTest {
                 listAsString(asm.splitParts("hello:  DB      00Dh, 00Ah, 'MICROCOSM ASSOCIATES'\n")));
     }
 
+    @Test
+    public void simpleCompile() {
+        // given
+        String sourceCode =
+                ";************************\n" +
+                "; Prints 'HELLO WORLD\\n'\n" +
+                ";************************\n" +
+                "\n" +
+                "        .project hello-world.mem\n" +
+                "        .tape специалистъ-mon\n" +
+                "        CPU     8080\n" +
+                "        .ORG    00000h\n" +
+                "\n" +
+                "start:  LXI     H,hello\n" +
+                "        CALL    bdos\n" +
+                "        JMP     wboot      ; exit\n" +
+                ";\n" +
+                "hello:  DB      00Dh, 00Ah, 'HELLO WORLD', 00Dh, 00Ah, '$'\n" +
+                ";\n" +
+                "bdos    EQU     0C037h     ; PRINT CHAR PROCEDURE\n" +
+                "wboot:  JMP     0C800h     ; BACK TO SYSTEM\n" +
+                "end:";
+
+        // when
+        Bites result = asm.compile(sourceCode);
+
+        // then
+        assertEquals(
+                "      00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F \n" +
+                "0000: 21 09 00 CD 37 C0 C3 19 00 0D 0A 48 45 4C 4C 4F \n" +
+                "0010: 20 57 4F 52 4C 44 0D 0A 24 C3 00 C8 \n",
+                result.toString());
+    }
+
     private String listAsString(List<List<String>> lists) {
         return lists.stream()
                 .map(list -> list.stream().map(

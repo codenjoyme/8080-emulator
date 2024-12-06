@@ -3,6 +3,9 @@ package spec.math;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import static spec.math.WordMath.hex16;
+import static spec.math.WordMath.hex8;
+
 public class Bites implements Iterable<Integer> {
 
     private int[] data;
@@ -79,5 +82,40 @@ public class Bites implements Iterable<Integer> {
     @Override
     public int hashCode() {
         return Arrays.hashCode(data);
+    }
+
+    @Override
+    public String toString() {
+        return detailsTable(-1, -1);
+    }
+
+    public String detailsTable(int start, int end) {
+        if (start == -1) {
+            start = 0;
+        }
+        if (end == -1 || end > data.length) {
+            end = data.length;
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("      ");
+        for (int i = 0; i < 16; i++) {
+            sb.append(hex8(i))
+                    .append(" ");
+        }
+        sb.append("\n");
+
+        for (int line = start; line < end; line += 16) {
+            sb.append(hex16(line))
+                    .append(": ");
+            for (int i = line; i < line + 16 && i < end; i++) {
+                sb.append(hex8(get(i)))
+                        .append(" ");
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 }
