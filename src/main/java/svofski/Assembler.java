@@ -1377,6 +1377,8 @@ public class Assembler {
         result.put("mem", memory);
         result.put("hex", hexText);
         Bites bin = toBin(memory);
+        Bites wave = wave(bin);
+        result.put("wave", wave);
         result.put("bin", bin);
         result.put("gutter", gutterContent);
         result.put("listing", listingText);
@@ -1394,6 +1396,12 @@ public class Assembler {
 
         result.put("info", info);
         return result;
+    }
+
+    private Bites wave(Bites data) {
+        String fileName = getBinFileName();
+        return new TapeFormat(tapeFormat, false)
+                .format(data.byteArray(), 0, fileName).makewav();
     }
 
     private List<Integer> toList(Map<Integer, Integer> mem) {

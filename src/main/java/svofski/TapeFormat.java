@@ -1,28 +1,34 @@
 package svofski;
 
-import java.nio.ByteBuffer;
+import spec.math.Bites;
+
 import java.util.Arrays;
 
 import static svofski.Wav.WAV_HEADER_SIZE;
 
 public class TapeFormat {
+    public static final String FORMAT_SPECIALIST = "specialist";
+    public static final String FORMAT_KRISTA = "krista";
+    public static final String FORMAT_V06C_CAS = "v06c_cas";
+    public static final String FORMAT_V06C_ROM = "v06c_rom";
+    public static final String FORMAT_NEKROSHA = "nekrosha";
     private String format;
     private String variant;
     private int speed;
-    private boolean forfile;
+    private boolean forFile;
     private byte[] data;
 
-    public TapeFormat(String fmt, Boolean forfile) {
+    public TapeFormat(String fmt, Boolean forFile) {
         this.format = null;
         this.variant = null;
         this.speed = 12;
-        this.forfile = forfile != null ? forfile : false;
+        this.forFile = forFile != null ? forFile : false;
 
         switch (fmt) {
             case "rk-bin":
             case "rk86-bin":
             case "86rk-bin":
-                this.format = "nekrosha";
+                this.format = FORMAT_NEKROSHA;
                 this.variant = "rk";
                 this.speed = 12;
                 break;
@@ -33,34 +39,34 @@ public class TapeFormat {
             case "nekrosha-bin":
             case "necro-bin":
             case "nekro-bin":
-                this.format = "nekrosha";
+                this.format = FORMAT_NEKROSHA;
                 this.variant = "mikrosha";
                 this.speed = 12;
                 break;
             case "partner-bin":
-                this.format = "nekrosha";
+                this.format = FORMAT_NEKROSHA;
                 this.variant = "rk";
                 this.speed = 8;
                 break;
             case "v06c-rom":
-                this.format = "v06c_rom";
+                this.format = FORMAT_V06C_ROM;
                 this.speed = 5;
                 break;
             case "v06c-cas":
             case "v06c-bload":
             case "v06c-basic":
-                this.format = "v06c_cas";
+                this.format = FORMAT_V06C_CAS;
                 this.speed = 8;
                 break;
             case "krista-rom":
-                this.format = "krista";
+                this.format = FORMAT_KRISTA;
                 this.speed = 8;
                 break;
             case "специалистъ-rks":
             case "spetsialist-rks":
             case "specialist-rks":
             case "spec-rks":
-                this.format = "specialist";
+                this.format = FORMAT_SPECIALIST;
                 this.speed = 9;
                 this.variant = null;
                 break;
@@ -68,13 +74,29 @@ public class TapeFormat {
             case "spetsialist-mon":
             case "specialist-mon":
             case "spec-mon":
-                this.format = "specialist";
+                this.format = FORMAT_SPECIALIST;
                 this.speed = 9;
                 this.variant = "name-header";
                 break;
         }
     }
 
+    public TapeFormat format(byte[] mem, int org, String name) {
+        switch (this.format) {
+            case FORMAT_NEKROSHA:
+                return nekrosha(mem, org, name);
+            case FORMAT_V06C_ROM:
+                return v06c_rom(mem, org, name);
+            case FORMAT_V06C_CAS:
+                return v06c_cas(mem, org, name);
+            case FORMAT_KRISTA:
+                return krista(mem, org, name);
+            case FORMAT_SPECIALIST:
+                return specialist(mem, org, name);
+        }
+        throw new IllegalArgumentException("Unknown format " + this.format);
+    }
+    
     public TapeFormat nekrosha(byte[] mem, int org, String name) {
         byte[] data = new byte[mem.length + 266 + 5];
 
@@ -87,7 +109,7 @@ public class TapeFormat {
         int csm_lo = 0;
 
         int dptr = 0;
-        if (!this.forfile) {
+        if (!this.forFile) {
             for (int i = 0; i < 256; ++i) {
                 data[dptr++] = 0;
             }
@@ -136,7 +158,7 @@ public class TapeFormat {
         data[dptr++] = 0;
         data[dptr++] = 0;
         data[dptr++] = 0;
-        if (this.forfile) {
+        if (this.forFile) {
             byte[] croppedData = new byte[end];
             System.arraycopy(data, 0, croppedData, 0, end);
             this.data = croppedData;
@@ -146,12 +168,11 @@ public class TapeFormat {
         return this;
     }
 
-    public ByteBuffer makewav() {
+    public Bites makewav() {
         byte[] encoded = biphase(this.data, this.speed != 0 ? this.speed : 12);
         Wav wav = new Wav(22050, 1);
         wav.setBuffer(encoded);
-        ByteBuffer stream = wav.getBuffer(encoded.length + WAV_HEADER_SIZE * 2);
-        return stream;
+        return wav.getBuffer(encoded.length + WAV_HEADER_SIZE * 2);
     }
 
     public byte[] biphase(byte[] data, int halfperiod) {
@@ -233,7 +254,7 @@ public class TapeFormat {
 
         // preamble for wav, not included in cas
         // 256[00] [E6]
-        if (!forfile) {
+        if (!forFile) {
             for (int i = 0; i < 256; ++i) data[dofs++] = 0;
             data[dofs++] = (byte) 0xE6;
         }
@@ -330,7 +351,7 @@ public class TapeFormat {
         int cs_lo = 0;
 
         int dptr = 0;
-        if (!forfile) {
+        if (!forFile) {
             if ("name-header".equals(variant)) {
                 for (int i = 0; i < 256; ++i) {
                     data[dptr++] = 0;
@@ -379,7 +400,7 @@ public class TapeFormat {
             mem[i] = 0;
         }
 
-        if (forfile) {
+        if (forFile) {
             this.data = Arrays.copyOf(data, end);
         } else {
             this.data = data;

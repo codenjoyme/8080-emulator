@@ -1,9 +1,12 @@
 package svofski;
 
+import spec.math.Bites;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public class Wav {
+
     private int sampleRate;
     private int channels;
     private boolean eof;
@@ -28,17 +31,17 @@ public class Wav {
         this.eof = false;
     }
 
-    public ByteBuffer getBuffer(int len) {
+    public Bites getBuffer(int len) {
         int requiredLen = Math.min(len, this.buffer.length - this.bufferNeedle);
-        byte[] rt = new byte[requiredLen];
+        Bites rt = new Bites(requiredLen);
         for (int i = 0; i < requiredLen; i++) {
-            rt[i] = this.buffer[this.bufferNeedle + i];
+            rt.set(i, this.buffer[this.bufferNeedle + i]);
         }
         this.bufferNeedle += requiredLen;
         if (this.bufferNeedle >= this.buffer.length) {
             this.eof = true;
         }
-        return ByteBuffer.wrap(rt);
+        return rt;
     }
 
     public boolean eof() {
@@ -46,38 +49,38 @@ public class Wav {
     }
 
     private byte[] getWavUint8Array(byte[] buffer) {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(WAV_HEADER_SIZE * 2 + buffer.length);
-        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        ByteBuffer result = ByteBuffer.allocate(WAV_HEADER_SIZE * 2 + buffer.length);
+        result.order(ByteOrder.LITTLE_ENDIAN);
 
-        byteBuffer.putShort((short) 0x4952); // "RI"
-        byteBuffer.putShort((short) 0x4646); // "FF"
+        result.putShort((short) 0x4952); // "RI"
+        result.putShort((short) 0x4646); // "FF"
 
         int riffSize = buffer.length + WAV_HEADER_SIZE * 2 - 8;
-        byteBuffer.putInt(riffSize);
+        result.putInt(riffSize);
 
-        byteBuffer.putShort((short) 0x4157); // "WA"
-        byteBuffer.putShort((short) 0x4556); // "VE"
+        result.putShort((short) 0x4157); // "WA"
+        result.putShort((short) 0x4556); // "VE"
 
-        byteBuffer.putShort((short) 0x6d66); // "fm"
-        byteBuffer.putShort((short) 0x2074); // "t "
+        result.putShort((short) 0x6d66); // "fm"
+        result.putShort((short) 0x2074); // "t "
 
-        byteBuffer.putInt(16); // fmt chunksize: 16
-        byteBuffer.putShort((short) 1); // format tag : 1
-        byteBuffer.putShort((short) this.channels); // channels:
+        result.putInt(16); // fmt chunksize: 16
+        result.putShort((short) 1); // format tag : 1
+        result.putShort((short) this.channels); // channels:
 
-        byteBuffer.putInt(this.sampleRate); // sample per sec
+        result.putInt(this.sampleRate); // sample per sec
 
         int byteRate = this.channels * this.sampleRate;
-        byteBuffer.putInt(byteRate); // byte per sec
+        result.putInt(byteRate); // byte per sec
 
-        byteBuffer.putShort((short) (this.channels * 2)); // block align
-        byteBuffer.putShort((short) 16); // bit per sample
-        byteBuffer.putShort((short) 0x6164); // "da"
-        byteBuffer.putShort((short) 0x6174); // "ta"
-        byteBuffer.putInt(buffer.length); // data size[byte]
+        result.putShort((short) (this.channels * 2)); // block align
+        result.putShort((short) 16); // bit per sample
+        result.putShort((short) 0x6164); // "da"
+        result.putShort((short) 0x6174); // "ta"
+        result.putInt(buffer.length); // data size[byte]
 
-        byteBuffer.put(buffer);
+        result.put(buffer);
 
-        return byteBuffer.array();
+        return result.array();
     }
 }

@@ -82,6 +82,9 @@ public class AssemblerTest {
         String memFile = APP_RESOURCES + "test/" + dir + "/" + info.get("binFileName");
         Bites bin = (Bites) data.get("bin");
         assertValue(memFile, bin.byteArray());
+
+        Bites wave = (Bites) data.get("wave");
+        assertValue("wave.wav", wave.byteArray());
     }
 
     @Test
