@@ -60,6 +60,10 @@ public class FileAssert {
         File file = new File(path);
         String hash = hashes.get(file.getAbsolutePath());
 
+        if (hash == null && file.exists()) {
+            hash = hash(file);
+        }
+
         save.accept(file);
 
         if (!Objects.equals(hash, hash(file))) {

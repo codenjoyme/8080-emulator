@@ -1,5 +1,6 @@
 package svofski;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -67,6 +68,11 @@ public class AssemblerTest {
         fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
         program = read(new File(APP_RESOURCES + "/test/" + name));
         dir = new File(name).getParent();
+    }
+
+    @After
+    public void after() throws Exception {
+        SmartAssert.checkResult();
     }
 
     @Test
