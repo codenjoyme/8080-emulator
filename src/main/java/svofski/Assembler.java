@@ -32,20 +32,23 @@ package svofski;
 // Guillermo S. Romero, Anna Merkulova, Stephan Henningsen
 //
 // Revison Log
-// Rev.A: Initial release
-// Rev.B: A lot of fixes to compile TINIDISK.ASM by Dr. Li-Chen Wang
-// Rev.C: Performance optimizations and cleanup, labels->hash
-// Rev.D: More syntax fixes; opera navigation and Back Button Toolbar
-// Rev.E: Navigation to label references (backref menu)
-//        Nice labels table
-//        Some Opera-related fixes
-// Rev.F: fixed '.' and semi-colon in db
-//        tab scroll fixed
-// Rev.G: $ can now work as hex prefix
-// Rev.H: Fixed spaces in reg-reg, .binfile, .hexfile
-// Rev.I: Fixed bug in evaluation of hex literals ending with d
-// Rev.J: Backport from offline version: register highlighting
-// Rev.K: Target encodings support
+// Rev.A:  Initial release
+// Rev.B:  A lot of fixes to compile TINIDISK.ASM by Dr. Li-Chen Wang
+// Rev.C:  Performance optimizations and cleanup, labels->hash
+// Rev.D:  More syntax fixes; opera navigation and Back Button Toolbar
+// Rev.E:  Navigation to label references (backref menu)
+//         Nice labels table
+//         Some Opera-related fixes
+// Rev.F:  fixed '.' and semi-colon in db
+//         tab scroll fixed
+// Rev.G:  $ can now work as hex prefix
+// Rev.H:  Fixed spaces in reg-reg, .binfile, .hexfile
+// Rev.I:  Fixed bug in evaluation of hex literals ending with d
+// Rev.J:  Backport from offline version: register highlighting
+// Rev.K:  Target encodings support
+// Rev.K2: Ported to Java by Oleksandr Baglai
+// Rev.K3: Fixed resolveNumber for processing numbers with '_' in them.
+//         Fixed corner cases with '0b' prefix in combination with 'h' suffix.
 //
 // -- all of the above is kept for historical reasons only --
 
