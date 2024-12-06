@@ -1,0 +1,3076 @@
+[
+  {
+    "input": [
+      "00000h",
+      0,
+      11
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {}
+      }
+    ],
+    "result": 0
+  },
+  {
+    "input": [
+      "start",
+      0,
+      13
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 79
+  },
+  {
+    "input": [
+      "0C800h",
+      3,
+      16
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 51200
+  },
+  {
+    "input": [
+      "00Dh",
+      5,
+      18
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah",
+      6,
+      18
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 10
+  },
+  {
+    "input": [
+      "00Dh",
+      55,
+      18
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah",
+      56,
+      18
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 10
+  },
+  {
+    "input": [
+      "00Dh",
+      58,
+      19
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah",
+      59,
+      19
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 10
+  },
+  {
+    "input": [
+      "00Dh",
+      75,
+      19
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah",
+      76,
+      19
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 10
+  },
+  {
+    "input": [
+      "msg1",
+      79,
+      29
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 6
+  },
+  {
+    "input": [
+      "msg",
+      82,
+      30
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 278
+  },
+  {
+    "input": [
+      "test_command",
+      85,
+      32
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 98
+  },
+  {
+    "input": [
+      "msg2",
+      88,
+      34
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 59
+  },
+  {
+    "input": [
+      "msg",
+      91,
+      35
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 278
+  },
+  {
+    "input": [
+      "wboot",
+      94,
+      36
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 3
+  },
+  {
+    "input": [
+      "00",
+      96,
+      39
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 0
+  },
+  {
+    "input": [
+      "0000H",
+      99,
+      45
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 0
+  },
+  {
+    "input": [
+      "0000H",
+      102,
+      46
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 0
+  },
+  {
+    "input": [
+      "0000H",
+      105,
+      47
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 0
+  },
+  {
+    "input": [
+      "0b0111_0111",
+      108,
+      49
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 119
+  },
+  {
+    "input": [
+      "calc_hash",
+      110,
+      50
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      113,
+      51
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "calc_hash",
+      117,
+      54
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      120,
+      55
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "0b1110_1000",
+      123,
+      57
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 232
+  },
+  {
+    "input": [
+      "calc_hash",
+      125,
+      58
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      128,
+      59
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "calc_hash",
+      132,
+      62
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      135,
+      63
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "0b1101_1110",
+      138,
+      65
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 222
+  },
+  {
+    "input": [
+      "calc_hash",
+      140,
+      66
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      143,
+      67
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "calc_hash",
+      147,
+      70
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      150,
+      71
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "0b0111_1001",
+      153,
+      73
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 121
+  },
+  {
+    "input": [
+      "calc_hash",
+      155,
+      74
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      158,
+      75
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "calc_hash",
+      162,
+      78
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      165,
+      79
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "0b1010_1100",
+      168,
+      81
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 172
+  },
+  {
+    "input": [
+      "calc_hash",
+      170,
+      82
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      173,
+      83
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "calc_hash",
+      177,
+      86
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      180,
+      87
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "0b1011_1010",
+      183,
+      89
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 186
+  },
+  {
+    "input": [
+      "calc_hash",
+      185,
+      90
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      188,
+      91
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "calc_hash",
+      192,
+      94
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      195,
+      95
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "0b0111_0101",
+      198,
+      97
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 117
+  },
+  {
+    "input": [
+      "calc_hash",
+      200,
+      98
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      203,
+      99
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "calc_hash",
+      207,
+      102
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      210,
+      103
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "0b1110_1010",
+      213,
+      105
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 234
+  },
+  {
+    "input": [
+      "calc_hash",
+      215,
+      106
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      218,
+      107
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "calc_hash",
+      222,
+      110
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      225,
+      111
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "0b1011_1110",
+      228,
+      113
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 190
+  },
+  {
+    "input": [
+      "calc_hash",
+      230,
+      114
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      233,
+      115
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "calc_hash",
+      237,
+      118
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 244
+  },
+  {
+    "input": [
+      "byteo",
+      240,
+      119
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 314
+  },
+  {
+    "input": [
+      "0000",
+      248,
+      131
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 0
+  },
+  {
+    "input": [
+      "08",
+      252,
+      135
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 8
+  },
+  {
+    "input": [
+      "dcx_loop1",
+      256,
+      139
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 254
+  },
+  {
+    "input": [
+      "xor_data",
+      259,
+      142
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 97
+  },
+  {
+    "input": [
+      "08",
+      263,
+      145
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 8
+  },
+  {
+    "input": [
+      "dcx_loop2",
+      269,
+      151
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 265
+  },
+  {
+    "input": [
+      "'$'",
+      283,
+      170
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 36
+  },
+  {
+    "input": [
+      "msge",
+      285,
+      171
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 296
+  },
+  {
+    "input": [
+      "pchar",
+      289,
+      173
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 301
+  },
+  {
+    "input": [
+      "msgs",
+      293,
+      175
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 282
+  },
+  {
+    "input": [
+      "bdos",
+      306,
+      189
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 49207
+  },
+  {
+    "input": [
+      "byto1",
+      319,
+      203
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 337
+  },
+  {
+    "input": [
+      "pchar",
+      322,
+      204
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 301
+  },
+  {
+    "input": [
+      "byto2",
+      326,
+      206
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 341
+  },
+  {
+    "input": [
+      "pchar",
+      329,
+      207
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 301
+  },
+  {
+    "input": [
+      "00Fh",
+      341,
+      217
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 15
+  },
+  {
+    "input": [
+      "00Ah",
+      343,
+      218
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 10
+  },
+  {
+    "input": [
+      "byto3",
+      345,
+      219
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 350
+  },
+  {
+    "input": [
+      "7",
+      348,
+      220
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 7
+  },
+  {
+    "input": [
+      "030h",
+      350,
+      221
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "begin": 0,
+          "bdos": 49207,
+          "wboot": 3,
+          "msg1": 6,
+          "msg2": 59,
+          "start": 79,
+          "done": 88,
+          "xor_data": 97,
+          "test_command": 98,
+          "calc_hash": 244,
+          "dcx_loop1": 254,
+          "dcx_loop2": 265,
+          "msg": 278,
+          "msgs": 282,
+          "msge": 296,
+          "pchar": 301,
+          "byteo": 314,
+          "byto1": 337,
+          "byto2": 341,
+          "byto3": 350,
+          "end": 353
+        }
+      }
+    ],
+    "result": 48
+  }
+]

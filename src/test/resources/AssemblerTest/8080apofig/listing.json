@@ -1,0 +1,244 @@
+	                ;******************************************************************************
+	                ;
+	                ; Created by Oleksandr Baglai to be able to work on LIK and assemble with
+	                ;     https://svofski.github.io/pretty-8080-assembler/
+	                ;     https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D0%BA_(%D0%BA%D0%BE%D0%BC%D0%BF%D1%8C%D1%8E%D1%82%D0%B5%D1%80)
+	                ;
+	                ;******************************************************************************
+	                
+	                        .PROJECT 8080apofig.mem
+	                        .tape специалистъ-mon
+	                        CPU     8080
+	                        .ORG    00000h
+	                
+0000	C3 4F 00        begin:  JMP     start
+	                
+	                bdos    EQU     0C037h     ; LIK PRINT CHAR PROCEDURE
+0003	C3 00 C8        wboot:  JMP     0C800h     ; LIK MONITOR-1M
+	                
+0006	0D 0A 38 30     msg1:   DB      00Dh, 00Ah, '8080 INSTRUCTION TEST (KR580VM80A CPU) BY APOFIG', 00Dh, 00Ah, '$'
+	. . .
+003A	24 
+
+003B	0D 0A 54 45     msg2:   DB      00Dh, 00Ah, 'TESTS COMPLETE$', 00Dh, 00Ah, '$'
+	. . .
+004B	24 0D 0A 24 
+
+	                
+	                ; Программа работает таким образом, чтобы после выполнения каждой отдельной операции состояние
+	                ; всех регистров записывается в определенной области памяти. Затем из этой области памяти
+	                ; мы получаем контрольную сумму, которую сравниваем с заведомо просчитанными суммами на реальной машине.
+	                ; Каждая команда выполняется опеределенное количество раз над все новыми данными. После ее выполнения
+	                ; методом XOR SHIFT мы рендомизируем значение всех регистров, так из большого количества итераций надо одной
+	                ; командой мы можем рассчитывать на ее хороший тест каверадж. Ну классная идея жеж!
+	                
+	                start:
+004F	21 06 00                LXI     H,msg1
+0052	CD 16 01                CALL    msg
+	                
+0055	CD 62 00                CALL    test_command
+	                
+0058	21 3B 00        done:   LXI     H,msg2
+005B	CD 16 01                CALL    msg
+005E	C3 03 00                JMP     wboot                ; warm boot
+	                
+	                ; тут мы будем хранить XOR всех регистров после выполнения процедуры calc_hash
+0061	00              xor_data: DB    00
+	                
+	                test_command:
+	                        ; Очистка регистра аккумулятора и PSW
+0062	AF                      XRA     A
+	                        ; Очистка регистров BC, DE и HL с помощью LXI
+0063	01 00 00                LXI     B, 0000H
+0066	11 00 00                LXI     D, 0000H
+0069	21 00 00                LXI     H, 0000H
+	                
+006C	F6 77                   ORI     0b0111_0111
+006E	CD F4 00                CALL    calc_hash
+0071	CD 3A 01                CALL    byteo
+	                
+0074	17                      RAL
+0075	CD F4 00                CALL    calc_hash
+0078	CD 3A 01                CALL    byteo
+	                
+007B	EE E8                   XRI     0b1110_1000
+007D	CD F4 00                CALL    calc_hash
+0080	CD 3A 01                CALL    byteo
+	                
+0083	07                      RLC
+0084	CD F4 00                CALL    calc_hash
+0087	CD 3A 01                CALL    byteo
+	                
+008A	E6 DE                   ANI     0b1101_1110
+008C	CD F4 00                CALL    calc_hash
+008F	CD 3A 01                CALL    byteo
+	                
+0092	0F                      RRC
+0093	CD F4 00                CALL    calc_hash
+0096	CD 3A 01                CALL    byteo
+	                
+0099	F6 79                   ORI     0b0111_1001
+009B	CD F4 00                CALL    calc_hash
+009E	CD 3A 01                CALL    byteo
+	                
+00A1	1F                      RAR
+00A2	CD F4 00                CALL    calc_hash
+00A5	CD 3A 01                CALL    byteo
+	                
+00A8	EE AC                   XRI     0b1010_1100
+00AA	CD F4 00                CALL    calc_hash
+00AD	CD 3A 01                CALL    byteo
+	                
+00B0	17                      RAL
+00B1	CD F4 00                CALL    calc_hash
+00B4	CD 3A 01                CALL    byteo
+	                
+00B7	E6 BA                   ANI     0b1011_1010
+00B9	CD F4 00                CALL    calc_hash
+00BC	CD 3A 01                CALL    byteo
+	                
+00BF	07                      RLC
+00C0	CD F4 00                CALL    calc_hash
+00C3	CD 3A 01                CALL    byteo
+	                
+00C6	F6 75                   ORI     0b0111_0101
+00C8	CD F4 00                CALL    calc_hash
+00CB	CD 3A 01                CALL    byteo
+	                
+00CE	0F                      RRC
+00CF	CD F4 00                CALL    calc_hash
+00D2	CD 3A 01                CALL    byteo
+	                
+00D5	EE EA                   XRI     0b1110_1010
+00D7	CD F4 00                CALL    calc_hash
+00DA	CD 3A 01                CALL    byteo
+	                
+00DD	1F                      RAR
+00DE	CD F4 00                CALL    calc_hash
+00E1	CD 3A 01                CALL    byteo
+	                
+00E4	E6 BE                   ANI     0b1011_1110
+00E6	CD F4 00                CALL    calc_hash
+00E9	CD 3A 01                CALL    byteo
+	                
+00EC	17                      RAL
+00ED	CD F4 00                CALL    calc_hash
+00F0	CD 3A 01                CALL    byteo
+	                
+00F3	C9                      RET
+	                
+	                calc_hash:
+	                ; сохраняем все регистры в стек
+00F4	C5                      PUSH B
+00F5	D5                      PUSH D
+00F6	E5                      PUSH H
+00F7	F5                      PUSH PSW
+	                
+	                ; записываем адрес вершины стека в HL <= SP
+00F8	21 00 00                LXI H,0000
+00FB	39                      DAD SP
+	                
+	                ; перемещаемся по стеку в место, где хранятся наши регистры
+00FC	0E 08                   MVI C,08      ; Установить значение регистра C равным 8
+	                dcx_loop1:
+00FE	2B                      DCX H         ; Уменьшить значение регистра H и L на 1
+00FF	0D                      DCR C         ; Уменьшить значение регистра C на 1
+0100	C2 FE 00                JNZ dcx_loop1 ; Повторять, пока значение регистра C не станет равным 0
+	                ; теперь (HL) указывает на область памяти содержащий начало цепочки: B C D E H L A PSW
+	                ; загрузим A из другой части памяти, где накапливаем результат
+0103	11 61 00        	LXI D,xor_data ; в DE помещаем адрес xor_data хранилища
+0106	1A              	LDAX D        ; загружаем в аккумулятор A=(DE) значение этого хранилища
+	                ; мы пройдемся по всей цепочке
+0107	0E 08              	MVI C,08      ; Установить значение регистра C равным 8
+	                dcx_loop2:
+0109	46              	MOV B,M       ; сохраним значение памяти в B
+010A	A8              	XRA B         ; A = A <XOR> B - накапливаем в A энтропию
+010B	23              	INX H         ; Увеличить значение регистра H и L на 1
+010C	0D                      DCR C         ; Уменьшить значение регистра C на 1
+010D	C2 09 01                JNZ dcx_loop2 ; Повторять, пока значение регистра C не станет равным 0
+	                ; сохраним A в области памяти (DE) для будущих накоплений
+0110	12              	STAX D
+	                ; загружаем все регистры из стека
+0111	C1                      POP B
+0112	D1                      POP D
+0113	E1                      POP H
+0114	F1                      POP PSW
+	                ; чтобы продолжить как ни в чем небывало
+0115	C9              	RET
+	                
+	                ;
+	                ;MESSAGE OUTPUT ROUTINE
+	                ;
+0116	C5              msg:    PUSH    B          ; Push state
+0117	D5                      PUSH    D
+0118	E5                      PUSH    H
+0119	F5                      PUSH    PSW
+011A	7E              msgs:   MOV     A,M        ; Get data
+011B	FE 24                   CPI     '$'        ; End?
+011D	CA 28 01                JZ      msge       ; Exit
+0120	7E                      MOV     A,M
+0121	CD 2D 01                CALL    pchar      ; Output
+0124	23                      INX     H          ; Next
+0125	C3 1A 01                JMP     msgs       ; Do all
+0128	F1              msge:   POP     PSW        ; Pop state
+0129	E1                      POP     H
+012A	D1                      POP     D
+012B	C1                      POP     B
+012C	C9                      RET
+	                ;
+	                ;CHARACTER OUTPUT ROUTINE
+	                ;
+012D	C5              pchar:  PUSH    B
+012E	D5                      PUSH    D
+012F	E5                      PUSH    H
+0130	F5                      PUSH    PSW
+0131	4F                      MOV     C,A
+0132	CD 37 C0                CALL    bdos
+0135	F1                      POP     PSW
+0136	E1                      POP     H
+0137	D1                      POP     D
+0138	C1                      POP     B
+0139	C9                      RET
+	                ;
+	                ;HEX BYTE OUTPUT ROUTINE
+	                ;
+013A	C5              byteo:  PUSH    B
+013B	D5                      PUSH    D
+013C	E5                      PUSH    H
+013D	F5                      PUSH    PSW
+013E	F5                      PUSH    PSW
+013F	CD 51 01                CALL    byto1
+0142	CD 2D 01                CALL    pchar
+0145	F1                      POP     PSW
+0146	CD 55 01                CALL    byto2
+0149	CD 2D 01                CALL    pchar
+014C	F1                      POP     PSW
+014D	E1                      POP     H
+014E	D1                      POP     D
+014F	C1                      POP     B
+0150	C9                      RET
+0151	0F              byto1:  RRC
+0152	0F                      RRC
+0153	0F                      RRC
+0154	0F                      RRC
+0155	E6 0F           byto2:  ANI     00Fh
+0157	FE 0A                   CPI     00Ah
+0159	FA 5E 01                JM      byto3
+015C	C6 07                   ADI     7
+015E	C6 30           byto3:  ADI     030h
+0160	C9                      RET
+	                
+	                end:
+Labels:
+bdos                    C037
+begin                   0000	byteo                   013A
+byto1                   0151	byto2                   0155
+byto3                   015E	calc_hash               00F4
+dcx_loop1               00FE	dcx_loop2               0109
+done                    0058	end                     0161
+msg                     0116	msg1                    0006
+msg2                    003B	msge                    0128
+msgs                    011A	pchar                   012D
+start                   004F	test_command            0062
+wboot                   0003	xor_data                0061
+

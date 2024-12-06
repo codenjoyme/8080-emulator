@@ -1,0 +1,8 @@
+{
+  "binFileName": "test.mem",
+  "hexFileName": "test.hex",
+  "kind": "assemble",
+  "org": 0,
+  "tapFileName": "test.cas",
+  "tapeFormat": "специалистъ-mon"
+}

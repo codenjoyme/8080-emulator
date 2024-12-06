@@ -1,0 +1,98 @@
+	                ;******************************************************************************
+	                ; Prints 'HELLO WORLD\nEE'
+	                ;
+	                ; Adapted by Oleksandr Baglai to be able to work on LIK and assemble with
+	                ;     https://svofski.github.io/pretty-8080-assembler/
+	                ;     https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D0%BA_(%D0%BA%D0%BE%D0%BC%D0%BF%D1%8C%D1%8E%D1%82%D0%B5%D1%80)
+	                ;
+	                ;******************************************************************************
+	                
+	                        .project hello-world.mem
+	                        .tape специалистъ-mon
+	                        CPU     8080
+	                        .ORG    00000h
+	                
+0000	21 0E 00        start:  LXI     H,hello
+0003	CD 21 00                CALL    msg
+0006	3E FE                   MVI     A,0FEh
+0008	CD 45 00                CALL    byteo      ; SHOW EXIT CODE
+000B	C3 1E 00                JMP     wboot      ; exit
+	                ;
+000E	0D 0A 48 45     hello:  DB      00Dh, 00Ah, 'HELLO WORLD', 00Dh, 00Ah, '$'
+	. . .
+001A	44 0D 0A 24 
+
+	                ;
+	                bdos    EQU     0C037h     ; LIK PRINT CHAR PROCEDURE
+001E	C3 00 C8        wboot:  JMP     0C800h     ; LIK MONITOR-1M
+	                ;
+	                ;MESSAGE OUTPUT ROUTINE
+	                ;
+0021	C5              msg:    PUSH    B          ; Push state
+0022	D5                      PUSH    D
+0023	E5                      PUSH    H
+0024	F5                      PUSH    PSW
+0025	7E              msgs:   MOV     A,M        ; Get data
+0026	FE 24                   CPI     '$'        ; End?
+0028	CA 33 00                JZ      msge       ; Exit
+002B	7E                      MOV     A,M
+002C	CD 38 00                CALL    pchar      ; Output
+002F	23                      INX     H          ; Next
+0030	C3 25 00                JMP     msgs       ; Do all
+0033	F1              msge:   POP     PSW        ; Pop state
+0034	E1                      POP     H
+0035	D1                      POP     D
+0036	C1                      POP     B
+0037	C9                      RET
+	                ;
+	                ;CHARACTER OUTPUT ROUTINE
+	                ;
+0038	C5              pchar:  PUSH    B
+0039	D5                      PUSH    D
+003A	E5                      PUSH    H
+003B	F5                      PUSH    PSW
+003C	4F                      MOV     C,A
+003D	CD 37 C0                CALL    bdos
+0040	F1                      POP     PSW
+0041	E1                      POP     H
+0042	D1                      POP     D
+0043	C1                      POP     B
+0044	C9                      RET
+	                ;
+	                ;HEX BYTE OUTPUT ROUTINE
+	                ;
+0045	C5              byteo:  PUSH    B
+0046	D5                      PUSH    D
+0047	E5                      PUSH    H
+0048	F5                      PUSH    PSW
+0049	F5                      PUSH    PSW
+004A	CD 5C 00                CALL    byto1
+004D	CD 38 00                CALL    pchar
+0050	F1                      POP     PSW
+0051	CD 60 00                CALL    byto2
+0054	CD 38 00                CALL    pchar
+0057	F1                      POP     PSW
+0058	E1                      POP     H
+0059	D1                      POP     D
+005A	C1                      POP     B
+005B	C9                      RET
+005C	0F              byto1:  RRC
+005D	0F                      RRC
+005E	0F                      RRC
+005F	0F                      RRC
+0060	E6 0F           byto2:  ANI     00Fh
+0062	FE 0A                   CPI     00Ah
+0064	FA 69 00                JM      byto3
+0067	C6 07                   ADI     7
+0069	C6 30           byto3:  ADI     030h
+006B	C9                      RET
+	                end:
+Labels:
+bdos                    C037
+byteo                   0045	byto1                   005C
+byto2                   0060	byto3                   0069
+end                     006C	hello                   000E
+msg                     0021	msge                    0033
+msgs                    0025	pchar                   0038
+start                   0000	wboot                   001E
+

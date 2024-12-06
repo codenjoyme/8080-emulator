@@ -1,0 +1,518 @@
+	                ;
+	                ; Preliminary i8080 tests
+	                ; Copyright (C) 1994 Frank D. Cringle
+	                ;
+	                ; This program is free software; you can redistribute it and/or
+	                ; modify it under the terms of the GNU General Public License
+	                ; as published by the Free Software Foundation; either version 2
+	                ; of the License, or (at your option) any later version.
+	                ;
+	                ; This program is distributed in the hope that it will be useful,
+	                ; but WITHOUT ANY WARRANTY; without even the implied warranty of
+	                ; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	                ; GNU General Public License for more details.
+	                ;
+	                ; You should have received a copy of the GNU General Public License
+	                ; along with this program; if not, write to the Free Software
+	                ; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+	                ;
+	                ; These tests have two goals.  To start with, we assume the worst and
+	                ; successively test the instructions needed to continue testing.
+	                ; Then we try to test all instructions which cannot be handled by
+	                ; zexlax - the crc-based instruction exerciser.
+	                ;
+	                ; Initially errors are 'reported' by jumping to 0.  This should reboot
+	                ; cp/m, so if the program terminates without any output one of the
+	                ; early tests failed.  Later errors are reported by outputting an
+	                ; address via the bdos conout routine.  The address can be located in
+	                ; a listing of this program.
+	                ;
+	                ; If the program runs to completion it displays a suitable message.
+	                
+	                ;******************************************************************************
+	                ;
+	                ; Modified by Ian Bartholomew to run a preliminary test on an 8080 CPU
+	                ;
+	                ; Modified by Oleksandr Baglai to be able to work on LIK and assemble with
+	                ;     https://svofski.github.io/pretty-8080-assembler/
+	                ;     https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D0%BA_(%D0%BA%D0%BE%D0%BC%D0%BF%D1%8C%D1%8E%D1%82%D0%B5%D1%80)
+	                ;
+	                ;******************************************************************************
+	                
+	                        .PROJECT 8080pre.mem
+	                        .tape специалистъ-mon
+	                        CPU     8080
+	                        .ORG    00000h
+	                
+0000	21 09 00        start:  LXI     H, mssg
+0003	CD 4C 00                CALL    msg
+0006	C3 97 00                JMP     test       ; start test
+	                ;
+0009	0D 0A 38 30     mssg:   DB      00Dh, 00Ah, '8080 PRELIMINARY TESTS'
+	. . .
+001D	45 53 54 53 
+
+0021	0D 0A 43 4F             DB      00Dh, 00Ah, 'COPYRIGHT (C) 1994 FRANK D. CRINGLE', 00Dh, 00Ah, '$'
+	. . .
+0045	45 0D 0A 24 
+
+	                ;
+	                bdos    EQU     0C037h     ; LIK PRINT CHAR PROCEDURE
+0049	C3 00 C8        wboot:  JMP     0C800h     ; LIK MONITOR-1M
+	                ;
+	                ;MESSAGE OUTPUT ROUTINE
+	                ;
+004C	C5              msg:    PUSH    B          ; Push state
+004D	D5                      PUSH    D
+004E	E5                      PUSH    H
+004F	F5                      PUSH    PSW
+0050	7E              msgs:   MOV     A,M        ; Get data
+0051	FE 24                   CPI     '$'        ; End?
+0053	CA 5E 00                JZ      msge       ; Exit
+0056	7E                      MOV     A,M
+0057	CD 63 00                CALL    pchar      ; Output
+005A	23                      INX     H          ; Next
+005B	C3 50 00                JMP     msgs       ; Do all
+005E	F1              msge:   POP     PSW        ; Pop state
+005F	E1                      POP     H
+0060	D1                      POP     D
+0061	C1                      POP     B
+0062	C9                      RET
+	                ;
+	                ;CHARACTER OUTPUT ROUTINE
+	                ;
+0063	C5              pchar:  PUSH    B
+0064	D5                      PUSH    D
+0065	E5                      PUSH    H
+0066	F5                      PUSH    PSW
+0067	4F                      MOV     C,A
+0068	CD 37 C0                CALL    bdos
+006B	F1                      POP     PSW
+006C	E1                      POP     H
+006D	D1                      POP     D
+006E	C1                      POP     B
+006F	C9                      RET
+	                ;
+	                ;HEX BYTE OUTPUT ROUTINE
+	                ;
+0070	C5              byteo:  PUSH    B
+0071	D5                      PUSH    D
+0072	E5                      PUSH    H
+0073	F5                      PUSH    PSW
+0074	F5                      PUSH    PSW
+0075	CD 87 00                CALL    byto1
+0078	CD 63 00                CALL    pchar
+007B	F1                      POP     PSW
+007C	CD 8B 00                CALL    byto2
+007F	CD 63 00                CALL    pchar
+0082	F1                      POP     PSW
+0083	E1                      POP     H
+0084	D1                      POP     D
+0085	C1                      POP     B
+0086	C9                      RET
+0087	0F              byto1:  RRC
+0088	0F                      RRC
+0089	0F                      RRC
+008A	0F                      RRC
+008B	E6 0F           byto2:  ANI     00Fh
+008D	FE 0A                   CPI     00Ah
+008F	FA 94 00                JM      byto3
+0092	C6 07                   ADI     7
+0094	C6 30           byto3:  ADI     030h
+0096	C9                      RET
+	                ;
+	                ; Start testing
+	                ;
+0097	3E 01           test:   MVI     a,1        ; test simple compares and z/nz jumps
+0099	FE 02                   CPI     2
+009B	CA AB 00                JZ      fail1
+009E	FE 01                   CPI     1
+00A0	C2 AB 00                JNZ     fail1
+00A3	C3 AE 00                JMP     lab0
+00A6	76                      HLT                ; emergency exit
+00A7	FF                      DB      0FFh
+00A8	C3 AE 00                JMP     lab0
+00AB	CD 11 03        fail1:  CALL    error
+	                
+00AE	CD B4 00        lab0:   CALL    lab2       ; does a simple call work?
+	                
+00B1	C3 11 03        lab1:   JMP     error      ; fail
+	                
+00B4	E1              lab2:   POP     h          ; check return address
+00B5	7C                      MOV     A,H
+00B6	FE 00                   CPI     (lab1 / 0FFh)
+00B8	CA BE 00                JZ      lab3
+00BB	CD 11 03                CALL    error
+00BE	7D              lab3:   MOV     A,L
+00BF	FE B1                   CPI     (lab1 & 0FFh)
+00C1	CA C7 00                JZ      lab4
+00C4	CD 11 03                CALL    error
+	                
+	                ; test presence and uniqueness of all machine registers
+	                ; (except ir)
+00C7	31 32 03        lab4:   LXI     SP,regs1
+00CA	F1                      POP     PSW
+00CB	C1                      POP     B
+00CC	D1                      POP     D
+00CD	E1                      POP     H
+00CE	31 42 03                LXI     SP,regs2+8
+00D1	E5                      PUSH    H
+00D2	D5                      PUSH    D
+00D3	C5                      PUSH    B
+00D4	F5                      PUSH    PSW
+	                
+00D5	3A 3A 03                LDA     regs2 + 0/2
+00D8	FE 02                   CPI     2
+00DA	C2 18 01                JNZ     fail2
+00DD	3A 3B 03                LDA     regs2 + 2/2
+00E0	FE 04                   CPI     4
+00E2	C2 18 01                JNZ     fail2
+00E5	3A 3C 03                LDA     regs2 + 4/2
+00E8	FE 06                   CPI     6
+00EA	C2 18 01                JNZ     fail2
+00ED	3A 3D 03                LDA     regs2 + 6/2
+00F0	FE 08                   CPI     8
+00F2	C2 18 01                JNZ     fail2
+00F5	3A 3E 03                LDA     regs2 + 8/2
+00F8	FE 0A                   CPI     10
+00FA	C2 18 01                JNZ     fail2
+00FD	3A 3F 03                LDA     regs2 + 10/2
+0100	FE 0C                   CPI     12
+0102	C2 18 01                JNZ     fail2
+0105	3A 40 03                LDA     regs2 + 12/2
+0108	FE 0E                   CPI     14
+010A	C2 18 01                JNZ     fail2
+010D	3A 41 03                LDA     regs2 + 14/2
+0110	FE 10                   CPI     16
+0112	C2 18 01                JNZ     fail2
+0115	C3 1B 01                JMP     lab5
+0118	CD 11 03        fail2:  CALL    error
+	                
+	                ; test access to memory via (hl)
+011B	21 42 03        lab5:   LXI     H,hlval
+011E	7E                      MOV     A,M
+011F	FE A5                   CPI     0A5h
+0121	C2 30 01                JNZ     fail3
+0124	21 43 03                LXI     H,hlval+1
+0127	7E                      MOV     A,M
+0128	FE 3C                   CPI     03Ch
+012A	C2 30 01                JNZ     fail3
+012D	C3 33 01                JMP     lab6
+0130	CD 11 03        fail3:  CALL    error
+	                
+	                ; test unconditional return
+0133	31 70 04        lab6:   LXI     SP,stack
+0136	21 3E 01                LXI     H,lab6_1
+0139	E5                      PUSH    H
+013A	C9                      RET
+013B	CD 11 03                CALL    error
+	                
+	                ; test instructions needed for hex output
+013E	3E FF           lab6_1: MVI     A,0FFh
+0140	E6 0F                   ANI     0Fh
+0142	FE 0F                   CPI     0Fh
+0144	C2 7C 01                JNZ     fail4
+0147	3E 5A                   MVI     A,05Ah
+0149	E6 0F                   ANI     0Fh
+014B	FE 0A                   CPI     0Ah
+014D	C2 7C 01                JNZ     fail4
+0150	0F                      RRC
+0151	FE 05                   CPI     05h
+0153	C2 7C 01                JNZ     fail4
+0156	0F                      RRC
+0157	FE 82                   CPI     82h
+0159	C2 7C 01                JNZ     fail4
+015C	0F                      RRC
+015D	FE 41                   CPI     41h
+015F	C2 7C 01                JNZ     fail4
+0162	0F                      RRC
+0163	FE A0                   CPI     0A0h
+0165	C2 7C 01                JNZ     fail4
+0168	21 34 12                LXI     H,01234h
+016B	E5                      PUSH    H
+016C	C1                      POP     B
+016D	78                      MOV     A,B
+016E	FE 12                   CPI     12h
+0170	C2 7C 01                JNZ     fail4
+0173	79                      MOV     A,C
+0174	FE 34                   CPI     34h
+0176	C2 7C 01                JNZ     fail4
+0179	C3 7F 01                JMP     lab0_c
+017C	CD 11 03        fail4:  CALL    error
+	                
+	                ; from now on we can report errors by displaying an address
+	                
+	                ; test conditional call, ret, jp, jr
+	                ; commands CC, CNC, JC, JNC, RC, RNC
+017F	21 01 00        lab0_c: LXI     H,001h            ; FLAG
+0182	E5                      PUSH    H
+0183	F1                      POP     PSW
+0184	DC 8A 01                CC      lab1_c
+0187	CD 11 03                CALL    error
+018A	E1              lab1_c: POP     H
+018B	21 D6 00                LXI     H,0D7h ^ 001h     ; FLAG
+018E	E5                      PUSH    H
+018F	F1                      POP     PSW
+0190	D4 96 01                CNC     lab2_c
+0193	CD 11 03                CALL    error
+0196	E1              lab2_c: POP     H
+0197	21 A4 01                LXI     H,lab3_c
+019A	E5                      PUSH    H
+019B	21 01 00                LXI     H,001h            ; FLAG
+019E	E5                      PUSH    H
+019F	F1                      POP     PSW
+01A0	D8                      RC
+01A1	CD 11 03                CALL    error
+01A4	21 B1 01        lab3_c: LXI     H,lab4_c
+01A7	E5                      PUSH    H
+01A8	21 D6 00                LXI     H,0D7h ^ 001h     ; FLAG
+01AB	E5                      PUSH    H
+01AC	F1                      POP     PSW
+01AD	D0                      RNC
+01AE	CD 11 03                CALL    error
+01B1	21 01 00        lab4_c: LXI     H,001h            ; FLAG
+01B4	E5                      PUSH    H
+01B5	F1                      POP     PSW
+01B6	DA BC 01                JC      lab5_c
+01B9	CD 11 03                CALL    error
+01BC	21 D6 00        lab5_c: LXI     H,0D7h ^ 001h     ; FLAG
+01BF	E5                      PUSH    H
+01C0	F1                      POP     PSW
+01C1	D2 C7 01                JNC     lab0_p
+01C4	CD 11 03                CALL    error
+	                
+	                ; commands CPE, CPO, JPE, JPO, RPE, RPO
+01C7	21 04 00        lab0_p: LXI     H,004h            ; FLAG
+01CA	E5                      PUSH    H
+01CB	F1                      POP     PSW
+01CC	EC D2 01                CPE     lab1_p
+01CF	CD 11 03                CALL    error
+01D2	E1              lab1_p: POP     H
+01D3	21 D3 00                LXI     H,0D7h ^ 004h     ; FLAG
+01D6	E5                      PUSH    H
+01D7	F1                      POP     PSW
+01D8	E4 DE 01                CPO     lab2_p
+01DB	CD 11 03                CALL    error
+01DE	E1              lab2_p: POP     H
+01DF	21 EC 01                LXI     H,lab3_p
+01E2	E5                      PUSH    H
+01E3	21 04 00                LXI     H,004h            ; FLAG
+01E6	E5                      PUSH    H
+01E7	F1                      POP     PSW
+01E8	E8                      RPE
+01E9	CD 11 03                CALL    error
+01EC	21 F9 01        lab3_p: LXI     H,lab4_p
+01EF	E5                      PUSH    H
+01F0	21 D3 00                LXI     H,0D7h ^ 004h     ; FLAG
+01F3	E5                      PUSH    H
+01F4	F1                      POP     PSW
+01F5	E0                      RPO
+01F6	CD 11 03                CALL    error
+01F9	21 04 00        lab4_p: LXI     H,004h            ; FLAG
+01FC	E5                      PUSH    H
+01FD	F1                      POP     PSW
+01FE	EA 04 02                JPE     lab5_p
+0201	CD 11 03                CALL    error
+0204	21 D3 00        lab5_p: LXI     H,0D7h ^ 004h     ; FLAG
+0207	E5                      PUSH    H
+0208	F1                      POP     PSW
+0209	E2 0F 02                JPO     lab0_z
+020C	CD 11 03                CALL    error
+	                
+	                ; commands CZ, CNZ, JZ, JNZ, RZ, RNZ
+020F	21 40 00        lab0_z: LXI     H,040h            ; FLAG
+0212	E5                      PUSH    H
+0213	F1                      POP     PSW
+0214	CC 1A 02                CZ      lab1_z
+0217	CD 11 03                CALL    error
+021A	E1              lab1_z: POP     H
+021B	21 97 00                LXI     H,0D7h ^ 040h     ; FLAG
+021E	E5                      PUSH    H
+021F	F1                      POP     PSW
+0220	C4 26 02                CNZ     lab2_z
+0223	CD 11 03                CALL    error
+0226	E1              lab2_z: POP     H
+0227	21 34 02                LXI     H,lab3_z
+022A	E5                      PUSH    H
+022B	21 40 00                LXI     H,040h            ; FLAG
+022E	E5                      PUSH    H
+022F	F1                      POP     PSW
+0230	C8                      RZ
+0231	CD 11 03                CALL    error
+0234	21 41 02        lab3_z: LXI     H,lab4_z
+0237	E5                      PUSH    H
+0238	21 97 00                LXI     H,0D7h ^ 040h     ; FLAG
+023B	E5                      PUSH    H
+023C	F1                      POP     PSW
+023D	C0                      RNZ
+023E	CD 11 03                CALL    error
+0241	21 40 00        lab4_z: LXI     H,040h            ; FLAG
+0244	E5                      PUSH    H
+0245	F1                      POP     PSW
+0246	CA 4C 02                JZ      lab5_z
+0249	CD 11 03                CALL    error
+024C	21 97 00        lab5_z: LXI     H,0D7h ^ 040h     ; FLAG
+024F	E5                      PUSH    H
+0250	F1                      POP     PSW
+0251	C2 57 02                JNZ     lab0_h
+0254	CD 11 03                CALL    error
+	                
+	                ; commands CM, CP, JM, JP, RM, RP
+0257	21 80 00        lab0_h: LXI     H,080h            ; FLAG
+025A	E5                      PUSH    H
+025B	F1                      POP     PSW
+025C	FC 62 02                CM      lab1_h
+025F	CD 11 03                CALL    error
+0262	E1              lab1_h: POP     H
+0263	21 57 00                LXI     H,0D7h ^ 080h     ; FLAG
+0266	E5                      PUSH    H
+0267	F1                      POP     PSW
+0268	F4 6E 02                CP      lab2_h
+026B	CD 11 03                CALL    error
+026E	E1              lab2_h: POP     H
+026F	21 7C 02                LXI     H,lab3_h
+0272	E5                      PUSH    H
+0273	21 80 00                LXI     H,080h            ; FLAG
+0276	E5                      PUSH    H
+0277	F1                      POP     PSW
+0278	F8                      RM
+0279	CD 11 03                CALL    error
+027C	21 89 02        lab3_h: LXI     H,lab4_h
+027F	E5                      PUSH    H
+0280	21 57 00                LXI     H,0D7h ^ 080h     ; FLAG
+0283	E5                      PUSH    H
+0284	F1                      POP     PSW
+0285	F0                      RP
+0286	CD 11 03                CALL    error
+0289	21 80 00        lab4_h: LXI     H,080h            ; FLAG
+028C	E5                      PUSH    H
+028D	F1                      POP     PSW
+028E	FA 94 02                JM      lab5_h
+0291	CD 11 03                CALL    error
+0294	21 57 00        lab5_h: LXI     H,0D7h ^ 080h     ; FLAG
+0297	E5                      PUSH    H
+0298	F1                      POP     PSW
+0299	F2 9F 02                JP      lab6_2
+029C	CD 11 03                CALL    error
+	                
+	                ; test indirect jumps
+029F	21 A6 02        lab6_2: LXI     H,lab7
+02A2	E9                      PCHL
+02A3	CD 11 03                CALL    error
+	                
+	                ; djnz (and (partially) inc a, inc hl)
+02A6	3E A5           lab7:   MVI    A,0A5h
+02A8	06 04                   MVI    B,4
+02AA	0F              lab8:   RRC
+02AB	05                      DCR    B
+02AC	C2 AA 02                JNZ    lab8
+02AF	FE 5A                   CPI    05Ah
+02B1	C4 11 03                CNZ    error
+02B4	06 10                   MVI    B,16
+02B6	3C              lab9:   INR    A
+02B7	05                      DCR    B
+02B8	C2 B6 02                JNZ    lab9
+02BB	FE 6A                   CPI    06Ah
+02BD	C4 11 03                CNZ    error
+02C0	06 00                   MVI    B,0
+02C2	21 00 00                LXI    H,0
+02C5	23              lab10:  INX    H
+02C6	05                      DCR    B
+02C7	C2 C5 02                JNZ    lab10
+02CA	7C                      MOV    A,H
+02CB	FE 01                   CPI    1
+02CD	C4 11 03                CNZ    error
+02D0	7D                      MOV    A,l
+02D1	FE 00                   CPI    0
+02D3	C4 11 03                CNZ    error
+	                
+02D6	21 DF 02        allok:  LXI    H,okmsg
+02D9	CD 4C 00                CALL   msg
+02DC	C3 49 00                JMP    wboot
+	                
+02DF	0D 0A 54 45     okmsg:  DB    00Dh, 00Ah, 'TESTS SUCCESSFUL', '$'
+	. . .
+02EF	55 4C 24 
+
+02F2	0D 0A 43 50     errmsg: DB    00Dh, 00Ah, 'CPU HAS FAILED!', 00Dh, 00Ah, 'ERROR ADDR=', '$'
+	. . .
+030E	52 3D 24 
+
+	                
+	                ; display address at top of stack and exit
+0311	21 F2 02        error:  LXI     H,errmsg  ;OUTPUT ERROR MESSAGE TO CONSOLE
+0314	CD 4C 00                CALL    msg
+0317	E3                      XTHL
+0318	2B                      DCX     H
+0319	2B                      DCX     H
+031A	2B                      DCX     H
+031B	7C                      MOV     A,H
+031C	CD 70 00                CALL    byteo    ;SHOW ERROR EXIT ADDRESS HIGH BYTE
+031F	7D                      MOV     A,L
+0320	CD 70 00                CALL    byteo    ;SHOW ERROR EXIT ADDRESS LOW BYTE
+0323	C3 49 00                JMP     wboot    ;EXIT TO CP/M WARM BOOT
+	                
+0326	F5              conout: PUSH   PSW
+0327	C5                      PUSH   B
+0328	D5                      PUSH   D
+0329	E5                      PUSH   H
+032A	CD 70 00                CALL   byteo
+032D	E1                      POP    H
+032E	D1                      POP    D
+032F	C1                      POP    B
+0330	F1                      POP    PSW
+0331	C9                      RET
+	                
+0332	02 04 06 08     regs1:  DB     002h, 004h, 006h, 008h, 00Ah, 00Ch, 00Eh, 010h
+	. . .
+0336	0A 0C 0E 10 
+
+	                
+033A	00 00 00 00     regs2:  DS     0,8
+	. . .
+033E	00 00 00 00 
+
+	                
+0342	A5 3C           hlval:  DB     0A5h,03Ch
+0344	00 00 00 00             DS     300
+	. . .
+046C	00 00 00 00 
+
+	                
+	                stack   EQU    $
+	                
+	                end:
+Labels:
+allok                   02D6
+bdos                    C037	byteo                   0070
+byto1                   0087	byto2                   008B
+byto3                   0094	conout                  0326
+end                     0470	errmsg                  02F2
+error                   0311	fail1                   00AB
+fail2                   0118	fail3                   0130
+fail4                   017C	hlval                   0342
+lab0                    00AE	lab0_c                  017F
+lab0_h                  0257	lab0_p                  01C7
+lab0_z                  020F	lab1                    00B1
+lab10                   02C5	lab1_c                  018A
+lab1_h                  0262	lab1_p                  01D2
+lab1_z                  021A	lab2                    00B4
+lab2_c                  0196	lab2_h                  026E
+lab2_p                  01DE	lab2_z                  0226
+lab3                    00BE	lab3_c                  01A4
+lab3_h                  027C	lab3_p                  01EC
+lab3_z                  0234	lab4                    00C7
+lab4_c                  01B1	lab4_h                  0289
+lab4_p                  01F9	lab4_z                  0241
+lab5                    011B	lab5_c                  01BC
+lab5_h                  0294	lab5_p                  0204
+lab5_z                  024C	lab6                    0133
+lab6_1                  013E	lab6_2                  029F
+lab7                    02A6	lab8                    02AA
+lab9                    02B6	msg                     004C
+msge                    005E	msgs                    0050
+mssg                    0009	okmsg                   02DF
+pchar                   0063	regs1                   0332
+regs2                   033A	stack                   0470
+start                   0000	test                    0097
+wboot                   0049	

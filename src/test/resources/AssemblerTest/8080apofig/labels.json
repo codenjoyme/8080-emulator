@@ -1,0 +1,23 @@
+{
+  "bdos": 49207,
+  "begin": 0,
+  "byteo": 314,
+  "byto1": 337,
+  "byto2": 341,
+  "byto3": 350,
+  "calc_hash": 244,
+  "dcx_loop1": 254,
+  "dcx_loop2": 265,
+  "done": 88,
+  "end": 353,
+  "msg": 278,
+  "msg1": 6,
+  "msg2": 59,
+  "msge": 296,
+  "msgs": 282,
+  "pchar": 301,
+  "start": 79,
+  "test_command": 98,
+  "wboot": 3,
+  "xor_data": 97
+}

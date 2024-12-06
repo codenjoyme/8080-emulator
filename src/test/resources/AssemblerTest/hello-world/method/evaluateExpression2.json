@@ -1,0 +1,688 @@
+[
+  {
+    "input": [
+      "00000h",
+      0,
+      12
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {}
+      }
+    ],
+    "result": 0
+  },
+  {
+    "input": [
+      "hello",
+      0,
+      14
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 14
+  },
+  {
+    "input": [
+      "msg",
+      3,
+      15
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 33
+  },
+  {
+    "input": [
+      "0FEh",
+      6,
+      16
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 254
+  },
+  {
+    "input": [
+      "byteo",
+      8,
+      17
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 69
+  },
+  {
+    "input": [
+      "wboot",
+      11,
+      18
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 30
+  },
+  {
+    "input": [
+      "00Dh",
+      13,
+      20
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah",
+      14,
+      20
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 10
+  },
+  {
+    "input": [
+      "00Dh",
+      26,
+      20
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah",
+      27,
+      20
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 10
+  },
+  {
+    "input": [
+      "0C800h",
+      30,
+      23
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 51200
+  },
+  {
+    "input": [
+      "'$'",
+      38,
+      32
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 36
+  },
+  {
+    "input": [
+      "msge",
+      40,
+      33
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 51
+  },
+  {
+    "input": [
+      "pchar",
+      44,
+      35
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 56
+  },
+  {
+    "input": [
+      "msgs",
+      48,
+      37
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 37
+  },
+  {
+    "input": [
+      "bdos",
+      61,
+      51
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 49207
+  },
+  {
+    "input": [
+      "byto1",
+      74,
+      65
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 92
+  },
+  {
+    "input": [
+      "pchar",
+      77,
+      66
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 56
+  },
+  {
+    "input": [
+      "byto2",
+      81,
+      68
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 96
+  },
+  {
+    "input": [
+      "pchar",
+      84,
+      69
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 56
+  },
+  {
+    "input": [
+      "00Fh",
+      96,
+      79
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 15
+  },
+  {
+    "input": [
+      "00Ah",
+      98,
+      80
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 10
+  },
+  {
+    "input": [
+      "byto3",
+      100,
+      81
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 105
+  },
+  {
+    "input": [
+      "7",
+      103,
+      82
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 7
+  },
+  {
+    "input": [
+      "030h",
+      105,
+      83
+    ],
+    "fields": [
+      {
+        "name": "labels",
+        "value": {
+          "start": 0,
+          "hello": 14,
+          "bdos": 49207,
+          "wboot": 30,
+          "msg": 33,
+          "msgs": 37,
+          "msge": 51,
+          "pchar": 56,
+          "byteo": 69,
+          "byto1": 92,
+          "byto2": 96,
+          "byto3": 105,
+          "end": 108
+        }
+      }
+    ],
+    "result": 48
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "binFileName": "hello-world.mem",
+  "hexFileName": "hello-world.hex",
+  "kind": "assemble",
+  "org": 0,
+  "tapFileName": "hello-world.cas",
+  "tapeFormat": "специалистъ-mon"
+}

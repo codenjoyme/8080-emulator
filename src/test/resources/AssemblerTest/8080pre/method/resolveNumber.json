@@ -1,0 +1,3145 @@
+[
+  {
+    "input": [
+      "00000h"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "00000h"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "0"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "9"
+    ],
+    "fields": null,
+    "result": 9
+  },
+  {
+    "input": [
+      "73"
+    ],
+    "fields": null,
+    "result": 73
+  },
+  {
+    "input": [
+      "0C037h"
+    ],
+    "fields": null,
+    "result": 49207
+  },
+  {
+    "input": [
+      "73"
+    ],
+    "fields": null,
+    "result": 73
+  },
+  {
+    "input": [
+      "76"
+    ],
+    "fields": null,
+    "result": 76
+  },
+  {
+    "input": [
+      "80"
+    ],
+    "fields": null,
+    "result": 80
+  },
+  {
+    "input": [
+      "94"
+    ],
+    "fields": null,
+    "result": 94
+  },
+  {
+    "input": [
+      "99"
+    ],
+    "fields": null,
+    "result": 99
+  },
+  {
+    "input": [
+      "112"
+    ],
+    "fields": null,
+    "result": 112
+  },
+  {
+    "input": [
+      "135"
+    ],
+    "fields": null,
+    "result": 135
+  },
+  {
+    "input": [
+      "139"
+    ],
+    "fields": null,
+    "result": 139
+  },
+  {
+    "input": [
+      "148"
+    ],
+    "fields": null,
+    "result": 148
+  },
+  {
+    "input": [
+      "151"
+    ],
+    "fields": null,
+    "result": 151
+  },
+  {
+    "input": [
+      "171"
+    ],
+    "fields": null,
+    "result": 171
+  },
+  {
+    "input": [
+      "174"
+    ],
+    "fields": null,
+    "result": 174
+  },
+  {
+    "input": [
+      "177"
+    ],
+    "fields": null,
+    "result": 177
+  },
+  {
+    "input": [
+      "180"
+    ],
+    "fields": null,
+    "result": 180
+  },
+  {
+    "input": [
+      "190"
+    ],
+    "fields": null,
+    "result": 190
+  },
+  {
+    "input": [
+      "199"
+    ],
+    "fields": null,
+    "result": 199
+  },
+  {
+    "input": [
+      "280"
+    ],
+    "fields": null,
+    "result": 280
+  },
+  {
+    "input": [
+      "283"
+    ],
+    "fields": null,
+    "result": 283
+  },
+  {
+    "input": [
+      "304"
+    ],
+    "fields": null,
+    "result": 304
+  },
+  {
+    "input": [
+      "307"
+    ],
+    "fields": null,
+    "result": 307
+  },
+  {
+    "input": [
+      "318"
+    ],
+    "fields": null,
+    "result": 318
+  },
+  {
+    "input": [
+      "380"
+    ],
+    "fields": null,
+    "result": 380
+  },
+  {
+    "input": [
+      "383"
+    ],
+    "fields": null,
+    "result": 383
+  },
+  {
+    "input": [
+      "394"
+    ],
+    "fields": null,
+    "result": 394
+  },
+  {
+    "input": [
+      "406"
+    ],
+    "fields": null,
+    "result": 406
+  },
+  {
+    "input": [
+      "420"
+    ],
+    "fields": null,
+    "result": 420
+  },
+  {
+    "input": [
+      "433"
+    ],
+    "fields": null,
+    "result": 433
+  },
+  {
+    "input": [
+      "444"
+    ],
+    "fields": null,
+    "result": 444
+  },
+  {
+    "input": [
+      "455"
+    ],
+    "fields": null,
+    "result": 455
+  },
+  {
+    "input": [
+      "466"
+    ],
+    "fields": null,
+    "result": 466
+  },
+  {
+    "input": [
+      "478"
+    ],
+    "fields": null,
+    "result": 478
+  },
+  {
+    "input": [
+      "492"
+    ],
+    "fields": null,
+    "result": 492
+  },
+  {
+    "input": [
+      "505"
+    ],
+    "fields": null,
+    "result": 505
+  },
+  {
+    "input": [
+      "516"
+    ],
+    "fields": null,
+    "result": 516
+  },
+  {
+    "input": [
+      "527"
+    ],
+    "fields": null,
+    "result": 527
+  },
+  {
+    "input": [
+      "538"
+    ],
+    "fields": null,
+    "result": 538
+  },
+  {
+    "input": [
+      "550"
+    ],
+    "fields": null,
+    "result": 550
+  },
+  {
+    "input": [
+      "564"
+    ],
+    "fields": null,
+    "result": 564
+  },
+  {
+    "input": [
+      "577"
+    ],
+    "fields": null,
+    "result": 577
+  },
+  {
+    "input": [
+      "588"
+    ],
+    "fields": null,
+    "result": 588
+  },
+  {
+    "input": [
+      "599"
+    ],
+    "fields": null,
+    "result": 599
+  },
+  {
+    "input": [
+      "610"
+    ],
+    "fields": null,
+    "result": 610
+  },
+  {
+    "input": [
+      "622"
+    ],
+    "fields": null,
+    "result": 622
+  },
+  {
+    "input": [
+      "636"
+    ],
+    "fields": null,
+    "result": 636
+  },
+  {
+    "input": [
+      "649"
+    ],
+    "fields": null,
+    "result": 649
+  },
+  {
+    "input": [
+      "660"
+    ],
+    "fields": null,
+    "result": 660
+  },
+  {
+    "input": [
+      "671"
+    ],
+    "fields": null,
+    "result": 671
+  },
+  {
+    "input": [
+      "678"
+    ],
+    "fields": null,
+    "result": 678
+  },
+  {
+    "input": [
+      "682"
+    ],
+    "fields": null,
+    "result": 682
+  },
+  {
+    "input": [
+      "694"
+    ],
+    "fields": null,
+    "result": 694
+  },
+  {
+    "input": [
+      "709"
+    ],
+    "fields": null,
+    "result": 709
+  },
+  {
+    "input": [
+      "726"
+    ],
+    "fields": null,
+    "result": 726
+  },
+  {
+    "input": [
+      "735"
+    ],
+    "fields": null,
+    "result": 735
+  },
+  {
+    "input": [
+      "754"
+    ],
+    "fields": null,
+    "result": 754
+  },
+  {
+    "input": [
+      "785"
+    ],
+    "fields": null,
+    "result": 785
+  },
+  {
+    "input": [
+      "806"
+    ],
+    "fields": null,
+    "result": 806
+  },
+  {
+    "input": [
+      "818"
+    ],
+    "fields": null,
+    "result": 818
+  },
+  {
+    "input": [
+      "826"
+    ],
+    "fields": null,
+    "result": 826
+  },
+  {
+    "input": [
+      "0,8"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "8"
+    ],
+    "fields": null,
+    "result": 8
+  },
+  {
+    "input": [
+      "834"
+    ],
+    "fields": null,
+    "result": 834
+  },
+  {
+    "input": [
+      "300"
+    ],
+    "fields": null,
+    "result": 300
+  },
+  {
+    "input": [
+      "300"
+    ],
+    "fields": null,
+    "result": 300
+  },
+  {
+    "input": [
+      "1136"
+    ],
+    "fields": null,
+    "result": 1136
+  },
+  {
+    "input": [
+      "$"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "1136"
+    ],
+    "fields": null,
+    "result": 1136
+  },
+  {
+    "input": [
+      "1136"
+    ],
+    "fields": null,
+    "result": 1136
+  },
+  {
+    "input": [
+      "1136"
+    ],
+    "fields": null,
+    "result": 1136
+  },
+  {
+    "input": [
+      "mssg"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "msg"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "test"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "0C800h"
+    ],
+    "fields": null,
+    "result": 51200
+  },
+  {
+    "input": [
+      "0C800h"
+    ],
+    "fields": null,
+    "result": 51200
+  },
+  {
+    "input": [
+      "'$'"
+    ],
+    "fields": null,
+    "result": 36
+  },
+  {
+    "input": [
+      "'$'"
+    ],
+    "fields": null,
+    "result": 36
+  },
+  {
+    "input": [
+      "msge"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "pchar"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "msgs"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "bdos"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "byto1"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "pchar"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "byto2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "pchar"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "00Fh"
+    ],
+    "fields": null,
+    "result": 15
+  },
+  {
+    "input": [
+      "00Fh"
+    ],
+    "fields": null,
+    "result": 15
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "byto3"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "7"
+    ],
+    "fields": null,
+    "result": 7
+  },
+  {
+    "input": [
+      "7"
+    ],
+    "fields": null,
+    "result": 7
+  },
+  {
+    "input": [
+      "030h"
+    ],
+    "fields": null,
+    "result": 48
+  },
+  {
+    "input": [
+      "030h"
+    ],
+    "fields": null,
+    "result": 48
+  },
+  {
+    "input": [
+      "1"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "1"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "fail1"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "1"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "1"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "fail1"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab0"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0FFh"
+    ],
+    "fields": null,
+    "result": 255
+  },
+  {
+    "input": [
+      "0FFh"
+    ],
+    "fields": null,
+    "result": 255
+  },
+  {
+    "input": [
+      "lab0"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      ""
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab1"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0FFh"
+    ],
+    "fields": null,
+    "result": 255
+  },
+  {
+    "input": [
+      ""
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0FFh"
+    ],
+    "fields": null,
+    "result": 255
+  },
+  {
+    "input": [
+      "lab3"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      ""
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab1"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0FFh"
+    ],
+    "fields": null,
+    "result": 255
+  },
+  {
+    "input": [
+      ""
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0FFh"
+    ],
+    "fields": null,
+    "result": 255
+  },
+  {
+    "input": [
+      "lab4"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "regs1"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "regs2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "8"
+    ],
+    "fields": null,
+    "result": 8
+  },
+  {
+    "input": [
+      "8"
+    ],
+    "fields": null,
+    "result": 8
+  },
+  {
+    "input": [
+      "regs2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "0"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "fail2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "regs2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "4"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "4"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "fail2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "regs2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "4"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "4"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "6"
+    ],
+    "fields": null,
+    "result": 6
+  },
+  {
+    "input": [
+      "6"
+    ],
+    "fields": null,
+    "result": 6
+  },
+  {
+    "input": [
+      "fail2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "regs2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "6"
+    ],
+    "fields": null,
+    "result": 6
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "6"
+    ],
+    "fields": null,
+    "result": 6
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "8"
+    ],
+    "fields": null,
+    "result": 8
+  },
+  {
+    "input": [
+      "8"
+    ],
+    "fields": null,
+    "result": 8
+  },
+  {
+    "input": [
+      "fail2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "regs2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "8"
+    ],
+    "fields": null,
+    "result": 8
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "8"
+    ],
+    "fields": null,
+    "result": 8
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "10"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "10"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "fail2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "regs2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "10"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "10"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "12"
+    ],
+    "fields": null,
+    "result": 12
+  },
+  {
+    "input": [
+      "12"
+    ],
+    "fields": null,
+    "result": 12
+  },
+  {
+    "input": [
+      "fail2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "regs2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "12"
+    ],
+    "fields": null,
+    "result": 12
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "12"
+    ],
+    "fields": null,
+    "result": 12
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "14"
+    ],
+    "fields": null,
+    "result": 14
+  },
+  {
+    "input": [
+      "14"
+    ],
+    "fields": null,
+    "result": 14
+  },
+  {
+    "input": [
+      "fail2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "regs2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "14"
+    ],
+    "fields": null,
+    "result": 14
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "14"
+    ],
+    "fields": null,
+    "result": 14
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "16"
+    ],
+    "fields": null,
+    "result": 16
+  },
+  {
+    "input": [
+      "16"
+    ],
+    "fields": null,
+    "result": 16
+  },
+  {
+    "input": [
+      "fail2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab5"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "hlval"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0A5h"
+    ],
+    "fields": null,
+    "result": 165
+  },
+  {
+    "input": [
+      "0A5h"
+    ],
+    "fields": null,
+    "result": 165
+  },
+  {
+    "input": [
+      "fail3"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "hlval"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "1"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "1"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "03Ch"
+    ],
+    "fields": null,
+    "result": 60
+  },
+  {
+    "input": [
+      "03Ch"
+    ],
+    "fields": null,
+    "result": 60
+  },
+  {
+    "input": [
+      "fail3"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab6"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "stack"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab6_1"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0FFh"
+    ],
+    "fields": null,
+    "result": 255
+  },
+  {
+    "input": [
+      "0FFh"
+    ],
+    "fields": null,
+    "result": 255
+  },
+  {
+    "input": [
+      "0Fh"
+    ],
+    "fields": null,
+    "result": 15
+  },
+  {
+    "input": [
+      "0Fh"
+    ],
+    "fields": null,
+    "result": 15
+  },
+  {
+    "input": [
+      "0Fh"
+    ],
+    "fields": null,
+    "result": 15
+  },
+  {
+    "input": [
+      "0Fh"
+    ],
+    "fields": null,
+    "result": 15
+  },
+  {
+    "input": [
+      "fail4"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "05Ah"
+    ],
+    "fields": null,
+    "result": 90
+  },
+  {
+    "input": [
+      "05Ah"
+    ],
+    "fields": null,
+    "result": 90
+  },
+  {
+    "input": [
+      "0Fh"
+    ],
+    "fields": null,
+    "result": 15
+  },
+  {
+    "input": [
+      "0Fh"
+    ],
+    "fields": null,
+    "result": 15
+  },
+  {
+    "input": [
+      "0Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "0Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "fail4"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "05h"
+    ],
+    "fields": null,
+    "result": 5
+  },
+  {
+    "input": [
+      "05h"
+    ],
+    "fields": null,
+    "result": 5
+  },
+  {
+    "input": [
+      "fail4"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "82h"
+    ],
+    "fields": null,
+    "result": 130
+  },
+  {
+    "input": [
+      "82h"
+    ],
+    "fields": null,
+    "result": 130
+  },
+  {
+    "input": [
+      "fail4"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "41h"
+    ],
+    "fields": null,
+    "result": 65
+  },
+  {
+    "input": [
+      "41h"
+    ],
+    "fields": null,
+    "result": 65
+  },
+  {
+    "input": [
+      "fail4"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0A0h"
+    ],
+    "fields": null,
+    "result": 160
+  },
+  {
+    "input": [
+      "0A0h"
+    ],
+    "fields": null,
+    "result": 160
+  },
+  {
+    "input": [
+      "fail4"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "01234h"
+    ],
+    "fields": null,
+    "result": 4660
+  },
+  {
+    "input": [
+      "01234h"
+    ],
+    "fields": null,
+    "result": 4660
+  },
+  {
+    "input": [
+      "12h"
+    ],
+    "fields": null,
+    "result": 18
+  },
+  {
+    "input": [
+      "12h"
+    ],
+    "fields": null,
+    "result": 18
+  },
+  {
+    "input": [
+      "fail4"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "34h"
+    ],
+    "fields": null,
+    "result": 52
+  },
+  {
+    "input": [
+      "34h"
+    ],
+    "fields": null,
+    "result": 52
+  },
+  {
+    "input": [
+      "fail4"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab0_c"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "001h"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "001h"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "lab1_c"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "001h"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "001h"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "lab2_c"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab3_c"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "001h"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "001h"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab4_c"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "001h"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "001h"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "001h"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "001h"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "lab5_c"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "001h"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "001h"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "lab0_p"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "lab1_p"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "lab2_p"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab3_p"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab4_p"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "lab5_p"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "lab0_z"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "040h"
+    ],
+    "fields": null,
+    "result": 64
+  },
+  {
+    "input": [
+      "040h"
+    ],
+    "fields": null,
+    "result": 64
+  },
+  {
+    "input": [
+      "lab1_z"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "040h"
+    ],
+    "fields": null,
+    "result": 64
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "040h"
+    ],
+    "fields": null,
+    "result": 64
+  },
+  {
+    "input": [
+      "lab2_z"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab3_z"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "040h"
+    ],
+    "fields": null,
+    "result": 64
+  },
+  {
+    "input": [
+      "040h"
+    ],
+    "fields": null,
+    "result": 64
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab4_z"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "040h"
+    ],
+    "fields": null,
+    "result": 64
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "040h"
+    ],
+    "fields": null,
+    "result": 64
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "040h"
+    ],
+    "fields": null,
+    "result": 64
+  },
+  {
+    "input": [
+      "040h"
+    ],
+    "fields": null,
+    "result": 64
+  },
+  {
+    "input": [
+      "lab5_z"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "040h"
+    ],
+    "fields": null,
+    "result": 64
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "040h"
+    ],
+    "fields": null,
+    "result": 64
+  },
+  {
+    "input": [
+      "lab0_h"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "080h"
+    ],
+    "fields": null,
+    "result": 128
+  },
+  {
+    "input": [
+      "080h"
+    ],
+    "fields": null,
+    "result": 128
+  },
+  {
+    "input": [
+      "lab1_h"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "080h"
+    ],
+    "fields": null,
+    "result": 128
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "080h"
+    ],
+    "fields": null,
+    "result": 128
+  },
+  {
+    "input": [
+      "lab2_h"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab3_h"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "080h"
+    ],
+    "fields": null,
+    "result": 128
+  },
+  {
+    "input": [
+      "080h"
+    ],
+    "fields": null,
+    "result": 128
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab4_h"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "080h"
+    ],
+    "fields": null,
+    "result": 128
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "080h"
+    ],
+    "fields": null,
+    "result": 128
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "080h"
+    ],
+    "fields": null,
+    "result": 128
+  },
+  {
+    "input": [
+      "080h"
+    ],
+    "fields": null,
+    "result": 128
+  },
+  {
+    "input": [
+      "lab5_h"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "080h"
+    ],
+    "fields": null,
+    "result": 128
+  },
+  {
+    "input": [
+      "0D7h"
+    ],
+    "fields": null,
+    "result": 215
+  },
+  {
+    "input": [
+      "080h"
+    ],
+    "fields": null,
+    "result": 128
+  },
+  {
+    "input": [
+      "lab6_2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "lab7"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0A5h"
+    ],
+    "fields": null,
+    "result": 165
+  },
+  {
+    "input": [
+      "0A5h"
+    ],
+    "fields": null,
+    "result": 165
+  },
+  {
+    "input": [
+      "4"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "4"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "lab8"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "05Ah"
+    ],
+    "fields": null,
+    "result": 90
+  },
+  {
+    "input": [
+      "05Ah"
+    ],
+    "fields": null,
+    "result": 90
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "16"
+    ],
+    "fields": null,
+    "result": 16
+  },
+  {
+    "input": [
+      "16"
+    ],
+    "fields": null,
+    "result": 16
+  },
+  {
+    "input": [
+      "lab9"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "06Ah"
+    ],
+    "fields": null,
+    "result": 106
+  },
+  {
+    "input": [
+      "06Ah"
+    ],
+    "fields": null,
+    "result": 106
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "0"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "0"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "0"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "lab10"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "1"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "1"
+    ],
+    "fields": null,
+    "result": 1
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "0"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "error"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "okmsg"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "msg"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "wboot"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "errmsg"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "msg"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "byteo"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "byteo"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "wboot"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "byteo"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "002h"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "002h"
+    ],
+    "fields": null,
+    "result": 2
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "004h"
+    ],
+    "fields": null,
+    "result": 4
+  },
+  {
+    "input": [
+      "006h"
+    ],
+    "fields": null,
+    "result": 6
+  },
+  {
+    "input": [
+      "006h"
+    ],
+    "fields": null,
+    "result": 6
+  },
+  {
+    "input": [
+      "008h"
+    ],
+    "fields": null,
+    "result": 8
+  },
+  {
+    "input": [
+      "008h"
+    ],
+    "fields": null,
+    "result": 8
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Ch"
+    ],
+    "fields": null,
+    "result": 12
+  },
+  {
+    "input": [
+      "00Ch"
+    ],
+    "fields": null,
+    "result": 12
+  },
+  {
+    "input": [
+      "00Eh"
+    ],
+    "fields": null,
+    "result": 14
+  },
+  {
+    "input": [
+      "00Eh"
+    ],
+    "fields": null,
+    "result": 14
+  },
+  {
+    "input": [
+      "010h"
+    ],
+    "fields": null,
+    "result": 16
+  },
+  {
+    "input": [
+      "010h"
+    ],
+    "fields": null,
+    "result": 16
+  },
+  {
+    "input": [
+      "0A5h"
+    ],
+    "fields": null,
+    "result": 165
+  },
+  {
+    "input": [
+      "0A5h"
+    ],
+    "fields": null,
+    "result": 165
+  },
+  {
+    "input": [
+      "03Ch"
+    ],
+    "fields": null,
+    "result": 60
+  },
+  {
+    "input": [
+      "03Ch"
+    ],
+    "fields": null,
+    "result": 60
+  }
+]

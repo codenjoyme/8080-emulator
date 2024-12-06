@@ -1,0 +1,8 @@
+{
+  "binFileName": "8080apofig.mem",
+  "hexFileName": "8080apofig.hex",
+  "kind": "assemble",
+  "org": 0,
+  "tapFileName": "8080apofig.cas",
+  "tapeFormat": "специалистъ-mon"
+}

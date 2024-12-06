@@ -1,0 +1,359 @@
+[
+  {
+    "input": [
+      "00000h"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "00000h"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "0"
+    ],
+    "fields": null,
+    "result": 0
+  },
+  {
+    "input": [
+      "14"
+    ],
+    "fields": null,
+    "result": 14
+  },
+  {
+    "input": [
+      "30"
+    ],
+    "fields": null,
+    "result": 30
+  },
+  {
+    "input": [
+      "0C037h"
+    ],
+    "fields": null,
+    "result": 49207
+  },
+  {
+    "input": [
+      "30"
+    ],
+    "fields": null,
+    "result": 30
+  },
+  {
+    "input": [
+      "33"
+    ],
+    "fields": null,
+    "result": 33
+  },
+  {
+    "input": [
+      "37"
+    ],
+    "fields": null,
+    "result": 37
+  },
+  {
+    "input": [
+      "51"
+    ],
+    "fields": null,
+    "result": 51
+  },
+  {
+    "input": [
+      "56"
+    ],
+    "fields": null,
+    "result": 56
+  },
+  {
+    "input": [
+      "69"
+    ],
+    "fields": null,
+    "result": 69
+  },
+  {
+    "input": [
+      "92"
+    ],
+    "fields": null,
+    "result": 92
+  },
+  {
+    "input": [
+      "96"
+    ],
+    "fields": null,
+    "result": 96
+  },
+  {
+    "input": [
+      "105"
+    ],
+    "fields": null,
+    "result": 105
+  },
+  {
+    "input": [
+      "108"
+    ],
+    "fields": null,
+    "result": 108
+  },
+  {
+    "input": [
+      "hello"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "msg"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0FEh"
+    ],
+    "fields": null,
+    "result": 254
+  },
+  {
+    "input": [
+      "0FEh"
+    ],
+    "fields": null,
+    "result": 254
+  },
+  {
+    "input": [
+      "byteo"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "wboot"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Dh"
+    ],
+    "fields": null,
+    "result": 13
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "0C800h"
+    ],
+    "fields": null,
+    "result": 51200
+  },
+  {
+    "input": [
+      "0C800h"
+    ],
+    "fields": null,
+    "result": 51200
+  },
+  {
+    "input": [
+      "'$'"
+    ],
+    "fields": null,
+    "result": 36
+  },
+  {
+    "input": [
+      "'$'"
+    ],
+    "fields": null,
+    "result": 36
+  },
+  {
+    "input": [
+      "msge"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "pchar"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "msgs"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "bdos"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "byto1"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "pchar"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "byto2"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "pchar"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "00Fh"
+    ],
+    "fields": null,
+    "result": 15
+  },
+  {
+    "input": [
+      "00Fh"
+    ],
+    "fields": null,
+    "result": 15
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "00Ah"
+    ],
+    "fields": null,
+    "result": 10
+  },
+  {
+    "input": [
+      "byto3"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "7"
+    ],
+    "fields": null,
+    "result": 7
+  },
+  {
+    "input": [
+      "7"
+    ],
+    "fields": null,
+    "result": 7
+  },
+  {
+    "input": [
+      "030h"
+    ],
+    "fields": null,
+    "result": 48
+  },
+  {
+    "input": [
+      "030h"
+    ],
+    "fields": null,
+    "result": 48
+  }
+]

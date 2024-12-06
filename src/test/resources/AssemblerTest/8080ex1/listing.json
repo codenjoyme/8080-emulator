@@ -1,0 +1,2075 @@
+	                ; zexlax.z80 - Z80 instruction set exerciser
+	                ; Copyright (C) 1994  Frank D. Cringle
+	                ;
+	                ; This program is free software; you can redistribute it and/or
+	                ; modify it under the terms of the GNU General Public License
+	                ; as published by the Free Software Foundation; either version 2
+	                ; of the License, or (at your option) any later version.
+	                ;
+	                ; This program is distributed in the hope that it will be useful,
+	                ; but WITHOUT ANY WARRANTY; without even the implied warranty of
+	                ; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	                ; GNU General Public License for more details.
+	                ;
+	                ; You should have received a copy of the GNU General Public License
+	                ; along with this program; if not, write to the Free Software
+	                ; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+	                ;
+	                ;******************************************************************************
+	                ;
+	                ; Modified to exercise an 8080 by Ian Bartholomew, February 2009
+	                ;
+	                ; CRC values for a KR580VM80A CPU
+	                ;
+	                ; I have made the following changes -
+	                ;
+	                ; Converted all mnemonics to 8080 and rewritten any Z80 code used
+	                ; in the original exerciser.  Changes are tagged with a #idb in the
+	                ; source code listing.
+	                ;
+	                ; Removed any test descriptors that are not used.
+	                ;
+	                ; Changed the macro definitions to work in M80
+	                ;
+	                ; The machine state snapshot has been changed to remove the IX/IY registers.
+	                ; They have been replaced by two more copies of HL to obviate the need
+	                ; for major changes in the exerciser code.
+	                ;
+	                ; Changed flag mask in all tests to 0FFh to reflect that the 8080, unlike the 8085
+	                ; and Z80, does define the unused bits in the flag register - [S Z 0 AC 0 P 1 C]
+	                ;
+	                ;******************************************************************************
+	                ;
+	                ; Modified by Oleksandr Baglai to be able to work on LIK and assemble with
+	                ;     https://svofski.github.io/pretty-8080-assembler/
+	                ;     https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D0%BA_(%D0%BA%D0%BE%D0%BC%D0%BF%D1%8C%D1%8E%D1%82%D0%B5%D1%80)
+	                ;
+	                ;******************************************************************************
+	                
+	                        .PROJECT 8080ex1.mem
+	                        .tape специалистъ-mon
+	                        CPU     8080
+	                        .ORG    00000h
+	                
+0000	C3 17 00        begin:    JMP     start
+	                
+0003	00 00 00 00             DB      0,0,0,0   ; 4 bytes I dont know what for :)
+	                
+	                ; machine state before test (needs to be at predictably constant address)
+0007	00 00 00 00     msbt:     DS      14
+	. . .
+0013	00 00 
+
+0015	00 00           spbt:     DS      2
+	                
+	                ; For the purposes of this test program, the machine state consists of:
+	                ;        a 2 byte memory operand, followed by
+	                ;        the registers --,--,HL,DE,BC,AF(flags,acc),SP
+	                ; for a total of 16 bytes.
+	                
+	                ; The program tests instructions (or groups of similar instructions)
+	                ; by cycling through a sequence of machine states, executing the test
+	                ; instruction for each one and running a 32-bit crc over the resulting
+	                ; machine states.  At the end of the sequence the crc is compared to
+	                ; an expected value that was found empirically on a real Z80.
+	                
+	                ; A test case is defined by a descriptor which consists of:
+	                ;        a flag mask byte,
+	                ;        the base case,
+	                ;        the increment vector,
+	                ;        the shift vector,
+	                ;        the expected crc,
+	                ;        a short descriptive message.
+	                ;
+	                ; The flag mask byte is used to prevent undefined flag bits from
+	                ; influencing the results.  Documented flags are as per Mostek Z80
+	                ; Technical Manual.
+	                ;
+	                ; The next three parts of the descriptor are 20 byte vectors
+	                ; corresponding to a 4 byte instruction and a 16 byte machine state.
+	                ; The first part is the base case, which is the first test case of
+	                ; the sequence.  This base is then modified according to the next 2
+	                ; vectors.  Each 1 bit in the increment vector specifies a bit to be
+	                ; cycled in the form of a binary counter.  For instance, if the byte
+	                ; corresponding to the accumulator is set to 0FFh in the increment
+	                ; vector, the test will be repeated for all 256 values of the
+	                ; accumulator.  Note that 1 bits don't have to be contiguous.  The
+	                ; number of test cases 'caused' by the increment vector is equal to
+	                ; 2^(number of 1 bits).  The shift vector is similar, but specifies a
+	                ; set of bits in the test case that are to be successively inverted.
+	                ; Thus the shift vector 'causes' a number of test cases equal to the
+	                ; number of 1 bits in it.
+	                
+	                ; The total number of test cases is the product of those caused by the
+	                ; counter and shift vectors and can easily become unweildy.  Each
+	                ; individual test case can take a few milliseconds to execute, due to
+	                ; the overhead of test setup and crc calculation, so test design is a
+	                ; compromise between coverage and execution time.
+	                
+	                ; This program is designed to detect differences between
+	                ; implementations and is not ideal for diagnosing the causes of any
+	                ; discrepancies.  However, provided a reference implementation (or
+	                ; real system) is available, a failing test case can be isolated by
+	                ; hand using a binary search of the test space.
+	                
+	                
+	                start:
+	                ;!        LHLD    6
+	                ;!        SPHL
+0017	11 F1 0C                  LXI     D,msg1
+001A	CD A5 0C                  CALL    msg
+	                
+001D	21 36 00                  LXI     H,tests              ; first test case
+0020	7E              loop:     MOV     A,M                  ;  end of list ?
+0021	23                        INX     H
+0022	B6                        ORA     M
+0023	CA 2D 00                  JZ      done
+0026	2B                        DCX     H
+0027	CD B1 09                  CALL    stt
+002A	C3 20 00                  JMP     loop
+	                
+002D	11 21 0D        done:     LXI     D,msg2
+0030	CD A5 0C                  CALL    msg
+0033	C3 A2 0C                  JMP     wboot                ; warm boot
+	                
+	                tests:
+0036	6A 00                     DW      add16
+0038	C9 00                     DW      alu8i
+003A	28 01                     DW      alu8r
+003C	87 01                     DW      daa
+003E	E6 01                     DW      inca
+0040	45 02                     DW      incb
+0042	A4 02                     DW      incbc
+0044	03 03                     DW      incc
+0046	62 03                     DW      incd
+0048	C1 03                     DW      incde
+004A	20 04                     DW      ince
+004C	7F 04                     DW      inch
+004E	DE 04                     DW      inchl
+0050	3D 05                     DW      incl
+0052	9C 05                     DW      incm
+0054	FB 05                     DW      incsp
+0056	5A 06                     DW      ld162
+0058	B9 06                     DW      ld166
+005A	18 07                     DW      ld16im
+005C	77 07                     DW      ld8bd
+005E	D6 07                     DW      ld8im
+0060	35 08                     DW      ld8rr
+0062	94 08                     DW      lda
+0064	F3 08                     DW      rot8080
+0066	52 09                     DW      stabd
+0068	00 00                     DW      0
+	                
+	                ; DAD <B,D,H,SP> (19,456 cycles)
+006A	FF              add16:    DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+006B	09 00 00 00               DB      09h,0,0,0                                    ; insn
+006F	A5 C4 C7 C4               DW      0C4A5h,0C4C7h,0D226h,0A050h,058EAh,08566h    ; memop,--,--,HL,DE,BC
+	. . .
+0077	EA 58 66 85 
+
+007B	C6 DE                     DB      0C6h,0DEh                                    ; flags,acc
+007D	C9 9B                     DW      09BC9h                                       ; SP
+	                
+	                                                                               ; second (512 cycles)
+007F	30 00 00 00               DB      030h,0,0,0                                   ; insn
+0083	00 00 00 00               DW      0,0,0,0,0F821h,0                             ; memop,--,--,HL,DE,BC
+	. . .
+008B	21 F8 00 00 
+
+008F	00 00                     DB      0,0                                          ; flags,acc
+0091	00 00                     DW      0000h                                        ; SP
+	                
+	                                                                               ; third (38 cycles)
+0093	00 00 00 00               DB      0,0,0,0                                      ; insn
+0097	00 00 00 00               DW      0,0,0,-1,-1,-1                               ; memop,--,--,HL,DE,BC
+	. . .
+009F	FF FF FF FF 
+
+00A3	D7 00                     DB      0D7h,0                                       ; flags,acc
+00A5	FF FF                     DW      -1                                           ; SP
+	                
+	                ;crc      DB      014h, 047h, 04Bh, 0A6h                       ; original expected crc
+00A7	48 8B 7F DA               DB      048h, 08Bh, 07Fh, 0DAh                       ; current expected crc from emu80
+00AB	44 41 44 20               DB      'DAD <B,D,H,SP>...............$'
+	. . .
+00C7	2E 24 
+
+	                
+	                ; ALUOP NN (28,672 cycles)
+00C9	FF              alu8i:    DB      0FFH                                         ; flag mask
+	                
+	                                                                               ; first
+00CA	C6 00 00 00               DB      0C6h,0,0,0                                   ; insn
+00CE	40 91 3C 7E               DW      09140h,07E3Ch,07A67h,0DF6Dh,05B61h,00B29h    ; memop,--,--,HL,DE,BC
+	. . .
+00D6	61 5B 29 0B 
+
+00DA	10 66                     DB      010h,066h                                    ; flags,acc
+00DC	B2 85                     DW      085B2h                                       ; SP
+	                
+	                                                                               ; second (2048 cycles)
+00DE	38 00 00 00               DB      038h,0,0,0                                   ; insn
+00E2	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+00EA	00 00 00 00 
+
+00EE	00 FF                     DB      0,-1                                         ; flags,acc
+00F0	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (14 cycles)
+00F2	00 FF 00 00               DB      0,-1,0,0                                     ; insn
+00F6	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+00FE	00 00 00 00 
+
+0102	D7 00                     DB      0D7h,0                                       ; flags,acc
+0104	00 00                     DW      0                                            ; SP
+	                
+0106	9E 92 2F 9E               DB      09Eh, 092h, 02Fh, 09Eh                       ; expected crc
+010A	41 4C 55 4F               DB      'ALUOP NN.....................$'
+	. . .
+0126	2E 24 
+
+	                
+	                ; ALUOP <B,C,D,E,H,L,M,A> (753,664 cycles)
+0128	FF              alu8r:    DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+0129	80 00 00 00               DB      080h,0,0,0                                   ; insn
+012D	3E C5 3A 57               DW      0c53Eh,0573Ah,04c4Dh,msbt,0e309h,0a666h      ; memop,--,--,HL,DE,BC
+	. . .
+0135	09 E3 66 A6 
+
+0139	D0 3B                     DB      0d0h,03bh                                    ; flags,acc
+013B	BB AD                     DW      0adbbh                                       ; SP
+	                
+	                                                                               ; second (16,384 cycles)
+013D	3F 00 00 00               DB      03Fh,0,0,0                                   ; insn
+0141	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0149	00 00 00 00 
+
+014D	00 FF                     DB      0,-1                                         ; flags,acc
+014F	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (46 cycles)
+0151	00 00 00 00               DB      0,0,0,0                                      ; insn
+0155	FF FF 00 00               DW      -1,0,0,0,-1,-1                               ; memop,--,--,HL,DE,BC
+	. . .
+015D	FF FF FF FF 
+
+0161	D7 00                     DB      0D7h,0                                       ; flags,acc
+0163	00 00                     DW      0                                            ; SP
+	                
+	                ;crc      DB      0cFh, 076h, 02Ch, 086h                       ; original expected crc
+0165	75 53 A0 26               DB      075h, 053h, 0A0h, 026h                       ; current expected crc from emu80
+0169	41 4C 55 4F               DB      'ALUOP <B,C,D,E,H,L,M,A>......$'
+	. . .
+0185	2E 24 
+
+	                
+	                ; <DAA,CMA,STC,CMC>
+0187	FF              daa:      DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+0188	27 00 00 00               DB      027h,0,0,0                                   ; insn
+018C	41 21 FA 09               DW      02141h,009fAh,01d60h,0a559h,08d5Bh,09079h    ; memop,--,--,HL,DE,BC
+	. . .
+0194	5B 8D 79 90 
+
+0198	04 8E                     DB      004h,08eh                                    ; flags,acc
+019A	9D 29                     DW      0299dh                                       ; SP
+	                
+	                                                                               ; second (65,536 cycles)
+019C	18 00 00 00               DB      018h,0,0,0                                   ; insn
+01A0	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+01A8	00 00 00 00 
+
+01AC	D7 FF                     DB      0D7h,-1                                      ; flags,acc
+01AE	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (1 cycle)
+01B0	00 00 00 00               DB      0,0,0,0                                      ; insn
+01B4	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+01BC	00 00 00 00 
+
+01C0	00 00                     DB      0,0                                          ; flags,acc
+01C2	00 00                     DW      0                                            ; SP
+	                
+01C4	BB 3F 03 0C               DB      0bBh,03Fh,003h,00ch                          ; expected crc
+01C8	3C 44 41 41               DB      '<DAA,CMA,STC,CMC>............$'
+	. . .
+01E4	2E 24 
+
+	                
+	                ; <INR,DCR> A (3072 cycles)
+01E6	FF              inca:     DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+01E7	3C 00 00 00               DB      03Ch,0,0,0                                   ; insn
+01EB	DF 4A D8 D5               DW      04adFh,0d5d8h,0e598h,08a2Bh,0a7b0h,0431bh    ; memop,--,--,HL,DE,BC
+	. . .
+01F3	B0 A7 1B 43 
+
+01F7	44 5A                     DB      044h,05ah                                    ; flags,acc
+01F9	30 D0                     DW      0d030h                                       ; SP
+	                
+	                                                                               ; second (512 cycles)
+01FB	01 00 00 00               DB      001h,0,0,0                                   ; insn
+01FF	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0207	00 00 00 00 
+
+020B	00 FF                     DB      0,-1                                         ; flags,acc
+020D	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (6 cycles)
+020F	00 00 00 00               DB      0,0,0,0                                      ; insn
+0213	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+021B	00 00 00 00 
+
+021F	D7 00                     DB      0D7h,0                                       ; flags,acc
+0221	00 00                     DW      0                                            ; SP
+	                
+0223	AD B6 46 0E               DB      0aDh,0b6h,046h,00eh                          ; expected crc
+0227	3C 49 4E 52               DB      '<INR,DCR> A..................$'
+	. . .
+0243	2E 24 
+
+	                
+	                ; <INR,DCR> B (3072 cycles)
+0245	FF              incb:     DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+0246	04 00 00 00               DB      004h,0,0,0                                   ; insn
+024A	23 D6 2D 43               DW      0d623h,0432Dh,07a61h,08180h,05a86h,01e85h    ; memop,--,--,HL,DE,BC
+	. . .
+0252	86 5A 85 1E 
+
+0256	86 58                     DB      086h,058h                                    ; flags,acc
+0258	BB 9B                     DW      09bbbh                                       ; SP
+	                
+	                                                                               ; second (512 cycles)
+025A	01 00 00 00               DB      001h,0,0,0                                   ; insn
+025E	00 00 00 00               DW      0,0,0,0,0,0ff00h                             ; memop,--,--,HL,DE,BC
+	. . .
+0266	00 00 00 FF 
+
+026A	00 00                     DB      0,0                                          ; flags,acc
+026C	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (6 cycles)
+026E	00 00 00 00               DB      0,0,0,0                                      ; insn
+0272	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,hl,dе,bc
+	. . .
+027A	00 00 00 00 
+
+027E	D7 00                     DB      0D7h,0                                       ; flags,acc
+0280	00 00                     DW      0                                            ; SP
+	                
+0282	83 ED 13 45               DB      083h,0eDh,013h,045h                          ; expected crc
+0286	3C 49 4E 52               DB      '<INR,DCR> B..................$'
+	. . .
+02A2	2E 24 
+
+	                
+	                ; <INX,DCX> B (1536 cycles)
+02A4	FF              incbc:    DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+02A5	03 00 00 00               DB      003h,0,0,0                                   ; insn
+02A9	97 CD AB 44               DW      0cd97h,044aBh,08dc9h,0e3e3h,011cCh,0e8a4h    ; memop,--,--,HL,DE,BC
+	. . .
+02B1	CC 11 A4 E8 
+
+02B5	02 49                     DB      002h,049h                                    ; flags,acc
+02B7	4D 2A                     DW      02a4dh                                       ; SP
+	                
+	                                                                               ; second (256 cycles)
+02B9	08 00 00 00               DB      008h,0,0,0                                   ; insn
+02BD	00 00 00 00               DW      0,0,0,0,0,0f821h                             ; memop,--,--,HL,DE,BC
+	. . .
+02C5	00 00 21 F8 
+
+02C9	00 00                     DB      0,0                                          ; flags,acc
+02CB	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (6 cycles)
+02CD	00 00 00 00               DB      0,0,0,0                                      ; insn
+02D1	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+02D9	00 00 00 00 
+
+02DD	D7 00                     DB      0D7h,0                                       ; flags,acc
+02DF	00 00                     DW      0                                            ; SP
+	                
+02E1	F7 92 87 CD               DB      0f7h,092h,087h,0cdh                          ; expected crc
+02E5	3C 49 4E 58               DB      '<INX,DCX> B..................$'
+	. . .
+0301	2E 24 
+
+	                
+	                ; <INR,DCR> C (3072 cycles)
+0303	FF              incc:     DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+0304	0C 00 00 00               DB      00Ch,0,0,0                                   ; insn
+0308	89 D7 35 09               DW      0d789h,00935h,0055Bh,09f85h,08b27h,0d208h    ; memop,--,--,HL,DE,BC
+	. . .
+0310	27 8B 08 D2 
+
+0314	95 05                     DB      095h,005h                                    ; flags,acc
+0316	60 06                     DW      00660h                                       ; SP
+	                
+	                                                                               ; second (512 cycles)
+0318	01 00 00 00               DB      001h,0,0,0                                   ; insn
+031C	00 00 00 00               DW      0,0,0,0,0,000FFh                             ; memop,--,--,HL,DE,BC
+	. . .
+0324	00 00 FF 00 
+
+0328	00 00                     DB      0,0                                          ; flags,acc
+032A	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (6 cycles)
+032C	00 00 00 00               DB      0,0,0,0                                      ; insn
+0330	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0338	00 00 00 00 
+
+033C	D7 00                     DB      0D7h,0                                       ; flags,acc
+033E	00 00                     DW      0                                            ; SP
+	                
+0340	E5 F6 72 1B               DB      0e5h,0f6h,072h,01bh                          ; expected crc
+0344	3C 49 4E 52               DB      '<INR,DCR> C..................$'
+	. . .
+0360	2E 24 
+
+	                
+	                ; <INR,DCR> D (3072 cycles)
+0362	FF              incd:     DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+0363	14 00 00 00               DB      014h,0,0,0                                   ; insn
+0367	EA A0 BA 5F               DW      0a0eAh,05fbAh,065fBh,0981Ch,038cCh,0debch    ; memop,--,--,HL,DE,BC
+	. . .
+036F	CC 38 BC DE 
+
+0373	43 5C                     DB      043h,05ch                                    ; flags,acc
+0375	BD 03                     DW      003bdh                                       ; SP
+	                
+	                                                                               ; second (512 cycles)
+0377	01 00 00 00               DB      001h,0,0,0                                   ; insn
+037B	00 00 00 00               DW      0,0,0,0,0ff00h,0                             ; memop,--,--,HL,DE,BC
+	. . .
+0383	00 FF 00 00 
+
+0387	00 00                     DB      0,0                                          ; flags,acc
+0389	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (6 cycles)
+038B	00 00 00 00               DB      0,0,0,0                                      ; insn
+038F	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0397	00 00 00 00 
+
+039B	D7 00                     DB      0D7h,0                                       ; flags,acc
+039D	00 00                     DW      0                                            ; SP
+	                
+039F	15 B5 57 9A               DB      015h,0b5h,057h,09ah                          ; expected crc
+03A3	3C 49 4E 52               DB      '<INR,DCR> D..................$'
+	. . .
+03BF	2E 24 
+
+	                
+	                ; <INX,DCX> D (1536 cycles)
+03C1	FF              incde:    DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+03C2	13 00 00 00               DB      013h,0,0,0                                   ; insn
+03C6	2E 34 1D 13               DW      0342Eh,0131Dh,028c9h,00acAh,09967h,03a2eh    ; memop,--,--,HL,DE,BC
+	. . .
+03CE	67 99 2E 3A 
+
+03D2	92 F6                     DB      092h,0f6h                                    ; flags,acc
+03D4	54 9D                     DW      09d54h                                       ; SP
+	                
+	                                                                               ; second (256 cycles)
+03D6	08 00 00 00               DB      008h,0,0,0                                   ; insn
+03DA	00 00 00 00               DW      0,0,0,0,0f821h,0                             ; memop,--,--,HL,DE,BC
+	. . .
+03E2	21 F8 00 00 
+
+03E6	00 00                     DB      0,0                                          ; flags,acc
+03E8	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (6 cycles)
+03EA	00 00 00 00               DB      0,0,0,0                                      ; insn
+03EE	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+03F6	00 00 00 00 
+
+03FA	D7 00                     DB      0D7h,0                                       ; flags,acc
+03FC	00 00                     DW      0                                            ; SP
+	                
+03FE	7F 4E 25 01               DB      07Fh,04Eh,025h,001h                          ; expected crc
+0402	3C 49 4E 58               DB      '<INX,DCX> D..................$'
+	. . .
+041E	2E 24 
+
+	                
+	                ; <INR,DCR> E (3072 cycles)
+0420	FF              ince:     DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+0421	1C 00 00 00               DB      01Ch,0,0,0                                   ; insn
+0425	2F 60 0D 4C               DW      0602Fh,04c0Dh,02402h,0e2f5h,0a0f4h,0a10ah    ; memop,--,--,HL,DE,BC
+	. . .
+042D	F4 A0 0A A1 
+
+0431	13 32                     DB      013h,032h                                    ; flags,acc
+0433	25 59                     DW      05925h                                       ; SP
+	                
+	                                                                               ; second (512 cycles)
+0435	01 00 00 00               DB      001h,0,0,0                                   ; insn
+0439	00 00 00 00               DW      0,0,0,0,000FFh,0                             ; memop,--,--,HL,DE,BC
+	. . .
+0441	FF 00 00 00 
+
+0445	00 00                     DB      0,0                                          ; flags,acc
+0447	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (6 cycles)
+0449	00 00 00 00               DB      0,0,0,0                                      ; insn
+044D	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0455	00 00 00 00 
+
+0459	D7 00                     DB      0D7h,0                                       ; flags,acc
+045B	00 00                     DW      0                                            ; SP
+	                
+045D	CF 2A B3 96               DB      0cFh,02Ah,0b3h,096h                          ; expected crc
+0461	3C 49 4E 52               DB      '<INR,DCR> E..................$'
+	. . .
+047D	2E 24 
+
+	                
+	                ; <INR,DCR> H (307 cycles)
+047F	FF              inch:     DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+0480	24 00 00 00               DB      024h,0,0,0                                   ; insn
+0484	06 15 EB F2               DW      01506h,0f2eBh,0e8dDh,0262Bh,011a6h,0bc1ah    ; memop,--,--,HL,DE,BC
+	. . .
+048C	A6 11 1A BC 
+
+0490	17 06                     DB      017h,006h                                    ; flags,acc
+0492	18 28                     DW      02818h                                       ; SP
+	                
+	                                                                               ; second (512 cycles)
+0494	01 00 00 00               DB      001h,0,0,0                                   ; insn
+0498	00 00 00 00               DW      0,0,0,0ff00h,0,0                             ; memop,--,--,HL,DE,BC
+	. . .
+04A0	00 00 00 00 
+
+04A4	00 00                     DB      0,0                                          ; flags,acc
+04A6	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (6 cycles)
+04A8	00 00 00 00               DB      0,0,0,0                                      ; insn
+04AC	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+04B4	00 00 00 00 
+
+04B8	D7 00                     DB      0D7h,0                                       ; flags,acc
+04BA	00 00                     DW      0                                            ; SP
+	                
+04BC	12 B2 95 2C               DB      012h,0b2h,095h,02ch                          ; expected crc
+04C0	3C 49 4E 52               DB      '<INR,DCR> H..................$'
+	. . .
+04DC	2E 24 
+
+	                
+	                ; <INX,DCX> H (1536 cycles)
+04DE	FF              inchl:    DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+04DF	23 00 00 00               DB      023h,0,0,0                                   ; insn
+04E3	F4 C3 A5 07               DW      0c3f4h,007a5h,01b6Dh,04f04h,0e2c2h,0822ah    ; memop,--,--,HL,DE,BC
+	. . .
+04EB	C2 E2 2A 82 
+
+04EF	57 E0                     DB      057h,0e0h                                    ; flags,acc
+04F1	E1 C3                     DW      0c3e1h                                       ; SP
+	                
+	                                                                               ; second (256 cycles)
+04F3	08 00 00 00               DB      008h,0,0,0                                   ; insn
+04F7	00 00 00 00               DW      0,0,0,0f821h,0,0                             ; memop,--,--,HL,DE,BC
+	. . .
+04FF	00 00 00 00 
+
+0503	00 00                     DB      0,0                                          ; flags,acc
+0505	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (6 cycles)
+0507	00 00 00 00               DB      0,0,0,0                                      ; insn
+050B	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0513	00 00 00 00 
+
+0517	D7 00                     DB      0D7h,0                                       ; flags,acc
+0519	00 00                     DW      0                                            ; SP
+	                
+051B	9F 2B 23 C0               DB      09Fh,02Bh,023h,0c0h                          ; expected crc
+051F	3C 49 4E 58               DB      '<INX,DCX> H..................$'
+	. . .
+053B	2E 24 
+
+	                
+	                ; <INR,DCR> L (3072 cycles)
+053D	FF              incl:     DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+053E	2C 00 00 00               DB      02Ch,0,0,0                                   ; insn
+0542	31 80 20 A5               DW      08031h,0a520h,04356h,0b409h,0f4c1h,0dfa2h    ; memop,--,--,HL,DE,BC
+	. . .
+054A	C1 F4 A2 DF 
+
+054E	D1 3C                     DB      0d1h,03ch                                    ; flags,acc
+0550	A2 3E                     DW      03ea2h                                       ; SP
+	                
+	                                                                               ; second (512 cycles)
+0552	01 00 00 00               DB      001h,0,0,0                                   ; insn
+0556	00 00 00 00               DW      0,0,0,0FFh,0,0                               ; memop,--,--,HL,DE,BC
+	. . .
+055E	00 00 00 00 
+
+0562	00 00                     DB      0,0                                          ; flags,acc
+0564	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (6 cycles)
+0566	00 00 00 00               DB      0,0,0,0                                      ; insn
+056A	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0572	00 00 00 00 
+
+0576	D7 00                     DB      0D7h,0                                       ; flags,acc
+0578	00 00                     DW      0                                            ; SP
+	                
+057A	FF 57 D3 56               DB      0FFh,057h,0d3h,056h                          ; expected crc
+057E	3C 49 4E 52               DB      '<INR,DCR> L..................$'
+	. . .
+059A	2E 24 
+
+	                
+	                ; <INR,DCR> M (3072 cycles)
+059C	FF              incm:     DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+059D	34 00 00 00               DB      034h,0,0,0                                   ; insn
+05A1	56 B8 7C 0C               DW      0b856h,00c7Ch,0e53Eh,msbt,0877Eh,0da58h      ; memop,--,--,HL,DE,BC
+	. . .
+05A9	7E 87 58 DA 
+
+05AD	15 5C                     DB      015h,05ch                                    ; flags,acc
+05AF	37 1F                     DW      01f37h                                       ; SP
+	                
+	                                                                               ; second (512 cycles)
+05B1	01 00 00 00               DB      001h,0,0,0                                   ; insn
+05B5	FF 00 00 00               DW      0FFh,0,0,0,0,0                               ; memop,--,--,HL,DE,BC
+	. . .
+05BD	00 00 00 00 
+
+05C1	00 00                     DB      0,0                                          ; flags,acc
+05C3	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (6 cycles)
+05C5	00 00 00 00               DB      0,0,0,0                                      ; insn
+05C9	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+05D1	00 00 00 00 
+
+05D5	D7 00                     DB      0D7h,0                                       ; flags,acc
+05D7	00 00                     DW      0                                            ; SP
+	                
+	                ;crc      DB      092h,0e9h,063h,0bdh                          ; original expected crc
+05D9	A0 4A 80 63               DB      0A0h, 04Ah, 080h, 063h                       ; current expected crc from emu80
+05DD	3C 49 4E 52               DB      '<INR,DCR> M..................$'
+	. . .
+05F9	2E 24 
+
+	                
+	                ; <INX,DCX> SP (1536 cycles)
+05FB	FF              incsp:    DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+05FC	33 00 00 00               DB      033h,0,0,0                                   ; insn
+0600	6F 34 82 D4               DW      0346Fh,0d482h,0d169h,0deb6h,0a494h,0f476h    ; memop,--,--,HL,DE,BC
+	. . .
+0608	94 A4 76 F4 
+
+060C	53 02                     DB      053h,002h                                    ; flags,acc
+060E	5B 85                     DW      0855bh                                       ; SP
+	                
+	                                                                               ; second (256 cycles)
+0610	08 00 00 00               DB      008h,0,0,0                                   ; insn
+0614	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+061C	00 00 00 00 
+
+0620	00 00                     DB      0,0                                          ; flags,acc
+0622	21 F8                     DW      0f821h                                       ; SP
+	                
+	                                                                               ; third (6 cycles)
+0624	00 00 00 00               DB      0,0,0,0                                      ; insn
+0628	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0630	00 00 00 00 
+
+0634	D7 00                     DB      0D7h,0                                       ; flags,acc
+0636	00 00                     DW      0                                            ; SP
+	                
+0638	D5 70 2F AB               DB      0d5h,070h,02Fh,0abh                          ; expected crc
+063C	3C 49 4E 58               DB      '<INX,DCX> SP.................$'
+	. . .
+0658	2E 24 
+
+	                
+	                ; LHLD NNNN (16 cycles)
+065A	FF              ld162:    DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+065B	2A 07 00 00               DB      02Ah,msbt & 0xFF,msbt >> 8,0                 ; insn
+065F	63 98 30 78               DW      09863h,07830h,02077h,0b1fEh,0b9fAh,0abb8h    ; memop,--,--,HL,DE,BC
+	. . .
+0667	FA B9 B8 AB 
+
+066B	04 06                     DB      004h,006h                                    ; flags,acc
+066D	15 60                     DW      06015h                                       ; SP
+	                
+	                                                                               ; second (1 cycle)
+066F	00 00 00 00               DB      0,0,0,0                                      ; insn
+0673	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+067B	00 00 00 00 
+
+067F	00 00                     DB      0,0                                          ; flags,acc
+0681	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (16 cycles)
+0683	00 00 00 00               DB      0,0,0,0                                      ; insn
+0687	FF FF 00 00               DW      -1,0,0,0,0,0                                 ; memop,--,--,HL,DE,BC
+	. . .
+068F	00 00 00 00 
+
+0693	00 00                     DB      0,0                                          ; flags,acc
+0695	00 00                     DW      0                                            ; SP
+	                
+0697	A9 C3 D5 CB               DB      0a9h,0c3h,0d5h,0cbh                          ; expected crc
+069B	4C 48 4C 44               DB      'LHLD NNNN....................$'
+	. . .
+06B7	2E 24 
+
+	                
+	                ; SHLD NNNN (16 cycles)
+06B9	FF              ld166:    DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+06BA	22 07 00 00               DB      022h,msbt & 0xFF,msbt >> 8,0                 ; insn
+06BE	03 D0 72 77               DW      0d003h,07772h,07f53h,03f72h,064eAh,0e180h    ; memop,--,--,HL,DE,BC
+	. . .
+06C6	EA 64 80 E1 
+
+06CA	10 2D                     DB      010h,02dh                                    ; flags,acc
+06CC	E9 35                     DW      035e9h                                       ; SP
+	                
+	                                                                               ; second (1 cycle)
+06CE	00 00 00 00               DB      0,0,0,0                                      ; insn
+06D2	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+06DA	00 00 00 00 
+
+06DE	00 00                     DB      0,0                                          ; flags,acc
+06E0	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (16 cycles)
+06E2	00 00 00 00               DB      0,0,0,0                                      ; insn
+06E6	00 00 00 00               DW      0,0,0,-1,0,0                                 ; memop,--,--,HL,DE,BC
+	. . .
+06EE	00 00 00 00 
+
+06F2	00 00                     DB      0,0                                          ; flags,acc
+06F4	00 00                     DW      0                                            ; SP
+	                
+06F6	E8 86 4F 26               DB      0e8h,086h,04Fh,026h                          ; expected crc
+06FA	53 48 4C 44               DB      'SHLD NNNN....................$'
+	. . .
+0716	2E 24 
+
+	                
+	                ; LXI <B,D,H,SP>,NNNN (64 cycles)
+0718	FF              ld16im:   DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+0719	01 00 00 00               DB      1,0,0,0                                      ; insn
+071D	1C 5C 46 2D               DW      05c1Ch,02d46h,08eb9h,06078h,074b1h,0b30eh    ; memop,--,--,HL,DE,BC
+	. . .
+0725	B1 74 0E B3 
+
+0729	46 D1                     DB      046h,0d1h                                    ; flags,acc
+072B	CC 30                     DW      030cch                                       ; SP
+	                
+	                                                                               ; second (4 cycles)
+072D	30 00 00 00               DB      030h,0,0,0                                   ; insn
+0731	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0739	00 00 00 00 
+
+073D	00 00                     DB      0,0                                          ; flags,acc
+073F	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (16 cycles)
+0741	00 FF FF 00               DB      0,0FFh,0FFh,0                                ; insn
+0745	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+074D	00 00 00 00 
+
+0751	00 00                     DB      0,0                                          ; flags,acc
+0753	00 00                     DW      0                                            ; SP
+	                
+0755	FC F4 6E 12               DB      0fCh,0f4h,06Eh,012h                          ; expected crc
+0759	4C 58 49 20               DB      'LXI <B,D,H,SP>,NNNN..........$'             ; descriptive tag
+	. . .
+0775	2E 24 
+
+	                
+	                ; LDAX <B,D> (44 cycles)
+0777	FF              ld8bd:    DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+0778	0A 00 00 00               DB      00Ah,0,0,0                                   ; insn
+077C	A8 B3 2A 1D               DW      0b3a8h,01d2Ah,07f8Eh,042aCh,msbt,msbt        ; memop,--,--,HL,DE,BC
+	. . .
+0784	07 00 07 00 
+
+0788	C6 B1                     DB      0c6h,0b1h                                    ; flags,acc
+078A	8E EF                     DW      0ef8eh                                       ; SP
+	                
+	                                                                               ; second (2 cycles)
+078C	10 00 00 00               DB      010h,0,0,0                                   ; insn
+0790	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0798	00 00 00 00 
+
+079C	00 00                     DB      0,0                                          ; flags,acc
+079E	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (22 cycles)
+07A0	00 00 00 00               DB      0,0,0,0                                      ; insn
+07A4	FF 00 00 00               DW      0FFh,0,0,0,0,0                               ; memop,--,--,HL,DE,BC
+	. . .
+07AC	00 00 00 00 
+
+07B0	D7 FF                     DB      0D7h,-1                                      ; flags,acc
+07B2	00 00                     DW      0                                            ; SP
+	                
+	                ;crc      DB      02Bh,082h,01Dh,05fh                          ; original expected crc
+07B4	33 F7 7A 39               DB      033h, 0F7h, 07Ah, 039h                       ; current expected crc from emu80
+	                                                                               ; new line is because of new screen if there is no errors
+07B8	0D 0A 0D 0A               DB      00Dh, 00Ah, 00Dh, 00Ah, 'LDAX <B,D>...............$'   ; descriptive tag
+	. . .
+07D4	2E 24 
+
+	                
+	                ; MVI <B,C,D,E,H,L,M,A>,NN (64 cycles)
+07D6	FF              ld8im:    DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+07D7	06 00 00 00               DB      6,0,0,0                                      ; insn
+07DB	07 C4 9D F4               DW      0c407h,0f49Dh,0d13Dh,00339h,0de89h,07455h    ; memop,--,--,HL,DE,BC
+	. . .
+07E3	89 DE 55 74 
+
+07E7	53 C0                     DB      053h,0c0h                                    ; flags,acc
+07E9	09 55                     DW      05509h                                       ; SP
+	                
+	                                                                               ; second (8 cycles)
+07EB	38 00 00 00               DB      038h,0,0,0                                   ; insn
+07EF	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+07F7	00 00 00 00 
+
+07FB	00 00                     DB      0,0                                          ; flags,acc
+07FD	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (8 cycles)
+07FF	00 00 00 00               DB      0,0,0,0                                      ; insn
+0803	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+080B	00 00 00 00 
+
+080F	00 FF                     DB      0,-1                                         ; flags,acc
+0811	00 00                     DW      0                                            ; SP
+	                
+0813	EA A7 20 44               DB      0eAh,0a7h,020h,044h                          ; expected crc
+0817	4D 56 49 20               DB      'MVI <B,C,D,E,H,L,M,A>,NN.....$'             ; descriptive tag
+	. . .
+0833	2E 24 
+
+	                
+	                ; MOV <BCDEHLA>,<BCDEHLA> (3456 cycles)
+0835	FF              ld8rr:    DB      0FFh                                         ; flag mask
+	                
+	                                                                               ; first
+0836	40 00 00 00               DB      040h,0,0,0                                   ; insn
+083A	A4 72 24 A0               DW      072a4h,0a024h,061aCh,msbt,082c7h,0718fh      ; memop,--,--,HL,DE,BC
+	. . .
+0842	C7 82 8F 71 
+
+0846	97 8F                     DB      097h,08fh                                    ; flags,acc
+0848	8E EF                     DW      0ef8eh                                       ; SP
+	                
+	                                                                               ; second (64 cycles)
+084A	3F 00 00 00               DB      03Fh,0,0,0                                   ; insn
+084E	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0856	00 00 00 00 
+
+085A	00 00                     DB      0,0                                          ; flags,acc
+085C	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (54 cycles)
+085E	00 00 00 00               DB      0,0,0,0                                      ; insn
+0862	FF 00 00 00               DW      0FFh,0,0,0,-1,-1                             ; memop,--,--,HL,DE,BC
+	. . .
+086A	FF FF FF FF 
+
+086E	D7 FF                     DB      0D7h,-1                                      ; flags,acc
+0870	00 00                     DW      0                                            ; SP
+	                
+	                ;crc      DB      010h,0b5h,08Ch,0eeh                          ; original expected crc
+0872	E8 76 0C 76               DB      0E8h, 076h, 00Ch, 076h                       ; current expected crc from emu80
+0876	4D 4F 56 20               DB      'MOV <BCDEHLA>,<BCDEHLA>......$'             ; descriptive tag
+	. . .
+0892	2E 24 
+
+	                
+	                ; STA NNNN / LDA NNNN (44 cycles)
+0894	FF              lda:      DB       0FFh                                        ; flag mask
+	                
+	                                                                               ; first
+0895	32 07 00 00               DB      032h,msbt & 0xFF,msbt >> 8,0                 ; insn
+0899	68 FD EC F4               DW      0fd68h,0f4eCh,044a0h,0b543h,00653h,0cdbah    ; memop,--,--,HL,DE,BC
+	. . .
+08A1	53 06 BA CD 
+
+08A5	D2 4F                     DB      0d2h,04fh                                    ; flags,acc
+08A7	D8 1F                     DW      01fd8h                                       ; SP
+	                
+	                                                                               ; second (2 cycles)
+08A9	08 00 00 00               DB      008h,0,0,0                                   ; insn
+08AD	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+08B5	00 00 00 00 
+
+08B9	00 00                     DB      0,0                                          ; flags,acc
+08BB	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (22 cycles)
+08BD	00 00 00 00               DB      0,0,0,0                                      ; insn
+08C1	FF 00 00 00               DW      0FFh,0,0,0,0,0                               ; memop,--,--,HL,DE,BC
+	. . .
+08C9	00 00 00 00 
+
+08CD	D7 FF                     DB      0D7h,-1                                      ; flags,acc
+08CF	00 00                     DW      0                                            ; SP
+	                
+08D1	ED 57 AF 72               DB      0EDh,057h,0AFh,072h                          ; expected crc
+08D5	53 54 41 20               DB      'STA NNNN / LDA NNNN..........$'             ; descriptive tag
+	. . .
+08F1	2E 24 
+
+	                
+	                ; <RLC,RRC,RAL,RAR> (6144 cycles)
+08F3	FF              rot8080:  DB       0FFh                                        ; flag mask
+	                
+	                                                                               ; first
+08F4	07 00 00 00               DB      7,0,0,0                                      ; insn
+08F8	92 CB 43 6D               DW      0cb92h,06d43h,00a90h,0c284h,00c53h,0f50eh    ; memop,--,--,HL,DE,BC
+	. . .
+0900	53 0C 0E F5 
+
+0904	91 EB                     DB      091h,0ebh                                    ; flags,acc
+0906	FC 40                     DW      040fch                                       ; SP
+	                
+	                                                                               ; second (1024 cycles)
+0908	18 00 00 00               DB      018h,0,0,0                                   ; insn
+090C	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0914	00 00 00 00 
+
+0918	00 FF                     DB      0,-1                                         ; flags,acc
+091A	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (6 cycles)
+091C	00 00 00 00               DB      0,0,0,0                                      ; insn
+0920	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0928	00 00 00 00 
+
+092C	D7 00                     DB      0D7h,0                                       ; flags,acc
+092E	00 00                     DW      0                                            ; SP
+	                
+0930	E0 D8 92 35               DB      0e0h,0d8h,092h,035h                          ; expected crc
+0934	3C 52 4C 43               DB      '<RLC,RRC,RAL,RAR>............$'             ; descriptive tag
+	. . .
+0950	2E 24 
+
+	                
+	                ; STAX <B,D> (96 cycles)
+0952	FF              stabd:    DB       0FFh                                        ; flag mask
+	                
+	                                                                               ; first
+0953	02 00 00 00               DB      2,0,0,0                                      ; insn
+0957	3B 0C 92 B5               DW      00c3Bh,0b592h,06cfFh,0959Eh,msbt,msbt+1      ; memop,--,--,HL,DE,BC
+	. . .
+095F	07 00 08 00 
+
+0963	C1 21                     DB      0c1h,021h                                    ; flags,acc
+0965	E7 BD                     DW      0bde7h                                       ; SP
+	                
+	                                                                               ; second (4 cycles)
+0967	18 00 00 00               DB      018h,0,0,0                                   ; insn
+096B	00 00 00 00               DW      0,0,0,0,0,0                                  ; memop,--,--,HL,DE,BC
+	. . .
+0973	00 00 00 00 
+
+0977	00 00                     DB      0,0                                          ; flags,acc
+0979	00 00                     DW      0                                            ; SP
+	                
+	                                                                               ; third (24 cycles)
+097B	00 00 00 00               DB      0,0,0,0                                      ; insn
+097F	FF FF 00 00               DW      -1,0,0,0,0,0                                 ; memop,--,--,HL,DE,BC
+	. . .
+0987	00 00 00 00 
+
+098B	00 FF                     DB      0,-1                                         ; flags,acc
+098D	00 00                     DW      0                                            ; SP
+	                
+	                ;crc      DB      02Bh,004h,071h,0e9h                          ; original expected crc
+098F	DA DD 0A 5D               DB      0DAh, 0DDh, 00Ah, 05Dh                       ; current expected crc from emu80
+0993	53 54 41 58               DB      'STAX <B,D>...................$'             ; descriptive tag
+	. . .
+09AF	2E 24 
+
+	                
+	                ; start test pointed to by (hl)
+09B1	E5              stt:      PUSH    H
+09B2	7E                        MOV     A,M                ; get pointer to test
+09B3	23                        INX     H
+09B4	66                        MOV     H,M
+09B5	6F                        MOV     L,A
+09B6	7E                        MOV     A,M                ; flag mask
+09B7	32 5A 0C                  STA     flgmsk+1
+09BA	23                        INX     H
+09BB	E5                        PUSH    H
+09BC	11 14 00                  LXI     D,20
+09BF	19                        DAD     D                  ; point to incmask
+09C0	11 B9 0B                  LXI     D,counter
+09C3	CD 28 0B                  CALL    initmask
+09C6	E1                        POP     H
+09C7	E5                        PUSH    H
+09C8	11 28 00                  LXI     D,20+20
+09CB	19                        DAD     D                  ; point to scanmask
+09CC	11 E1 0B                  LXI     D,shifter
+09CF	CD 28 0B                  CALL    initmask
+09D2	21 E1 0B                  LXI     H,shifter
+09D5	36 01                     MVI     M,1                ; first bit
+09D7	E1                        POP     H
+09D8	E5                        PUSH    H
+09D9	11 28 0C                  LXI     D,iut              ; copy initial instruction under test
+09DC	01 04 00                  LXI     B,4
+	                
+	                ;#idb ldir replaced with following code
+09DF	7E              ldir1:    MOV     A,M
+09E0	12                        STAX    D
+09E1	23                        INX     H
+09E2	13                        INX     D
+09E3	0B                        DCX     B
+09E4	78                        MOV     A,B
+09E5	B1                        ORA     C
+09E6	C2 DF 09                  JNZ     ldir1
+	                ;#idb
+	                
+09E9	11 07 00                  LXI     D,msbt             ; copy initial machine state
+09EC	01 10 00                  LXI     B,16
+	                
+	                ;#idb ldir replaced with following code
+09EF	7E              ldir2:    MOV     A,M
+09F0	12                        STAX    D
+09F1	23                        INX     H
+09F2	13                        INX     D
+09F3	0B                        DCX     B
+09F4	78                        MOV     A,B
+09F5	B1                        ORA     C
+09F6	C2 EF 09                  JNZ     ldir2
+	                ;#idb
+	                
+09F9	11 2C 00                  LXI     D,20+20+4          ; skip incmask, scanmask and expcrc
+09FC	19                        DAD     D
+09FD	EB                        XCHG
+09FE	CD A5 0C                  CALL    msg                ; show test name
+0A01	CD AB 0D                  CALL    initcrc            ; initialise crc
+	                ; test loop
+0A04	3A 28 0C        tlp:      LDA     iut
+0A07	FE 76                     CPI     076h               ; pragmatically avoid halt intructions
+0A09	CA 1B 0A                  JZ      tlp2
+0A0C	E6 DF                     ANI     0DFh
+0A0E	FE DD                     CPI     0DDh
+0A10	C2 18 0A                  JNZ     tlp1
+0A13	3A 29 0C                  LDA     iut+1
+0A16	FE 76                     CPI     076h
+0A18	C4 09 0C        tlp1:     CNZ     test               ; execute the test instruction
+0A1B	CD 68 0B        tlp2:     CALL    count              ; increment the counter
+0A1E	C4 8C 0B                  CNZ     shift              ; shift the scan bit
+0A21	E1                        POP     H                  ; pointer to test case
+0A22	CA 51 0A                  JZ      tlp3               ; done if shift returned NZ
+0A25	11 3C 00                  LXI     D,20+20+20
+0A28	19                        DAD     D                  ; point to expected crc
+0A29	CD 6C 0D                  CALL    cmpcrc
+0A2C	11 32 0D                  LXI     D,okmsg
+0A2F	CA 4A 0A                  JZ      tlpok
+0A32	11 39 0D                  LXI     D,ermsg1
+0A35	CD A5 0C                  CALL    msg
+0A38	CD 90 0C                  CALL    phex8
+0A3B	11 57 0D                  LXI     D,ermsg2
+0A3E	CD A5 0C                  CALL    msg
+0A41	21 BF 0D                  LXI     H,crcval
+0A44	CD 90 0C                  CALL    phex8
+0A47	11 69 0D                  LXI     D,crlf
+0A4A	CD A5 0C        tlpok:    CALL    msg
+0A4D	E1                        POP     H
+0A4E	23                        INX     H
+0A4F	23                        INX     H
+0A50	C9                        RET
+	                
+0A51	E5              tlp3:     PUSH    H
+0A52	3E 01                     MVI     A,1                ; initialise count and shift scanners
+0A54	32 C7 0A                  STA     cntbit
+0A57	32 EB 0A                  STA     shfbit
+0A5A	21 B9 0B                  LXI     H,counter
+0A5D	22 C8 0A                  SHLD    cntbyt
+0A60	21 E1 0B                  LXI     H,shifter
+0A63	22 EC 0A                  SHLD    shfbyt
+	                
+0A66	06 04                     MVI     B,4                ; bytes in iut field
+0A68	E1                        POP     H                  ; pointer to test case
+0A69	E5                        PUSH    H
+0A6A	11 28 0C                  LXI     D,iut
+0A6D	CD 7B 0A                  CALL    setup              ; setup iut
+0A70	06 10                     MVI     B,16               ; bytes in machine state
+0A72	11 07 00                  LXI     D,msbt
+0A75	CD 7B 0A                  CALL    setup              ; setup machine state
+0A78	C3 04 0A                  JMP     tlp
+	                
+	                ; setup a field of the test case
+	                ; B  = number of bytes
+	                ; hl = pointer to base case
+	                ; de = destination
+0A7B	CD 84 0A        setup:    CALL    subyte
+0A7E	23                        INX     H
+0A7F	05                        DCR     B
+0A80	C2 7B 0A                  JNZ     setup
+0A83	C9                        RET
+	                
+0A84	C5              subyte:   PUSH    B
+0A85	D5                        PUSH    D
+0A86	E5                        PUSH    H
+0A87	4E                        MOV     C,M                ; get base byte
+0A88	11 14 00                  LXI     D,20
+0A8B	19                        DAD     D                  ; point to incmask
+0A8C	7E                        MOV     A,M
+0A8D	FE 00                     CPI     0
+0A8F	CA A5 0A                  JZ      subshf
+0A92	06 08                     MVI     B,8                ; 8 bits
+0A94	0F              subclp:   RRC
+0A95	F5                        PUSH    PSW
+0A96	3E 00                     MVI     A,0
+0A98	DC CA 0A                  CC      nxtcbit            ; get next counter bit if mask bit was set
+0A9B	A9                        XRA     C                  ; flip bit if counter bit was set
+0A9C	0F                        RRC
+0A9D	4F                        MOV     C,A
+0A9E	F1                        POP     PSW
+0A9F	05                        DCR     B
+0AA0	C2 94 0A                  JNZ     subclp
+0AA3	06 08                     MVI     B,8
+0AA5	11 14 00        subshf:   LXI     D,20
+0AA8	19                        DAD     D                  ; point to shift mask
+0AA9	7E                        MOV     A,M
+0AAA	FE 00                     CPI     0
+0AAC	CA C0 0A                  JZ      substr
+0AAF	06 08                     MVI     B,8                ; 8 bits
+0AB1	0F              sbshf1:   RRC
+0AB2	F5                        PUSH    PSW
+0AB3	3E 00                     MVI     A,0
+0AB5	DC EE 0A                  CC      nxtsbit            ; get next shifter bit if mask bit was set
+0AB8	A9                        XRA     C                  ; flip bit if shifter bit was set
+0AB9	0F                        RRC
+0ABA	4F                        MOV     C,A
+0ABB	F1                        POP     PSW
+0ABC	05                        DCR     B
+0ABD	C2 B1 0A                  JNZ     sbshf1
+0AC0	E1              substr:   POP     H
+0AC1	D1                        POP     D
+0AC2	79                        MOV     A,C
+0AC3	12                        STAX    D                  ; mangled byte to destination
+0AC4	13                        INX     D
+0AC5	C1                        POP     B
+0AC6	C9                        RET
+	                
+	                ; get next counter bit in low bit of a
+0AC7	00              cntbit:   DS      1
+0AC8	00 00           cntbyt:   DS      2
+	                
+0ACA	C5              nxtcbit:  PUSH    B
+0ACB	E5                        PUSH    H
+0ACC	2A C8 0A                  LHLD    cntbyt
+0ACF	46                        MOV     B,M
+0AD0	21 C7 0A                  LXI     H,cntbit
+0AD3	7E                        MOV     A,M
+0AD4	4F                        MOV     C,A
+0AD5	07                        RLC
+0AD6	77                        MOV     M,A
+0AD7	FE 01                     CPI     1
+0AD9	C2 E3 0A                  JNZ     ncb1
+0ADC	2A C8 0A                  LHLD    cntbyt
+0ADF	23                        INX     H
+0AE0	22 C8 0A                  SHLD    cntbyt
+0AE3	78              ncb1:     MOV     A,B
+0AE4	A1                        ANA     C
+0AE5	E1                        POP     H
+0AE6	C1                        POP     B
+0AE7	C8                        RZ
+0AE8	3E 01                     MVI     A,1
+0AEA	C9                        RET
+	                
+	                ; get next shifter bit in low bit of a
+0AEB	00              shfbit:   DS      1
+0AEC	00 00           shfbyt:   DS      2
+	                
+0AEE	C5              nxtsbit:  PUSH    B
+0AEF	E5                        PUSH    H
+0AF0	2A EC 0A                  LHLD    shfbyt
+0AF3	46                        MOV     B,M
+0AF4	21 EB 0A                  LXI     H,shfbit
+0AF7	7E                        MOV     A,M
+0AF8	4F                        MOV     C,A
+0AF9	07                        RLC
+0AFA	77                        MOV     M,A
+0AFB	FE 01                     CPI     1
+0AFD	C2 07 0B                  JNZ     nsb1
+0B00	2A EC 0A                  LHLD    shfbyt
+0B03	23                        INX     H
+0B04	22 EC 0A                  SHLD    shfbyt
+0B07	78              nsb1:     MOV     A,B
+0B08	A1                        ANA     C
+0B09	E1                        POP     H
+0B0A	C1                        POP     B
+0B0B	C8                        RZ
+0B0C	3E 01                     MVI     A,1
+0B0E	C9                        RET
+	                
+	                
+	                ; clear memory at HL, BC bytes
+0B0F	F5              clrmem:   PUSH    PSW
+0B10	C5                        PUSH    B
+0B11	D5                        PUSH    D
+0B12	E5                        PUSH    H
+0B13	36 00                     MVI     M,0
+0B15	54                        MOV     D,H
+0B16	5D                        MOV     E,l
+0B17	13                        INX     D
+0B18	0B                        DCX     B
+	                
+	                ;#idb ldir replaced with following code
+0B19	7E              ldir3:    MOV     A,M
+0B1A	12                        STAX    D
+0B1B	23                        INX     H
+0B1C	13                        INX     D
+0B1D	0B                        DCX     B
+0B1E	78                        MOV     A,B
+0B1F	B1                        ORA     C
+0B20	C2 19 0B                  JNZ     ldir3
+	                ;#idb
+	                
+0B23	E1                        POP     H
+0B24	D1                        POP     D
+0B25	C1                        POP     B
+0B26	F1                        POP     PSW
+0B27	C9                        RET
+	                
+	                ; initialise counter or shifter
+	                ; DE = pointer to work area for counter or shifter
+	                ; HL = pointer to mask
+	                initmask:
+0B28	D5                        PUSH    D
+0B29	EB                        XCHG
+0B2A	01 28 00                  LXI     B,20+20
+0B2D	CD 0F 0B                  CALL    clrmem             ; clear work area
+0B30	EB                        XCHG
+0B31	06 14                     MVI     B,20               ; byte counter
+0B33	0E 01                     MVI     C,1                ; first bit
+0B35	16 00                     MVI     D,0                ; bit counter
+0B37	5E              imlp:     MOV     E,M
+0B38	7B              imlp1:    MOV     A,E
+0B39	A1                        ANA     C
+0B3A	CA 3E 0B                  JZ      imlp2
+0B3D	14                        INR     D
+0B3E	79              imlp2:    MOV     A,C
+0B3F	07                        RLC
+0B40	4F                        MOV     C,A
+0B41	FE 01                     CPI     1
+0B43	C2 38 0B                  JNZ     imlp1
+0B46	23                        INX     H
+0B47	05                        DCR     B
+0B48	C2 37 0B                  JNZ     imlp
+	                ; got number of 1-bits in mask in reg d
+0B4B	7A                        MOV     A,D
+0B4C	E6 F8                     ANI     0f8h
+0B4E	0F                        RRC
+0B4F	0F                        RRC
+0B50	0F                        RRC                        ; divide by 8 (get byte offset)
+0B51	6F                        MOV     L,A
+0B52	26 00                     MVI     H,0
+0B54	7A                        MOV     A,D
+0B55	E6 07                     ANI     7                  ; bit offset
+0B57	3C                        INR     A
+0B58	47                        MOV     B,A
+0B59	3E 80                     MVI     A,080h
+0B5B	07              imlp3:    RLC
+0B5C	05                        DCR     B
+0B5D	C2 5B 0B                  JNZ     imlp3
+0B60	D1                        POP     D
+0B61	19                        DAD     D
+0B62	11 14 00                  LXI     D,20
+0B65	19                        DAD     D
+0B66	77                        MOV     M,A
+0B67	C9                        RET
+	                
+	                ; multi-byte counter
+0B68	C5              count:    PUSH    B
+0B69	D5                        PUSH    D
+0B6A	E5                        PUSH    H
+0B6B	21 B9 0B                  LXI     H,counter          ; 20 byte counter starts here
+0B6E	11 14 00                  LXI     D,20               ; somewhere in here is the stop bit
+0B71	EB                        XCHG
+0B72	19                        DAD     D
+0B73	EB                        XCHG
+0B74	34              cntlp:    INR     m
+0B75	7E                        MOV     A,M
+0B76	FE 00                     CPI     0
+0B78	CA 87 0B                  JZ      cntlp1             ; overflow to next byte
+0B7B	47                        MOV     B,A
+0B7C	1A                        LDAX    D
+0B7D	A0                        ANA     B                  ; test for terminal value
+0B7E	CA 83 0B                  JZ      cntend
+0B81	36 00                     MVI     M,0                ; reset to zero
+0B83	C1              cntend:   POP     B
+0B84	D1                        POP     D
+0B85	E1                        POP     H
+0B86	C9                        RET
+	                
+0B87	23              cntlp1:   INX     H
+0B88	13                        INX     D
+0B89	C3 74 0B                  JMP     cntlp
+	                
+	                
+	                ; multi-byte shifter
+0B8C	C5              shift:    PUSH    B
+0B8D	D5                        PUSH    D
+0B8E	E5                        PUSH    H
+0B8F	21 E1 0B                  LXI     H,shifter          ; 20 byte shift register starts here
+0B92	11 14 00                  LXI     D,20               ; somewhere in here is the stop bit
+0B95	EB                        XCHG
+0B96	19                        DAD     D
+0B97	EB                        XCHG
+0B98	7E              shflp:    MOV     A,M
+0B99	B7                        ORA     A
+0B9A	CA B4 0B                  JZ      shflp1
+0B9D	47                        MOV     B,A
+0B9E	1A                        LDAX    D
+0B9F	A0                        ANA     B
+0BA0	C2 B0 0B                  JNZ     shlpe
+0BA3	78                        MOV     A,B
+0BA4	07                        RLC
+0BA5	FE 01                     CPI     1
+0BA7	C2 AE 0B                  JNZ     shflp2
+0BAA	36 00                     MVI     M,0
+0BAC	23                        INX     H
+0BAD	13                        INX     D
+0BAE	77              shflp2:   MOV     M,A
+0BAF	AF                        XRA     a                  ; set Z
+0BB0	E1              shlpe:    POP     H
+0BB1	D1                        POP     D
+0BB2	C1                        POP     B
+0BB3	C9                        RET
+0BB4	23              shflp1:   INX     H
+0BB5	13                        INX     D
+0BB6	C3 98 0B                  JMP     shflp
+	                
+0BB9	00 00 00 00     counter:  DS     2*20
+	. . .
+0BDD	00 00 00 00 
+
+0BE1	00 00 00 00     shifter:  DS     2*20
+	. . .
+0C05	00 00 00 00 
+
+	                
+	                ; test harness
+0C09	F5              test:     PUSH    PSW
+0C0A	C5                        PUSH    B
+0C0B	D5                        PUSH    D
+0C0C	E5                        PUSH    H
+	                ;!        if      0
+	                ;!        LXI     D,crlf
+	                ;!        CALL    msg
+	                ;!        LXI     H,iut
+	                ;!        MVI     B,4
+	                ;!        CALL    hexstr
+	                ;!        MVI     A,' '
+	                ;!        CALL    pchar
+	                ;!        MVI     B,16
+	                ;!        LXI     H,msbt
+	                ;!        CALL    hexstr
+	                ;!        endif
+0C0D	F3                        DI                         ; disable interrupts
+	                
+	                ;#idb ld (spsav),sp replaced by following code
+	                ;#idb All registers and flages are immediately overwritten so
+	                ;#idb no need to preserve any state.
+0C0E	21 00 00                  LXI     H,0                ; save stack pointer
+0C11	39                        DAD     sp
+0C12	22 84 0C                  SHLD    spsav
+	                ;#idb
+	                
+0C15	31 09 00                  LXI     sp,msbt+2          ; point to test-case machine state
+	                
+	                ;#idb pop iy
+	                ;#idb pop ix both replaced by following code
+	                ;#idb Just dummy out ix/iy with copies of HL
+0C18	E1                        POP     H                  ; and load all regs
+0C19	E1                        POP     H
+	                ;#idb
+	                
+0C1A	E1                        POP     H
+0C1B	D1                        POP     D
+0C1C	C1                        POP     B
+0C1D	F1                        POP     PSW
+	                
+	                ;#idb ld sp,(spbt) replaced with the following code
+	                ;#idb HL is copied/restored before/after load so no state changed
+0C1E	22 72 0C                  SHLD    temp
+0C21	2A 15 00                  LHLD    spbt
+0C24	F9                        SPHL
+0C25	2A 72 0C                  LHLD    temp
+	                ;#idb
+	                
+0C28	00 00 00 00     iut:      DS      4                 ; max 4 byte instruction under test
+	                
+	                ;#idb ld (spat),sp replaced with the following code
+	                ;#idb Must be very careful to preserve registers and flag
+	                ;#idb state resulting from the test.  The temptation is to use the
+	                ;#idb stack - but that doesn't work because of the way the app
+	                ;#idb uses SP as a quick way of pointing to memory.
+	                ;#idb Bit of a code smell, but I can't think of an easier way.
+0C2C	22 72 0C                  SHLD    temp
+0C2F	21 00 00                  LXI     H,0
+0C32	DA 39 0C                  JC      temp1             ; jump on the state of the C flag set in the test
+	                
+0C35	39                        DAD     sp                ; this code will clear the C flag (0 + nnnn = nc)
+0C36	C3 3B 0C                  JMP     temp2             ; C flag is same state as before
+	                
+0C39	39              temp1:    DAD     sp                ; this code will clear the C flag (0 + nnnn = nc)
+0C3A	37                        STC                       ; C flage needs re-setting to preserve state
+	                
+0C3B	22 82 0C        temp2:    SHLD    spat
+0C3E	2A 72 0C                  LHLD    temp
+	                ;#idb
+	                
+0C41	31 82 0C                  LXI     sp,spat
+0C44	F5                        PUSH    psw               ; save other registers
+0C45	C5                        PUSH    B
+0C46	D5                        PUSH    D
+0C47	E5                        PUSH    H
+	                
+	                ;#idb push ix
+	                ;#idb push iy both replaced by following code
+	                ;#idb Must match change made to pops made before test
+0C48	E5                        PUSH    H
+0C49	E5                        PUSH    H
+	                ;#idb
+	                
+	                ;#idb ld sp,(spsav) replaced with following code
+	                ;#idb No need to preserve state
+0C4A	2A 84 0C                  LHLD    spsav             ; restore stack pointer
+0C4D	F9                        SPHL
+	                ;#idb
+	                
+0C4E	FB                        EI                        ; enable interrupts
+0C4F	2A 07 00                  LHLD    msbt              ; copy memory operand
+0C52	22 74 0C                  SHLD    msat
+0C55	21 80 0C                  LXI     H,flgsat          ; flags after test
+0C58	7E                        MOV     A,M
+0C59	E6 FF           flgmsk:   ANI     0FFh              ; mask-out irrelevant bits (self-modified code!)
+0C5B	77                        MOV     M,A
+0C5C	06 10                     MVI     B,16              ; total of 16 bytes of state
+0C5E	11 74 0C                  LXI     D,msat
+0C61	21 BF 0D                  LXI     H,crcval
+0C64	1A              tcrc:     LDAX    D
+0C65	13                        INX     D
+0C66	CD 83 0D                  CALL    updcrc            ; accumulate crc of this test case
+0C69	05                        DCR     B
+0C6A	C2 64 0C                  JNZ     tcrc
+	                ;!        if      0
+	                ;!        MVI     A,' '
+	                ;!        CALL    pchar
+	                ;!        LXI     H,crcval
+	                ;!        CALL    phex8
+	                ;!        LXI     D,crlf
+	                ;!        CALL    msg
+	                ;!        LXI     H,msat
+	                ;!        MVI     B,16
+	                ;!        CALL    hexstr
+	                ;!        LXI     D,crlf
+	                ;!        CALL    msg
+	                ;!        endif
+0C6D	E1                        POP     H
+0C6E	D1                        POP     D
+0C6F	C1                        POP     B
+0C70	F1                        POP     PSW
+0C71	C9                        RET
+	                
+	                ;#idb Added to store HL state
+0C72	00 00           temp:     DS      2
+	                ;#idb
+	                
+	                ; machine state after test
+0C74	00 00 00 00     msat:     DS      14                ; memop,--,--,HL,DE,BC
+	. . .
+0C80	00 00 
+
+0C82	00 00           spat:     DS      2                 ; stack pointer after test
+	                flgsat    EQU     spat-2            ; flags
+	                
+0C84	00 00           spsav:    DS      2                 ; saved stack pointer
+	                
+	                ; display hex string (pointer in HL, byte count in B)
+0C86	7E              hexstr:   MOV     A,M
+0C87	CD CA 0C                  CALL    byteo
+0C8A	23                        INX     H
+0C8B	05                        DCR     B
+0C8C	C2 86 0C                  JNZ     hexstr
+0C8F	C9                        RET
+	                
+	                ; display hex
+	                ; display the big-endian 32-bit value pointed to by HL
+0C90	F5              phex8:    PUSh    PSW
+0C91	C5                        PUSh    B
+0C92	E5                        PUSh    H
+0C93	06 04                     MVI     B,4
+0C95	7E              ph8lp:    MOV     A,M
+0C96	CD CA 0C                  CALl    byteo
+0C99	23                        INX     H
+0C9A	05                        DCR     B
+0C9B	C2 95 0C                  JNZ     ph8lp
+0C9E	E1                        POP     H
+0C9F	C1                        POP     B
+0CA0	F1                        POP     PSW
+0CA1	C9                        RET
+	                
+	                ;
+	                bdos      EQU     0C037h            ; LIK PRINT CHAR PROCEDURE
+0CA2	C3 00 C8        wboot:    JMP     0C800h            ; LIK MONITOR-1M
+	                ;
+	                ;MESSAGE OUTPUT ROUTINE
+	                ;
+0CA5	C5              msg:      PUSH    B                 ; Push state
+0CA6	D5                        PUSH    D
+0CA7	E5                        PUSH    H
+0CA8	F5                        PUSH    PSW
+0CA9	EB                        XCHG                      ; Swap HL and DE
+0CAA	7E              msgs:     MOV     A,M               ; Get data
+0CAB	FE 24                     CPI     '$'               ; End?
+0CAD	CA B8 0C                  JZ      msge              ; Exit
+0CB0	7E                        MOV     A,M
+0CB1	CD BD 0C                  CALL    pchar             ; Output
+0CB4	23                        INX     H                 ; Next
+0CB5	C3 AA 0C                  JMP     msgs              ; Do all
+0CB8	F1              msge:     POP     PSW               ; Pop state
+0CB9	E1                        POP     H
+0CBA	D1                        POP     D
+0CBB	C1                        POP     B
+0CBC	C9                        RET
+	                ;
+	                ;CHARACTER OUTPUT ROUTINE
+	                ;
+0CBD	C5              pchar:    PUSH    B
+0CBE	D5                        PUSH    D
+0CBF	E5                        PUSH    H
+0CC0	F5                        PUSH    PSW
+0CC1	4F                        MOV     C,A
+0CC2	CD 37 C0                  CALL    bdos
+0CC5	F1                        POP     PSW
+0CC6	E1                        POP     H
+0CC7	D1                        POP     D
+0CC8	C1                        POP     B
+0CC9	C9                        RET
+	                ;
+	                ;HEX BYTE OUTPUT ROUTINE
+	                ;
+0CCA	C5              byteo:    PUSH    B
+0CCB	D5                        PUSH    D
+0CCC	E5                        PUSH    H
+0CCD	F5                        PUSH    PSW
+0CCE	F5                        PUSH    PSW
+0CCF	CD E1 0C                  CALL    byto1
+0CD2	CD BD 0C                  CALL    pchar
+0CD5	F1                        POP     PSW
+0CD6	CD E5 0C                  CALL    byto2
+0CD9	CD BD 0C                  CALL    pchar
+0CDC	F1                        POP     PSW
+0CDD	E1                        POP     H
+0CDE	D1                        POP     D
+0CDF	C1                        POP     B
+0CE0	C9                        RET
+0CE1	0F              byto1:    RRC
+0CE2	0F                        RRC
+0CE3	0F                        RRC
+0CE4	0F                        RRC
+0CE5	E6 0F           byto2:    ANI     00Fh
+0CE7	FE 0A                     CPI     00Ah
+0CE9	FA EE 0C                  JM      byto3
+0CEC	C6 07                     ADI     7
+0CEE	C6 30           byto3:    ADI     030h
+0CF0	C9                        RET
+	                
+0CF1	0D 0A 38 30     msg1:     DB      00Dh, 00Ah, '8080 INSTRUCTION EXERCISER (KR580VM80A CPU)', 00Dh, 00Ah, '$'
+	. . .
+0D1D	29 0D 0A 24 
+
+0D21	54 45 53 54     msg2:     DB      'TESTS COMPLETE', 00Dh, 00Ah, '$'
+	. . .
+0D31	24 
+
+0D32	20 20 4F 4B     okmsg:    DB      '  OK', 00Dh, 00Ah, '$'
+	. . .
+0D36	0D 0A 24 
+
+0D39	20 20 45 52     ermsg1:   DB      '  ERROR ****', 00Dh, 00Ah, ' CRC EXPECTED: ', '$'
+	. . .
+0D55	20 24 
+
+0D57	0D 0A 20 46     ermsg2:   DB      00Dh, 00Ah, ' FOUND:        ', '$'
+	. . .
+0D67	20 24 
+
+0D69	0D 0A 24        crlf:     DB      00Dh, 00Ah, '$'
+	                
+	                ; compare crc
+	                ; HL points to value to compare to crcval
+0D6C	C5              cmpcrc:   PUSH    B
+0D6D	D5                        PUSH    D
+0D6E	E5                        PUSH    H
+0D6F	11 BF 0D                  LXI     D,crcval
+0D72	06 04                     MVI     B,4
+0D74	1A              cclp:     LDAX    D
+0D75	BE                        CMP     m
+0D76	C2 7F 0D                  JNZ     cce
+0D79	23                        INX     H
+0D7A	13                        INX     D
+0D7B	05                        DCR     B
+0D7C	C2 74 0D                  JNZ     cclp
+0D7F	E1              cce:      POP     H
+0D80	D1                        POP     D
+0D81	C1                        POP     B
+0D82	C9                        RET
+	                
+	                ; 32-bit crc routine
+	                ; entry: A contains next byte, HL points to crc
+	                ; exit:  crc updated
+0D83	F5              updcrc:   PUSH    PSW
+0D84	C5                        PUSH    B
+0D85	D5                        PUSH    D
+0D86	E5                        PUSH    H
+0D87	E5                        PUSH    H
+0D88	11 03 00                  LXI     D,3
+0D8B	19                        DAD     D                 ; point to low byte of old crc
+0D8C	AE                        XRA     m                 ; xor with new byte
+0D8D	6F                        MOV     L,A
+0D8E	26 00                     MVI     H,0
+0D90	29                        DAD     H                 ; use result as index into table of 4 byte entries
+0D91	29                        DAD     H
+0D92	EB                        XCHG
+0D93	21 C3 0D                  LXI     H,crctab
+0D96	19                        DAD     D                 ; point to selected entry in crctab
+0D97	EB                        XCHG
+0D98	E1                        POP     H
+0D99	01 04 00                  LXI     B,4               ; c = byte count, B = accumulator
+0D9C	1A              crclp:    LDAX    D
+0D9D	A8                        XRA     B
+0D9E	46                        MOV     B,M
+0D9F	77                        MOV     M,A
+0DA0	13                        INX     D
+0DA1	23                        INX     H
+0DA2	0D                        DCR     C
+0DA3	C2 9C 0D                  JNZ     crclp
+	                ;!        IF      0
+	                ;!        LXI     H,crcval
+	                ;!        CALL    phex8
+	                ;!        LXI     D,crlf
+	                ;!        CALL    msg
+	                ;!        ENDIF
+0DA6	E1                        POP     H
+0DA7	D1                        POP     D
+0DA8	C1                        POP     B
+0DA9	F1                        POP     PSW
+0DAA	C9                        RET
+	                
+0DAB	F5              initcrc:  PUSH    PSW
+0DAC	C5                        PUSH    B
+0DAD	E5                        PUSH    H
+0DAE	21 BF 0D                  LXI     H,crcval
+0DB1	3E FF                     MVI     A,0FFh
+0DB3	06 04                     MVI     B,4
+0DB5	77              icrclp:   MOV     M,A
+0DB6	23                        INX     H
+0DB7	05                        DCR     B
+0DB8	C2 B5 0D                  JNZ     icrclp
+0DBB	E1                        POP     H
+0DBC	C1                        POP     B
+0DBD	F1                        POP     PSW
+0DBE	C9                        RET
+	                
+0DBF	00 00 00 00     crcval:   DS      4
+	                
+0DC3	00 00 00 00     crctab:   DB      000h,000h,000h,000h
+0DC7	77 07 30 96               DB      077h,007h,030h,096h
+0DCB	EE 0E 61 2C               DB      0EEh,00Eh,061h,02Ch
+0DCF	99 09 51 BA               DB      099h,009h,051h,0BAh
+0DD3	07 6D C4 19               DB      007h,06Dh,0C4h,019h
+0DD7	70 6A F4 8F               DB      070h,06Ah,0F4h,08Fh
+0DDB	E9 63 A5 35               DB      0E9h,063h,0A5h,035h
+0DDF	9E 64 95 A3               DB      09Eh,064h,095h,0A3h
+0DE3	0E DB 88 32               DB      00Eh,0DBh,088h,032h
+0DE7	79 DC B8 A4               DB      079h,0DCh,0B8h,0A4h
+0DEB	E0 D5 E9 1E               DB      0E0h,0D5h,0E9h,01Eh
+0DEF	97 D2 D9 88               DB      097h,0D2h,0D9h,088h
+0DF3	09 B6 4C 2B               DB      009h,0B6h,04Ch,02Bh
+0DF7	7E B1 7C BD               DB      07Eh,0B1h,07Ch,0BDh
+0DFB	E7 B8 2D 07               DB      0E7h,0B8h,02Dh,007h
+0DFF	90 BF 1D 91               DB      090h,0BFh,01Dh,091h
+0E03	1D B7 10 64               DB      01Dh,0B7h,010h,064h
+0E07	6A B0 20 F2               DB      06Ah,0B0h,020h,0F2h
+0E0B	F3 B9 71 48               DB      0F3h,0B9h,071h,048h
+0E0F	84 BE 41 DE               DB      084h,0BEh,041h,0DEh
+0E13	1A DA D4 7D               DB      01Ah,0DAh,0D4h,07Dh
+0E17	6D DD E4 EB               DB      06Dh,0DDh,0E4h,0EBh
+0E1B	F4 D4 B5 51               DB      0F4h,0D4h,0B5h,051h
+0E1F	83 D3 85 C7               DB      083h,0D3h,085h,0C7h
+0E23	13 6C 98 56               DB      013h,06Ch,098h,056h
+0E27	64 6B A8 C0               DB      064h,06Bh,0A8h,0C0h
+0E2B	FD 62 F9 7A               DB      0FDh,062h,0F9h,07Ah
+0E2F	8A 65 C9 EC               DB      08Ah,065h,0C9h,0ECh
+0E33	14 01 5C 4F               DB      014h,001h,05Ch,04Fh
+0E37	63 06 6C D9               DB      063h,006h,06Ch,0D9h
+0E3B	FA 0F 3D 63               DB      0FAh,00Fh,03Dh,063h
+0E3F	8D 08 0D F5               DB      08Dh,008h,00Dh,0F5h
+0E43	3B 6E 20 C8               DB      03Bh,06Eh,020h,0C8h
+0E47	4C 69 10 5E               DB      04Ch,069h,010h,05Eh
+0E4B	D5 60 41 E4               DB      0D5h,060h,041h,0E4h
+0E4F	A2 67 71 72               DB      0A2h,067h,071h,072h
+0E53	3C 03 E4 D1               DB      03Ch,003h,0E4h,0D1h
+0E57	4B 04 D4 47               DB      04Bh,004h,0D4h,047h
+0E5B	D2 0D 85 FD               DB      0D2h,00Dh,085h,0FDh
+0E5F	A5 0A B5 6B               DB      0A5h,00Ah,0B5h,06Bh
+0E63	35 B5 A8 FA               DB      035h,0B5h,0A8h,0FAh
+0E67	42 B2 98 6C               DB      042h,0B2h,098h,06Ch
+0E6B	DB BB C9 D6               DB      0DBh,0BBh,0C9h,0D6h
+0E6F	AC BC F9 40               DB      0ACh,0BCh,0F9h,040h
+0E73	32 D8 6C E3               DB      032h,0D8h,06Ch,0E3h
+0E77	45 DF 5C 75               DB      045h,0DFh,05Ch,075h
+0E7B	DC D6 0D CF               DB      0DCh,0D6h,00Dh,0CFh
+0E7F	AB D1 3D 59               DB      0ABh,0D1h,03Dh,059h
+0E83	26 D9 30 AC               DB      026h,0D9h,030h,0ACh
+0E87	51 DE 00 3A               DB      051h,0DEh,000h,03Ah
+0E8B	C8 D7 51 80               DB      0C8h,0D7h,051h,080h
+0E8F	BF D0 61 16               DB      0BFh,0D0h,061h,016h
+0E93	21 B4 F4 B5               DB      021h,0B4h,0F4h,0B5h
+0E97	56 B3 C4 23               DB      056h,0B3h,0C4h,023h
+0E9B	CF BA 95 99               DB      0CFh,0BAh,095h,099h
+0E9F	B8 BD A5 0F               DB      0B8h,0BDh,0A5h,00Fh
+0EA3	28 02 B8 9E               DB      028h,002h,0B8h,09Eh
+0EA7	5F 05 88 08               DB      05Fh,005h,088h,008h
+0EAB	C6 0C D9 B2               DB      0C6h,00Ch,0D9h,0B2h
+0EAF	B1 0B E9 24               DB      0B1h,00Bh,0E9h,024h
+0EB3	2F 6F 7C 87               DB      02Fh,06Fh,07Ch,087h
+0EB7	58 68 4C 11               DB      058h,068h,04Ch,011h
+0EBB	C1 61 1D AB               DB      0C1h,061h,01Dh,0ABh
+0EBF	B6 66 2D 3D               DB      0B6h,066h,02Dh,03Dh
+0EC3	76 DC 41 90               DB      076h,0DCh,041h,090h
+0EC7	01 DB 71 06               DB      001h,0DBh,071h,006h
+0ECB	98 D2 20 BC               DB      098h,0D2h,020h,0BCh
+0ECF	EF D5 10 2A               DB      0EFh,0D5h,010h,02Ah
+0ED3	71 B1 85 89               DB      071h,0B1h,085h,089h
+0ED7	06 B6 B5 1F               DB      006h,0B6h,0B5h,01Fh
+0EDB	9F BF E4 A5               DB      09Fh,0BFh,0E4h,0A5h
+0EDF	E8 B8 D4 33               DB      0E8h,0B8h,0D4h,033h
+0EE3	78 07 C9 A2               DB      078h,007h,0C9h,0A2h
+0EE7	0F 00 F9 34               DB      00Fh,000h,0F9h,034h
+0EEB	96 09 A8 8E               DB      096h,009h,0A8h,08Eh
+0EEF	E1 0E 98 18               DB      0E1h,00Eh,098h,018h
+0EF3	7F 6A 0D BB               DB      07Fh,06Ah,00Dh,0BBh
+0EF7	08 6D 3D 2D               DB      008h,06Dh,03Dh,02Dh
+0EFB	91 64 6C 97               DB      091h,064h,06Ch,097h
+0EFF	E6 63 5C 01               DB      0E6h,063h,05Ch,001h
+0F03	6B 6B 51 F4               DB      06Bh,06Bh,051h,0F4h
+0F07	1C 6C 61 62               DB      01Ch,06Ch,061h,062h
+0F0B	85 65 30 D8               DB      085h,065h,030h,0D8h
+0F0F	F2 62 00 4E               DB      0F2h,062h,000h,04Eh
+0F13	6C 06 95 ED               DB      06Ch,006h,095h,0EDh
+0F17	1B 01 A5 7B               DB      01Bh,001h,0A5h,07Bh
+0F1B	82 08 F4 C1               DB      082h,008h,0F4h,0C1h
+0F1F	F5 0F C4 57               DB      0F5h,00Fh,0C4h,057h
+0F23	65 B0 D9 C6               DB      065h,0B0h,0D9h,0C6h
+0F27	12 B7 E9 50               DB      012h,0B7h,0E9h,050h
+0F2B	8B BE B8 EA               DB      08Bh,0BEh,0B8h,0EAh
+0F2F	FC B9 88 7C               DB      0FCh,0B9h,088h,07Ch
+0F33	62 DD 1D DF               DB      062h,0DDh,01Dh,0DFh
+0F37	15 DA 2D 49               DB      015h,0DAh,02Dh,049h
+0F3B	8C D3 7C F3               DB      08Ch,0D3h,07Ch,0F3h
+0F3F	FB D4 4C 65               DB      0FBh,0D4h,04Ch,065h
+0F43	4D B2 61 58               DB      04Dh,0B2h,061h,058h
+0F47	3A B5 51 CE               DB      03Ah,0B5h,051h,0CEh
+0F4B	A3 BC 00 74               DB      0A3h,0BCh,000h,074h
+0F4F	D4 BB 30 E2               DB      0D4h,0BBh,030h,0E2h
+0F53	4A DF A5 41               DB      04Ah,0DFh,0A5h,041h
+0F57	3D D8 95 D7               DB      03Dh,0D8h,095h,0D7h
+0F5B	A4 D1 C4 6D               DB      0A4h,0D1h,0C4h,06Dh
+0F5F	D3 D6 F4 FB               DB      0D3h,0D6h,0F4h,0FBh
+0F63	43 69 E9 6A               DB      043h,069h,0E9h,06Ah
+0F67	34 6E D9 FC               DB      034h,06Eh,0D9h,0FCh
+0F6B	AD 67 88 46               DB      0ADh,067h,088h,046h
+0F6F	DA 60 B8 D0               DB      0DAh,060h,0B8h,0D0h
+0F73	44 04 2D 73               DB      044h,004h,02Dh,073h
+0F77	33 03 1D E5               DB      033h,003h,01Dh,0E5h
+0F7B	AA 0A 4C 5F               DB      0AAh,00Ah,04Ch,05Fh
+0F7F	DD 0D 7C C9               DB      0DDh,00Dh,07Ch,0C9h
+0F83	50 05 71 3C               DB      050h,005h,071h,03Ch
+0F87	27 02 41 AA               DB      027h,002h,041h,0AAh
+0F8B	BE 0B 10 10               DB      0BEh,00Bh,010h,010h
+0F8F	C9 0C 20 86               DB      0C9h,00Ch,020h,086h
+0F93	57 68 B5 25               DB      057h,068h,0B5h,025h
+0F97	20 6F 85 B3               DB      020h,06Fh,085h,0B3h
+0F9B	B9 66 D4 09               DB      0B9h,066h,0D4h,009h
+0F9F	CE 61 E4 9F               DB      0CEh,061h,0E4h,09Fh
+0FA3	5E DE F9 0E               DB      05Eh,0DEh,0F9h,00Eh
+0FA7	29 D9 C9 98               DB      029h,0D9h,0C9h,098h
+0FAB	B0 D0 98 22               DB      0B0h,0D0h,098h,022h
+0FAF	C7 D7 A8 B4               DB      0C7h,0D7h,0A8h,0B4h
+0FB3	59 B3 3D 17               DB      059h,0B3h,03Dh,017h
+0FB7	2E B4 0D 81               DB      02Eh,0B4h,00Dh,081h
+0FBB	B7 BD 5C 3B               DB      0B7h,0BDh,05Ch,03Bh
+0FBF	C0 BA 6C AD               DB      0C0h,0BAh,06Ch,0ADh
+0FC3	ED B8 83 20               DB      0EDh,0B8h,083h,020h
+0FC7	9A BF B3 B6               DB      09Ah,0BFh,0B3h,0B6h
+0FCB	03 B6 E2 0C               DB      003h,0B6h,0E2h,00Ch
+0FCF	74 B1 D2 9A               DB      074h,0B1h,0D2h,09Ah
+0FD3	EA D5 47 39               DB      0EAh,0D5h,047h,039h
+0FD7	9D D2 77 AF               DB      09Dh,0D2h,077h,0AFh
+0FDB	04 DB 26 15               DB      004h,0DBh,026h,015h
+0FDF	73 DC 16 83               DB      073h,0DCh,016h,083h
+0FE3	E3 63 0B 12               DB      0E3h,063h,00Bh,012h
+0FE7	94 64 3B 84               DB      094h,064h,03Bh,084h
+0FEB	0D 6D 6A 3E               DB      00Dh,06Dh,06Ah,03Eh
+0FEF	7A 6A 5A A8               DB      07Ah,06Ah,05Ah,0A8h
+0FF3	E4 0E CF 0B               DB      0E4h,00Eh,0CFh,00Bh
+0FF7	93 09 FF 9D               DB      093h,009h,0FFh,09Dh
+0FFB	0A 00 AE 27               DB      00Ah,000h,0AEh,027h
+0FFF	7D 07 9E B1               DB      07Dh,007h,09Eh,0B1h
+1003	F0 0F 93 44               DB      0F0h,00Fh,093h,044h
+1007	87 08 A3 D2               DB      087h,008h,0A3h,0D2h
+100B	1E 01 F2 68               DB      01Eh,001h,0F2h,068h
+100F	69 06 C2 FE               DB      069h,006h,0C2h,0FEh
+1013	F7 62 57 5D               DB      0F7h,062h,057h,05Dh
+1017	80 65 67 CB               DB      080h,065h,067h,0CBh
+101B	19 6C 36 71               DB      019h,06Ch,036h,071h
+101F	6E 6B 06 E7               DB      06Eh,06Bh,006h,0E7h
+1023	FE D4 1B 76               DB      0FEh,0D4h,01Bh,076h
+1027	89 D3 2B E0               DB      089h,0D3h,02Bh,0E0h
+102B	10 DA 7A 5A               DB      010h,0DAh,07Ah,05Ah
+102F	67 DD 4A CC               DB      067h,0DDh,04Ah,0CCh
+1033	F9 B9 DF 6F               DB      0F9h,0B9h,0DFh,06Fh
+1037	8E BE EF F9               DB      08Eh,0BEh,0EFh,0F9h
+103B	17 B7 BE 43               DB      017h,0B7h,0BEh,043h
+103F	60 B0 8E D5               DB      060h,0B0h,08Eh,0D5h
+1043	D6 D6 A3 E8               DB      0D6h,0D6h,0A3h,0E8h
+1047	A1 D1 93 7E               DB      0A1h,0D1h,093h,07Eh
+104B	38 D8 C2 C4               DB      038h,0D8h,0C2h,0C4h
+104F	4F DF F2 52               DB      04Fh,0DFh,0F2h,052h
+1053	D1 BB 67 F1               DB      0D1h,0BBh,067h,0F1h
+1057	A6 BC 57 67               DB      0A6h,0BCh,057h,067h
+105B	3F B5 06 DD               DB      03Fh,0B5h,006h,0DDh
+105F	48 B2 36 4B               DB      048h,0B2h,036h,04Bh
+1063	D8 0D 2B DA               DB      0D8h,00Dh,02Bh,0DAh
+1067	AF 0A 1B 4C               DB      0AFh,00Ah,01Bh,04Ch
+106B	36 03 4A F6               DB      036h,003h,04Ah,0F6h
+106F	41 04 7A 60               DB      041h,004h,07Ah,060h
+1073	DF 60 EF C3               DB      0DFh,060h,0EFh,0C3h
+1077	A8 67 DF 55               DB      0A8h,067h,0DFh,055h
+107B	31 6E 8E EF               DB      031h,06Eh,08Eh,0EFh
+107F	46 69 BE 79               DB      046h,069h,0BEh,079h
+1083	CB 61 B3 8C               DB      0CBh,061h,0B3h,08Ch
+1087	BC 66 83 1A               DB      0BCh,066h,083h,01Ah
+108B	25 6F D2 A0               DB      025h,06Fh,0D2h,0A0h
+108F	52 68 E2 36               DB      052h,068h,0E2h,036h
+1093	CC 0C 77 95               DB      0CCh,00Ch,077h,095h
+1097	BB 0B 47 03               DB      0BBh,00Bh,047h,003h
+109B	22 02 16 B9               DB      022h,002h,016h,0B9h
+109F	55 05 26 2F               DB      055h,005h,026h,02Fh
+10A3	C5 BA 3B BE               DB      0C5h,0BAh,03Bh,0BEh
+10A7	B2 BD 0B 28               DB      0B2h,0BDh,00Bh,028h
+10AB	2B B4 5A 92               DB      02Bh,0B4h,05Ah,092h
+10AF	5C B3 6A 04               DB      05Ch,0B3h,06Ah,004h
+10B3	C2 D7 FF A7               DB      0C2h,0D7h,0FFh,0A7h
+10B7	B5 D0 CF 31               DB      0B5h,0D0h,0CFh,031h
+10BB	2C D9 9E 8B               DB      02Ch,0D9h,09Eh,08Bh
+10BF	5B DE AE 1D               DB      05Bh,0DEh,0AEh,01Dh
+10C3	9B 64 C2 B0               DB      09Bh,064h,0C2h,0B0h
+10C7	EC 63 F2 26               DB      0ECh,063h,0F2h,026h
+10CB	75 6A A3 9C               DB      075h,06Ah,0A3h,09Ch
+10CF	02 6D 93 0A               DB      002h,06Dh,093h,00Ah
+10D3	9C 09 06 A9               DB      09Ch,009h,006h,0A9h
+10D7	EB 0E 36 3F               DB      0EBh,00Eh,036h,03Fh
+10DB	72 07 67 85               DB      072h,007h,067h,085h
+10DF	05 00 57 13               DB      005h,000h,057h,013h
+10E3	95 BF 4A 82               DB      095h,0BFh,04Ah,082h
+10E7	E2 B8 7A 14               DB      0E2h,0B8h,07Ah,014h
+10EB	7B B1 2B AE               DB      07Bh,0B1h,02Bh,0AEh
+10EF	0C B6 1B 38               DB      00Ch,0B6h,01Bh,038h
+10F3	92 D2 8E 9B               DB      092h,0D2h,08Eh,09Bh
+10F7	E5 D5 BE 0D               DB      0E5h,0D5h,0BEh,00Dh
+10FB	7C DC EF B7               DB      07Ch,0DCh,0EFh,0B7h
+10FF	0B DB DF 21               DB      00Bh,0DBh,0DFh,021h
+1103	86 D3 D2 D4               DB      086h,0D3h,0D2h,0D4h
+1107	F1 D4 E2 42               DB      0F1h,0D4h,0E2h,042h
+110B	68 DD B3 F8               DB      068h,0DDh,0B3h,0F8h
+110F	1F DA 83 6E               DB      01Fh,0DAh,083h,06Eh
+1113	81 BE 16 CD               DB      081h,0BEh,016h,0CDh
+1117	F6 B9 26 5B               DB      0F6h,0B9h,026h,05Bh
+111B	6F B0 77 E1               DB      06Fh,0B0h,077h,0E1h
+111F	18 B7 47 77               DB      018h,0B7h,047h,077h
+1123	88 08 5A E6               DB      088h,008h,05Ah,0E6h
+1127	FF 0F 6A 70               DB      0FFh,00Fh,06Ah,070h
+112B	66 06 3B CA               DB      066h,006h,03Bh,0CAh
+112F	11 01 0B 5C               DB      011h,001h,00Bh,05Ch
+1133	8F 65 9E FF               DB      08Fh,065h,09Eh,0FFh
+1137	F8 62 AE 69               DB      0F8h,062h,0AEh,069h
+113B	61 6B FF D3               DB      061h,06Bh,0FFh,0D3h
+113F	16 6C CF 45               DB      016h,06Ch,0CFh,045h
+1143	A0 0A E2 78               DB      0A0h,00Ah,0E2h,078h
+1147	D7 0D D2 EE               DB      0D7h,00Dh,0D2h,0EEh
+114B	4E 04 83 54               DB      04Eh,004h,083h,054h
+114F	39 03 B3 C2               DB      039h,003h,0B3h,0C2h
+1153	A7 67 26 61               DB      0A7h,067h,026h,061h
+1157	D0 60 16 F7               DB      0D0h,060h,016h,0F7h
+115B	49 69 47 4D               DB      049h,069h,047h,04Dh
+115F	3E 6E 77 DB               DB      03Eh,06Eh,077h,0DBh
+1163	AE D1 6A 4A               DB      0AEh,0D1h,06Ah,04Ah
+1167	D9 D6 5A DC               DB      0D9h,0D6h,05Ah,0DCh
+116B	40 DF 0B 66               DB      040h,0DFh,00Bh,066h
+116F	37 D8 3B F0               DB      037h,0D8h,03Bh,0F0h
+1173	A9 BC AE 53               DB      0A9h,0BCh,0AEh,053h
+1177	DE BB 9E C5               DB      0DEh,0BBh,09Eh,0C5h
+117B	47 B2 CF 7F               DB      047h,0B2h,0CFh,07Fh
+117F	30 B5 FF E9               DB      030h,0B5h,0FFh,0E9h
+1183	BD BD F2 1C               DB      0BDh,0BDh,0F2h,01Ch
+1187	CA BA C2 8A               DB      0CAh,0BAh,0C2h,08Ah
+118B	53 B3 93 30               DB      053h,0B3h,093h,030h
+118F	24 B4 A3 A6               DB      024h,0B4h,0A3h,0A6h
+1193	BA D0 36 05               DB      0BAh,0D0h,036h,005h
+1197	CD D7 06 93               DB      0CDh,0D7h,006h,093h
+119B	54 DE 57 29               DB      054h,0DEh,057h,029h
+119F	23 D9 67 BF               DB      023h,0D9h,067h,0BFh
+11A3	B3 66 7A 2E               DB      0B3h,066h,07Ah,02Eh
+11A7	C4 61 4A B8               DB      0C4h,061h,04Ah,0B8h
+11AB	5D 68 1B 02               DB      05Dh,068h,01Bh,002h
+11AF	2A 6F 2B 94               DB      02Ah,06Fh,02Bh,094h
+11B3	B4 0B BE 37               DB      0B4h,00Bh,0BEh,037h
+11B7	C3 0C 8E A1               DB      0C3h,00Ch,08Eh,0A1h
+11BB	5A 05 DF 1B               DB      05Ah,005h,0DFh,01Bh
+11BF	2D 02 EF 8D               DB      02Dh,002h,0EFh,08Dh
+	                
+	                end:
+Labels:
+add16                   006A
+alu8i                   00C9	alu8r                   0128
+bdos                    C037	begin                   0000
+byteo                   0CCA	byto1                   0CE1
+byto2                   0CE5	byto3                   0CEE
+cce                     0D7F	cclp                    0D74
+clrmem                  0B0F	cmpcrc                  0D6C
+cntbit                  0AC7	cntbyt                  0AC8
+cntend                  0B83	cntlp                   0B74
+cntlp1                  0B87	count                   0B68
+counter                 0BB9	crclp                   0D9C
+crctab                  0DC3	crcval                  0DBF
+crlf                    0D69	daa                     0187
+done                    002D	end                     11C3
+ermsg1                  0D39	ermsg2                  0D57
+flgmsk                  0C59	flgsat                  0C80
+hexstr                  0C86	icrclp                  0DB5
+imlp                    0B37	imlp1                   0B38
+imlp2                   0B3E	imlp3                   0B5B
+inca                    01E6	incb                    0245
+incbc                   02A4	incc                    0303
+incd                    0362	incde                   03C1
+ince                    0420	inch                    047F
+inchl                   04DE	incl                    053D
+incm                    059C	incsp                   05FB
+initcrc                 0DAB	initmask                0B28
+iut                     0C28	ld162                   065A
+ld166                   06B9	ld16im                  0718
+ld8bd                   0777	ld8im                   07D6
+ld8rr                   0835	lda                     0894
+ldir1                   09DF	ldir2                   09EF
+ldir3                   0B19	loop                    0020
+msat                    0C74	msbt                    0007
+msg                     0CA5	msg1                    0CF1
+msg2                    0D21	msge                    0CB8
+msgs                    0CAA	ncb1                    0AE3
+nsb1                    0B07	nxtcbit                 0ACA
+nxtsbit                 0AEE	okmsg                   0D32
+pchar                   0CBD	ph8lp                   0C95
+phex8                   0C90	rot8080                 08F3
+sbshf1                  0AB1	setup                   0A7B
+shfbit                  0AEB	shfbyt                  0AEC
+shflp                   0B98	shflp1                  0BB4
+shflp2                  0BAE	shift                   0B8C
+shifter                 0BE1	shlpe                   0BB0
+spat                    0C82	spbt                    0015
+spsav                   0C84	stabd                   0952
+start                   0017	stt                     09B1
+subclp                  0A94	subshf                  0AA5
+substr                  0AC0	subyte                  0A84
+tcrc                    0C64	temp                    0C72
+temp1                   0C39	temp2                   0C3B
+test                    0C09	tests                   0036
+tlp                     0A04	tlp1                    0A18
+tlp2                    0A1B	tlp3                    0A51
+tlpok                   0A4A	updcrc                  0D83
+wboot                   0CA2	

@@ -8,8 +8,7 @@ function replacer(key, value) {
   return value;
 }
 
-export function readFile(fileName) {
-  const filePath = path.join(__dirname, '', fileName);
+export function readFile(filePath) {
   try {
     return fs.readFileSync(filePath, "utf-8");
   } catch (error) {
@@ -18,9 +17,8 @@ export function readFile(fileName) {
   }
 }
 
-export function assertCall(fileName, value, silent = true) {
+export function assertCall(filePath, value, silent = true) {
   const testTitle = expect.getState().currentTestName || "unknown";
-  const filePath = path.join(__dirname, 'actual', fileName);
 
   const isJson = value.constructor === Object || value.constructor === Array;
   const actual = isJson ? JSON.stringify(value, replacer, 2) : value;
@@ -53,10 +51,10 @@ export let recorder = (() => {
   var data = [];
   var method = null;
   let collect = (input) => {
-    let found = data.find((item) => {
-      return JSON.stringify(item) === JSON.stringify(input);
+    const exists = data.some(item => {
+      return Object.keys(input).every(key => input[key] === item[key]);
     });
-    if (!found) {
+    if (!exists) {
       data.push(input);
     }
   };
@@ -98,6 +96,6 @@ export let record = function (object, methodName, fields) {
 }
 export let assertAllRecords = function(dir) {
   recs.forEach((rec) => {
-    assertCall(dir + 'method/' + rec.method() + '.json', rec.result());
+    assertCall(path.join(dir, 'method', rec.method() + '.json'), rec.result());
   });
 }
