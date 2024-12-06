@@ -1,5 +1,7 @@
 package spec.math;
 
+import spec.Range;
+
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -30,10 +32,24 @@ public class Bites implements Iterable<Integer> {
         return data;
     }
 
+    public byte[] byteArray(Range range) {
+        int length = range.length();
+        int begin = range.begin();
+
+        byte[] bytes = new byte[length];
+        for (int i = 0; i < length; i++) {
+            bytes[i] = (byte) data[begin + i];
+        }
+        return bytes;
+    }
+
     public byte[] byteArray() {
-        byte[] bytes = new byte[data.length];
-        for (int i = 0; i < data.length; i++) {
-            bytes[i] = (byte) data[i];
+        int length = size();
+        int begin = 0;
+
+        byte[] bytes = new byte[length];
+        for (int i = 0; i < length; i++) {
+            bytes[i] = (byte) data[begin + i];
         }
         return bytes;
     }

@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import spec.math.Bites;
 import spec.stuff.FileAssert;
+import spec.stuff.SmartAssert;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,6 +59,7 @@ public class AssemblerTest {
 
     @Before
     public void setup() {
+        SmartAssert.setup();
         asm = new Assembler();
         fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
         program = read(new File(APP_RESOURCES + "/test/" + name));

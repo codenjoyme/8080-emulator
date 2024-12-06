@@ -170,7 +170,7 @@ public class TapeFormat {
 
     public Bites makewav() {
         byte[] encoded = biphase(this.data, this.speed != 0 ? this.speed : 12);
-        Wav wav = new Wav(22050, 1);
+        Wav wav = new Wav(11025, 1);
         wav.setBuffer(encoded);
         return wav.getBuffer(encoded.length + WAV_HEADER_SIZE * 2);
     }

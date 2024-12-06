@@ -11,6 +11,7 @@ import spec.platforms.Lik;
 import spec.platforms.Specialist;
 import spec.stuff.AbstractTest;
 import spec.stuff.FileAssert;
+import svofski.TapeFormat;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -108,6 +109,22 @@ public class IntegrationTest extends AbstractTest {
     private void assertTrace() {
         fileAssert.check("Cpu trace", "trace.log",
                 file -> write(file, trace()));
+    }
+
+    @Test
+    public void testLik_kladWave() {
+        // given
+        Range range = Lik.loadGame(base, roms, "klad");
+
+        // when
+        byte[] mem = memory.all().byteArray(range);
+        Bites wave = new TapeFormat("specialist-rks", false)
+                .format(mem, 0, "klad.rks").makewav();
+
+        // then
+        String fileName = APP_RESOURCES + "lik/apps/klad.wav";
+        fileAssert.check(fileName, fileName,
+                file -> write(file, wave.byteArray()));
     }
 
     @Test
