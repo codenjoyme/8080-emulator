@@ -4,20 +4,27 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import spec.stuff.FileAssert;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 import static spec.IntegrationTest.APP_RESOURCES;
 import static spec.IntegrationTest.TEST_RESOURCES;
 import static spec.stuff.FileAssert.*;
 
+@RunWith(Parameterized.class)
 public class AssemblerTest {
 
     private Assembler asm;
@@ -25,15 +32,36 @@ public class AssemblerTest {
     @Rule
     public TestName test = new TestName();
     private FileAssert fileAssert;
+
     private String program;
+    private String name;
+    private String dir;
+
+    public AssemblerTest(String name) {
+        this.name = name;
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        String base = APP_RESOURCES + "/test/";
+        Path start = Paths.get(base);
+        try (Stream<Path> stream = Files.walk(start)) {
+            return stream
+                    .filter(Files::isRegularFile)
+                    .filter(file -> file.toString().endsWith(".asm"))
+                    .map(file -> new Object[]{file.toString().substring(base.length() - 1)})
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            return Collections.emptyList();
+        }
+    }
 
     @Before
     public void setup() {
         asm = new Assembler();
-
         fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
-
-        program = read(new File(APP_RESOURCES + "/test/test/test.asm"));
+        program = read(new File(APP_RESOURCES + "/test/" + name));
+        dir = new File(name).getParent();
     }
 
     @Test
@@ -115,7 +143,7 @@ public class AssemblerTest {
     }
 
     private void assertValue(String name, String result) {
-        fileAssert.check(name, name,
+        fileAssert.check(name, dir + "/" + name,
                 file -> write(file, result));
     }
 }
