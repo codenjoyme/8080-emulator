@@ -19,7 +19,7 @@ public class Lik {
     }
 
     public static Range loadGame(URL base, RomLoader roms, String name) {
-        return roms.loadRKS(base, "lik/apps/" + name + ".rks");
+        return roms.loadRKS(base, "lik/apps/" + name + "/" + name + ".rks");
     }
 
     public static Range loadTest(URL base, RomLoader roms, String name) {

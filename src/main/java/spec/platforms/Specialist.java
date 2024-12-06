@@ -14,6 +14,6 @@ public class Specialist {
     }
 
     public static void loadGame(URL base, RomLoader roms, String name) {
-        roms.loadRKS(base, "specialist/apps/" + name + ".rks");
+        roms.loadRKS(base, "specialist/apps/" + name + "/" + name + ".rks");
     }
 }
