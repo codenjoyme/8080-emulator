@@ -235,13 +235,38 @@ Assembler.prototype.resolveNumber = function(identifier) {
     }
 
     //if (first === '$') {
-    if (identifier.match(/^\$[0-9a-f]+$/)) {
+    if (identifier.match(/^\$[0-9a-fA-F_]+$/)) {
+        identifier = identifier.replace(/_/g, '');
         let test = Number("0x" + identifier.substr(1, identifier.length-1));
+        if (!isNaN(test)) {
+            return test;
+        }
+        return test;
+    }
+
+    // Handling hexadecimal numbers with 0x or 0X prefix
+    if (identifier.match(/^0[xX][0-9a-fA-F_]+$/)) {
+        identifier = identifier.replace(/_/g, '');
+        let test = Number(identifier);
+        if (!isNaN(test)) {
+            return test;
+        }
+        return test;
+    }
+
+    // Handling binary numbers with 0b or 0B prefix but not contains hHbBqQdD suffix
+    if (identifier.match(/^0[bB][01_]+(?![hHbBqQdD])$/)) {
+        identifier = identifier.replace(/_/g, '');
+        let test = Number(identifier);
+        if (!isNaN(test)) {
+            return test;
+        }
         return test;
     }
 
     //if (Assembler.DecimalDigits.indexOf(identifier[0]) != -1) {
-    if (identifier.match(/^[+-]?[0-9]+/)) {
+    if (identifier.match(/^[+-]?[0-9a-fA-F][0-9a-fA-F_]*[hHbBqQdD]?$/)) {
+        identifier = identifier.replace(/_/g, '');
         let test = Number(identifier);
         if (!isNaN(test)) {
             return test.valueOf();
@@ -250,31 +275,27 @@ Assembler.prototype.resolveNumber = function(identifier) {
         var suffix = identifier[identifier.length-1].toLowerCase();
         switch (suffix) {
             case 'd':
-                test = parseInt(identifier.substr(0, identifier.length-1));
+                test = Number(identifier.substr(0, identifier.length-1));
                 if (!isNaN(test)) {
                     return test;
                 }
                 break;
             case 'h':
-                test = parseInt(identifier.substr(0, identifier.length-1), 16);
+                test = Number("0x" + identifier.substr(0, identifier.length-1));
                 if (!isNaN(test)) {
                     return test;
                 }
                 break;
             case 'b':
-                test = parseInt(identifier.substr(0, identifier.length-1), 2);
+                test = Number("0b" + identifier.substr(0, identifier.length-1));
                 if (!isNaN(test)) {
                     return test;
                 }
                 break;
             case 'q':
-                var oct = identifier.substr(0, identifier.length-1);
-                for (var i = oct.length; --i >= 0;) {
-                    if (oct[i] == '8' || oct[i] == '9') return undefined;
-                }
-                var octaltest = parseInt(oct, 8);
-                if (!isNaN(octaltest)) {
-                    return octaltest;
+                test = Number("08" + identifier.substr(0, identifier.length-1));
+                if (!isNaN(test)) {
+                    return test;
                 }
                 break;
         }
@@ -1210,7 +1231,7 @@ Assembler.prototype.evaluateExpression2 = function(input, addr0, linenumber) {
         //console.log('0 input=',  input);
         //console.log('1 expr=', expr);
         var that = this;
-        expr += input.replace(/\b0x[0-9a-fA-F]+\b|\b[0-9][0-9a-fA-F]*[hbqdHBQD]?\b|'.'/g,
+        expr += input.replace(/\b\$[0-9a-fA-F_]+\b|\b0[xX][0-9a-fA-F_]+\b|\b0[bB][01_]+(?![hHbBqQdD])\b|\b[0-9a-fA-F][0-9a-fA-F_]*[hHbBqQdD]?\b|'.'/g,
                 function(m) {
                     return that.resolveNumber(m);
                 });

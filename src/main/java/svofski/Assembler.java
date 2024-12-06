@@ -247,24 +247,42 @@ public class Assembler {
             return 0xff & identifier.charAt(1);
         }
 
+        // Handling hexadecimal numbers with $ prefix
+        if (first == '$') {
+            if (identifier.matches("^\\$[0-9a-fA-F_]+$")) {
+                try {
+                    return Integer.parseInt(identifier.substring(1), 16);
+                } catch (NumberFormatException e) {
+                    // continue
+                }
+            }
+        }
+
         // Handling hexadecimal numbers with 0x or 0X prefix
-        if (identifier.matches("^0[xX][0-9a-fA-F]+")) {
-            return Integer.parseInt(identifier.substring(2), 16);
+        if (identifier.matches("^0[xX][0-9a-fA-F_]+$")) {
+            try {
+                return Integer.parseInt(identifier.substring(2), 16);
+            } catch (NumberFormatException e) {
+                // continue
+            }
         }
 
         // Handling binary numbers with 0b or 0B prefix
-        if (identifier.matches("^0[bB][01_]+")) {
-            return Integer.parseInt(identifier.substring(2), 2);
+        if (identifier.matches("^0[bB][01_]+(?![hHbBqQdD])$")) {
+            try {
+                return Integer.parseInt(identifier.substring(2), 2);
+            } catch (NumberFormatException e) {
+                // continue
+            }
         }
 
         // Handling numbers without specific base prefix
-        if (identifier.matches("^[0-9a-fA-F][0-9a-fA-F_]*[hHbBqQdD]?")) {
+        if (identifier.matches("^[+-]?[0-9a-fA-F][0-9a-fA-F_]*[hHbBqQdD]?$")) {
             try {
                 // Default conversion in case no suffix is present
-                Integer test = Integer.valueOf(identifier);
-                return test;
+                return Integer.valueOf(identifier);
             } catch (NumberFormatException e) {
-                // Continue to suffix handling if NumberFormatException occurs
+                // continue
             }
 
             char suffix = identifier.charAt(identifier.length() - 1);
@@ -1213,7 +1231,7 @@ public class Assembler {
             // System.out.println("0 input=" + input);
             // System.out.println("1 expr=" + expr);
             Pattern pattern = Pattern.compile(
-                    "\\b0[xX][0-9a-fA-F_]+\\b|\\b0[bB][01_]+\\b|\\b[0-9a-fA-F][0-9a-fA-F_]*[hHbBqQdD]?\\b|'.'");
+                    "\\b\\$[0-9a-fA-F_]+\\b|\\b0[xX][0-9a-fA-F_]+\\b|\\b0[bB][01_]+(?![hHbBqQdD])\\b|\\b[0-9a-fA-F][0-9a-fA-F_]*[hHbBqQdD]?\\b|'.'");
             Matcher matcher = pattern.matcher(input);
             StringBuffer sb = new StringBuffer();
             while (matcher.find()) {

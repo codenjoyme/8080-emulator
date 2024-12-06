@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 import static spec.IntegrationTest.APP_RESOURCES;
 import static spec.IntegrationTest.TEST_RESOURCES;

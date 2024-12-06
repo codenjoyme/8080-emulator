@@ -407,17 +407,10 @@
   },
   {
     "input": [
-      "calc_hash"
+      "0b0111_0111"
     ],
     "fields": null,
-    "result": null
-  },
-  {
-    "input": [
-      "byteo"
-    ],
-    "fields": null,
-    "result": null
+    "result": 119
   },
   {
     "input": [
@@ -432,6 +425,27 @@
     ],
     "fields": null,
     "result": null
+  },
+  {
+    "input": [
+      "calc_hash"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "byteo"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0b1110_1000"
+    ],
+    "fields": null,
+    "result": 232
   },
   {
     "input": [
@@ -477,17 +491,10 @@
   },
   {
     "input": [
-      "calc_hash"
+      "0b1101_1110"
     ],
     "fields": null,
-    "result": null
-  },
-  {
-    "input": [
-      "byteo"
-    ],
-    "fields": null,
-    "result": null
+    "result": 222
   },
   {
     "input": [
@@ -502,6 +509,27 @@
     ],
     "fields": null,
     "result": null
+  },
+  {
+    "input": [
+      "calc_hash"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "byteo"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0b0111_1001"
+    ],
+    "fields": null,
+    "result": 121
   },
   {
     "input": [
@@ -547,17 +575,10 @@
   },
   {
     "input": [
-      "calc_hash"
+      "0b1010_1100"
     ],
     "fields": null,
-    "result": null
-  },
-  {
-    "input": [
-      "byteo"
-    ],
-    "fields": null,
-    "result": null
+    "result": 172
   },
   {
     "input": [
@@ -572,6 +593,27 @@
     ],
     "fields": null,
     "result": null
+  },
+  {
+    "input": [
+      "calc_hash"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "byteo"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0b1011_1010"
+    ],
+    "fields": null,
+    "result": 186
   },
   {
     "input": [
@@ -617,6 +659,13 @@
   },
   {
     "input": [
+      "0b0111_0101"
+    ],
+    "fields": null,
+    "result": 117
+  },
+  {
+    "input": [
       "calc_hash"
     ],
     "fields": null,
@@ -652,17 +701,10 @@
   },
   {
     "input": [
-      "calc_hash"
+      "0b1110_1010"
     ],
     "fields": null,
-    "result": null
-  },
-  {
-    "input": [
-      "byteo"
-    ],
-    "fields": null,
-    "result": null
+    "result": 234
   },
   {
     "input": [
@@ -677,6 +719,27 @@
     ],
     "fields": null,
     "result": null
+  },
+  {
+    "input": [
+      "calc_hash"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "byteo"
+    ],
+    "fields": null,
+    "result": null
+  },
+  {
+    "input": [
+      "0b1011_1110"
+    ],
+    "fields": null,
+    "result": 190
   },
   {
     "input": [
