@@ -8,6 +8,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
@@ -259,7 +260,7 @@ public class Application {
                 if (base.toString().startsWith("http")) return;
 
                 String folder = lik ? "lik" : "specialist";
-                openFileDialog(file -> load(file.getAbsolutePath()),
+                openFileDialog(file -> load(toRelative(base, file)),
                         base.getFile() + "/" + folder + "/apps",
                         "Data file",
                         "com", "rom", "rks", "bin", "mem");
@@ -308,6 +309,14 @@ public class Application {
 
 
         hard.ports().processKey(key);
+    }
+
+    private String toRelative(URL base, File file) {
+        try {
+            return Paths.get(base.toURI()).relativize(Paths.get(file.getPath())).toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void openFileDialog(Consumer<File> onSelect,

@@ -1,7 +1,7 @@
 package spec;
 
-import spec.math.Bites;
 import org.apache.commons.io.IOUtils;
+import spec.math.Bites;
 
 import java.io.File;
 import java.io.InputStream;
@@ -104,26 +104,22 @@ public class RomLoader {
     }
 
     public Range load(URL base, String path) {
-        try {
-            File file = new File(path);
-            switch (substringAfter(file.getName(), ".")) {
-                case "com": {
-                    return loadROM(base, file.getPath(), 0x0100);
-                }
-                case "rom":
-                case "bin": {
-                    return loadROM(base, file.getPath(), 0xC000);
-                }
-                case "rks": {
-                    return loadRKS(base, file.getPath());
-                }
-                case "mem":
-                default: {
-                    return loadROM(base, file.getPath(), 0x0000);
-                }
+        File file = new File(path);
+        switch (substringAfter(file.getName(), ".")) {
+            case "com": {
+                return loadROM(base, path, 0x0100);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            case "rom":
+            case "bin": {
+                return loadROM(base, path, 0xC000);
+            }
+            case "rks": {
+                return loadRKS(base, path);
+            }
+            case "mem":
+            default: {
+                return loadROM(base, path, 0x0000);
+            }
         }
     }
 
