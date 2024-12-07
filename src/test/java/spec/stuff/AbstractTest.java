@@ -11,6 +11,7 @@ import static spec.Constants.*;
 import static spec.math.WordMath.hex8;
 import static spec.assembler.Assembler.asString;
 import static spec.stuff.SmartAssert.assertEquals;
+import static spec.stuff.TrackUpdatedMemory.TRACK_ALL_CHANGES;
 
 public abstract class AbstractTest {
 
@@ -38,7 +39,7 @@ public abstract class AbstractTest {
 
             @Override
             protected Memory createMemory() {
-                return memory = new TrackUpdatedMemory(x10000);
+                return memory = new TrackUpdatedMemory(x10000, TRACK_ALL_CHANGES);
             }
 
             @Override

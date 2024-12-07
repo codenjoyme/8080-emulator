@@ -15,16 +15,27 @@ import static spec.math.WordMath.hex8;
 
 public class TrackUpdatedMemory extends Memory {
 
+    public static boolean TRACK_ALL_CHANGES = false;
+    public static boolean TRACK_ONLY_UPDATED_VALUES = !TRACK_ALL_CHANGES;
+
     private List<UpdatedBite> updated;
     private boolean trackChanges;
+    private boolean trackOnlyUpdates;
     private int start;
     private int end;
 
-    public TrackUpdatedMemory(int size) {
+    /**
+     * @param size Memory size
+     * @param trackOnlyUpdates
+     *      true - if save as UpdatedBite only changed bites;
+     *      false - track all saved bites.
+     */
+    public TrackUpdatedMemory(int size, boolean trackOnlyUpdates) {
         super();
         mem = new TrackUpdatedBites(size);
         resetChanges();
         trackChanges = true;
+        this.trackOnlyUpdates = trackOnlyUpdates;
     }
 
     public void resetChanges() {
@@ -43,6 +54,9 @@ public class TrackUpdatedMemory extends Memory {
         public void set(int addr, int bite) {
             int prev = super.get(addr);
             if (trackChanges) {
+                if (trackOnlyUpdates && prev == bite) {
+                    return;
+                }
                 updated.add(new UpdatedBite(addr, prev, bite));
                 start = Math.min(start, addr);
                 end = Math.max(end, addr);
@@ -66,6 +80,9 @@ public class TrackUpdatedMemory extends Memory {
     }
 
     public String detailsTable() {
+        if (updated.isEmpty()) {
+            return "";
+        }
         // по каждому изменению адреса оставляем только последние изменения
         LinkedList<UpdatedBite> changes = new LinkedList<>(updated);
         changes.sort(Comparator.comparingInt(UpdatedBite::addr));

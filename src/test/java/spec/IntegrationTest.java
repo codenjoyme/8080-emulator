@@ -14,6 +14,7 @@ import spec.platforms.Lik;
 import spec.platforms.Specialist;
 import spec.stuff.AbstractTest;
 import spec.stuff.FileAssert;
+import spec.stuff.TrackUpdatedMemory;
 import svofski.TapeFormat;
 
 import java.io.File;
@@ -26,10 +27,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static java.util.stream.Collectors.toList;
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
-import static spec.math.WordMath.hex16;
-import static spec.math.WordMath.hex8;
 import static spec.stuff.FileAssert.write;
 import static spec.stuff.SmartAssert.assertEquals;
+import static spec.stuff.TrackUpdatedMemory.TRACK_ONLY_UPDATED_VALUES;
 import static svofski.AssemblerTest.findAllFiles;
 
 public class IntegrationTest extends AbstractTest {
@@ -57,11 +57,20 @@ public class IntegrationTest extends AbstractTest {
         video = new PngVideo(hard.video(), hard.memory());
         base = getBase();
         record.screenShoot(this::assertScreen);
-        fileAssert = new FileAssert(TEST_RESOURCES + test.getMethodName());
+        
+        fileAssert = new FileAssert(
+                TEST_RESOURCES + getTestResultFolder());
         fileAssert.removeTestsData();
+        
         dizAssembler = new DizAssembler(cpu.data());
         reset();
+        
         record.after(TICKS).stopCpu();
+    }
+
+    private String getTestResultFolder() {
+        return "IntegrationTest/" +
+                test.getMethodName().replaceAll("_", "/");
     }
 
     public static URL getBase()  {
@@ -198,7 +207,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    public void testLik_klad() {
+    public void testLik_game_klad_levels() {
         // given
         Lik.loadRom(base, roms);
         Lik.loadGame(base, roms, "klad");
@@ -234,7 +243,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    public void testLik_klad_recording() {
+    public void testLik_game_klad_recording() {
         // about 36 sec
 
         // given
@@ -264,7 +273,10 @@ public class IntegrationTest extends AbstractTest {
                 () -> record.at(1379).shoot("screeen14")
         );
         assertCpuAt(data);
+
+        // check that all program was the same after running
         assertDizAssembly(data, "launchedProgram");
+
 
         // when then
         Lik.loadGame(base, roms, "klad");
@@ -275,28 +287,24 @@ public class IntegrationTest extends AbstractTest {
     }
 
     private void assertMemory(Range range, String romFileName) {
-        String diff = "";
-        Bites source = new Bites(0x10000);
+        TrackUpdatedMemory source = new TrackUpdatedMemory(0x10000, TRACK_ONLY_UPDATED_VALUES);
         try {
             URL base = new File(TEST_RESOURCES).toURI().toURL();
-            roms.loadROM(base, test.getMethodName() + "/" + romFileName, source, 0x0000);
+            roms.loadROM(base, "inputs/" + romFileName, source.all(), 0x0000);
+            source.resetChanges();
         } catch (Exception e) {
-            // do nothing
+            throw new RuntimeException(e);
         }
         for (int addr = range.begin(); addr <= range.end(); addr++) {
-            int bite1 = memory.read8(addr);
-            int bite2 = source.get(addr);
-            if (bite1 != bite2) {
-                diff += String.format("%s: %s != %s",
-                        hex16(addr), hex8(bite1), hex8(bite2));
-            }
+            int bite = memory.read8(addr);
+            source.write8(addr, bite);
         }
-        assertEquals("", diff);
+        assertEquals("", source.detailsTable());
     }
 
 
     @Test
-    public void testLik_reversi_recording() {
+    public void testLik_game_reversi_recording() {
         // given
         Lik.loadRom(base, roms);
         Lik.loadGame(base, roms, "reversi");
@@ -306,7 +314,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    public void testLik_reversi2_recording() {
+    public void testLik_game_reversi2_recording() {
         // given
         Lik.loadRom(base, roms);
         Lik.loadGame(base, roms, "reversi2");
@@ -317,7 +325,7 @@ public class IntegrationTest extends AbstractTest {
 
     private void assertRecord(String path, Runnable... configure) {
         fileRecorder.startWriting();
-        int lastTick = hard.loadRecord(TEST_RESOURCES + "recordings/" + path);
+        int lastTick = hard.loadRecord(TEST_RESOURCES + "inputs/" + path);
         record.after(lastTick).stopCpu();
         Arrays.asList(configure).forEach(Runnable::run);
         cpu.PC(0xC000);
@@ -347,7 +355,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    public void testSpecialist_blobcop() {
+    public void testSpecialist_game_blobcop() {
         // given
         Specialist.loadRom(base, roms);
         Specialist.loadGame(base, roms, "blobcop");
@@ -361,7 +369,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    public void testSpecialist_babnik() {
+    public void testSpecialist_game_babnik() {
         // given
         Specialist.loadRom(base, roms);
         Specialist.loadGame(base, roms, "babnik");
@@ -421,7 +429,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    public void testLik_diagnostic_exerciser_preliminary() {
+    public void testLik_diagnostic_exerciserPreliminary() {
         // 8080/8085 CPU Exerciser by Ian Bartholomew and Frank Cringles
         // The preliminary test
         // https://raw.githubusercontent.com/begoon/i8080-core/master/8080PRE.MAC
@@ -446,7 +454,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    public void testLik_diagnostic_zexlax_8080_exerciser() {
+    public void testLik_diagnostic_zexlax8080exerciser() {
         // zexlax.z80 - Z80 instruction set exerciser
         // Copyright (C) 1994  Frank D. Cringle
         // Modified to exercise an 8080 by Ian Bartholomew, February 2009
@@ -484,7 +492,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    public void testLik_diagnostic_apofig_8080_exerciser() {
+    public void testLik_diagnostic_apofig8080exerciser() {
         // given
         Lik.loadRom(base, roms);
         Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080apofig/8080apofig.mem", Lik.PLATFORM);

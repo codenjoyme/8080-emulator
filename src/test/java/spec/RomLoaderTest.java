@@ -15,6 +15,7 @@ import static spec.Constants.CPU_TICKS_PER_INTERRUPT;
 import static spec.Constants.x10000;
 import static spec.IntegrationTest.TEST_RESOURCES;
 import static spec.stuff.FileAssert.write;
+import static spec.stuff.TrackUpdatedMemory.TRACK_ALL_CHANGES;
 
 public class RomLoaderTest {
 
@@ -28,7 +29,7 @@ public class RomLoaderTest {
 
     @Before
     public void setup() {
-        memory = new TrackUpdatedMemory(x10000);
+        memory = new TrackUpdatedMemory(x10000, TRACK_ALL_CHANGES);
         cpu = new Cpu(CPU_TICKS_PER_INTERRUPT, null, null, null);
         roms = new RomLoader(memory, cpu);
 

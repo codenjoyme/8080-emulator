@@ -24,16 +24,16 @@
   * [x] Есть [исходники](../../../../src/main/resources/test/8080apofig/8080apofig.asm).
   * [x] Отлажен на эмуляторе.
   * [x] Добавлен как интеграционный тест:
-    + [тут](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_apofig_8080_exerciser()`.
-    + [результаты](../../../../src/test/resources/testLik_diagnostic_apofig_8080_exerciser)
+    + [тут](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_apofig8080exerciser()`.
+    + [результаты](../../../../src/test/resources/testLik/diagnostic/apofig8080exerciser)
 
 - [`src/main/resources/test/8080ex1`](../../../../src/main/resources/test/8080ex1)
   * The basic CPU Excerciser. This file is a copy of the vanilla file.
   * [x] Есть [исходники](../../../../src/main/resources/test/8080ex1/8080ex1.asm).
   * [ ] Отлажен на эмуляторе.
   * [x] Добавлен как интеграционный тест:
-    + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_zexlax_8080_exerciser()`
-    + [результаты](../../../../src/test/resources/testLik_diagnostic_zexlax_8080_exerciser)
+    + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_zexlax8080exerciser()`
+    + [результаты](../../../../src/test/resources/testLik/diagnostic/zexlax8080exerciser)
    
 - [`src/main/resources/test/8080exer`](../../../../src/main/resources/test/8080exer)
   * Vanilla basic CPU Excerciser having CRCs from the real KR580VM80A
@@ -48,8 +48,8 @@
   * [x] Есть [исходники](../../../../src/main/resources/test/8080pre/8080pre.asm).
   * [x] Отлажен на эмуляторе.
   * [x] Добавлен как интеграционный тест:
-    + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_exerciser_preliminary()`
-    + [результаты](../../../../src/test/resources/testLik_diagnostic_exerciser_preliminary)
+    + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_exerciserPreliminary()`
+    + [результаты](../../../../src/test/resources/testLik/diagnostic/exerciserPreliminary)
   
 - [`src/main/resources/test/8085exer`](../../../../src/main/resources/test/8085exer)
   * Пока еще не изученный тест.
@@ -69,7 +69,7 @@
   * [x] Отлажен на эмуляторе.
   * [x] Добавлен как интеграционный тест:
     + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_helloWorld()`
-    + [результаты](../../../../src/test/resources/testLik_helloWorld)
+    + [результаты](../../../../src/test/resources/testLik/helloWorld)
   
 - [`src/main/resources/test/test`](../../../../src/main/resources/test/test)
   * 8080/8085 CPU Diagnostic, version 1.0, by Microcosm Associates.
@@ -77,7 +77,7 @@
   * [x] Отлажен на эмуляторе.
   * [x] Добавлен как интеграционный тест:
     + [тест](../../../../src/test/java/spec/IntegrationTest.java)`testLik_diagnostic_microcosm()`
-    + [результаты](../../../../src/test/resources/testLik_diagnostic_microcosm)
+    + [результаты](../../../../src/test/resources/testLik/diagnosticMicrocosm)
 
 Алгоритм компиляции на стороннем компиляторе:
 - На примере теста [`src/main/resources/test/test`](../../../../src/main/resources/test/test)

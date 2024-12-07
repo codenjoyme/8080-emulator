@@ -58,6 +58,9 @@ public class FileAssert {
     public void check(String info, String name, Consumer<File> save) {
         String path = (name.startsWith("src/") ? name : testDir().getAbsolutePath() + "/" + name);
         File file = new File(path);
+        if (file.getParentFile() != null) {
+            file.getParentFile().mkdirs();
+        }
         String hash = hashes.get(file.getAbsolutePath());
 
         if (hash == null && file.exists()) {
