@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.stream.Collectors.toList;
+import static spec.Constants.SCREEN;
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
 import static spec.stuff.FileAssert.write;
@@ -102,7 +103,7 @@ public class IntegrationTest extends AbstractTest {
     private void assertScreen(String name) {
         fileAssert.check("Screenshots", name + ".png",
                 file -> {
-                    video.drawToFile(file);
+                    video.drawToFile(SCREEN, file);
                     return null;
                 });
     }

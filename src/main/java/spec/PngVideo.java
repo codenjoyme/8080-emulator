@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static spec.Constants.SCREEN;
 
 public class PngVideo implements Video.Drawer {
 
@@ -34,8 +33,8 @@ public class PngVideo implements Video.Drawer {
         // do nothing
     }
 
-    public void drawToFile(File file) {
-        draw();
+    public void drawToFile(Range range, File file) {
+        draw(range);
 
         try {
             ImageIO.write(image, "PNG", file);
@@ -44,8 +43,8 @@ public class PngVideo implements Video.Drawer {
         }
     }
 
-    public void draw() {
-        for (int addr = SCREEN.begin(); addr <= SCREEN.end(); addr++) {
+    public void draw(Range range) {
+        for (int addr = range.begin(); addr <= range.end(); addr++) {
             video.plot(addr, memory.read8(addr));
         }
         video.screenPaint();
