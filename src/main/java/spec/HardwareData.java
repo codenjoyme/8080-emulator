@@ -38,7 +38,7 @@ public abstract class HardwareData implements Data {
         if (SCREEN.includes(addr)) {
             if (memory.read8(addr) != bite) {
                 // было изменение ячейки видеопамяти
-                video.plot(addr, bite);
+                video.plot(addr - SCREEN.begin(), bite);
             }
         }
 

@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
+import static spec.Constants.SCREEN_WIDTH;
 
 public class PngVideo implements Video.Drawer {
 
@@ -23,6 +24,32 @@ public class PngVideo implements Video.Drawer {
         graphics = image.getGraphics();
     }
 
+    /**
+     * It will print the memory to the file like this range is a video memory.
+     *
+     * @param range    range of memory to print
+     * @param maxWidth maximum width of the image
+     * @param memory   memory to read from
+     * @param file     file to write to
+     */
+    public static void drawToFile(Range range, int maxWidth, Memory memory, File file) {
+        int width = maxWidth - maxWidth % Video.PATTERN;
+        int pwidth = width / Video.PATTERN;
+        int notEnoughBytes = Math.floorMod(range.length(), pwidth);
+        int height = range.length() / pwidth + (notEnoughBytes > 0 ? 1 : 0);
+
+        Video video = new Video(width, height){
+            public void plot(int offset, int pattern) {
+                int px = offset % pwidth;
+                int y = offset / pwidth;
+                changes[px][y] = pattern(pattern);
+            }
+        };
+
+        PngVideo png = new PngVideo(video, memory);
+        png.drawToFile(range.begin(), file);
+    }
+
     @Override
     public void draw(int x, int y, Image pattern) {
         graphics.drawImage(pattern, x, y, null);
@@ -33,8 +60,8 @@ public class PngVideo implements Video.Drawer {
         // do nothing
     }
 
-    public void drawToFile(Range range, File file) {
-        draw(range);
+    public void drawToFile(int start, File file) {
+        draw(start);
 
         try {
             ImageIO.write(image, "PNG", file);
@@ -43,9 +70,11 @@ public class PngVideo implements Video.Drawer {
         }
     }
 
-    public void draw(Range range) {
-        for (int addr = range.begin(); addr <= range.end(); addr++) {
-            video.plot(addr, memory.read8(addr));
+    public void draw(int start) {
+        Range range = video.range(start);
+        for (int offs = 0; offs < range.length(); offs++) {
+            int addr = offs + range.begin();
+            video.plot(offs, memory.read8(addr));
         }
         video.screenPaint();
     }

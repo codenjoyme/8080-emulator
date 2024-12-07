@@ -15,15 +15,17 @@ public class Video {
 
     public static final int PATTERN = 0x08;
 
-    private int pwidth; // ширина экрана в 8 байтовых паттернах
-    private int height; // высота экрана в пикселях
+    protected int pwidth; // ширина экрана в 8 байтовых паттернах
+    protected int height; // высота экрана в пикселях
+    private Range range;
     private Drawer drawer;
-    private Pattern[][] changes;
+    protected Pattern[][] changes;
     private Pattern[] patterns;
 
     public Video(int width, int height) {
         this.pwidth = fromWidth(width);
         this.height = height;
+        this.range = new Range(0, -(pwidth * height));
         changes = new Pattern[pwidth][height];
         patterns = new Pattern[0x100];
         clean();
@@ -37,6 +39,10 @@ public class Video {
                     (bite & 0b0011_1000) << 2,
                     (bite & 0b0000_0111) << 5);
         }
+    }
+
+    public Range range(int begin) {
+        return range.shift(begin);
     }
 
     public interface Drawer {
@@ -77,7 +83,7 @@ public class Video {
         }
     }
 
-    private Pattern pattern(int bite) {
+    protected Pattern pattern(int bite) {
         Pattern result = patterns[bite];
         if (result == null) {
             result = patterns[bite] = new Pattern(bite);
@@ -85,8 +91,7 @@ public class Video {
         return result;
     }
 
-    public void plot(int addr, int pattern) {
-        int offset = addr - SCREEN.begin();
+    public void plot(int offset, int pattern) {
         int px = fromWidth((offset & 0x3F00) >> 5);
         int y = offset & 0x00FF;
         changes[px][y] = pattern(pattern);
@@ -113,7 +118,7 @@ public class Video {
         return px * PATTERN;
     }
 
-    private int fromWidth(int width) {
+    protected int fromWidth(int width) {
         return width / PATTERN;
     }
 

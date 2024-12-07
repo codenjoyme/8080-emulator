@@ -1,7 +1,6 @@
 package spec;
 
 import static spec.math.WordMath.hex16;
-import static spec.math.WordMath.word;
 
 public class Range {
 
@@ -49,6 +48,10 @@ public class Range {
 
     public int offset(int offset) {
         return begin + offset;
+    }
+
+    public Range shift(int offset) {
+        return new Range(begin + offset, end + offset);
     }
 
     @Override

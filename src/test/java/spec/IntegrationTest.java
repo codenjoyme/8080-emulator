@@ -28,8 +28,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.stream.Collectors.toList;
-import static spec.Constants.SCREEN;
-import static spec.Constants.START_POINT;
+import static spec.Constants.*;
 import static spec.KeyCode.*;
 import static spec.stuff.FileAssert.write;
 import static spec.stuff.TrackUpdatedMemory.TRACK_ONLY_UPDATED_VALUES;
@@ -103,7 +102,7 @@ public class IntegrationTest extends AbstractTest {
     private void assertScreen(String name) {
         fileAssert.check("Screenshots", name + ".png",
                 file -> {
-                    video.drawToFile(SCREEN, file);
+                    video.drawToFile(SCREEN.begin(), file);
                     return null;
                 });
     }
@@ -281,16 +280,23 @@ public class IntegrationTest extends AbstractTest {
         assertCpuAt(data);
 
         // check that all program was the same after running
-
+        // when then
         String sourceCode = assertDizAssembly(data, "launchedProgram.asm");
         assertAssembly(sourceCode, "recompiled.mem");
+        assertPngMemory(range, "recompiled.png");
 
         // when then
         Lik.loadGame(base, roms, "klad");
         assertDizAssembly(data, "newProgram.asm");
+        assertPngMemory(range, "original.png");
 
         // when then
         assertMemory(range, "recompiled.mem", "recompiled.log");
+
+    }
+
+    private void assertPngMemory(Range range, String image) {
+        PngVideo.drawToFile(range, SCREEN_WIDTH, memory, new File(TEST_RESOURCES + getTestResultFolder() + "/" + image));
     }
 
     private void assertAssembly(String sourceCode, String recompiledFile) throws IOException {
@@ -300,7 +306,7 @@ public class IntegrationTest extends AbstractTest {
         FileUtils.writeByteArrayToFile(new File(TEST_RESOURCES + getTestResultFolder() + "/" + recompiledFile), bytes);
     }
 
-    private void assertMemory(Range range, String romFileName, String diffFileName) {
+    private Memory assertMemory(Range range, String romFileName, String diffFileName) {
         TrackUpdatedMemory source = new TrackUpdatedMemory(0x10000, TRACK_ONLY_UPDATED_VALUES);
         try {
             URL base = new File(TEST_RESOURCES).toURI().toURL();
@@ -315,6 +321,7 @@ public class IntegrationTest extends AbstractTest {
         }
         fileAssert.check("Diff", diffFileName,
                 file -> write(file, source.detailsTable()));
+        return source;
     }
 
     @Test
