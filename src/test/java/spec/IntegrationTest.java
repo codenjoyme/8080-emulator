@@ -289,7 +289,7 @@ public class IntegrationTest extends AbstractTest {
         assertDizAssembly(data, "newProgram.asm");
 
         // when then
-        assertMemory(range, "recompiled.mem", "recompiled.diff");
+        assertMemory(range, "recompiled.mem", "recompiled.log");
     }
 
     private void assertAssembly(String sourceCode, String recompiledFile) throws IOException {
