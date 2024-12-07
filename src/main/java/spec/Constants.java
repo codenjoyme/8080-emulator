@@ -20,16 +20,21 @@ public class Constants {
     public static final int x100 = 0x100;
     public static final int x10000 = 0x10000;
 
+    public static final int SCREEN_WIDTH_IN_PATTERNS = 48;
+
+    public static final int SCREEN_WIDTH = SCREEN_WIDTH_IN_PATTERNS * Video.PATTERN; // 384
+    public static final int SCREEN_HEIGHT = 256;
+
+    public static final int SCREEN_MEMORY_START = 0x9000;
+    public static final int SCREEN_MEMORY_LENGTH = SCREEN_WIDTH_IN_PATTERNS * SCREEN_HEIGHT; // 0xC000
+
     public static final int START_POINT = 0xC000;  // старт процессора после перезапуска
-    public static final Range SCREEN = new Range(0x9000, 0xBFFF); // область экрана
+    public static final Range SCREEN = new Range(SCREEN_MEMORY_START, -SCREEN_MEMORY_LENGTH); // область экрана [0x9000 : 0xBFFF]
     public static final Range ROM = new Range(0xC000, 0xF7FF);    // ПЗУ
     public static final Range PORTS = new Range(0xF800, 0xFFFE);  // порты
 
     public static final int BORDER_WIDTH = 10;
     public static final int BORDER_PORT = 254;
-
-    public static final int SCREEN_WIDTH = 384;
-    public static final int SCREEN_HEIGHT = 256;
 
     public static final String RECORD_LOG_FILE = "./keys.rec";
 
