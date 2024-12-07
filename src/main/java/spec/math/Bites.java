@@ -43,16 +43,11 @@ public class Bites implements Iterable<Integer> {
         return bytes;
     }
 
-    // TODO remove code duplicate
     public byte[] byteArray() {
         int length = size();
         int begin = 0;
 
-        byte[] bytes = new byte[length];
-        for (int i = 0; i < length; i++) {
-            bytes[i] = (byte) data[begin + i];
-        }
-        return bytes;
+        return byteArray(new Range(begin, -length));
     }
 
     public int size() {
@@ -103,10 +98,10 @@ public class Bites implements Iterable<Integer> {
 
     @Override
     public String toString() {
-        return detailsTable(-1, -1);
+        return toString(-1, -1);
     }
 
-    public String detailsTable(int start, int end) {
+    public String toString(int start, int end) {
         if (start == -1) {
             start = 0;
         }

@@ -21,8 +21,6 @@ public class Range {
             int length = -endOrLength;
             this.end = begin + length - 1;
         }
-        this.begin = word(this.begin);
-        this.end = word(this.end);
     }
 
     public int begin() {
