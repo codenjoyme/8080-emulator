@@ -43,6 +43,7 @@ public class Bites implements Iterable<Integer> {
         return bytes;
     }
 
+    // TODO remove code duplicate
     public byte[] byteArray() {
         int length = size();
         int begin = 0;
