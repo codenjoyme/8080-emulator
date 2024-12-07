@@ -33,7 +33,7 @@ public class RomLoaderTest {
         cpu = new Cpu(CPU_TICKS_PER_INTERRUPT, null, null, null);
         roms = new RomLoader(memory, cpu);
 
-        fileAssert = new FileAssert(TEST_RESOURCES + test.getMethodName());
+        fileAssert = new FileAssert(TEST_RESOURCES + "/RomLoaderTest/" + test.getMethodName());
         fileAssert.removeTestsData();
     }
 
