@@ -1,5 +1,6 @@
 package spec;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -15,9 +16,11 @@ import spec.platforms.Specialist;
 import spec.stuff.AbstractTest;
 import spec.stuff.FileAssert;
 import spec.stuff.TrackUpdatedMemory;
+import svofski.Assembler;
 import svofski.TapeFormat;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -28,7 +31,6 @@ import static java.util.stream.Collectors.toList;
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
 import static spec.stuff.FileAssert.write;
-import static spec.stuff.SmartAssert.assertEquals;
 import static spec.stuff.TrackUpdatedMemory.TRACK_ONLY_UPDATED_VALUES;
 import static svofski.AssemblerTest.findAllFiles;
 
@@ -99,11 +101,14 @@ public class IntegrationTest extends AbstractTest {
 
     private void assertScreen(String name) {
         fileAssert.check("Screenshots", name + ".png",
-                file -> video.drawToFile(file));
+                file -> {
+                    video.drawToFile(file);
+                    return null;
+                });
     }
 
-    private void assertCpu(String name) {
-        fileAssert.check("Cpu state", name + ".log",
+    private String assertCpu(String name) {
+        return fileAssert.check("Cpu state", name + ".log",
                 file -> write(file, cpu.toStringDetails()));
     }
 
@@ -111,18 +116,18 @@ public class IntegrationTest extends AbstractTest {
         assertCpu("cpu");
     }
 
-    private void assertCpuAt(WhereIsData data) {
-        fileAssert.check("Cpu was at info", "cpuAt.log",
+    private String assertCpuAt(WhereIsData data) {
+        return fileAssert.check("Cpu was at info", "cpuAt.log",
                 file -> write(file, data.toString()));
     }
 
-    private void assertDizAssembly(WhereIsData data, String name) {
-        fileAssert.check("DizAssembled program", name + ".log",
+    private String assertDizAssembly(WhereIsData data, String name) {
+        return fileAssert.check("DizAssembled program", name,
                 file -> write(file, dizAssembler.program(data.range(), data.info())));
     }
 
-    private void assertTrace() {
-        fileAssert.check("Cpu trace", "trace.log",
+    private String assertTrace() {
+        return fileAssert.check("Cpu trace", "trace.log",
                 file -> write(file, trace()));
     }
 
@@ -243,7 +248,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    public void testLik_game_klad_recording() {
+    public void testLik_game_klad_recording() throws IOException {
         // about 36 sec
 
         // given
@@ -275,22 +280,30 @@ public class IntegrationTest extends AbstractTest {
         assertCpuAt(data);
 
         // check that all program was the same after running
-        assertDizAssembly(data, "launchedProgram");
 
+        String sourceCode = assertDizAssembly(data, "launchedProgram.asm");
+        assertAssembly(sourceCode, "recompiled.mem");
 
         // when then
         Lik.loadGame(base, roms, "klad");
-        assertDizAssembly(data, "newProgram");
+        assertDizAssembly(data, "newProgram.asm");
 
         // when then
-        assertMemory(range, "recompiled.mem");
+        assertMemory(range, "recompiled.mem", "recompiled.diff");
     }
 
-    private void assertMemory(Range range, String romFileName) {
+    private void assertAssembly(String sourceCode, String recompiledFile) throws IOException {
+        Assembler assembler = new Assembler();
+        Bites result = assembler.compile(sourceCode);
+        byte[] bytes = result.byteArray();
+        FileUtils.writeByteArrayToFile(new File(TEST_RESOURCES + getTestResultFolder() + "/" + recompiledFile), bytes);
+    }
+
+    private void assertMemory(Range range, String romFileName, String diffFileName) {
         TrackUpdatedMemory source = new TrackUpdatedMemory(0x10000, TRACK_ONLY_UPDATED_VALUES);
         try {
             URL base = new File(TEST_RESOURCES).toURI().toURL();
-            roms.loadROM(base, "inputs/" + romFileName, source.all(), 0x0000);
+            roms.loadROM(base, getTestResultFolder() + "/" + romFileName, source.all(), 0x0000);
             source.resetChanges();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -299,9 +312,9 @@ public class IntegrationTest extends AbstractTest {
             int bite = memory.read8(addr);
             source.write8(addr, bite);
         }
-        assertEquals("", source.detailsTable());
+        fileAssert.check("Diff", diffFileName,
+                file -> write(file, source.detailsTable()));
     }
-
 
     @Test
     public void testLik_game_reversi_recording() {

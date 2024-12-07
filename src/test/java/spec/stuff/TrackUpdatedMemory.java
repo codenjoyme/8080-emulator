@@ -115,21 +115,26 @@ public class TrackUpdatedMemory extends Memory {
         builder.append("\n");
 
         for (int line = startLine; line < endLine; line += 16) {
-            builder.append(hex16(line))
-                    .append(": ");
 
+            StringBuilder lineString = new StringBuilder();
+            boolean empty = true;
             for (int i = line; i < line + 16; i++) {
                 String display = "-";
                 for (UpdatedBite ub : changes) {
                     if (ub.addr() == i) {
                         display = hex8(ub.prev()) + ">" + hex8(ub.next());
+                        empty = false;
                         break;
                     }
                 }
-                builder.append(String.format(" %-5s ", display));
+                lineString.append(String.format(" %-5s ", display));
             }
-
-            builder.append("\n");
+            if (!empty) {
+                builder.append(hex16(line))
+                        .append(": ")
+                        .append(lineString)
+                        .append("\n");
+            }
         }
 
         return builder.toString();

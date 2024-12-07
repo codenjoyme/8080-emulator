@@ -55,7 +55,7 @@ public class FileAssert {
         dir.delete();
     }
 
-    public void check(String info, String name, Consumer<File> save) {
+    public String check(String info, String name, Function<File, String> save) {
         String path = (name.startsWith("src/") ? name : testDir().getAbsolutePath() + "/" + name);
         File file = new File(path);
         if (file.getParentFile() != null) {
@@ -67,30 +67,34 @@ public class FileAssert {
             hash = hash(file);
         }
 
-        save.accept(file);
+        String result = save.apply(file);
 
         if (!Objects.equals(hash, hash(file))) {
             fail(info + " was changed.\n"
                     + file.getAbsolutePath() + "\n"
                     + "Please check git diff to see differences.\n");
         }
+
+        return result;
     }
 
     private String hash(File file) {
         return HashUtils.hashFile(file, "MD5");
     }
 
-    public static void write(File file, byte[] string) {
+    public static String write(File file, byte[] string) {
         file.getParentFile().mkdirs();
         try {
             FileUtils.writeByteArrayToFile(file, string);
+            return new String(string);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void write(File file, String string) {
+    public static String write(File file, String string) {
         write(file, string.getBytes());
+        return string;
     }
 
     public static String read(File file) {
@@ -112,8 +116,8 @@ public class FileAssert {
         throw new IllegalArgumentException("Unsupported json type: " + jsonElement);
     }
 
-    public void checkJson(String name, BiFunction<List<Object>, Function<String, Map>, Object> function) {
-        check(name, name, file -> {
+    public String checkJson(String name, BiFunction<List<Object>, Function<String, Map>, Object> function) {
+        return check(name, name, file -> {
             String data = read(file);
 
             Gson gson = new Gson();
@@ -131,7 +135,9 @@ public class FileAssert {
                 map.put("result", result);
             });
 
-            write(file, asString(values));
+            String result = asString(values);
+            write(file, result);
+            return result;
         });
     }
 
