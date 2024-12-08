@@ -58,6 +58,10 @@ public class Key {
         return code == NUM_2;
     }
 
+    public boolean numThree() {
+        return code == NUM_3;
+    }
+
     public boolean numStar() {
         return code == NUM_STAR;
     }

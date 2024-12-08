@@ -9,13 +9,17 @@ import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.function.Consumer;
 
 import static spec.Constants.*;
 import static spec.Video.COLORS;
 
 public class Application {
+
+    private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS");
 
     private int interrupt = 0;
     private int refreshRate = REFRESH_RATE;
@@ -240,6 +244,15 @@ public class Application {
                 }
                 graphic.refreshBorder();
                 Logger.debug("IO Draw Mode: %s", IO_DRAW_MODE_INFO[ioDrawMode]);
+            }
+            return;
+        }
+
+        if (key.numThree()) {
+            if (key.pressed()) {
+                File file = new File("screenshots/screen_" + DATE_FORMAT.format(new Date()) + ".png");
+                Logger.debug("Screen shoot to %s", file);
+                hard.png().drawToFile(SCREEN.begin(), file);
             }
             return;
         }

@@ -15,6 +15,7 @@ import static spec.math.WordMath.hex16;
 
 public class Hardware {
 
+    private PngVideo png;
     private Memory memory;
     private Cpu cpu;
     private RomLoader roms;
@@ -44,6 +45,13 @@ public class Hardware {
         data = createHardwareData();
         cpu = createCpu(CPU_TICKS_PER_INTERRUPT);
         roms = createRomLoader();
+        png = createPngVideo();
+    }
+
+    // components
+
+    private PngVideo createPngVideo() {
+        return new PngVideo(video, memory);
     }
 
     private Audio createAudio() {
@@ -54,7 +62,6 @@ public class Hardware {
         }
     }
 
-    // components
     protected RomLoader createRomLoader() {
         return new RomLoader(memory, cpu);
     }
@@ -261,6 +268,10 @@ public class Hardware {
     }
 
     // components getters
+
+    public PngVideo png() {
+        return png;
+    }
 
     public RomLoader roms() {
         return roms;

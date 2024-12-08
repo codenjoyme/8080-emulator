@@ -18,10 +18,10 @@ public class PngVideo implements Video.Drawer {
 
     public PngVideo(Video video, Memory memory) {
         this.video = video;
-        video.drawer(this);
         this.memory = memory;
         image = new BufferedImage(video.width(), video.height(), TYPE_INT_ARGB);
         graphics = image.getGraphics();
+        video.drawer(this);
     }
 
     /**

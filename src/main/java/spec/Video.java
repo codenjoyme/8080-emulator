@@ -2,11 +2,12 @@ package spec;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static java.awt.Color.BLACK;
 import static java.awt.Color.WHITE;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static spec.Constants.SCREEN;
 import static spec.math.WordMath.BITE;
 
 public class Video {
@@ -18,7 +19,7 @@ public class Video {
     protected int pwidth; // ширина экрана в 8 байтовых паттернах
     protected int height; // высота экрана в пикселях
     private Range range;
-    private Drawer drawer;
+    private List<Drawer> drawers = new CopyOnWriteArrayList<>();
     protected Pattern[][] changes;
     private Pattern[] patterns;
 
@@ -72,7 +73,7 @@ public class Video {
     }
 
     public void drawer(Drawer drawer) {
-        this.drawer = drawer;
+        this.drawers.add(drawer);
     }
 
     public void clean() {
@@ -103,15 +104,13 @@ public class Video {
                 if (changes[px][y] == null) continue;
 
                 Pattern pattern = changes[px][y];
-                if (drawer != null) {
-                    drawer.draw(toWidth(px), y, pattern.image());
-                }
+                int fx = toWidth(px);
+                int fy = y;
+                drawers.forEach(it -> it.draw(fx, fy, pattern.image()));
                 changes[px][y] = null;
             }
         }
-        if (drawer != null) {
-            drawer.done();
-        }
+        drawers.forEach(Drawer::done);
     }
 
     private int toWidth(int px) {
