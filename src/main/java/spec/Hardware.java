@@ -212,7 +212,6 @@ public class Hardware {
     }
 
     public void reset() {
-        Logger.debug("Reset Hardware");
         justReset();
         cpuEnabled = true;
         cpuSuspended = false;

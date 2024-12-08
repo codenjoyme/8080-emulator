@@ -62,6 +62,10 @@ public class Key {
         return code == NUM_3;
     }
 
+    public boolean numFour() {
+        return code == NUM_4;
+    }
+
     public boolean numStar() {
         return code == NUM_STAR;
     }

@@ -257,6 +257,14 @@ public class Application {
             return;
         }
 
+        if (key.numFour()) {
+            if (key.pressed()) {
+                Logger.debug("Stop record/replay");
+                hard.record().reset();
+            }
+            return;
+        }
+
         if (key.numSlash()) {
             if (key.pressed()) {
                 // TODO как сделать рабочим в веб версии?
