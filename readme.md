@@ -329,6 +329,7 @@ cache: MemoryCache: removed entry http://localhost:8080/spec.jnlp
        + ctrl           - `0b_00x0_0000` is ctrl key pressed
      - 12*6 bytes       - keyboard state 12 x 6 for all keys - is key pressed
    * Application state: TODO implement me
+     - 1 byte for int   - `GraphicControl.ioDrawMode`
      - 4 bytes for int  - `CPU tick`
      - 4 bytes for int  - `CPU tact`
      - 4 bytes for int  - `interrupt`
@@ -339,7 +340,6 @@ cache: MemoryCache: removed entry http://localhost:8080/spec.jnlp
        + fullSpeed      - `0b0000_000x`
        + lik            - `0b0000_00x0`
        + willReset      - `0b0000_0x00`
-     - 1 byte for int   - `ioDrawMode`
      - 8 bytes for long - `time`
      - 4 bytes for int  - `iterations`
    * Memory dump: `0x0000` - `0xFFFF`

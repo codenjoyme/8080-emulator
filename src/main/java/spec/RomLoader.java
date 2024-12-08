@@ -13,17 +13,19 @@ import static spec.math.WordMath.*;
 
 public class RomLoader {
 
-    private static final int SNAPSHOT_CPU_STATE_SIZE = 13;
-    private static final int SNAPSHOT_IO_PORTS_SIZE = 12;
+    private static final int SNAPSHOT_APPS_STATE_SIZE = 14;
+    private static final int SNAPSHOT_IO_PORTS_KEYS_STATE_SIZE = 12;
 
     private Memory memory;
     private Cpu cpu;
     private IOPorts ports;
+    private GraphicControl graphic;
 
-    public RomLoader(Memory memory, Cpu cpu, IOPorts ports) {
+    public RomLoader(Memory memory, Cpu cpu, IOPorts ports, GraphicControl graphic) {
         this.memory = memory;
         this.cpu = cpu;
         this.ports = ports;
+        this.graphic = graphic;
     }
 
     private void logLoading(String name, Range range) {
@@ -105,44 +107,45 @@ public class RomLoader {
     /**
      * Load hardware snapshot.
      * Format: CPU state, memory dump, I/O ports state.
-     * - CPU state:
-     *    - 2 bytes          - PC(low byte, high byte)
-     *    - 2 bytes          - SP(low byte, high byte)
-     *    - 2 bytes          - AF(low byte, high byte)
-     *    - 2 bytes          - BC(low byte, high byte)
-     *    - 2 bytes          - DE(low byte, high byte)
-     *    - 2 bytes          - HL(low byte, high byte)
-     * - I/O ports state:
-     *    - 1 byte           - flags 0b__shift_alt_ctrl_A__C1_0_B_C0
-     *       - Ain           - 0b_000x_0000
-     *       - Bin           - 0b_0000_00x0
-     *       - C0in          - 0b_0000_000x
-     *       - C1in          - 0b_0000_x000
-     *       - shift         - 0b_x000_0000 is shift key pressed
-     *       - alt           - 0b_0x00_0000 is alt key pressed
-     *       - ctrl          - 0b_00x0_0000 is ctrl key pressed
-     *    - 12*6 bytes       - keyboard state [12][6] for all keys - is key pressed
-     * - Application state: TODO implement me
-     *    - 4 bytes for int  - CPU tick
-     *    - 4 bytes for int  - CPU tact
-     *    - 4 bytes for int  - interrupt
-     *    - 4 bytes for int  - refreshRate
-     *    - 8 bytes for long - last
-     *    - 4 bytes for int  - delay
-     *    - 1 byte for other flags:
-     *       - fullSpeed     - 0b0000_000x
-     *       - lik           - 0b0000_00x0
-     *       - willReset     - 0b0000_0x00
-     *    - 1 byte for int   - ioDrawMode
-     *    - 8 bytes for long - time
-     *    - 4 bytes for int  - iterations
-     * - Memory dump: 0x0000-0xFFFF
+     * * CPU state:
+     *      - 2 bytes          - `PC` (low byte, high byte)
+     *      - 2 bytes          - `SP` (low byte, high byte)
+     *      - 2 bytes          - `AF` (low byte, high byte)
+     *      - 2 bytes          - `BC` (low byte, high byte)
+     *      - 2 bytes          - `DE` (low byte, high byte)
+     *      - 2 bytes          - `HL` (low byte, high byte)
+     *    * I/O ports state:
+     *      - 1 byte           - flags `0b__shift_alt_ctrl_A__C1_0_B_C0`
+     *        + Ain            - `0b_000x_0000`
+     *        + Bin            - `0b_0000_00x0`
+     *        + C0in           - `0b_0000_000x`
+     *        + C1in           - `0b_0000_x000`
+     *        + shift          - `0b_x000_0000` is shift key pressed
+     *        + alt            - `0b_0x00_0000` is alt key pressed
+     *        + ctrl           - `0b_00x0_0000` is ctrl key pressed
+     *      - 12*6 bytes       - keyboard state 12 x 6 for all keys - is key pressed
+     *    * Application state:
+     *      - 1 byte for int   - `GraphicControl.ioDrawMode`
+     *      TODO implement me
+     *      - 4 bytes for int  - `CPU tick`
+     *      - 4 bytes for int  - `CPU tact`
+     *      - 4 bytes for int  - `interrupt`
+     *      - 4 bytes for int  - `refreshRate`
+     *      - 8 bytes for long - `last`
+     *      - 4 bytes for int  - `delay`
+     *      - 1 byte for other flags:
+     *        + fullSpeed      - `0b0000_000x`
+     *        + lik            - `0b0000_00x0`
+     *        + willReset      - `0b0000_0x00`
+     *      - 8 bytes for long - `time`
+     *      - 4 bytes for int  - `iterations`
+     *    * Memory dump: `0x0000` - `0xFFFF`
      */
     public Range loadSnapshot(URL base, String path) {
         try {
             URL url = new URL(base, path);
             InputStream is = url.openStream();
-            Bites header = read8arr(is, SNAPSHOT_CPU_STATE_SIZE + SNAPSHOT_IO_PORTS_SIZE);
+            Bites header = read8arr(is, SNAPSHOT_APPS_STATE_SIZE + SNAPSHOT_IO_PORTS_KEYS_STATE_SIZE);
 
             cpu.PC(merge(header.get(1), header.get(0)));
             cpu.SP(merge(header.get(3), header.get(2)));
@@ -153,7 +156,9 @@ public class RomLoader {
 
             ports.state(header.get(12));
 
-            Range keysRange = new Range(0, -SNAPSHOT_IO_PORTS_SIZE).shift(SNAPSHOT_CPU_STATE_SIZE);
+            graphic.ioDrawMode(header.get(13));
+
+            Range keysRange = new Range(0, -SNAPSHOT_IO_PORTS_KEYS_STATE_SIZE).shift(SNAPSHOT_APPS_STATE_SIZE);
             ports.keyState(header.array(keysRange));
 
             Range range = new Range(0, -x10000);
@@ -169,7 +174,7 @@ public class RomLoader {
     public void saveSnapshot(URL base, String path) {
         try {
             URL url = new URL(base, path);
-            Bites bites = new Bites(x10000 + SNAPSHOT_CPU_STATE_SIZE + SNAPSHOT_IO_PORTS_SIZE);
+            Bites bites = new Bites(x10000 + SNAPSHOT_APPS_STATE_SIZE + SNAPSHOT_IO_PORTS_KEYS_STATE_SIZE);
 
             bites.set(0, lo(cpu.PC()));
             bites.set(1, hi(cpu.PC()));
@@ -186,7 +191,9 @@ public class RomLoader {
 
             bites.set(12, ports.state());
 
-            Range keysRange = new Range(0, -SNAPSHOT_IO_PORTS_SIZE).shift(SNAPSHOT_CPU_STATE_SIZE);
+            bites.set(13, graphic.ioDrawMode());
+
+            Range keysRange = new Range(0, -SNAPSHOT_IO_PORTS_KEYS_STATE_SIZE).shift(SNAPSHOT_APPS_STATE_SIZE);
             bites.set(keysRange, ports.keyState());
 
             Range memoryRange = new Range(0, -x10000);

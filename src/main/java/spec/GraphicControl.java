@@ -65,9 +65,20 @@ public class GraphicControl {
     }
 
     public void nextDrawMode() {
-        ioDrawMode++;
-        if (ioDrawMode == 5) {
-            ioDrawMode = 0;
+        int mode = ioDrawMode() + 1;
+        if (mode == 5) {
+            mode = 0;
+        }
+        ioDrawMode(mode);
+    }
+
+    public int ioDrawMode() {
+        return ioDrawMode;
+    }
+
+    public void ioDrawMode(int mode) {
+        ioDrawMode = mode;
+        if (ioDrawMode == 0) {
             printIO(BORDER_PORT, 0x30);
         } else {
             printIO(BORDER_PORT, 0x00);

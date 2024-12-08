@@ -29,7 +29,7 @@ public class Hardware {
     private KeyLogger keyLogger;
     private KeyRecord record;
     private FileRecorder fileRecorder;
-    private GraphicControl grapticControl;
+    private GraphicControl graphtic;
 
     private boolean lineOut;
     private boolean cpuEnabled;
@@ -39,7 +39,7 @@ public class Hardware {
 
     public Hardware(int screenWidth, int screenHeight, Container parent) {
         lineOut = true;
-        grapticControl = createGraphicControl(parent);
+        graphtic = createGraphicControl(parent);
         memory = createMemory();
         fileRecorder = createFileRecorder(logFile());
         keyLogger = createKeyLogger();
@@ -72,12 +72,12 @@ public class Hardware {
     }
 
     protected RomLoader createRomLoader() {
-        return new RomLoader(memory, cpu, ports);
+        return new RomLoader(memory, cpu, ports, graphtic);
     }
 
     protected Video createVideo(int width, int height) {
         Video video = new Video(width, height);
-        video.drawer(grapticControl.getDrawer());
+        video.drawer(graphtic.getDrawer());
         return video;
     }
 
@@ -210,12 +210,12 @@ public class Hardware {
 
     // OUT команда процессора
     protected void out8(int port, int bite) {
-        grapticControl.printIO(port, bite);
+        graphtic.printIO(port, bite);
     }
 
     // запись в порты КР580ВВ55
     protected void outPort8(int port, int bite) {
-        grapticControl.printIO(port, bite);
+        graphtic.printIO(port, bite);
     }
 
     protected int in8(int port) {
@@ -336,6 +336,6 @@ public class Hardware {
     }
 
     public GraphicControl graphic() {
-        return grapticControl;
+        return graphtic;
     }
 }

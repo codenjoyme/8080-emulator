@@ -12,6 +12,13 @@ import spec.stuff.FileAssert;
 import spec.stuff.SmartAssert;
 import spec.stuff.TrackUpdatedMemory;
 
+import java.awt.*;
+import java.awt.event.KeyListener;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static spec.Constants.CPU_TICKS_PER_INTERRUPT;
 import static spec.Constants.x10000;
 import static spec.IntegrationTest.TEST_RESOURCES;
@@ -25,6 +32,7 @@ public class RomLoaderTest {
     private TrackUpdatedMemory memory;
     private Cpu cpu;
     private IOPorts ports;
+    private GraphicControl graphic;
 
     @Rule
     public TestName test = new TestName();
@@ -35,6 +43,14 @@ public class RomLoaderTest {
         SmartAssert.setup();
 
         memory = new TrackUpdatedMemory(x10000, TRACK_ALL_CHANGES);
+
+        Container parent = mock(Container.class);
+        when(parent.getKeyListeners()).thenReturn(new KeyListener[0]);
+        Image image = mock(Image.class);
+        when(parent.createImage(anyInt(), anyInt())).thenReturn(image);
+        when(image.getGraphics()).thenReturn(mock(Graphics.class));
+
+        graphic = new GraphicControl(parent);
 
         ports = new IOPorts(memory, new Layout(), null);
         memory.resetChanges();
@@ -50,7 +66,7 @@ public class RomLoaderTest {
                 // do nothing
             }
         }, null, null);
-        roms = new RomLoader(memory, cpu, ports);
+        roms = new RomLoader(memory, cpu, ports, graphic);
 
         fileAssert = new FileAssert(TEST_RESOURCES + "/RomLoaderTest/" + test.getMethodName());
         fileAssert.removeTestsData();
@@ -98,7 +114,7 @@ public class RomLoaderTest {
     }
 
     @Test
-    public void tesSaveLoadSnapshots() {
+    public void testSaveLoadSnapshots() {
         // given
         Lik.loadRom(IntegrationTest.getBase(), roms);
         Lik.loadGame(IntegrationTest.getBase(), roms, "klad");
@@ -124,6 +140,9 @@ public class RomLoaderTest {
                 0b0110_1001,
                 0b0101_1010
         }));
+        graphic.nextDrawMode();
+        graphic.nextDrawMode();
+        graphic.nextDrawMode();
 
         // then
         String expectedCpu =
@@ -180,9 +199,16 @@ public class RomLoaderTest {
 
         assertEquals(expectedCpu, cpu.toStringDetails());
         assertEquals(expectedPorts, ports.toStringDetails());
+        assertEquals(3, graphic.ioDrawMode());
 
         // when
         roms.saveSnapshot(IntegrationTest.getTargetBase(), "snapshot.bin");
+
+        // reset all states
+        cpu.reset();
+        ports.reset();
+        graphic.nextDrawMode();
+        graphic.nextDrawMode();
 
         // when
         setup();
@@ -191,6 +217,7 @@ public class RomLoaderTest {
         // then
         assertEquals(expectedCpu, cpu.toStringDetails());
         assertEquals(expectedPorts, ports.toStringDetails());
+        assertEquals(3, graphic.ioDrawMode());
     }
 
     private void assertMemoryChanges() {
