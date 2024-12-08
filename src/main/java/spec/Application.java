@@ -28,11 +28,13 @@ public class Application {
     private boolean fullSpeed = false;
     private boolean lik = true;
 
-    // 0 - бордюр подсвечивает активно ли окно
-    // 1 - бордюр подсвечивает запись байта в порт А
-    // 2 - бордюр подсвечивает запись байта в порт B
-    // 3 - бордюр подсвечивает запись байта в порт C
-    // 4 - бордюр подсвечивает запись байта в порт RgSYS
+    public static String[] IO_DRAW_MODE_INFO = new String[] {
+        "0: Border highlights active window",
+        "1: Border highlights writing byte to Port A",
+        "2: Border highlights writing byte to Port B",
+        "3: Border highlights writing byte to Port C",
+        "4: Border highlights writing byte to Port RgSYS"
+    };
     private int ioDrawMode = 0;
 
     private URL base;
@@ -208,6 +210,7 @@ public class Application {
         if (key.numZero()) {
             if (key.pressed()) {
                 lik = !lik;
+                Logger.debug("Switch to %s", lik ? "LIK" : "Specialist");
                 hard.pause();
                 loadRoms(base);
                 hard.reset();
@@ -236,7 +239,7 @@ public class Application {
                     printIO(BORDER_PORT, 0x00);
                 }
                 graphic.refreshBorder();
-                Logger.debug("IO Draw Mode: " + ioDrawMode);
+                Logger.debug("IO Draw Mode: %s", IO_DRAW_MODE_INFO[ioDrawMode]);
             }
             return;
         }
@@ -272,8 +275,10 @@ public class Application {
             if (key.pressed()) {
                 fullSpeed = !fullSpeed;
                 if (fullSpeed) {
+                    Logger.debug("Full speed mode");
                     refreshRate = MAX_REFRESH_RATE;
                 } else {
+                    Logger.debug("Normal speed mode");
                     refreshRate = REFRESH_RATE;
                 }
             }
@@ -294,7 +299,7 @@ public class Application {
                 } else {
                     delay = (int) (delay / 0.8);
                 }
-                Logger.debug("Delay increased: " + delay);
+                Logger.debug("Delay increased: %s", delay);
             }
             return;
         }
@@ -302,11 +307,10 @@ public class Application {
         if (key.numPlus()) {
             if (key.pressed()) {
                 delay = (int) (delay * 0.8);
-                Logger.debug("Delay decreased: " + delay);
+                Logger.debug("Delay decreased: %s", delay);
             }
             return;
         }
-
 
         hard.ports().processKey(key);
     }

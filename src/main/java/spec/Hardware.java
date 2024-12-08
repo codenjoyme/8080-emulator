@@ -89,7 +89,7 @@ public class Hardware {
     }
 
     protected KeyRecord createKeyRecord() {
-        return new KeyRecord(fileRecorder, ports, this::stop);
+        return new KeyRecord(fileRecorder, ports, this::stop, this::pause);
     }
 
     protected IOPorts createIoPorts() {
@@ -163,10 +163,12 @@ public class Hardware {
     }
 
     public void stop() {
+        Logger.debug("Stop CPU");
         cpuEnabled = false;
     }
 
     public void pause() {
+        Logger.debug("Pause CPU");
         cpuSuspended = true;
     }
 
@@ -175,6 +177,7 @@ public class Hardware {
     }
 
     public void resume() {
+        Logger.debug("Resume CPU");
         cpuSuspended = false;
     }
 
@@ -202,6 +205,7 @@ public class Hardware {
     }
 
     public void reset() {
+        Logger.debug("Reset Hardware");
         justReset();
         cpuEnabled = true;
         cpuSuspended = false;
@@ -227,6 +231,7 @@ public class Hardware {
     public int loadRecord(String path) {
         if (!record.ready()) return -1;
 
+        Logger.debug("Loading record from %s", path);
         pause();
         int lastTick = record.load(path);
         reset();
