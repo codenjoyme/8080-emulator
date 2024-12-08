@@ -16,13 +16,15 @@ public class KeyRecord {
     private IOPorts ports;
     private Consumer<String> screenShoot;
     private Runnable stopCpu;
+    private Runnable pauseCpu;
     private int shootIndex; // индекс сделанного скриншота
     private Integer lastRecordedTick;
 
-    public KeyRecord(FileRecorder fileRecorder, IOPorts ports, Runnable stopCpu) {
+    public KeyRecord(FileRecorder fileRecorder, IOPorts ports, Runnable stopCpu, Runnable pauseCpu) {
         this.fileRecorder = fileRecorder;
         this.ports = ports;
         this.stopCpu = stopCpu;
+        this.pauseCpu = pauseCpu;
         this.shootIndex = 0;
         reset();
     }
@@ -63,7 +65,11 @@ public class KeyRecord {
         fileRecorder.read((delta, key) -> {
             Action it = after.get().after(delta);
             if (key.pressed()) {
-                after.set(it.down(key.code()));
+                if (key.pause()) {
+                    after.set(it.pauseCpu());
+                } else {
+                    after.set(it.down(key.code()));
+                }
             } else {
                 after.set(it.up(key.code()));
             }
@@ -90,6 +96,7 @@ public class KeyRecord {
         int tick;
         String shoot;
         boolean stopCpu;
+        boolean pauseCpu;
         boolean resetRecord;
 
         Integer keyCode;
@@ -154,6 +161,11 @@ public class KeyRecord {
             return this;
         }
 
+        public Action pauseCpu() {
+            pauseCpu = true;
+            return this;
+        }
+
         public Action after(int delta) {
             return KeyRecord.this.after(tick + delta);
         }
@@ -183,6 +195,9 @@ public class KeyRecord {
             }
             if (action.stopCpu) {
                 stopCpu.run();
+            }
+            if (action.pauseCpu) {
+                pauseCpu.run();
             }
             if (action.resetRecord) {
                 reset();

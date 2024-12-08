@@ -8,11 +8,12 @@ import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static spec.KeyCode.PAUSE;
 import static spec.math.WordMath.hex8;
 
 public class FileRecorder {
 
-    public static final Pattern RECORD_LINE = Pattern.compile("after\\((.*)\\).(up|down)\\(0x(.*)\\);");
+    public static final Pattern RECORD_LINE = Pattern.compile("after\\((.*)\\).(up|down)\\(0x(.*)\\);|stop\\(\\);");
     private File file;
     private boolean writing;
 
@@ -59,6 +60,10 @@ public class FileRecorder {
             for (String line : Files.readAllLines(file.toPath())) {
                 index++;
                 if (line.startsWith("//")) continue;
+                if (line.equals("stop();")) {
+                    onLine.accept(1, new Key(PAUSE, true, 0x00));
+                    continue;
+                }
 
                 Matcher matcher = RECORD_LINE.matcher(line);
                 if (!matcher.matches() || matcher.groupCount() != 3) {
