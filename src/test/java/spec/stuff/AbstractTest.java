@@ -5,11 +5,12 @@ import org.junit.Before;
 import spec.*;
 import spec.assembler.Assembler;
 
-import java.io.File;
+import java.awt.*;
 
+import static org.mockito.Mockito.mock;
 import static spec.Constants.*;
-import static spec.math.WordMath.hex8;
 import static spec.assembler.Assembler.asString;
+import static spec.math.WordMath.hex8;
 import static spec.stuff.SmartAssert.assertEquals;
 import static spec.stuff.TrackUpdatedMemory.TRACK_ALL_CHANGES;
 
@@ -28,11 +29,17 @@ public abstract class AbstractTest {
     protected FileRecorder fileRecorder;
     protected CpuDebug debug;
     protected KeyLogger keyLogger;
+    protected IOPorts ports;
+    protected GraphicControl graphic;
+    protected Timings timings;
+
+    @Before
+    public void setup() {
+        SmartAssert.setup();
+    }
 
     @Before
     public void before() {
-        SmartAssert.setup();
-
         Logger.DEBUG = false;
 
         hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, null) {
@@ -49,28 +56,70 @@ public abstract class AbstractTest {
             }
 
             @Override
-            protected FileRecorder createFileRecorder(File logFile) {
-                return fileRecorder = super.createFileRecorder(logFile);
+            protected GraphicControl createGraphicControl(Container parent) {
+                return AbstractTest.this.createGraphicControl(parent);
+            }
+
+            @Override
+            protected Timings createTimings() {
+                return AbstractTest.this.createTimings(this);
+            }
+
+            @Override
+            protected void out8(int port, int bite) {
+                // делаем все по быстрому
+            }
+
+            @Override
+            protected void outPort8(int port, int bite) {
+                // делаем все по быстрому
             }
         };
 
+        fileRecorder = hard.fileRecorder();
         fileRecorder.stopWriting();
+
         keyLogger = hard.keyLogger();
         keyLogger.console(false);
+
         roms = hard.roms();
         record = hard.record();
         asm = hard.cpu().asm();
+        ports = hard.ports();
+        graphic = hard.graphic();
+        timings = hard.timings();
         memory.resetChanges();
+
         debug = cpu.debug();
         debug.disable();
         debug.console(false);
+
         memoryInit = false;
+
         cpu.PC(START);
     }
 
     @After
     public void after() throws Exception {
         SmartAssert.checkResult();
+    }
+
+    protected GraphicControl createGraphicControl(Container parent) {
+        return mock(GraphicControl.class);
+    }
+
+    protected Timings createTimings(Hardware hard) {
+        return new Timings(hard) {
+            @Override
+            public void updateState() {
+                // делаем все по быстрому
+            }
+
+            @Override
+            public void sleep(long millis) {
+                // делаем все по быстрому
+            }
+        };
     }
 
     public void givenPr(String program) {

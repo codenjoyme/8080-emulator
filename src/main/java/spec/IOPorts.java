@@ -7,7 +7,9 @@ import java.util.function.BiConsumer;
 import static spec.Constants.*;
 import static spec.KeyCode.*;
 
-public class IOPorts {
+public class IOPorts implements StateProvider {
+
+    public static final int SNAPSHOT_IO_PORTS_SIZE = 13;
 
     private boolean Ain;   // порт A на ввод
     private boolean Bin;   // порт B на ввод
@@ -49,7 +51,7 @@ public class IOPorts {
         reset();
     }
 
-    public void state(int bite) {
+    public void bitesState(int bite) {
         // 0b__shift_alt_ctrl_A__C1_0_B_C0
         Ain(bite);
         Bin(bite);
@@ -60,7 +62,7 @@ public class IOPorts {
         ctrl(bite);
     }
 
-    public int state() {
+    public int bitesState() {
         // 0b__shift_alt_ctrl_A__C1_0_B_C0
         return (Ain ? b0001_0000 : 0)
                 | (Bin ? b0000_0010 : 0)
@@ -71,23 +73,37 @@ public class IOPorts {
                 | (ctrl ? b0010_0000 : 0);
     }
 
-    public void keyState(Bites bites) {
-        for (int i = 0; i < 12; i++) {
+    @Override
+    public int stateSize() {
+        return SNAPSHOT_IO_PORTS_SIZE;
+    }
+
+    @Override
+    public void state(Bites bites) {
+        if (bites.size() != stateSize()) {
+            throw new IllegalArgumentException("Invalid size of I/O ports state: " + bites.size());
+        }
+        int lastIndex = bites.size() - 1;
+        for (int i = 0; i < lastIndex; i++) {
             for (int j = 0; j < 6; j++) {
                 keyStatus[i][j] = isSet(bites.get(i), b0000_0001 << j);
             }
         }
+        bitesState(bites.get(lastIndex));
     }
 
-    public Bites keyState() {
-        Bites bites = new Bites(12);
-        for (int i = 0; i < 12; i++) {
+    @Override
+    public Bites state() {
+        Bites bites = new Bites(stateSize());
+        int lastIndex = bites.size() - 1;
+        for (int i = 0; i < lastIndex; i++) {
             int bite = 0;
             for (int j = 0; j < 6; j++) {
                 bite |= keyStatus[i][j] ? (b0000_0001 << j) : 0;
             }
             bites.set(i, bite);
         }
+        bites.set(lastIndex, bitesState());
         return bites;
     }
 

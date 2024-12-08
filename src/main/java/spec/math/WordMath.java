@@ -1,5 +1,7 @@
 package spec.math;
 
+import spec.Range;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -14,6 +16,24 @@ public class WordMath {
 
     public static int hi(int word) {
         return (word >> 8) & BITE;
+    }
+
+    public static Bites splitBites(long value, int count) {
+        Bites result = new Bites(count);
+        for (int i = 0; i < count; i++) {
+            result.set(i, (int) value & BITE);
+            value >>= 8;
+        }
+        return result;
+    }
+
+    public static long joinBites(Bites bites, Range range) {
+        long result = 0;
+        for (int i = range.end(); i >= range.begin(); i--) {
+            result <<= 8;
+            result |= bites.get(i);
+        }
+        return result;
     }
 
     public static int merge(int bite1, int bite2) {

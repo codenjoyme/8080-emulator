@@ -1,6 +1,5 @@
 package spec;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -8,73 +7,35 @@ import org.junit.rules.TestName;
 import spec.math.Bites;
 import spec.platforms.Lik;
 import spec.platforms.Specialist;
+import spec.stuff.AbstractTest;
 import spec.stuff.FileAssert;
-import spec.stuff.SmartAssert;
-import spec.stuff.TrackUpdatedMemory;
 
 import java.awt.*;
 import java.awt.event.KeyListener;
+import java.util.concurrent.atomic.AtomicLong;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static spec.Constants.CPU_TICKS_PER_INTERRUPT;
-import static spec.Constants.x10000;
 import static spec.IntegrationTest.TEST_RESOURCES;
 import static spec.stuff.FileAssert.write;
 import static spec.stuff.SmartAssert.assertEquals;
-import static spec.stuff.TrackUpdatedMemory.TRACK_ALL_CHANGES;
+import static spec.stuff.SmartAssert.assertNotSame;
 
-public class RomLoaderTest {
-
-    private RomLoader roms;
-    private TrackUpdatedMemory memory;
-    private Cpu cpu;
-    private IOPorts ports;
-    private GraphicControl graphic;
+public class RomLoaderTest extends AbstractTest {
 
     @Rule
     public TestName test = new TestName();
     private FileAssert fileAssert;
+    private AtomicLong time = new AtomicLong(1733699155599L);
 
     @Before
-    public void setup() {
-        SmartAssert.setup();
-
-        memory = new TrackUpdatedMemory(x10000, TRACK_ALL_CHANGES);
-
-        Container parent = mock(Container.class);
-        when(parent.getKeyListeners()).thenReturn(new KeyListener[0]);
-        Image image = mock(Image.class);
-        when(parent.createImage(anyInt(), anyInt())).thenReturn(image);
-        when(image.getGraphics()).thenReturn(mock(Graphics.class));
-
-        graphic = new GraphicControl(parent);
-
-        ports = new IOPorts(memory, new Layout(), null);
-        memory.resetChanges();
-
-        cpu = new Cpu(CPU_TICKS_PER_INTERRUPT, new HardwareData(memory, ports, null) {
-            @Override
-            public int in8(int port) {
-                return 0xFF;
-            }
-
-            @Override
-            public void out8(int port, int bite) {
-                // do nothing
-            }
-        }, null, null);
-        roms = new RomLoader(memory, cpu, ports, graphic);
+    @Override
+    public void before() {
+        super.before();
 
         fileAssert = new FileAssert(TEST_RESOURCES + "/RomLoaderTest/" + test.getMethodName());
         fileAssert.removeTestsData();
-    }
-
-    @After
-    public void after() throws Exception {
-        SmartAssert.checkResult();
     }
 
     @Test
@@ -113,20 +74,44 @@ public class RomLoaderTest {
         assertMemoryChanges();
     }
 
+    @Override
+    protected Timings createTimings(Hardware hard) {
+        return new Timings(hard){
+            @Override
+            protected long now() {
+                return time.addAndGet(1234);
+            }
+        };
+    }
+
+    @Override
+    protected GraphicControl createGraphicControl(Container inputParent) {
+        Container parent = mock(Container.class);
+        when(parent.getKeyListeners()).thenReturn(new KeyListener[0]);
+        Image image = mock(Image.class);
+        when(parent.createImage(anyInt(), anyInt())).thenReturn(image);
+        when(image.getGraphics()).thenReturn(mock(Graphics.class));
+
+        graphic = new GraphicControl(parent);
+        return graphic;
+    }
+
     @Test
     public void testSaveLoadSnapshots() {
         // given
         Lik.loadRom(IntegrationTest.getBase(), roms);
         Lik.loadGame(IntegrationTest.getBase(), roms, "klad");
-        cpu.AF(0x1234); // random values
+
+        // random values
+        cpu.AF(0x1234);
         cpu.BC(0x5678);
         cpu.DE(0x9ABC);
         cpu.HL(0xDEF0);
         cpu.PC(0x2345);
         cpu.SP(0x6789);
+
         ports.reset();
-        ports.state(0b1010_0101);
-        ports.keyState(new Bites(new int[]{
+        ports.state(new Bites(new int[]{
                 0b1010_0101,
                 0b1100_0011,
                 0b1001_0110,
@@ -138,11 +123,25 @@ public class RomLoaderTest {
                 0b0000_1111,
                 0b1011_1101,
                 0b0110_1001,
-                0b0101_1010
+                0b0101_1010,
+                0b1010_0101 // flags
         }));
+
         graphic.nextDrawMode();
         graphic.nextDrawMode();
         graphic.nextDrawMode();
+
+        timings.changeFullSpeed();
+        timings.decreaseDelay();
+        for (int i = 0; i < 1234567; i++) {
+            timings.updateState();
+            if (i % 3 == 1) {
+                timings.sleep();
+            }
+            if (i % 3 == 0) {
+                timings.profiling();
+            }
+        }
 
         // then
         String expectedCpu =
@@ -197,27 +196,42 @@ public class RomLoaderTest {
                 "    |4| - - + + + - - + - + - +\n" +
                 "    |5| + - - - + - - - - + + -\n";
 
+        String expectedTimings =
+                "interrupt   : 1234567\n" +
+                "refreshRate : 100\n" +
+                "willReset   : false\n" +
+                "last        : 1733830170613\n" +
+                "delay       : 5\n" +
+                "fullSpeed   : true\n" +
+                "time        : 1733830164443\n" +
+                "iterations  : 1646090\n";
+
         assertEquals(expectedCpu, cpu.toStringDetails());
         assertEquals(expectedPorts, ports.toStringDetails());
         assertEquals(3, graphic.ioDrawMode());
+        assertEquals(expectedTimings, timings.toStringDetails());
 
         // when
         roms.saveSnapshot(IntegrationTest.getTargetBase(), "snapshot.bin");
 
+        // given
         // reset all states
-        cpu.reset();
-        ports.reset();
-        graphic.nextDrawMode();
-        graphic.nextDrawMode();
+        before();
+
+        // then
+        assertNotSame(expectedCpu, cpu.toStringDetails());
+        assertNotSame(expectedPorts, ports.toStringDetails());
+        assertNotSame(3, graphic.ioDrawMode());
+        assertNotSame(expectedTimings, timings.toStringDetails());
 
         // when
-        setup();
         roms.loadSnapshot(IntegrationTest.getTargetBase(), "snapshot.bin");
 
         // then
         assertEquals(expectedCpu, cpu.toStringDetails());
         assertEquals(expectedPorts, ports.toStringDetails());
         assertEquals(3, graphic.ioDrawMode());
+        assertEquals(expectedTimings, timings.toStringDetails());
     }
 
     private void assertMemoryChanges() {

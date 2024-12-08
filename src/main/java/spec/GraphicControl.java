@@ -1,11 +1,15 @@
 package spec;
 
+import spec.math.Bites;
+
 import java.awt.*;
 
 import static spec.Constants.*;
 import static spec.Video.COLORS;
 
-public class GraphicControl {
+public class GraphicControl implements StateProvider {
+
+    public static final int SNAPSHOT_GRAPHIC_STATE_SIZE = 1;
 
     private final Graphic graphic;
 
@@ -85,5 +89,27 @@ public class GraphicControl {
         }
         graphic.refreshBorder();
         Logger.debug("IO Draw Mode: %s", IO_DRAW_MODE_INFO[ioDrawMode]);
+    }
+
+    @Override
+    public int stateSize() {
+        return SNAPSHOT_GRAPHIC_STATE_SIZE;
+    }
+
+    @Override
+    public Bites state() {
+        Bites result = new Bites(stateSize());
+
+        result.set(0, ioDrawMode());
+
+        return result;
+    }
+
+    @Override
+    public void state(Bites bites) {
+        if (bites.size() != stateSize()) {
+            throw new IllegalArgumentException("Invalid graphic state size: " + bites.size());
+        }
+        ioDrawMode(bites.get(0));
     }
 }

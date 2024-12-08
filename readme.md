@@ -71,7 +71,7 @@ Intro
 - [ ] Запустить и отладить четвертый тест "Экзорцист". 
 - [ ] Попробовать в бейсике запустить какую-то большую игру и подебажить ошибки. 
 - [ ] Добавить поддержку звука.
-- [!] Сделать возможным по рисайзу скейлить окно с содержимым. 
+- [ ] Сделать возможным по рисайзу скейлить окно с содержимым. 
 - [x] Разделить GODObjects на компоненты.
 - [x] Отрефакторить видео логику, там ужас сейчас как не просто.
 - [x] Реализовать сохранение скриншота в png файл. 
@@ -113,7 +113,8 @@ Intro
       бывал процессор, дабы понять, где есть программа, а где данные. Это на следующем этапе 
       позволит  
 - [x] Реализовать ассемблер как в https://svofski.github.io/pretty-8080-assembler/
-- [ ] Закончить дизасемблер.
+- [!] Закончить дизасемблер.
+- [!] Реализовать сохранение/загрузку снепшотов по хоткеям. Весь стейт должен сохраняться. 
 - [ ] Сделать что-то еще...
 - [ ] И еще что-то...
 
@@ -311,38 +312,38 @@ cache: MemoryCache: removed entry http://localhost:8080/spec.jnlp
 - `NumPad 6` - Сохранение состояния машины в папку `snapshots`. При этом сохраняются все
    регистры CPU, IO порты и состояния клавиатуры, а так же вся память. Сохранение происходит в файл
    с расширением `snp`. Его структура такая:
-   * CPU state:
-     - 2 bytes          - `PC` (low byte, high byte)
-     - 2 bytes          - `SP` (low byte, high byte)
-     - 2 bytes          - `AF` (low byte, high byte)
-     - 2 bytes          - `BC` (low byte, high byte)
-     - 2 bytes          - `DE` (low byte, high byte)
-     - 2 bytes          - `HL` (low byte, high byte)
-   * I/O ports state:
-     - 1 byte           - flags `0b__shift_alt_ctrl_A__C1_0_B_C0`
-       + Ain            - `0b_000x_0000`
-       + Bin            - `0b_0000_00x0`
-       + C0in           - `0b_0000_000x`
-       + C1in           - `0b_0000_x000`
-       + shift          - `0b_x000_0000` is shift key pressed
-       + alt            - `0b_0x00_0000` is alt key pressed
-       + ctrl           - `0b_00x0_0000` is ctrl key pressed
-     - 12*6 bytes       - keyboard state 12 x 6 for all keys - is key pressed
-   * Application state: TODO implement me
-     - 1 byte for int   - `GraphicControl.ioDrawMode`
-     - 4 bytes for int  - `CPU tick`
-     - 4 bytes for int  - `CPU tact`
-     - 4 bytes for int  - `interrupt`
-     - 4 bytes for int  - `refreshRate`
-     - 8 bytes for long - `last`
-     - 4 bytes for int  - `delay`
-     - 1 byte for other flags:
-       + fullSpeed      - `0b0000_000x`
-       + lik            - `0b0000_00x0`
-       + willReset      - `0b0000_0x00`
-     - 8 bytes for long - `time`
-     - 4 bytes for int  - `iterations`
-   * Memory dump: `0x0000` - `0xFFFF`
+   * CPU state: 
+     - 2 bytes             - `PC` (low byte, high byte) 
+     - 2 bytes             - `SP` (low byte, high byte) 
+     - 2 bytes             - `AF` (low byte, high byte) 
+     - 2 bytes             - `BC` (low byte, high byte) 
+     - 2 bytes             - `DE` (low byte, high byte) 
+     - 2 bytes             - `HL` (low byte, high byte) 
+   * I/O ports state: 
+     - 12*6 bytes          - keyboard state 12 x 6 for all keys - is key pressed 
+     - 1 byte              - flags `0b__shift_alt_ctrl_A__C1_0_B_C0` 
+       + Ain               - `0b_000x_0000` 
+       + Bin               - `0b_0000_00x0` 
+       + C0in              - `0b_0000_000x` 
+       + C1in              - `0b_0000_x000` 
+       + shift             - `0b_x000_0000` is shift key pressed 
+       + alt               - `0b_0x00_0000` is alt key pressed 
+       + ctrl              - `0b_00x0_0000` is ctrl key pressed 
+   * GraphicControl state: 
+     - 1 byte for int      - `ioDrawMode` 
+   * Timings state: 
+     - 4 bytes for int     - `interrupt` 
+     - 4 bytes for int     - `refreshRate` 
+     - 1 byte for boolean  - 1 if `willReset` true, 0 otherwise 
+     - 8 bytes for long    - `last` 
+     - 4 bytes for int     - `delay` 
+     - 1 byte for boolean  - 1 if `fullSpeed` true, 0 otherwise 
+     - 8 bytes for long    - `time` 
+     - 4 bytes for int     - `iterations` 
+   * Memory dump: `0x0000` - `0xFFFF` 
+   * TODO implement me 
+     - 1 byte for boolean  - 1 if `lik` true, 0 otherwise 
+     - 4 bytes for int     - `CPU tick` 
 
 - `NumPad /` - Запуск replay режима. Откроется диалог `Recording file` в котором можно выбрать файл `rec` 
   с записью. После выбора файла эмулятор выполнит `reset` и начнет воспроизведение записи.

@@ -4,7 +4,7 @@ import spec.math.Bites;
 
 import static spec.math.WordMath.*;
 
-public class Memory {
+public class Memory implements StateProvider {
 
     protected Bites mem;
 
@@ -67,5 +67,23 @@ public class Memory {
             result.append(hex8(bites.get(i)));
         }
         return result.toString();
+    }
+
+    @Override
+    public int stateSize() {
+        return mem.size();
+    }
+
+    @Override
+    public void state(Bites bites) {
+        if (bites.size() != stateSize()) {
+            throw new IllegalArgumentException("Invalid memory state size: " + bites.size());
+        }
+        mem.set(new Range(0, -bites.size()), bites);
+    }
+
+    @Override
+    public Bites state() {
+        return mem.array();
     }
 }

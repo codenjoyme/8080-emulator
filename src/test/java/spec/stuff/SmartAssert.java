@@ -28,10 +28,6 @@ public class SmartAssert {
 
     private static List<AssertionError> failures;
 
-    static {
-        setup();
-    }
-
     public static void setup() {
         failures = new CopyOnWriteArrayList<>();
     }
@@ -40,6 +36,15 @@ public class SmartAssert {
         failNotInitialized();
         try {
             Assert.assertEquals(expected, actual);
+        } catch (AssertionError e) {
+            failures.add(e);
+        }
+    }
+
+    public static void assertNotSame(Object expected, Object actual) {
+        failNotInitialized();
+        try {
+            Assert.assertNotSame(expected, actual);
         } catch (AssertionError e) {
             failures.add(e);
         }

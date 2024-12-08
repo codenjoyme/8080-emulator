@@ -24,23 +24,11 @@ public class Application {
 
     private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS");
 
-    private int interrupt = 0;
-    private int refreshRate = REFRESH_RATE;
-
-    // TODO а точно тут надо так заморачиваться с многопоточностью?
-    private boolean willReset = false;
-
-    private long last = 0;
-    private int delay = CPU_INTERRUPT_DELAY;
-    private boolean fullSpeed = false;
     private boolean lik = true;
 
     private URL base;
     private Container parent;
     private Hardware hard;
-
-    private long time;
-    private int iterations;
 
     /**
      * Container — это абстрактный подкласс класса Component, определяющий дополнительные методы,
@@ -53,13 +41,7 @@ public class Application {
         this.base = base;
         createFolders();
 
-        hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, parent) {
-
-            @Override
-            protected void update() {
-                updateState();
-            }
-        };
+        hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, parent);
 
         hard.fileRecorder().with(RECORD_LOG_FILE);
         loadRoms(base);
@@ -82,65 +64,6 @@ public class Application {
         }
 
         reset();
-    }
-
-    private void updateState() {
-        profiling();
-
-        if (willReset) {
-            Logger.info("Reset Hardware!");
-            willReset = false;
-            hard.reset();
-        }
-
-        interrupt++;
-
-        // Обновлять экран каждое прерывание по умолчанию
-        if ((interrupt % refreshRate) == 0) {
-            hard.video().screenPaint();
-        }
-
-        hard.audio().tick();
-
-        if (!fullSpeed) {
-            sleep();
-        }
-    }
-
-    private void profiling() {
-        if (++iterations % 1000 == 0) {
-            if (time != 0) {
-                Logger.debug("Time per 10k interrupts: %ss", 1.0D * (now() - time) / 1000);
-            }
-            time = now();
-        }
-    }
-
-    private long now() {
-        return System.currentTimeMillis();
-    }
-
-    private void sleep() {
-        // Trying to slow to 100%, browsers resolution on the system
-        // time is not accurate enough to check every interrurpt. So
-        // we check every 4 interrupts.
-        if ((interrupt % 4) == 0) {
-            long time = now();
-            long duration = time - last;
-            last = time;
-            // запомним текущее время, как предыдущее.
-            if (duration < delay) {
-                sleep(delay - duration);
-            }
-        }
-    }
-
-    public static void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (Exception ignored) {
-            // do nothing
-        }
     }
 
     public void lostFocus() {
@@ -252,41 +175,28 @@ public class Application {
 
         if (key.numStar()) {
             if (key.pressed()) {
-                fullSpeed = !fullSpeed;
-                if (fullSpeed) {
-                    Logger.debug("Full speed mode");
-                    refreshRate = MAX_REFRESH_RATE;
-                } else {
-                    Logger.debug("Normal speed mode");
-                    refreshRate = REFRESH_RATE;
-                }
+                hard.timings().changeFullSpeed();
             }
             return;
         }
 
         if (key.pause()) {
             if (key.pressed()) {
-                willReset = true;
+                hard.timings().willReset();
             }
             return;
         }
 
         if (key.numMinus()) {
             if (key.pressed()) {
-                if (delay < 10) {
-                    delay++;
-                } else {
-                    delay = (int) (delay / 0.8);
-                }
-                Logger.debug("Delay increased: %s", delay);
+                hard.timings().increaseDelay();
             }
             return;
         }
 
         if (key.numPlus()) {
             if (key.pressed()) {
-                delay = (int) (delay * 0.8);
-                Logger.debug("Delay decreased: %s", delay);
+                hard.timings().decreaseDelay();
             }
             return;
         }

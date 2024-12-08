@@ -18,8 +18,12 @@ public class AssemblerTest {
 
     @Before
     public void setup() {
-        assembler = new Assembler();
         SmartAssert.setup();
+    }
+
+    @Before
+    public void before() {
+        assembler = new Assembler();
     }
 
     @After

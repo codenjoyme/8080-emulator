@@ -30,6 +30,7 @@ public class Hardware {
     private KeyRecord record;
     private FileRecorder fileRecorder;
     private GraphicControl graphtic;
+    private Timings timings;
 
     private boolean lineOut;
     private boolean cpuEnabled;
@@ -39,6 +40,7 @@ public class Hardware {
 
     public Hardware(int screenWidth, int screenHeight, Container parent) {
         lineOut = true;
+        timings = createTimings();
         graphtic = createGraphicControl(parent);
         memory = createMemory();
         fileRecorder = createFileRecorder(logFile());
@@ -53,17 +55,21 @@ public class Hardware {
         png = createPngVideo();
     }
 
-    private GraphicControl createGraphicControl(Container parent) {
+    // components
+
+    protected Timings createTimings() {
+        return new Timings(this);
+    }
+
+    protected GraphicControl createGraphicControl(Container parent) {
         return new GraphicControl(parent);
     }
 
-    // components
-
-    private PngVideo createPngVideo() {
+    protected PngVideo createPngVideo() {
         return new PngVideo(video, memory);
     }
 
-    private Audio createAudio() {
+    protected Audio createAudio() {
         if (lineOut) {
             return audio = new OldAudio();
         } else {
@@ -72,7 +78,7 @@ public class Hardware {
     }
 
     protected RomLoader createRomLoader() {
-        return new RomLoader(memory, cpu, ports, graphtic);
+        return new RomLoader(memory, cpu, ports, graphtic, timings);
     }
 
     protected Video createVideo(int width, int height) {
@@ -167,14 +173,11 @@ public class Hardware {
     // logic
 
     private boolean cpuInterrupt() {
-        update();
+        timings.updateState();
+
         while (cpuSuspended) {
             cpuSuspended();
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                // do nothing
-            }
+            timings.sleep(100);
         }
         return cpuEnabled;
     }
@@ -220,10 +223,6 @@ public class Hardware {
 
     protected int in8(int port) {
         return 0xFF;
-    }
-
-    protected void update() {
-        // please override if needed
     }
 
     protected File logFile() {
@@ -337,5 +336,9 @@ public class Hardware {
 
     public GraphicControl graphic() {
         return graphtic;
+    }
+
+    public Timings timings() {
+        return timings;
     }
 }

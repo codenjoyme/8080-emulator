@@ -7,10 +7,12 @@ import spec.math.Bites;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static spec.math.WordMath.hex8;
+import static spec.math.WordMath.*;
 import static spec.mods.Event.CHANGE_PC;
 
-public class Cpu extends Registry {
+public class Cpu extends Registry implements StateProvider {
+
+    public static final int SNAPSHOT_CPU_STATE_SIZE = 14;
 
     private Consumer<Cpu> onTick;
     private Supplier<Boolean> onInterrupt;
@@ -117,5 +119,48 @@ public class Cpu extends Registry {
         }
         int hi = data.read8(addr + 2);
         return Bites.of(commandBite, lo, hi);
+    }
+
+    @Override
+    public int stateSize() {
+        return SNAPSHOT_CPU_STATE_SIZE;
+    }
+
+    @Override
+    public Bites state() {
+        Bites result = new Bites(stateSize());
+
+        result.set(0, lo(PC()));
+        result.set(1, hi(PC()));
+        result.set(2, lo(SP()));
+        result.set(3, hi(SP()));
+        result.set(4, F());
+        result.set(5, A());
+        result.set(6, C());
+        result.set(7, B());
+        result.set(8, E());
+        result.set(9, D());
+        result.set(10, L());
+        result.set(11, H());
+
+        return result;
+    }
+
+    @Override
+    public void state(Bites bites) {
+        if (bites.size() != stateSize()) {
+            throw new IllegalArgumentException("Invalid CPU state size: " + bites.size());
+        }
+
+        PC(merge(bites.get(1), bites.get(0)));
+        SP(merge(bites.get(3), bites.get(2)));
+        F(bites.get(4));
+        A(bites.get(5));
+        C(bites.get(6));
+        B(bites.get(7));
+        E(bites.get(8));
+        D(bites.get(9));
+        L(bites.get(10));
+        H(bites.get(11));
     }
 }

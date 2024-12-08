@@ -64,6 +64,10 @@ public class AssemblerTest {
     @Before
     public void setup() {
         SmartAssert.setup();
+    }
+
+    @Before
+    public void before() {
         asm = new Assembler();
         fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
         program = read(new File(APP_RESOURCES + "/test/" + name));
