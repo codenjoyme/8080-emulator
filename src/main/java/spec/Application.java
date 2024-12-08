@@ -35,18 +35,8 @@ public class Application {
     private boolean fullSpeed = false;
     private boolean lik = true;
 
-    public static String[] IO_DRAW_MODE_INFO = new String[] {
-        "0: Border highlights active window",
-        "1: Border highlights writing byte to Port A",
-        "2: Border highlights writing byte to Port B",
-        "3: Border highlights writing byte to Port C",
-        "4: Border highlights writing byte to Port RgSYS"
-    };
-    private int ioDrawMode = 0;
-
     private URL base;
     private Container parent;
-    private Graphic graphic;
     private Hardware hard;
 
     private long time;
@@ -62,19 +52,8 @@ public class Application {
         this.parent = parent;
         this.base = base;
         createFolders();
-        graphic = new Graphic(SCREEN_WIDTH, SCREEN_HEIGHT, BORDER_WIDTH, parent);
 
-        hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, graphic) {
-
-            @Override
-            protected void out8(int port, int bite) {
-                printIO(port, bite);
-            }
-
-            @Override
-            protected void outPort8(int port, int bite) {
-                printIO(port, bite);
-            }
+        hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, parent) {
 
             @Override
             protected void update() {
@@ -89,44 +68,6 @@ public class Application {
     private void createFolders() {
         new File(base.getFile() + SNAPSHOTS).mkdirs();
         new File(base.getFile() + SCREENSHOTS).mkdirs();
-    }
-
-    private void printIO(int port, int bite) {
-        switch (ioDrawMode) {
-            case 0 : {
-                if (port != BORDER_PORT) {
-                    return;
-                }
-            } break;
-
-            case 1 : {
-                if (port != IOPorts.PortA) {
-                    return;
-                }
-            } break;
-
-            case 2 : {
-                if (port != IOPorts.PortB) {
-                    return;
-                }
-            } break;
-
-            case 3 : {
-                if (port != IOPorts.PortC) {
-                    return;
-                }
-            } break;
-
-            case 4 : {
-                if (port != IOPorts.RgRGB) {
-                    return;
-                }
-            } break;
-
-        }
-
-        graphic.refreshBorder();
-        graphic.changeColor(COLORS[bite]);
     }
 
     public void load(String rom) {
@@ -204,13 +145,13 @@ public class Application {
 
     public void lostFocus() {
         Logger.debug("Lost focus");
-        printIO(BORDER_PORT, 0x50);
+        hard.graphic().printIO(BORDER_PORT, 0x50);
         hard.ports().resetKeyboard();
     }
 
     public void gotFocus() {
         Logger.debug("Got focus");
-        printIO(BORDER_PORT, 0x30);
+        hard.graphic().printIO(BORDER_PORT, 0x30);
         hard.ports().resetKeyboard();
     }
 
@@ -239,15 +180,7 @@ public class Application {
 
         if (key.numTwo()) {
             if (key.pressed()) {
-                ioDrawMode++;
-                if (ioDrawMode == 5) {
-                    ioDrawMode = 0;
-                    printIO(BORDER_PORT, 0x30);
-                } else {
-                    printIO(BORDER_PORT, 0x00);
-                }
-                graphic.refreshBorder();
-                Logger.debug("IO Draw Mode: %s", IO_DRAW_MODE_INFO[ioDrawMode]);
+                hard.graphic().nextDrawMode();
             }
             return;
         }

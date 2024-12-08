@@ -5,6 +5,7 @@ import spec.sound.Audio;
 import spec.sound.NewAudio;
 import spec.sound.OldAudio;
 
+import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Hardware {
     private KeyLogger keyLogger;
     private KeyRecord record;
     private FileRecorder fileRecorder;
-    private Video.Drawer drawer;
+    private GraphicControl grapticControl;
 
     private boolean lineOut;
     private boolean cpuEnabled;
@@ -36,9 +37,9 @@ public class Hardware {
 
     private final List<Runnable> cpuSuspendedListeners = new CopyOnWriteArrayList<>();
 
-    public Hardware(int screenWidth, int screenHeight, Video.Drawer drawer) {
+    public Hardware(int screenWidth, int screenHeight, Container parent) {
         lineOut = true;
-        this.drawer = drawer;
+        grapticControl = createGraphicControl(parent);
         memory = createMemory();
         fileRecorder = createFileRecorder(logFile());
         keyLogger = createKeyLogger();
@@ -50,6 +51,10 @@ public class Hardware {
         cpu = createCpu(CPU_TICKS_PER_INTERRUPT);
         roms = createRomLoader();
         png = createPngVideo();
+    }
+
+    private GraphicControl createGraphicControl(Container parent) {
+        return new GraphicControl(parent);
     }
 
     // components
@@ -72,7 +77,7 @@ public class Hardware {
 
     protected Video createVideo(int width, int height) {
         Video video = new Video(width, height);
-        video.drawer(drawer);
+        video.drawer(grapticControl.getDrawer());
         return video;
     }
 
@@ -205,16 +210,15 @@ public class Hardware {
 
     // OUT команда процессора
     protected void out8(int port, int bite) {
-        // please override if needed
+        grapticControl.printIO(port, bite);
     }
 
     // запись в порты КР580ВВ55
     protected void outPort8(int port, int bite) {
-        // please override if needed
+        grapticControl.printIO(port, bite);
     }
 
     protected int in8(int port) {
-        // please override if needed
         return 0xFF;
     }
 
@@ -329,5 +333,9 @@ public class Hardware {
 
     public Audio audio() {
         return audio;
+    }
+
+    public GraphicControl graphic() {
+        return grapticControl;
     }
 }
