@@ -275,7 +275,26 @@ public class IntegrationTest extends AbstractTest {
                 () -> record.at(1100).shoot("screeen11"),
                 () -> record.at(1200).shoot("screeen12"),
                 () -> record.at(1300).shoot("screeen13"),
-                () -> record.at(1379).shoot("screeen14")
+                () -> record.at(1400).shoot("screeen14"),
+                () -> record.at(1500).shoot("screeen15"),
+                () -> record.at(1600).shoot("screeen16"),
+                () -> record.at(1700).shoot("screeen17"),
+                () -> record.at(1800).shoot("screeen18"),
+                () -> record.at(1900).shoot("screeen19"),
+                () -> record.at(2000).shoot("screeen20"),
+                () -> record.at(2100).shoot("screeen21"),
+                () -> record.at(2200).shoot("screeen22"),
+                () -> record.at(2300).shoot("screeen23"),
+                () -> record.at(2310).shoot("screeen24"),
+                () -> record.at(2311).shoot("screeen25"),
+                () -> record.at(2312).shoot("screeen26"),
+                () -> record.at(2313).shoot("screeen27"),
+                () -> record.at(2314).shoot("screeen28"),
+                () -> record.at(2315).shoot("screeen29"),
+                () -> record.at(2316).shoot("screeen30"),
+                () -> record.at(2317).shoot("screeen31"), // TODO тут почему-то в режиме тиста gameover а в реальной игре нет
+                () -> record.at(2318).shoot("screeen32"),
+                () -> record.at(2319).shoot("screeen33")
         );
         assertCpuAt(data);
 

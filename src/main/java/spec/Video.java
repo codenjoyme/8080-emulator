@@ -73,7 +73,9 @@ public class Video {
     }
 
     public void drawer(Drawer drawer) {
-        this.drawers.add(drawer);
+        if (drawer != null) {
+            this.drawers.add(drawer);
+        }
     }
 
     public void clean() {
