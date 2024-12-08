@@ -8,10 +8,10 @@ public abstract class HardwareData implements Data {
     private IOPorts ports;
     private Video video;
 
-    public HardwareData(Hardware hard) {
-        memory = hard.memory();
-        ports = hard.ports();
-        video = hard.video();
+    public HardwareData(Memory memory, IOPorts ports, Video video) {
+        this.memory = memory;
+        this.ports = ports;
+        this.video = video;
     }
 
     @Override

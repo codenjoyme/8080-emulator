@@ -19,6 +19,9 @@ import static spec.Video.COLORS;
 
 public class Application {
 
+    public static final String SNAPSHOTS = "snapshots/";
+    public static final String SCREENSHOTS = "screenshots/";
+
     private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS");
 
     private int interrupt = 0;
@@ -58,6 +61,7 @@ public class Application {
     public Application(Container parent, URL base) {
         this.parent = parent;
         this.base = base;
+        createFolders();
         graphic = new Graphic(SCREEN_WIDTH, SCREEN_HEIGHT, BORDER_WIDTH, parent);
 
         hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, graphic) {
@@ -80,6 +84,11 @@ public class Application {
 
         hard.fileRecorder().with(RECORD_LOG_FILE);
         loadRoms(base);
+    }
+
+    private void createFolders() {
+        new File(base.getFile() + SNAPSHOTS).mkdirs();
+        new File(base.getFile() + SCREENSHOTS).mkdirs();
     }
 
     private void printIO(int port, int bite) {
@@ -131,12 +140,7 @@ public class Application {
             Specialist.loadRom(base, hard.roms());
         }
 
-        String snapshot = null; // TODO научиться сохранять и загружать снепшоты
-        if (snapshot != null) {
-            loadSnapshot(base, snapshot);
-        } else {
-            reset();
-        }
+        reset();
     }
 
     private void updateState() {
@@ -250,8 +254,8 @@ public class Application {
 
         if (key.numThree()) {
             if (key.pressed()) {
-                File file = new File("screenshots/screen_" + DATE_FORMAT.format(new Date()) + ".png");
-                Logger.debug("Screen shoot to %s", file);
+                File file = new File(SCREENSHOTS + "screen_" + DATE_FORMAT.format(new Date()) + ".png");
+                Logger.debug("Save screenshoot to %s", file);
                 hard.png().drawToFile(SCREEN.begin(), file);
             }
             return;
@@ -261,6 +265,27 @@ public class Application {
             if (key.pressed()) {
                 Logger.debug("Stop record/replay");
                 hard.record().reset();
+            }
+            return;
+        }
+
+        if (key.numFive()) {
+            if (key.pressed()) {
+                // TODO как сделать рабочим в веб версии?
+                if (base.toString().startsWith("http")) return;
+
+                openFileDialog(file -> hard.loadSnapshot(base, toRelative(base, file)),
+                        base.getFile() + SNAPSHOTS,
+                        "Snapshot file",
+                        "snp");
+            }
+            return;
+        }
+
+        if (key.numSix()) {
+            if (key.pressed()) {
+                File file = new File(SNAPSHOTS + "snapshot_" + DATE_FORMAT.format(new Date()) + ".snp");
+                hard.saveSnapshot(base, file.getPath());
             }
             return;
         }
@@ -358,10 +383,6 @@ public class Application {
             File file = files.getSelectedFile();
             onSelect.accept(file);
         }
-    }
-
-    private void loadSnapshot(URL base, String snapshot) {
-        hard.loadSnapshot(base, snapshot);
     }
 
     public void start() {

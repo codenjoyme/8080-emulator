@@ -41,6 +41,7 @@ public class IntegrationTest extends AbstractTest {
 
     public static final String TEST_RESOURCES = "src/test/resources/";
     public static final String APP_RESOURCES = "src/main/resources/";
+    public static final String TARGET_RESOURCES = "target/";
     private static final String CPU_TESTS_RESOURCES = "test/";
 
     @Rule
@@ -78,6 +79,14 @@ public class IntegrationTest extends AbstractTest {
     public static URL getBase()  {
         try {
             return new File(APP_RESOURCES).toURI().toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static URL getTargetBase()  {
+        try {
+            return new File(TARGET_RESOURCES).toURI().toURL();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

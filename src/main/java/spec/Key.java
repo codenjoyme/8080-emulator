@@ -66,6 +66,14 @@ public class Key {
         return code == NUM_4;
     }
 
+    public boolean numFive() {
+        return code == NUM_5;
+    }
+
+    public boolean numSix() {
+        return code == NUM_6;
+    }
+
     public boolean numStar() {
         return code == NUM_STAR;
     }

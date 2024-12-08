@@ -5,3 +5,4 @@ build/out/
 /*.rec
 node_modules
 screenshots/
+snapshots/

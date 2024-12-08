@@ -16,7 +16,7 @@ public class Bites implements Iterable<Integer> {
         data = new int[length];
     }
 
-    private Bites(int[] data) {
+    public Bites(int[] data) {
         this.data = data;
     }
 
@@ -28,10 +28,25 @@ public class Bites implements Iterable<Integer> {
         return new Bites(data);
     }
 
-    public int[] array() {
-        return data;
+    public Bites array(Range range) {
+        int length = range.length();
+        int begin = range.begin();
+
+        Bites bytes = new Bites(length);
+        for (int i = 0; i < length; i++) {
+            bytes.set(i, get(begin + i));
+        }
+        return bytes;
     }
 
+    public Bites array() {
+        int length = size();
+        int begin = 0;
+
+        return array(new Range(begin, -length));
+    }
+
+    // TODO remove code duplicate
     public byte[] byteArray(Range range) {
         int length = range.length();
         int begin = range.begin();
@@ -58,9 +73,18 @@ public class Bites implements Iterable<Integer> {
         data[index] = bite;
     }
 
+    public void set(Range range, Bites bites) {
+        int length = range.length();
+        int begin = range.begin();
+
+        for (int i = 0; i < length; i++) {
+            set(begin + i, bites.get(i));
+        }
+    }
+
     @Override
     public Iterator<Integer> iterator() {
-        return new Iterator<Integer>() {
+        return new Iterator<>() {
             private int index = 0;
 
             @Override

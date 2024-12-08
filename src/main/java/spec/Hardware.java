@@ -7,6 +7,8 @@ import spec.sound.OldAudio;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static spec.Constants.*;
 import static spec.KeyCode.END;
@@ -31,6 +33,8 @@ public class Hardware {
     private boolean lineOut;
     private boolean cpuEnabled;
     private boolean cpuSuspended;
+
+    private final List<Runnable> cpuSuspendedListeners = new CopyOnWriteArrayList<>();
 
     public Hardware(int screenWidth, int screenHeight, Video.Drawer drawer) {
         lineOut = true;
@@ -63,7 +67,7 @@ public class Hardware {
     }
 
     protected RomLoader createRomLoader() {
-        return new RomLoader(memory, cpu);
+        return new RomLoader(memory, cpu, ports);
     }
 
     protected Video createVideo(int width, int height) {
@@ -77,7 +81,7 @@ public class Hardware {
     }
 
     protected HardwareData createHardwareData() {
-        return new HardwareData(this) {
+        return new HardwareData(memory, ports, video) {
 
             @Override
             public int in8(int port) {
@@ -160,6 +164,7 @@ public class Hardware {
     private boolean cpuInterrupt() {
         update();
         while (cpuSuspended) {
+            cpuSuspended();
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -167,6 +172,16 @@ public class Hardware {
             }
         }
         return cpuEnabled;
+    }
+
+    private void cpuSuspended() {
+        cpuSuspendedListeners.forEach(Runnable::run);
+        cpuSuspendedListeners.clear();
+    }
+
+    public void pause(Runnable listener) {
+        cpuSuspendedListeners.add(listener);
+        pause();
     }
 
     public void stop() {
@@ -229,9 +244,17 @@ public class Hardware {
         cpu.execute();
     }
 
-    public void loadSnapshot(URL base, String snapshot) {
-        roms.loadSnapshot(base, snapshot);
-        ports.resetKeyboard();
+    public void loadSnapshot(URL base, String path) {
+        pause(() -> {
+            roms.loadSnapshot(base, path);
+            keyLogger.reset();
+            video.redraw(SCREEN_MEMORY_START, memory);
+            resume();
+        });
+    }
+
+    public void saveSnapshot(URL base, String path) {
+        roms.saveSnapshot(base, path);
     }
 
     public int loadRecord(String path) {

@@ -46,6 +46,15 @@ public class Video {
         return range.shift(begin);
     }
 
+    public void redraw(int start, Memory memory) {
+        Range range = range(start);
+        for (int offs = 0; offs < range.length(); offs++) {
+            int addr = offs + range.begin();
+            plot(offs, memory.read8(addr));
+        }
+        screenPaint();
+    }
+
     public interface Drawer {
         void draw(int x, int y, Image pattern);
 

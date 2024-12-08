@@ -4,7 +4,7 @@ import spec.math.Bites;
 
 import java.util.function.BiConsumer;
 
-import static spec.Constants.ROM;
+import static spec.Constants.*;
 import static spec.KeyCode.*;
 
 public class IOPorts {
@@ -31,9 +31,9 @@ public class IOPorts {
     private final Bites bit = Bites.of(0x00FE, 0x00FD, 0x00FB, 0x00F7, 0x00EF, 0x00DF, 0x00BF, 0x007F);
 
     // биты установки
-    private final Bites msk = Bites.of(0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080);
+    private final Bites msk = Bites.of(b0000_0001, b0000_0010, b0000_0100, b0000_1000, b0001_0000, b0010_0000, b0100_0000, b1000_0000);
 
-    // массив матрицы клавиш "Специалиста" ( true - нажата, false - отпущена)
+    // массив матрицы клавиш "Специалиста" (true - нажата, false - отпущена)
     // 12 x 6 + Shift + Reset
     private boolean[][] keyStatus = new boolean[12][6];
 
@@ -47,6 +47,48 @@ public class IOPorts {
         keyboard = new Keyboard();
         layout.setup(keyboard);
         reset();
+    }
+
+    public void state(int bite) {
+        // 0b__shift_alt_ctrl_A__C1_0_B_C0
+        Ain(bite);
+        Bin(bite);
+        C0in(bite);
+        C1in(bite);
+        shift(bite);
+        alt(bite);
+        ctrl(bite);
+    }
+
+    public int state() {
+        // 0b__shift_alt_ctrl_A__C1_0_B_C0
+        return (Ain ? b0001_0000 : 0)
+                | (Bin ? b0000_0010 : 0)
+                | (C0in ? b0000_0001 : 0)
+                | (C1in ? b0000_1000 : 0)
+                | (shift ? b1000_0000 : 0)
+                | (alt ? b0100_0000 : 0)
+                | (ctrl ? b0010_0000 : 0);
+    }
+
+    public void keyState(Bites bites) {
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 6; j++) {
+                keyStatus[i][j] = isSet(bites.get(i), b0000_0001 << j);
+            }
+        }
+    }
+
+    public Bites keyState() {
+        Bites bites = new Bites(12);
+        for (int i = 0; i < 12; i++) {
+            int bite = 0;
+            for (int j = 0; j < 6; j++) {
+                bite |= keyStatus[i][j] ? (b0000_0001 << j) : 0;
+            }
+            bites.set(i, bite);
+        }
+        return bites;
     }
 
     // ввод из порта памяти КР580ВВ55
@@ -124,7 +166,7 @@ public class IOPorts {
                         if (shift) {
                             result &= 0b1111_1101; // выставим состояние Shift: B1 = 0
                         } else {
-                            result |= 0b0000_0010; // выставим состояние Shift: B1 = 1
+                            result |= b0000_0010; // выставим состояние Shift: B1 = 1
                         }
 
                         //  возвращаем состояние порта В
@@ -145,7 +187,7 @@ public class IOPorts {
                                 // по битам порта CLow от 0 до 3
                                 for (int j = 0; j < 4; j++) {
                                     // если такая нажата  и  такой бит порта В = 0, ставим бит C = 0
-                                    if (keyStatus[j + 8][i] && (B() & msk.get(i + 2)) == 0) {
+                                    if (keyStatus[j + 8][i] && !isSet(B(), msk.get(i + 2))) {
                                         result = result & bit.get(j);
                                     }
                                 }
@@ -254,7 +296,38 @@ public class IOPorts {
         }
         // в ПОРТ RYC запишем YC ПОРТЫ 0xFFE3
         R(bite);
+    }
 
+    private boolean isSet(int bite, int mask) {
+        return (bite & mask) != 0;
+    }
+
+    private void Ain(int bite) {
+        Ain = isSet(bite, b0001_0000);
+    }
+
+    private void C1in(int bite) {
+        C1in = isSet(bite, b0000_1000);
+    }
+
+    private void Bin(int bite) {
+        Bin = isSet(bite, b0000_0010);
+    }
+
+    private void C0in(int bite) {
+        C0in = isSet(bite, b0000_0001);
+    }
+
+    private void shift(int bite) {
+        shift = isSet(bite, b1000_0000);
+    }
+
+    private void alt(int bite) {
+        alt = isSet(bite, b0100_0000);
+    }
+
+    private void ctrl(int bite) {
+        ctrl = isSet(bite, b0010_0000);
     }
 
     public int A() {
@@ -396,5 +469,51 @@ public class IOPorts {
 
         // порт цвета - зелёный на черном.
         memory.write16(RgRGB, 0x0020);
+    }
+
+    public String toStringDetails() {
+        return String.format(
+                "Ain   : %s\n" +
+                "Bin   : %s\n" +
+                "C0in  : %s\n" +
+                "C1in  : %s\n" +
+                "\n" +
+                "shift : %s\n" +
+                "alt   : %s\n" +
+                "ctrl  : %s\n" +
+                "\n" +
+                "keyStatus:\n" +
+                "%s",
+                bitToString(Ain),
+                bitToString(Bin),
+                bitToString(C0in),
+                bitToString(C1in),
+                bitToString(shift),
+                bitToString(alt),
+                bitToString(ctrl),
+                toString(keyStatus));
+    }
+
+    private String bitToString(boolean bit) {
+        return bit ? "-" : "+";
+    }
+
+    private String toString(boolean[][] keyStatus) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("       | | | | | | | | | | |1|1|\n")
+          .append("       |0|1|2|3|4|5|6|7|8|9|0|1|\n");
+
+        for (int i = 0; i < keyStatus[0].length; i++) {
+            sb.append("    |").append(i).append("|");
+            for (int j = 0; j < keyStatus.length; j++) {
+                if (keyStatus[j][i]) {
+                    sb.append(" +");
+                } else {
+                    sb.append(" -");
+                }
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }

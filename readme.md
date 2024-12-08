@@ -304,6 +304,46 @@ cache: MemoryCache: removed entry http://localhost:8080/spec.jnlp
 
 - `NumPad 4` - Останавливает воспроизведение/запись replay.
 
+- `NumPad 5` - Загрузка состояния машины из папки `snapshots`. При этом заружаются все 
+  регистры CPU, IO порты и состояния клавиатуры, а так же вся память. Выполнение продолдается с 
+  места на котором было сохранено состояние.
+
+- `NumPad 6` - Сохранение состояния машины в папку `snapshots`. При этом сохраняются все
+   регистры CPU, IO порты и состояния клавиатуры, а так же вся память. Сохранение происходит в файл
+   с расширением `snp`. Его структура такая:
+   * CPU state:
+     - 2 bytes          - `PC` (low byte, high byte)
+     - 2 bytes          - `SP` (low byte, high byte)
+     - 2 bytes          - `AF` (low byte, high byte)
+     - 2 bytes          - `BC` (low byte, high byte)
+     - 2 bytes          - `DE` (low byte, high byte)
+     - 2 bytes          - `HL` (low byte, high byte)
+   * I/O ports state:
+     - 1 byte           - flags `0b__shift_alt_ctrl_A__C1_0_B_C0`
+       + Ain            - `0b_000x_0000`
+       + Bin            - `0b_0000_00x0`
+       + C0in           - `0b_0000_000x`
+       + C1in           - `0b_0000_x000`
+       + shift          - `0b_x000_0000` is shift key pressed
+       + alt            - `0b_0x00_0000` is alt key pressed
+       + ctrl           - `0b_00x0_0000` is ctrl key pressed
+     - 12*6 bytes       - keyboard state 12 x 6 for all keys - is key pressed
+   * Application state: TODO implement me
+     - 4 bytes for int  - `CPU tick`
+     - 4 bytes for int  - `CPU tact`
+     - 4 bytes for int  - `interrupt`
+     - 4 bytes for int  - `refreshRate`
+     - 8 bytes for long - `last`
+     - 4 bytes for int  - `delay`
+     - 1 byte for other flags:
+       + fullSpeed      - `0b0000_000x`
+       + lik            - `0b0000_00x0`
+       + willReset      - `0b0000_0x00`
+     - 1 byte for int   - `ioDrawMode`
+     - 8 bytes for long - `time`
+     - 4 bytes for int  - `iterations`
+   * Memory dump: `0x0000` - `0xFFFF`
+
 - `NumPad /` - Запуск replay режима. Откроется диалог `Recording file` в котором можно выбрать файл `rec` 
   с записью. После выбора файла эмулятор выполнит `reset` и начнет воспроизведение записи.
   Формат файла текстовый, показывает все нажатые клавиши в зависимости от тика процессора.

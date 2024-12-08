@@ -4,7 +4,6 @@ import spec.assembler.Assembler;
 import spec.assembler.Command;
 import spec.math.Bites;
 
-import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -15,6 +14,7 @@ public class Cpu extends Registry {
 
     private Consumer<Cpu> onTick;
     private Supplier<Boolean> onInterrupt;
+
     private int interrupt; // количество тактов на 1 прерывание
     private int tick;      // количество операций, которые сделал процессор
     private int tact;

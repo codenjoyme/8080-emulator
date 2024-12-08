@@ -1,5 +1,6 @@
 package spec;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import spec.math.Bites;
 
@@ -7,17 +8,22 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
-import static spec.math.WordMath.BITE;
-import static spec.math.WordMath.merge;
+import static spec.Constants.x10000;
+import static spec.math.WordMath.*;
 
 public class RomLoader {
 
+    private static final int SNAPSHOT_CPU_STATE_SIZE = 13;
+    private static final int SNAPSHOT_IO_PORTS_SIZE = 12;
+
     private Memory memory;
     private Cpu cpu;
+    private IOPorts ports;
 
-    public RomLoader(Memory memory, Cpu cpu) {
+    public RomLoader(Memory memory, Cpu cpu, IOPorts ports) {
         this.memory = memory;
         this.cpu = cpu;
+        this.ports = ports;
     }
 
     private void logLoading(String name, Range range) {
@@ -81,23 +87,114 @@ public class RomLoader {
         return header;
     }
 
-    private int readBytes(InputStream is, Bites a, Range range) throws Exception {
-        int off = range.begin();
-        int n = range.length();
+    private int readBytes(InputStream is, Bites bites, Range range) throws Exception {
+        return readBytes(is, bites, range.begin(), range.length());
+    }
 
-        byte[] buff = new byte[n];
+    private int readBytes(InputStream is, Bites bites, int offset, int length) throws Exception {
+        byte[] buff = new byte[length];
 
         IOUtils.readFully(is, buff);
 
-        for (int i = 0; i < n; i++) {
-            a.set(i + off, (buff[i] + 256) & BITE);
+        for (int i = 0; i < length; i++) {
+            bites.set(i + offset, (buff[i] + 256) & BITE);
         }
-        return n;
+        return length;
     }
 
-    public void loadSnapshot(URL base, String path) {
+    /**
+     * Load hardware snapshot.
+     * Format: CPU state, memory dump, I/O ports state.
+     * - CPU state:
+     *    - 2 bytes          - PC(low byte, high byte)
+     *    - 2 bytes          - SP(low byte, high byte)
+     *    - 2 bytes          - AF(low byte, high byte)
+     *    - 2 bytes          - BC(low byte, high byte)
+     *    - 2 bytes          - DE(low byte, high byte)
+     *    - 2 bytes          - HL(low byte, high byte)
+     * - I/O ports state:
+     *    - 1 byte           - flags 0b__shift_alt_ctrl_A__C1_0_B_C0
+     *       - Ain           - 0b_000x_0000
+     *       - Bin           - 0b_0000_00x0
+     *       - C0in          - 0b_0000_000x
+     *       - C1in          - 0b_0000_x000
+     *       - shift         - 0b_x000_0000 is shift key pressed
+     *       - alt           - 0b_0x00_0000 is alt key pressed
+     *       - ctrl          - 0b_00x0_0000 is ctrl key pressed
+     *    - 12*6 bytes       - keyboard state [12][6] for all keys - is key pressed
+     * - Application state: TODO implement me
+     *    - 4 bytes for int  - CPU tick
+     *    - 4 bytes for int  - CPU tact
+     *    - 4 bytes for int  - interrupt
+     *    - 4 bytes for int  - refreshRate
+     *    - 8 bytes for long - last
+     *    - 4 bytes for int  - delay
+     *    - 1 byte for other flags:
+     *       - fullSpeed     - 0b0000_000x
+     *       - lik           - 0b0000_00x0
+     *       - willReset     - 0b0000_0x00
+     *    - 1 byte for int   - ioDrawMode
+     *    - 8 bytes for long - time
+     *    - 4 bytes for int  - iterations
+     * - Memory dump: 0x0000-0xFFFF
+     */
+    public Range loadSnapshot(URL base, String path) {
         try {
-            loadRKS(base, path);
+            URL url = new URL(base, path);
+            InputStream is = url.openStream();
+            Bites header = read8arr(is, SNAPSHOT_CPU_STATE_SIZE + SNAPSHOT_IO_PORTS_SIZE);
+
+            cpu.PC(merge(header.get(1), header.get(0)));
+            cpu.SP(merge(header.get(3), header.get(2)));
+            cpu.AF(merge(header.get(5), header.get(4)));
+            cpu.BC(merge(header.get(7), header.get(6)));
+            cpu.DE(merge(header.get(9), header.get(8)));
+            cpu.HL(merge(header.get(11), header.get(10)));
+
+            ports.state(header.get(12));
+
+            Range keysRange = new Range(0, -SNAPSHOT_IO_PORTS_SIZE).shift(SNAPSHOT_CPU_STATE_SIZE);
+            ports.keyState(header.array(keysRange));
+
+            Range range = new Range(0, -x10000);
+            readBytes(is, memory.all(), 0, range.length());
+
+            Logger.debug("Snapshot loaded from %s", url);
+            return range;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void saveSnapshot(URL base, String path) {
+        try {
+            URL url = new URL(base, path);
+            Bites bites = new Bites(x10000 + SNAPSHOT_CPU_STATE_SIZE + SNAPSHOT_IO_PORTS_SIZE);
+
+            bites.set(0, lo(cpu.PC()));
+            bites.set(1, hi(cpu.PC()));
+            bites.set(2, lo(cpu.SP()));
+            bites.set(3, hi(cpu.SP()));
+            bites.set(4, cpu.F());
+            bites.set(5, cpu.A());
+            bites.set(6, cpu.C());
+            bites.set(7, cpu.B());
+            bites.set(8, cpu.E());
+            bites.set(9, cpu.D());
+            bites.set(10, cpu.L());
+            bites.set(11, cpu.H());
+
+            bites.set(12, ports.state());
+
+            Range keysRange = new Range(0, -SNAPSHOT_IO_PORTS_SIZE).shift(SNAPSHOT_CPU_STATE_SIZE);
+            bites.set(keysRange, ports.keyState());
+
+            Range memoryRange = new Range(0, -x10000);
+            bites.set(memoryRange.shift(keysRange.end() + 1), memory.all());
+
+            FileUtils.writeByteArrayToFile(new File(url.getFile()), bites.byteArray());
+
+            Logger.info("Snapshot saved to %s", url);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -115,6 +212,9 @@ public class RomLoader {
             }
             case "rks": {
                 return loadRKS(base, path);
+            }
+            case "snp": {
+                return loadSnapshot(base, path);
             }
             case "mem":
             default: {

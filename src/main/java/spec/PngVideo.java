@@ -61,21 +61,12 @@ public class PngVideo implements Video.Drawer {
     }
 
     public void drawToFile(int start, File file) {
-        draw(start);
+        video.redraw(start, memory);
 
         try {
             ImageIO.write(image, "PNG", file);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void draw(int start) {
-        Range range = video.range(start);
-        for (int offs = 0; offs < range.length(); offs++) {
-            int addr = offs + range.begin();
-            video.plot(offs, memory.read8(addr));
-        }
-        video.screenPaint();
     }
 }
