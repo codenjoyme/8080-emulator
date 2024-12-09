@@ -82,7 +82,7 @@ public class FileAssert {
         return HashUtils.hashFile(file, "MD5");
     }
 
-    public static String write(File file, byte[] string) {
+    public String write(File file, byte[] string) {
         file.getParentFile().mkdirs();
         try {
             FileUtils.writeByteArrayToFile(file, string);
@@ -92,12 +92,12 @@ public class FileAssert {
         }
     }
 
-    public static String write(File file, String string) {
+    public String write(File file, String string) {
         write(file, string.getBytes());
         return string;
     }
 
-    public static String read(File file) {
+    public String read(File file) {
         try {
             return FileUtils.readFileToString(file, "UTF-8");
         } catch (IOException e) {

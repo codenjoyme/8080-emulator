@@ -70,7 +70,7 @@ public class AssemblerTest {
     public void before() {
         asm = new Assembler();
         fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
-        program = read(new File(APP_RESOURCES + "/test/" + name));
+        program = fileAssert.read(new File(APP_RESOURCES + "/test/" + name));
         dir = new File(name).getParent();
     }
 
@@ -203,7 +203,7 @@ public class AssemblerTest {
     private void assertValue(String name, byte[] result) {
         String path = (name.startsWith("src/") ? name : dir + "/" + name);
         fileAssert.check(name, path,
-                file -> write(file, result));
+                file -> fileAssert.write(file, result));
     }
 
     private void assertValue(String name, String result) {

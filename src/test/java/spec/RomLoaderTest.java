@@ -1,9 +1,7 @@
 package spec;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestName;
 import spec.math.Bites;
 import spec.platforms.Lik;
 import spec.platforms.Specialist;
@@ -17,31 +15,17 @@ import java.util.concurrent.atomic.AtomicLong;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static spec.IntegrationTest.TEST_RESOURCES;
-import static spec.stuff.FileAssert.write;
 import static spec.stuff.SmartAssert.assertEquals;
 import static spec.stuff.SmartAssert.assertNotSame;
 
 public class RomLoaderTest extends AbstractTest {
 
-    @Rule
-    public TestName test = new TestName();
-    private FileAssert fileAssert;
     private AtomicLong time = new AtomicLong(1733699155599L);
-
-    @Before
-    @Override
-    public void before() {
-        super.before();
-
-        fileAssert = new FileAssert(TEST_RESOURCES + "/RomLoaderTest/" + test.getMethodName());
-        fileAssert.removeTestsData();
-    }
 
     @Test
     public void testLoadLikRom() {
         // when
-        Lik.loadRom(IntegrationTest.getBase(), roms);
+        Lik.loadRom(base, roms);
 
         // then
         assertMemoryChanges();
@@ -50,7 +34,7 @@ public class RomLoaderTest extends AbstractTest {
     @Test
     public void testLoadLikGame() {
         // when
-        Lik.loadGame(IntegrationTest.getBase(), roms, "reversi");
+        Lik.loadGame(base, roms, "reversi");
 
         // then
         assertMemoryChanges();
@@ -59,7 +43,7 @@ public class RomLoaderTest extends AbstractTest {
     @Test
     public void testLoadSpecialistRom() {
         // when
-        Specialist.loadRom(IntegrationTest.getBase(), roms);
+        Specialist.loadRom(base, roms);
 
         // then
         assertMemoryChanges();
@@ -68,7 +52,7 @@ public class RomLoaderTest extends AbstractTest {
     @Test
     public void testLoadSpecialistGame() {
         // when
-        Specialist.loadGame(IntegrationTest.getBase(), roms, "babnik");
+        Specialist.loadGame(base, roms, "babnik");
 
         // then
         assertMemoryChanges();
@@ -99,8 +83,8 @@ public class RomLoaderTest extends AbstractTest {
     @Test
     public void testSaveLoadSnapshots() {
         // given
-        Lik.loadRom(IntegrationTest.getBase(), roms);
-        Lik.loadGame(IntegrationTest.getBase(), roms, "klad");
+        Lik.loadRom(base, roms);
+        Lik.loadGame(base, roms, "klad");
 
         // random values
         cpu.AF(0x1234);
@@ -222,7 +206,7 @@ public class RomLoaderTest extends AbstractTest {
         assertEquals("specialist", romSwitcher.current());
 
         // when
-        roms.saveSnapshot(IntegrationTest.getTargetBase(), "snapshot.bin");
+        roms.saveSnapshot(targetBase, "snapshot.bin");
 
         // given
         // reset all states
@@ -236,7 +220,7 @@ public class RomLoaderTest extends AbstractTest {
         assertEquals("lik", romSwitcher.current());
 
         // when
-        roms.loadSnapshot(IntegrationTest.getTargetBase(), "snapshot.bin");
+        roms.loadSnapshot(targetBase, "snapshot.bin");
 
         // then
         assertEquals(expectedCpu, cpu.toStringDetails(true));
@@ -248,7 +232,7 @@ public class RomLoaderTest extends AbstractTest {
 
     private void assertMemoryChanges() {
         fileAssert.check("Cpu state", "memory-changes.log",
-                file -> write(file, memory.detailsTable()));
+                file -> fileAssert.write(file, memory.detailsTable()));
         memory.resetChanges();
     }
 }

@@ -1,12 +1,8 @@
 package spec;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestName;
-import spec.assembler.DizAssembler;
 import spec.math.Bites;
 import spec.mods.StopWhen;
 import spec.mods.WhenPC;
@@ -14,140 +10,39 @@ import spec.mods.WhereIsData;
 import spec.platforms.Lik;
 import spec.platforms.Specialist;
 import spec.stuff.AbstractTest;
-import spec.stuff.FileAssert;
-import spec.stuff.TrackUpdatedMemory;
-import svofski.Assembler;
 import svofski.TapeFormat;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static java.util.stream.Collectors.toList;
-import static spec.Constants.*;
+import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
-import static spec.stuff.FileAssert.write;
-import static spec.stuff.TrackUpdatedMemory.TRACK_ONLY_UPDATED_VALUES;
-import static svofski.AssemblerTest.findAllFiles;
 
 public class IntegrationTest extends AbstractTest {
 
     private static final int K10 = 10_000;
-    private static final int TICKS = 10_000_000;
 
-    public static final String TEST_RESOURCES = "src/test/resources/";
-    public static final String APP_RESOURCES = "src/main/resources/";
-    public static final String TARGET_RESOURCES = "target/";
-    private static final String CPU_TESTS_RESOURCES = "test/";
-
-    @Rule
-    public TestName test = new TestName();
-
-    private URL base;
-    private FileAssert fileAssert;
-    private PngVideo video;
-    private DizAssembler dizAssembler;
-
-    @Before
     @Override
+    @Before
     public void before() {
         super.before();
 
-        video = new PngVideo(hard.video(), hard.memory());
-        base = getBase();
-        record.screenShoot(this::assertScreen);
-        
-        fileAssert = new FileAssert(
-                TEST_RESOURCES + getTestResultFolder());
-        fileAssert.removeTestsData();
-        
-        dizAssembler = new DizAssembler(cpu.data());
         reset();
-        
         record.after(TICKS).stopCpu();
-    }
-
-    private String getTestResultFolder() {
-        return "IntegrationTest/" +
-                test.getMethodName().replaceAll("_", "/");
-    }
-
-    public static URL getBase()  {
-        try {
-            return new File(APP_RESOURCES).toURI().toURL();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static URL getTargetBase()  {
-        try {
-            return new File(TARGET_RESOURCES).toURI().toURL();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @After
     @Override
     public void after() throws Exception {
         assertScreen();
+
         super.after();
-    }
-
-    private void reset() {
-        record.reset();
-        hard.reset();
-    }
-
-    private void assertScreen() {
-        assertScreen("end");
-    }
-
-    private void assertScreen(String name) {
-        fileAssert.check("Screenshots", name + ".png",
-                file -> {
-                    video.drawToFile(SCREEN.begin(), file);
-                    return null;
-                });
-    }
-
-    private String assertCpu(String name) {
-        return fileAssert.check("Cpu state", name + ".log",
-                file -> write(file, cpu.toStringDetails()));
-    }
-
-    private void assertCpu() {
-        assertCpu("cpu");
-    }
-
-    private String assertCpuAt(WhereIsData data) {
-        return fileAssert.check("Cpu was at info", "cpuAt.log",
-                file -> write(file, data.toString()));
-    }
-
-    private String assertDizAssembly(WhereIsData data, String name) {
-        return fileAssert.check("DizAssembled program", name,
-                file -> write(file, dizAssembler.program(data.range(), data.info())));
-    }
-
-    private String assertTrace() {
-        return fileAssert.check("Cpu trace", "trace.log",
-                file -> write(file, trace()));
     }
 
     @Test
     public void testLik_generateWave() {
-        String dir = APP_RESOURCES + "lik/apps";
-        List<String> names = findAllFiles(dir, ".rks").stream()
-                .map(it -> new File(it[0].toString()).getParentFile().getName())
-                .collect(toList());
-
-        names.forEach(this::testLik_generateWave);
+        getAllFiles(APP_RESOURCES + "lik/apps", ".rks")
+                .forEach(this::testLik_generateWave);
     }
 
     private void testLik_generateWave(String name) {
@@ -162,7 +57,7 @@ public class IntegrationTest extends AbstractTest {
         // then
         String fileName = APP_RESOURCES + "lik/apps/" + name + "/" + name + ".wav";
         fileAssert.check(fileName, fileName,
-                file -> write(file, wave.byteArray()));
+                file -> fileAssert.write(file, wave.byteArray()));
     }
 
     @Test
@@ -320,36 +215,6 @@ public class IntegrationTest extends AbstractTest {
 
         // when then
         assertMemory(range, "recompiled.mem", "recompiled.log");
-
-    }
-
-    private void assertPngMemory(Range range, String image) {
-        PngVideo.drawToFile(range, SCREEN_WIDTH, memory, new File(TEST_RESOURCES + getTestResultFolder() + "/" + image));
-    }
-
-    private void assertAssembly(String sourceCode, String recompiledFile) throws IOException {
-        Assembler assembler = new Assembler();
-        Bites result = assembler.compile(sourceCode);
-        byte[] bytes = result.byteArray();
-        FileUtils.writeByteArrayToFile(new File(TEST_RESOURCES + getTestResultFolder() + "/" + recompiledFile), bytes);
-    }
-
-    private Memory assertMemory(Range range, String romFileName, String diffFileName) {
-        TrackUpdatedMemory source = new TrackUpdatedMemory(0x10000, TRACK_ONLY_UPDATED_VALUES);
-        try {
-            URL base = new File(TEST_RESOURCES).toURI().toURL();
-            roms.loadROM(base, getTestResultFolder() + "/" + romFileName, source.all(), 0x0000);
-            source.resetChanges();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        for (int addr = range.begin(); addr <= range.end(); addr++) {
-            int bite = memory.read8(addr);
-            source.write8(addr, bite);
-        }
-        fileAssert.check("Diff", diffFileName,
-                file -> write(file, source.detailsTable()));
-        return source;
     }
 
     @Test
@@ -370,15 +235,6 @@ public class IntegrationTest extends AbstractTest {
 
         // when
         assertRecord("reversi2.rec");
-    }
-
-    private void assertRecord(String path, Runnable... configure) {
-        fileRecorder.startWriting();
-        int lastTick = hard.loadRecord(TEST_RESOURCES + "inputs/" + path);
-        record.after(lastTick).stopCpu();
-        Arrays.asList(configure).forEach(Runnable::run);
-        cpu.PC(0xC000);
-        hard.start();
     }
 
     @Test

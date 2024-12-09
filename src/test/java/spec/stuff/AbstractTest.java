@@ -2,21 +2,40 @@ package spec.stuff;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 import spec.*;
 import spec.assembler.Assembler;
+import spec.assembler.DizAssembler;
+import spec.math.Bites;
+import spec.mods.WhereIsData;
 
 import java.awt.*;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
 
+import static java.util.stream.Collectors.toList;
 import static org.mockito.Mockito.mock;
 import static spec.Constants.*;
 import static spec.assembler.Assembler.asString;
 import static spec.math.WordMath.hex8;
 import static spec.stuff.SmartAssert.assertEquals;
 import static spec.stuff.TrackUpdatedMemory.TRACK_ALL_CHANGES;
+import static spec.stuff.TrackUpdatedMemory.TRACK_ONLY_UPDATED_VALUES;
+import static svofski.AssemblerTest.findAllFiles;
 
 public abstract class AbstractTest {
 
     public static int START = 0x0000;
+
+    public static final int TICKS = 10_000_000;
+
+    public static final String TEST_RESOURCES = "src/test/resources/";
+    public static final String APP_RESOURCES = "src/main/resources/";
+    public static final String TARGET_RESOURCES = "target/";
+    public static final String CPU_TESTS_RESOURCES = "test/";
 
     protected boolean memoryInit;
 
@@ -33,6 +52,14 @@ public abstract class AbstractTest {
     protected GraphicControl graphic;
     protected Timings timings;
     protected RomSwitcher romSwitcher;
+    protected PngVideo video;
+    protected DizAssembler dizAssembler;
+
+    @Rule
+    public TestName test = new TestName();
+    protected FileAssert fileAssert;
+    protected URL base;
+    protected URL targetBase;
 
     @Before
     public void setup() {
@@ -42,6 +69,12 @@ public abstract class AbstractTest {
     @Before
     public void before() {
         Logger.DEBUG = false;
+
+        base = getBase();
+        targetBase = getTargetBase();
+
+        fileAssert = new FileAssert(TEST_RESOURCES + "/" + getTestResultFolder());
+        fileAssert.removeTestsData();
 
         hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, null) {
 
@@ -84,13 +117,20 @@ public abstract class AbstractTest {
         keyLogger.console(false);
 
         roms = hard.roms();
+
         record = hard.record();
+        record.screenShoot(this::assertScreen);
+
         asm = hard.cpu().asm();
         ports = hard.ports();
         graphic = hard.graphic();
         timings = hard.timings();
         memory.resetChanges();
         romSwitcher = hard.romSwitcher();
+
+        video = new PngVideo(hard.video(), hard.memory());
+
+        dizAssembler = new DizAssembler(cpu.data());
 
         debug = cpu.debug();
         debug.disable();
@@ -99,11 +139,39 @@ public abstract class AbstractTest {
         memoryInit = false;
 
         cpu.PC(START);
+
+        // reset();
+    }
+
+    public void reset() {
+        record.reset();
+        hard.reset();
     }
 
     @After
     public void after() throws Exception {
         SmartAssert.checkResult();
+    }
+
+    public URL getBase()  {
+        try {
+            return new File(APP_RESOURCES).toURI().toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public URL getTargetBase()  {
+        try {
+            return new File(TARGET_RESOURCES).toURI().toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected String getTestResultFolder() {
+        return this.getClass().getSimpleName() + "/" +
+                test.getMethodName().replaceAll("_", "/");
     }
 
     protected GraphicControl createGraphicControl(Container parent) {
@@ -186,5 +254,88 @@ public abstract class AbstractTest {
     public void asrtMem(String expected) {
         assertEquals(expected, memory.details());
         memory.resetChanges();
+    }
+
+    public void assertScreen() {
+        assertScreen("end");
+    }
+
+    public void assertScreen(String name) {
+        fileAssert.check("Screenshots", name + ".png",
+                file -> {
+                    video.drawToFile(SCREEN.begin(), file);
+                    return null;
+                });
+    }
+
+    public String assertCpu(String name) {
+        return fileAssert.check("Cpu state", name + ".log",
+                file -> fileAssert.write(file, cpu.toStringDetails()));
+    }
+
+    public void assertCpu() {
+        assertCpu("cpu");
+    }
+
+    public String assertCpuAt(WhereIsData data) {
+        return fileAssert.check("Cpu was at info", "cpuAt.log",
+                file -> fileAssert.write(file, data.toString()));
+    }
+
+    public String assertDizAssembly(WhereIsData data, String name) {
+        return fileAssert.check("DizAssembled program", name,
+                file -> fileAssert.write(file, dizAssembler.program(data.range(), data.info())));
+    }
+
+    public String assertTrace() {
+        return fileAssert.check("Cpu trace", "trace.log",
+                file -> fileAssert.write(file, trace()));
+    }
+
+    public void assertPngMemory(Range range, String image) {
+        PngVideo.drawToFile(range, SCREEN_WIDTH, memory,
+                new File(TEST_RESOURCES + getTestResultFolder() + "/" + image));
+    }
+
+    public Bites assertAssembly(String sourceCode, String recompiledFile) {
+        svofski.Assembler assembler = new svofski.Assembler();
+        Bites result = assembler.compile(sourceCode);
+        byte[] bytes = result.byteArray();
+
+        fileAssert.write(new File(TEST_RESOURCES + getTestResultFolder() + "/" + recompiledFile), bytes);
+        return result;
+    }
+
+    public Memory assertMemory(Range range, String romFileName, String diffFileName) {
+        TrackUpdatedMemory source = new TrackUpdatedMemory(0x10000, TRACK_ONLY_UPDATED_VALUES);
+        try {
+            URL base = new File(TEST_RESOURCES).toURI().toURL();
+            roms.loadROM(base, getTestResultFolder() + "/" + romFileName, source.all(), 0x0000);
+            source.resetChanges();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        for (int addr = range.begin(); addr <= range.end(); addr++) {
+            int bite = memory.read8(addr);
+            source.write8(addr, bite);
+        }
+        fileAssert.check("Diff", diffFileName,
+                file -> fileAssert.write(file, source.detailsTable()));
+        return source;
+    }
+
+    public void assertRecord(String path, Runnable... configure) {
+        fileRecorder.startWriting();
+        int lastTick = hard.loadRecord(TEST_RESOURCES + "inputs/" + path);
+        record.after(lastTick).stopCpu();
+        Arrays.asList(configure).forEach(Runnable::run);
+        cpu.PC(0xC000);
+        hard.start();
+    }
+
+    public java.util.List<String> getAllFiles(String dir, String type) {
+        return findAllFiles(dir, type).stream()
+                .map(it -> new File(it[0].toString()).getParentFile().getName())
+                .collect(toList());
     }
 }
