@@ -31,6 +31,7 @@ public class Hardware {
     private FileRecorder fileRecorder;
     private GraphicControl graphtic;
     private Timings timings;
+    private RomSwitcher romSwitcher;
 
     private boolean lineOut;
     private boolean cpuEnabled;
@@ -53,9 +54,14 @@ public class Hardware {
         cpu = createCpu(CPU_TICKS_PER_INTERRUPT);
         roms = createRomLoader();
         png = createPngVideo();
+        romSwitcher = createRomSwitcher();
     }
 
     // components
+
+    protected RomSwitcher createRomSwitcher() {
+        return new RomSwitcher(this);
+    }
 
     protected Timings createTimings() {
         return new Timings(this);
@@ -292,6 +298,14 @@ public class Hardware {
         return range;
     }
 
+    public void pauseResume() {
+        if (isPaused()) {
+            resume();
+        } else {
+            pause();
+        }
+    }
+
     // components getters
 
     public PngVideo png() {
@@ -340,5 +354,9 @@ public class Hardware {
 
     public Timings timings() {
         return timings;
+    }
+
+    public RomSwitcher romSwitcher() {
+        return romSwitcher;
     }
 }

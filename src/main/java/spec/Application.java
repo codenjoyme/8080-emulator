@@ -24,8 +24,6 @@ public class Application {
 
     private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS");
 
-    private boolean lik = true;
-
     private URL base;
     private Container parent;
     private Hardware hard;
@@ -44,26 +42,12 @@ public class Application {
         hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, parent);
 
         hard.fileRecorder().with(RECORD_LOG_FILE);
-        loadRoms(base);
+        hard.romSwitcher().loadRoms(base);
     }
 
     private void createFolders() {
         new File(base.getFile() + SNAPSHOTS).mkdirs();
         new File(base.getFile() + SCREENSHOTS).mkdirs();
-    }
-
-    public void load(String rom) {
-        hard.loadData(base, rom, lik);
-    }
-
-    private void loadRoms(URL base) {
-        if (lik) {
-            Lik.loadRom(base, hard.roms());
-        } else {
-            Specialist.loadRom(base, hard.roms());
-        }
-
-        reset();
     }
 
     public void lostFocus() {
@@ -81,22 +65,14 @@ public class Application {
     public void handleKey(Key key) {
         if (key.numZero()) {
             if (key.pressed()) {
-                lik = !lik;
-                Logger.debug("Switch to %s", lik ? "LIK" : "Specialist");
-                hard.pause();
-                loadRoms(base);
-                hard.reset();
+                hard.romSwitcher().nextRom(base);
             }
             return;
         }
 
         if (key.numOne()) {
             if (key.pressed()) {
-                if (hard.isPaused()) {
-                    hard.resume();
-                } else {
-                    hard.pause();
-                }
+                hard.pauseResume();
             }
             return;
         }
@@ -164,8 +140,8 @@ public class Application {
                 // TODO как сделать рабочим в веб версии?
                 if (base.toString().startsWith("http")) return;
 
-                String folder = lik ? "lik" : "specialist";
-                openFileDialog(file -> load(toRelative(base, file)),
+                String folder = hard.romSwitcher().current();
+                openFileDialog(file -> hard.romSwitcher().load(base, toRelative(base, file)),
                         base.getFile() + "/" + folder + "/apps",
                         "Data file",
                         "com", "rom", "rks", "bin", "mem");
@@ -232,8 +208,7 @@ public class Application {
         hard.start();
     }
 
-    private void reset() {
-        hard.reset();
+    public void load(String rom) {
+        hard.romSwitcher().load(base, rom);
     }
-
 }

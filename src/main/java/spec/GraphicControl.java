@@ -98,11 +98,11 @@ public class GraphicControl implements StateProvider {
 
     @Override
     public Bites state() {
-        Bites result = new Bites(stateSize());
+        Bites bites = new Bites(stateSize());
 
-        result.set(0, ioDrawMode());
+        bites.set(0, ioDrawMode());
 
-        return result;
+        return bites;
     }
 
     @Override
