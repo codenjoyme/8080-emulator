@@ -1,12 +1,10 @@
 package spec;
 
-import org.junit.Before;
 import org.junit.Test;
 import spec.math.Bites;
 import spec.platforms.Lik;
 import spec.platforms.Specialist;
 import spec.stuff.AbstractTest;
-import spec.stuff.FileAssert;
 
 import java.awt.*;
 import java.awt.event.KeyListener;
@@ -25,7 +23,7 @@ public class RomLoaderTest extends AbstractTest {
     @Test
     public void testLoadLikRom() {
         // when
-        Lik.loadRom(base, roms);
+        lik().loadRom(base, roms);
 
         // then
         assertMemoryChanges();
@@ -34,7 +32,7 @@ public class RomLoaderTest extends AbstractTest {
     @Test
     public void testLoadLikGame() {
         // when
-        Lik.loadGame(base, roms, "reversi");
+        lik().loadGame(base, roms, "reversi");
 
         // then
         assertMemoryChanges();
@@ -43,7 +41,7 @@ public class RomLoaderTest extends AbstractTest {
     @Test
     public void testLoadSpecialistRom() {
         // when
-        Specialist.loadRom(base, roms);
+        specialist().loadRom(base, roms);
 
         // then
         assertMemoryChanges();
@@ -52,7 +50,7 @@ public class RomLoaderTest extends AbstractTest {
     @Test
     public void testLoadSpecialistGame() {
         // when
-        Specialist.loadGame(base, roms, "babnik");
+        specialist().loadGame(base, roms, "babnik");
 
         // then
         assertMemoryChanges();
@@ -83,8 +81,8 @@ public class RomLoaderTest extends AbstractTest {
     @Test
     public void testSaveLoadSnapshots() {
         // given
-        Lik.loadRom(base, roms);
-        Lik.loadGame(base, roms, "klad");
+        lik().loadRom(base, roms);
+        lik().loadGame(base, roms, "klad");
 
         // random values
         cpu.AF(0x1234);
@@ -131,7 +129,7 @@ public class RomLoaderTest extends AbstractTest {
             }
         }
 
-        romSwitcher.lik = false;
+        romSwitcher.platform = Specialist.NAME;
 
         // then
         String expectedCpu =

@@ -2,13 +2,13 @@ package spec;
 
 import spec.math.Bites;
 import spec.platforms.Lik;
-import spec.platforms.Specialist;
+import spec.platforms.PlatformFactory;
 
 import java.net.URL;
 
 public class RomSwitcher implements StateProvider {
 
-    protected boolean lik = true;
+    protected String platform = Lik.NAME;
 
     private final Hardware hard;
 
@@ -17,30 +17,25 @@ public class RomSwitcher implements StateProvider {
     }
 
     public void load(URL base, String rom) {
-        hard.loadData(base, rom, lik);
+        hard.loadData(base, rom, platform);
     }
 
     public void loadRoms(URL base) {
-        if (lik) {
-            Lik.loadRom(base, hard.roms());
-        } else {
-            Specialist.loadRom(base, hard.roms());
-        }
-
+        PlatformFactory.platform(platform)
+                .loadRom(base, hard.roms());
         hard.reset();
     }
 
-
     public void nextRom(URL base) {
-        lik = !lik;
-        Logger.debug("Switch to %s", lik ? "LIK" : "Specialist");
+        platform = PlatformFactory.next(platform);
+        Logger.debug("Switch to %s", platform);
         hard.pause();
         loadRoms(base);
         hard.reset();
     }
 
     public String current() {
-        return lik ? "lik" : "specialist";
+        return platform;
     }
 
     @Override
@@ -53,14 +48,14 @@ public class RomSwitcher implements StateProvider {
         if (bites.size() != stateSize()) {
             throw new IllegalArgumentException("Invalid size of ROM switcher state: " + bites.size());
         }
-        lik = bites.get(0) == 1;
+        platform = PlatformFactory.valueOf(bites.get(0));
     }
 
     @Override
     public Bites state() {
         Bites bites = new Bites(stateSize());
 
-        bites.set(0, lik ? 1 : 0);
+        bites.set(0, PlatformFactory.indexOf(platform));
 
         return bites;
     }

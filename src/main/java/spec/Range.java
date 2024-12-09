@@ -22,6 +22,16 @@ public class Range {
         }
     }
 
+    public static Range of(Range... ranges) {
+        int begin = Integer.MAX_VALUE;
+        int end = Integer.MIN_VALUE;
+        for (Range range : ranges) {
+            begin = Math.min(begin, range.begin);
+            end = Math.max(end, range.end);
+        }
+        return new Range(begin, end);
+    }
+
     public int begin() {
         return begin;
     }

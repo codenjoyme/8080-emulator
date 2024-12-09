@@ -25,8 +25,8 @@ public class DizAssemblerTest extends AbstractTest {
     @Test
     public void testDizAssembly() {
         // given
-        Lik.loadRom(base, roms);
-        Range range = Lik.loadGame(base, roms, "klad");
+        lik().loadRom(base, roms);
+        Range range = lik().loadGame(base, roms, "klad");
         Bites original = memory.read8arr(range);
 
         WhereIsData data = new WhereIsData(range);

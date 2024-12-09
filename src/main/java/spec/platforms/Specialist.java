@@ -1,19 +1,33 @@
 package spec.platforms;
 
+import spec.Range;
 import spec.RomLoader;
 
 import java.net.URL;
 
-public class Specialist {
+public class Specialist implements Platform {
 
-    public static final boolean PLATFORM = false;
+    public static final String NAME = "specialist";
 
-    public static void loadRom(URL base, RomLoader roms) {
-        roms.loadROM(base, "specialist/roms/monitor0.rom", 0xC000);
-        roms.loadROM(base, "specialist/roms/monitor1.rom", 0xC800);
+    @Override
+    public String name() {
+        return NAME;
     }
 
-    public static void loadGame(URL base, RomLoader roms, String name) {
-        roms.loadRKS(base, "specialist/apps/" + name + "/" + name + ".rks");
+    @Override
+    public Range loadRom(URL base, RomLoader roms) {
+        return Range.of(
+                roms.loadROM(base, name() + "/roms/monitor0.rom", 0xC000),
+                roms.loadROM(base, name() + "/roms/monitor1.rom", 0xC800));
+    }
+
+    @Override
+    public Range loadGame(URL base, RomLoader roms, String name) {
+        return roms.loadRKS(base, name() + "/apps/" + name + "/" + name + ".rks");
+    }
+
+    @Override
+    public Range loadTest(URL base, RomLoader roms, String name) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 }

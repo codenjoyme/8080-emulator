@@ -276,13 +276,13 @@ public class Hardware {
         return lastTick;
     }
 
-    public Range loadData(URL base, String path, boolean platform) {
+    public Range loadData(URL base, String path, String platform) {
         pause();
 
         Range range = roms.load(base, path);
 
         int delta = 25_000;
-        if (platform == Lik.PLATFORM) {
+        if (platform.equals(Lik.NAME)) {
             record.reset().after(delta)
                     .press(END).after(delta)
                     .press(ENTER).after(delta)

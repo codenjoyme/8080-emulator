@@ -1,5 +1,6 @@
 package spec.stuff;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -9,12 +10,18 @@ import spec.assembler.Assembler;
 import spec.assembler.DizAssembler;
 import spec.math.Bites;
 import spec.mods.WhereIsData;
+import spec.platforms.Lik;
+import spec.platforms.Platform;
+import spec.platforms.PlatformFactory;
+import spec.platforms.Specialist;
 
-import java.awt.*;
+import java.awt.Container;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.mockito.Mockito.mock;
@@ -146,6 +153,14 @@ public abstract class AbstractTest {
     public void reset() {
         record.reset();
         hard.reset();
+    }
+
+    public Platform lik() {
+        return PlatformFactory.platform(Lik.NAME);
+    }
+
+    public Platform specialist() {
+        return PlatformFactory.platform(Specialist.NAME);
     }
 
     @After
@@ -333,9 +348,16 @@ public abstract class AbstractTest {
         hard.start();
     }
 
-    public java.util.List<String> getAllFiles(String dir, String type) {
+    public List<Pair<String, String>> getAllFiles(String dir, String type) {
+        String platform = dir.contains("lik") ? "lik" : "specialist";
         return findAllFiles(dir, type).stream()
-                .map(it -> new File(it[0].toString()).getParentFile().getName())
+                .map(it -> Pair.of(platform, new File(it[0].toString()).getParentFile().getName()))
+                .collect(toList());
+    }
+
+    public List<Pair<String, String>> getAllFiles(String type) {
+        return PlatformFactory.all().stream()
+                .flatMap(name -> getAllFiles(APP_RESOURCES + name + "/apps", type).stream())
                 .collect(toList());
     }
 }

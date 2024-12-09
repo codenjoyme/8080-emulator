@@ -3,14 +3,11 @@ package spec;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import spec.math.Bites;
 import spec.mods.StopWhen;
 import spec.mods.WhenPC;
 import spec.mods.WhereIsData;
 import spec.platforms.Lik;
-import spec.platforms.Specialist;
 import spec.stuff.AbstractTest;
-import svofski.TapeFormat;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -40,30 +37,9 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    public void testLik_generateWave() {
-        getAllFiles(APP_RESOURCES + "lik/apps", ".rks")
-                .forEach(this::testLik_generateWave);
-    }
-
-    private void testLik_generateWave(String name) {
-        // given
-        Range range = Lik.loadGame(base, roms, name);
-
-        // when
-        byte[] mem = memory.all().byteArray(range);
-        Bites wave = new TapeFormat("specialist-rks", false)
-                .format(mem, 0, name + ".rks").makewav();
-
-        // then
-        String fileName = APP_RESOURCES + "lik/apps/" + name + "/" + name + ".wav";
-        fileAssert.check(fileName, fileName,
-                file -> fileAssert.write(file, wave.byteArray()));
-    }
-
-    @Test
     public void testLik_smoke() {
         // given
-        Lik.loadRom(base, roms);
+        lik().loadRom(base, roms);
 
         // when
         record.reset()
@@ -89,8 +65,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testLik_scenario() {
         // given
-        Lik.loadRom(base, roms);
-        Lik.loadGame(base, roms, "klad");
+        lik().loadRom(base, roms);
+        lik().loadGame(base, roms, "klad");
 
         // when
         record.after(12 * K10).down(0x23)
@@ -118,8 +94,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testLik_game_klad_levels() {
         // given
-        Lik.loadRom(base, roms);
-        Lik.loadGame(base, roms, "klad");
+        lik().loadRom(base, roms);
+        lik().loadGame(base, roms, "klad");
 
         // when then
         record.shoot("logo", it -> it.after(200 * K10))
@@ -159,8 +135,8 @@ public class IntegrationTest extends AbstractTest {
 //        Logger.DEBUG = true;
 //        WhereIsData.PRINT_RW = true;
 
-        Lik.loadRom(base, roms);
-        Range range = Lik.loadGame(base, roms, "klad");
+        lik().loadRom(base, roms);
+        Range range = lik().loadGame(base, roms, "klad");
         WhereIsData data = new WhereIsData(range);
         cpu.modAdd(data);
 
@@ -209,7 +185,7 @@ public class IntegrationTest extends AbstractTest {
         assertPngMemory(range, "recompiled.png");
 
         // when then
-        Lik.loadGame(base, roms, "klad");
+        lik().loadGame(base, roms, "klad");
         assertDizAssembly(data, "newProgram.asm");
         assertPngMemory(range, "original.png");
 
@@ -220,8 +196,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testLik_game_reversi_recording() {
         // given
-        Lik.loadRom(base, roms);
-        Lik.loadGame(base, roms, "reversi");
+        lik().loadRom(base, roms);
+        lik().loadGame(base, roms, "reversi");
 
         // when
         assertRecord("reversi.rec");
@@ -230,8 +206,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testLik_game_reversi2_recording() {
         // given
-        Lik.loadRom(base, roms);
-        Lik.loadGame(base, roms, "reversi2");
+        lik().loadRom(base, roms);
+        lik().loadGame(base, roms, "reversi2");
 
         // when
         assertRecord("reversi2.rec");
@@ -240,7 +216,7 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testLik_keyboard() {
         // given
-        Lik.loadRom(base, roms);
+        lik().loadRom(base, roms);
 
         // when
         assertRecord("keyboard.rec");
@@ -249,7 +225,7 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testSpecialist_monitor() {
         // given
-        Specialist.loadRom(base, roms);
+        specialist().loadRom(base, roms);
 
         // when
         cpu.PC(START_POINT);
@@ -262,8 +238,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testSpecialist_game_blobcop() {
         // given
-        Specialist.loadRom(base, roms);
-        Specialist.loadGame(base, roms, "blobcop");
+        specialist().loadRom(base, roms);
+        specialist().loadGame(base, roms, "blobcop");
 
         // when
         cpu.PC(0x0000);
@@ -276,8 +252,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testSpecialist_game_babnik() {
         // given
-        Specialist.loadRom(base, roms);
-        Specialist.loadGame(base, roms, "babnik");
+        specialist().loadRom(base, roms);
+        specialist().loadGame(base, roms, "babnik");
 
         // when
         cpu.PC(0x0000);
@@ -290,8 +266,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testLik_helloWorld() {
         // given
-        Lik.loadRom(base, roms);
-        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "hello-world/hello-world.mem", Lik.PLATFORM);
+        lik().loadRom(base, roms);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "hello-world/hello-world.mem", Lik.NAME);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // последняя команда перед выходом в монитор
@@ -315,8 +291,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testLik_diagnostic_microcosm() {
         // given
-        Lik.loadRom(base, roms);
-        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "test/test.mem", Lik.PLATFORM);
+        lik().loadRom(base, roms);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "test/test.mem", Lik.NAME);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
@@ -340,8 +316,8 @@ public class IntegrationTest extends AbstractTest {
         // https://raw.githubusercontent.com/begoon/i8080-core/master/8080PRE.MAC
 
         // given
-        Lik.loadRom(base, roms);
-        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080pre/8080pre.mem", Lik.PLATFORM);
+        lik().loadRom(base, roms);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080pre/8080pre.mem", Lik.NAME);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
@@ -366,8 +342,8 @@ public class IntegrationTest extends AbstractTest {
 
         // given
         memory.doNotTrackChanges();
-        Lik.loadRom(base, roms);
-        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080ex1/8080ex1.mem", Lik.PLATFORM);
+        lik().loadRom(base, roms);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080ex1/8080ex1.mem", Lik.NAME);
         // выводим trace только в этом диапазоне
         // debug.enable(range);
         // debug.console(true);
@@ -399,8 +375,8 @@ public class IntegrationTest extends AbstractTest {
     @Test
     public void testLik_diagnostic_apofig8080exerciser() {
         // given
-        Lik.loadRom(base, roms);
-        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080apofig/8080apofig.mem", Lik.PLATFORM);
+        lik().loadRom(base, roms);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080apofig/8080apofig.mem", Lik.NAME);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
