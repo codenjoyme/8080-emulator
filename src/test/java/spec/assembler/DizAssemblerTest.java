@@ -42,7 +42,7 @@ public class DizAssemblerTest extends AbstractTest {
             cpu.modAdd(data);
 
             // when
-            fileName = APP_RESOURCES + platform.name() + "/apps/" + name + "/" + name + ".asm";
+            fileName = platform.app(name, ".asm");
             String sourceCode = assertDizAssembly(data, fileName);
             Bites recompiled = assertAssembly(sourceCode, null);
 

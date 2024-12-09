@@ -17,10 +17,16 @@ import spec.platforms.Specialist;
 
 import java.awt.Container;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -28,10 +34,10 @@ import static org.mockito.Mockito.mock;
 import static spec.Constants.*;
 import static spec.assembler.Assembler.asString;
 import static spec.math.WordMath.hex8;
+import static spec.platforms.Platform.RESOURCES;
 import static spec.stuff.SmartAssert.assertEquals;
 import static spec.stuff.TrackUpdatedMemory.TRACK_ALL_CHANGES;
 import static spec.stuff.TrackUpdatedMemory.TRACK_ONLY_UPDATED_VALUES;
-import static svofski.AssemblerTest.findAllFiles;
 
 public abstract class AbstractTest {
 
@@ -40,9 +46,8 @@ public abstract class AbstractTest {
     public static final int TICKS = 10_000_000;
 
     public static final String TEST_RESOURCES = "src/test/resources/";
-    public static final String APP_RESOURCES = "src/main/resources/";
     public static final String TARGET_RESOURCES = "target/";
-    public static final String CPU_TESTS_RESOURCES = "test/";
+    public static final String CPU_TESTS_RESOURCES = RESOURCES + "test/";
 
     protected boolean memoryInit;
 
@@ -126,7 +131,7 @@ public abstract class AbstractTest {
         roms = hard.roms();
 
         record = hard.record();
-        record.screenShoot(this::assertScreen);
+        record.screenshot(this::assertScreen);
 
         asm = hard.cpu().asm();
         ports = hard.ports();
@@ -170,7 +175,7 @@ public abstract class AbstractTest {
 
     public URL getBase()  {
         try {
-            return new File(APP_RESOURCES).toURI().toURL();
+            return new File(".").toURI().toURL();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -350,6 +355,19 @@ public abstract class AbstractTest {
         hard.start();
     }
 
+    public static List<Object[]> findAllFiles(String base, String type) {
+        Path start = Paths.get(base);
+        try (Stream<Path> stream = java.nio.file.Files.walk(start)) {
+            return stream
+                    .filter(Files::isRegularFile)
+                    .filter(file -> file.toString().endsWith(type))
+                    .map(file -> new Object[]{ file.toString().replace("\\", "/").substring(base.length()) })
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            return Collections.emptyList();
+        }
+    }
+
     public List<Pair<Platform, String>> getAllFiles(String dir, String type) {
         String platformName = dir.contains(Lik.NAME) ? Lik.NAME : Specialist.NAME;
         return findAllFiles(dir, type).stream()
@@ -361,7 +379,7 @@ public abstract class AbstractTest {
 
     public List<Pair<Platform, String>> getAllFiles(String type) {
         return PlatformFactory.all().stream()
-                .flatMap(name -> getAllFiles(APP_RESOURCES + name + "/apps", type).stream())
+                .flatMap(name -> getAllFiles(RESOURCES + name + "/apps", type).stream())
                 .collect(toList());
     }
 

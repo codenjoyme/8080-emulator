@@ -44,7 +44,7 @@ public class Hardware {
         timings = createTimings();
         graphtic = createGraphicControl(parent);
         memory = createMemory();
-        fileRecorder = createFileRecorder(logFile());
+        fileRecorder = createFileRecorder();
         keyLogger = createKeyLogger();
         ports = createIoPorts();
         record = createKeyRecord();
@@ -112,8 +112,8 @@ public class Hardware {
         };
     }
 
-    protected FileRecorder createFileRecorder(File logFile) {
-        return new FileRecorder(logFile);
+    protected FileRecorder createFileRecorder() {
+        return new FileRecorder();
     }
 
     protected KeyRecord createKeyRecord() {
@@ -229,10 +229,6 @@ public class Hardware {
 
     protected int in8(int port) {
         return 0xFF;
-    }
-
-    protected File logFile() {
-        return new File(RECORD_LOG_FILE);
     }
 
     public void reset() {

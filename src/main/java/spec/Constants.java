@@ -45,8 +45,6 @@ public class Constants {
     public static final int BORDER_WIDTH = 10;
     public static final int BORDER_PORT = 254;
 
-    public static final String RECORD_LOG_FILE = "./keys.rec";
-
     // подогнано экспериментально, чтобы в игре Клад отрисовка была максимально близкой
     public static final int CPU_TICKS_PER_INTERRUPT = 2000;
     public static final int CPU_INTERRUPT_DELAY = 35 * CPU_TICKS_PER_INTERRUPT / 10000;

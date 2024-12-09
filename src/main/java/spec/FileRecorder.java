@@ -17,9 +17,8 @@ public class FileRecorder {
     private File file;
     private boolean writing;
 
-    public FileRecorder(File file) {
-        this.file = file;
-        startWriting();
+    public FileRecorder() {
+        writing = false;
     }
 
     public void write(int delta, Key key) {
@@ -89,7 +88,7 @@ public class FileRecorder {
         // do nothing
     }
 
-    public void with(String path) {
-        this.file = new File(path);
+    public void with(File file) {
+        this.file = file;
     }
 }

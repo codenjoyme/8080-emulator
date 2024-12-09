@@ -2,6 +2,7 @@ package spec;
 
 import spec.math.Bites;
 import spec.platforms.Lik;
+import spec.platforms.Platform;
 import spec.platforms.PlatformFactory;
 
 import java.net.URL;
@@ -34,8 +35,8 @@ public class RomSwitcher implements StateProvider {
         hard.reset();
     }
 
-    public String current() {
-        return platform;
+    public Platform current() {
+        return PlatformFactory.platform(platform);
     }
 
     @Override

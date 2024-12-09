@@ -201,7 +201,7 @@ public class RomLoaderTest extends AbstractTest {
         assertEquals(expectedPorts, ports.toStringDetails());
         assertEquals(3, graphic.ioDrawMode());
         assertEquals(expectedTimings, timings.toStringDetails());
-        assertEquals("specialist", romSwitcher.current());
+        assertEquals("specialist", romSwitcher.current().name());
 
         // when
         roms.saveSnapshot(targetBase, "snapshot.bin");
@@ -215,7 +215,7 @@ public class RomLoaderTest extends AbstractTest {
         assertNotSame(expectedPorts, ports.toStringDetails());
         assertNotSame(3, graphic.ioDrawMode());
         assertNotSame(expectedTimings, timings.toStringDetails());
-        assertEquals("lik", romSwitcher.current());
+        assertEquals("lik", romSwitcher.current().name());
 
         // when
         roms.loadSnapshot(targetBase, "snapshot.bin");
@@ -225,7 +225,7 @@ public class RomLoaderTest extends AbstractTest {
         assertEquals(expectedPorts, ports.toStringDetails());
         assertEquals(3, graphic.ioDrawMode());
         assertEquals(expectedTimings, timings.toStringDetails());
-        assertEquals("specialist", romSwitcher.current());
+        assertEquals("specialist", romSwitcher.current().name());
     }
 
     private void assertMemoryChanges() {

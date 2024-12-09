@@ -67,11 +67,7 @@ public class Main extends JFrame implements KeyListener {
     }
 
     private File contentRoot() {
-        File result = new File("src/main/resources");
-        if (!result.exists()) {
-            result = new File(".");
-        }
-        return result;
+        return new File(".");
     }
 
     @Override

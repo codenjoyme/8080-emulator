@@ -27,7 +27,7 @@ public class WaveGeneratorTest extends AbstractTest {
                 .format(mem, 0, name + ".rks").makewav();
 
         // then
-        String fileName = APP_RESOURCES + platform.name() + "/apps/" + name + "/" + name + ".wav";
+        String fileName = platform.app(name, ".wav");
         fileAssert.check(fileName, fileName,
                 file -> {
                     Logger.info("Wrote '%s'\n", file);

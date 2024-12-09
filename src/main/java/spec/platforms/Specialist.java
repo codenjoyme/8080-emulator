@@ -17,13 +17,13 @@ public class Specialist implements Platform {
     @Override
     public Range loadRom(URL base, RomLoader roms) {
         return Range.of(
-                roms.loadROM(base, name() + "/roms/monitor0.rom", 0xC000),
-                roms.loadROM(base, name() + "/roms/monitor1.rom", 0xC800));
+                roms.loadROM(base, platform() + "/roms/monitor0.rom", 0xC000),
+                roms.loadROM(base, platform() + "/roms/monitor1.rom", 0xC800));
     }
 
     @Override
     public Range loadGame(URL base, RomLoader roms, String name) {
-        return roms.loadRKS(base, name() + "/apps/" + name + "/" + name + ".rks");
+        return roms.loadRKS(base, platform() + "/apps/" + name + "/" + name + ".rks");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package spec;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -14,7 +15,7 @@ public class KeyRecord {
     private Map<Integer, Action> scenario;
     private FileRecorder fileRecorder;
     private IOPorts ports;
-    private Consumer<String> screenShoot;
+    private Consumer<String> screenshot;
     private Runnable stopCpu;
     private Runnable pauseCpu;
     private int shootIndex; // индекс сделанного скриншота
@@ -29,8 +30,8 @@ public class KeyRecord {
         reset();
     }
 
-    public void screenShoot(Consumer<String> screenShoot) {
-        this.screenShoot = screenShoot;
+    public void screenshot(Consumer<String> screenshot) {
+        this.screenshot = screenshot;
     }
 
     public Action after(int tick) {
@@ -61,7 +62,7 @@ public class KeyRecord {
     public int load(String path) {
         AtomicReference<Action> after = new AtomicReference<>(reset().after(0));
         fileRecorder.stopWriting();
-        fileRecorder.with(path);
+        fileRecorder.with(new File(path));
         fileRecorder.read((delta, key) -> {
             Action it = after.get().after(delta);
             if (key.pressed()) {
@@ -186,8 +187,8 @@ public class KeyRecord {
         Action action = scenario.get(tick);
 
         if (action != null) {
-            if (action.shoot != null && screenShoot != null) {
-                screenShoot.accept(action.shoot);
+            if (action.shoot != null && screenshot != null) {
+                screenshot.accept(action.shoot);
             }
             if (action.keyCode != null) {
                 Logger.debugLine("[%s] ", action.index);

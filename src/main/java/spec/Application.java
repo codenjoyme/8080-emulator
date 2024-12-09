@@ -1,7 +1,6 @@
 package spec;
 
-import spec.platforms.Lik;
-import spec.platforms.Specialist;
+import spec.platforms.Platform;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -9,20 +8,14 @@ import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.function.Consumer;
 
 import static spec.Constants.*;
-import static spec.Video.COLORS;
+import static spec.Files.RECORDS;
+import static spec.Files.SNAPSHOTS;
 
 public class Application {
-
-    public static final String SNAPSHOTS = "snapshots/";
-    public static final String SCREENSHOTS = "screenshots/";
-
-    private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS");
 
     private URL base;
     private Container parent;
@@ -37,17 +30,12 @@ public class Application {
     public Application(Container parent, URL base) {
         this.parent = parent;
         this.base = base;
-        createFolders();
 
         hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, parent);
 
-        hard.fileRecorder().with(RECORD_LOG_FILE);
+        hard.fileRecorder().with(Files.newRecord());
+        hard.fileRecorder().startWriting();
         hard.romSwitcher().loadRoms(base);
-    }
-
-    private void createFolders() {
-        new File(base.getFile() + SNAPSHOTS).mkdirs();
-        new File(base.getFile() + SCREENSHOTS).mkdirs();
     }
 
     public void lostFocus() {
@@ -86,8 +74,8 @@ public class Application {
 
         if (key.numThree()) {
             if (key.pressed()) {
-                File file = new File(SCREENSHOTS + "screen_" + DATE_FORMAT.format(new Date()) + ".png");
-                Logger.debug("Save screenshoot to %s", file);
+                File file = Files.newScreenshot();
+                Logger.debug("Save screenshot to %s", file.getAbsolutePath());
                 hard.png().drawToFile(SCREEN.begin(), file);
             }
             return;
@@ -116,7 +104,7 @@ public class Application {
 
         if (key.numSix()) {
             if (key.pressed()) {
-                File file = new File(SNAPSHOTS + "snapshot_" + DATE_FORMAT.format(new Date()) + ".snp");
+                File file = Files.newSnapshot();
                 hard.saveSnapshot(base, file.getPath());
             }
             return;
@@ -128,7 +116,7 @@ public class Application {
                 if (base.toString().startsWith("http")) return;
 
                 openFileDialog(file -> hard.loadRecord(file.getAbsolutePath()),
-                        ".",
+                        base.getFile() + RECORDS,
                         "Recording file",
                         "rec");
             }
@@ -140,9 +128,10 @@ public class Application {
                 // TODO как сделать рабочим в веб версии?
                 if (base.toString().startsWith("http")) return;
 
-                String folder = hard.romSwitcher().current();
-                openFileDialog(file -> hard.romSwitcher().load(base, toRelative(base, file)),
-                        base.getFile() + "/" + folder + "/apps",
+                RomSwitcher switcher = hard.romSwitcher();
+                Platform platform = switcher.current();
+                openFileDialog(file -> switcher.load(base, toRelative(base, file)),
+                        base.getFile() + platform.apps(),
                         "Data file",
                         "com", "rom", "rks", "bin", "mem");
             }

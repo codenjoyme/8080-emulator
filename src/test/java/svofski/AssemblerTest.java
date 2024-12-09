@@ -12,19 +12,14 @@ import spec.stuff.FileAssert;
 import spec.stuff.SmartAssert;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
-import static spec.IntegrationTest.APP_RESOURCES;
 import static spec.IntegrationTest.TEST_RESOURCES;
-import static spec.stuff.FileAssert.*;
+import static spec.platforms.Platform.RESOURCES;
+import static spec.stuff.AbstractTest.findAllFiles;
+import static spec.stuff.FileAssert.asString;
 
 @RunWith(Parameterized.class)
 public class AssemblerTest {
@@ -38,6 +33,7 @@ public class AssemblerTest {
     private String program;
     private String name;
     private String dir;
+    private static String base = RESOURCES + "test/";
 
     public AssemblerTest(String name) {
         this.name = name;
@@ -45,20 +41,7 @@ public class AssemblerTest {
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
-        return findAllFiles(APP_RESOURCES + "test/", ".asm");
-    }
-
-    public static List<Object[]> findAllFiles(String base, String type) {
-        Path start = Paths.get(base);
-        try (Stream<Path> stream = Files.walk(start)) {
-            return stream
-                    .filter(Files::isRegularFile)
-                    .filter(file -> file.toString().endsWith(type))
-                    .map(file -> new Object[]{ file.toString().replace("\\", "/").substring(base.length()) })
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            return Collections.emptyList();
-        }
+        return findAllFiles(base, ".asm");
     }
 
     @Before
@@ -70,7 +53,7 @@ public class AssemblerTest {
     public void before() {
         asm = new Assembler();
         fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
-        program = fileAssert.read(new File(APP_RESOURCES + "/test/" + name));
+        program = fileAssert.read(new File(base + name));
         dir = new File(name).getParent();
     }
 
@@ -94,7 +77,7 @@ public class AssemblerTest {
         Map<String, String> info = (Map) data.get("info");
         assertValue("info.json", asString(info));
 
-        String memFile = APP_RESOURCES + "test/" + dir + "/" + info.get("binFileName");
+        String memFile = base + dir + "/" + info.get("binFileName");
         Bites bin = (Bites) data.get("bin");
         assertValue(memFile, bin.byteArray());
 
