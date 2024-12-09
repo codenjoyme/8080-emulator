@@ -19,13 +19,15 @@ public class RomLoader {
     private GraphicControl graphic;
     private Timings timings;
     private Memory memory;
+    private RomSwitcher romSwitcher;
 
-    public RomLoader(Memory memory, Cpu cpu, IOPorts ports, GraphicControl graphic, Timings timings) {
+    public RomLoader(Memory memory, Cpu cpu, IOPorts ports, GraphicControl graphic, Timings timings, RomSwitcher romSwitcher) {
         this.memory = memory;
         this.cpu = cpu;
         this.ports = ports;
         this.graphic = graphic;
         this.timings = timings;
+        this.romSwitcher = romSwitcher;
     }
 
     private void logLoading(String name, Range range) {
@@ -139,7 +141,7 @@ public class RomLoader {
      *   - 8 bytes for long    - `time`
      *   - 4 bytes for int     - `iterations`
      * * Memory dump: `0x0000` - `0xFFFF`
-     * TODO implement me
+     * * ROM switcher state:
      *   - 1 byte for boolean  - 1 if `lik` true, 0 otherwise
      */
     public Range loadSnapshot(URL base, String path) {
@@ -195,7 +197,8 @@ public class RomLoader {
                 ports,
                 graphic,
                 timings,
-                memory);
+                memory,
+                romSwitcher);
     }
 
     private int readPart(StateProvider provider, int offset, Bites bites) {

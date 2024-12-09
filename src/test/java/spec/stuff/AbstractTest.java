@@ -32,6 +32,7 @@ public abstract class AbstractTest {
     protected IOPorts ports;
     protected GraphicControl graphic;
     protected Timings timings;
+    protected RomSwitcher romSwitcher;
 
     @Before
     public void setup() {
@@ -89,6 +90,7 @@ public abstract class AbstractTest {
         graphic = hard.graphic();
         timings = hard.timings();
         memory.resetChanges();
+        romSwitcher = hard.romSwitcher();
 
         debug = cpu.debug();
         debug.disable();

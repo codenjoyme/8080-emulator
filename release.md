@@ -166,8 +166,9 @@
       добавлять просто. 
 - [x] (9abcc545) Все данные которые отностятся к подсчету таймингов вынесены из `Application` в `Timings`.
 - [x] (9abcc545) Во всех тестах исправлено использование `SmartAssert.setup()`. 
-- [x] (5f05384f) В загрузку/сохранение snapshot так же включен `Cpu.tick`, `Cpu.tact`, `Cpu.interrupt`
-- [x] (--------) Выделил из `Application` в `RomSwitcher` логику переключения ROM.
-- [x] (--------)  
+- [x] (5f05384f) В загрузку/сохранение snapshot так же включен `Cpu.tick`, `Cpu.tact`, `Cpu.interrupt`.
+- [x] (a814b732) Выделил из `Application` в `RomSwitcher` логику переключения ROM.
+- [x] (--------) В загрузку/сохранение snapshot так же включен `RomSwitcher.lik`.
+- [x] (--------)   
 
 Продолжение следует!

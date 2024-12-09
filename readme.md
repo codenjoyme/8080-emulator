@@ -344,7 +344,7 @@ cache: MemoryCache: removed entry http://localhost:8080/spec.jnlp
      - 8 bytes for long    - `time` 
      - 4 bytes for int     - `iterations` 
    * Memory dump: `0x0000` - `0xFFFF` 
-   * TODO implement me 
+   * ROM switcher state:
      - 1 byte for boolean  - 1 if `lik` true, 0 otherwise  
 
 - `NumPad /` - Запуск replay режима. Откроется диалог `Recording file` в котором можно выбрать файл `rec` 

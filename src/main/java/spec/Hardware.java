@@ -52,9 +52,9 @@ public class Hardware {
         audio = createAudio();
         data = createHardwareData();
         cpu = createCpu(CPU_TICKS_PER_INTERRUPT);
-        roms = createRomLoader();
         png = createPngVideo();
         romSwitcher = createRomSwitcher();
+        roms = createRomLoader();
     }
 
     // components
@@ -84,7 +84,7 @@ public class Hardware {
     }
 
     protected RomLoader createRomLoader() {
-        return new RomLoader(memory, cpu, ports, graphtic, timings);
+        return new RomLoader(memory, cpu, ports, graphtic, timings, romSwitcher);
     }
 
     protected Video createVideo(int width, int height) {
