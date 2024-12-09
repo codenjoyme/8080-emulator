@@ -73,6 +73,10 @@ public class Bites implements Iterable<Integer> {
         data[index] = bite;
     }
 
+    public void set(Bites bites) {
+        set(new Range(0, -bites.size()), bites);
+    }
+
     public void set(Range range, Bites bites) {
         int length = range.length();
         int begin = range.begin();

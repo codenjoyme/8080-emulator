@@ -137,8 +137,8 @@ public class TapeFormat {
             }
         }
 
-        System.out.println("checksum rk=" + Util.hex8(cs_hi & 0xff) + Util.hex8(cs_lo & 0xff));
-        System.out.println("checksum microsha=" + Util.hex8(csm_hi & 0xff) + Util.hex8(csm_lo & 0xff));
+        // System.out.println("checksum rk=" + Util.hex8(cs_hi & 0xff) + Util.hex8(cs_lo & 0xff));
+        // System.out.println("checksum microsha=" + Util.hex8(csm_hi & 0xff) + Util.hex8(csm_lo & 0xff));
 
         if (this.variant.equals("mikrosha")) {
             data[dptr++] = (byte) (csm_hi & 0xff);

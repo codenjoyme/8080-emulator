@@ -32,22 +32,30 @@ public class SmartAssert {
         failures = new CopyOnWriteArrayList<>();
     }
 
-    public static void assertEquals(Object expected, Object actual) {
+    public static void assertEquals(String message, Object expected, Object actual) {
         failNotInitialized();
         try {
-            Assert.assertEquals(expected, actual);
+            Assert.assertEquals(message, expected, actual);
+        } catch (AssertionError e) {
+            failures.add(e);
+        }
+    }
+
+    public static void assertEquals(Object expected, Object actual) {
+        assertEquals(null, expected, actual);
+    }
+
+    public static void assertNotSame(String message, Object expected, Object actual) {
+        failNotInitialized();
+        try {
+            Assert.assertNotSame(message, expected, actual);
         } catch (AssertionError e) {
             failures.add(e);
         }
     }
 
     public static void assertNotSame(Object expected, Object actual) {
-        failNotInitialized();
-        try {
-            Assert.assertNotSame(expected, actual);
-        } catch (AssertionError e) {
-            failures.add(e);
-        }
+        assertNotSame(null, expected, actual);
     }
 
     private static void failNotInitialized() {

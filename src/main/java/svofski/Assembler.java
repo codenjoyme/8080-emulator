@@ -68,7 +68,7 @@ import java.util.regex.Pattern;
 
 public class Assembler {
 
-    private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+    private final static ScriptEngine ENGINE = new ScriptEngineManager().getEngineByName("JavaScript");
 
     public boolean debug = false;
     public String tapeFormat = "rk-bin";
@@ -1343,16 +1343,16 @@ public class Assembler {
 
     public Integer evalInvoke(String expr) {
         try {
-            Object eval = engine.eval(expr);
+            Object eval = ENGINE.eval(expr);
             if (eval instanceof Double) {
                 return ((Double) eval).intValue();
             } else {
                 return (Integer) eval;
             }
-        } catch (ScriptException err) {
-            err.printStackTrace();
+        } catch (ScriptException exception) {
+            exception.printStackTrace();
             System.out.println("Expression was: " + expr);
-            System.out.print(err.toString());
+            System.out.print(exception.toString());
         }
 
         return null;

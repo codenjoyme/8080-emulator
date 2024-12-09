@@ -317,7 +317,9 @@ public abstract class AbstractTest {
         Bites result = assembler.compile(sourceCode);
         byte[] bytes = result.byteArray();
 
-        fileAssert.write(new File(TEST_RESOURCES + getTestResultFolder() + "/" + recompiledFile), bytes);
+        if (recompiledFile != null) {
+            fileAssert.write(new File(TEST_RESOURCES + getTestResultFolder() + "/" + recompiledFile), bytes);
+        }
         return result;
     }
 
@@ -348,16 +350,35 @@ public abstract class AbstractTest {
         hard.start();
     }
 
-    public List<Pair<String, String>> getAllFiles(String dir, String type) {
-        String platform = dir.contains("lik") ? "lik" : "specialist";
+    public List<Pair<Platform, String>> getAllFiles(String dir, String type) {
+        String platformName = dir.contains(Lik.NAME) ? Lik.NAME : Specialist.NAME;
         return findAllFiles(dir, type).stream()
-                .map(it -> Pair.of(platform, new File(it[0].toString()).getParentFile().getName()))
+                .map(it -> Pair.of(
+                        PlatformFactory.platform(platformName),
+                        new File(it[0].toString()).getParentFile().getName()))
                 .collect(toList());
     }
 
-    public List<Pair<String, String>> getAllFiles(String type) {
+    public List<Pair<Platform, String>> getAllFiles(String type) {
         return PlatformFactory.all().stream()
                 .flatMap(name -> getAllFiles(APP_RESOURCES + name + "/apps", type).stream())
                 .collect(toList());
+    }
+
+    public static void assertMemoryChanges(String message, String expected, Bites original, Bites recompiled) {
+        int maxSize = Math.max(original.size(), recompiled.size());
+        TrackUpdatedMemory tracker = new TrackUpdatedMemory(maxSize, true);
+
+        tracker.all().set(original);
+
+        tracker.resetChanges();
+
+        tracker.all().set(recompiled);
+
+        assertEquals("Memory size after recompilation for: " + message,
+                original.size(), recompiled.size());
+
+        assertEquals("File are not equal for: " + message,
+                expected, tracker.detailsTable());
     }
 }

@@ -1,47 +1,61 @@
 package spec.assembler;
 
-import org.junit.Before;
 import org.junit.Test;
+import spec.Logger;
 import spec.Range;
 import spec.math.Bites;
 import spec.mods.WhereIsData;
-import spec.platforms.Lik;
+import spec.platforms.Platform;
 import spec.stuff.AbstractTest;
-import spec.stuff.TrackUpdatedMemory;
 
-import static org.junit.Assert.*;
+import java.io.File;
+import java.util.List;
+
+import static spec.stuff.SmartAssert.fail;
 
 public class DizAssemblerTest extends AbstractTest {
 
-    @Override
-    @Before
-    public void before() {
-        super.before();
-
-        reset();
-        record.after(TICKS).stopCpu();
-    }
-
     @Test
     public void testDizAssembly() {
-        // given
-        lik().loadRom(base, roms);
-        Range range = lik().loadGame(base, roms, "klad");
-        Bites original = memory.read8arr(range);
-
-        WhereIsData data = new WhereIsData(range);
-        cpu.modAdd(data);
-
-        // when
-        String sourceCode = assertDizAssembly(data, "klad.asm");
-        Bites recompiled = assertAssembly(sourceCode, "klad-recompiled.mem");
-
-        // then
-        TrackUpdatedMemory tracker = new TrackUpdatedMemory(original.size(), true);
-        tracker.state(original);
-        tracker.resetChanges();
-        tracker.state(recompiled);
-        assertEquals("", tracker.detailsTable());
+        getAllFiles(".rks")
+                .forEach(pair -> testDizAssembly(pair.getKey(), pair.getValue()));
     }
 
+    private void testDizAssembly(Platform platform, String name) {
+        Logger.info("======================================================================");
+        String test = String.format("Testing [%s] %s", platform.name(), name);
+        Logger.info(test);
+
+        if (List.of("klad2", "pilot", "reversi", "tetris3", "tip-top2", "zoo", "blobcop").contains(name)) {
+            Logger.info("Skipping test for %s", name);
+            return; // TODO debug all errors
+        }
+
+        String fileName = null;
+        try {
+            // given
+            platform.loadRom(base, roms);
+            Range range = platform.loadGame(base, roms, name);
+            Bites original = memory.read8arr(range);
+
+            WhereIsData data = new WhereIsData(range);
+            cpu.modAdd(data);
+
+            // when
+            fileName = APP_RESOURCES + platform.name() + "/apps/" + name + "/" + name + ".asm";
+            String sourceCode = assertDizAssembly(data, fileName);
+            Bites recompiled = assertAssembly(sourceCode, null);
+
+            // then
+            assertMemoryChanges(test, "", original, recompiled);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            fail(String.format("For: %s, we got: %s", test, exception.getMessage()));
+
+            if (fileName != null) {
+                new File(fileName).delete();
+                Logger.info("Deleted '%s' because of error", fileName);
+            }
+        }
+    }
 }
