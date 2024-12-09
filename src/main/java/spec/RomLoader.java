@@ -215,7 +215,7 @@ public class RomLoader {
 
     public Range load(URL base, String path) {
         File file = new File(path);
-        switch (substringAfter(file.getName(), ".")) {
+        switch (substringAfter(file.getName(), ".").toLowerCase()) {
             case "com": {
                 return loadROM(base, path, 0x0100);
             }
