@@ -57,22 +57,43 @@ public class RomLoader {
 
     // TODO сделать преобразователь mem -> rks
 
-    // для ПК "Специалист"
-    // ADN: ML_B, ST_B
-    // ADK: ML_B, ST_B
-    // Bytes...
-    // KSM: ML_B, ST_B
+    // Разновидность 1 для ПК "Специалист":
+    // 2 байта  - адресс начала памяти (low byte, high byte)
+    // 2 байта  - адресс конца памяти (low byte, high byte)
+    // массив байтов прпограммы длинной между началом и концом
+    // 2 байта  - контрольная сумма (low byte, high byte) TODO реализовать проверку
+
+    // Разновидность 2
+    // 4 байта  - 0x70 0x8F 0x82 0x8F (префикс)
+    // 16 байт  - 0x00
+    // 1 байт   - 0xBC
+    // 2 байта  - контрольная сумма (low byte, high byte) TODO реализовать проверку
+    // 255 байт - 0x00
+    // 1 байт   - 0xE6
+    // 2 байта  - адресс начала памяти (low byte, high byte)
+    // 2 байта  - адресс конца памяти (low byte, high byte)
+    // массив байтов прпограммы длинной между началом и концом
     public Range loadRKS(URL base, String path) {
         try {
             URL url = new URL(base, path);
             InputStream is = url.openStream();
+
             Bites header = read8arr(is, 4);
+            if (header.equals(new Bites(0x70, 0x8F, 0x82, 0x8F))) {
+                read8arr(is, 16);
+                read8arr(is, 1).equals(new Bites(0xBC));
+                Bites crc = read8arr(is, 2);
+                read8arr(is, 255);
+                read8arr(is, 1).equals(new Bites(0xE6));
+                header = read8arr(is, 4);
+            }
+
             Range range = new Range(
                     WordMath.merge(header.get(1), header.get(0)),
                     WordMath.merge(header.get(3), header.get(2)));
             if (range.isInvalid()) {
                 throw new IllegalArgumentException(String.format(
-                        "Rage %s is invalid for: %s", range, path));
+                        "Range %s is invalid for: %s", range, path));
             }
 
             logLoading(url.toString(), range);

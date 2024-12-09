@@ -16,7 +16,7 @@ public class Bites implements Iterable<Integer> {
         data = new int[length];
     }
 
-    public Bites(int[] data) {
+    public Bites(int... data) {
         this.data = data;
     }
 
@@ -157,5 +157,9 @@ public class Bites implements Iterable<Integer> {
         }
 
         return sb.toString();
+    }
+
+    public boolean equals(Bites bites) {
+        return Arrays.equals(data, bites.data);
     }
 }
