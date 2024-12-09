@@ -107,9 +107,8 @@ public class GraphicControl implements StateProvider {
 
     @Override
     public void state(Bites bites) {
-        if (bites.size() != stateSize()) {
-            throw new IllegalArgumentException("Invalid graphic state size: " + bites.size());
-        }
+        validateState("graphic", bites);
+
         ioDrawMode(bites.get(0));
     }
 }

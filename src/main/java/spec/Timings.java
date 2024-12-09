@@ -123,9 +123,7 @@ public class Timings implements StateProvider{
 
     @Override
     public void state(Bites bites) {
-        if (bites.size() != stateSize()) {
-            throw new IllegalArgumentException("Invalid timings state size: " + bites.size());
-        }
+        validateState("Timings", bites);
 
         interrupt = (int) joinBites(bites, new Range(0, 3));
         refreshRate = (int) joinBites(bites, new Range(4, 7));

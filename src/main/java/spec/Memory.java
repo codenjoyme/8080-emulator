@@ -76,10 +76,9 @@ public class Memory implements StateProvider {
 
     @Override
     public void state(Bites bites) {
-        if (bites.size() != stateSize()) {
-            throw new IllegalArgumentException("Invalid memory state size: " + bites.size());
-        }
-        mem.set(new Range(0, -bites.size()), bites);
+        validateState("memory", bites);
+
+        mem.set(bites);
     }
 
     @Override

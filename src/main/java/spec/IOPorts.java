@@ -80,9 +80,8 @@ public class IOPorts implements StateProvider {
 
     @Override
     public void state(Bites bites) {
-        if (bites.size() != stateSize()) {
-            throw new IllegalArgumentException("Invalid size of I/O ports state: " + bites.size());
-        }
+        validateState("I/O ports", bites);
+
         int lastIndex = bites.size() - 1;
         for (int i = 0; i < lastIndex; i++) {
             for (int j = 0; j < 6; j++) {

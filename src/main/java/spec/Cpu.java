@@ -153,9 +153,7 @@ public class Cpu extends Registry implements StateProvider {
 
     @Override
     public void state(Bites bites) {
-        if (bites.size() != stateSize()) {
-            throw new IllegalArgumentException("Invalid CPU state size: " + bites.size());
-        }
+        validateState("CPU", bites);
 
         PC(merge(bites.get(1), bites.get(0)));
         SP(merge(bites.get(3), bites.get(2)));

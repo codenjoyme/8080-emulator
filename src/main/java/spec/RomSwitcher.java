@@ -45,9 +45,8 @@ public class RomSwitcher implements StateProvider {
 
     @Override
     public void state(Bites bites) {
-        if (bites.size() != stateSize()) {
-            throw new IllegalArgumentException("Invalid size of ROM switcher state: " + bites.size());
-        }
+        validateState("ROM switcher", bites);
+
         platform = PlatformFactory.valueOf(bites.get(0));
     }
 
