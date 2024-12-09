@@ -1,0 +1,19 @@
+Registers:      K580           8086
+                 AF (=PSW)      CX
+                 BC             BP
+                 DE             DX
+                 HL             BX
+                 SP             SP
+                 PC             SI
+
+Segments:       CSEG            CS
+                SCREEN          ES
+                SPECIAL         DS,SS
+
+Клавиши:        ScrollLock      ([418h]&10h) Toggle mode.
+                  F1  - help
+                  F2  - trace into
+                  F3  - step over
+		  F9  - menu
+		  F10 - quit
+	

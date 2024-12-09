@@ -1,0 +1,4 @@
+BEEPP    RKS   - демонстрация оператора Beep
+BEEPP2   RKS   - демонстрация оператора Beep
+BIZNES   RKS   - "Монополия"
+BASICMIC RKS   - имя программы: BASIC-MICRON
