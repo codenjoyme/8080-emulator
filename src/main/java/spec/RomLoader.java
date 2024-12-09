@@ -114,6 +114,9 @@ public class RomLoader {
      *   - 2 bytes             - `BC` (low byte, high byte)
      *   - 2 bytes             - `DE` (low byte, high byte)
      *   - 2 bytes             - `HL` (low byte, high byte)
+     *   - 4 bytes for int     - `interrupt`
+     *   - 4 bytes for int     - `tick`
+     *   - 4 bytes for int     - `tact`
      * * I/O ports state:
      *   - 12*6 bytes          - keyboard state 12 x 6 for all keys - is key pressed
      *   - 1 byte              - flags `0b__shift_alt_ctrl_A__C1_0_B_C0`
@@ -138,8 +141,6 @@ public class RomLoader {
      * * Memory dump: `0x0000` - `0xFFFF`
      * TODO implement me
      *   - 1 byte for boolean  - 1 if `lik` true, 0 otherwise
-     *   - 4 bytes for int     - `CPU tick`
-     *   - 4 bytes for int     - `CPU tact`
      */
     public Range loadSnapshot(URL base, String path) {
         try {

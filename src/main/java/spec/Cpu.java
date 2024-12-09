@@ -12,14 +12,15 @@ import static spec.mods.Event.CHANGE_PC;
 
 public class Cpu extends Registry implements StateProvider {
 
-    public static final int SNAPSHOT_CPU_STATE_SIZE = 14;
+    public static final int SNAPSHOT_CPU_STATE_SIZE = 30;
 
     private Consumer<Cpu> onTick;
     private Supplier<Boolean> onInterrupt;
 
-    private int interrupt; // количество тактов на 1 прерывание
-    private int tick;      // количество операций, которые сделал процессор
-    private int tact;
+    protected int interrupt; // количество тактов на 1 прерывание
+    protected int tick;      // количество операций, которые сделал процессор
+    protected int tact;
+
     private Assembler asm;
     private CpuDebug debug;
     private boolean enabled;
@@ -128,22 +129,26 @@ public class Cpu extends Registry implements StateProvider {
 
     @Override
     public Bites state() {
-        Bites result = new Bites(stateSize());
+        Bites bites = new Bites(stateSize());
 
-        result.set(0, lo(PC()));
-        result.set(1, hi(PC()));
-        result.set(2, lo(SP()));
-        result.set(3, hi(SP()));
-        result.set(4, F());
-        result.set(5, A());
-        result.set(6, C());
-        result.set(7, B());
-        result.set(8, E());
-        result.set(9, D());
-        result.set(10, L());
-        result.set(11, H());
+        bites.set(0, lo(PC()));
+        bites.set(1, hi(PC()));
+        bites.set(2, lo(SP()));
+        bites.set(3, hi(SP()));
+        bites.set(4, F());
+        bites.set(5, A());
+        bites.set(6, C());
+        bites.set(7, B());
+        bites.set(8, E());
+        bites.set(9, D());
+        bites.set(10, L());
+        bites.set(11, H());
 
-        return result;
+        bites.set(new Range(12, 15), splitBites(interrupt, 4));
+        bites.set(new Range(16, 19), splitBites(tick, 4));
+        bites.set(new Range(20, 23), splitBites(tact, 4));
+
+        return bites;
     }
 
     @Override
@@ -162,5 +167,26 @@ public class Cpu extends Registry implements StateProvider {
         D(bites.get(9));
         L(bites.get(10));
         H(bites.get(11));
+
+        interrupt = (int) joinBites(bites, new Range(12, 15));
+        tick = (int) joinBites(bites, new Range(16, 19));
+        tact = (int) joinBites(bites, new Range(20, 23));
+    }
+
+    public String toStringDetails(boolean withTicks) {
+        if (withTicks) {
+            return String.format(
+                    "tick:      %s\n" +
+                    "tact:      %s\n" +
+                    "interrupt: %s\n" +
+                    "%s",
+                    withTicks ? tick : "",
+                    withTicks ? tact : "",
+                    interrupt,
+                    super.toStringDetails());
+        } else {
+            return super.toStringDetails();
+        }
+
     }
 }

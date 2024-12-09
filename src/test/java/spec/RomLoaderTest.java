@@ -110,6 +110,10 @@ public class RomLoaderTest extends AbstractTest {
         cpu.PC(0x2345);
         cpu.SP(0x6789);
 
+        cpu.tact = 0x12345678;
+        cpu.tick = 0x1ABCDEF0;
+        cpu.interrupt = 0x1216;
+
         ports.reset();
         ports.state(new Bites(new int[]{
                 0b1010_0101,
@@ -145,6 +149,9 @@ public class RomLoaderTest extends AbstractTest {
 
         // then
         String expectedCpu =
+                "tick:      448585456\n" +
+                "tact:      305419896\n" +
+                "interrupt: 4630\n" +
                 "BC:  5678\n" +
                 "DE:  9ABC\n" +
                 "HL:  DEF0\n" +
@@ -206,7 +213,7 @@ public class RomLoaderTest extends AbstractTest {
                 "time        : 1733830164443\n" +
                 "iterations  : 1646090\n";
 
-        assertEquals(expectedCpu, cpu.toStringDetails());
+        assertEquals(expectedCpu, cpu.toStringDetails(true));
         assertEquals(expectedPorts, ports.toStringDetails());
         assertEquals(3, graphic.ioDrawMode());
         assertEquals(expectedTimings, timings.toStringDetails());
@@ -219,7 +226,7 @@ public class RomLoaderTest extends AbstractTest {
         before();
 
         // then
-        assertNotSame(expectedCpu, cpu.toStringDetails());
+        assertNotSame(expectedCpu, cpu.toStringDetails(true));
         assertNotSame(expectedPorts, ports.toStringDetails());
         assertNotSame(3, graphic.ioDrawMode());
         assertNotSame(expectedTimings, timings.toStringDetails());
@@ -228,7 +235,7 @@ public class RomLoaderTest extends AbstractTest {
         roms.loadSnapshot(IntegrationTest.getTargetBase(), "snapshot.bin");
 
         // then
-        assertEquals(expectedCpu, cpu.toStringDetails());
+        assertEquals(expectedCpu, cpu.toStringDetails(true));
         assertEquals(expectedPorts, ports.toStringDetails());
         assertEquals(3, graphic.ioDrawMode());
         assertEquals(expectedTimings, timings.toStringDetails());
