@@ -2,7 +2,7 @@ package spec.assembler;
 
 import spec.Data;
 import spec.Range;
-import spec.mods.WhereIsData;
+import spec.mods.Info;
 
 import java.util.*;
 
@@ -15,7 +15,7 @@ public class DizAssembler {
     private Assembler asm;
     private Data data;
     private Range range;
-    private WhereIsData.Info[] infoData;
+    private Info[] infoData;
     private Map<Integer, String> labels;
     private int pad;
 
@@ -36,7 +36,7 @@ public class DizAssembler {
             processed.add(addr);
             do {
                 Command command = asm.find(data.read8(addr));
-                WhereIsData.Info info = markCommand(infoData, addr, data, command, true);
+                Info info = markCommand(infoData, addr, data, command, true);
                 if (command.isJump() || command.isCall()) {
                     toProcess.add(info.data);
                 }
@@ -51,7 +51,7 @@ public class DizAssembler {
         }
     }
 
-    public String program(Range range, WhereIsData.Info[] inputInfo) {
+    public String program(Range range, Info[] inputInfo) {
         this.range = range;
         this.infoData = clone(inputInfo);
         boolean canonicalData = true;
@@ -65,7 +65,7 @@ public class DizAssembler {
     private void arrangeLabels(Range range) {
         labels = new HashMap<>();
         for (int addr = range.begin(); addr <= range.end(); addr++) {
-            WhereIsData.Info info = infoData[addr];
+            Info info = infoData[addr];
 
             if (info.type == COMMAND) {
                 if (info.command.isCall()
@@ -115,7 +115,7 @@ public class DizAssembler {
 
     private void dizAssembly(Range range, boolean canonical) {
         for (int addr = range.begin(); addr <= range.end(); addr++) {
-            WhereIsData.Info info = infoData[addr];
+            Info info = infoData[addr];
 
             if (info.type == DATA) {
                 // если у нас данные
@@ -158,7 +158,7 @@ public class DizAssembler {
         int count = 0;
         boolean first = true;
         for (int addr = range.begin(); addr <= range.end(); addr++) {
-            WhereIsData.Info info = infoData[addr];
+            Info info = infoData[addr];
 
             // если у нас данные, выстраиваем их по 10 в ряд
             if (info.type == DATA) {
@@ -211,10 +211,10 @@ public class DizAssembler {
         return padRight(string, pad, ' ');
     }
 
-    private WhereIsData.Info[] clone(WhereIsData.Info[] info) {
-        WhereIsData.Info[] result = new WhereIsData.Info[info.length];
+    private Info[] clone(Info[] info) {
+        Info[] result = new Info[info.length];
         for (int addr = 0; addr < info.length; addr++) {
-            result[addr] = new WhereIsData.Info(info[addr]);
+            result[addr] = new Info(info[addr]);
         }
         return result;
     }

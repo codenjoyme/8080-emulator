@@ -5,7 +5,6 @@ import spec.Data;
 import spec.Logger;
 import spec.Range;
 import spec.assembler.Command;
-import spec.math.Bites;
 
 import java.util.List;
 
@@ -78,7 +77,9 @@ public class WhereIsData implements CpuMod {
                 throw new IllegalArgumentException("Mark error: " +
                         info.type.name() + ">" + type.name() + " " + hex16(addr + i));
             }
-            info.command(command).type(type).increase();
+            info.command(command); // TODO why I cant set here if (info.command == null) info.command(command);
+            info.type(type);       // TODO and same here. This will improve performance
+            info.increase();
         }
         infos[addr].code(data.read8(addr));
         infos[addr].data(data.read16(addr + 1));
@@ -108,84 +109,7 @@ public class WhereIsData implements CpuMod {
         STACK
     }
 
-    public static class Info {
 
-        public int access;
-        public Type type;
-        public Command command;
-        public String asm;
-        public int data;
-        public int code;
-        public String labelTo;
-        public String label;
-
-        public Info(int access, Type type, Command command) {
-            this.access = access;
-            this.type = type;
-            this.command = command;
-        }
-
-        public Info(Info info) {
-            this(info.access, info.type, info.command);
-        }
-
-        public Info increase() {
-            access++;
-            return this;
-        }
-
-        public Info type(Type type) {
-            this.type = type;
-            return this;
-        }
-
-        public Info command(Command command) {
-            this.command = command;
-            return this;
-        }
-
-        public Info asm(String asm) {
-            this.asm = asm;
-            return this;
-        }
-
-        public Info data(int word) {
-            data = word;
-            return this;
-        }
-
-        public Info code(int bite) {
-            code = bite;
-            return this;
-        }
-
-        public String data(boolean canonical) {
-            String hex = command.size() == 3
-                    ? hex16(data)
-                    : hex8(data);
-            return canonical
-                    ? canonical(hex)
-                    : hex;
-        }
-
-        public String printCommand(boolean canonical) {
-            Bites bites = new Bites(command.size());
-            bites.set(0, code);
-            if (command.size() >= 2) {
-                bites.set(1, lo(data));
-            }
-            if (command.size() == 3) {
-                bites.set(2, hi(data));
-            }
-            return command.print(bites, canonical);
-        }
-
-        public String asm(boolean canonical) {
-            return asm == null
-                    ? asm = printCommand(canonical)
-                    : asm;
-        }
-    }
 
     @Override
     public String toString() {
