@@ -1,0 +1,120 @@
+DATE: 1733556364118
+
+===============================================================================================
+Q: Как в java перегнать цфму wave int[] в ogg.  Jorbiz не предлагать
+-----------------------------------------------------------------------------------------------
+A: Преобразование аудиоданных из формата WAV в OGG в Java без использования JOrbis потребует использования другой библиотеки, которая поддерживает как чтение аудиоданных WAV, так и кодирование в OGG. Одним из возможных вариантов может быть использование сочетания библиотек AudioInputStream (для чтения WAV) из javax.sound.sampled и Xiph.Org's libvorbis (через JNI или другой Java-совместимый интерфейс).
+
+Вот примерный план действий по реализации этого процесса:
+
+1. Используйте AudioInputStream для загрузки файла WAV и извлечения аудиоданных. Это может выглядеть примерно так:
+   ```java
+   AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("input.wav"));
+   AudioFormat format = audioInputStream.getFormat();
+   ```
+
+2. Полученные данные следует в каком-то виде передать в кодировщик OGG. Однако, поскольку libvorbis и Java не могут напрямую работать друг с другом, вам потребуется создать связующий код, что может потребовать использование JNI.
+
+3. Кодируйте аудиоданные в формат OGG с помощью libvorbis:
+    - Для этого вам понадобится загрузить и настроить библиотеку libvorbis. Это может потребовать написания обёртки на C/C++, которая будет взаимодействовать с Java через JNI.
+    - Вы можете воспользоваться предварительно скомпилированными версиями libvorbis или скомпилировать её самостоятельно под вашу систему.
+
+4. Сохраните выходные данные OGG в файл или обработайте иным образом.
+
+Пример кода для шагов 1 и 2:
+```java
+import javax.sound.sampled.*;
+
+public class WavToOggConverter {
+    public static void main(String[] args) throws Exception {
+        // Загрузите аудиоданные из WAV файла
+        File audioFile = new File("input.wav");
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+        AudioFormat format = audioInputStream.getFormat();
+
+        // Теперь данные необходимо передать в libvorbis для кодирования в OGG
+        // Это предполагает написание JNI-обёртки для взаимодействия с libvorbis
+    }
+}
+```
+
+Обратите внимание: написание JNI-обертки и использование нативных библиотек может быть сложным и подвержены ошибкам, особенно в плане управления памятью и возможных утечек памяти. Если JOrbis неудовлетворительный из-за его ограничений или производительности, возможно, вам стоит рассмотреть варианты использования других языков программирования, более тесно интегрированных с собственными библиотеками, такими как C или C++, для части обработки аудиоданных.
+===============================================================================================
+
+===============================================================================================
+Q: Как этосделать с помощью https://github.com/Gagravarr/VorbisJava
+-----------------------------------------------------------------------------------------------
+A: Для использования библиотеки VorbisJava для конвертации аудио из формата WAV в формат OGG Vorbis, вы можете следовать следующему пошаговому процессу. Главный модуль этой библиотеки, который мы будем использовать, это `VorbisEnc`, предназначенный для кодирования аудио.
+
+Прежде всего, убедитесь, что у вас добавлена зависимость VorbisJava в ваш проект. Если вы используете Maven, добавьте следующее в ваш `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>org.gagravarr</groupId>
+    <artifactId>vorbis-java-tika</artifactId>
+    <version>0.8</version>
+</dependency>
+```
+
+Теперь, давайте перейдем к коду:
+
+1. **Чтение WAV файла**: Используйте `AudioInputStream` для чтения WAV файла.
+2. **Конвертация в OGG**: Используйте VorbisEnc для конвертации в OGG.
+
+```java
+import org.gagravarr.ogg.*;
+import org.gagravarr.vorbis.*;
+import javax.sound.sampled.*;
+import java.io.*;
+
+public class WavToOggConverter {
+    public static void main(String[] args) throws Exception {
+        // Загрузите WAV файл
+        File wavFile = new File("input.wav");
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(wavFile);
+        AudioFormat audioFormat = audioInputStream.getFormat();
+
+        // Проверяем, поддерживается ли аудио формат
+        if (audioFormat.getEncoding() != AudioFormat.Encoding.PCM_SIGNED) {
+            throw new IllegalArgumentException("Only PCM signed audio format is supported");
+        }
+
+        int channels = audioFormat.getChannels();
+        float sampleRate = audioFormat.getSampleRate();
+
+        // Создание файла OGG для записи
+        FileOutputStream outputStream = new FileOutputStream("output.ogg");
+        OggFile oggFile = new OggFile(outputStream);
+        VorbisFile vorbisFile = new VorbisFile(oggFile);
+
+        // Создание энкодера
+        VorbisInfo vorbisInfo = new VorbisInfo(channels, (int) sampleRate, 0);
+        VorbisComment vorbisComment = new VorbisComment();
+        vorbisComment.addComment("ENCODER", "VorbisJava");
+        VorbisSetup vorbisSetup = VorbisEncoder.init(vorbisInfo, vorbisComment);
+
+        VorbisAudioData vad;
+        byte[] buffer = new byte[4096];
+        int bytesRead;
+
+        while ((bytesRead = audioInputStream.read(buffer)) != -1) {
+            vad = new VorbisAudioData(buffer, 0, bytesRead);
+            vorbisFile.writeAudioData(vad);
+        }
+
+        // Закрываем и флашим данные на диск
+        vorbisFile.close();
+        oggFile.close();
+        outputStream.close();
+    }
+}
+```
+
+В данном случае:
+- Мы сначала открываем WAV файл через `AudioSystem`.
+- Проверяем, что файл имеет подходящий формат.
+- Создаем файл OGG для записи и инициализируем Vorbis-энкодер.
+- Читаем данные из WAV и записываем в OGG с помощью Vorbis.
+
+Учтите, что код выше является базовым примером. Вам возможно потребуется более детальная работа с аудио данными, дополнительные настройки энкодера, обработка возможных исключений и т.д.
+===============================================================================================

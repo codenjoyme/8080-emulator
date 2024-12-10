@@ -1,0 +1,247 @@
+DATE: 1733411964622
+
+===============================================================================================
+Q: Вот тут мне надо, чтобы числа во внутрях json не были Double а Integer
+            Gson gson = new Gson();
+            JsonElement jsonElement = JsonParser.parseString(data);
+
+            List<Object> values = parseJson(jsonElement, gson, List.class);
+-----------------------------------------------------------------------------------------------
+A: Для того чтобы в получаемом JSON числа не были представлены как `Double`, а были `Integer`, нужно создать пользовательский адаптер для десериализации. Этот адаптер будет проверять каждое число и превращать его в `Integer`, если это возможно.
+
+Пример создания адаптера:
+
+```java
+import com.google.gson.*;
+import java.lang.reflect.Type;
+
+public class IntegerTypeAdapter extends TypeAdapter<Number> {
+
+    @Override
+    public void write(JsonWriter out, Number value) throws IOException {
+        out.value(value);
+    }
+
+    @Override
+    public Number read(JsonReader in) throws IOException {
+        if (in.peek() == JsonToken.NULL) {
+            in.nextNull();
+            return null;
+        }
+        try {
+            double doubleValue = in.nextDouble();
+            if(doubleValue == (int) doubleValue) {
+                return (int) doubleValue;
+            } else {
+                return doubleValue;
+            }
+        } catch (NumberFormatException e) {
+            throw new JsonSyntaxException(e);
+        }
+    }
+}
+```
+
+После создания адаптера, его нужно зарегистрировать при создании экземпляра `Gson`:
+
+```java
+Gson gson = new GsonBuilder()
+    .registerTypeAdapter(Double.class, new IntegerTypeAdapter())
+    .create();
+JsonElement jsonElement = JsonParser.parseString(data);
+
+List<Object> values = gson.fromJson(jsonElement, List.class);
+```
+
+Теперь `gson` будет использовать наш адаптер `IntegerTypeAdapter` для обработки чисел при десериализации. Это позволит автоматически преобразовать числа из JSON в `Integer`, если они являются целыми, или оставить их как `Double`, если они содержат дробную часть.
+
+Учтите, что этот адаптер работает только с типом `Double.class`. Если в вашем JSON числа представлены как `Integer` или другие типы чисел, этот код может не сработать должным образом. В таком случае адаптеры нужно будет подстроить под конкретные нужды.
+===============================================================================================
+
+===============================================================================================
+Q: не отрабатывает вообще
+-----------------------------------------------------------------------------------------------
+A: Прошу прощения за недочёт. Давайте попробуем другой подход. Мы будем использовать класс `TypeAdapter` для `Number`, чтобы обработать все числовые типы данных.
+
+Давайте создадим адаптер, который будет проверять каждое число и преобразовывать его в `Integer`, если это возможно, иначе в `Double`.
+
+```java
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
+
+import java.io.IOException;
+
+public class NumberTypeAdapter extends TypeAdapter<Number> {
+
+    @Override
+    public Number read(JsonReader in) throws IOException {
+        JsonToken token = in.peek();
+        switch (token) {
+            case NUMBER:
+                String numberStr = in.nextString();
+                if (numberStr.contains(".") || numberStr.contains("e") || numberStr.contains("E")) {
+                    return Double.parseDouble(numberStr);
+                } else {
+                    return Integer.parseInt(numberStr);
+                }
+            case NULL:
+                in.nextNull();
+                return null;
+            default:
+                throw new JsonSyntaxException("Expected number but was " + token);
+        }
+    }
+
+    @Override
+    public void write(JsonWriter out, Number value) throws IOException {
+        out.value(value);
+    }
+}
+```
+
+Теперь давайте зарегистрируем этот адаптер в `GsonBuilder` и применим `Gson` для разбора JSON:
+
+```java
+Gson gson = new GsonBuilder()
+    .registerTypeAdapter(Number.class, new NumberTypeAdapter())
+    .create();
+
+JsonElement jsonElement = JsonParser.parseString(data);
+Type listType = new TypeToken<List<Object>>(){}.getType();
+List<Object> values = gson.fromJson(jsonElement, listType);
+
+// Проверяем результат
+System.out.println(values);
+```
+
+Здесь мы зарегистрировали наш `NumberTypeAdapter` для класса `Number`, что охватывает `Integer`, `Double` и другие числовые типы, используемые в JSON. Это позволит точно контролировать, как числа десериализуются в зависимости от их представления в JSON-строке.
+
+Убедитесь, что JSON, который вы обрабатываете, корректен и что все числовые значения соответствуют вашим ожиданиям. Если возникнут дополнительные вопросы или нужна дополнительная помощь, не стесняйтесь спрашивать!
+===============================================================================================
+
+===============================================================================================
+Q: тоже ничего
+-----------------------------------------------------------------------------------------------
+A: Извините за предыдущие неудачные попытки. Предлагаю другой метод решения вашей проблемы. Этот метод будет использовать `JsonDeserializer` для чтения JSON и определения типа числа на этапе считывания.
+
+Создадим кастомный `JsonDeserializer<Number>` для преобразования любых чисел в `Integer` или `Double`, если это необходимо. На этот раз мы сосредоточимся именно на полях, а не на глобальной обработке чисел во всём JSON.
+
+```java
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.List;
+
+
+public class CustomNumberDeserializer implements JsonDeserializer<Number> {
+
+    @Override
+    public Number deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
+        if (json.isJsonPrimitive()) {
+            JsonPrimitive primitive = json.getAsJsonPrimitive();
+            if (primitive.isNumber()) {
+                double doubleValue = primitive.getAsDouble();
+                if (doubleValue == (int) doubleValue) {
+                    return (int) doubleValue;
+                } else {
+                    return doubleValue;
+                }
+            }
+        }
+        throw new JsonParseException("Expected a number but was " + json);
+    }
+
+    public static void main(String[] args) {
+        String data = "[1.0, 2, 3.5, 4, 5.0]";
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Number.class, new CustomNumberDeserializer());
+        Gson gson = builder.create();
+
+        Type listType = new TypeToken<List<Number>>(){}.getType();
+        List<Number> numbers = gson.fromJson(data, listType);
+        System.out.println(numbers);
+    }
+}
+```
+Этот код использует `JsonDeserializer<Number>`, который проверяет, является ли числовое значение целым или с плавающей точкой, и преобразует его соответственно. Этот десериализатор зарегистрирован для типа `Number`, что охватывает как `Integer`, так и `Double`.
+
+Попробуйте запустить этот пример и убедитесь, что он корректно преобразует значения из JSON.
+
+Если это не сработает или требуется применение этого подхода в вашем основном коде, укажите, пожалуйста, больше деталей о структуре данных, которую вы обрабатываете, чтобы я мог предложить более конкретное решение.
+===============================================================================================
+
+===============================================================================================
+Q: Тоже ничего
+-----------------------------------------------------------------------------------------------
+A: Извините за предыдущие недоразумения. Давайте попробуем другой подход, который будет более надёжно работать с JSON-структурами, содержащими числа как с плавающей точкой, так и целые числа.
+
+Вам нужно использовать пользовательский `TypeAdapterFactory`, чтобы обработать все возможные варианты чисел в вашем JSON. Этот фабричный класс будет проверять, какие числа являются целыми, а какие нет, и соответствующим образом их преобразовывать.
+
+Вот пример того, как можно создать такой `TypeAdapterFactory`:
+
+```java
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
+import java.io.IOException;
+
+class IntegerTypeAdapterFactory implements TypeAdapterFactory {
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+        if (type.getRawType() != Number.class) {
+            return null; // если это не число, используем дефолтные адаптеры
+        }
+
+        return (TypeAdapter<T>) new TypeAdapter<Number>() {
+            @Override
+            public Number read(JsonReader in) throws IOException {
+                JsonToken jsonToken = in.peek();
+                switch (jsonToken) {
+                    case NUMBER:
+                        String numberStr = in.nextString();
+                        try {
+                            return Integer.parseInt(numberStr);
+                        } catch (NumberFormatException e) {
+                            return Double.parseDouble(numberStr);
+                        }
+                    case NULL:
+                        in.nextNull();
+                        return null;
+                    default:
+                        throw new JsonSyntaxException("Expected number but was " + jsonToken);
+                }
+            }
+
+            @Override
+            public void write(JsonWriter out, Number value) throws IOException {
+                out.value(value);
+            }
+        };
+    }
+}
+```
+
+Этот фабричный класс проверяет тип каждого числа во время десериализации и преобразует его либо в `Integer`, либо в `Double` в зависимости от содержания.
+
+Пример использования:
+
+```java
+public static void main(String[] args) {
+    String json = "[1, 2.0, 3, 4.25, 5]";
+
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapterFactory(new IntegerTypeAdapterFactory())
+            .create();
+
+    Object result = gson.fromJson(json, Object.class);
+    System.out.println(result);
+}
+```
+
+Пожалуйста, попробуйте этот подход. Если он не решит вашу проблему, возможно, потребуются дополнительные детали о вашем JSON-документе или о специфичных требованиях к обработке чисел.
+===============================================================================================

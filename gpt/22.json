@@ -1,0 +1,188 @@
+DATE: 1733233275036
+
+===============================================================================================
+Q: У меня есть JS файл мне надо сделать точную копию делающую это на java
+"""
+var Wav = function(opt_params){
+
+    this._sampleRate = opt_params && opt_params.sampleRate ? opt_params.sampleRate : 44100;
+
+    this._channels = opt_params && opt_params.channels ? opt_params.channels : 2;
+
+    this._eof = true;
+
+    this._bufferNeedle = 0;
+
+    this._buffer;
+
+};
+
+Wav.prototype.setBuffer = function(buffer){
+    this._buffer = this.getWavUint8Array(buffer);
+    this._bufferNeedle = 0;
+    this._internalBuffer = '';
+    this._hasOutputHeader = false;
+    this._eof = false;
+};
+
+Wav.prototype.getBuffer = function(len){
+    var rt;
+    if( this._bufferNeedle + len >= this._buffer.length ){
+        rt = new Uint8Array(this._buffer.length - this._bufferNeedle);
+        this._eof = true;
+    }
+    else {
+        rt = new Uint8Array(len);
+    }
+
+    for(var i=0; i<rt.length; i++){
+        rt[i] = this._buffer[i+this._bufferNeedle];
+    }
+    this._bufferNeedle += rt.length;
+
+    return  rt.buffer;
+};
+
+Wav.prototype.eof = function(){
+    return this._eof;
+};
+
+const WAV_HEADER_SIZE = 22;
+
+Wav.prototype.getWavUint8Array = function(buffer){
+    var intBuffer = new Int16Array(WAV_HEADER_SIZE);
+    var byteBuffer = new Uint8Array(buffer.length + WAV_HEADER_SIZE * 2);
+
+    intBuffer[0] = 0x4952; // "RI"
+    intBuffer[1] = 0x4646; // "FF"
+
+    intBuffer[2] = (buffer.length + WAV_HEADER_SIZE * 2 - 8) & 0x0000ffff; // RIFF size
+    intBuffer[3] = ((buffer.length + WAV_HEADER_SIZE * 2 - 8) & 0xffff0000) >> 16; // RIFF size
+
+    intBuffer[4] = 0x4157; // "WA"
+    intBuffer[5] = 0x4556; // "VE"
+
+    intBuffer[6] = 0x6d66; // "fm"
+    intBuffer[7] = 0x2074; // "t "
+
+    intBuffer[8] = 0x0010; // fmt chunksize: 16
+    intBuffer[9] = 0x0000; //
+
+    intBuffer[10] = 0x0001; // format tag : 1
+    intBuffer[11] = this._channels; // channels: 1
+
+    intBuffer[12] = this._sampleRate & 0x0000ffff; // sample per sec
+    intBuffer[13] = (this._sampleRate & 0xffff0000) >> 16; // sample per sec
+
+    intBuffer[14] = (this._channels*this._sampleRate) & 0x0000ffff; // byte per sec
+    intBuffer[15] = ((this._channels*this._sampleRate) & 0xffff0000) >> 16; // byte per sec
+
+    intBuffer[16] = 0x0001; // block align
+    intBuffer[17] = 0x0008; // bit per sample
+    intBuffer[18] = 0x6164; // "da"
+    intBuffer[19] = 0x6174; // "ta"
+    intBuffer[20] = (buffer.length) & 0x0000ffff; // data size[byte]
+    intBuffer[21] = ((buffer.length) & 0xffff0000) >> 16; // data size[byte]\t
+
+    /* Copy header */
+    var dptr = 0;
+    for (var i = 0; i < WAV_HEADER_SIZE; ++i) {
+        byteBuffer[dptr++] = 0377 & intBuffer[i];
+        byteBuffer[dptr++] = intBuffer[i] >> 8;
+    }
+
+    var sptr = 0;
+    for (var i = 0; i < buffer.length; i++) {
+        byteBuffer[dptr++] = buffer[i];
+    }
+
+    return byteBuffer;
+};
+
+"""
+Пожалуйста не делай сокращений и оптимизаций в коде, просто конвертируй один формат в другой, чтобы оно максимально было работоспособным и выглядеть как исходный код на js. так же мне не нужны никаки пояснения - только код
+-----------------------------------------------------------------------------------------------
+A: ```java
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
+public class Wav {
+    private int sampleRate;
+    private int channels;
+    private boolean eof;
+    private int bufferNeedle;
+    private byte[] buffer;
+    private String internalBuffer;
+    private boolean hasOutputHeader;
+    private static final int WAV_HEADER_SIZE = 22;
+
+    public Wav(Integer sampleRate, Integer channels) {
+        this.sampleRate = sampleRate != null ? sampleRate : 44100;
+        this.channels = channels != null ? channels : 2;
+        this.eof = true;
+        this.bufferNeedle = 0;
+    }
+
+    public void setBuffer(byte[] inputBuffer) {
+        this.buffer = getWavUint8Array(inputBuffer);
+        this.bufferNeedle = 0;
+        this.internalBuffer = "";
+        this.hasOutputHeader = false;
+        this.eof = false;
+    }
+
+    public ByteBuffer getBuffer(int len) {
+        int requiredLen = Math.min(len, this.buffer.length - this.bufferNeedle);
+        byte[] rt = new byte[requiredLen];
+        for (int i = 0; i < requiredLen; i++) {
+            rt[i] = this.buffer[this.bufferNeedle + i];
+        }
+        this.bufferNeedle += requiredLen;
+        if (this.bufferNeedle >= this.buffer.length) {
+            this.eof = true;
+        }
+        return ByteBuffer.wrap(rt);
+    }
+
+    public boolean eof() {
+        return this.eof;
+    }
+
+    private byte[] getWavUint8Array(byte[] buffer) {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(WAV_HEADER_SIZE * 2 + buffer.length);
+        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+
+        byteBuffer.putShort((short) 0x4952); // "RI"
+        byteBuffer.putShort((short) 0x4646); // "FF"
+
+        int riffSize = buffer.length + WAV_HEADER_SIZE * 2 - 8;
+        byteBuffer.putInt(riffSize);
+
+        byteBuffer.putShort((short) 0x4157); // "WA"
+        byteBuffer.putShort((short) 0x4556); // "VE"
+
+        byteBuffer.putShort((short) 0x6d66); // "fm"
+        byteBuffer.putShort((short) 0x2074); // "t "
+
+        byteBuffer.putInt(16); // fmt chunksize: 16
+        byteBuffer.putShort((short) 1); // format tag : 1
+        byteBuffer.putShort((short) this.channels); // channels:
+
+        byteBuffer.putInt(this.sampleRate); // sample per sec
+
+        int byteRate = this.channels * this.sampleRate;
+        byteBuffer.putInt(byteRate); // byte per sec
+
+        byteBuffer.putShort((short) (this.channels * 2)); // block align
+        byteBuffer.putShort((short) 16); // bit per sample
+        byteBuffer.putShort((short) 0x6164); // "da"
+        byteBuffer.putShort((short) 0x6174); // "ta"
+        byteBuffer.putInt(buffer.length); // data size[byte]
+
+        byteBuffer.put(buffer);
+
+        return byteBuffer.array();
+    }
+}
+```
+===============================================================================================

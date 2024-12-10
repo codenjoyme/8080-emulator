@@ -1,0 +1,77 @@
+DATE: 1733109218348
+
+===============================================================================================
+Q: Переведи на русский
+; For the purposes of this test program, the machine state consists of:
+;        a 2 byte memory operand, followed by
+;        the registers iy,ix,hl,de,bc,af,sp
+; for a total of 16 bytes.
+
+; The program tests instructions (or groups of similar instructions)
+; by cycling through a sequence of machine states, executing the test
+; instruction for each one and running a 32-bit crc over the resulting
+; machine states.  At the end of the sequence the crc is compared to
+; an expected value that was found empirically on a real Z80.
+
+; A test case is defined by a descriptor which consists of:
+;        a flag mask byte,
+;        the base case,
+;        the incement vector,
+;        the shift vector,
+;        the expected crc,
+;        a short descriptive message.
+;
+; The flag mask byte is used to prevent undefined flag bits from
+; influencing the results.  Documented flags are as per Mostek Z80
+; Technical Manual.
+;
+; The next three parts of the descriptor are 20 byte vectors
+; corresponding to a 4 byte instruction and a 16 byte machine state.
+; The first part is the base case, which is the first test case of
+; the sequence.  This base is then modified according to the next 2
+; vectors.  Each 1 bit in the increment vector specifies a bit to be
+; cycled in the form of a binary counter.  For instance, if the byte
+; corresponding to the accumulator is set to 0ffh in the increment
+; vector, the test will be repeated for all 256 values of the
+; accumulator.  Note that 1 bits don't have to be contiguous.  The
+; number of test cases 'caused' by the increment vector is equal to
+; 2^(number of 1 bits).  The shift vector is similar, but specifies a
+; set of bits in the test case that are to be successively inverted.
+; Thus the shift vector 'causes' a number of test cases equal to the
+; number of 1 bits in it.
+
+; The total number of test cases is the product of those caused by the
+; counter and shift vectors and can easily become unweildy.  Each
+; individual test case can take a few milliseconds to execute, due to
+; the overhead of test setup and crc calculation, so test design is a
+; compromise between coverage and execution time.
+
+; This program is designed to detect differences between
+; implementations and is not ideal for diagnosing the causes of any
+; discrepancies.  However, provided a reference implementation (or
+; real system) is available, a failing test case can be isolated by
+; hand using a binary search of the test space.
+-----------------------------------------------------------------------------------------------
+A: Для целей этой тестовой программы состояние машины состоит из:
+- 2-байтового операнда памяти, за которым следуют
+- регистры iy, ix, hl, de, bc, af, sp
+- всего 16 байтов.
+
+Программа тестирует инструкции (или группы похожих инструкций) за счёт циклического прохождения через последовательность состояний машины, выполняет тестовую инструкцию для каждого и прогоняет 32-битную CRC через полученные состояния машины. В конце последовательности CRC сравнивается с ожидаемым значением, которое было получено эмпирическим путём на реальном Z80.
+
+Тестовый случай определяется дескриптором, который состоит из:
+- байта маски флагов,
+- базового случая,
+- вектора приращения,
+- вектора сдвига,
+- ожидаемой CRC,
+- краткого описательного сообщения.
+
+Байт маски флагов используется для предотвращения влияния неопределенных битов флагов на результаты. Документированные флаги соответствуют Техническому руководству Mostek Z80.
+
+Следующие три части дескриптора - это 20-байтовые векторы, соответствующие 4-байтовой инструкции и 16-байтовому состоянию машины. Первая часть - базовый случай, который является первым тестовым случаем последовательности. Эта база затем модифицируется в соответствии со следующими 2 векторами. Каждый бит 1 в векторе приращения указывает, какой бит будет зацикливаться в виде двоичного счётчика. Вектор сдвига аналогичен, но указывает набор битов в тестовом случае, которые должны быть последовательно инвертированы.
+
+Общее количество тестовых случаев - это произведение чисел, вызванных счётчиком и векторами сдвига, и оно может легко стать громоздким. Отдельный тестовый случай может занимать несколько миллисекунд, из-за накладных расходов на настройку теста и расчет CRC, поэтому дизайн теста - это компромисс между охватом и временем выполнения.
+
+Эта программа предназначена для выявления различий между реализациями и не идеальна для диагностики причин любых расхождений. Однако, если доступна эталонная реализация (или реальная система), тест с ошибкой может быть изолирован вручную с помощью бинарного поиска в тестовом пространстве.
+===============================================================================================

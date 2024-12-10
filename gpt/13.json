@@ -1,0 +1,141 @@
+DATE: 1733128586544
+
+===============================================================================================
+Q: Могу я как-то устранить дублирование?
+    public static void hex(StringBuilder result, List<Integer> bites) {
+        boolean first = true;
+        for (Integer bite : bites) {
+            if (first) {
+                first = false;
+            } else {
+                result.append(' ');
+            }
+            result.append(hex8(bite));
+        }
+    }
+
+    public static void hex(StringBuilder result, int[] bites) {
+        boolean first = true;
+        for (Integer bite : bites) {
+            if (first) {
+                first = false;
+            } else {
+                result.append(' ');
+            }
+            result.append(hex8(bite));
+        }
+    }
+-----------------------------------------------------------------------------------------------
+A: Да, вы можете устранить дублирование кода, объединив эти два метода в один, используя обобщенный подход. Рассмотрим возможность использования интерфейса `Iterable<Integer>`, который может быть реализован как `List<Integer>`, так и массивами примитивов через специальный адаптер. Вот как это можно сделать:
+
+```java
+public static void hex(StringBuilder result, Iterable<Integer> bites) {
+    boolean first = true;
+    for (Integer bite : bites) {
+        if (first) {
+            first = false;
+        } else {
+            result.append(' ');
+        }
+        result.append(hex8(bite));
+    }
+}
+
+public static Iterable<Integer> arrayToIterable(int[] array) {
+    return new Iterable<Integer>() {
+        @Override
+        public Iterator<Integer> iterator() {
+            return new Iterator<Integer>() {
+                private int index = 0;
+
+                @Override
+                public boolean hasNext() {
+                    return index < array.length;
+                }
+
+                @Override
+                public Integer next() {
+                    return array[index++];
+                }
+            };
+        }
+    };
+}
+```
+
+Затем вы можете вызывать общий метод `hex` для обработки как `List<Integer>`, так и массивов `int`:
+
+```java
+StringBuilder result = new StringBuilder();
+List<Integer> bitesList = Arrays.asList(1, 2, 3);
+int[] bitesArray = {1, 2, 3};
+
+hex(result, bitesList);  // Использование с List<Integer>
+hex(result, arrayToIterable(bitesArray));  // Использование с int[]
+```
+
+Этот подход избавляет вас от необходимости дублировать функциональное содержимое метода `hex`, обеспечивая его переиспользование как для списков, так и для массивов. Обратите внимание, что код выше добавляет немного сложности из-за необходимости конвертации массива в `Iterable`, но он устраняет дублирование бизнес-логики (формирование строки в шестнадцатеричном формате).
+===============================================================================================
+
+===============================================================================================
+Q: А проще?
+-----------------------------------------------------------------------------------------------
+A: Хорошо, давайте попробуем простой подход, используя перегрузку метода для принятия массива `int[]` и упаковки его в список перед вызовом основного метода `hex`. Это проще, чем создание собственного итератора, и позволит переиспользовать большую часть кода:
+
+```java
+import java.util.Arrays;
+import java.util.List;
+
+public static void hex(StringBuilder result, List<Integer> bites) {
+    boolean first = true;
+    for (Integer bite : bites) {
+        if (first) {
+            first = false;
+        } else {
+            result.append(' ');
+        }
+        result.append(hex8(bite));
+    }
+}
+
+public static void hex(StringBuilder result, int[] bites) {
+    // Конвертируем массив в список используя метод Arrays.stream() и методы упаковки
+    hex(result, Arrays.stream(bites).boxed().toList());
+}
+```
+
+Таким образом, всё преобразование из `int[]` в `List<Integer>` сделано во втором методе `hex`, который затем делегирует выполнение основного метода первому `hex`. Это позволяет избежать дублирования логики помещения чисел в строку с разделителями и конвертацией в шестнадцатеричный формат. Этот метод более компактен и проще для понимания по сравнению с предыдущими решениями, так как использует стандартные методы Java для упаковки примитивных типов.
+===============================================================================================
+
+===============================================================================================
+Q: а так чтобы без стримов?
+-----------------------------------------------------------------------------------------------
+A: Конечно, вы можете преобразовать массив `int[]` в `List<Integer>` без использования стримов, просто обернув его в список вручную. Давайте рассмотрим этот вариант:
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public static void hex(StringBuilder result, List<Integer> bites) {
+    boolean first = true;
+    for (Integer bite : bites) {
+        if (first) {
+            first = false;
+        } else {
+            result.append(' ');
+        }
+        result.append(hex8(bite));
+    }
+}
+
+public static void hex(StringBuilder result, int[] bites) {
+    List<Integer> biteList = new ArrayList<>(bites.length);
+    for (int bite : bites) {
+        biteList.add(bite);
+    }
+    hex(result, biteList);
+}
+```
+
+В этом случае `hex(StringBuilder result, int[] bites)` создаёт новый `ArrayList<Integer>`, заполняет его элементами из `int[]`, а затем вызывает первый метод `hex` с этим списком. Это позволяет избежать дублирования основного кода обработки и конкатенации строк и оставляет только необходимость преобразования типов данных, что делается только в перегрузке метода. Это решение хорошо подходит, если вы хотите избежать использования Java Streams API.
+===============================================================================================

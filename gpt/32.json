@@ -1,0 +1,67 @@
+DATE: 1733409577067
+
+===============================================================================================
+Q: Вот тут мне надо, чтобы если null есть среди значений, то записывалось null в json
+
+    private String asString(Object data) {
+        boolean isJson = data instanceof Map || data instanceof List;
+        if (isJson) {
+            return new GsonBuilder().setPrettyPrinting()
+                    .registerTypeAdapter(HashMap.class, new MapSerializer())
+                    .create().toJson(data);
+        } else {
+            return data.toString();
+        }
+    }
+-----------------------------------------------------------------------------------------------
+A: Чтобы задать поведение Gson при сериализации значений `null`, нужно включить опцию `serializeNulls()` в конструкторе `GsonBuilder`. Вот как это можно сделать в вашем случае:
+
+```java
+private String asString(Object data) {
+    boolean isJson = data instanceof Map || data instanceof List;
+    if (isJson) {
+        return new GsonBuilder()
+                .setPrettyPrinting()
+                .serializeNulls() // включаем сериализацию null
+                .registerTypeAdapter(HashMap.class, new MapSerializer())
+                .create()
+                .toJson(data);
+    } else {
+        return data == null ? null : data.toString();
+    }
+}
+```
+
+Также стоит обратить внимание на случай, когда `data` равно `null`, и не является ни `Map`, ни `List` — такой случай должен возвращать `null`. Это я учел во второй ветке условия.
+===============================================================================================
+
+===============================================================================================
+Q: А так же чтобы не экскейпило символы '
+  {
+    "input": [
+      "\u0027$\u0027"
+    ],
+-----------------------------------------------------------------------------------------------
+A: Для того, чтобы предотвратить экранирование определённых символов, в частности символа апострофа ('), можно использовать `GsonBuilder` с `disableHtmlEscaping()`. Эта опция отключит HTML-экранирование в Gson.
+
+Пример обновлённого метода:
+
+```java
+private String asString(Object data) {
+    boolean isJson = data instanceof Map || data instanceof List;
+    if (isJson) {
+        return new GsonBuilder()
+                .setPrettyPrinting()
+                .serializeNulls() // Включаем сериализацию null
+                .disableHtmlEscaping() // Отключаем HTML-экранирование
+                .registerTypeAdapter(HashMap.class, new MapSerializer())
+                .create()
+                .toJson(data);
+    } else {
+        return data == null ? null : data.toString();
+    }
+}
+```
+
+Теперь символы, такие как апостроф, не будут экранироваться, и в JSON будут попадать в их исходном виде.
+===============================================================================================

@@ -1,0 +1,135 @@
+DATE: 1733108661519
+
+===============================================================================================
+Q: Вот данные для теста команд ассемблера
+"""
+add16:    db      0ffh                                         ; flag mask
+
+                                                               ; first
+          db      09h,0,0,0                                    ; insn
+          dw      0c4a5h,0c4c7h,0d226h,0a050h,058eah,08566h    ; memop,hliy,hlix,hl,de,bc
+          db      0c6h,0deh                                    ; flags,acc
+          dw      09bc9h                                       ; sp
+
+                                                               ; second (512 cycles)
+          db      030h,0,0,0                                   ; insn
+          dw      0,0,0,0,0f821h,0                             ; memop,hliy,hlix,hl,de,bc
+          db      0,0                                          ; flags,acc
+          dw      0000h                                        ; sp
+
+                                                               ; third (38 cycles)
+          db      0,0,0,0                                      ; insn
+          dw      0,0,0,-1,-1,-1                               ; memop,hliy,hlix,hl,de,bc
+          db      0d7h,0                                       ; flags,acc
+          dw      -1                                           ; sp
+
+;crc      db      014h, 047h, 04bh, 0a6h                       ; original expected crc
+          db      048h, 08Bh, 07fh, 0dah                       ; current expected crc
+          db      'DAD <B,D,H,SP>...............$'
+"""
+Что тут такое memop,hliy,hlix ?
+-----------------------------------------------------------------------------------------------
+A: В данном фрагменте кода, "memop", "hliy", и "hlix" вероятно обозначают различные адреса или регистры в контексте работы ассемблерной операции "add16". Наиболее вероятно:
+
+- "memop" может быть адресом памяти или адресной операцией, вовлеченной в операцию сложения.
+- "hliy" и "hlix" могут относиться к конкретным регистрам или местоположениям памяти, которые используются в процессе сложения. Названия могут относиться к вариантам регистров HL в архитектуре процессоров, например, в Extended Indexing или какие-то специфичные управляющие регистры.
+
+Таким образом, эти термины касаются аспектов управления данными и адресацией в процессе выполнения команды `add16` на уровне ассемблера.
+===============================================================================================
+
+===============================================================================================
+Q: Вот смотри что другие показывают
+          dw      09140h,07e3ch,07a67h,0df6dh,05b61h,00b29h    ; memop,hliy,hlix,hl,de,bc
+          ; aluop a,nn (28,672 cycles)
+
+          dw      0c53eh,0573ah,04c4dh,msbt,0e309h,0a666h      ; memop,hliy,hlix,hl,de,bc
+          ; aluop a,<b,c,d,e,h,l,(hl),a> (753,664 cycles)
+
+Может это маски команд?
+-----------------------------------------------------------------------------------------------
+A: Исходя из информации, представленной в последних примерах данных, кажется более вероятным, что значения, указанные после комментария "; memop, hliy, hlix, hl, de, bc", представляют собой наборы данных или параметры, которые используются в различных ассемблерных инструкциях.
+
+Особенно, приведённые комментарии, например "; aluop a,nn" и "; aluop a,<b,c,d,e,h,l,(hl),a>", указывают на то, что эти значения могут относиться к операциям арифметико-логического устройства (ALU) процессора, где "nn", "b", "c" и т.д. означают различные операнды, с которыми производится операция.
+
+В данном контексте:
+- "memop" может относиться к главной операции над памятью или основному операнду.
+- "hliy" и "hlix" возможно относятся к специфическим регистрам или значениям, связанным с индексацией или адресацией в памяти.
+- "hl", "de", "bc" — это классические регистры, используемые в многих типах процессоров (например, Z80 и его аналоги), в которых "hl" может быть регистром указателя, "de" и "bc" могут использоваться для хранения временных данных или для вычислений.
+
+Таким образом, скорее всего, эти двухбайтовые значения (`dw`) приведены как часть параметров, которые задействуются в различных ассемблерных командах для выполнения спецификов операций, описываемых в комментариях. Это могут быть как маски, так и другие параметры, влияющие на выполнение команды.
+===============================================================================================
+
+===============================================================================================
+Q: Вот что пишется в инструкции:
+"""
+ For the purposes of this test program, the machine state consists of:
+;        a 2 byte memory operand, followed by
+;        the registers iy,ix,hl,de,bc,af,sp
+; for a total of 16 bytes.
+
+; The program tests instructions (or groups of similar instructions)
+; by cycling through a sequence of machine states, executing the test
+; instruction for each one and running a 32-bit crc over the resulting
+; machine states.  At the end of the sequence the crc is compared to
+; an expected value that was found empirically on a real Z80.
+
+; A test case is defined by a descriptor which consists of:
+;        a flag mask byte,
+;        the base case,
+;        the incement vector,
+;        the shift vector,
+;        the expected crc,
+;        a short descriptive message.
+;
+; The flag mask byte is used to prevent undefined flag bits from
+; influencing the results.  Documented flags are as per Mostek Z80
+; Technical Manual.
+;
+; The next three parts of the descriptor are 20 byte vectors
+; corresponding to a 4 byte instruction and a 16 byte machine state.
+; The first part is the base case, which is the first test case of
+; the sequence.  This base is then modified according to the next 2
+; vectors.  Each 1 bit in the increment vector specifies a bit to be
+; cycled in the form of a binary counter.  For instance, if the byte
+; corresponding to the accumulator is set to 0ffh in the increment
+; vector, the test will be repeated for all 256 values of the
+; accumulator.  Note that 1 bits don't have to be contiguous.  The
+; number of test cases 'caused' by the increment vector is equal to
+; 2^(number of 1 bits).  The shift vector is similar, but specifies a
+; set of bits in the test case that are to be successively inverted.
+; Thus the shift vector 'causes' a number of test cases equal to the
+; number of 1 bits in it.
+
+; The total number of test cases is the product of those caused by the
+; counter and shift vectors and can easily become unweildy.  Each
+; individual test case can take a few milliseconds to execute, due to
+; the overhead of test setup and crc calculation, so test design is a
+; compromise between coverage and execution time.
+
+; This program is designed to detect differences between
+; implementations and is not ideal for diagnosing the causes of any
+; discrepancies.  However, provided a reference implementation (or
+; real system) is available, a failing test case can be isolated by
+; hand using a binary search of the test space.
+"""
+Чем это может помочь в понимании что такое ; memop,hliy,hlix,?
+"""
+      dw      09140h,07e3ch,07a67h,0df6dh,05b61h,00b29h    ; memop,hliy,hlix,hl,de,bc
+          ; aluop a,nn (28,672 cycles)
+
+          dw      0c53eh,0573ah,04c4dh,msbt,0e309h,0a666h      ; memop,hliy,hlix,hl,de,bc
+          ; aluop a,<b,c,d,e,h,l,(hl),a> (753,664 cycles)
+"""
+-----------------------------------------------------------------------------------------------
+A: Исходя из предоставленной информации в инструкции, выражается, как устроено тестирование команд процессора, и какие составляющие используются для определения состояния машины для тестирования. Описание даёт понимание об устройстве данных, которые вы видели в строках с "memop, hliy, hlix, hl, de, bc".
+
+В данной структуре:
+- "memop" представляет собой 2-байтовый операнд памяти. Он является первым элементом в 16-байтовом описании состояния машины.
+- Далее следуют регистры: "iy", "ix", "hl", "de", "bc", "af", "sp". В указанном фрагменте кода использованы "hliy" и "hlix" вместо "iy" и "ix" — это может быть либо опечатка, либо специфическое обозначение в контексте тестируемого ассемблера или системы. Эти регистры участвуют в дальнейших операциях и могут изменять своё состояние в зависимости от исполняемых команд и векторов изменений ("increment vector" и "shift vector").
+
+Таким образом, выписка данных вида `dw 09140h,07e3ch,07a67h,0df6dh,05b61h,00b29h` представляет собой конкретные начальные значения для данных 2-байтового операнда памяти и регистров, которые затем модифицируются и проверяются на соответствие ожидаемым результатам посредством вычисления 32-битного CRC.
+
+Когда в комментарии указаны конкретные аритметико-логические операции (например, "aluop a, nn"), данный фрагмент кода демонстрирует, какие операции выполняются над аккумулятором 'a' и как они влияют на состояние регистров и операнд памяти в тестах.
+
+Это помогает в понимании, как формируется и меняется состояние машины при исполнении различных команд ассемблера, что является ключом к тестированию и верификации поведения процессора на различных данных и командах.
+===============================================================================================

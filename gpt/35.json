@@ -1,0 +1,101 @@
+DATE: 1733453182265
+
+===============================================================================================
+Q: Что не так?
+Warning: Nashorn engine is planned to be removed from a future JDK release
+javax.script.ScriptException: <eval>:1:1 Missing space after numeric literal
+0b0111_0111
+ ^ in <eval> at line number 1 at column number 1
+    at jdk.scripting.nashorn/jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:477)
+    at jdk.scripting.nashorn/jdk.nashorn.api.scripting.NashornScriptEngine.compileImpl(NashornScriptEngine.java:544)
+    at jdk.scripting.nashorn/jdk.nashorn.api.scripting.NashornScriptEngine.compileImpl(NashornScriptEngine.java:531)
+    at jdk.scripting.nashorn/jdk.nashorn.api.scripting.NashornScriptEngine.evalImpl(NashornScriptEngine.java:409)
+    at jdk.scripting.nashorn/jdk.nashorn.api.scripting.NashornScriptEngine.eval(NashornScriptEngine.java:162)
+    at java.scripting/javax.script.AbstractScriptEngine.eval(AbstractScriptEngine.java:264)
+    at svofski.Assembler.evalInvoke(Assembler.java:1331)
+    at svofski.Assembler.evaluateExpression2(Assembler.java:1239)
+    at svofski.AssemblerTest.lambda$evaluateExpression2$5(AssemblerTest.java:105)
+    at spec.stuff.FileAssert.lambda$checkJson$1(FileAssert.java:117)
+    at java.base/java.util.ArrayList.forEach(ArrayList.java:1540)
+    at spec.stuff.FileAssert.lambda$checkJson$2(FileAssert.java:111)
+    at spec.stuff.FileAssert.check(FileAssert.java:62)
+    at spec.stuff.FileAssert.checkJson(FileAssert.java:104)
+    at svofski.AssemblerTest.evaluateExpression2(AssemblerTest.java:91)
+    at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+    at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+    at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+    at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+    at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+    at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+    at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+    at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+    at org.junit.rules.TestWatcher$1.evaluate(TestWatcher.java:61)
+    at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+    at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+    at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+    at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+    at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+    at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+    at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+    at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+    at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+    at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+    at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+    at org.junit.runners.Suite.runChild(Suite.java:128)
+    at org.junit.runners.Suite.runChild(Suite.java:27)
+    at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+    at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+    at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+    at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+    at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+    at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+    at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+    at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+    at com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:69)
+    at com.intellij.rt.junit.IdeaTestRunner$Repeater$1.execute(IdeaTestRunner.java:38)
+    at com.intellij.rt.execution.junit.TestsRepeater.repeat(TestsRepeater.java:11)
+    at com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:35)
+    at com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:232)
+    at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:55)
+-----------------------------------------------------------------------------------------------
+A: Ошибка указывает на то, что в скрипте есть проблема с использованием числового литерала в двоичном формате. В частности, сообщение об ошибке "Missing space after numeric literal" и указатель на позицию "^" (в начале строки) говорит о том, что после числового значения 0b0111_0111 должен стоять пробел, а его нет.
+
+Синтакс часто требует разделения элементов кода пробелами для корректного интерпретирования. В данном контексте, прямо указывает на ошибку сразу после "0b0111_0111", что говорит о возможной попытке интерпретатора использовать данное значение в качестве литерала для чего-то ещё, что влечет за собой ошибку. Это может быть связано со спецификой парсера или интерпретатора, которые требуют определённого форматирования кода.
+
+Для решения этой проблемы, необходимо исследовать контекст кода и, возможно, добавить пробел после двоичного числа, если это уместно по логике скрипта. Если же скрипт ожидает какое-то конкретное поведение от этого литерала и его положение в коде критично, необходимо исследовать и другие части скрипта на предмет корректности и соответствия ожиданиям использования.
+
+Возможно, также стоит проверить версию JDK и настройки среды, поскольку проблема может быть связана с изменениями в обработке скриптов в новой версии JDK, как предупреждает первая строка ошибки о планах удаления Nashorn engine в будущих релизах JDK.
+===============================================================================================
+
+===============================================================================================
+Q: я использую
+private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+-----------------------------------------------------------------------------------------------
+A: В данном случае вы используете JavaScript engine, которая предоставляется Nashorn в поздних версиях JDK 8 и выше до Java 15. Настройка вашего `ScriptEngine` выглядит стандартно. Проблема может заключаться в самом скрипте JavaScript, который вы пытаетесь выполнить.
+
+JavaScript, включая его реализацию Nashorn, поддерживает использование двоичных литералов, начинающихся на `0b` или `0B`, за которым следует последовательность из `0` и `1`. Пример поддерживаемого двоичного литерала в JavaScript:
+```javascript
+let num = 0b01110111;
+```
+Однако, vаш код `0b0111_0111`, который содержит символ подчеркивания (`_`), не поддерживается в JavaScript как часть числового литерала. Символы подчеркивания используются в Java для улучшения читаемости числовых литералов, но JavaScript эти символы не поддерживает.
+
+### Решение:
+Уберите символы подчеркивания из вашего двоичного литерала при использовании его в JavaScript:
+```javascript
+let num = 0b01110111;
+```
+
+Используйте этот исправленный скрипт в вашем `ScriptEngine`. Например:
+```java
+ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+try {
+    engine.eval("print(0b01110111)"); // Замените 0b0111_0111 на 0b01110111
+} catch (ScriptException e) {
+    e.printStackTrace();
+}
+```
+Этот код должен корректно выполниться и напечатать число `119`, которое является десятичным представлением двоичного числа `01110111`.
+
+Make sure you update your JavaScript code if you initially use underscores `_` in your numeric literals while working in Java environments.
+===============================================================================================

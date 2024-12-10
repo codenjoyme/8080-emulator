@@ -1,0 +1,203 @@
+DATE: 1733456529551
+
+===============================================================================================
+Q: Мне надо чтобы этот regeexp
+Pattern pattern = Pattern.compile("\\b0x[0-9a-fA-F]+\\b|\\b[0-9][0-9a-fA-F_]*[hbqdHBQD]?\\b|'.'");
+работал так же для чисел
+0b000011010101
+0b0_000__1101_0101
+так же как и
+0000011010101
+и то же для других систем счисления
+-----------------------------------------------------------------------------------------------
+A: Для того чтобы ваш регулярное выражение работало для двоичных чисел, начинающихся с "0b", а также со вставками нижних подчеркиваний между цифрами, вы можете изменить регулярное выражение следующим образом:
+
+```java
+Pattern pattern = Pattern.compile(
+"\b0[xX][0-9a-fA-F_]+\b|\b0[bB][01_]+\b|\b[0-9][0-9a-fA-F_]*[hHbBqQdD]?\b|'.'");
+```
+
+Теперь давайте разберем это:
+1. `\b0[xX][0-9a-fA-F_]+\b` - совпадает с шестнадцатеричными числами, начинающимися с "0x" или "0X", содержащими числа от 0 до 9 и буквы от a до f (обе регистры), разделенные нижними подчеркиваниями.
+2. `\b0[bB][01_]+\b` - совпадает с двоичными числами, начинающимися с "0b" или "0B", содержащими цифры 0 и 1, которые могут быть разделены нижними подчеркиваниями.
+3. `\b[0-9][0-9a-fA-F_]*[hHbBqQdD]?\b` - цифры от 0 до 9, за которыми следуют цифры или буквы (для различных систем счисления), разделенные нижними подчеркиваниями, и необязательный суффикс, указывающий систему счисления (h, b, q, d в разных регистрах).
+4. `'.'` - совпадает с символом в одинарных кавычках.
+
+Этот шаблон должен корректно обрабатывать различные числовые литералы, включая те, у которых есть разделители в виде нижних подчеркиваний.
+===============================================================================================
+
+===============================================================================================
+Q: Соответственно мен надо поменять так же и функцию
+public Integer resolveNumber(String identifier) {
+        if (identifier == null || identifier.length() == 0) return null;
+
+        char first = identifier.charAt(0);
+        if ((first == '\'' || first == '"') && identifier.length() == 3) {
+            return 0xff & identifier.charAt(1);
+        }
+
+        if (identifier.matches("^\\$[0-9a-fA-F]+$")) {
+            Integer test = Integer.parseInt(identifier.substring(1), 16);
+            return test;
+        }
+
+        if (identifier.matches("(^[+-]?[0-9]+).*")) {
+            try {
+                Integer test = Integer.valueOf(identifier);
+                return test;
+            } catch (NumberFormatException e) {
+                // Continue to suffix handling if NumberFormatException occurs
+            }
+
+            char suffix = identifier.charAt(identifier.length() - 1);
+            switch (Character.toLowerCase(suffix)) {
+                case 'd':
+                    try {
+                        Integer test = Integer.parseInt(identifier.substring(0, identifier.length() - 1));
+                        return test;
+                    } catch (NumberFormatException e) {
+                        // Ignoring as returning null will handle it
+                    }
+                    break;
+                case 'h':
+                    try {
+                        Integer test = Integer.parseInt(identifier.substring(0, identifier.length() - 1), 16);
+                        return test;
+                    } catch (NumberFormatException e) {
+                        // Ignoring as returning null will handle it
+                    }
+                    break;
+                case 'b':
+                    try {
+                        Integer test = Integer.parseInt(identifier.substring(0, identifier.length() - 1), 2);
+                        return test;
+                    } catch (NumberFormatException e) {
+                        // Ignoring as returning null will handle it
+                    }
+                    break;
+                case 'q':
+                    String oct = identifier.substring(0, identifier.length() - 1);
+                    for (int i = oct.length(); --i >= 0;) {
+                        char c = oct.charAt(i);
+                        if (c == '8' || c == '9') return null;
+                    }
+                    try {
+                        Integer octalTest = Integer.parseInt(oct, 8);
+                        return octalTest;
+                    } catch (NumberFormatException e) {
+                        // Ignoring as returning null will handle it
+                    }
+                    break;
+            }
+        }
+        return null;
+    }
+-----------------------------------------------------------------------------------------------
+A: Для того чтобы ваша функция `resolveNumber` корректно обрабатывала числа, содержащие подчеркивания и начинающиеся с представления систем счисления (например, `0x`, `0b`), предлагаю внести следующие изменения:
+
+1. Добавить универсальную функцию для удаления нижних подчеркиваний из числовых строк.
+2. Расширить логику, чтобы она проверяла префиксы `0x` и `0b`.
+
+Модифицированная функция выглядела бы следующим образом:
+
+```java
+public Integer resolveNumber(String identifier) {
+    if (identifier == null || identifier.length() == 0) return null;
+
+    // Remove underscores
+    identifier = identifier.replace("_", "");
+
+    char first = identifier.charAt(0);
+    if ((first == '\'' || first == '"') && identifier.length() == 3) {
+        return 0xff & identifier.charAt(1);
+    }
+
+    // Handling hexadecimal numbers with 0x or 0X prefix
+    if (identifier.matches("^0[xX][0-9a-fA-F]+")) {
+        return Integer.parseInt(identifier.substring(2), 16);
+    }
+
+    // Handling binary numbers with 0b or 0B prefix
+    if (identifier.matches("^0[bB][01]+")) {
+        return Integer.parseInt(identifier.substring(2), 2);
+    }
+
+    // Handling numbers without specific base prefix
+    if (identifier.matches("^[+-]?[0-9]+[hbqdHBQD]?")) {
+        try {
+            // Default conversion in case no suffix is present
+            Integer test = Integer.valueOf(identifier);
+            return test;
+        } catch (NumberFormatException e) {
+            // Continue to suffix handling if NumberFormatException occurs
+        }
+
+        char suffix = identifier.charAt(identifier.length() - 1);
+        switch (Character.toLowerCase(suffix)) {
+            case 'd':
+                return safeParseInt(identifier, 10);
+            case 'h':
+                return safeParseInt(identifier, 16);
+            case 'b':
+                return safeParseInt(identifier, 2);
+            case 'q':
+                return safeParseInt(identifier, 8);
+        }
+    }
+    return null;
+}
+
+private Integer safeParseInt(String identifier, int radix) {
+    try {
+        return Integer.parseInt(identifier.substring(0, identifier.length() - 1), radix);
+    } catch (NumberFormatException e) {
+        return null;
+    }
+}
+```
+
+Это упрощает код и нормализует ввод, удаляя подчёркивания, которые допустимы для улучшения читабельности числовых литералов в языках программирования, таких как Java. Теперь функция обрабатывает числа с различными префиксами и суффиксами, соответствуя различным системам счисления.
+===============================================================================================
+
+===============================================================================================
+Q: Вот тут мне надо
+expr += input.replace(/\b\$[0-9a-fA-F_]+\b|\b0[xX][0-9a-fA-F_]+\b|\b0[bB][01_]+\b|\b[0-9a-fA-F][0-9a-fA-F_]*[hHbBqQdD]?\b|'.'/g,
+чтобы в части \b0[bB][01_]+\b
+не содержались символы [hHbBqQdD] вконце
+-----------------------------------------------------------------------------------------------
+A: Чтобы убедиться, что в части `\b0[bB][01_]+\b` номер, представляющий двоичное число, не заканчивается символами `[hHbBqQdD]`, вам нужно изменить регулярное выражение таким образом, чтобы оно явно исключало наличие этих символов в конце у двоичных чисел.
+
+Вы можете изменить эту часть вашего регулярного выражения на следующее:
+
+```javascript
+\b0[bB][01_]+(?![hHbBqQdD])\b
+```
+
+Полное регулярное выражение было бы:
+
+```javascript
+expr += input.replace(/\b\$[0-9a-fA-F_]+\b|\b0[xX][0-9a-fA-F_]+\b|\b0[bB][01_]+(?![hHbBqQdD])\b|\b[0-9a-fA-F][0-9a-fA-F_]*[hHbBqQdD]?\b|'.'/g,
+```
+
+Здесь:
+- `(?![hHbBqQdD])` - это отрицательный просмотр вперёд (negative lookahead), который утверждает, что следующим символом не может быть любой символ из `[hHbBqQdD]`. Это гарантирует, что двоичное число, начинающееся с `0b` или `0B`, не будет оканчиваться на любой из этих символов, которые могут быть интерпретированы как суффиксы, указывающие другую систему счисления.
+
+Такое изменение позволит вашему коду точно идентифицировать и заменять только те двоичные числа, которые не содержат суффиксов систем счисления в конце, предотвращая неверную обработку ваших числовых данных.
+===============================================================================================
+
+===============================================================================================
+Q: а что значит \b
+\b\$[0-9a-fA-F_]+\b
+-----------------------------------------------------------------------------------------------
+A: В регулярных выражениях `\b` представляет собой символ границы слова (word boundary). Этот символ не совпадает с конкретным символом в тексте, но указывает на позицию между двумя символами, где одна сторона границы представляет символ слова (обычно это буквы, цифры, или подчеркивание), а другая сторона — не символ слова.
+
+Пример применения `\b` в выражении `\b\$[0-9a-fA-F_]+\b`:
+
+1. Первый `\b` гарантирует, что совпадение начнётся только в начале слова. Это значит, что до знака доллара `$` не должно быть других букв, цифр или подчеркиваний. Таким образом, экспрессия `abc$123` не подойдёт, так как здесь `$` не находится на границе слова.
+
+2. `\$\[0-9a-fA-F_]+\` - этот сегмент совпадает с литералами, начинающимися со знака доллара `$`, за которым следуют одна или более цифры или латинские буквы (возможно с подчеркиваниями), обозначающие шестнадцатеричное число. Он будет правильно совпадать со строками вида `$1f`, `$a_b_c`, `$0F123`.
+
+3. Второй `\b` подтверждает окончание слова после последней допустимой цифры или буквы в шестнадцатеричном числе. Это означает, что сразу за последним символом шестнадцатеричного числа не должно идти других букв, цифр или подчеркиваний.
+
+Использование `\b` важно для точной и корректной работы регулярных выражений, когда вам необходимо извлекать целые "слова" или паттерны, строго ограниченные несимвольными границами. Это помогает предотвратить частичные или некорректные совпадения, которые могли бы возникнуть, если бы `\b` не было использовано.
+===============================================================================================

@@ -1,0 +1,123 @@
+DATE: 1733389888374
+
+===============================================================================================
+Q: У меня есть преобразователь в json с форматированием
+return new GsonBuilder().setPrettyPrinting().create().toJson(data);
+я хочу чтобы все поля json объектов внутри (не важно это родительский объект, или какой-то объект в list) были посортированы по алфавиту
+-----------------------------------------------------------------------------------------------
+A: Для того, чтобы сортировать поля JSON объектов в алфавитном порядке, можно создать кастомный сериализатор для `Map`, который будет сортировать ключи перед преобразованием их в JSON. Примерный код будет выглядеть следующим образом:
+
+```java
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+
+import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.TreeMap;
+
+public class JsonSorted {
+
+    public static void main(String[] args) {
+        // Создание данных для сериализации
+        Map<String, Object> data = new TreeMap<>();
+        data.put("z", "last");
+        data.put("b", "middle");
+        data.put("a", "first");
+
+        // Создаем объект Gson с кастомным сериализатором
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(Map.class, new MapSerializer())
+                .create();
+
+        // Преобразуем данные в форматированный JSON
+        String json = gson.toJson(data);
+        System.out.println(json);
+    }
+
+    // Кастомный сериализатор для Map, который сортирует ключи
+    static class MapSerializer implements JsonSerializer<Map<?, ?>> {
+        @Override
+        public JsonElement serialize(Map<?, ?> src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject json = new JsonObject();
+            src = new TreeMap<>(src);
+            src.forEach((key, value) -> json.add(String.valueOf(key), context.serialize(value)));
+            return json;
+        }
+    }
+}
+```
+
+В коде выше мы создали `MapSerializer`, который принимает `Map` объект, сортирует его ключи (используя `TreeMap`), а затем сериализует его в `JsonObject`. Этот сериализатор зарегистрирован в `GsonBuilder`, так что он будет использоваться вместо стандартного сериализатора для `Map`.
+===============================================================================================
+
+===============================================================================================
+Q: Теперь мне надо сделать то же но в js коде
+export function assemble(program) {
+    asm.assemble(program);
+    asm.intelHex();
+    return {
+        'mem': asm.mem,
+        'hex': asm.hexText,
+        'gutter': asm.gutterContent,
+        'errors': asm.errors,
+        'xref': asm.xref,
+        'labels': asm.labels,
+        'info': {
+            'org': asm.org,
+            'kind': 'assemble',
+            'binFileName': asm.getBinFileName(),
+            'hexFileName': asm.getHexFileName(),
+            'tapFileName': asm.getTapFileName(),
+            'tapeFormat': asm.tapeFormat
+        }
+    };
+}
+-----------------------------------------------------------------------------------------------
+A: Для того, чтобы сортировать ключи объектов JSON по алфавиту в JavaScript, вы можете создать функцию, которая рекурсивно обходит объекты и сортирует их ключи, если объект является вложенной структурой. Вот так может выглядеть ваша функция `assemble` с добавлением функции сортировки ключей:
+
+```javascript
+function sortObjectKeys(data) {
+    if (Array.isArray(data)) {
+        return data.map(sortObjectKeys);
+    } else if (data !== null && typeof data === 'object') {
+        const sortedData = {};
+        Object.keys(data).sort().forEach(key => {
+            sortedData[key] = sortObjectKeys(data[key]);
+        });
+        return sortedData;
+    }
+    return data;
+}
+
+export function assemble(program) {
+    asm.assemble(program);
+    asm.intelHex();
+
+    const outputData = {
+        'mem': asm.mem,
+        'hex': asm.hexText,
+        'gutter': asm.gutterContent,
+        'errors': asm.errors,
+        'xref': asm.xref,
+        'labels': asm.labels,
+        'info': {
+            'org': asm.org,
+            'kind': 'assemble',
+            'binFileName': asm.getBinFileName(),
+            'hexFileName': asm.getHexFileName(),
+            'tapFileName': asm.getTapFileName(),
+            'tapeFormat': asm.tapeFormat
+        }
+    };
+
+    return sortObjectKeys(outputData);
+}
+```
+
+В данном примере используется функция `sortObjectKeys`, которая проверяет тип значения (массив, объект или что-то иное). Если это объект, функция сначала сортирует ключи, затем рекурсивно вызывает себя для всех значений объекта для обеспечения сортировки вложенных структур. Это гарантирует, что все ключи в любом уровне объекта будут отсортированы в алфавитном порядке.
+===============================================================================================

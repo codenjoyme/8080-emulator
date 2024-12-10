@@ -1,0 +1,21 @@
+DATE: 1733382721080
+
+===============================================================================================
+Q: Закончи реализацию
+function importScripts(script) {
+    let imp = require(script);
+    // all values from imp set to global variable
+    for (let key in imp) {
+
+    }
+}
+
+-----------------------------------------------------------------------------------------------
+A: function importScripts(script) {
+    let imp = require(script);
+    // all values from imp set to global variable
+    for (let key in imp) {
+        global[key] = imp[key];
+    }
+}
+===============================================================================================

@@ -1,0 +1,148 @@
+DATE: 1733614535363
+
+===============================================================================================
+Q: У меня под виндой в java
+contentRoot().toURI().toURL()
+возвращает
+file:/C:/Java/8080-emulator/src/main/resources/
+потом это приводит к тому, что C воспринимается как протокол
+-----------------------------------------------------------------------------------------------
+A: Это происходит из-за формата URL, который отличается для Windows и Unix-подобных систем. В Windows пути к файлам начинаются с буквы диска (например, C:), что может быть интерпретировано как схема URL, если не обработать это корректно.
+
+Для решения проблемы вы можете использовать метод `toURI()` и затем преобразовать его в строку, что обычно решает проблему с интерпретацией диска как протокола. Пример кода:
+
+```java
+URI uri = contentRoot().toURI();
+URL url = uri.toURL();
+// Использовать url.toString() для получения правильной строки URL
+System.out.println(url.toString());
+```
+
+Также вы можете добавить проверку и коррекцию в вашем коде, чтобы явно указать, что это файловый URL, добавив префикс "file:///", которого может не хватать:
+
+```java
+URL url = new URL("file:///" + contentRoot().toURI().getPath());
+System.out.println(url.toString());
+```
+
+Это должно корректно обработать путь и предотвратить ошибочную интерпретацию буквы диска как часть протокола.
+===============================================================================================
+
+===============================================================================================
+Q: Хорошо, тогда так
+У меня есть base = URL(file:/C:/Java/8080-emulator/src/main/resources/)
+И file.getPath() = C:\Java\8080-emulator\src\main\resources\lik\apps\klad\klad.rks
+Мне надо сделать path предварительно не абсолютным, а относительным URL
+как,
+-----------------------------------------------------------------------------------------------
+A: Вы можете относительный URL создать, используя путь файла относительно базового URL. Сначала нужно преобразовать оба пути в объекты `File` и затем использовать методы класса `File` для получения относительного пути.
+
+Вот шаги, чтобы это выполнить:
+
+1. Преобразовать URL в `File`.
+2. Использовать метод `getCanonicalFile()` или `getAbsolutePath()` для получения абсолютного пути.
+3. Получить относительный путь используя метод `relativize()` из класса `Path`.
+
+Пример кода:
+
+```java
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class UrlConverter {
+
+    public static void main(String[] args) throws Exception {
+        URL baseUrl = new URL("file:/C:/Java/8080-emulator/src/main/resources/");
+        String filePath = "C:\\Java\\8080-emulator\\src\\main\\resources\\lik\\apps\\klad\\klad.rks";
+
+        // Преобразование URL в объект File
+        File basePath = Paths.get(baseUrl.toURI()).toFile();
+        File file = new File(filePath);
+
+        // Получение абсолютных путей
+        String basePathAbsolute = basePath.getCanonicalPath();
+        String filePathAbsolute = file.getCanonicalPath();
+
+        // Создание объектов Path из абсолютных путей
+        Path basePathPath = Paths.get(basePathAbsolute);
+        Path filePathPath = Paths.get(filePathAbsolute);
+
+        // Получение относительного пути
+        Path relativePath = basePathPath.relativize(filePathPath);
+
+        // Преобразование Path в строку
+        String relativeUrl = relativePath.toString();
+
+        System.out.println("Relative URL: " + relativeUrl);
+    }
+}
+```
+Этот код позволяет получить относительный путь от базового URL к целевому файлу. Обратите внимание, что относительный путь будет использоваться как путь на файловой системе, а не как URL. Для использования в URL, возможно потребуется заменить обратные слеши Windows (`\`) на обычные слеши (`/`).
+===============================================================================================
+
+===============================================================================================
+Q: А покороче, может есть какие-то apache commons?
+-----------------------------------------------------------------------------------------------
+A: Да, Вы абсолютно правы. Для упрощения данной задачи можно использовать библиотеку Apache Commons IO. В ней есть класс `FilenameUtils`, который предоставляет удобные методы для работы с путями файлов, включая получение относительного пути.
+
+Первым делом добавьте зависимость Apache Commons IO в Ваш проект. Если вы используете Maven, добавьте следующую зависимость в файл `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>commons-io</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>2.8.0</version>
+</dependency>
+```
+
+Теперь вы можете использовать `FilenameUtils` для получения относительного пути как показано ниже:
+
+```java
+import org.apache.commons.io.FilenameUtils;
+
+public class RelativePathExample {
+    public static void main(String[] args) throws Exception {
+        String baseURL = "file:/C:/Java/8080-emulator/src/main/resources/";
+        String filePath = "C:\\Java\\8080-emulator\\src\\main\\resources\\lik\\apps\\klad\\klad.rks";
+
+        // Относительный путь от baseURL к filePath
+        String basePath = new java.net.URI(baseURL).getPath();
+        String relativePath = FilenameUtils.separatorsToUnix(FilenameUtils.relativePath(filePath, basePath));
+
+        System.out.println("Relative path: " + relativePath);
+    }
+}
+```
+
+В этом примере используется `FilenameUtils.relativePath()` для нахождения относительного пути от базового пути к целевому файлу и `FilenameUtils.separatorsToUnix()` для корректного отображения слешей как в URL.
+
+Обратите внимание, что пути должны быть в правильном формате файловой системы или URL, иначе данная функция может выдать ошибочный результат. Вы также можете проверить другие полезные методы в документации Apache Commons IO для решения похожих задач.
+===============================================================================================
+
+===============================================================================================
+Q: нет там таких методов
+-----------------------------------------------------------------------------------------------
+A: Извините за путаницу, мой предыдущий ответ содержал ошибки. Действительно, в библиотеке Apache Commons IO нет напрямую метода `relativePath`. Вместо этого мы можем использовать стандартные средства Java NIO для решения этой задачи, как я упоминал в первом ответе, или использовать другие библиотеки, если нужно сократить код.
+
+Давайте ещё раз пройдёмся по использованию Java NIO для получения относительного пути, но сделаем это компактнее:
+
+```java
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class RelativePathExample {
+    public static void main(String[] args) throws Exception {
+        Path basePath = Paths.get("C:/Java/8080-emulator/src/main/resources/");
+        Path filePath = Paths.get("C:/Java/8080-emulator/src/main/resources/lik/apps/klad/klad.rks");
+
+        Path relativePath = basePath.relativize(filePath);
+        System.out.println("Relative path: " + relativePath.toString());
+    }
+}
+```
+Этот код корректно выдаст относительный путь, используя только встроенные библиотеки Java без дополнительных зависимостей. Если файловые пути указаны правильно и точно соответствуют полному пути до файлов, этот код сработает как ожидается.
+
+Если есть желание использовать библиотеки для упрощения кода или получения дополнительных функций, рассмотрите использование других библиотек, таких как Google Guava, которая также предоставляет утилиты для работы с файлами и путями.
+===============================================================================================

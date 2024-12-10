@@ -1,0 +1,424 @@
+DATE: 1733450829146
+
+===============================================================================================
+Q: Как сделать класс параметризиуремым?
+@RunWith(Parameterized.class)
+public class AssemblerTest {
+
+    private Assembler asm;
+
+    @Rule
+    public TestName test = new TestName();
+    private FileAssert fileAssert;
+
+    private String program;
+    private String name;
+
+    public AssemblerTest(String name) {
+        this.name = name;
+        this.program = read(new File(APP_RESOURCES + "/test/test/" + name + ".asm"));;
+    }
+
+    @Before
+    public void setup() {
+        asm = new Assembler();
+
+        fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
+    }
+
+    @Test
+    public void assemble(String program) {
+        Map<String, Object> data = asm.process(program);
+-----------------------------------------------------------------------------------------------
+A: To make the class parameterized, follow these steps:
+
+1. Annotate the class with `@RunWith(Parameterized.class)`. This informs JUnit to run the tests in this class with different sets of parameters.
+
+2. Define a static method that returns a Collection of arrays (or other Iterable) which represents the parameters for each test. Annotate this method with `@Parameterized.Parameters`. Each array in the collection should contain the parameters for the constructor of the Test class.
+
+3. Modify the constructor of the test class to accept parameters as needed for each test case. These parameters can be used to initialize fields in the test class that can be used across multiple test methods.
+
+4. Modify or create test methods that utilize the initialized fields.
+
+In your example, we need to add a static method to generate the test data, and update the constructor if necessary. Here is how you can do it:
+
+```java
+@RunWith(Parameterized.class)
+public class AssemblerTest {
+
+    private Assembler asm;
+
+    @Rule
+    public TestName test = new TestName();
+    private FileAssert fileAssert;
+
+    private final String program;
+    private final String name;
+
+    public AssemblerTest(String name, String program) {
+        this.name = name;
+        this.program = program;
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+            { "test1", read(new File(APP_RESOURCES + "/test/test/test1.asm")) },
+            { "test2", read(new File(APP_RESOURCES + "/test/test/test2.asm")) }
+            // Add more tests as needed
+        });
+    }
+
+    @Before
+    public void setup() {
+        asm = new Assembler();
+        fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
+    }
+
+    @Test
+    public void assemble() {
+        Map<String, Object> data = asm.process(program);
+        // Assertions go here using the data map
+    }
+
+    private static String read(File file) {
+        // implementation to read content from file
+        return "your file content";
+    }
+}
+```
+
+With this setup:
+- Each element in the `data()` method represents a different test case, with parameters fed into `AssemblerTest` constructor.
+- The `assemble()` test method will be executed for each element in the `data()` method.
+
+Remember to adjust your implementation appropriately for the 'read' method to correctly handle file reading based on your specifics. Also, ensure that the `assemble` method in the `AssemblerTest` class can properly access and use the `program` instance variable initialized by the constructor.
+===============================================================================================
+
+===============================================================================================
+Q: я хочу чтобы test1 только был параметром
+-----------------------------------------------------------------------------------------------
+A: Если вам нужно использовать только `test1` в качестве параметра, вы можете упростить метод `data()`, предоставив только одну строку параметров в коллекцию. Вот как это можно реализовать:
+
+```java
+@RunWith(Parameterized.class)
+public class AssemblerTest {
+
+    private Assembler asm;
+
+    @Rule
+    public TestName test = new TestName();
+    private FileAssert fileAssert;
+
+    private final String program;
+    private final String name;
+
+    public AssemblerTest(String name, String program) {
+        this.name = name;
+        this.program = program;
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+            { "test1", read(new File(APP_RESOURCES + "/test/test/test1.asm")) }
+            // Только test1 используется здесь в качестве параметра
+        });
+    }
+
+    @Before
+    public void setup() {
+        asm = new Assembler();
+        fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
+    }
+
+    @Test
+    public void assemble() {
+        Map<String, Object> data = asm.process(program);
+        // Выполните проверки с использованием данных из переменной data
+    }
+
+    private static String read(File file) {
+        // Реализация чтения содержимого файла
+        return "your file content";
+    }
+}
+```
+
+Теперь класс `AssemblerTest` параметризирован и предполагает выполнение теста только для caso `test1`. Параметры могут быть расширены простым добавлением новых элементов в возвращаемый массив в методе `data()`.
+
+Обратите внимание, что метод `read(File file)` должен быть скорректирован для корректного чтения содержимого файла в вашей среде, и он должен возвращать содержимое в виде строки, которая будет использоваться как программа для ассемблера.
+===============================================================================================
+
+===============================================================================================
+Q: неет read(new File(APP_RESOURCES + "/test/test/test1.asm")
+пусть рассчитывается в setup
+-----------------------------------------------------------------------------------------------
+A: Если вы хотите переместить загрузку содержимого файла в метод `setup()`, вам нужно провести некоторые изменения в структуре вашего класса. Поскольку `setup()` вызывается перед каждым тестом, вы можете инициализировать `program` там. Но в таком случае конструктор больше не принимает `program` как параметр, а будет принимать только `name`.
+
+Вот как можно изменить код:
+
+```java
+@RunWith(Parameterized.class)
+public class AssemblerTest {
+
+    private Assembler asm;
+
+    @Rule
+    public TestName test = new TestName();
+    private FileAssert fileAssert;
+
+    private String program;  // Зачем его делать final если мы будем его инициализировать в setup
+    private final String name;
+
+    public AssemblerTest(String name) {
+        this.name = name;
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+            { "test1" } // Теперь параметр только имя файла
+        });
+    }
+
+    @Before
+    public void setup() {
+        asm = new Assembler();
+        fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
+
+        // Инициализация 'program' перенесена сюда
+        program = read(new File(APP_RESOURCES + "/test/test/" + name + ".asm"));
+    }
+
+    @Test
+    public void assemble() {
+        Map<String, Object> data = asm.process(program);
+        // Выполните проверки с использованием данных из переменной data
+    }
+
+    private static String read(File file) {
+        // Реализация чтения содержимого файла
+        return "your file content";  // Замените на реальное содержимое файла
+    }
+}
+```
+
+Теперь конструктор класса `AssemblerTest` принимает только параметр `name`, который передается из метода `data()` и определяет имя файла, откуда будет загружено содержимое программы в методе `setup()` перед каждым тестом. Это позволяет легко расширять набор тестов, добавляя новые имена файлов в метод `data()`.
+===============================================================================================
+
+===============================================================================================
+Q:     @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        // найти все файлы APP_RESOURCES + "/test/" которые в разрешении asm
+        // и вернуть их имена с папками относительно APP_RESOURCES + "/test/"
+        // TODO no this return Arrays.stream(Objects.requireNonNull(new File(APP_RESOURCES + "/test/").listFiles()))
+        // deep find all files in all folders
+        return ...
+
+                .filter(file -> file.getName().endsWith(".asm"))
+                .map(file -> new Object[]{file.getPath().substring(APP_RESOURCES.length() + 1)})
+                .collect(toList());
+
+    }
+-----------------------------------------------------------------------------------------------
+A: Для реализации метода `data()`, который динамически находит все файлы с расширением `.asm` в указанной директории и поддиректориях, вам понадобится использовать рекурсивный способ обхода папок. В Java это можно сделать с помощью классов `Files` и `Paths`, используя метод `Files.walk()`. Пример реализации метода `data()` приведён ниже:
+
+```java
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+@RunWith(Parameterized.class)
+public class AssemblerTest {
+
+    private static final String APP_RESOURCES = "/path/to/app/resources";
+
+    // Остальные поля и методы класса
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        Path start = Paths.get(APP_RESOURCES + "/test/");
+        try (Stream<Path> stream = Files.walk(start)) {
+            return stream
+                    .filter(Files::isRegularFile)
+                    .filter(file -> file.toString().endsWith(".asm"))
+                    .map(file -> new Object[]{file.toString().substring(APP_RESOURCES.length() + 6)}  // 6 for "/test/"
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            // Логика обработки исключения
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    // Конструктор и остальные методы
+}
+```
+
+Если путь `APP_RESOURCES` не включает в себя предшествующий `/`, вы можете адаптировать строку субтракции `.substring(APP_RESOURCES.length() + 1)`.
+
+Обратите внимание:
+- `Files.walk()` генерирует поток, который представляет собой все файлы в директории и её поддиректориях.
+- `filter(Files::isRegularFile)` оставляет в потоке только файлы, исключая директории.
+- `filter(file -> file.toString().endsWith(".asm"))` фильтрует файлы, заканчивающиеся на `.asm`.
+- Путь каждого файла обрезается так, чтобы удалить базовую часть пути и сохранить лишь относительный путь файлов `.asm`.
+- Поток приводится к списку, который возвращается как параметры для тестов.
+
+Такая реализация позволяет автоматически обнаруживать все `.asm` файлы в указанной директории и поддиректориях, значительно упрощая добавление новых тестов и поддержку тестового набора.
+===============================================================================================
+
+===============================================================================================
+Q: Вот я сделал в Java
+
+@RunWith(Parameterized.class)
+public class AssemblerTest {
+
+    private Assembler asm;
+
+    @Rule
+    public TestName test = new TestName();
+    private FileAssert fileAssert;
+
+    private String program;
+    private String name;
+    private String dir;
+
+    public AssemblerTest(String name) {
+        this.name = name;
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        String base = APP_RESOURCES + "/test/";
+        Path start = Paths.get(base);
+        try (Stream<Path> stream = Files.walk(start)) {
+            return stream
+                    .filter(Files::isRegularFile)
+                    .filter(file -> file.toString().endsWith(".asm"))
+                    .map(file -> new Object[]{file.toString().substring(base.length() - 1)})
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    @Before
+    public void setup() {
+        asm = new Assembler();
+        fileAssert = new FileAssert(TEST_RESOURCES + AssemblerTest.class.getSimpleName());
+        program = read(new File(APP_RESOURCES + "/test/" + name));
+        dir = new File(name).getParent();
+    }
+
+    @Test
+    public void assemble() {
+        Map<String, Object> data = asm.process(program);
+
+        assertValue("memory.json", asString(data.get("mem")));
+        assertValue("hex.json", asString(data.get("hex")));
+        assertValue("gutter.json", asString(data.get("gutter")));
+        assertValue("listing.json", asString(data.get("listing")));
+        assertValue("errors.json", asString(data.get("errors")));
+        assertValue("xref.json", asString(data.get("xref")));
+        assertValue("labels.json", asString(data.get("labels")));
+        assertValue("info.json", asString(data.get("info")));
+    }
+
+Теперь то же надо сделать в JS
+
+import { readFile, record, assertCall, assertAllRecords } from "./common";
+import * as assembler from '../../../main/javascript/svofski/assembler';
+
+describe('assembler', () => {
+    const dir = '../../../resources/AssemblerTest/';
+    const program = readFile('../../../main/resources/test/test/test.asm');
+
+    test('assemble', () => {
+
+        // when
+        record(assembler.asm, 'evaluateExpression2', [ 'labels' ]);
+        record(assembler.asm, 'resolveNumber');
+
+        let data = assembler.assemble(program);
+
+        // then
+        assertAllRecords(dir);
+
+        assertCall(dir + 'memory.json', data.mem);
+        assertCall(dir + 'hex.json', data.hex);
+        assertCall(dir + 'gutter.json', data.gutter);
+        assertCall(dir + 'listing.json', data.listing);
+        assertCall(dir + 'errors.json', data.errors);
+        assertCall(dir + 'xref.json', data.xref);
+        assertCall(dir + 'labels.json', data.labels);
+        assertCall(dir + 'info.json', data.info);
+    });
+});
+
+При этом общая логика теста пусть максимально остается неизменной. Мне надо элегантное локаничное решение. Без async/await.
+-----------------------------------------------------------------------------------------------
+A: Для реализации подхода подобного Java JUnit `@Parameterized` параметризированных тестов в JavaScript с использованием Jest, можно использовать Jest параметры через функцию `each`. Это позволит вам использвать динамически сгенерированный список тестовых данных.
+
+Вот пример того, как это можно сделать, используя Node.js файловый API для синхронного чтения списка файлов из директории:
+
+```javascript
+const fs = require('fs');
+const path = require('path');
+const assembler = require('../../../main/javascript/svofski/assembler');
+const { readFile, record, assertCall, assertAllRecords } = require("./common");
+
+const APP_RESOURCES = "../../../main/resources";
+
+function findAsmFiles(dir, fileList = []) {
+    const files = fs.readdirSync(dir);
+    files.forEach(file => {
+        const filePath = path.join(dir, file);
+        if (fs.statSync(filePath).isDirectory()) {
+            findAsmFiles(filePath, fileList);
+        } else if (file.endsWith('.asm')) {
+            fileList.push(filePath.substring(APP_RESOURCES.length + "/test/".length));
+        }
+    });
+    return fileList;
+}
+
+const files = findAsmFiles(path.join(APP_RESOURCES, "/test/"));
+
+describe.each(files)('%s', (fileName) => {
+    const filePath = path.join(APP_RESOURCES, "/test/", fileName);
+    const program = readFile(filePath);
+    const dir = path.dirname(filePath);
+
+    test('assemble', () => {
+        record(assembler.asm, 'evaluateExpression2', [ 'labels' ]);
+        record(assembler.asm, 'resolveNumber');
+
+        let data = assembler.assemble(program);
+
+        assertAllRecords(dir);
+
+        assertCall(path.join(dir, 'memory.json'), data.mem);
+        assertCall(path.join(dir, 'hex.json'), data.hex);
+        assertCall(path.join(dir, 'gutter.json'), data.gutter);
+        assertCall(path.join(dir, 'listing.json'), data.listing);
+        assertCall(path.join(dir, 'errors.json'), data.errors);
+        assertCall(path.join(dir, 'xref.json'), data.xref);
+        assertCall(path.join(dir, 'labels.json'), data.labels);
+        assertCall(path.join(dir, 'info.json'), data.info);
+    });
+});
+```
+
+В этой версии испытаний:
+- `findAsmFiles` рекурсивно ищет `.asm` файлы в директории и поддиректориях, начиная с заданного пути и возвращает их пути относительно директории `APP_RESOURCES`.
+- В `describe.each(files)` мы передаем массив путей к файлам как параметры для генерации тестов. `%s` в строке описания динамически заменяется на имя файла.
+- В каждом тесте считываются содержимое файла программы и выполняется ассемблирование.
+- Пути сохраняются с учетом исходной директории, что позволяет эквивалентно обрабатывать результаты.
+
+Таким образом, вы создаете динамически параметризированный тест в Jest, подобный тому, как это делается в Java с JUnit.
+===============================================================================================

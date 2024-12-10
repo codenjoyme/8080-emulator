@@ -1,0 +1,153 @@
+DATE: 1733224424650
+
+===============================================================================================
+Q: У меня есть класс который переопределяет метод записи в память
+public class TrackUpdatedMemory extends Memory {
+    private List<UpdatedBite> updated;
+...
+        @Override
+        public void set(int addr, int bite) {
+            int prev = super.get(addr);
+            if (trackChanges) {
+                updated.add(new UpdatedBite(addr, prev, bite));
+                start = Math.min(start, addr);
+                end = Math.max(end, addr);
+            }
+            super.set(addr, bite);
+        }
+...
+потом печатает на екран список изменений
+    public String details() {
+        return updated.stream()
+                .map(UpdatedBite::toString)
+                .collect(joining("\n"));
+    }
+...
+Вот как выглядит то что мы храним
+public class UpdatedBite {
+
+    private final int addr;
+    private final int prev;
+    private final int next;
+}
+...
+Но я хочу чтобы это был не список, а красиво организованные данные в 16 ричном виде
+             0         1            2          3          4       5          6  7  8  9  A  B  C  D  E  F
+0000:  00>A2 00>BA A2>34 -           -       00>01  и атк далее...
+0000:  -          -            -           00>21  -       -   и так далее
+...
+У меня же есть методы для 16ричного преобразования байта и word в текст
+public static String hex16(int bite) {
+ public static String hex8(int bite) {
+Для начала покажи пример как будет выглядеть такая таблица
+-----------------------------------------------------------------------------------------------
+A: Допустим, у вас есть записи изменений в памяти:
+
+1. Адрес 0x0002: со значения 0x00 до значения 0xA2
+2. Адрес 0x0003: со значения 0x00 до значения 0xBA
+3. Адрес 0x0005: со значения 0xA2 до значения 0x34
+4. Адрес 0x0007: со значения 0x00 до значения 0x01
+
+Таблица будет выглядеть так:
+
+```
+             0         1            2          3          4       5          6  7  8  9  A  B  C  D  E  F
+0000:  -          -        00>A2 00>BA -     A2>34      -       00>01 -           -    -   -     -    -       -
+```
+
+Описание:
+- Каждая строка начинается с адреса в памяти (например, `0000:` на позиции 0x0000).
+- Затем следуют значения для каждого байта в этой строке. Если значение было изменено, то оно отображается с предыдущим и новым значением (например, `00>A2`). Если значение не было изменено, на его месте ставится дефис (`-`).
+
+Эта таблица представляет собой удобное визуальное представление изменений в памяти, при этом измененные байты ясно выделены, что упрощает анализ и отладку.
+===============================================================================================
+
+===============================================================================================
+Q: Да, а теперь реализуй его в коде
+-----------------------------------------------------------------------------------------------
+A: Для реализации предложенной таблицы изменений памяти можно воспользоваться следующим подходом в классе `TrackUpdatedMemory`. Для удобства, предположим что вы храните изменения в списке `updated` и у вас уже есть методы для перевода чисел в 16-ричный формат.
+
+```java
+import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+import static java.util.stream.Collectors.joining;
+
+public class TrackUpdatedMemory extends Memory {
+    private List<UpdatedBite> updated;
+    private boolean trackChanges;
+    private int start = Integer.MAX_VALUE;
+    private int end = Integer.MIN_VALUE;
+
+    @Override
+    public void set(int addr, int bite) {
+        int prev = super.get(addr);
+        if (trackChanges) {
+            updated.add(new UpdatedBite(addr, prev, bite));
+            start = Math.min(start, addr);
+            end = Math.max(end, addr);
+        }
+        super.set(addr, bite);
+    }
+
+    public String details() {
+        // Начинаем с минимального адреса, округлённого до начала строки (16 байт на строку)
+        int startLine = start - start % 16;
+        // Окончание вывода - с конца изменений, округлённо вверх до конца строки
+        int endLine = (end + 16) - (end % 16);
+
+        StringBuilder builder = new StringBuilder();
+
+        for (int line = startLine; line < endLine; line += 16) {
+            // Шапка строки
+            builder.append(String.format("%04X: ", line));
+
+            for (int i = line; i < line + 16; i++) {
+                String display = "-";
+                for (UpdatedBite ub : updated) {
+                    if (ub.addr == i) {
+                        display = String.format("%02X>%02X", ub.prev, ub.next);
+                        break;
+                    }
+                }
+                builder.append(String.format(" %-6s ", display));
+            }
+
+            builder.append("\n");
+        }
+
+        return builder.toString();
+    }
+}
+
+public class UpdatedBite {
+    public final int addr;
+    public final int prev;
+    public final int next;
+
+    public UpdatedBite(int addr, int prev, int next) {
+        this.addr = addr;
+        this.prev = prev;
+        this.next = next;
+    }
+}
+
+public class Memory {
+    // Простая реализация, пусть будет такая
+    private int[] data = new int[1024];
+
+    public int get(int addr) {
+        return data[addr];
+    }
+
+    public void set(int addr, int value) {
+        data[addr] = value;
+    }
+}
+```
+
+В данном коде:
+- Для каждой строки памяти, начинаем выводить с адреса, округлённого до самой ближайшей "строки".
+- В каждой строке мы идем по 16 ячейкам, проверяя, было ли изменение для каждой ячейки в нашем списке `updated`. Если было, выводим это изменение в формате `prev>next`, иначе `-`.
+- Метод `details()` будет возвращать строку, которую вы можете вывести на экран или использовать другим способом.
+===============================================================================================
