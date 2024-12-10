@@ -133,7 +133,7 @@ public class IntegrationTest extends AbstractTest {
 
         // given
 //        Logger.DEBUG = true;
-//        WhereIsData.PRINT_RW = true;
+        WhereIsData.PRINT_RW = true;
 
         lik().loadRom(base, roms);
         Range range = lik().loadGame(base, roms, "klad");
