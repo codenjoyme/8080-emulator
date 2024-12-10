@@ -38,7 +38,7 @@ public class CpuDebug {
         if (!enabled) return;
         if (!range.includes(registry.PC())) return;
 
-        int callDeep = registry.mod(CallDeep.class).callDeep();
+        int callDeep = registry.callDeepMod().callDeep();
         if (callDeep >= maxDeepCall) return;
 
         String out = log(callDeep);

@@ -1,69 +1,65 @@
 package spec.mods;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Modifiable {
 
-    protected Map<Event, CpuMod[]> mods = new HashMap<>();
+    private final List<CpuMod> readMem = new ArrayList<>(5);
+    private final List<CpuMod> writeMem = new ArrayList<>(5);
+    private final List<CpuMod> changePC = new ArrayList<>(5);
+    private final List<CpuMod> runCall = new ArrayList<>(5);
+    private final List<CpuMod> runRet = new ArrayList<>(5);
 
     public void on(Event event, Object... params) {
-        CpuMod[] mods = mods(event);
-        if (mods == null) {
-            return;
-        }
+        List<CpuMod> mods = mods(event);
 
-        for (int i = 0; i < mods.length; i++) {
-            mods[i].on(event, params);
+        for (int i = 0; i < mods.size(); i++) {
+            CpuMod mod = mods.get(i);
+            if (mod != null) {
+                mod.on(event, params);
+            }
         }
     }
 
-    private CpuMod[] mods(Event event) {
-        return mods.get(event);
+    private List<CpuMod> mods(Event event) {
+        switch (event) {
+            case CHANGE_PC:
+                return changePC;
+            case READ_MEM:
+                return readMem;
+            case WRITE_MEM:
+                return writeMem;
+            case RUN_CALL:
+                return runCall;
+            case RUN_RET:
+                return runRet;
+            default:
+                throw new IllegalArgumentException("Event not supported: " + event);
+        }
     }
 
     public void modAdd(CpuMod mod) {
         mod.supports().forEach(event -> {
-            CpuMod[] arr = mods(event);
-            CpuMod[] newArr = new CpuMod[arr == null ? 1 : arr.length + 1];
-            if (arr != null) {
-                System.arraycopy(arr, 0, newArr, 0, arr.length);
+            List<CpuMod> mods = mods(event);
+            if (mods != null) {
+                mods.add(mod);
             }
-            newArr[newArr.length - 1] = mod;
-            mods.put(event, newArr);
         });
-
     }
 
-    public <M extends CpuMod> M mod(Class<M> clazz) {
-        return mods.values().stream()
-                .flatMap(Arrays::stream)
-                .filter(mod -> mod.itsMe(clazz))
-                .map(clazz::cast)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Mod not found: " + clazz));
+    public CallDeep callDeepMod() {
+        return (CallDeep) runCall.get(0); // This is only for performance reasons
     }
 
     public <M extends CpuMod> void modRemove(Class<M> clazz) {
-        mods.values().forEach(arr -> {
-            for (int i = 0; i < arr.length; i++) {
-                if (arr[i].itsMe(clazz)) {
-                    CpuMod[] newArr = new CpuMod[arr.length - 1];
-                    System.arraycopy(arr, 0, newArr, 0, i);
-                    System.arraycopy(arr, i + 1, newArr, i, arr.length - i - 1);
-                    mods.put(arr[i].supports().get(0), newArr);
-                    return;
-                }
-            }
-        });
+        allMods().forEach(modsList -> modsList.removeIf(mod -> clazz.isInstance(mod)));
+    }
+
+    private List<List<CpuMod>> allMods() {
+        return Arrays.asList(readMem, writeMem, changePC, runCall, runRet);
     }
 
     public void reset() {
-        mods.values().forEach(arr -> {
-            for (CpuMod mod : arr) {
-                mod.reset();
-            }
-        });
+        allMods().forEach(modsList -> modsList.forEach(CpuMod::reset));
     }
 }
