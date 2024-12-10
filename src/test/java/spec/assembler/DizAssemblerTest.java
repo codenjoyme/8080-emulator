@@ -18,6 +18,7 @@ public class DizAssemblerTest extends AbstractTest {
     @Test
     public void testDizAssembly() {
         getAllFiles(".rks")
+//                .stream().filter(pair -> pair.getValue().equals("klad"))
                 .forEach(pair -> testDizAssembly(pair.getKey(), pair.getValue()));
     }
 
@@ -50,7 +51,7 @@ public class DizAssemblerTest extends AbstractTest {
             assertMemoryChanges(test, "", original, recompiled);
         } catch (Exception exception) {
             exception.printStackTrace();
-            fail(String.format("For: %s, we got: %s", test, exception.getMessage()));
+            fail(String.format("For: %s, we got: %s", test, exception.toString()));
 
             if (fileName != null) {
                 new File(fileName).delete();

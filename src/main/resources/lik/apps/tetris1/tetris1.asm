@@ -1,266 +1,266 @@
         CPU  8080
         .ORG 00000h
-lab7    EQU 04000h
-lab47   EQU 02601h
-lab50   EQU 02603h
-lab173  EQU 02605h
-lab25   EQU 02007h
-lab21   EQU 0240Bh
-lab230  EQU 0C010h
-lab231  EQU 07A13h
-lab239  EQU 03E13h
-lab228  EQU 0C427h
-lab214  EQU 0C037h
-lab114  EQU 03A4Fh
-lab136  EQU 0CAB7h
-lab80   EQU 0C0BEh
-lab73   EQU 08100h
-lab194  EQU 0FF00h
-lab192  EQU 0FF01h
-lab195  EQU 0FF02h
-lab191  EQU 0FF03h
-lab150  EQU 0B707h
-lab18   EQU 0170Bh
-lab240  EQU 07B13h
-lab236  EQU 01D14h
-lab28   EQU 0C337h
-lab174  EQU 02786h
-lab175  EQU 0278Eh
-lab111  EQU 077AEh
-lab227  EQU 027CDh
-lab168  EQU 0FFE0h
-lab163  EQU 0FFF0h
-lab224  EQU 0FFF7h
-lab26   EQU 08FFCh
-lab91   EQU 0FFFFh
-        JMP lab0
+loij    EQU 04000h
+lqxx    EQU 02601h
+lwaa    EQU 02603h
+liyt    EQU 02605h
+lyab    EQU 02007h
+lqwx    EQU 0240Bh
+lsfy    EQU 0C010h
+lugz    EQU 07A13h
+lkph    EQU 03E13h
+lodw    EQU 0C427h
+lmpi    EQU 0C037h
+lupm    EQU 03A4Fh
+lmmi    EQU 0CAB7h
+lege    EQU 0C0BEh
+lqyx    EQU 08100h
+lyuo    EQU 0FF00h
+lusm    EQU 0FF01h
+lavp    EQU 0FF02h
+lsrl    EQU 0FF03h
+loaw    EQU 0B707h
+lktu    EQU 0170Bh
+lmqi    EQU 07B13h
+leme    EQU 01D14h
+leee    EQU 0C337h
+lkzu    EQU 02786h
+lmav    EQU 0278Eh
+lomj    EQU 077AEh
+lmcv    EQU 027CDh
+lyto    EQU 0FFE0h
+looj    EQU 0FFF0h
+lgzs    EQU 0FFF7h
+lacc    EQU 08FFCh
+larp    EQU 0FFFFh
+        JMP labc
         DB 000h, 000h
-lab282: LXI H,lab1
+lshy:   LXI H,lccd
         MVI M,02Bh
         INX H
         MVI A,080h
-lab2:   MVI M,000h
+lede:   MVI M,000h
         INX H
         DCR A
-        JNZ lab2
-lab222: XRA A
-        STA lab3
-        STA lab4
-        STA lab5
-        STA lab6
-        LXI H,lab7
-        SHLD lab8
-        STA lab9
+        JNZ lede
+lcxq:   XRA A
+        STA lgef
+        STA lifg
+        STA lkgh
+        STA lmhi
+        LXI H,loij
+        SHLD lqjk
+        STA lskl
         LXI H,00000h
-        SHLD lab10
-        SHLD lab11
-        SHLD lab12
+        SHLD lulm
+        SHLD lwmn
+        SHLD lyno
         MOV D,A
         LXI B,00000h
-        LXI H,lab13
-        CALL lab14
-        LXI H,lab15
+        LXI H,laop
+        CALL lcpq
+        LXI H,leqr
         LXI B,00005h
         MVI D,014h
-        CALL lab14
+        CALL lcpq
         MVI D,000h
-        LXI H,lab16
-        CALL lab14
-        LXI H,lab17
+        LXI H,lgrs
+        CALL lcpq
+        LXI H,list
         MVI E,001h
-lab23:  PUSH D
+luyz:   PUSH D
         PUSH H
-        LXI B,lab18
+        LXI B,lktu
         MOV A,E
         ADI 030h
-        CALL lab19
+        CALL lmuv
         MVI A,03Eh
-        CALL lab19
+        CALL lmuv
         MVI D,000h
-        CALL lab14
-        LXI H,lab20
-        CALL lab14
+        CALL lcpq
+        LXI H,lovw
+        CALL lcpq
         POP H
         PUSH H
         LXI D,00009h
         DAD D
-        LXI B,lab21
-        CALL lab22
+        LXI B,lqwx
+        CALL lsxy
         POP H
         LXI D,0000Ch
         DAD D
-        LDA lab4
+        LDA lifg
         ADI 00Eh
-        STA lab4
+        STA lifg
         POP D
         INR E
         MOV A,E
         CPI 00Ah
-        JNZ lab23
+        JNZ luyz
         XRA A
-        STA lab4
-        LXI H,lab24
+        STA lifg
+        LXI H,lwza
         MVI D,000h
-        CALL lab14
-        LXI B,lab25
-        LXI H,lab1
+        CALL lcpq
+        LXI B,lyab
+        LXI H,lccd
         MVI D,009h
-lab34:  PUSH H
+lqkk:   PUSH H
         LXI H,0C010h
-        SHLD lab26
+        SHLD lacc
         POP H
         MVI A,001h
-        CALL lab27
-lab31:  CALL lab28
+        CALL lcdd
+lkhh:   CALL leee
         CPI 00Dh
-        JZ lab29
+        JZ lgff
         CPI 008h
-        JZ lab30
+        JZ ligg
         DCR D
         INR D
-        JZ lab31
+        JZ lkhh
         CPI 020h
-        JNZ lab32
+        JNZ lmii
         MVI A,02Bh
-        JMP lab33
-lab32:  CPI 041h
-        JC lab31
+        JMP lojj
+lmii:   CPI 041h
+        JC lkhh
         CPI 060h
-        JC lab33
+        JC lojj
         SUI 020h
-lab33:  MOV M,A
-        CALL lab19
+lojj:   MOV M,A
+        CALL lmuv
         INX H
         DCR D
-        JMP lab34
-lab30:  MOV A,D
+        JMP lqkk
+ligg:   MOV A,D
         CPI 009h
-        JZ lab31
+        JZ lkhh
         MVI A,00Bh
-        CALL lab27
+        CALL lcdd
         DCR B
         INR D
         DCX H
-        JMP lab34
-lab29:  MOV A,D
+        JMP lqkk
+lgff:   MOV A,D
         CPI 009h
-        JNZ lab35
+        JNZ lsll
         MVI D,000h
-        CALL lab14
-        JMP lab36
-lab35:  MVI M,000h
+        CALL lcpq
+        JMP lumm
+lsll:   MVI M,000h
         MVI A,00Bh
-        CALL lab27
-lab36:  CALL lab37
-        CALL lab38
+        CALL lcdd
+lumm:   CALL lwnn
+        CALL lyoo
         CPI 020h
-        JNZ lab36
-lab217: CALL lab39
+        JNZ lumm
+lssl:   CALL lapp
         LXI H,00000h
-        SHLD lab40
-        SHLD lab41
-        SHLD lab12
-        LXI B,lab42
-        LXI H,lab40
-        CALL lab43
-        CALL lab44
+        SHLD lcqq
+        SHLD lerr
+        SHLD lyno
+        LXI B,lgss
+        LXI H,lcqq
+        CALL litt
+        CALL lkuu
         XRA A
-        STA lab45
-        STA lab46
-        LXI B,lab47
-        CALL lab48
-        LXI H,lab8
-        LXI B,lab49
-        CALL lab43
-        LDA lab5
-        LXI B,lab50
-        CALL lab48
-        LDA lab5
+        STA lmvv
+        STA loww
+        LXI B,lqxx
+        CALL lsyy
+        LXI H,lqjk
+        LXI B,luzz
+        CALL litt
+        LDA lkgh
+        LXI B,lwaa
+        CALL lsyy
+        LDA lkgh
         ANI 00Fh
         MVI B,007h
         DCR A
-        JNZ lab51
+        JNZ lybb
         MVI B,00Eh
-lab51:  DCR A
-        JNZ lab52
+lybb:   DCR A
+        JNZ ladc
         MVI B,015h
-lab52:  MOV A,B
-        STA lab53
+ladc:   MOV A,B
+        STA lced
         LXI H,00120h
-        SHLD lab54
-lab155: CALL lab55
-        CALL lab56
+        SHLD lefe
+lyfb:   CALL lggf
+        CALL lihg
         XRA A
-        STA lab57
-        LDA lab5
+        STA lkih
+        LDA lkgh
         ANI 00Fh
         CPI 003h
-        JNC lab58
+        JNC lmji
         INR A
         MOV C,A
         MVI A,030h
         MOV B,A
-lab60:  DCR C
-        JZ lab59
+lqlk:   DCR C
+        JZ lokj
         ADD B
-        JMP lab60
-lab58:  MVI A,060h
-lab59:  ADI 000h
+        JMP lqlk
+lmji:   MVI A,060h
+lokj:   ADI 000h
         DAA
-        STA lab61
-        CALL lab62
-lab64:  CALL lab63
-        LDA lab57
+        STA lsml
+        CALL lunm
+lypo:   CALL lwon
+        LDA lkih
         ORA A
-        JNZ lab64
-        LDA lab65
+        JNZ lypo
+        LDA laqp
         ORA A
-        JNZ lab66
-        LDA lab61
+        JNZ lcrq
+        LDA lsml
         MVI B,099h
         ADD B
         DAA
-        STA lab61
-        CALL lab62
-lab66:  CALL lab67
+        STA lsml
+        CALL lunm
+lcrq:   CALL lesr
         CPI 010h
-        JZ lab68
+        JZ lgts
         CPI 004h
-        JZ lab69
+        JZ liut
         CPI 080h
-        JZ lab70
+        JZ lkvu
         CPI 020h
-        JZ lab71
+        JZ lmwv
         CPI 001h
-        JZ lab72
+        JZ loxw
         CPI 002h
-lab242: JZ lab73
-        JMP lab64
-lab72:  LHLD lab54
-        SHLD lab74
+lqsk:   JZ lqyx
+        JMP lypo
+loxw:   LHLD lefe
+        SHLD lszy
         LXI H,00700h
-        SHLD lab54
+        SHLD lefe
         XRA A
-        STA lab4
-        STA lab6
-lab78:  LXI H,lab75
-        CALL lab14
-        CALL lab67
+        STA lifg
+        STA lmhi
+laec:   LXI H,luaz
+        CALL lcpq
+        CALL lesr
         CPI 001h
-        JZ lab76
-        LXI H,lab77
-        CALL lab14
-        CALL lab67
+        JZ lwba
+        LXI H,lycb
+        CALL lcpq
+        CALL lesr
         CPI 001h
-        JNZ lab78
-lab76:  LXI H,lab79
-        CALL lab14
-        LHLD lab74
-        SHLD lab54
-        JMP lab64
-lab215: MVI B,003h
+        JNZ laec
+lwba:   LXI H,lcfd
+        CALL lcpq
+        LHLD lszy
+        SHLD lefe
+        JMP lypo
+loqj:   MVI B,003h
         PUSH PSW
-lab81:  POP PSW
+lghf:   POP PSW
         LDAX D
         CMP M
         RNZ
@@ -268,102 +268,102 @@ lab81:  POP PSW
         DCR B
         INX H
         INX D
-        JNZ lab81
+        JNZ lghf
         POP PSW
         RET
-lab39:  LXI H,lab82
+lapp:   LXI H,liig
         MVI C,01Ah
-lab85:  MVI B,010h
-        LXI D,lab83
-        CALL lab84
+lolj:   MVI B,010h
+        LXI D,lkjh
+        CALL lmki
         DCR C
-        JNZ lab85
-        CALL lab86
-        LXI H,lab87
-        CALL lab14
-        LDA lab5
-        LXI B,lab88
-        CALL lab48
-        LXI H,lab89
-        CALL lab14
-        LXI H,lab8
-        LXI B,lab90
-        CALL lab43
-        LXI H,lab91
-        CALL lab92
-        LXI H,lab91
-        CALL lab92
-        LXI H,lab91
-        CALL lab92
-        LXI H,lab82
+        JNZ lolj
+        CALL lqmk
+        LXI H,lsnl
+        CALL lcpq
+        LDA lkgh
+        LXI B,luom
+        CALL lsyy
+        LXI H,lwpn
+        CALL lcpq
+        LXI H,lqjk
+        LXI B,lyqo
+        CALL litt
+        LXI H,larp
+        CALL lcsq
+        LXI H,larp
+        CALL lcsq
+        LXI H,larp
+        CALL lcsq
+        LXI H,liig
         MVI C,019h
-lab94:  MVI B,010h
-        LXI D,lab93
-        CALL lab84
+lgus:   MVI B,010h
+        LXI D,letr
+        CALL lmki
         DCR C
-        JNZ lab94
-        LXI D,lab95
+        JNZ lgus
+        LXI D,livt
         MVI B,010h
-        CALL lab84
-        LDA lab5
+        CALL lmki
+        LDA lkgh
         ANI 00Fh
         CPI 003h
-        JC lab86
+        JC lqmk
         SUI 003h
         RRC
         RRC
         RRC
         LXI D,00000h
         MOV E,A
-        LXI H,lab96
+        LXI H,lkwu
         DAD D
-        LXI D,lab97
+        LXI D,lmxv
         XCHG
         MVI B,010h
-lab102: PUSH B
+lwca:   PUSH B
         MVI B,002h
-lab101: LDAX D
+lubz:   LDAX D
         MVI C,008h
-lab100: RAL
-        JNC lab99
+lsay:   RAL
+        JNC lqzx
         MVI M,002h
-lab99:  INX H
+lqzx:   INX H
         DCR C
-        JNZ lab100
+        JNZ lsay
         DCR B
         INX D
-        JNZ lab101
+        JNZ lubz
         POP B
         DCR B
-        JNZ lab102
-lab86:  XRA A
-        STA lab6
-        STA lab4
+        JNZ lwca
+lqmk:   XRA A
+        STA lmhi
+        STA lifg
         LXI B,00000h
-lab106: CALL lab103
+lehe:   CALL lydb
         MOV A,M
-        CALL lab104
+        CALL lafc
         INX B
         LXI H,001A0h
-        CALL lab105
-        JNZ lab106
+        CALL lcgd
+        JNZ lehe
         RET
-lab92:  DCX H
+lcsq:   DCX H
         MOV A,H
         ORA L
-        JNZ lab92
+        JNZ lcsq
         RET
-lab103: LXI H,lab82
+lydb:   LXI H,liig
         DAD B
         RET
-lab84:  LDAX D
+lmki:   LDAX D
         MOV M,A
         INX D
         INX H
         DCR B
-        JNZ lab84
+        JNZ lmki
         RET
-lab27:  PUSH B
+lcdd:   PUSH B
         PUSH D
         PUSH H
         PUSH PSW
@@ -375,7 +375,7 @@ lab27:  PUSH B
         RLC
         RLC
         MOV C,A
-        LDA lab4
+        LDA lifg
         ADD C
         MOV E,A
         POP PSW
@@ -385,38 +385,38 @@ lab27:  PUSH B
         DAD H
         DAD H
         DAD H
-        LXI B,lab108
+        LXI B,lijg
         DAD B
         XCHG
-        LDA lab3
+        LDA lgef
         ORA A
-lab244: JZ lab109
+luum:   JZ lkkh
         DCR A
-        JZ lab110
-lab113: LDAX D
+        JZ lmli
+lsol:   LDAX D
         XRA M
         MOV M,A
-        JMP lab112
-lab110: LXI B,00007h
+        JMP lqnk
+lmli:   LXI B,00007h
         DAD B
-        JMP lab113
-lab109: MVI B,008h
-lab115: LDAX D
+        JMP lsol
+lkkh:   MVI B,008h
+lwqn:   LDAX D
         MOV C,A
-        LDA lab6
+        LDA lmhi
         ANA M
         XRA C
         MOV M,A
         INX H
         INX D
         DCR B
-        JNZ lab115
-lab112: POP PSW
+        JNZ lwqn
+lqnk:   POP PSW
         POP H
         POP D
         POP B
         RET
-lab104: PUSH B
+lafc:   PUSH B
         PUSH D
         PUSH PSW
         MOV A,C
@@ -435,36 +435,36 @@ lab104: PUSH B
         PUSH D
         POP B
         POP PSW
-        CALL lab27
+        CALL lcdd
         POP D
         POP B
         RET
-lab105: MOV A,H
+lcgd:   MOV A,H
         CMP B
         RNZ
         MOV A,L
         CMP C
         RET
-lab55:  CALL lab37
-        LDA lab53
+lggf:   CALL lwnn
+        LDA lced
         MOV C,A
         MOV A,L
-lab117: CMP C
-        JC lab116
+lasp:   CMP C
+        JC lyro
         SUB C
-        JMP lab117
-lab116: RLC
+        JMP lasp
+lyro:   RLC
         RLC
         RLC
         MOV L,A
         MVI H,000h
-        LXI D,lab118
+        LXI D,lctq
         DAD D
-        LXI D,lab119
+        LXI D,leur
         MVI C,008h
-lab122: MOV A,M
+lkxu:   MOV A,M
         MVI B,008h
-lab121: RAL
+liwt:   RAL
         PUSH PSW
         MVI A,000h
         RAL
@@ -472,83 +472,83 @@ lab121: RAL
         POP PSW
         INX D
         DCR B
-        JNZ lab121
+        JNZ liwt
         INX H
         DCR C
-        JNZ lab122
+        JNZ lkxu
         XRA A
-        STA lab65
-        LHLD lab123
+        STA laqp
+        LHLD lmyv
         MOV A,H
         ANI 003h
-        STA lab124
+        STA lozw
         MOV A,H
         RRC
         RRC
         ANI 007h
-        JZ lab125
+        JZ lqax
         DCR A
-lab125: ADI 003h
+lqax:   ADI 003h
         MOV L,A
         MVI H,000h
-        SHLD lab126
+        SHLD lsby
         RET
-lab37:  LHLD lab123
+lwnn:   LHLD lmyv
         MVI C,010h
-lab128: MOV A,H
+lwda:   MOV A,H
         DAD H
         ANI 060h
-        JPE lab127
+        JPE lucz
         INX H
-lab127: DCR C
-        JNZ lab128
-        SHLD lab123
+lucz:   DCR C
+        JNZ lwda
+        SHLD lmyv
         RET
-lab56:  CALL lab129
-        JZ lab130
+lihg:   CALL lyeb
+        JZ lagc
         POP H
-        JMP lab131
-lab129: CALL lab132
+        JMP lchd
+lyeb:   CALL leie
         XRA A
-        STA lab133
-        CALL lab134
-        LDA lab65
+        STA lgjf
+        CALL likg
+        LDA laqp
         ORA A
-        JZ lab135
+        JZ lklh
         LXI B,00010h
         DAD B
-        CALL lab134
-lab135: LDA lab133
+        CALL likg
+lklh:   LDA lgjf
         ORA A
         RET
-lab134: PUSH H
+likg:   PUSH H
         PUSH D
         MVI B,004h
-lab140: MVI C,004h
-lab139: LDAX D
+luqm:   MVI C,004h
+lspl:   LDAX D
         ORA A
-        JZ lab137
+        JZ lonj
         MOV A,M
         ORA A
-        JZ lab137
+        JZ lonj
         MVI A,001h
-        STA lab133
-        JMP lab138
-lab137: INX D
+        STA lgjf
+        JMP lqok
+lonj:   INX D
         INX H
         DCR C
-        JNZ lab139
+        JNZ lspl
         PUSH B
         LXI B,0000Ch
         DAD B
         POP B
         DCR B
-        JNZ lab140
-lab138: POP D
+        JNZ luqm
+lqok:   POP D
         POP H
         RET
-lab132: LXI H,lab119
-        LDA lab124
+leie:   LXI H,leur
+        LDA lozw
         RLC
         RLC
         RLC
@@ -557,184 +557,184 @@ lab132: LXI H,lab119
         MVI D,000h
         DAD D
         XCHG
-        LHLD lab126
-        LXI B,lab82
+        LHLD lsby
+        LXI B,liig
         DAD B
         RET
-lab130: CALL lab132
-        LHLD lab126
-        LDA lab65
-        STA lab4
+lagc:   CALL leie
+        LHLD lsby
+        LDA laqp
+        STA lifg
         MVI A,0FFh
-        STA lab6
+        STA lmhi
         MVI B,004h
-lab143: MVI C,004h
-lab142: PUSH B
+latp:   MVI C,004h
+lyso:   PUSH B
         PUSH H
         POP B
         LDAX D
         ORA A
-        JZ lab141
-        CALL lab104
-lab141: PUSH B
+        JZ lwrn
+        CALL lafc
+lwrn:   PUSH B
         POP H
         POP B
         INX H
         INX D
         DCR C
-        JNZ lab142
+        JNZ lyso
         PUSH B
         LXI B,0000Ch
         DAD B
         POP B
         DCR B
-        JNZ lab143
+        JNZ latp
         RET
-lab63:  MVI A,002h
-        STA lab3
-        LDA lab57
+lwon:   MVI A,002h
+        STA lgef
+        LDA lkih
         ORA A
-        CZ lab130
-        LDA lab65
+        CZ lagc
+        LDA laqp
         ORA A
-        JZ lab144
-lab149: INR A
+        JZ lcuq
+lmzv:   INR A
         CPI 008h
-        JZ lab145
-lab146: STA lab65
+        JZ levr
+lgws:   STA laqp
         MVI A,001h
-        STA lab3
-        LDA lab57
+        STA lgef
+        LDA lkih
         ORA A
-        CZ lab130
+        CZ lagc
         XRA A
-        STA lab3
+        STA lgef
         RET
-lab145: LHLD lab126
+levr:   LHLD lsby
         LXI B,00010h
         DAD B
-        SHLD lab126
+        SHLD lsby
         XRA A
-        JMP lab146
-lab144: LHLD lab126
-        SHLD lab147
+        JMP lgws
+lcuq:   LHLD lsby
+        SHLD lixt
         LXI B,00010h
         DAD B
-        SHLD lab126
-        CALL lab129
-        LHLD lab147
-        SHLD lab126
-        JNZ lab148
-        JMP lab149
-lab148: CALL lab132
+        SHLD lsby
+        CALL lyeb
+        LHLD lixt
+        SHLD lsby
+        JNZ lkyu
+        JMP lmzv
+lkyu:   CALL leie
         MVI B,004h
-lab153: MVI C,004h
-lab152: LDAX D
+ludz:   MVI C,004h
+lscy:   LDAX D
         RLC
         ORA A
-        JZ lab151
+        JZ lqbx
         MOV M,A
-lab151: INX H
+lqbx:   INX H
         INX D
         DCR C
-        JNZ lab152
+        JNZ lscy
         PUSH B
         LXI B,0000Ch
         DAD B
         POP B
         DCR B
-        JNZ lab153
+        JNZ ludz
         XRA A
-        STA lab3
-        CALL lab86
-        CALL lab154
-        JMP lab155
-lab154: LXI H,lab156
-        LXI D,lab61
-        CALL lab157
-        LXI B,lab42
-        CALL lab43
-        LXI H,lab158
-        LXI D,lab61
-        CALL lab157
-        LXI B,lab159
-        CALL lab43
+        STA lgef
+        CALL lqmk
+        CALL lwea
+        JMP lyfb
+lwea:   LXI H,lahc
+        LXI D,lsml
+        CALL lcid
+        LXI B,lgss
+        CALL litt
+        LXI H,leje
+        LXI D,lsml
+        CALL lcid
+        LXI B,lgkf
+        CALL litt
         XRA A
-        STA lab160
-lab185: LXI H,lab161
-lab165: CALL lab162
-        LXI B,lab163
+        STA lilg
+lglf:   LXI H,lkmh
+lsql:   CALL lmni
+        LXI B,looj
         DAD B
-        LXI B,lab164
-        CALL lab105
-        JNZ lab165
+        LXI B,lqpk
+        CALL lcgd
+        JNZ lsql
         PUSH B
         PUSH H
-        LDA lab160
+        LDA lilg
         ORA A
-        JZ lab166
+        JZ lurm
         MOV B,A
-        LDA lab46
+        LDA loww
         ADD B
-        STA lab46
+        STA loww
         CPI 008h
-        JC lab167
+        JC lwsn
         SUI 008h
-        STA lab46
-        LDA lab45
+        STA loww
+        LDA lmvv
         CPI 008h
-        JZ lab167
+        JZ lwsn
         INR A
-        STA lab45
-        LXI B,lab47
-        CALL lab48
-        LHLD lab54
-        LXI B,lab168
+        STA lmvv
+        LXI B,lqxx
+        CALL lsyy
+        LHLD lefe
+        LXI B,lyto
         DAD B
-        SHLD lab54
-lab167: LDA lab160
+        SHLD lefe
+lwsn:   LDA lilg
         MVI B,001h
         DCR A
-        JZ lab169
+        JZ laup
         MVI B,003h
         DCR A
-        JZ lab169
+        JZ laup
         MVI B,006h
         DCR A
-        JZ lab169
+        JZ laup
         MVI B,010h
-lab169: MOV A,B
-        STA lab170
-        LXI D,lab171
-        LXI H,lab156
-        CALL lab157
-        LXI B,lab42
-        CALL lab43
-        LXI H,lab158
-        LXI D,lab171
-        CALL lab157
-        LXI B,lab159
-        CALL lab43
-        LDA lab160
-        LHLD lab12
+laup:   MOV A,B
+        STA lcvq
+        LXI D,lewr
+        LXI H,lahc
+        CALL lcid
+        LXI B,lgss
+        CALL litt
+        LXI H,leje
+        LXI D,lewr
+        CALL lcid
+        LXI B,lgkf
+        CALL litt
+        LDA lilg
+        LHLD lyno
         MOV E,A
         MVI D,000h
-        CALL lab172
-        SHLD lab12
-        CALL lab44
-lab166: POP H
+        CALL lgxs
+        SHLD lyno
+        CALL lkuu
+lurm:   POP H
         POP B
         RET
-lab62:  LXI B,00303h
-        LDA lab61
-        JMP lab48
-lab44:  LHLD lab12
-        LXI B,lab173
+lunm:   LXI B,00303h
+        LDA lsml
+        JMP lsyy
+lkuu:   LHLD lyno
+        LXI B,liyt
         MOV A,H
-        CALL lab48
+        CALL lsyy
         MOV A,L
-        JMP lab48
-lab157: LDAX D
+        JMP lsyy
+lcid:   LDAX D
         ADD M
         DAA
         MOV M,A
@@ -751,245 +751,245 @@ lab157: LDAX D
         DAA
         MOV M,A
         RET
-lab43:  MVI E,003h
-lab176: MOV A,M
-        CALL lab48
+litt:   MVI E,003h
+lobw:   MOV A,M
+        CALL lsyy
         INX H
         DCR E
-        JNZ lab176
+        JNZ lobw
         RET
-lab22:  MVI E,003h
-lab178: MOV A,M
-        CALL lab177
+lsxy:   MVI E,003h
+lsdy:   MOV A,M
+        CALL lqcx
         INX H
         DCR E
-        JNZ lab178
+        JNZ lsdy
         RET
-lab48:  PUSH PSW
+lsyy:   PUSH PSW
         XRA A
-        STA lab6
-        STA lab4
+        STA lmhi
+        STA lifg
         POP PSW
-lab177: MOV D,A
+lqcx:   MOV D,A
         RRC
         RRC
         RRC
         RRC
         ANI 00Fh
         ADI 030h
-        CALL lab19
+        CALL lmuv
         MOV A,D
         ANI 00Fh
         ADI 030h
-        CALL lab19
+        CALL lmuv
         RET
-lab162: PUSH H
+lmni:   PUSH H
         MVI B,00Ah
-lab180: MOV A,M
+lwfa:   MOV A,M
         ORA A
-        JZ lab179
+        JZ luez
         INX H
         DCR B
-        JNZ lab180
+        JNZ lwfa
         POP H
         PUSH H
-lab184: PUSH H
-        LXI B,lab163
+leke:   PUSH H
+        LXI B,looj
         PUSH H
         POP D
         DAD B
         MVI B,00Ah
-lab182: MOV A,M
+laic:   MOV A,M
         STAX D
         INX H
         INX D
         DCR B
-        JNZ lab182
+        JNZ laic
         POP H
-        LXI B,lab164
-        CALL lab105
-        JZ lab183
-        LXI B,lab163
+        LXI B,lqpk
+        CALL lcgd
+        JZ lcjd
+        LXI B,looj
         DAD B
-        JMP lab184
-lab183: CALL lab86
-        LDA lab160
+        JMP leke
+lcjd:   CALL lqmk
+        LDA lilg
         INR A
-        STA lab160
+        STA lilg
         POP H
         POP H
-        JMP lab185
-lab179: POP H
+        JMP lglf
+luez:   POP H
         RET
-lab67:  LHLD lab54
+lesr:   LHLD lefe
         XRA A
-        STA lab186
-lab190: CALL lab38
+        STA limg
+lqqk:   CALL lyoo
         ORA A
-        JNZ lab187
-        STA lab188
-        JMP lab189
-lab187: MOV B,A
-        LDA lab188
+        JNZ lknh
+        STA lmoi
+        JMP lopj
+lknh:   MOV B,A
+        LDA lmoi
         ORA A
         MOV A,B
-        STA lab188
-        JNZ lab189
-        LDA lab186
+        STA lmoi
+        JNZ lopj
+        LDA limg
         ORA A
-        JNZ lab189
+        JNZ lopj
         MOV A,B
-        STA lab186
-lab189: DCX H
+        STA limg
+lopj:   DCX H
         MOV A,H
         ORA L
-        JNZ lab190
-        LDA lab186
+        JNZ lqqk
+        LDA limg
         ORA A
         RET
-lab38:  MVI A,091h
-        STA lab191
+lyoo:   MVI A,091h
+        STA lsrl
         MVI A,0FBh
-        STA lab192
+        STA lusm
         MVI C,00Fh
-lab193: DCR C
-        JNZ lab193
-        LDA lab194
+lwtn:   DCR C
+        JNZ lwtn
+        LDA lyuo
         ANI 03Fh
         MOV B,A
-        LDA lab195
+        LDA lavp
         ANI 003h
         RRC
         RRC
         ORA B
         CMA
         RET
-lab68:  CALL lab130
-        LHLD lab126
-        SHLD lab147
-        LXI B,lab91
-lab198: DAD B
-        SHLD lab126
-        CALL lab129
-        JNZ lab196
-        JMP lab197
-lab196: LHLD lab147
-        SHLD lab126
-        JMP lab197
-lab69:  CALL lab130
-        LHLD lab126
-        SHLD lab147
+lgts:   CALL lagc
+        LHLD lsby
+        SHLD lixt
+        LXI B,larp
+lgys:   DAD B
+        SHLD lsby
+        CALL lyeb
+        JNZ lcwq
+        JMP lexr
+lcwq:   LHLD lixt
+        SHLD lsby
+        JMP lexr
+liut:   CALL lagc
+        LHLD lsby
+        SHLD lixt
         LXI B,00001h
-        JMP lab198
-lab71:  MVI A,001h
-        STA lab57
-        JMP lab64
-lab70:  CALL lab130
-        LDA lab124
-        STA lab199
+        JMP lgys
+lmwv:   MVI A,001h
+        STA lkih
+        JMP lypo
+lkvu:   CALL lagc
+        LDA lozw
+        STA lizt
         INR A
         CPI 004h
-        JC lab200
+        JC lkau
         XRA A
-lab200: STA lab124
-        CALL lab129
-        JNZ lab201
-lab197: CALL lab130
-        JMP lab64
-lab201: LDA lab199
-        STA lab124
-        JMP lab197
-lab14:  PUSH H
+lkau:   STA lozw
+        CALL lyeb
+        JNZ lmbv
+lexr:   CALL lagc
+        JMP lypo
+lmbv:   LDA lizt
+        STA lozw
+        JMP lexr
+lcpq:   PUSH H
         PUSH B
-lab203: MOV A,M
+lqdx:   MOV A,M
         ORA A
-        JZ lab202
-        CALL lab19
+        JZ locw
+        CALL lmuv
         INX H
-        JMP lab203
-lab202: MOV A,D
+        JMP lqdx
+locw:   MOV A,D
         ORA A
         POP B
         POP H
         RZ
         DCR D
         INR C
-        JMP lab14
-lab19:  CPI 020h
-        JNC lab204
+        JMP lcpq
+lmuv:   CPI 020h
+        JNC lsey
         CPI 01Fh
-        JZ lab205
+        JZ lufz
         CPI 008h
-        JZ lab206
+        JZ lwga
         CPI 018h
-        JZ lab207
+        JZ lyhb
         CPI 019h
-        JZ lab208
+        JZ lajc
         CPI 01Ah
-        JZ lab209
+        JZ lckd
         CPI 00Ah
-        JZ lab210
+        JZ lele
         CPI 00Dh
-        JZ lab211
+        JZ lgmf
         CPI 007h
-        JZ lab212
+        JZ ling
         RET
-lab204: PUSH PSW
+lsey:   PUSH PSW
         ANI 07Fh
         SUI 020h
-        CALL lab27
+        CALL lcdd
         POP PSW
         CPI 080h
-        JNC lab213
+        JNC lkoh
         INR B
         RET
-lab213: INR C
+lkoh:   INR C
         RET
-lab206: DCR B
+lwga:   DCR B
         RET
-lab207: INR B
+lyhb:   INR B
         RET
-lab209: INR C
+lckd:   INR C
         RET
-lab208: DCR C
+lajc:   DCR C
         RET
-lab211: MVI B,000h
+lgmf:   MVI B,000h
         RET
-lab210: INR C
+lele:   INR C
         MVI B,000h
         RET
-lab212: INX H
+ling:   INX H
         MOV B,M
         INX H
         MOV C,M
         RET
-lab205: PUSH B
+lufz:   PUSH B
         MVI C,01Fh
-        CALL lab214
+        CALL lmpi
         POP B
         RET
-lab131: LXI D,lab8
-        LXI H,lab40
-        CALL lab215
-        JNC lab216
-        LDA lab5
+lchd:   LXI D,lqjk
+        LXI H,lcqq
+        CALL loqj
+        JNC lqrk
+        LDA lkgh
         ADI 001h
         DAA
-        STA lab5
+        STA lkgh
         ANI 00Fh
-        JNZ lab217
+        JNZ lssl
         LXI H,00040h
         LXI D,00015h
-        LDA lab5
-lab218: CALL lab172
+        LDA lkgh
+lutm:   CALL lgxs
         SUI 010h
-        JNZ lab218
+        JNZ lutm
         MOV A,H
         MOV H,L
         MOV L,A
-        SHLD lab8
-        JMP lab217
-lab172: PUSH PSW
+        SHLD lqjk
+        JMP lssl
+lgxs:   PUSH PSW
         MOV A,L
         ADD E
         DAA
@@ -1000,51 +1000,51 @@ lab172: PUSH PSW
         MOV H,A
         POP PSW
         RET
-lab216: LXI H,lab219
+lqrk:   LXI H,lwun
         MVI D,009h
-lab221: PUSH H
+lawp:   PUSH H
         PUSH D
-        LXI D,lab10
-        CALL lab215
-        JNC lab220
+        LXI D,lulm
+        CALL loqj
+        JNC lyvo
         POP D
         POP H
         LXI B,0000Ch
         DAD B
         DCR D
-        JNZ lab221
-        JMP lab222
-lab220: POP D
+        JNZ lawp
+        JMP lcxq
+lyvo:   POP D
         MOV A,D
         CPI 001h
-        JZ lab223
+        JZ leyr
         POP H
         PUSH H
-        LXI B,lab224
+        LXI B,lgzs
         DAD B
         XCHG
-        LXI B,lab225
-        LXI H,lab226
-lab229: DCX B
+        LXI B,liat
+        LXI H,lkbu
+lqex:   DCX B
         DCX H
         MOV A,M
         STAX B
-        CALL lab228
-        JNZ lab229
-lab223: POP H
-        LXI B,lab224
+        CALL lodw
+        JNZ lqex
+leyr:   POP H
+        LXI B,lgzs
         DAD B
-        LXI D,lab1
+        LXI D,lccd
         MVI B,009h
-        CALL lab84
-        LXI D,lab10
+        CALL lmki
+        LXI D,lulm
         MVI B,003h
-        CALL lab84
-        JMP lab222
+        CALL lmki
+        JMP lcxq
 
-lab13:  DB 02Ch, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+laop:   DB 02Ch, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-lab98:  DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+loyw:   DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
         DB 060h, 060h, 060h, 060h, 060h, 02Dh, 00Ah, 061h, 02Bh, 052h
         DB 045h, 05Ah, 055h, 04Ch, 058h, 054h, 041h, 054h, 03Ah, 030h
@@ -1065,13 +1065,13 @@ lab98:  DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
         DB 060h, 060h, 060h, 063h, 060h, 060h, 060h, 060h, 060h, 060h
         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
         DB 060h, 060h, 060h, 060h, 060h, 064h, 00Ah, 000h
-lab15:  DB 061h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+leqr:   DB 061h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
         DB 02Bh, 061h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
         DB 02Bh, 02Bh, 02Bh, 061h, 000h
-lab16:  DB 007h, 000h, 01Ah, 061h, 02Bh, 02Bh, 02Bh, 02Bh
-lab90:  DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+lgrs:   DB 007h, 000h, 01Ah, 061h, 02Bh, 02Bh, 02Bh, 02Bh
+lyqo:   DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 062h, 060h, 060h, 060h
         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 064h, 00Ah
@@ -1098,16 +1098,16 @@ lab90:  DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
         DB 060h, 065h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
         DB 060h, 060h, 060h, 02Eh, 000h
-lab75:  DB 007h, 007h, 01Eh, 02Bh, 050h, 041h, 055h, 05Ah, 041h, 02Bh
+luaz:   DB 007h, 007h, 01Eh, 02Bh, 050h, 041h, 055h, 05Ah, 041h, 02Bh
         DB 000h
-lab79:  DB 007h, 007h, 01Eh, 023h, 023h, 023h, 023h, 023h, 023h, 023h
+lcfd:   DB 007h, 007h, 01Eh, 023h, 023h, 023h, 023h, 023h, 023h, 023h
         DB 000h
-lab77:  DB 007h, 007h, 01Eh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+lycb:   DB 007h, 007h, 01Eh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
         DB 000h
-lab87:  DB 007h, 003h, 011h, 055h, 052h, 04Fh, 057h, 045h, 04Eh, 058h
+lsnl:   DB 007h, 003h, 011h, 055h, 052h, 04Fh, 057h, 045h, 04Eh, 058h
         DB 03Dh, 02Bh, 02Bh, 000h
-lab89:  DB 007h, 003h, 013h, 043h, 045h, 04Ch, 058h, 03Dh, 02Bh, 000h
-lab24:  DB 007h, 016h, 008h, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh
+lwpn:   DB 007h, 003h, 013h, 043h, 045h, 04Ch, 058h, 03Dh, 02Bh, 000h
+lwza:   DB 007h, 016h, 008h, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh
         DB 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh
         DB 03Dh, 03Dh, 03Dh, 03Dh, 007h, 018h, 009h, 054h, 041h, 042h
         DB 04Ch, 049h, 043h, 041h, 02Bh, 052h, 045h, 04Bh, 04Fh, 052h
@@ -1118,46 +1118,46 @@ lab24:  DB 007h, 016h, 008h, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh
         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
         DB 064h, 007h, 019h, 007h, 049h, 047h, 052h, 041h, 045h, 054h
         DB 03Ah, 000h
-lab20:  DB 007h, 021h, 00Bh, 02Bh, 03Dh, 02Bh, 000h
-lab65:  DB 000h
-lab4:   DB 000h
-lab124: DB 000h
-lab199: DB 000h
-lab126: DB 008h, 000h
-lab147: DB 018h, 000h
-lab6:   DB 000h
-lab3:   DB 000h
-lab123: DB 038h, 018h
-lab5:   DB 000h, 000h, 000h
-lab61:  DB 030h
-lab57:  DB 001h
-lab133: DB 001h
-lab54:  DB 020h, 001h
-lab74:  DB 000h, 000h
-lab12:  DB 000h, 000h
-lab188: DB 020h
-lab186: DB 020h
-lab40:  DB 000h
-lab41:  DB 004h
-lab156: DB 066h, 000h
-lab170: DB 000h
-lab171: DB 000h
-lab160: DB 000h
-lab46:  DB 000h
-lab45:  DB 000h
-lab53:  DB 007h
-lab8:   DB 000h, 040h
-lab9:   DB 000h
-lab10:  DB 000h
-lab11:  DB 000h
-lab158: DB 000h
-lab95:  DB 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h
+lovw:   DB 007h, 021h, 00Bh, 02Bh, 03Dh, 02Bh, 000h
+laqp:   DB 000h
+lifg:   DB 000h
+lozw:   DB 000h
+lizt:   DB 000h
+lsby:   DB 008h, 000h
+lixt:   DB 018h, 000h
+lmhi:   DB 000h
+lgef:   DB 000h
+lmyv:   DB 038h, 018h
+lkgh:   DB 000h, 000h, 000h
+lsml:   DB 030h
+lkih:   DB 001h
+lgjf:   DB 001h
+lefe:   DB 020h, 001h
+lszy:   DB 000h, 000h
+lyno:   DB 000h, 000h
+lmoi:   DB 020h
+limg:   DB 020h
+lcqq:   DB 000h
+lerr:   DB 004h
+lahc:   DB 066h, 000h
+lcvq:   DB 000h
+lewr:   DB 000h
+lilg:   DB 000h
+loww:   DB 000h
+lmvv:   DB 000h
+lced:   DB 007h
+lqjk:   DB 000h, 040h
+lskl:   DB 000h
+lulm:   DB 000h
+lwmn:   DB 000h
+leje:   DB 000h
+livt:   DB 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h
         DB 003h, 003h, 003h, 003h, 003h, 003h
-lab93:  DB 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+letr:   DB 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 003h, 003h, 003h
-lab83:  DB 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh
+lkjh:   DB 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh
         DB 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh
-lab118: DB 027h, 000h, 023h, 020h, 072h, 000h, 013h, 010h, 00Fh, 000h
+lctq:   DB 027h, 000h, 023h, 020h, 072h, 000h, 013h, 010h, 00Fh, 000h
         DB 022h, 022h, 00Fh, 000h, 022h, 022h, 047h, 000h, 032h, 020h
         DB 071h, 000h, 011h, 030h, 074h, 000h, 031h, 010h, 017h, 000h
         DB 022h, 030h, 033h, 000h, 033h, 000h, 033h, 000h, 033h, 000h
@@ -1174,18 +1174,18 @@ lab118: DB 027h, 000h, 023h, 020h, 072h, 000h, 013h, 010h, 00Fh, 000h
         DB 026h, 022h, 002h, 0F0h, 044h, 070h, 074h, 040h, 071h, 010h
         DB 011h, 070h, 023h, 060h, 047h, 020h, 036h, 020h, 027h, 010h
         DB 026h, 030h, 027h, 040h, 063h, 020h, 017h, 020h
-lab119: DB 000h, 000h, 001h, 000h, 000h, 001h, 001h, 001h, 000h, 000h
+leur:   DB 000h, 000h, 001h, 000h, 000h, 001h, 001h, 001h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 001h, 000h
         DB 000h, 000h, 001h, 001h, 000h, 000h, 001h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 001h, 001h, 001h, 000h, 000h, 001h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 001h, 000h, 000h, 001h, 001h, 000h, 000h, 000h, 001h
         DB 000h
-lab42:  DB 000h, 000h
-lab49:  DB 000h, 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h
+lgss:   DB 000h, 000h
+luzz:   DB 000h, 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 003h, 003h, 003h
-lab82:  DB 003h, 003h, 003h
-lab164: DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+liig:   DB 003h, 003h, 003h
+lqpk:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 002h, 000h, 003h, 003h, 003h, 003h
         DB 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 002h
@@ -1200,7 +1200,7 @@ lab164: DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 002h, 000h, 000h, 003h, 003h
         DB 003h
-lab97:  DB 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+lmxv:   DB 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 002h, 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 002h, 000h, 000h, 003h
         DB 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h
@@ -1211,7 +1211,7 @@ lab97:  DB 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 003h, 003h, 003h, 000h, 000h, 002h, 002h, 002h, 002h, 000h
         DB 000h, 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h
         DB 000h, 000h, 000h, 000h, 002h, 000h, 000h, 000h, 000h
-lab88:  DB 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h
+luom:   DB 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h
         DB 002h, 002h, 002h, 000h, 000h, 000h, 003h, 003h, 003h, 003h
         DB 003h, 003h, 000h, 000h, 002h, 002h, 000h, 002h, 000h, 000h
         DB 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h
@@ -1225,12 +1225,12 @@ lab88:  DB 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h
         DB 000h, 002h, 002h, 002h, 000h, 002h, 000h, 000h, 003h, 003h
         DB 003h, 003h, 003h, 003h
-lab161: DB 000h, 000h, 002h, 002h, 000h, 002h, 002h, 002h, 000h, 000h
+lkmh:   DB 000h, 000h, 002h, 002h, 000h, 002h, 002h, 002h, 000h, 000h
         DB 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h
         DB 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h
-lab1:   DB 02Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-lab17:  DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-lab219: DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+lccd:   DB 02Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+list:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+lwun:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
@@ -1240,9 +1240,9 @@ lab219: DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-lab226: DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+lkbu:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h
-lab225: DB 000h, 00Eh, 00Eh, 020h, 0CDh, 05Eh, 00Eh, 02Ah, 00Ah, 010h
+liat:   DB 000h, 00Eh, 00Eh, 020h, 0CDh, 05Eh, 00Eh, 02Ah, 00Ah, 010h
         DB 0CDh, 056h, 00Eh, 00Eh, 029h, 0CDh, 05Eh, 00Eh, 001h, 020h
         DB 004h, 0C9h, 006h, 00Ch, 0C3h, 056h, 00Eh, 0C5h, 0CDh, 067h
         DB 00Eh, 0C1h, 0C9h, 07Ch, 0CDh, 050h, 00Eh, 07Dh, 0CDh, 050h
@@ -1250,7 +1250,7 @@ lab225: DB 000h, 00Eh, 00Eh, 020h, 0CDh, 05Eh, 00Eh, 02Ah, 00Ah, 010h
         DB 0C3h, 027h, 006h, 0C3h, 038h, 0C4h, 0C3h, 000h, 000h, 00Bh
         DB 000h, 008h, 001h, 02Eh, 001h, 000h, 001h, 016h, 002h, 00Eh
         DB 001h, 026h, 002h, 02Bh, 001h
-lab96:  DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+lkwu:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 010h, 008h, 010h, 008h, 018h, 018h, 01Ch, 038h
         DB 01Eh, 078h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
@@ -1276,7 +1276,7 @@ lab96:  DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 000h, 000h, 000h, 000h
-lab108: DB 055h, 000h, 001h, 000h, 001h, 000h, 001h, 000h, 0FFh, 0FFh
+lijg:   DB 055h, 000h, 001h, 000h, 001h, 000h, 001h, 000h, 0FFh, 0FFh
         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0C3h, 0A5h, 099h
         DB 099h, 0A5h, 0C3h, 0FFh, 049h, 092h, 024h, 0C9h, 092h, 024h
         DB 049h, 092h, 000h, 000h, 001h, 002h, 007h, 007h, 00Fh, 00Fh
@@ -1340,25 +1340,25 @@ lab108: DB 055h, 000h, 001h, 000h, 001h, 000h, 001h, 000h, 0FFh, 0FFh
         DB 015h, 0C3h, 0A8h, 000h, 07Ah, 0FEh, 009h, 0CAh, 0B5h, 000h
         DB 03Eh, 00Bh, 0CDh, 0F0h, 002h, 005h, 014h, 02Bh, 0C3h, 0A8h
         DB 000h, 07Ah, 0FEh, 009h, 0C2h, 005h, 001h, 016h, 000h, 0CDh
-lab0:   CALL lab230
+labc:   CALL lsfy
         LXI D,09000h
-lab232: MVI A,066h
+lwha:   MVI A,066h
         STAX D
         INX D
         MOV A,D
         CPI 091h
-        JNZ lab232
+        JNZ lwha
         LXI D,0BF00h
-lab233: MVI A,066h
+lyib:   MVI A,066h
         STAX D
         INX D
         MOV A,D
         CPI 0C0h
-        JNZ lab233
+        JNZ lyib
         LXI D,09000h
-        CALL lab234
-        JMP lab235
-lab234: MVI A,0FFh
+        CALL lakc
+        JMP lcld
+lakc:   MVI A,0FFh
         STAX D
         INX D
         STAX D
@@ -1366,18 +1366,18 @@ lab234: MVI A,0FFh
         DCR E
         MOV A,D
         CPI 0C0h
-        JNZ lab234
+        JNZ lakc
         RET
-lab235: LXI D,09004h
-        CALL lab234
+lcld:   LXI D,09004h
+        CALL lakc
         LXI D,090FAh
-        CALL lab234
+        CALL lakc
         LXI D,090FEh
-        CALL lab234
+        CALL lakc
         LXI D,09418h
-        CALL lab237
-        JMP lab238
-lab237: MVI A,0FFh
+        CALL lgnf
+        JMP liog
+lgnf:   MVI A,0FFh
         STAX D
         INX D
         MVI A,066h
@@ -1389,24 +1389,24 @@ lab237: MVI A,0FFh
         INX D
         MOV A,E
         CPI 0E4h
-        JNZ lab237
+        JNZ lgnf
         RET
-lab238: LXI D,09318h
-        CALL lab237
+liog:   LXI D,09318h
+        CALL lgnf
         LXI D,09618h
-        CALL lab237
+        CALL lgnf
         LXI D,0B918h
-        CALL lab237
+        CALL lgnf
         LXI D,0BB18h
-        CALL lab237
+        CALL lgnf
         LXI D,0BC18h
-        CALL lab237
-        LXI B,lab241
+        CALL lgnf
+        LXI B,lorj
         LXI D,09820h
         MVI H,000h
-lab245: LDAX B
+lwvn:   LDAX B
         SUI 001h
-        JZ lab243
+        JZ lstl
         ADI 001h
         STAX D
         INX D
@@ -1414,33 +1414,33 @@ lab245: LDAX B
         INR H
         MOV A,H
         CPI 008h
-        JNZ lab245
+        JNZ lwvn
         INR D
         INR D
         MVI H,000h
-        JMP lab245
-lab243: LXI B,lab246
+        JMP lwvn
+lstl:   LXI B,lywo
         LXI D,0AB20h
         MVI H,000h
-lab249: LDAX B
+lezr:   LDAX B
         SUI 001h
-        JZ lab247
-        CALL lab248
-        JNZ lab249
+        JZ laxp
+        CALL lcyq
+        JNZ lezr
         INR D
         INR D
         MVI H,000h
         MVI E,020h
-        JMP lab249
-lab247: LXI B,lab250
+        JMP lezr
+laxp:   LXI B,lgas
         LXI D,099A0h
         MVI H,000h
-lab253: LDAX B
+lmdv:   LDAX B
         SUI 001h
-        JZ lab251
-        CALL lab248
-        JMP lab252
-lab248: ADI 001h
+        JZ libt
+        CALL lcyq
+        JMP lkcu
+lcyq:   ADI 001h
         STAX D
         INX D
         INX B
@@ -1448,42 +1448,42 @@ lab248: ADI 001h
         MOV A,H
         CPI 008h
         RET
-lab252: JNZ lab253
+lkcu:   JNZ lmdv
         INR D
         INR D
         MVI H,000h
         MVI E,0A0h
-        JMP lab253
-lab251: LXI B,lab254
+        JMP lmdv
+libt:   LXI B,loew
         LXI D,0991Ch
         MVI L,000h
-lab263: PUSH B
+lgof:   PUSH B
         PUSH D
         MVI H,000h
-lab256: LDAX B
+lsgy:   LDAX B
         SUI 001h
-        JZ lab255
-        CALL lab248
-        JNZ lab256
-lab255: CALL lab257
+        JZ lqfx
+        CALL lcyq
+        JNZ lsgy
+lqfx:   CALL luhz
         POP D
-        LXI B,lab258
+        LXI B,lwia
         MVI H,000h
-lab260: LDAX B
+lalc:   LDAX B
         SUI 001h
-        JZ lab259
-        CALL lab248
-        JNZ lab260
-lab259: POP B
+        JZ lyjb
+        CALL lcyq
+        JNZ lalc
+lyjb:   POP B
         MOV A,C
         CPI 078h
-        JNZ lab261
+        JNZ lcmd
         MVI C,048h
         INR L
         MOV A,L
         CPI 00Ah
-        JZ lab262
-lab261: MOV A,C
+        JZ lene
+lcmd:   MOV A,C
         ADI 010h
         MOV C,A
         INR D
@@ -1491,70 +1491,70 @@ lab261: MOV A,C
         DCR E
         DCR E
         DCR E
-        JMP lab263
-lab257: MVI A,001h
-lab266: MVI D,0E0h
-lab265: MVI E,080h
-lab264: DCR E
-        JNZ lab264
+        JMP lgof
+luhz:   MVI A,001h
+lmri:   MVI D,0E0h
+lkqh:   MVI E,080h
+lipg:   DCR E
+        JNZ lipg
         DCR D
-        JNZ lab265
+        JNZ lkqh
         DCR A
-        JNZ lab266
+        JNZ lmri
         RET
-lab276: LXI B,lab267
+lgbs:   LXI B,losj
         LXI D,0AF30h
         MVI H,000h
-lab269: LDAX B
+lsul:   LDAX B
         SUI 001h
-        JZ lab268
-        CALL lab248
-        JNZ lab269
+        JZ lqtk
+        CALL lcyq
+        JNZ lsul
         INR D
         MVI H,000h
         MVI E,030h
-        JMP lab269
-lab262: LXI B,lab270
+        JMP lsul
+lene:   LXI B,luvm
         LXI D,0B898h
         LXI H,00000h
-lab278: PUSH B
+lkdu:   PUSH B
         PUSH D
         MVI H,000h
-lab272: LDAX B
+lyxo:   LDAX B
         SUI 001h
-        JZ lab271
-        CALL lab248
-        JNZ lab272
-lab271: CALL lab257
+        JZ lwwn
+        CALL lcyq
+        JNZ lyxo
+lwwn:   CALL luhz
         POP D
-        LXI B,lab258
+        LXI B,lwia
         MVI H,000h
-lab274: LDAX B
+lczq:   LDAX B
         SUI 001h
-        JZ lab273
-        CALL lab248
-        JNZ lab274
-lab273: POP B
+        JZ layp
+        CALL lcyq
+        JNZ lczq
+layp:   POP B
         MOV A,C
         CPI 0F0h
-        JNZ lab275
+        JNZ lear
         MVI C,0E0h
         INR L
         MOV A,L
         CPI 009h
-        JZ lab276
-        JMP lab277
-lab275: MOV A,C
+        JZ lgbs
+        JMP lict
+lear:   MOV A,C
         ADI 010h
         MOV C,A
-lab277: LXI D,0B898h
-        JMP lab278
-lab268: LXI B,lab279
+lict:   LXI D,0B898h
+        JMP lkdu
+lqtk:   LXI B,lmev
         LXI D,099C0h
         MVI H,000h
-lab281: LDAX B
+lqgx:   LDAX B
         SUI 001h
-        JZ lab280
+        JZ lofw
         ADI 001h
         STAX D
         INX D
@@ -1564,29 +1564,29 @@ lab281: LDAX B
         INR H
         MOV A,H
         CPI 008h
-        JNZ lab281
+        JNZ lqgx
         INR D
         INR D
         INR D
         INR D
         MVI H,000h
         MVI E,0C0h
-        JMP lab281
-lab280: MVI A,00Fh
-        CALL lab266
-        CALL lab230
+        JMP lqgx
+lofw:   MVI A,00Fh
+        CALL lmri
+        CALL lsfy
         MVI C,01Fh
-        CALL lab214
-        JMP lab282
+        CALL lmpi
+        JMP lshy
         DB 007h, 06Bh, 0BBh, 0B6h, 0BBh, 0B7h, 0B7h, 0B7h, 000h, 0B0h
         DB 07Bh, 04Bh, 0B7h, 0B7h, 0BBh
-lab120: DB 07Bh, 0B7h, 00Bh, 020h, 0B4h, 0B0h, 0B7h, 0B7h, 0B7h, 000h
+lgvs:   DB 07Bh, 0B7h, 00Bh, 020h, 0B4h, 0B0h, 0B7h, 0B7h, 0B7h, 000h
         DB 0B0h, 07Bh, 0B0h, 007h, 007h, 0BBh, 070h, 0BBh
-lab159: DB 0BBh, 0B7h, 07Bh, 001h, 0B7h, 0B7h, 0BBh, 0B0h, 0B0h, 07Bh
+lgkf:   DB 0BBh, 0B7h, 07Bh, 001h, 0B7h, 0B7h, 0BBh, 0B0h, 0B0h, 07Bh
         DB 0B7h, 0BBh, 0B7h, 011h, 07Bh, 010h, 000h, 01Bh, 071h, 07Bh
         DB 044h, 0B7h, 0B0h, 000h, 0BBh, 07Bh, 0B7h, 00Bh, 0BBh, 0BBh
         DB 0BBh, 0B7h, 07Bh, 0BBh, 0BBh, 070h, 0BBh
-lab241: DB 066h, 066h, 066h, 066h, 03Eh, 006h, 006h, 006h, 07Eh, 066h
+lorj:   DB 066h, 066h, 066h, 066h, 03Eh, 006h, 006h, 006h, 07Eh, 066h
         DB 066h, 066h, 066h, 066h, 066h, 066h, 03Ch, 066h, 066h, 066h
         DB 066h, 066h, 066h, 03Ch, 000h, 000h, 000h, 000h, 000h, 000h
         DB 000h, 000h, 066h, 066h, 066h, 000h, 000h, 000h, 000h, 000h
@@ -1602,14 +1602,14 @@ lab241: DB 066h, 066h, 066h, 066h, 03Eh, 006h, 006h, 006h, 07Eh, 066h
         DB 066h, 000h, 000h, 000h, 000h, 000h, 001h, 007h, 0BBh, 0BBh
         DB 01Ah, 007h, 066h, 066h, 060h, 000h, 007h, 000h, 000h, 066h
         DB 066h, 067h
-lab246: DB 03Ch, 066h, 060h, 060h, 060h, 060h, 066h, 03Ch, 063h, 066h
+lywo:   DB 03Ch, 066h, 060h, 060h, 060h, 060h, 066h, 03Ch, 063h, 066h
         DB 06Ch, 078h, 07Ch, 066h, 063h, 063h, 0FEh, 0FEh, 030h, 030h
         DB 030h, 030h, 030h, 030h, 07Eh, 060h, 060h, 07Eh, 066h, 066h
         DB 066h, 07Ch, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
         DB 07Eh, 066h, 064h, 07Eh, 066h, 066h, 066h, 07Ch, 0FEh, 0FEh
         DB 030h, 030h, 030h, 030h, 030h, 030h, 001h, 000h, 001h, 000h
         DB 001h, 000h, 001h, 000h
-lab250: DB 066h, 066h, 066h, 066h, 03Eh, 006h, 006h, 006h, 0FEh, 060h
+lgas:   DB 066h, 066h, 066h, 066h, 03Eh, 006h, 006h, 006h, 0FEh, 060h
         DB 060h, 060h, 07Ch, 060h, 060h, 0FEh, 07Eh, 066h, 066h, 066h
         DB 07Eh, 060h, 060h, 060h, 066h, 066h, 066h, 066h, 07Eh, 066h
         DB 066h, 066h, 03Ch, 066h, 066h, 066h, 066h, 066h, 066h, 03Ch
@@ -1617,16 +1617,16 @@ lab250: DB 066h, 066h, 066h, 066h, 03Eh, 006h, 006h, 006h, 0FEh, 060h
         DB 066h, 066h, 066h, 066h, 07Fh, 07Fh, 063h, 063h, 063h, 073h
         DB 06Bh, 06Bh, 06Bh, 073h, 001h, 007h, 0BBh, 0BBh, 000h, 000h
         DB 000h, 000h
-lab254: DB 00Eh, 00Eh, 03Ch, 02Fh, 02Ch, 00Eh, 005h, 00Ah, 001h, 007h
+loew:   DB 00Eh, 00Eh, 03Ch, 02Fh, 02Ch, 00Eh, 005h, 00Ah, 001h, 007h
         DB 0BBh, 0BBh, 000h, 000h, 07Bh, 07Bh, 007h, 007h, 00Eh, 03Eh
         DB 00Eh, 007h, 01Eh, 006h, 001h, 070h, 0BBh, 0BBh, 07Bh, 07Bh
         DB 07Bh, 072h, 00Eh, 00Eh, 03Ch, 02Fh, 02Ch, 00Eh, 005h, 00Ah
         DB 001h, 070h, 0BBh, 0BBh, 07Bh, 070h, 07Bh, 0BBh, 00Eh, 00Eh
         DB 0FCh, 01Fh, 038h, 0F6h, 002h, 003h, 001h, 070h, 0BBh, 0BBh
         DB 070h, 0AAh, 0AAh, 000h
-lab258: DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 001h, 070h
+lwia:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 001h, 070h
         DB 0BBh, 0BBh, 0BBh, 0BBh, 0BBh, 0BBh
-lab267: DB 03Ch, 066h, 066h, 066h, 066h, 066h, 066h, 03Ch, 0FEh, 0FEh
+losj:   DB 03Ch, 066h, 066h, 066h, 066h, 066h, 066h, 03Ch, 0FEh, 0FEh
         DB 030h, 030h, 030h, 030h, 030h, 030h, 03Eh, 066h, 066h, 066h
         DB 066h, 066h, 0FFh, 0FFh, 000h, 000h, 000h, 000h, 000h, 060h
         DB 060h, 060h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
@@ -1634,11 +1634,11 @@ lab267: DB 03Ch, 066h, 066h, 066h, 066h, 066h, 066h, 03Ch, 0FEh, 0FEh
         DB 066h, 066h, 066h, 066h, 066h, 03Ch, 03Ch, 066h, 066h, 066h
         DB 066h, 066h, 066h, 03Ch, 001h, 066h, 066h, 066h, 066h, 066h
         DB 066h, 067h
-lab270: DB 04Eh, 04Eh, 024h, 01Eh, 00Eh, 00Dh, 00Ah, 00Ah, 001h, 000h
+luvm:   DB 04Eh, 04Eh, 024h, 01Eh, 00Eh, 00Dh, 00Ah, 00Ah, 001h, 000h
         DB 000h, 000h, 000h, 007h, 000h, 007h, 02Eh, 02Eh, 024h, 01Eh
         DB 00Eh, 00Dh, 00Ah, 00Ah, 001h, 0AAh, 07Ah, 000h, 007h, 000h
         DB 007h, 0BBh
-lab279: DB 066h, 066h, 066h, 000h, 000h, 000h, 000h, 000h, 0FEh, 0FEh
+lmev:   DB 066h, 066h, 066h, 000h, 000h, 000h, 000h, 000h, 0FEh, 0FEh
         DB 030h, 030h, 030h, 030h, 030h, 030h, 0FEh, 060h, 060h, 060h
         DB 07Ch, 060h, 060h, 0FEh, 0FEh, 0FEh, 030h, 030h, 030h, 030h
         DB 030h, 030h, 07Ch, 066h, 066h, 066h, 07Eh, 07Ch, 066h, 066h

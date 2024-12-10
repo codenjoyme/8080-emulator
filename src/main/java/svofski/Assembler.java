@@ -1000,11 +1000,9 @@ public class Assembler {
 
     public List<Map<String, Object>> gutter(List<String> text, Map<Integer, Integer> lengths, Map<Integer, Integer> addresses) {
         List<Map<String, Object>> result = new ArrayList<>();
-        int addr = 0;
 
         for (int i = 0, end_i = text.size(); i < end_i; i += 1) {
             boolean unresolved = false;
-            int width = 0;
             Map<Integer, Integer> hexes = new HashMap<>(lengths.get(i));
             for (int b = 0; b < lengths.get(i); ++b) {
                 Integer bytte = this.mem.get(addresses.get(i) + b);

@@ -79,7 +79,7 @@ public class DizAssembler {
                     int newAddr = info.data;
                     String label = labels.get(newAddr);
                     if (label == null) {
-                        label = "lab" + labels.size();
+                        label = toLabel(labels.size());
                         labels.put(newAddr, label);
                         infoData[newAddr].label = label;
                     }
@@ -87,6 +87,30 @@ public class DizAssembler {
                 }
             }
         }
+    }
+
+    private String toLabel(int value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("Value must be between 1 and " + Integer.MAX_VALUE);
+        }
+
+        final int base = 26;
+        final int maxLength = 3;
+        char[] chars = new char[base];
+        for (int i = 0; i < base; i++) {
+            chars[i] = (char) ('a' + i);
+        }
+
+        StringBuilder label = new StringBuilder("l");
+        int shift = value % base;
+        for (int i = 0; i < maxLength; i++) {
+            int index = (shift + value) % base;
+            label.append(chars[index]);
+            shift = (shift + 1) % base;
+            value /= base;
+        }
+
+        return label.toString();
     }
 
     private void dizAssembly(Range range, boolean canonical) {

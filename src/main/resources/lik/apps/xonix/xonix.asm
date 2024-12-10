@@ -1,6 +1,6 @@
       CPU  8080
       .ORG 00000h
-lab0  EQU 06917h
+labc  EQU 06917h
       RST 2
       RAL
       MOV L,C

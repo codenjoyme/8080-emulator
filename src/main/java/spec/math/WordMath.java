@@ -68,11 +68,6 @@ public class WordMath {
         return result;
     }
 
-    public static List<Integer> reverse(List<Integer> bites) {
-        Collections.reverse(bites);
-        return bites;
-    }
-
     public static String bits(int bite) {
         return String.format("%8s", Integer.toBinaryString(bite)).replaceAll(" ", "0");
     }
