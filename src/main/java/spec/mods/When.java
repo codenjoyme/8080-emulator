@@ -2,7 +2,7 @@ package spec.mods;
 
 import java.util.function.BiConsumer;
 
-public class When implements CpuMod {
+public abstract class When implements CpuMod {
 
     protected BiConsumer<Event, Object[]> trigger;
 

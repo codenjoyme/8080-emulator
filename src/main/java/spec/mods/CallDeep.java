@@ -1,11 +1,18 @@
 package spec.mods;
 
+import java.util.List;
+
 import static spec.mods.Event.RUN_CALL;
 import static spec.mods.Event.RUN_RET;
 
 public class CallDeep implements CpuMod {
 
     private int callDeep;
+
+    @Override
+    public List<Event> supports() {
+        return List.of(RUN_CALL, RUN_RET);
+    }
 
     @Override
     public void on(Event event, Object... params) {

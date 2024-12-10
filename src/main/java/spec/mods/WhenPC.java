@@ -6,6 +6,7 @@ import spec.assembler.Command;
 import spec.math.Bites;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
@@ -38,5 +39,10 @@ public class WhenPC extends When {
     public WhenPC(Bites commandCodes, Consumer<Cpu> trigger) {
         this((cpu, command) -> commandCodes.equals(cpu.commandBites()),
                 trigger);
+    }
+
+    @Override
+    public List<Event> supports() {
+        return List.of(CHANGE_PC);
     }
 }

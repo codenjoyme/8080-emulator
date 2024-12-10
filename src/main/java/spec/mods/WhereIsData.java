@@ -7,6 +7,8 @@ import spec.Range;
 import spec.assembler.Command;
 import spec.math.Bites;
 
+import java.util.List;
+
 import static spec.math.WordMath.*;
 import static spec.mods.Event.*;
 import static spec.mods.WhereIsData.Type.*;
@@ -23,6 +25,11 @@ public class WhereIsData implements CpuMod {
     public WhereIsData(Range range) {
         init();
         this.range = range;
+    }
+
+    @Override
+    public List<Event> supports() {
+        return List.of(CHANGE_PC, WRITE_MEM, READ_MEM);
     }
 
     @Override
