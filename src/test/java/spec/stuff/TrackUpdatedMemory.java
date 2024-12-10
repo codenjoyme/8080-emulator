@@ -5,8 +5,6 @@ import spec.Range;
 import spec.math.Bites;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 
 import static java.util.stream.Collectors.joining;
@@ -39,7 +37,10 @@ public class TrackUpdatedMemory extends Memory {
     }
 
     public void resetChanges() {
-        updated = new ArrayList<>(100_000);
+        updated = new ArrayList<>(mem.size());
+        for (int i = 0; i < mem.size(); i++) {
+            updated.add(new UpdatedBite(i, mem.get(i)));
+        }
         start = Integer.MAX_VALUE;
         end = Integer.MIN_VALUE;
     }
@@ -57,7 +58,7 @@ public class TrackUpdatedMemory extends Memory {
                 if (trackOnlyUpdates && prev == bite) {
                     return;
                 }
-                updated.add(new UpdatedBite(addr, prev, bite));
+                updated.get(addr).add(bite);
                 start = Math.min(start, addr);
                 end = Math.max(end, addr);
             }
@@ -75,6 +76,7 @@ public class TrackUpdatedMemory extends Memory {
 
     public String details() {
         return updated.stream()
+                .filter(UpdatedBite::changed)
                 .map(UpdatedBite::toString)
                 .collect(joining("\n"));
     }
@@ -83,22 +85,6 @@ public class TrackUpdatedMemory extends Memory {
         if (updated.isEmpty()) {
             return "";
         }
-        // по каждому изменению адреса оставляем только последние изменения
-        LinkedList<UpdatedBite> changes = new LinkedList<>(updated);
-        changes.sort(Comparator.comparingInt(UpdatedBite::addr));
-        for (int i = 0; i < changes.size(); i++) {
-            UpdatedBite ub = changes.get(i);
-            for (int j = i + 1; j < changes.size(); j++) {
-                UpdatedBite ub2 = changes.get(j);
-                if (ub.addr() == ub2.addr()) {
-                    changes.remove(i);
-                    i--;
-                    break;
-                } else if (ub.addr() < ub2.addr()) {
-                    break;
-                }
-            }
-        }
 
         // Начинаем с минимального адреса, округлённого до начала строки (16 байт на строку)
         int startLine = start - start % 16;
@@ -106,26 +92,16 @@ public class TrackUpdatedMemory extends Memory {
         int endLine = (end + 16) - (end % 16);
 
         StringBuilder builder = new StringBuilder();
-
-        builder.append("       ");
-        for (int i = 0; i < 16; i++) {
-            builder.append(hex8(i))
-                    .append("     ");
-        }
-        builder.append("\n");
-
         for (int line = startLine; line < endLine; line += 16) {
 
             StringBuilder lineString = new StringBuilder();
             boolean empty = true;
             for (int i = line; i < line + 16; i++) {
                 String display = "-";
-                for (UpdatedBite ub : changes) {
-                    if (ub.addr() == i) {
-                        display = hex8(ub.prev()) + ">" + hex8(ub.next());
-                        empty = false;
-                        break;
-                    }
+                UpdatedBite ub = updated.get(i);
+                if (ub.changed()) {
+                    display = hex8(ub.original()) + ">" + hex8(ub.last());
+                    empty = false;
                 }
                 lineString.append(String.format(" %-5s ", display));
             }
@@ -137,7 +113,19 @@ public class TrackUpdatedMemory extends Memory {
             }
         }
 
-        return builder.toString();
+        if (builder.length() == 0) {
+            return "";
+        }
+        StringBuilder result = new StringBuilder();
+        result.append("       ");
+        for (int i = 0; i < 16; i++) {
+            result.append(hex8(i))
+                    .append("     ");
+        }
+        result.append("\n")
+                .append(builder);
+
+        return result.toString();
     }
 
     public String changedBites() {
