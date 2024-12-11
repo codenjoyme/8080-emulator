@@ -9,47 +9,52 @@
 
         CPU  8080
         .ORG 0C000h
-lehe    EQU 00323h
-laop    EQU 0266Fh
-lasp    EQU 08FE1h
-lydb    EQU 08FE3h
-lmki    EQU 08FE5h
-lwmn    EQU 08FE7h
-lulm    EQU 08FE9h
-laec    EQU 08FEBh
-lesr    EQU 08FEDh
-lwon    EQU 08FEFh
-lwba    EQU 08FF0h
-lumm    EQU 08FF1h
-lcqq    EQU 08FF2h
-lsay    EQU 08FF3h
-litt    EQU 08FF4h
-lgef    EQU 08FF6h
-lyno    EQU 08FF8h
-lifg    EQU 08FFAh
-loij    EQU 08FFCh
-lskl    EQU 08FFDh
-lubz    EQU 08FFFh
-lupm    EQU 0C800h
-luzz    EQU 0FF00h
-loww    EQU 0FF01h
-lybb    EQU 0FF02h
-lccd    EQU 0FF03h
+lifg    EQU 00000h
+lacc    EQU 00008h
+loij    EQU 00300h
+lomj    EQU 00323h
+lgrs    EQU 0266Fh
+lccd    EQU 07FFFh
+lkxu    EQU 08FE1h
+lijg    EQU 08FE3h
+lwpn    EQU 08FE5h
+lcpq    EQU 08FE7h
+laop    EQU 08FE9h
+liig    EQU 08FEBh
+lmwv    EQU 08FEDh
+lesr    EQU 08FEFh
+lege    EQU 08FF0h
+lcqq    EQU 08FF1h
+lkuu    EQU 08FF2h
+lcgd    EQU 08FF3h
+lqxx    EQU 08FF4h
+lkgh    EQU 08FF6h
+leqr    EQU 08FF8h
+lmhi    EQU 08FFAh
+lulm    EQU 08FFCh
+lyno    EQU 08FFDh
+lehe    EQU 08FFFh
+leur    EQU 0C800h
+lced    EQU 0FF00h
+lwaa    EQU 0FF01h
+lggf    EQU 0FF02h
+lede    EQU 0FF03h
+luom    EQU 0FFFFh
         JMP labc
-labc:   LXI SP,07FFFh
+labc:   LXI SP,lccd
         MVI A,082h
-        STA lccd
-        JMP lede
+        STA lede
+        JMP lgef
         DB 000h, 000h
-lsxy:   PUSH H
+lyab:   PUSH H
         PUSH B
-        LXI H,00000h
+        LXI H,lifg
         DAD SP
-        SHLD lgef
+        SHLD lkgh
         LXI SP,0C000h
-        LHLD lifg
-        LXI B,00300h
-lkgh:   PUSH H
+        LHLD lmhi
+        LXI B,loij
+lqjk:   PUSH H
         PUSH H
         PUSH H
         PUSH H
@@ -60,30 +65,30 @@ lkgh:   PUSH H
         DCX B
         MOV A,B
         ORA C
-        JNZ lkgh
-        LHLD lgef
+        JNZ lqjk
+        LHLD lkgh
         SPHL
         POP B
         POP H
         RET
-lijg:   PUSH H
+lsol:   PUSH H
         PUSH D
         PUSH B
         PUSH PSW
         MOV A,C
         CPI 021h
-        JC lmhi
-luyz:   LHLD loij
+        JC lskl
+lcdd:   LHLD lulm
         MOV A,H
         CPI 0BEh
-        JNC lqjk
-lovw:   ADI 003h
-        STA lskl
+        JNC lwmn
+luyz:   ADI 003h
+        STA lyno
         XCHG
         MOV A,C
-        STA lulm
+        STA laop
         SUI 020h
-        LHLD lwmn
+        LHLD lcpq
         ADD L
         MOV L,A
         DAD H
@@ -103,238 +108,238 @@ lovw:   ADI 003h
         RRC
         ADI 090h
         MOV H,A
-        SHLD lyno
+        SHLD leqr
         MVI B,008h
         NOP
-leqr:   LDAX D
+lktu:   LDAX D
         MOV L,A
         MVI H,000h
         MOV A,C
-lcpq:   DAD H
+list:   DAD H
         DAD H
         DCR A
-        JNZ lcpq
+        JNZ list
         PUSH H
         INX D
         DCR B
-        JNZ leqr
+        JNZ lktu
         MVI B,008h
-        LHLD lyno
-list:   POP D
+        LHLD leqr
+lovw:   POP D
         MOV A,D
-        CALL lgrs
+        CALL lmuv
         MOV M,A
         INR H
         MOV A,E
-        CALL lgrs
+        CALL lmuv
         MOV M,A
         DCR H
         DCR L
         DCR B
-        JNZ list
-lqkk:   POP PSW
+        JNZ lovw
+lyoo:   POP PSW
         POP B
         POP D
         POP H
         RET
-lsll:   MOV C,A
-        LDA lifg
+lapp:   MOV C,A
+        LDA lmhi
         ORA A
-        JNZ lktu
+        JNZ lqwx
         MOV A,C
         CMA
         ANA M
         RET
-lktu:   MOV A,M
+lqwx:   MOV A,M
         ORA C
         RET
-lqjk:   MOV A,L
+lwmn:   MOV A,L
         CPI 0F5h
-        JNC lmuv
+        JNC lsxy
         ADI 00Ah
         MOV L,A
-        STA loij
+        STA lulm
         MVI H,000h
         MOV A,H
-        JMP lovw
-lmuv:   CALL lqwx
-        NOP
-        CALL lsxy
-        LXI H,00008h
-        SHLD loij
         JMP luyz
-lmhi:   LHLD loij
+lsxy:   CALL lwza
+        NOP
+        CALL lyab
+        LXI H,lacc
+        SHLD lulm
+        JMP lcdd
+lskl:   LHLD lulm
         CPI 020h
-        JZ lwza
-        CPI 00Ah
-        JZ lyab
-        CPI 00Dh
-        JZ lacc
-        CPI 018h
-        JZ lwza
-        CPI 008h
-        JZ lcdd
-        CPI 019h
         JZ leee
-        CPI 01Ah
+        CPI 00Ah
         JZ lgff
-        CPI 00Ch
+        CPI 00Dh
         JZ ligg
-        CPI 01Fh
+        CPI 018h
+        JZ leee
+        CPI 008h
         JZ lkhh
-        JMP lmii
-lwza:   MOV A,H
+        CPI 019h
+        JZ lmii
+        CPI 01Ah
+        JZ lojj
+        CPI 00Ch
+        JZ lqkk
+        CPI 01Fh
+        JZ lsll
+        JMP lumm
+leee:   MOV A,H
         CPI 0BEh
-        JNC lyab
+        JNC lgff
         ADI 003h
         MOV H,A
-        JMP lmii
-lyab:   MVI H,000h
+        JMP lumm
+lgff:   MVI H,000h
         MOV A,L
         CPI 0F5h
-        JNC lojj
+        JNC lwnn
         ADI 00Ah
         MOV L,A
-        JMP lmii
-lojj:   CALL lqwx
+        JMP lumm
+lwnn:   CALL lwza
         NOP
-        JMP lkhh
-lacc:   MVI H,000h
-        JMP lmii
-lcdd:   MOV A,H
+        JMP lsll
+ligg:   MVI H,000h
+        JMP lumm
+lkhh:   MOV A,H
         CPI 002h
-        JC lmii
+        JC lumm
         SUI 003h
         MOV H,A
-        JMP lmii
-leee:   MOV A,L
+        JMP lumm
+lmii:   MOV A,L
         CPI 011h
-        JC lmii
+        JC lumm
         SUI 00Ah
         MOV L,A
-        JMP lmii
-lgff:   MOV A,L
+        JMP lumm
+lojj:   MOV A,L
         CPI 0F5h
-        JNC lmii
+        JNC lumm
         ADI 00Ah
         MOV L,A
-        JMP lmii
-ligg:   LXI H,00008h
-        JMP lmii
-lkhh:   CALL lsxy
-        JMP ligg
-lmii:   SHLD loij
+        JMP lumm
+lqkk:   LXI H,lacc
+        JMP lumm
+lsll:   CALL lyab
         JMP lqkk
-lgrs:   MOV C,A
-        LDA lulm
+lumm:   SHLD lulm
+        JMP lyoo
+lmuv:   MOV C,A
+        LDA laop
         CPI 07Fh
         MOV A,C
-        JZ lsll
+        JZ lapp
         XRA M
         RET
         DB 000h
-lerr:   PUSH H
+lmvv:   PUSH H
         PUSH B
-        LHLD lumm
-lyoo:   MVI A,00Bh
-        STA lccd
-        CALL lwnn
+        LHLD lcqq
+lgss:   MVI A,00Bh
+        STA lede
+        CALL lerr
         MVI A,00Ah
-        STA lccd
-        CALL lwnn
+        STA lede
+        CALL lerr
         DCR H
-        JNZ lyoo
+        JNZ lgss
         NOP
         NOP
         NOP
         POP B
         POP H
         RET
-lwnn:   MOV B,L
-lapp:   DCR B
-        JNZ lapp
+lerr:   MOV B,L
+litt:   DCR B
+        JNZ litt
         RET
-loxw:   PUSH PSW
+lwba:   PUSH PSW
         MVI A,040h
-        STA lcqq
-        CALL lerr
+        STA lkuu
+        CALL lmvv
         POP PSW
         RET
-liig:   PUSH H
+lqmk:   PUSH H
         MVI A,040h
-lgss:   STA lumm
-        CALL lerr
+loww:   STA lcqq
+        CALL lmvv
         POP H
         RET
-lghf:   PUSH H
+lolj:   PUSH H
         MVI A,050h
-        JMP lgss
-luom:   PUSH H
+        JMP loww
+letr:   PUSH H
         PUSH B
         MVI B,0FFh
-lced:   NOP
+lkih:   NOP
         NOP
         NOP
-        LDA litt
+        LDA lqxx
         ORA A
-        JZ lkuu
-        CALL lmvv
-        LDA loww
+        JZ lsyy
+        CALL luzz
+        LDA lwaa
         ANI 002h
-        JZ lqxx
-lggf:   CALL lsyy
-        LDA luzz
+        JZ lybb
+lokj:   CALL ladc
+        LDA lced
         CPI 0FFh
-        JNZ lwaa
-        LDA lybb
+        JNZ lefe
+        LDA lggf
         ORI 0F0h
         CPI 0FFh
-        JNZ ladc
-        JMP lced
-lkuu:   CALL lmvv
-        LDA loww
+        JNZ lihg
+        JMP lkih
+lsyy:   CALL luzz
+        LDA lwaa
         ANI 002h
-        JNZ lefe
+        JNZ lmji
         MVI B,0FFh
-        JMP lggf
-lefe:   DCR B
-        JNZ lggf
-        STA litt
+        JMP lokj
+lmji:   DCR B
+        JNZ lokj
+        STA lqxx
         NOP
         NOP
         NOP
-        JMP lced
-lwaa:   MOV L,A
+        JMP lkih
+lefe:   MOV L,A
         MVI H,0FFh
-        JMP lihg
-ladc:   MOV H,A
+        JMP lqlk
+lihg:   MOV H,A
         MVI L,0FFh
-lihg:   MVI C,0FBh
-lkih:   INR C
+lqlk:   MVI C,0FBh
+lsml:   INR C
         DAD H
-        JC lkih
+        JC lsml
         MOV L,C
         MVI B,0FFh
-lokj:   CALL lmvv
-        LDA loww
+lwon:   CALL luzz
+        LDA lwaa
         ORI 003h
         CPI 0FFh
-        JNZ lmji
+        JNZ lunm
         DCR B
-        JNZ lokj
-        JMP lced
-lqlk:   LDA loww
+        JNZ lwon
+        JMP lkih
+lypo:   LDA lwaa
         CMA
         ANI 0F7h
         RET
-lqwx:   CALL lqlk
-        CNZ lsml
+lwza:   CALL lypo
+        CNZ laqp
         RET
         DB 000h
-lmji:   MVI C,0FDh
-lunm:   INR C
+lunm:   MVI C,0FDh
+lcrq:   INR C
         RRC
-        JC lunm
+        JC lcrq
         MOV A,C
         RLC
         RLC
@@ -348,236 +353,236 @@ lunm:   INR C
         POP B
         POP H
         RET
-lqxx:   STA litt
+lybb:   STA lqxx
         NOP
         NOP
         NOP
-        JMP lced
-lmvv:   MVI A,082h
-        STA lccd
+        JMP lkih
+luzz:   MVI A,082h
+        STA lede
         RET
-lsyy:   MVI A,091h
-        STA lccd
+ladc:   MVI A,091h
+        STA lede
         RET
-lsml:   PUSH B
-        LDA lwon
+laqp:   PUSH B
+        LDA lesr
         CPI 080h
-        JZ lypo
-laqp:   MVI C,0FFh
-lcrq:   CALL lmvv
-        LDA loww
+        JZ lgts
+liut:   MVI C,0FFh
+lkvu:   CALL luzz
+        LDA lwaa
         ORI 003h
         CPI 0FFh
-        JNZ laqp
+        JNZ liut
         MVI B,015h
-        CALL lapp
+        CALL litt
         DCR C
-        JNZ lcrq
-lsnl:   POP B
+        JNZ lkvu
+lcsq:   POP B
         RET
-lkvu:   LHLD lesr
+lszy:   LHLD lmwv
         PCHL
         DB 021h, 0FEh, 018h, 022h, 0E7h, 08Fh, 00Eh, 021h, 0CDh, 0BCh
         DB 0C2h, 021h, 0A0h, 018h, 022h, 0E7h, 08Fh, 0C9h, 000h
-lycb:   LDA litt
-        JMP lgts
+lghf:   LDA lqxx
+        JMP loxw
         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-lolj:   CALL liut
-        JMP lkvu
+lyqo:   CALL lqyx
+        JMP lszy
         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0E5h, 0D5h, 0C5h, 0F5h
         DB 079h, 02Ah, 0FCh, 08Fh, 0EBh, 0C3h, 050h, 0C0h
-liut:   JMP lmwv
-lyqo:   CALL loxw
+lqyx:   JMP luaz
+livt:   CALL lwba
         CPI 081h
-        JNC lqyx
+        JNC lycb
         CPI 021h
-        JC lszy
+        JC laec
         MOV C,A
         CPI 040h
-        JNC luaz
-        LDA litt
+        JNC lcfd
+        LDA lqxx
         ORA A
         MOV A,C
-        JNZ lszy
+        JNZ laec
         XRI 010h
-lszy:   STA lwba
-        STA lwon
+laec:   STA lege
+        STA lesr
         RET
-luaz:   CPI 07Fh
-        JZ lycb
-        LDA laec
-lgts:   ORA A
+lcfd:   CPI 07Fh
+        JZ lghf
+        LDA liig
+loxw:   ORA A
         MOV A,C
-        JNZ lszy
+        JNZ laec
         SUI 020h
-        JMP lszy
-lwpn:   STA lwon
-        LDA lwba
+        JMP laec
+lgus:   STA lesr
+        LDA lege
         RET
-lqyx:   CPI 081h
-        JNZ lcfd
-        LDA laec
+lycb:   CPI 081h
+        JNZ lkjh
+        LDA liig
         ORA A
         MVI A,001h
-        JZ lege
+        JZ lmki
         XRA A
-lege:   STA laec
+lmki:   STA liig
         ORA A
         LXI H,0C2C8h
         PUSH H
-        JZ lghf
-        JMP liig
-lcfd:   CPI 08Ch
-        JNZ lkjh
-        LXI H,0FFFFh
-lcsq:   SHLD lifg
-        JMP liut
-larp:   LHLD lmki
+        JZ lolj
+        JMP lqmk
+lkjh:   CPI 08Ch
+        JNZ lsnl
+        LXI H,luom
+lmxv:   SHLD lmhi
+        JMP lqyx
+lkwu:   LHLD lwpn
         PCHL
-lsol:   PUSH B
+lctq:   PUSH B
         PUSH D
         PUSH H
-        CALL lkvu
-        CALL lolj
+        CALL lszy
+        CALL lyqo
         NOP
         NOP
         POP H
         POP D
         POP B
         RET
-lypo:   MVI C,010h
-lqmk:   MVI B,0FFh
-        CALL lapp
+lgts:   MVI C,010h
+larp:   MVI B,0FFh
+        CALL litt
         DCR C
-        JNZ lqmk
-        JMP lsnl
-        DB 0C5h, 006h, 015h, 0CDh, 090h, 0C1h, 0C1h, 0C3h, 087h, 0C2h
-lmwv:   CALL lsml
-        CALL luom
-        CPI 080h
-        JZ lwpn
-        JMP lyqo
-lkjh:   CPI 08Bh
         JNZ larp
-        LXI H,00000h
         JMP lcsq
-lwca:   PUSH B
+        DB 0C5h, 006h, 015h, 0CDh, 090h, 0C1h, 0C1h, 0C3h, 087h, 0C2h
+luaz:   CALL laqp
+        CALL letr
+        CPI 080h
+        JZ lgus
+        JMP livt
+lsnl:   CPI 08Bh
+        JNZ lkwu
+        LXI H,lifg
+        JMP lmxv
+lgif:   PUSH B
         PUSH D
-lyro:   MVI C,000h
+liwt:   MVI C,000h
         MOV D,A
-        LDA loww
+        LDA lwaa
         ANI 001h
         MOV E,A
-lqzx:   MOV A,C
+lafc:   MOV A,C
         ANI 07Fh
         RLC
         MOV C,A
-lgus:   LDA loww
+lqzx:   LDA lwaa
         CPI 080h
-        JC letr
+        JC loyw
         ANI 001h
         CMP E
-        JZ lgus
+        JZ lqzx
         ORA C
         MOV C,A
-        CALL livt
-        LDA loww
+        CALL lsay
+        LDA lwaa
         ANI 001h
         MOV E,A
         MOV A,D
         ORA A
-        JP lkwu
+        JP lubz
         MOV A,C
         CPI 0E6h
-        JNZ lmxv
+        JNZ lwca
         XRA A
-        STA lyno
-        JMP loyw
-lmxv:   CPI 019h
-        JNZ lqzx
+        STA leqr
+        JMP lydb
+lwca:   CPI 019h
+        JNZ lafc
         MVI A,0FFh
-        STA lsay
-loyw:   MVI D,009h
-lkwu:   DCR D
-        JNZ lqzx
-        LDA lsay
+        STA lcgd
+lydb:   MVI D,009h
+lubz:   DCR D
+        JNZ lafc
+        LDA lcgd
         XRA C
         POP D
         POP B
         RET
-livt:   LDA lubz
+lsay:   LDA lehe
         MOV B,A
-        JMP lapp
+        JMP litt
         DB 0C5h, 0D5h, 0F5h, 057h, 00Eh, 008h, 07Ah, 007h, 057h, 0E6h
         DB 001h, 0F6h, 00Eh, 032h, 003h, 0FFh, 05Fh, 0CDh, 084h, 0C4h
         DB 07Bh, 0EEh, 001h, 032h, 003h, 0FFh, 0CDh, 084h, 0C4h, 00Dh
         DB 0C2h, 0D6h, 0C3h, 0F1h, 0D1h, 0C1h, 0C9h, 000h, 000h, 000h
         DB 000h
-lqnk:   MVI A,0FFh
-        CALL lwca
+lasp:   MVI A,0FFh
+        CALL lgif
         MOV L,A
         MVI A,008h
-        CALL lwca
+        CALL lgif
         MOV H,A
-        SHLD lydb
+        SHLD lijg
         MVI A,008h
-        CALL lwca
+        CALL lgif
         MOV E,A
         MVI A,008h
-        CALL lwca
+        CALL lgif
         MOV D,A
-lcgd:   MVI A,008h
-        CALL lwca
+lmli:   MVI A,008h
+        CALL lgif
         MOV M,A
-        CALL lafc
+        CALL lkkh
         INX H
-        JNZ lcgd
+        JNZ lmli
         RET
         DB 03Eh, 0FFh, 0C3h, 016h, 0C4h
-lafc:   MOV A,H
+lkkh:   MOV A,H
         CMP D
         RNZ
         MOV A,L
         CMP E
         RET
-lgif:   MOV A,M
+lqnk:   MOV A,M
         STAX B
         INX H
         INX B
-        CALL lafc
-        JNZ lgif
+        CALL lkkh
+        JNZ lqnk
         RET
-lkkh:   MOV A,M
+lupm:   MOV A,M
         MOV C,A
         CPI 000h
         RZ
-        CALL lijg
+        CALL lsol
         INX H
-        JMP lkkh
-lede:   LXI H,lmli
-        LXI D,lomj
-        LXI B,08FE3h
-        CALL lgif
-        CALL lkkh
+        JMP lupm
+lgef:   LXI H,lwqn
+        LXI D,lyro
+        LXI B,lijg
         CALL lqnk
-        LHLD lydb
+        CALL lupm
+        CALL lasp
+        LHLD lijg
         PCHL
-letr:   CALL lsol
+loyw:   CALL lctq
         CPI 00Dh
-        JZ lupm
+        JZ leur
         CPI 00Ah
-        JZ lwqn
-        STA lubz
+        JZ lgvs
+        STA lehe
         MVI A,0FFh
-        JMP lyro
-lwqn:   LHLD lasp
+        JMP liwt
+lgvs:   LHLD lkxu
         PCHL
 
-lmli:   DB 000h, 0C0h, 0C8h, 0C2h, 0A0h, 018h, 000h, 000h, 000h, 000h
+lwqn:   DB 000h, 0C0h, 0C8h, 0C2h, 0A0h, 018h, 000h, 000h, 000h, 000h
         DB 054h, 0C3h, 020h, 020h, 050h, 040h, 000h, 03Ah, 0FEh, 08Fh
         DB 0C3h, 0CCh, 0C3h, 000h, 000h, 000h, 000h, 028h, 03Ch
-lomj:   DB 01Fh, 02Ah, 020h, 052h, 055h, 04Eh, 022h, 043h, 04Fh, 04Dh
+lyro:   DB 01Fh, 02Ah, 020h, 052h, 055h, 04Eh, 022h, 043h, 04Fh, 04Dh
         DB 03Ah, 022h, 000h, 0FFh, 0FFh, 0FFh, 081h, 00Ch, 019h, 01Ah
         DB 020h, 020h, 020h, 008h, 080h, 018h, 00Ah, 00Dh, 000h, 000h
         DB 000h, 000h, 071h, 07Eh, 073h, 06Dh, 069h, 074h, 078h, 062h

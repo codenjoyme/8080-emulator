@@ -44,7 +44,13 @@ public class DizAssembler {
                 Command command = asm.find(data.read8(addr));
                 Info info = markCommand(infoData, addr, data, command, true);
                 if (command.isJump() || command.isCall()) {
-                    toProcess.add(info.data);
+                    int addr2 = info.data;
+                    if (range.includes(addr2)) {
+                        toProcess.add(addr2);
+                    } else {
+                        // куда ссылаются игрушки за пределами своей памяти (полезно для исследований)
+                        // System.out.println(hex16(addr2));
+                    }
                 }
                 if (command.name().startsWith("RET")
                         || command.name().startsWith("JMP")
@@ -86,6 +92,8 @@ public class DizAssembler {
                     int newAddr = info.data;
                     String label = labels.get(newAddr);
                     if (label == null) {
+                        // TODO если я хочу, чтобы имена лейблов отражали адреса, надо поставить, но это ломает тесты ассемблера
+                        // label = toLabel(newAddr);
                         label = toLabel(labels.size());
                         labels.put(newAddr, label);
                         infoData[newAddr].label = label;
@@ -96,7 +104,8 @@ public class DizAssembler {
         }
     }
 
-    private String toLabel(int value) {
+    public static String toLabel(int value) {
+        int input = value;
         if (value < 0) {
             throw new IllegalArgumentException("Value must be between 1 and " + Integer.MAX_VALUE);
         }
@@ -117,6 +126,7 @@ public class DizAssembler {
             value /= base;
         }
 
+        // System.out.println("for value " + hex16(input) + " label is " + label);
         return label.toString();
     }
 
@@ -139,7 +149,7 @@ public class DizAssembler {
     private String buildProgram(Range range, boolean canonicalData) {
         StringBuilder result = new StringBuilder();
 
-        pad = "lab: ".length() + String.valueOf(labels.size()).length();
+        pad = "lab: lxxx".length() - 1;
 
         // настройка ассемблера
         String start = hex16(range.begin());
@@ -150,6 +160,10 @@ public class DizAssembler {
         // константы адресов памяти за пределами программы
         for (Map.Entry<Integer, String> entry : labels.entrySet()) {
             int addr = entry.getKey();
+            if (range.includes(addr)) {
+                //continue; // не записываем его как EQU поскольку будет внутри программы ссылка на него
+            }
+
             String label = entry.getValue();
             if (!range.includes(addr)) {
                 String hex = hex16(addr);

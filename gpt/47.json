@@ -1,0 +1,335 @@
+DATE: 1733860964937
+
+===============================================================================================
+Q: У меня есть класс CPU моего самописного эмулятора.
+Он наследуется от 
+public abstract class Modifiable {
+    protected List<CpuMod> mods = new ArrayList<>(10);
+    public void on(Event event, Object... params) {
+        for (int i = 0; i < mods.size(); i++) {
+            mods.get(i).on(event, params);
+        }
+    }
+
+    public void modAdd(CpuMod mod) {
+        mods.add(mod);
+    }
+
+    public <M extends CpuMod> M mod(Class<M> clazz) {
+        for (CpuMod mod : mods) {
+            if (mod.itsMe(clazz)) {
+                return (M) mod;
+            }
+        }
+        throw new IllegalArgumentException("Mod not found: " + clazz);
+    }
+    public <M extends CpuMod> void modRemove(Class<M> clazz) {
+        mods.removeIf(mod ->
+                mod.itsMe(clazz));
+    }
+    public void reset() {
+        mods.forEach(CpuMod::reset);
+    }
+}
+Внутри я могу задавать разные modы и вопрос в том, что он встраивается в чтение запись памяти, разные изменения регистров вызов метода 
+ public void on(Event event, Object... params) {
+И это сильно удорожает время выполнение команд процессора. 
+Но я не могу избавиться от этого поведение - оно мне нужно в исследовательских целях. Как я могу максимально оптимизировать код по производительности?
+-----------------------------------------------------------------------------------------------
+A: Для оптимизации кода в случаях, когда необходимо обрабатывать события на уровне CPU с помощью множества модификаций, можно рассмотреть следующие подходы:
+
+1. **Предварительный анализ и кеширование активных модов:** Вместо того чтобы каждый раз перебирать все моды, можно анализировать, какие из них активны для определенного события и кешировать этот список. Так, в методе `on(Event event, Object... params)` можно будет вызывать только те моды, которые заинтересованы в текущем событии.
+
+2. **Использование многопоточности:** В зависимости от того, как реализованы моды и их функциональность, можно рассмотреть возможность обработки событий в параллельных потоках. Это может увеличить производительность, особенно на многоядерных системах. Важно убедиться, что доступ к изменяемым ресурсам синхронизирован должным образом.
+
+3. **Оптимизация метода `itsMe(Class<M>)`:** Проверка типа каждого мода на соответствие классу может быть дорогостоящей операцией. Рассмотрите возможность оптимизации этой функциональности, возможно, за счет использования более быстрых способов соответствия или кеширования результатов этой проверки.
+
+4. **Использование специальных паттернов:** Примените паттерны проектирования, такие как Observer или Mediator, для более четкой и эффективной системы управления событиями и модами.
+
+5. **Профилирование и точечная оптимизация:** Регулярно выполняйте профилирование вашего эмулятора, чтобы понимать, какие части кода являются узкими местами. Это может дать вам представление о том, где нужно сосредоточить усилия на оптимизацию.
+
+6. **Условное добавление модов и событий:** Возможно, не все события важны для каждого мода. Рассмотрите возможность дополнительной настройки или конфигурации, позволяющей определять, какие моды активны для каких событий, тем самым уменьшая нагрузку на систему от лишних вызовов.
+
+7. **Использование быстрых коллекций:** Вы можете оптимизировать работу с коллекциями, используя более подходящие структуры данных, например, массивы вместо ArrayList там, где это возможно, чтобы уменьшить затраты на операции вставки и удаления.
+
+Комбинируя эти подходы, можно значительно увеличить производительность вашего эмулятора без потери необходимой функциональности.
+===============================================================================================
+
+===============================================================================================
+Q: Покажи мне пример реализации, без применения многопоточности.
+-----------------------------------------------------------------------------------------------
+A: Давайте оптимизируем класс `Modifiable` так, чтобы использовать кеширование активных модов для конкретных событий и минимизировать проверки типов при каждом вызове. В этом примере я также добавлю простой способ определения, какие моды активны для конкретных событий.
+
+```java
+import java.util.*;
+
+public abstract class Modifiable {
+    protected List<CpuMod> mods = new ArrayList<>(10);
+    private Map<Event, List<CpuMod>> eventModCache = new HashMap<>();
+
+    public void on(Event event, Object... params) {
+        List<CpuMod> activeMods = eventModCache.get(event);
+        if (activeMods == null) {
+            activeMods = new ArrayList<>();
+            for (CpuMod mod : mods) {
+                if (mod.supports(event)) {
+                    activeMods.add(mod);
+                }
+            }
+            eventModCache.put(event, activeMods);
+        }
+        for (CpuMod mod : activeMods) {
+            mod.on(event, params);
+        }
+    }
+
+    public void modAdd(CpuMod mod) {
+        mods.add(mod);
+        eventModCache.clear(); // Сбросить кэш, так как добавлен новый мод
+    }
+
+    public <M extends CpuMod> M mod(Class<M> clazz) {
+        for (CpuMod mod : mods) {
+            if (mod.getClass().equals(clazz)) {
+                return (M) mod;
+            }
+        }
+        throw new IllegalArgumentException("Mod not found: " + clazz);
+    }
+
+    public <M extends CpuMod> void modRemove(Class<M> clazz) {
+        mods.removeIf(mod -> mod.getClass().equals(clazz));
+        eventModCache.clear(); // Сбросить кэш, так как один из модов был удален
+    }
+    
+    public void reset() {
+        mods.forEach(CpuMod::reset);
+    }
+}
+
+interface CpuMod {
+    boolean supports(Event event);
+    void on(Event event, Object... params);
+    void reset();
+}
+
+enum Event {
+    READ, WRITE, EXECUTE
+}
+```
+
+Здесь важными изменениями являются:
+- Метод `on(Event event, Object... params)` теперь использует кэш `eventModCache` для хранения списка активных модов для каждого события. Это уменьшает необходимость в постоянном переборе всех модов для каждого события.
+- При добавлении или удалении мода кэш сбрасывается, чтобы обеспечить актуальность данных.
+- Я добавил метод `supports(Event event)` в интерфейс `CpuMod`, который должен использоваться модами для определения, должны ли они реагировать на конкретное событие. Это позволяет избежать вызова методов модов, которые не заинтересованы в обработке текущего события.
+
+Эти изменения помогают уменьшить нагрузку и время выполнения метода `on()` за счет предварительной фильтрации и кэширования активных модов для каждого типа события.
+===============================================================================================
+
+===============================================================================================
+Q: А давай сделаем пересчет этой мапы в методе добавления модов
+-----------------------------------------------------------------------------------------------
+A: Для того чтобы пересчитать кэш модов сразу при их добавлении, мы можем модифицировать метод `modAdd`, чтобы он обновлял `eventModCache` каждый раз, когда добавляется новый мод. Вот как это может выглядеть:
+
+```java
+public void modAdd(CpuMod mod) {
+    mods.add(mod);
+    updateEventModCache();
+}
+
+private void updateEventModCache() {
+    eventModCache.clear();  // Очистить существующий кэш
+    for (Event event : Event.values()) {
+        List<CpuMod> activeMods = new ArrayList<>();
+        for (CpuMod mod : mods) {
+            if (mod.supports(event)) {
+                activeMods.add(mod);
+            }
+        }
+        eventModCache.put(event, activeMods);
+    }
+}
+```
+
+Здесь метод `updateEventModCache` перестраивает кэш для всех возможных событий. Кэш обновляется при каждом добавлении мода, что обеспечивает его актуальность. Это позволяет сохранить точность и актуальность данных в `eventModCache`, избегая необходимости его полной перестройки при каждом вызове метода `on()`.
+
+Также обратите внимание, что метод `modRemove` также должен вызывать этот же метод обновления кэша, чтобы убедиться, что удалённые моды больше не будут обрабатываться:
+
+```java
+public <M extends CpuMod> void modRemove(Class<M> clazz) {
+    mods.removeIf(mod -> mod.getClass().equals(clazz));
+    updateEventModCache(); // Обновить кэш после удаления мода
+}
+```
+
+Теперь, каждый раз когда мод добавляется или удаляется, кэш `eventModCache` будет полностью перестраиваться для всех событий, что обеспечивает максимальную производительность в моменты обработки событий за счет затрат на моменты изменения списка модов. Это подходит для случаев, когда изменения в списках модов происходят не так часто, как обработка событий.",
+===============================================================================================
+        
+===============================================================================================
+Q: Вот что я сделал
+"""
+public abstract class Modifiable {
+
+    protected Map<Event, CpuMod[]> mods = new HashMap<>();
+
+    public void on(Event event, Object... params) {
+        CpuMod[] mods = mods(event);
+        if (mods == null) {
+            return;
+        }
+
+        for (int i = 0; i < mods.length; i++) {
+            mods[i].on(event, params);
+        }
+    }
+
+    private CpuMod[] mods(Event event) {
+        return mods.get(event);
+    }
+
+    public void modAdd(CpuMod mod) {
+        mod.supports().forEach(event -> {
+            CpuMod[] arr = mods(event);
+            CpuMod[] newArr = new CpuMod[arr == null ? 1 : arr.length + 1];
+            if (arr != null) {
+                System.arraycopy(arr, 0, newArr, 0, arr.length);
+            }
+            newArr[newArr.length - 1] = mod;
+            mods.put(event, newArr);
+        });
+
+    }
+
+    public <M extends CpuMod> M mod(Class<M> clazz) {
+        return mods.values().stream()
+                .flatMap(Arrays::stream)
+                .filter(mod -> mod.itsMe(clazz))
+                .map(clazz::cast)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Mod not found: " + clazz));
+    }
+
+    public <M extends CpuMod> void modRemove(Class<M> clazz) {
+        mods.values().forEach(arr -> {
+            for (int i = 0; i < arr.length; i++) {
+                if (arr[i].itsMe(clazz)) {
+                    CpuMod[] newArr = new CpuMod[arr.length - 1];
+                    System.arraycopy(arr, 0, newArr, 0, i);
+                    System.arraycopy(arr, i + 1, newArr, i, arr.length - i - 1);
+                    mods.put(arr[i].supports().get(0), newArr);
+                    return;
+                }
+            }
+        });
+    }
+
+    public void reset() {
+        mods.values().forEach(arr -> {
+            for (CpuMod mod : arr) {
+                mod.reset();
+            }
+        });
+    }
+}
+"""
+Пожалуйста сделай там ArrayList и map разверни в 5 полей, каждое для своего типа ивента 
+public enum Event {
+
+    READ_MEM,
+    WRITE_MEM,
+    CHANGE_PC,
+    RUN_CALL,
+    RUN_RET
+}
+
+-----------------------------------------------------------------------------------------------
+A: В вашем примере использовался массив для хранения модов, привязанных к определенному событию. Чтобы использовать `ArrayList` и разделить `mods` на 5 отдельных полей для каждого типа ивента, код будет выглядеть следующим образом:
+
+```java
+public abstract class Modifiable {
+
+    // Отдельные списки для каждого типа события
+    private List<CpuMod> readMemMods = new ArrayList<>();
+    private List<CpuMod> writeMemMods = new ArrayList<>();
+    private List<CpuMod> changePcMods = new ArrayList<>();
+    private List<CpuMod> runCallMods = new ArrayList<>();
+    private List<CpuMod> runRetMods = new ArrayList<>();
+
+    public void on(Event event, Object... params) {
+        List<CpuMod> eventMods = getEventMods(event);
+        if (eventMods == null) {
+            return;
+        }
+
+        for (CpuMod mod : eventMods) {
+            mod.on(event, params);
+        }
+    }
+
+    private List<CpuMod> getEventMods(Event event) {
+        switch (event) {
+            case READ_MEM:
+                return readMemMods;
+            case WRITE_MEM:
+                return writeMemMods;
+            case CHANGE_PC:
+                return changePcMods;
+            case RUN_CALL:
+                return runCallMods;
+            case RUN_RET:
+                return runRetMods;
+            default:
+                return null;
+        }
+    }
+
+    public void modAdd(CpuMod mod) {
+        mod.supports().forEach(event -> {
+            List<CpuMod> modsList = getEventMods(event);
+            if (modsList != null) {
+                modsList.add(mod);
+            }
+        });
+    }
+
+    public <M extends CpuMod> M mod(Class<M> clazz) {
+        return getAllMods().stream()
+                .filter(mod -> clazz.isInstance(mod))
+                .map(clazz::cast)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Mod not found: " + clazz));
+    }
+
+    private List<CpuMod> getAllMods() {
+        List<CpuMod> allMods = new ArrayList<>();
+        allMods.addAll(readMemMods);
+        allMods.addAll(writeMemMods);
+        allMods.addAll(changePcMods);
+        allMods.addAll(runCallMods);
+        allMods.addAll(runRetMods);
+        return allMods;
+    }
+
+    public <M extends CpuMod> void modRemove(Class<M> clazz) {
+        getAllModsList().forEach(modsList -> modsList.removeIf(mod -> clazz.isInstance(mod)));
+    }
+
+    private List<List<CpuMod>> getAllModsList() {
+        return Arrays.asList(readMemMods, writeMemMods, changePcMods, runCallMods, runRetMods);
+    }
+
+    public void reset() {
+        getAllModsList().forEach(modsList -> modsList.forEach(CpuMod::reset));
+    }
+}
+```
+
+В этом коде:
+- Мы используем отдельные списки для каждого типа ивента.
+- Метод `getEventMods(Event event)` возвращает соответствующий список модов в зависимости от типа события.
+- Метод `modAdd` теперь добавляет мод в соответствующий список, основываясь на поддерживаемых им событиях.
+- Методы `mod` и `modRemove` работают со всеми модами, собирая их в список при помощи метода `getAllMods`.
+- Метод `reset` теперь перебирает все списки модов и вызывает метод `reset` для каждого мода.
+
+Эти изменения позволяют более четко разделить обработку для каждого типа ивентов и упростить работу с модами.
+===============================================================================================

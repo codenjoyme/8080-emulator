@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static spec.platforms.Platform.RESOURCES;
+import static spec.stuff.SmartAssert.assertEquals;
 import static spec.stuff.SmartAssert.fail;
 
 public class DizAssemblerTest extends AbstractTest {
@@ -82,7 +83,10 @@ public class DizAssemblerTest extends AbstractTest {
         String asmPath = binPath.replaceAll(".bin", ".asm");
 
         // when then
-        assertDizAssembly(binPath, asmPath, range);
+        assertDizAssembly(binPath, asmPath, range,
+                // те адреса куда ссылались игрушки
+                // TODO изучить как они это делали, и что полезного там есть
+                0xC427, 0xC438, 0xC337, 0xC25A, 0xC254, 0xC010, 0xC037, 0xC170);
     }
 
     @Test
@@ -105,7 +109,10 @@ public class DizAssemblerTest extends AbstractTest {
                 binPath2, new Range(range2.begin(), range.end()));
 
         // when then
-        assertDizAssembly(binPath, asmPath, range, 0xC9B6, 0xC9BC);
+        assertDizAssembly(binPath, asmPath, range,
+                // адреса что я вручную методом тыка пробовал, последовательно изучая
+                // области с данными после дизассемблирования на предмет - а не код ли это?
+                0xC9B6, 0xC9BC/*, 0xC9C7*/);
     }
 
     private void assertDizAssembly(String binPath, String asmPath, Range range, Integer... probablyCommands) {
@@ -123,5 +130,38 @@ public class DizAssemblerTest extends AbstractTest {
 
         // then
         assertMemoryChanges("", "", range, original, recompiled);
+    }
+
+    @Test
+    public void testToLabel() {
+        assertLabels(
+                "00000 > labc\n" +
+                "01323 > lwsu\n" +
+                "02477 > lcxq\n" +
+                "027CD > luzo\n" +
+                "07FFF > louf\n" +
+                "08F50 > lekg\n" +
+                "08F51 > lglh\n" +
+                "08F70 > lqrm\n" +
+                "08FE1 > liev\n" +
+                "08FFC > lkgw\n" +
+                "0C037 > lekl\n" +
+                "0C337 > lgca\n" +
+                "0C427 > lsrh\n");
+    }
+
+    private static void assertLabels(String addresses) {
+        String[] lines = addresses.split("\n");
+        StringBuilder result = new StringBuilder();
+        for (String line : lines) {
+            String[] parts = line.split(" > ");
+            int address = Integer.parseInt(parts[0], 16);
+            String label = parts[1];
+            result.append(parts[0])
+                    .append(" > ")
+                    .append(DizAssembler.toLabel(address))
+                    .append("\n");
+        }
+        assertEquals(addresses, result.toString());
     }
 }

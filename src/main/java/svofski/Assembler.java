@@ -449,7 +449,7 @@ public class Assembler {
         return result;
     }
 
-    public Object labelResolution(String label, String value, int addr, int lineno, boolean rewrite) {
+    public Map<String, Object> labelResolution(String label, String value, int addr, int lineno, boolean rewrite) {
         if (label_resolutions.containsKey(label) && !rewrite) {
             return null;
         }
@@ -782,7 +782,7 @@ public class Assembler {
                     return -1;
                 }
                 Expression ex = new Expression(-1, 2, Arrays.copyOfRange(parts, 1, parts.length), linenumber);
-                this.labelResolution(labelTag, ex.text, addr, linenumber, true);
+                Map<String, Object> lr = this.labelResolution(labelTag, ex.text, addr, linenumber, true);
                 result = 0;
                 break;
             }
@@ -1014,7 +1014,7 @@ public class Assembler {
                 }
             }
 
-            boolean err = this.errors.get(i) != null || unresolved;
+            boolean err = errors.get(i) != null || unresolved;
 
             Map<String, Object> gutobj = new HashMap<>();
             gutobj.put("addr", addresses.get(i));
@@ -1250,8 +1250,13 @@ public class Assembler {
 
             // System.out.println("expr=" + expr);
             return this.evalInvoke(expr.toLowerCase());
-        } catch (Exception err) {
-            this.errors.put(linenumber, err.toString());
+        } catch (Exception exception) {
+            this.errors.put(linenumber, exception.toString());
+
+            exception.printStackTrace();
+            System.out.println("Expression was: " + input + " at address: " + addr0 + " in linenumber: " + linenumber);
+            System.out.println(exception.toString());
+
             return -1;
         }
     }
@@ -1333,7 +1338,11 @@ public class Assembler {
                 matcher.appendReplacement(sb, value);
             }
             input = matcher.appendTail(sb).toString();
-        } catch (Exception e) {
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            System.out.println("Expression was: " + input + " at address: " + addr);
+            System.out.println(exception.toString());
+
             return null;
         }
         return input;
