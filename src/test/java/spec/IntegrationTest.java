@@ -175,7 +175,7 @@ public class IntegrationTest extends AbstractTest {
                 () -> record.at(2314).shoot("screeen28"),
                 () -> record.at(2315).shoot("screeen29"),
                 () -> record.at(2316).shoot("screeen30"),
-                () -> record.at(2317).shoot("screeen31"), // TODO тут почему-то в режиме тиста gameover а в реальной игре нет
+                () -> record.at(2317).shoot("screeen31"), // TODO тут почему-то в режиме теста game over а в реальной игре нет
                 () -> record.at(2318).shoot("screeen32"),
                 () -> record.at(2319).shoot("screeen33")
         );

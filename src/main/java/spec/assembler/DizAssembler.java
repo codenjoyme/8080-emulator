@@ -70,7 +70,7 @@ public class DizAssembler {
     }
 
     private void arrangeLabels(Range range) {
-        labels = new HashMap<>();
+        labels = new TreeMap<>();
         for (int addr = range.begin(); addr <= range.end(); addr++) {
             Info info = infoData[addr];
 

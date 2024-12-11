@@ -10,25 +10,25 @@
        CPU  8080
        .ORG 00000h
 lccd   EQU 02000h
-lcdd   EQU 04000h
-lsll   EQU 09000h
 lmhi   EQU 02018h
-lqkk   EQU 0DF5Ah
 lcqq   EQU 0201Ah
 lerr   EQU 0201Bh
 ligg   EQU 0201Dh
 leee   EQU 0201Fh
 lifg   EQU 02020h
+lqxx   EQU 02022h
+laop   EQU 02023h
+lskl   EQU 0202Ah
+lgef   EQU 020A5h
+lmuv   EQU 020A6h
+labc   EQU 03FFFh
+lcdd   EQU 04000h
+lsll   EQU 09000h
+lqkk   EQU 0DF5Ah
 lkuu   EQU 0FFE0h
 lqjk   EQU 0FFE1h
 lgss   EQU 0FFE2h
-lqxx   EQU 02022h
 loij   EQU 0FFE3h
-laop   EQU 02023h
-lgef   EQU 020A5h
-lmuv   EQU 020A6h
-lskl   EQU 0202Ah
-labc   EQU 03FFFh
        LXI SP,labc
        LXI H,lccd
        XRA A

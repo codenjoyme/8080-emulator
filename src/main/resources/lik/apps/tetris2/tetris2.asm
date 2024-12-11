@@ -9,30 +9,30 @@
 
         CPU  8080
         .ORG 00000h
-leie    EQU 0FF00h
-lyso    EQU 0B000h
-lklh    EQU 0FF01h
-lyeb    EQU 0FF02h
-lsby    EQU 0FF03h
-lubz    EQU 08008h
+loxw    EQU 012B6h
+lqwx    EQU 01323h
+lomj    EQU 022CDh
 letr    EQU 02313h
 lcsq    EQU 0231Bh
-lqwx    EQU 01323h
-labc    EQU 0C037h
-lgvs    EQU 0C337h
-loij    EQU 0C438h
-lmki    EQU 0A338h
-lqmk    EQU 0AC38h
-lmli    EQU 0A438h
-lgus    EQU 0C170h
 lgef    EQU 02377h
-lkvu    EQU 0A0A8h
-loxw    EQU 012B6h
-lomj    EQU 022CDh
+lubz    EQU 08008h
 lkkh    EQU 08FF1h
 lyqo    EQU 08FF2h
 luqm    EQU 08FF4h
 lwca    EQU 08FFCh
+lkvu    EQU 0A0A8h
+lmki    EQU 0A338h
+lmli    EQU 0A438h
+lqmk    EQU 0AC38h
+lyso    EQU 0B000h
+labc    EQU 0C037h
+lgus    EQU 0C170h
+lgvs    EQU 0C337h
+loij    EQU 0C438h
+leie    EQU 0FF00h
+lklh    EQU 0FF01h
+lyeb    EQU 0FF02h
+lsby    EQU 0FF03h
         MVI C,01Fh
         CALL labc
         LXI H,lccd

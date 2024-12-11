@@ -9,25 +9,25 @@
 
         CPU  8080
         .ORG 00000h
-lsxy    EQU 05700h
-luyz    EQU 0F700h
+lccd    EQU 00A80h
+laop    EQU 0100Fh
+ligg    EQU 01080h
+lmli    EQU 0110Eh
+lijg    EQU 01323h
+lqkk    EQU 0180Fh
 lgus    EQU 01900h
+lggf    EQU 02080h
+loyw    EQU 02377h
+labc    EQU 03FFFh
+lsxy    EQU 05700h
+lmhi    EQU 0C037h
+lihg    EQU 0C427h
+luyz    EQU 0F700h
 lwca    EQU 0FF00h
 lubz    EQU 0FF01h
 lydb    EQU 0FF02h
 lsay    EQU 0FF03h
-lmli    EQU 0110Eh
-laop    EQU 0100Fh
-lqkk    EQU 0180Fh
-lijg    EQU 01323h
-lihg    EQU 0C427h
-lmhi    EQU 0C037h
-loyw    EQU 02377h
-lccd    EQU 00A80h
-ligg    EQU 01080h
-lggf    EQU 02080h
 lcsq    EQU 0FFE0h
-labc    EQU 03FFFh
 letr    EQU 0FFFFh
 lqnk:   LXI SP,labc
         LXI H,lccd

@@ -12,16 +12,16 @@
        .ORG 0C800h
 lwza   EQU 00000h
 lapp   EQU 01323h
-lojj   EQU 0C427h
-lkgh   EQU 0C337h
-lkuu   EQU 0C037h
+loww   EQU 02477h
+labc   EQU 07FFFh
 lifg   EQU 08F50h
 lyoo   EQU 08F51h
-lccd   EQU 08FE1h
 lumm   EQU 08F70h
-loww   EQU 02477h
+lccd   EQU 08FE1h
 lmvv   EQU 08FFCh
-labc   EQU 07FFFh
+lkuu   EQU 0C037h
+lkgh   EQU 0C337h
+lojj   EQU 0C427h
 lgss:  LXI SP,labc
        LXI H,0C800h
        SHLD lccd

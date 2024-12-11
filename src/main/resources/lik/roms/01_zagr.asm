@@ -9,11 +9,6 @@
 
         CPU  8080
         .ORG 0C000h
-luzz    EQU 0FF00h
-lupm    EQU 0C800h
-loww    EQU 0FF01h
-lybb    EQU 0FF02h
-lccd    EQU 0FF03h
 lehe    EQU 00323h
 laop    EQU 0266Fh
 lasp    EQU 08FE1h
@@ -35,6 +30,11 @@ lifg    EQU 08FFAh
 loij    EQU 08FFCh
 lskl    EQU 08FFDh
 lubz    EQU 08FFFh
+lupm    EQU 0C800h
+luzz    EQU 0FF00h
+loww    EQU 0FF01h
+lybb    EQU 0FF02h
+lccd    EQU 0FF03h
         JMP labc
 labc:   LXI SP,07FFFh
         MVI A,082h
