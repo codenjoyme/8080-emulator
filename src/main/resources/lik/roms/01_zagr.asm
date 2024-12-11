@@ -13,6 +13,8 @@ ljyzh    EQU 00000h
 ljypl    EQU 00008h
 ljyzb    EQU 00300h
 lnftz    EQU 00323h
+lkahc    EQU 018A0h
+lnpsu    EQU 018FEh
 lnimf    EQU 0266Fh
 lohyk    EQU 07FFFh
 lcauo    EQU 08FE1h
@@ -85,7 +87,7 @@ lczfh:   LHLD lcjko
 lhdxd:   ADI 003h
          STA lbxhm
          XCHG
-         MOV A,C
+ldlfx:   MOV A,C
          STA lcaks
          SUI 020h
          LHLD lfqsk
@@ -382,16 +384,29 @@ lczeu:   POP B
          RET
 lgsdk:   LHLD lbxjy
          PCHL
-         DB 021h, 0FEh, 018h, 022h, 0E7h, 08Fh, 00Eh, 021h, 0CDh, 0BCh
-         DB 0C2h, 021h, 0A0h, 018h, 022h, 0E7h, 08Fh, 0C9h, 000h
+         LXI H,lnpsu
+         SHLD lfqsk
+         MVI C,021h
+         CALL ldhue
+         LXI H,lkahc
+         SHLD lfqsk
+         RET
+         DB 000h
 lhdue:   LDA lcjuk
          JMP lgozs
          DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
          DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
 ldleu:   CALL ldkye
          JMP lgsdk
-         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0E5h, 0D5h, 0C5h, 0F5h
-         DB 079h, 02Ah, 0FCh, 08Fh, 0EBh, 0C3h, 050h, 0C0h
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+ldhue:   PUSH H
+         PUSH D
+         PUSH B
+         PUSH PSW
+         MOV A,C
+         LHLD lcjko
+         XCHG
+         JMP ldlfx
 ldkye:   JMP lhatr
 lgrts:   CALL lcwby
          CPI 081h
