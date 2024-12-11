@@ -56,7 +56,7 @@ public class DizAssemblerTest extends AbstractTest {
 
     @Test
     @Ignore
-    public void testDecompileTest() {
+    public void testDecompileTest_cputest() {
         // given
         lik().loadRom(base, roms);
         String path = RESOURCES + "test/cputest/cputest.com";
@@ -66,6 +66,18 @@ public class DizAssemblerTest extends AbstractTest {
         // TODO по какой-то причине он пытается воспринимать блок данных как команды
         // TODO я не уверен так же, что его стоит загружать в 0x0000 но в 0x0100 он не работает точно
         // TODO так же при дизассемблировании переполняется 0xFFFF что странно
+
+        // when then
+        assertDizAssembly(path, range);
+    }
+
+    @Test
+    @Ignore
+    public void testDecompileTest_lik_romZagruzchik() {
+        // given
+        String path = lik().platform() + "/roms/01_zagr.bin";
+        Range range = roms.loadROM(base, path, 0xC000);
+        path = path.replaceAll(".bin", ".asm");
 
         // when then
         assertDizAssembly(path, range);
@@ -83,6 +95,6 @@ public class DizAssemblerTest extends AbstractTest {
         Bites recompiled = assertAssembly(sourceCode, null);
 
         // then
-        assertMemoryChanges("", "", original, recompiled);
+        assertMemoryChanges("", "", range, original, recompiled);
     }
 }

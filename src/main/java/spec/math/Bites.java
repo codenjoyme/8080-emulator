@@ -74,7 +74,11 @@ public class Bites implements Iterable<Integer> {
     }
 
     public void set(Bites bites) {
-        set(new Range(0, -bites.size()), bites);
+        set(0, bites);
+    }
+
+    public void set(int offset, Bites bites) {
+        set(new Range(offset, -bites.size()), bites);
     }
 
     public void set(Range range, Bites bites) {
@@ -161,5 +165,9 @@ public class Bites implements Iterable<Integer> {
 
     public boolean equals(Bites bites) {
         return Arrays.equals(data, bites.data);
+    }
+
+    public Bites cutFrom(int org) {
+        return array(new Range(org, -(size() - org)));
     }
 }

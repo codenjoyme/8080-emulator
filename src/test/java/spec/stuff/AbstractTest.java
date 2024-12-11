@@ -383,15 +383,14 @@ public abstract class AbstractTest {
                 .collect(toList());
     }
 
-    public static void assertMemoryChanges(String message, String expected, Bites original, Bites recompiled) {
-        int maxSize = Math.max(original.size(), recompiled.size());
-        TrackUpdatedMemory tracker = new TrackUpdatedMemory(maxSize, true);
+    public static void assertMemoryChanges(String message, String expected, Range range, Bites original, Bites recompiled) {
+        TrackUpdatedMemory tracker = new TrackUpdatedMemory(x10000, true);
 
-        tracker.all().set(original);
+        tracker.all().set(range.begin(), original);
 
         tracker.resetChanges();
 
-        tracker.all().set(recompiled);
+        tracker.all().set(range.begin(), recompiled);
 
         assertEquals("Memory size after recompilation for: " + message,
                 original.size(), recompiled.size());

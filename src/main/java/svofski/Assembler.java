@@ -1375,9 +1375,9 @@ public class Assembler {
         result.put("mem", memory);
         result.put("hex", hexText);
         Bites bin = toBin(memory);
-        Bites wave = wave(bin);
+        Bites wave = wave(bin, org);
         result.put("wave", wave);
-        result.put("bin", bin);
+        result.put("bin", bin.cutFrom(org));
         result.put("gutter", gutterContent);
         result.put("listing", listingText);
         result.put("errors", errors);
@@ -1396,10 +1396,10 @@ public class Assembler {
         return result;
     }
 
-    private Bites wave(Bites data) {
+    private Bites wave(Bites data, int org) {
         String fileName = getBinFileName();
         return new TapeFormat(tapeFormat, false)
-                .format(data.byteArray(), 0, fileName).makewav();
+                .format(data.byteArray(), org, fileName).makewav();
     }
 
     private List<Integer> toList(Map<Integer, Integer> mem) {
@@ -1412,7 +1412,7 @@ public class Assembler {
     }
 
     public Bites compile(String sourceCode) {
-        return toBin(process(sourceCode).get("mem"));
+        return (Bites) process(sourceCode).get("bin");
     }
 
     public static void main(String[] args) throws IOException {
