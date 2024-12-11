@@ -10,6 +10,7 @@ import spec.platforms.Lik;
 import spec.platforms.Platform;
 import spec.stuff.AbstractTest;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class DizAssemblerTest extends AbstractTest {
         String test = String.format("Testing [%s] %s", platform.name(), name);
         Logger.info(test);
 
-        if (List.of("klad2", "pilot", "reversi", "tetris3", "tip-top2", "zoo", "blobcop").contains(name)) {
+        if (List.of("pilot", "reversi", "tip-top2", "zoo", "blobcop").contains(name)) {
             Logger.info("Skipping test for %s", name);
             return; // TODO debug all errors
         }
@@ -53,8 +54,8 @@ public class DizAssemblerTest extends AbstractTest {
             fail(String.format("For: %s, we got: %s", test, exception.toString()));
 
             if (asmPath != null) {
-//                new File(asmPath).delete();
-//                Logger.info("Deleted '%s' because of error", asmPath);
+                new File(asmPath).delete();
+                Logger.info("Deleted '%s' because of error", asmPath);
             }
         }
     }
