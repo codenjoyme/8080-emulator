@@ -1,8 +1,5 @@
 package spec.assembler;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import spec.Data;
 import spec.Range;
 import spec.mods.Info;
@@ -121,31 +118,37 @@ public class DizAssembler {
     }
 
     public static String toLabel(int value) {
-        try {
-            // Инициализируем MessageDigest для SHA-256
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        int[] order = {15, 1, -1, 14, 0, 13, 2, 12, -1, 3, 11, 4, 10, 5, 9, 6, 8, 7};
+        int output = 0;
 
-            // Создаем соль на основе значения, изменяем соль каждый раз разным образом
-            String salt = "Salt" + (value % 100); // Пример простого изменения соли
-            String toHash = value + salt; // Комбинируем значение и соль перед хэшированием
-
-            byte[] hash = digest.digest(toHash.getBytes(StandardCharsets.UTF_8));
-
-            final int base = 26;
-            final int numChars = 7; // Увеличиваем длину метки
-            StringBuilder label = new StringBuilder("l");
-
-            for (int i = 0; i < numChars; i++) {
-                int byteIndex = (i * 2) % hash.length;
-                int index = ((hash[byteIndex] & 0xFF) + (hash[(byteIndex + 1) % hash.length] & 0xFF)) % base;
-                label.append((char) ('a' + index));
+        for (int i = 0; i < order.length; i++) {
+            if (order[i] == -1) {
+                // Вставляем нулевой бит в текущую позицию
+                output <<= 1;
+            } else {
+                // Вставляем соответствующий бит из входного числа
+                int bit = (value >> order[i]) & 1;
+                output = (output << 1) | bit;
             }
-
-            return label.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
         }
+
+        output = output ^ 0b101010101111011001;
+        // Преобразуем результат в 26-ричное число
+        StringBuilder label = new StringBuilder();
+        while (output > 0) {
+            int remainder = output % 26;
+            label.insert(0, (char) ('a' + remainder));
+            output /= 26;
+        }
+
+        // Дополняем метку до четырех символов, если необходимо
+        while (label.length() < 4) {
+            label.insert(0, 'a');
+        }
+
+        label.insert(0, 'l');
+
+        return label.toString();
     }
 
     private void dizAssembly(Range range, boolean canonical) {

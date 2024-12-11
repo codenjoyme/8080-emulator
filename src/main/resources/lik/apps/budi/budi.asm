@@ -7,4092 +7,4092 @@
 ; 
 ;*********************************************************************************************************
 
-            CPU  8080
-            .ORG 00000h
-llpsmrbe    EQU 07FFFh
-lvsttnrd    EQU 08800h
-lepjeurk    EQU 08852h
-lghlhgwl    EQU 088C6h
-lrjqosrv    EQU 08BF2h
-lalwexyp    EQU 08CB4h
-lrcpoinj    EQU 08CB5h
-linibphx    EQU 08D00h
-lqzxspwj    EQU 08DFFh
-lyoeziir    EQU 08F10h
-lhcsetuh    EQU 08F11h
-lcklcyzw    EQU 08F12h
-ltklcnjq    EQU 08F13h
-lcjjrmtj    EQU 08F14h
-lqdlxrlx    EQU 08F15h
-liqshvjm    EQU 08F16h
-lydhodbh    EQU 08F17h
-lynbewej    EQU 08F19h
-lmsckcqv    EQU 08F1Bh
-lggiqtpm    EQU 08F1Dh
-lultgnye    EQU 08FE3h
-lfsmoppk    EQU 08FF1h
-lhfgpppn    EQU 08FF2h
-lhkeseoq    EQU 09306h
-ldmrotsj    EQU 094E3h
-lhwiogyv    EQU 09923h
-lqbcrrwi    EQU 09999h
-lkksbuck    EQU 09D06h
-lkurdogj    EQU 0A006h
-lyvrekgv    EQU 0A170h
-lbchrlcm    EQU 0A706h
-lkrgnnlg    EQU 0A906h
-lbkjaojf    EQU 0B206h
-lacayflg    EQU 0B406h
-lbapjdvb    EQU 0B623h
-lkqofyts    EQU 0BB06h
-lhsaydhb    EQU 0C010h
-lhxclmmn    EQU 0C170h
-lpcdfemz    EQU 0C254h
-lqboxtmt    EQU 0C25Ah
-lpxvrqhs    EQU 0C473h
-lwwntqlb    EQU 0C490h
-lwsyhnle    EQU 0C50Ch
-lkeyupxh    EQU 0FED1h
-lxazvrue    EQU 0FF00h
-lkukegic    EQU 0FF01h
-lskutmav    EQU 0FF02h
-lnsvwlwm    EQU 0FF03h
-lmtmwmjm    EQU 0FFF0h
-ljbtkier:   JMP lnwtltqy
-            DB 03Eh, 000h, 032h, 002h, 0FFh, 0CDh, 010h, 0C0h, 03Eh, 040h
-            DB 032h, 002h, 0FFh, 03Eh, 0C0h, 03Dh, 03Dh, 0FEh, 040h, 0CAh
-            DB 070h, 000h, 0F5h, 0CDh, 02Fh, 000h, 0F1h, 0E5h, 026h, 04Fh
-            DB 02Eh, 000h, 02Dh, 0C2h, 023h, 000h, 025h, 0C2h, 021h, 000h
-            DB 0E1h, 0C3h, 012h, 000h, 026h, 098h, 06Fh, 011h, 080h, 000h
-            DB 03Eh, 0B4h, 0BCh, 0D2h, 03Fh, 000h, 026h, 098h, 023h, 023h
-            DB 03Eh, 0C0h, 0BDh, 0C8h, 00Eh, 004h, 01Ah, 013h, 017h, 0DAh
-            DB 059h, 000h, 017h, 0DAh, 054h, 000h, 006h, 000h, 0C3h, 064h
-            DB 000h, 006h, 00Fh, 0C3h, 064h, 000h, 017h, 0DAh, 062h, 000h
-            DB 006h, 0F0h, 0C3h, 064h, 000h, 006h, 0FFh, 070h, 02Bh, 070h
-            DB 023h, 024h, 00Dh, 0CAh, 035h, 000h, 0C3h, 047h, 000h, 0CDh
-            DB 01Bh, 068h, 000h, 004h, 0C2h, 070h, 000h, 0C3h, 080h, 002h
-            DB 000h, 000h, 000h, 000h, 000h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 055h, 066h, 044h, 066h, 066h, 044h, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 055h, 054h, 033h, 055h, 067h, 033h, 036h, 077h, 033h, 066h
-            DB 034h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 053h, 033h, 033h, 077h, 077h, 077h, 078h, 033h
-            DB 037h, 078h, 085h, 083h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 054h, 033h, 033h
-            DB 033h, 033h, 033h, 033h, 033h, 033h, 033h, 033h, 055h, 055h
-            DB 055h, 055h, 055h, 055h, 055h, 055h, 0AAh, 0AAh, 0AAh, 0AAh
-            DB 0AAh, 0AAh, 0AAh, 0AAh, 0AAh, 055h, 055h, 055h, 055h, 055h
-            DB 055h, 055h, 055h, 055h, 054h, 044h, 044h, 044h, 044h, 044h
-            DB 044h, 044h, 044h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h
-lfxfkzwj:   MVI A,0C0h
-            STA lskutmav
-            CALL lhsaydhb
-            LXI H,lccbxedj
-            SHLD lwsjpbww
-            CALL lfwuhwto
-            LXI H,lbzhwyzy
-            LXI B,005FFh
-            CALL lgojptzs
-            LXI H,lrcpoinj
-            CALL ldqlwwue
-lbtzcjem:   CALL lmhhhokk
-            NOP
-            INR B
-            JNZ lbtzcjem
-            LXI D,lhkeseoq
-            LXI B,lcpbpaqo
-            CALL ldfwcvon
-            LXI H,lqbcrrwi
-            SHLD lryzfnxo
-            CALL lptmhjmn
-            LXI D,lkurdogj
-            LXI B,lhqfxzza
-            CALL ldfwcvon
-            MVI A,002h
-            STA lxjdjdql
-            LXI D,lkrgnnlg
-            LXI B,lsjvrkba
-            CALL ldfwcvon
-            LXI H,00000h
-            SHLD lsxryjst
-            CALL ljkynvzi
-            LXI D,lacayflg
-            LXI B,lqlbrilp
-            CALL ldfwcvon
-            XRA A
-            STA lfjqztdp
-            STA lmzsyazc
-            STA lhcsetuh
-            STA lcklcyzw
-            STA ltklcnjq
-            MVI A,00Fh
-            STA lcjjrmtj
-            STA lqdlxrlx
-            STA liqshvjm
-            LXI H,lwnvqfjh
-            SHLD lntvwugd
-lmuiuhkh:   LHLD lntvwugd
-            MOV D,M
-            INX H
-            MOV E,M
-            INX H
-            SHLD lntvwugd
-            XCHG
-            SHLD lwsjpbww
-            CALL lgjoeeta
-            LDA lfjqztdp
-            CPI 00Eh
-            JZ lzatnpma
-            CALL lnoizrpz
-laydkrdc:   CALL lfwuhwto
-            LXI H,lrcpoinj
-            MVI A,032h
-            STA lmhdxhpu
-            SHLD lykvejks
-            XRA A
-            STA lyoeziir
-            CALL llcdosfy
-            LXI H,lhwiogyv
-            SHLD lydhodbh
-            XCHG
-            LXI H,lghlhgwl
-            SHLD lynbewej
-            LXI B,leeinatx
-            CALL lbqwyyas
-            LXI H,lbapjdvb
-            SHLD lmsckcqv
-            XCHG
-            LXI H,lrjqosrv
-            SHLD lggiqtpm
-            XRA A
-            JMP lrvjxftl
-leezbokb:   LXI D,ldmrotsj
-            LXI H,lepjeurk
-            LXI B,leeinatx
-            CALL lxwihvsz
-lujyadoh:   CALL lhnnuqzx
-            CALL lkxqztxm
-            NOP
-            NOP
-            NOP
-            CALL ljkynvzi
-            LDA lmzsyazc
-            CPI 000h
-            JNZ leorpaji
-            LDA lyoeziir
-            CPI 000h
-            JZ lvposmvm
-            CALL liqvytzq
-            LXI H,lsfeclfw
-            LXI B,004FFh
-            CALL lgojptzs
-            LDA lxjdjdql
-            CPI 000h
-            JZ leorpaji
-            LXI H,lftnryxb
-            CALL ldqlwwue
-            JMP laydkrdc
-lvposmvm:   CALL ltpdbhcr
-            CALL lmhhhokk
-            CPI 071h
-            JZ lcpwvbfg
-            CPI 07Eh
-            JZ lezkzmck
-            CPI 008h
-            JZ ljgmuocy
-            CPI 018h
-            JZ lajwgaqj
-            CPI 019h
-            JZ lhikdiyf
-            CPI 01Ah
-            JZ lwybgrmo
-            CPI 01Fh
-            JZ laydkrdc
-            CALL lgrobscj
-            JMP lujyadoh
-ljgmuocy:   SHLD leqyeusm
-            CALL lkpeoxqk
-            MOV A,M
-            CPI 000h
-            JZ lchqelud
-            CPI 048h
-            JZ lchqelud
-            CPI 051h
-            JZ lchqelud
-            JMP loyzxvms
-lchqelud:   CALL llujgder
-            JZ loyzxvms
-            INX H
-            MOV A,M
-            DCX H
-            CPI 000h
-            JZ lxyzmekr
-            CPI 048h
-            JZ lxyzmekr
-            CPI 051h
-            JZ lxyzmekr
-            CPI 02Dh
-            JNZ loyzxvms
-            INX H
-            CALL lqklcwrq
-            DCX H
-            JMP lxyzmekr
-loyzxvms:   MOV A,M
-            CPI 009h
-            JZ lvenqoab
-            CPI 012h
-            JZ lvenqoab
-            CPI 02Dh
-            JNZ lmjrhhri
-            CALL lqklcwrq
-lmjrhhri:   CALL llwjliss
-            LXI B,lovagmaj
-            DCR D
-            CALL lxwihvsz
-            CALL lgrobscj
-            LXI B,lxnlnoxo
-            CALL lxwihvsz
-            JMP lujyadoh
-lajwgaqj:   SHLD leqyeusm
-            CALL laeosatg
-            MOV A,M
-            CPI 000h
-            JZ lubpzdph
-            CPI 048h
-            JZ lubpzdph
-            CPI 051h
-            JZ lubpzdph
-            JMP ltsyqdhf
-lubpzdph:   CALL linygdtg
-            JZ ltsyqdhf
-            INX H
-            MOV A,M
-            DCX H
-            CPI 000h
-            JZ ldlglyhi
-            CPI 048h
-            JZ ldlglyhi
-            CPI 051h
-            JZ ldlglyhi
-            CPI 02Dh
-            JNZ ltsyqdhf
-            INX H
-            CALL lqklcwrq
-            DCX H
-            JMP ldlglyhi
-ltsyqdhf:   MOV A,M
-            CPI 009h
-            JZ lvenqoab
-            CPI 012h
-            JZ lvenqoab
-            CPI 02Dh
-            JNZ lbaelmii
-            CALL lqklcwrq
-lbaelmii:   CALL llwjliss
-            LXI B,lfwlzngl
-            INR D
-            CALL lxwihvsz
-            CALL lgrobscj
-            LXI B,lsgemnce
-            CALL lxwihvsz
-            JMP lujyadoh
-lqklcwrq:   PUSH H
-            LXI H,lkkhiecd
-            CALL ldqlwwue
-            POP H
-            CALL lptmhjmn
-            PUSH PSW
-            LDA lmhdxhpu
-            DCR A
-            STA lmhdxhpu
-            POP PSW
-            MVI M,000h
-            RET
+         CPU  8080
+         .ORG 00000h
+lohyk    EQU 07FFFh
+lcmxd    EQU 08800h
+lgftl    EQU 08852h
+lgcvc    EQU 088C6h
+lgfso    EQU 08BF2h
+lcjum    EQU 08CB4h
+lbxrk    EQU 08CB5h
+lcmyl    EQU 08D00h
+lfqgk    EQU 08DFFh
+lcmvr    EQU 08F10h
+lcasp    EQU 08F11h
+lgfuh    EQU 08F12h
+lftrf    EQU 08F13h
+lcjux    EQU 08F14h
+lbxrv    EQU 08F15h
+lgctn    EQU 08F16h
+lfqql    EQU 08F17h
+lcait    EQU 08F19h
+lfthj    EQU 08F1Bh
+lbxhz    EQU 08F1Dh
+lftte    EQU 08FE3h
+lcasc    EQU 08FF1h
+lgftu    EQU 08FF2h
+lgenb    EQU 09306h
+lfvls    EQU 094E3h
+lfvfn    EQU 09923h
+lcbve    EQU 09999h
+lgejr    EQU 09D06h
+lgjbl    EQU 0A006h
+lctat    EQU 0A170h
+lgjcl    EQU 0A706h
+lgiwp    EQU 0A906h
+lgkon    EQU 0B206h
+lgkqb    EQU 0B406h
+lgbmv    EQU 0B623h
+lgkjr    EQU 0BB06h
+ldlft    EQU 0C010h
+ldlfj    EQU 0C170h
+ldiev    EQU 0C254h
+lhduj    EQU 0C25Ah
+lgscb    EQU 0C473h
+ldlgy    EQU 0C490h
+ldhyx    EQU 0C50Ch
+ldgns    EQU 0FED1h
+ldstf    EQU 0FF00h
+ldgqd    EQU 0FF01h
+lhlrv    EQU 0FF02h
+lgzot    EQU 0FF03h
+ldsqg    EQU 0FFF0h
+ljyzh:   JMP lldcb
+         DB 03Eh, 000h, 032h, 002h, 0FFh, 0CDh, 010h, 0C0h, 03Eh, 040h
+         DB 032h, 002h, 0FFh, 03Eh, 0C0h, 03Dh, 03Dh, 0FEh, 040h, 0CAh
+         DB 070h, 000h, 0F5h, 0CDh, 02Fh, 000h, 0F1h, 0E5h, 026h, 04Fh
+         DB 02Eh, 000h, 02Dh, 0C2h, 023h, 000h, 025h, 0C2h, 021h, 000h
+         DB 0E1h, 0C3h, 012h, 000h, 026h, 098h, 06Fh, 011h, 080h, 000h
+         DB 03Eh, 0B4h, 0BCh, 0D2h, 03Fh, 000h, 026h, 098h, 023h, 023h
+         DB 03Eh, 0C0h, 0BDh, 0C8h, 00Eh, 004h, 01Ah, 013h, 017h, 0DAh
+         DB 059h, 000h, 017h, 0DAh, 054h, 000h, 006h, 000h, 0C3h, 064h
+         DB 000h, 006h, 00Fh, 0C3h, 064h, 000h, 017h, 0DAh, 062h, 000h
+         DB 006h, 0F0h, 0C3h, 064h, 000h, 006h, 0FFh, 070h, 02Bh, 070h
+         DB 023h, 024h, 00Dh, 0CAh, 035h, 000h, 0C3h, 047h, 000h, 0CDh
+         DB 01Bh, 068h, 000h, 004h, 0C2h, 070h, 000h, 0C3h, 080h, 002h
+         DB 000h, 000h, 000h, 000h, 000h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 055h, 066h, 044h, 066h, 066h, 044h, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 055h, 054h, 033h, 055h, 067h, 033h, 036h, 077h, 033h, 066h
+         DB 034h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 053h, 033h, 033h, 077h, 077h, 077h, 078h, 033h
+         DB 037h, 078h, 085h, 083h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 054h, 033h, 033h
+         DB 033h, 033h, 033h, 033h, 033h, 033h, 033h, 033h, 055h, 055h
+         DB 055h, 055h, 055h, 055h, 055h, 055h, 0AAh, 0AAh, 0AAh, 0AAh
+         DB 0AAh, 0AAh, 0AAh, 0AAh, 0AAh, 055h, 055h, 055h, 055h, 055h
+         DB 055h, 055h, 055h, 055h, 054h, 044h, 044h, 044h, 044h, 044h
+         DB 044h, 044h, 044h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h
+ljyyy:   MVI A,0C0h
+         STA lhlrv
+         CALL ldlft
+         LXI H,lkfav
+         SHLD ljjvz
+         CALL ljyxy
+         LXI H,lkanz
+         LXI B,005FFh
+         CALL lnrje
+         LXI H,lbxrk
+         CALL lncup
+ljyyi:   CALL lojlh
+         NOP
+         INR B
+         JNZ ljyyi
+         LXI D,lgenb
+         LXI B,lkajv
+         CALL ljzah
+         LXI H,lcbve
+         SHLD lnrsn
+         CALL ljjef
+         LXI D,lgjbl
+         LXI B,lnhhu
+         CALL ljzah
+         MVI A,002h
+         STA lnrsm
+         LXI D,lgiwp
+         LXI B,ljnwy
+         CALL ljzah
+         LXI H,00000h
+         SHLD ljjpw
+         CALL ljvtd
+         LXI D,lgkqb
+         LXI B,lnqkj
+         CALL ljzah
+         XRA A
+         STA lnosh
+         STA lncom
+         STA lcasp
+         STA lgfuh
+         STA lftrf
+         MVI A,00Fh
+         STA lcjux
+         STA lbxrv
+         STA lgctn
+         LXI H,ljyks
+         SHLD lnfvj
+ljvyh:   LHLD lnfvj
+         MOV D,M
+         INX H
+         MOV E,M
+         INX H
+         SHLD lnfvj
+         XCHG
+         SHLD ljjvz
+         CALL lnfpk
+         LDA lnosh
+         CPI 00Eh
+         JZ ljyhr
+         CALL ljyjw
+ljyyl:   CALL ljyxy
+         LXI H,lbxrk
+         MVI A,032h
+         STA lnryl
+         SHLD lnook
+         XRA A
+         STA lcmvr
+         CALL lnofi
+         LXI H,lfvfn
+         SHLD lfqql
+         XCHG
+         LXI H,lgcvc
+         SHLD lcait
+         LXI B,lkamx
+         CALL lnrrx
+         LXI H,lgbmv
+         SHLD lfthj
+         XCHG
+         LXI H,lgfso
+         SHLD lbxhz
+         XRA A
+         JMP ljyrm
+ljmjv:   LXI D,lfvls
+         LXI H,lgftl
+         LXI B,lkamx
+         CALL lnoyd
+ljjut:   CALL ljyub
+         CALL ljyuy
+         NOP
+         NOP
+         NOP
+         CALL ljvtd
+         LDA lncom
+         CPI 000h
+         JNZ lnogd
+         LDA lcmvr
+         CPI 000h
+         JZ lnoko
+         CALL lnfge
+         LXI H,lkahl
+         LXI B,004FFh
+         CALL lnrje
+         LDA lnrsm
+         CPI 000h
+         JZ lnogd
+         LXI H,lkais
+         CALL lncup
+         JMP ljyyl
+lnoko:   CALL lnfjk
+         CALL lojlh
+         CPI 071h
+         JZ lncja
+         CPI 07Eh
+         JZ ljmnu
+         CPI 008h
+         JZ ljjlm
+         CPI 018h
+         JZ ljvwr
+         CPI 019h
+         JZ ljmnc
+         CPI 01Ah
+         JZ ljvzf
+         CPI 01Fh
+         JZ ljyyl
+         CALL lnrwk
+         JMP ljjut
+ljjlm:   SHLD lnrmt
+         CALL ljyqu
+         MOV A,M
+         CPI 000h
+         JZ lnowk
+         CPI 048h
+         JZ lnowk
+         CPI 051h
+         JZ lnowk
+         JMP lnfmf
+lnowk:   CALL lnfjw
+         JZ lnfmf
+         INX H
+         MOV A,M
+         DCX H
+         CPI 000h
+         JZ lnrwx
+         CPI 048h
+         JZ lnrwx
+         CPI 051h
+         JZ lnrwx
+         CPI 02Dh
+         JNZ lnfmf
+         INX H
+         CALL lnfjs
+         DCX H
+         JMP lnrwx
+lnfmf:   MOV A,M
+         CPI 009h
+         JZ ljmkm
+         CPI 012h
+         JZ ljmkm
+         CPI 02Dh
+         JNZ lnomb
+         CALL lnfjs
+lnomb:   CALL lnrzb
+         LXI B,lkamt
+         DCR D
+         CALL lnoyd
+         CALL lnrwk
+         LXI B,lkakh
+         CALL lnoyd
+         JMP ljjut
+ljvwr:   SHLD lnrmt
+         CALL lnclo
+         MOV A,M
+         CPI 000h
+         JZ ljjmz
+         CPI 048h
+         JZ ljjmz
+         CPI 051h
+         JZ ljjmz
+         JMP lnrwf
+ljjmz:   CALL lnowa
+         JZ lnrwf
+         INX H
+         MOV A,M
+         DCX H
+         CPI 000h
+         JZ lnowd
+         CPI 048h
+         JZ lnowd
+         CPI 051h
+         JZ lnowd
+         CPI 02Dh
+         JNZ lnrwf
+         INX H
+         CALL lnfjs
+         DCX H
+         JMP lnowd
+lnrwf:   MOV A,M
+         CPI 009h
+         JZ ljmkm
+         CPI 012h
+         JZ ljmkm
+         CPI 02Dh
+         JNZ ljjwq
+         CALL lnfjs
+ljjwq:   CALL lnrzb
+         LXI B,lkamd
+         INR D
+         CALL lnoyd
+         CALL lnrwk
+         LXI B,lkajr
+         CALL lnoyd
+         JMP ljjut
+lnfjs:   PUSH H
+         LXI H,lnrwa
+         CALL lncup
+         POP H
+         CALL ljjef
+         PUSH PSW
+         LDA lnryl
+         DCR A
+         STA lnryl
+         POP PSW
+         MVI M,000h
+         RET
 
-lkkhiecd:   DB 060h, 030h, 050h, 030h, 030h, 030h, 0FFh
-lvenqoab:   LHLD leqyeusm
-            LXI B,leeinatx
-            CALL lxwihvsz
-            CALL lgrobscj
-            JMP lujyadoh
-lkpeoxqk:   MOV A,L
-            SUI 01Ch
-            MOV L,A
-            RNC
-            DCR H
-            RET
-laeosatg:   MVI A,01Ch
-            ADD L
-            MOV L,A
-            RNC
-            INR H
-            RET
-linygdtg:   PUSH D
-            INR D
-            JMP lalfpcjs
-llujgder:   PUSH D
-            DCR D
-lalfpcjs:   CALL lllvbvtb
-            CALL lllvbvtb
-            INX D
-            LDAX D
-            POP D
-            CPI 01Ch
-            RET
-lhikdiyf:   MOV A,M
-            CPI 03Fh
-            JZ lfgravub
-            CPI 024h
-            JNZ lujyadoh
-            CALL llgjbtok
-            DCX H
-            CALL llwjliss
-            LXI B,lwxtuhwd
-            CALL ldfwcvon
-            CALL lgrobscj
-            CALL llwjliss
-            CALL llgjbtok
-            LXI B,lobnprrh
-            CALL lxwihvsz
-            JMP lujyadoh
-lfgravub:   LDA lmhdxhpu
-            CPI 000h
-            JNZ lujyadoh
-            LXI H,ldncmvxv
-            CALL ldqlwwue
-            JMP lmuiuhkh
-lwybgrmo:   INX H
-            MOV A,M
-            CPI 024h
-            JNZ luetwfgg
-            CALL lllvbvtb
-            CALL llwjliss
-            LXI B,lobnprrh
-            CALL ldfwcvon
-            CALL lgrobscj
-            CALL llwjliss
-            CALL lllvbvtb
-            LXI B,lwxtuhwd
-            CALL lxwihvsz
-            JMP lujyadoh
-luetwfgg:   CPI 000h
-            DCX H
-            JZ lyracjuo
-            JMP lujyadoh
-lxyzmekr:   DCR D
-            JMP lyracjuo
-ldlglyhi:   INR D
-lyracjuo:   INX H
-            CALL llwjliss
-            LXI B,leeinatx
-            CALL lllvbvtb
-            CALL lllvbvtb
-            CALL ldfwcvon
-            CALL lgrobscj
-            CALL lxwihvsz
-            MOV A,M
-            CPI 000h
-            JZ ltfcxnad
-            CPI 048h
-            JZ ltfcxnad
-            CPI 051h
-            JZ ltfcxnad
-            JMP lujyadoh
-ltfcxnad:   INX H
-            MOV A,M
-            CPI 02Dh
-            JNZ lmrpmwjo
-            CALL lqklcwrq
-            XRA A
-lmrpmwjo:   DCX H
-            CPI 000h
-            JZ lyracjuo
-            CPI 048h
-            JZ lyracjuo
-            CPI 051h
-            JZ lyracjuo
-            MOV A,M
-            JMP lujyadoh
-lcpwvbfg:   SHLD leqyeusm
-            CALL lkpeoxqk
-            MOV A,M
-            CPI 009h
-            JZ lbofmwdy
-            CPI 024h
-            JZ lbofmwdy
-            INX H
-            MOV A,M
-            CPI 009h
-            JNZ lbofmwdy
-            PUSH D
-            DCR D
-            CALL lscjzefb
-            POP D
-            LHLD leqyeusm
-            LXI B,lwxtuhwd
-            CALL ldfwcvon
-            JMP lujyadoh
-lezkzmck:   SHLD leqyeusm
-            CALL laeosatg
-            MOV A,M
-            CPI 009h
-            JZ lbofmwdy
-            CPI 024h
-            JZ lbofmwdy
-            INX H
-            MOV A,M
-            CPI 009h
-            JNZ lbofmwdy
-            PUSH D
-            INR D
-            CALL lscjzefb
-            POP D
-            LHLD leqyeusm
-            LXI B,lobnprrh
-            CALL ldfwcvon
-            JMP lujyadoh
-lbofmwdy:   LHLD leqyeusm
-            JMP lujyadoh
-lscjzefb:   MVI M,048h
-            CALL lllvbvtb
-            CALL lllvbvtb
-            CALL lllvbvtb
-            CALL loznzyoe
-            CALL lheuykcw
-            RET
-loznzyoe:   PUSH H
-            PUSH D
-            PUSH H
-            POP B
-            LXI H,linibphx
-lanobmqm:   MOV A,M
-            CPI 0FFh
-            JZ lonnpcsa
-            CPI 000h
-            JZ lonnpcsa
-            CALL lkumgolf
-            JMP lanobmqm
-lonnpcsa:   MVI M,040h
-            INX H
-            MOV M,C
-            INX H
-            MOV M,B
-            INX H
-            MOV M,E
-            INX H
-            MOV M,D
-            POP D
-            POP H
-            RET
-lheuykcw:   CALL llgjbtok
-            CALL llgjbtok
-            PUSH D
-            MVI A,063h
-            CALL ldpidlup
-            PUSH H
-            LXI H,ljuhlymc
-            CALL ldqlwwue
-            POP H
-            MVI A,048h
-            CALL ldpidlup
-            POP D
-            PUSH H
-            LXI H,ljuhlymc
-            CALL ldqlwwue
-            POP H
-            PUSH D
-            MVI A,06Ch
-            CALL ldpidlup
-            POP D
-            XRA A
-            CALL ldpidlup
-            RET
+lnrwa:   DB 060h, 030h, 050h, 030h, 030h, 030h, 0FFh
+ljmkm:   LHLD lnrmt
+         LXI B,lkamx
+         CALL lnoyd
+         CALL lnrwk
+         JMP ljjut
+ljyqu:   MOV A,L
+         SUI 01Ch
+         MOV L,A
+         RNC
+         DCR H
+         RET
+lnclo:   MVI A,01Ch
+         ADD L
+         MOV L,A
+         RNC
+         INR H
+         RET
+lnowa:   PUSH D
+         INR D
+         JMP ljjkm
+lnfjw:   PUSH D
+         DCR D
+ljjkm:   CALL lnfiy
+         CALL lnfiy
+         INX D
+         LDAX D
+         POP D
+         CPI 01Ch
+         RET
+ljmnc:   MOV A,M
+         CPI 03Fh
+         JZ lnftr
+         CPI 024h
+         JNZ ljjut
+         CALL lnovc
+         DCX H
+         CALL lnrzb
+         LXI B,lkakl
+         CALL ljzah
+         CALL lnrwk
+         CALL lnrzb
+         CALL lnovc
+         LXI B,lkamh
+         CALL lnoyd
+         JMP ljjut
+lnftr:   LDA lnryl
+         CPI 000h
+         JNZ ljjut
+         LXI H,lkagi
+         CALL lncup
+         JMP ljvyh
+ljvzf:   INX H
+         MOV A,M
+         CPI 024h
+         JNZ ljmnv
+         CALL lnfiy
+         CALL lnrzb
+         LXI B,lkamh
+         CALL ljzah
+         CALL lnrwk
+         CALL lnrzb
+         CALL lnfiy
+         LXI B,lkakl
+         CALL lnoyd
+         JMP ljjut
+ljmnv:   CPI 000h
+         DCX H
+         JZ lnctb
+         JMP ljjut
+lnrwx:   DCR D
+         JMP lnctb
+lnowd:   INR D
+lnctb:   INX H
+         CALL lnrzb
+         LXI B,lkamx
+         CALL lnfiy
+         CALL lnfiy
+         CALL ljzah
+         CALL lnrwk
+         CALL lnoyd
+         MOV A,M
+         CPI 000h
+         JZ ljzao
+         CPI 048h
+         JZ ljzao
+         CPI 051h
+         JZ ljzao
+         JMP ljjut
+ljzao:   INX H
+         MOV A,M
+         CPI 02Dh
+         JNZ lnfmg
+         CALL lnfjs
+         XRA A
+lnfmg:   DCX H
+         CPI 000h
+         JZ lnctb
+         CPI 048h
+         JZ lnctb
+         CPI 051h
+         JZ lnctb
+         MOV A,M
+         JMP ljjut
+lncja:   SHLD lnrmt
+         CALL ljyqu
+         MOV A,M
+         CPI 009h
+         JZ lnfte
+         CPI 024h
+         JZ lnfte
+         INX H
+         MOV A,M
+         CPI 009h
+         JNZ lnfte
+         PUSH D
+         DCR D
+         CALL ljmks
+         POP D
+         LHLD lnrmt
+         LXI B,lkakl
+         CALL ljzah
+         JMP ljjut
+ljmnu:   SHLD lnrmt
+         CALL lnclo
+         MOV A,M
+         CPI 009h
+         JZ lnfte
+         CPI 024h
+         JZ lnfte
+         INX H
+         MOV A,M
+         CPI 009h
+         JNZ lnfte
+         PUSH D
+         INR D
+         CALL ljmks
+         POP D
+         LHLD lnrmt
+         LXI B,lkamh
+         CALL ljzah
+         JMP ljjut
+lnfte:   LHLD lnrmt
+         JMP ljjut
+ljmks:   MVI M,048h
+         CALL lnfiy
+         CALL lnfiy
+         CALL lnfiy
+         CALL lnflx
+         CALL ljyxd
+         RET
+lnflx:   PUSH H
+         PUSH D
+         PUSH H
+         POP B
+         LXI H,lcmyl
+lnrwj:   MOV A,M
+         CPI 0FFh
+         JZ lnfvd
+         CPI 000h
+         JZ lnfvd
+         CALL ljyxg
+         JMP lnrwj
+lnfvd:   MVI M,040h
+         INX H
+         MOV M,C
+         INX H
+         MOV M,B
+         INX H
+         MOV M,E
+         INX H
+         MOV M,D
+         POP D
+         POP H
+         RET
+ljyxd:   CALL lnovc
+         CALL lnovc
+         PUSH D
+         MVI A,063h
+         CALL lncpd
+         PUSH H
+         LXI H,lnolx
+         CALL lncup
+         POP H
+         MVI A,048h
+         CALL lncpd
+         POP D
+         PUSH H
+         LXI H,lnolx
+         CALL lncup
+         POP H
+         PUSH D
+         MVI A,06Ch
+         CALL lncpd
+         POP D
+         XRA A
+         CALL lncpd
+         RET
 
-ljuhlymc:   DB 00Ah, 017h, 00Ah, 007h, 003h, 006h, 009h, 005h, 009h, 009h
-            DB 001h, 009h, 009h, 001h, 009h, 00Ah, 003h, 014h, 00Fh, 007h
-            DB 00Ah, 017h, 00Ah, 007h, 003h, 006h, 009h, 005h, 009h, 009h
-            DB 001h, 009h, 009h, 001h, 009h, 00Ah, 003h, 014h, 00Fh, 007h
-            DB 00Ah, 017h, 00Ah, 007h, 003h, 006h, 009h, 005h, 009h, 009h
-            DB 001h, 009h, 009h, 001h, 009h, 00Ah, 003h, 014h, 00Fh, 007h
-            DB 0FFh
-ltpdbhcr:   PUSH H
-            PUSH D
-            LXI H,linibphx
-lgjulewx:   MOV A,M
-            CPI 000h
-            JZ lsdoeojz
-            CPI 0FFh
-            JZ ltxgivgr
-            CPI 001h
-            JZ lxbqrvrx
-            CPI 020h
-            JZ lzsrllcr
-            CPI 012h
-            JZ lbglkjel
-            CPI 010h
-            JZ lbglkjel
-            DCR A
-ltxgivgr:   MOV M,A
-            CALL lkumgolf
-            JMP lgjulewx
-lsdoeojz:   POP D
-            POP H
-            RET
-lxbqrvrx:   MVI A,0FFh
-            MOV M,A
-            MVI A,009h
-            JMP lrompgec
-lzsrllcr:   DCR A
-            MOV M,A
-            MVI A,051h
-            JMP lrompgec
-lbglkjel:   DCR A
-            MOV M,A
-            MVI A,05Ah
-            JMP lrompgec
-lrompgec:   INX H
-            MOV E,M
-            INX H
-            MOV D,M
-            STAX D
-            INX H
-            MOV E,M
-            INX H
-            MOV D,M
-            CALL ldpidlup
-            INX H
-            JMP lgjulewx
-lkumgolf:   INX H
-            INX H
-            INX H
-            INX H
-            INX H
-            RET
-llgjbtok:   DCX D
-            DCX D
-            DCX D
-            DCX D
-            RET
-lllvbvtb:   INX D
-            INX D
-            INX D
-            INX D
-            RET
-ldfwcvon:   PUSH H
-            PUSH D
-            PUSH B
-            JMP lesichct
-lxwihvsz:   PUSH H
-            PUSH D
-            PUSH B
-            MOV A,M
-            STA lolcjmjh
-            DCX H
-            MOV A,M
-            STA lqjcwczt
-            XCHG
-            SHLD lbyxjxug
-            XCHG
-lesichct:   PUSH B
-            POP H
-            MOV A,E
-            STA lgabmczk
-            MOV C,M
-            MOV A,C
-            STA ltbsujhy
-            INX H
-            MOV B,M
-            INX H
-            MOV A,M
-            CALL lfydoayc
-lnfaskes:   INX H
-            MOV A,M
-            STAX D
-            INX D
-            DCR C
-            JNZ lnfaskes
-            INR D
-            LDA lgabmczk
-            MOV E,A
-            LDA ltbsujhy
-            MOV C,A
-            DCR B
-            JNZ lnfaskes
-            POP B
-            POP D
-            POP H
-            RET
-llwjliss:   PUSH D
-            PUSH H
-            LDA lqjcwczt
-            LHLD lbyxjxug
-            XCHG
-            CALL llgjbtok
-            POP H
-            CALL ldpidlup
-            LDA lolcjmjh
-            CALL ldpidlup
-            POP D
-            RET
+lnolx:   DB 00Ah, 017h, 00Ah, 007h, 003h, 006h, 009h, 005h, 009h, 009h
+         DB 001h, 009h, 009h, 001h, 009h, 00Ah, 003h, 014h, 00Fh, 007h
+         DB 00Ah, 017h, 00Ah, 007h, 003h, 006h, 009h, 005h, 009h, 009h
+         DB 001h, 009h, 009h, 001h, 009h, 00Ah, 003h, 014h, 00Fh, 007h
+         DB 00Ah, 017h, 00Ah, 007h, 003h, 006h, 009h, 005h, 009h, 009h
+         DB 001h, 009h, 009h, 001h, 009h, 00Ah, 003h, 014h, 00Fh, 007h
+         DB 0FFh
+lnfjk:   PUSH H
+         PUSH D
+         LXI H,lcmyl
+ljyzo:   MOV A,M
+         CPI 000h
+         JZ lncvc
+         CPI 0FFh
+         JZ ljzai
+         CPI 001h
+         JZ lnrpc
+         CPI 020h
+         JZ lnrwm
+         CPI 012h
+         JZ ljmky
+         CPI 010h
+         JZ ljmky
+         DCR A
+ljzai:   MOV M,A
+         CALL ljyxg
+         JMP ljyzo
+lncvc:   POP D
+         POP H
+         RET
+lnrpc:   MVI A,0FFh
+         MOV M,A
+         MVI A,009h
+         JMP ljyzs
+lnrwm:   DCR A
+         MOV M,A
+         MVI A,051h
+         JMP ljyzs
+ljmky:   DCR A
+         MOV M,A
+         MVI A,05Ah
+         JMP ljyzs
+ljyzs:   INX H
+         MOV E,M
+         INX H
+         MOV D,M
+         STAX D
+         INX H
+         MOV E,M
+         INX H
+         MOV D,M
+         CALL lncpd
+         INX H
+         JMP ljyzo
+ljyxg:   INX H
+         INX H
+         INX H
+         INX H
+         INX H
+         RET
+lnovc:   DCX D
+         DCX D
+         DCX D
+         DCX D
+         RET
+lnfiy:   INX D
+         INX D
+         INX D
+         INX D
+         RET
+ljzah:   PUSH H
+         PUSH D
+         PUSH B
+         JMP lncsp
+lnoyd:   PUSH H
+         PUSH D
+         PUSH B
+         MOV A,M
+         STA lnolz
+         DCX H
+         MOV A,M
+         STA lncix
+         XCHG
+         SHLD ljyzv
+         XCHG
+lncsp:   PUSH B
+         POP H
+         MOV A,E
+         STA ljjkh
+         MOV C,M
+         MOV A,C
+         STA ljvnj
+         INX H
+         MOV B,M
+         INX H
+         MOV A,M
+         CALL logtt
+ljmmt:   INX H
+         MOV A,M
+         STAX D
+         INX D
+         DCR C
+         JNZ ljmmt
+         INR D
+         LDA ljjkh
+         MOV E,A
+         LDA ljvnj
+         MOV C,A
+         DCR B
+         JNZ ljmmt
+         POP B
+         POP D
+         POP H
+         RET
+lnrzb:   PUSH D
+         PUSH H
+         LDA lncix
+         LHLD ljyzv
+         XCHG
+         CALL lnovc
+         POP H
+         CALL lncpd
+         LDA lnolz
+         CALL lncpd
+         POP D
+         RET
 
-leqyeusm:   DB 052h, 088h
-ltbsujhy:   DB 008h
-lgabmczk:   DB 070h
-lolcjmjh:   DB 000h
-lqjcwczt:   DB 000h
-lbyxjxug:   DB 0E3h, 094h
-lmhdxhpu:   DB 032h
-lntvwugd:   DB 0CAh, 009h
-lwsjpbww:   DB 000h, 061h
-ldqlwwue:   MOV A,M
-            CPI 0FFh
-            RZ
-            CPI 000h
-            JZ luhrawdm
-            STA lfsmoppk
-            INX H
-            MOV A,M
-            STA lhfgpppn
-            INX H
-            CALL lhxclmmn
-            JMP ldqlwwue
-luhrawdm:   INX H
-            MOV A,M
-            PUSH H
-            MOV H,A
-lswrzxpp:   MVI L,0FFh
-lvkccenl:   DCR L
-            JNZ lvkccenl
-            DCR H
-            JNZ lswrzxpp
-            POP H
-            INX H
-            JMP ldqlwwue
-lgrobscj:   PUSH D
-            PUSH B
-            PUSH H
-            LHLD lykvejks
-            MOV A,M
-            CPI 000h
-            JZ lsvcowds
-            CPI 0FFh
-            JZ lpxaacxn
-            STA lfsmoppk
-            MVI A,020h
-            STA lhfgpppn
-            CALL lhxclmmn
-            INX H
-            JMP lgvewdua
-lsvcowds:   PUSH H
-            MVI H,020h
-lyhrigcu:   MVI L,0FFh
-lvybiabl:   DCR L
-            JNZ lvybiabl
-            DCR H
-            JNZ lyhrigcu
-            POP H
-            INX H
-            JMP lgvewdua
-lpxaacxn:   LXI H,lrcpoinj
-lgvewdua:   SHLD lykvejks
-            POP H
-            POP B
-            POP D
-            RET
+lnrmt:   DB 052h, 088h
+ljvnj:   DB 008h
+ljjkh:   DB 070h
+lnolz:   DB 000h
+lncix:   DB 000h
+ljyzv:   DB 0E3h, 094h
+lnryl:   DB 032h
+lnfvj:   DB 0CAh, 009h
+ljjvz:   DB 000h, 061h
+lncup:   MOV A,M
+         CPI 0FFh
+         RZ
+         CPI 000h
+         JZ lncih
+         STA lcasc
+         INX H
+         MOV A,M
+         STA lgftu
+         INX H
+         CALL ldlfj
+         JMP lncup
+lncih:   INX H
+         MOV A,M
+         PUSH H
+         MOV H,A
+lnfvu:   MVI L,0FFh
+ljjwk:   DCR L
+         JNZ ljjwk
+         DCR H
+         JNZ lnfvu
+         POP H
+         INX H
+         JMP lncup
+lnrwk:   PUSH D
+         PUSH B
+         PUSH H
+         LHLD lnook
+         MOV A,M
+         CPI 000h
+         JZ lnrvu
+         CPI 0FFh
+         JZ ljvzq
+         STA lcasc
+         MVI A,020h
+         STA lgftu
+         CALL ldlfj
+         INX H
+         JMP lncve
+lnrvu:   PUSH H
+         MVI H,020h
+ljjti:   MVI L,0FFh
+lncry:   DCR L
+         JNZ lncry
+         DCR H
+         JNZ ljjti
+         POP H
+         INX H
+         JMP lncve
+ljvzq:   LXI H,lbxrk
+lncve:   SHLD lnook
+         POP H
+         POP B
+         POP D
+         RET
 
-lykvejks:   DB 0DEh, 08Ch
-lfwuhwto:   LHLD lwsjpbww
-            LXI D,lvsttnrd
-lebzmghm:   MOV A,M
-            STAX D
-            INX H
-            INX D
-            CPI 0FFh
-            JNZ lebzmghm
-            LXI H,lalwexyp
-lfvaeppw:   CALL lkpeoxqk
-            MVI A,087h
-            CMP H
-            RNC
-            PUSH H
-            CALL lkwjiudo
-            POP H
-            JMP lfvaeppw
-lkwjiudo:   MVI D,091h
-leplpwcx:   MVI E,017h
-            INR D
-lwieaght:   MOV A,M
-            CPI 0FEh
-            RZ
-            CALL ldpidlup
-            MOV A,E
-            CPI 0F7h
-            INX H
-            JZ leplpwcx
-            JMP lwieaght
-ldpidlup:   PUSH H
-            LXI H,ltljixhm
-            ADD L
-            MOV L,A
-            MOV A,M
-            CALL lfydoayc
-            MVI B,008h
-lyzqsavz:   INX H
-            MOV A,M
-            STAX D
-            INX D
-            DCR B
-            JNZ lyzqsavz
-            POP H
-            RET
-lptmhjmn:   PUSH H
-            PUSH D
-            PUSH B
-            LHLD lryzfnxo
-            INR L
-            MOV A,L
-            ANI 00Fh
-            CPI 00Ah
-            JNZ lwlkbhyy
-            MOV A,L
-            ANI 0F0h
-            ADI 010h
-            MOV L,A
-            CPI 0A0h
-            JNZ lwlkbhyy
-            CALL lnoizrpz
-            MVI L,000h
-            INR H
-            MOV A,H
-            ANI 00Fh
-            CPI 00Ah
-            JNZ lwlkbhyy
-            MOV A,H
-            ANI 0F0h
-            ADI 010h
-            MOV H,A
-            CPI 0A0h
-            JNZ lwlkbhyy
-            LXI H,00000h
-lwlkbhyy:   SHLD lryzfnxo
-            LXI D,lkksbuck
-lhllvhip:   PUSH H
-            POP B
-            CALL lgltuaya
-            POP B
-            POP D
-            POP H
-            RET
+lnook:   DB 0DEh, 08Ch
+ljyxy:   LHLD ljjvz
+         LXI D,lcmxd
+lnovu:   MOV A,M
+         STAX D
+         INX H
+         INX D
+         CPI 0FFh
+         JNZ lnovu
+         LXI H,lcjum
+lnryk:   CALL ljyqu
+         MVI A,087h
+         CMP H
+         RNC
+         PUSH H
+         CALL ljmug
+         POP H
+         JMP lnryk
+ljmug:   MVI D,091h
+lnfsw:   MVI E,017h
+         INR D
+lnove:   MOV A,M
+         CPI 0FEh
+         RZ
+         CALL lncpd
+         MOV A,E
+         CPI 0F7h
+         INX H
+         JZ lnfsw
+         JMP lnove
+lncpd:   PUSH H
+         LXI H,lkamr
+         ADD L
+         MOV L,A
+         MOV A,M
+         CALL logtt
+         MVI B,008h
+lnfnl:   INX H
+         MOV A,M
+         STAX D
+         INX D
+         DCR B
+         JNZ lnfnl
+         POP H
+         RET
+ljjef:   PUSH H
+         PUSH D
+         PUSH B
+         LHLD lnrsn
+         INR L
+         MOV A,L
+         ANI 00Fh
+         CPI 00Ah
+         JNZ lnfnp
+         MOV A,L
+         ANI 0F0h
+         ADI 010h
+         MOV L,A
+         CPI 0A0h
+         JNZ lnfnp
+         CALL ljyjw
+         MVI L,000h
+         INR H
+         MOV A,H
+         ANI 00Fh
+         CPI 00Ah
+         JNZ lnfnp
+         MOV A,H
+         ANI 0F0h
+         ADI 010h
+         MOV H,A
+         CPI 0A0h
+         JNZ lnfnp
+         LXI H,00000h
+lnfnp:   SHLD lnrsn
+         LXI D,lgejr
+ljmfd:   PUSH H
+         POP B
+         CALL lncpf
+         POP B
+         POP D
+         POP H
+         RET
 
-lryzfnxo:   DB 000h, 000h
-ljkynvzi:   PUSH H
-            PUSH D
-            PUSH B
-            LHLD lsxryjst
-            DCR L
-            MOV A,L
-            ANI 00Fh
-            CPI 00Fh
-            JNZ leepvily
-            MOV A,L
-            ANI 0F0h
-            ORI 009h
-            MOV L,A
-            CPI 0F9h
-            JNZ leepvily
-            MVI L,099h
-            DCR H
-            MOV A,H
-            ANI 00Fh
-            CPI 00Fh
-            JNZ leepvily
-            MOV A,H
-            ANI 0F0h
-            ORI 009h
-            MOV H,A
-            CPI 0F9h
-            JNZ leepvily
-            MVI A,001h
-            STA lmzsyazc
-            LXI H,lqbcrrwi
-leepvily:   SHLD lsxryjst
-            LXI D,lbkjaojf
-            JMP lhllvhip
+lnrsn:   DB 000h, 000h
+ljvtd:   PUSH H
+         PUSH D
+         PUSH B
+         LHLD ljjpw
+         DCR L
+         MOV A,L
+         ANI 00Fh
+         CPI 00Fh
+         JNZ ljvhg
+         MOV A,L
+         ANI 0F0h
+         ORI 009h
+         MOV L,A
+         CPI 0F9h
+         JNZ ljvhg
+         MVI L,099h
+         DCR H
+         MOV A,H
+         ANI 00Fh
+         CPI 00Fh
+         JNZ ljvhg
+         MOV A,H
+         ANI 0F0h
+         ORI 009h
+         MOV H,A
+         CPI 0F9h
+         JNZ ljvhg
+         MVI A,001h
+         STA lncom
+         LXI H,lcbve
+ljvhg:   SHLD ljjpw
+         LXI D,lgkon
+         JMP ljmfd
 
-lsxryjst:   DB 046h, 099h
-lmzsyazc:   DB 000h
-lnoizrpz:   PUSH H
-            PUSH D
-            PUSH B
-            LDA lxjdjdql
-            INR A
-            MOV D,A
-            ANI 00Fh
-            CPI 00Ah
-            MOV A,D
-            JNZ ltfjqwnz
-            LDA lxjdjdql
-            ANI 0F0h
-            ADI 010h
-ltfjqwnz:   STA lxjdjdql
-            MOV L,A
-            MVI H,0FFh
-            LXI D,lbchrlcm
-            JMP lhllvhip
-liqvytzq:   PUSH H
-            PUSH D
-            PUSH B
-            LDA lxjdjdql
-            DCR A
-            MOV D,A
-            ANI 00Fh
-            CPI 0FFh
-            MOV A,D
-            JNZ ltfjqwnz
-            ANI 0F0h
-            ORI 009h
-            JMP ltfjqwnz
+ljjpw:   DB 046h, 099h
+lncom:   DB 000h
+ljyjw:   PUSH H
+         PUSH D
+         PUSH B
+         LDA lnrsm
+         INR A
+         MOV D,A
+         ANI 00Fh
+         CPI 00Ah
+         MOV A,D
+         JNZ lncce
+         LDA lnrsm
+         ANI 0F0h
+         ADI 010h
+lncce:   STA lnrsm
+         MOV L,A
+         MVI H,0FFh
+         LXI D,lgjcl
+         JMP ljmfd
+lnfge:   PUSH H
+         PUSH D
+         PUSH B
+         LDA lnrsm
+         DCR A
+         MOV D,A
+         ANI 00Fh
+         CPI 0FFh
+         MOV A,D
+         JNZ lncce
+         ANI 0F0h
+         ORI 009h
+         JMP lncce
 
-lxjdjdql:   DB 000h
-lgjoeeta:   PUSH H
-            PUSH D
-            PUSH B
-            LDA lfjqztdp
-            INR A
-            MOV D,A
-            ANI 00Fh
-            CPI 00Ah
-            MOV A,D
-            JNZ lgbiuzyb
-            LDA lfjqztdp
-            ANI 0F0h
-            ADI 010h
-lgbiuzyb:   STA lfjqztdp
-            MOV L,A
-            MVI H,0FFh
-            LXI D,lkqofyts
-            JMP lhllvhip
+lnrsm:   DB 000h
+lnfpk:   PUSH H
+         PUSH D
+         PUSH B
+         LDA lnosh
+         INR A
+         MOV D,A
+         ANI 00Fh
+         CPI 00Ah
+         MOV A,D
+         JNZ lnrge
+         LDA lnosh
+         ANI 0F0h
+         ADI 010h
+lnrge:   STA lnosh
+         MOV L,A
+         MVI H,0FFh
+         LXI D,lgkjr
+         JMP ljmfd
 
-lfjqztdp:   DB 001h
-lgltuaya:   MOV A,C
-            CALL lnyvzngj
-            MOV A,C
-            RAR
-            RAR
-            RAR
-            RAR
-            DCR D
-            CALL lnyvzngj
-            MOV A,B
-            CPI 0FFh
-            RZ
-            DCR D
-            CALL lnyvzngj
-            MOV A,B
-            RAR
-            RAR
-            RAR
-            RAR
-            DCR D
-            CALL lnyvzngj
-            RET
-lnyvzngj:   ANI 00Fh
-            LXI H,lrxikjib
-lcuashaw:   CMP M
-            JZ lxnhuntk
-            INX H
-            INX H
-            JMP lcuashaw
-lxnhuntk:   INX H
-            PUSH B
-            MOV C,M
-            MVI B,013h
-            CALL ldfwcvon
-            POP B
-            RET
+lnosh:   DB 001h
+lncpf:   MOV A,C
+         CALL lnorr
+         MOV A,C
+         RAR
+         RAR
+         RAR
+         RAR
+         DCR D
+         CALL lnorr
+         MOV A,B
+         CPI 0FFh
+         RZ
+         DCR D
+         CALL lnorr
+         MOV A,B
+         RAR
+         RAR
+         RAR
+         RAR
+         DCR D
+         CALL lnorr
+         RET
+lnorr:   ANI 00Fh
+         LXI H,lnofj
+lnffn:   CMP M
+         JZ ljvqp
+         INX H
+         INX H
+         JMP lnffn
+ljvqp:   INX H
+         PUSH B
+         MOV C,M
+         MVI B,013h
+         CALL ljzah
+         POP B
+         RET
 
-lrxikjib:   DB 000h, 000h, 001h, 013h, 002h, 026h, 003h, 039h, 004h, 04Ch
-            DB 005h, 05Fh, 006h, 072h, 007h, 085h, 008h, 098h, 009h, 0ABh
-lvbdgiwb:   MOV A,D
-            CMP H
-            RNZ
-            MOV A,E
-            CMP L
-            RNZ
-            MVI A,001h
-            STA lyoeziir
-            RET
-leorpaji:   LXI B,lrdyqgak
-            LXI D,lyvrekgv
-            CALL ldfwcvon
-            LXI H,lmwpynyg
-            CALL ldqlwwue
-lxkwzkzx:   CALL lmhhhokk
-            NOP
-            INR B
-            JNZ lxkwzkzx
-            JMP ljbtkier
-lzatnpma:   LXI H,lccbxedj
-            SHLD lwsjpbww
-            CALL lfwuhwto
-            LXI H,lrcpoinj
-            CALL ldqlwwue
-            JMP lxkwzkzx
-lgojptzs:   MOV E,M
-            CALL ldtfgrcv
-            INX H
-            DCX B
-            MOV A,B
-            CPI 000h
-            JNZ lgojptzs
-            RET
-ldtfgrcv:   PUSH PSW
-            MVI D,008h
-            MOV A,E
-lhontcbx:   RAL
-            CALL lkuzuotl
-            JC lujvqobb
-            PUSH PSW
-            MVI A,00Bh
-lvhxbqkz:   STA lnsvwlwm
-            POP PSW
-            DCR D
-            JNZ lhontcbx
-            POP PSW
-            RET
-lujvqobb:   PUSH PSW
-            MVI A,00Ah
-            JMP lvhxbqkz
-lkuzuotl:   PUSH PSW
-            MVI A,004h
-lgetnkxt:   DCR A
-            JNZ lgetnkxt
-            POP PSW
-            RET
-llcdosfy:   LXI H,lqzxspwj
-ljqnepet:   DCR L
-            MVI M,000h
-            JNZ ljqnepet
-            RET
+lnofj:   DB 000h, 000h, 001h, 013h, 002h, 026h, 003h, 039h, 004h, 04Ch
+         DB 005h, 05Fh, 006h, 072h, 007h, 085h, 008h, 098h, 009h, 0ABh
+lnrqt:   MOV A,D
+         CMP H
+         RNZ
+         MOV A,E
+         CMP L
+         RNZ
+         MVI A,001h
+         STA lcmvr
+         RET
+lnogd:   LXI B,lkanx
+         LXI D,lctat
+         CALL ljzah
+         LXI H,lkair
+         CALL lncup
+ljjgh:   CALL lojlh
+         NOP
+         INR B
+         JNZ ljjgh
+         JMP ljyzh
+ljyhr:   LXI H,lkfav
+         SHLD ljjvz
+         CALL ljyxy
+         LXI H,lbxrk
+         CALL lncup
+         JMP ljjgh
+lnrje:   MOV E,M
+         CALL lncms
+         INX H
+         DCX B
+         MOV A,B
+         CPI 000h
+         JNZ lnrje
+         RET
+lncms:   PUSH PSW
+         MVI D,008h
+         MOV A,E
+lnfdq:   RAL
+         CALL ljjnm
+         JC lnces
+         PUSH PSW
+         MVI A,00Bh
+ljjpy:   STA lgzot
+         POP PSW
+         DCR D
+         JNZ lnfdq
+         POP PSW
+         RET
+lnces:   PUSH PSW
+         MVI A,00Ah
+         JMP ljjpy
+ljjnm:   PUSH PSW
+         MVI A,004h
+ljyhm:   DCR A
+         JNZ ljyhm
+         POP PSW
+         RET
+lnofi:   LXI H,lfqgk
+ljmrm:   DCR L
+         MVI M,000h
+         JNZ ljmrm
+         RET
 
-lwnvqfjh:   DB 025h, 000h, 02Ah, 000h, 02Fh, 000h, 034h, 000h, 039h, 000h
-            DB 03Eh, 000h, 043h, 000h, 048h, 000h, 04Dh, 000h, 052h, 000h
-            DB 057h, 000h, 05Ch, 000h, 061h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-lrvjxftl:   STA lhcsetuh
-            STA lcklcyzw
-            LXI B,leeinatx
-            CALL lemfnbwi
-            JMP leezbokb
-            DB 000h
-lhnnuqzx:   PUSH H
-            PUSH D
-            PUSH B
-            LDA lcjjrmtj
-            DCR A
-            JNZ lkafhjzy
-            XCHG
-            SHLD lxwbmgot
-            MVI A,00Fh
-lkafhjzy:   STA lcjjrmtj
-            LHLD lxwbmgot
-            PUSH H
-            POP B
-            LHLD lydhodbh
-            XCHG
-            LHLD lynbewej
-            MOV A,M
-            CPI 05Ah
-            JZ ltwknssi
-            MOV A,B
-            CMP D
-            JC ljdqvizb
-            JZ ldddtkeh
-            JMP lefmqdvf
-ltwknssi:   DCX H
-            MOV A,M
-            CPI 02Dh
-            JNZ lrfavvxy
-            CALL lgebunrd
-lrfavvxy:   INX H
-            JMP lcnyufwp
-ldddtkeh:   MOV A,C
-            CMP E
-            JNZ lefmqdvf
-            MVI A,001h
-            STA lcjjrmtj
-            JMP ladvtpti
-ljdqvizb:   MOV A,C
-            CMP E
-            JC lhvzmvsr
-            JZ lppoikey
-            JMP lcatmfdv
-lefmqdvf:   MOV A,C
-            CMP E
-            JC lqyoutkz
-            JZ lhauvyhs
-            JMP lahzrggj
-lvvkfdcd:   PUSH H
-            LXI H,lxazvrue
-            SHLD lxwbmgot
-            POP H
-            JMP lemglowy
-lwzzhuip:   PUSH H
-            LXI H,00000h
-            SHLD lxwbmgot
-            POP H
-lemglowy:   MVI A,019h
-            STA lcjjrmtj
-lbnidwwc:   LHLD luynujtm
-            LXI B,leeinatx
-            CALL lbqwyyas
-            CALL lgrobscj
-            JMP ladvtpti
-lppoikey:   SHLD luynujtm
-            CALL lkpeoxqk
-            MOV A,M
-            CPI 000h
-            JNZ lsziwncj
-            CALL llujgder
-            JZ lsziwncj
-            INX H
-            MOV A,M
-            DCX H
-            CPI 000h
-            JZ lpudpcqf
-            CPI 048h
-            JZ lbbxajzn
-            CPI 051h
-            JZ lbbxajzn
-lsziwncj:   MOV A,M
-            CPI 009h
-            JZ lvvkfdcd
-            CPI 012h
-            JZ lvvkfdcd
-            CPI 048h
-            JZ lbnidwwc
-            CPI 051h
-            JZ lbnidwwc
-            CPI 05Ah
-            JZ lbnidwwc
-            CPI 02Dh
-            JNZ lwztphbr
-            LDA lhcsetuh
-            CPI 000h
-            JNZ lwztphbr
-            MVI A,001h
-            STA lhcsetuh
-            MVI M,000h
-lwztphbr:   CALL lzfmakud
-            LXI B,lovagmaj
-            DCR D
-            CALL ldfwcvon
-            CALL lgrobscj
-            LXI B,lxnlnoxo
-            CALL lbqwyyas
-            JMP ladvtpti
-lhvzmvsr:   MOV A,M
-            CPI 024h
-            JZ lcnyufwp
-            CPI 02Dh
-            JNZ lppoikey
-            CALL lgebunrd
-            JMP lppoikey
-lcatmfdv:   INX H
-            MOV A,M
-            CPI 024h
-            JZ lnnbjnty
-            DCX H
-            JMP lppoikey
-lhauvyhs:   SHLD luynujtm
-            CALL laeosatg
-            MOV A,M
-            CPI 000h
-            JNZ lksrnbfn
-            CALL linygdtg
-            JZ lksrnbfn
-            INX H
-            MOV A,M
-            DCX H
-            CPI 000h
-            JZ lkqjnpvj
-            CPI 048h
-            JZ lrtlvuaq
-            CPI 051h
-            JZ lrtlvuaq
-lksrnbfn:   MOV A,M
-            CPI 009h
-            JZ lwzzhuip
-            CPI 012h
-            JZ lwzzhuip
-            CPI 048h
-            JZ lbnidwwc
-            CPI 051h
-            JZ lbnidwwc
-            CPI 05Ah
-            JZ lbnidwwc
-            CPI 02Dh
-            JNZ lozgewkw
-            LDA lhcsetuh
-            CPI 000h
-            JNZ lozgewkw
-            MVI A,001h
-            STA lhcsetuh
-            MVI M,000h
-lozgewkw:   CALL lzfmakud
-            LXI B,lfwlzngl
-            INR D
-            CALL ldfwcvon
-            CALL lgrobscj
-            LXI B,lsgemnce
-            CALL lbqwyyas
-            JMP ladvtpti
-lqyoutkz:   MOV A,M
-            CPI 024h
-            JZ lcnyufwp
-            CPI 02Dh
-            JNZ lhauvyhs
-            CALL lgebunrd
-            JMP lhauvyhs
-lahzrggj:   INX H
-            MOV A,M
-            CPI 024h
-            JZ lnnbjnty
-            DCX H
-            JMP lhauvyhs
-lcnyufwp:   CALL lzfmakud
-            DCX H
-            CALL llgjbtok
-            LXI B,lwxtuhwd
-            CALL ldfwcvon
-            CALL lgrobscj
-            CALL llgjbtok
-            CALL lzfmakud
-            LXI B,lobnprrh
-            CALL lbqwyyas
-            JMP ladvtpti
-lnnbjnty:   CALL lzfmakud
-            CALL lllvbvtb
-            LXI B,lobnprrh
-            CALL ldfwcvon
-            CALL lgrobscj
-            CALL lllvbvtb
-            CALL lzfmakud
-            LXI B,lwxtuhwd
-            CALL lbqwyyas
-            JMP ladvtpti
-lbbxajzn:   DCR D
-            JMP lmhzblhp
-lrtlvuaq:   INR D
-lmhzblhp:   LDA lhcsetuh
-            CPI 000h
-            JZ lbcycend
-            XRA A
-            STA lhcsetuh
-            MVI M,02Dh
-            MOV A,M
-            PUSH D
-            INX D
-            INX D
-            CALL ldpidlup
-            POP D
-lbcycend:   INX H
-            CALL lzfmakud
-            CALL lllvbvtb
-            CALL lllvbvtb
-            LXI B,leeinatx
-            CALL lbqwyyas
-            JMP ladvtpti
-lpudpcqf:   DCR D
-            JMP lffsnszy
-lkqjnpvj:   INR D
-lffsnszy:   INX H
-            CALL lzfmakud
-            LXI B,leeinatx
-            CALL lllvbvtb
-            CALL lllvbvtb
-            CALL ldfwcvon
-            CALL lgrobscj
-            CALL lbqwyyas
-            MOV A,M
-            CPI 02Dh
-            JZ lfwrvrhd
-            CPI 000h
-            JNZ ladvtpti
-            JMP lkgmpind
-lfwrvrhd:   CALL lgebunrd
-lkgmpind:   INX H
-            MOV A,M
-            DCX H
-            CPI 02Dh
-            JZ ltielkcu
-            CPI 000h
-            JZ lffsnszy
-            JMP ladvtpti
-ltielkcu:   CALL lgebunrd
-            JNZ lffsnszy
-            INX H
-            MVI M,000h
-            DCX H
-            JMP lffsnszy
-lgebunrd:   LDA lhcsetuh
-            CPI 000h
-            RNZ
-            MVI M,000h
-            MVI A,001h
-            STA lhcsetuh
-            RET
-lbqwyyas:   PUSH H
-            PUSH D
-            PUSH B
-            MOV A,M
-            STA lfdnwssu
-            DCX H
-            MOV A,M
-            STA letzwrkt
-            XCHG
-            SHLD lbiqaedt
-            XCHG
-            JMP lesichct
-lzfmakud:   PUSH D
-            PUSH H
-            LDA letzwrkt
-            LHLD lbiqaedt
-            XCHG
-            CALL llgjbtok
-            CALL ldpidlup
-            LDA lfdnwssu
-            CALL ldpidlup
-            POP H
-            POP D
-            RET
+ljyks:   DB 025h, 000h, 02Ah, 000h, 02Fh, 000h, 034h, 000h, 039h, 000h
+         DB 03Eh, 000h, 043h, 000h, 048h, 000h, 04Dh, 000h, 052h, 000h
+         DB 057h, 000h, 05Ch, 000h, 061h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+ljyrm:   STA lcasp
+         STA lgfuh
+         LXI B,lkamx
+         CALL lnrqy
+         JMP ljmjv
+         DB 000h
+ljyub:   PUSH H
+         PUSH D
+         PUSH B
+         LDA lcjux
+         DCR A
+         JNZ ljyrp
+         XCHG
+         SHLD ljyvo
+         MVI A,00Fh
+ljyrp:   STA lcjux
+         LHLD ljyvo
+         PUSH H
+         POP B
+         LHLD lfqql
+         XCHG
+         LHLD lcait
+         MOV A,M
+         CPI 05Ah
+         JZ ljyqz
+         MOV A,B
+         CMP D
+         JC lnffx
+         JZ lnoez
+         JMP lnopp
+ljyqz:   DCX H
+         MOV A,M
+         CPI 02Dh
+         JNZ lnrft
+         CALL ljvuz
+lnrft:   INX H
+         JMP ljyrq
+lnoez:   MOV A,C
+         CMP E
+         JNZ lnopp
+         MVI A,001h
+         STA lcjux
+         JMP lnotk
+lnffx:   MOV A,C
+         CMP E
+         JC ljyrc
+         JZ ljyke
+         JMP ljmrb
+lnopp:   MOV A,C
+         CMP E
+         JC ljvql
+         JZ ljvjn
+         JMP ljjqg
+ljmqn:   PUSH H
+         LXI H,ldstf
+         SHLD ljyvo
+         POP H
+         JMP ljvqj
+ljviz:   PUSH H
+         LXI H,00000h
+         SHLD ljyvo
+         POP H
+ljvqj:   MVI A,019h
+         STA lcjux
+ljmef:   LHLD lnogr
+         LXI B,lkamx
+         CALL lnrrx
+         CALL lnrwk
+         JMP lnotk
+ljyke:   SHLD lnogr
+         CALL ljyqu
+         MOV A,M
+         CPI 000h
+         JNZ ljviu
+         CALL lnfjw
+         JZ ljviu
+         INX H
+         MOV A,M
+         DCX H
+         CPI 000h
+         JZ lnfcw
+         CPI 048h
+         JZ ljjgo
+         CPI 051h
+         JZ ljjgo
+ljviu:   MOV A,M
+         CPI 009h
+         JZ ljmqn
+         CPI 012h
+         JZ ljmqn
+         CPI 048h
+         JZ ljmef
+         CPI 051h
+         JZ ljmef
+         CPI 05Ah
+         JZ ljmef
+         CPI 02Dh
+         JNZ lnrgm
+         LDA lcasp
+         CPI 000h
+         JNZ lnrgm
+         MVI A,001h
+         STA lcasp
+         MVI M,000h
+lnrgm:   CALL lnosz
+         LXI B,lkamt
+         DCR D
+         CALL ljzah
+         CALL lnrwk
+         LXI B,lkakh
+         CALL lnrrx
+         JMP lnotk
+ljyrc:   MOV A,M
+         CPI 024h
+         JZ ljyrq
+         CPI 02Dh
+         JNZ ljyke
+         CALL ljvuz
+         JMP ljyke
+ljmrb:   INX H
+         MOV A,M
+         CPI 024h
+         JZ lncek
+         DCX H
+         JMP ljyke
+ljvjn:   SHLD lnogr
+         CALL lnclo
+         MOV A,M
+         CPI 000h
+         JNZ ljyrb
+         CALL lnowa
+         JZ ljyrb
+         INX H
+         MOV A,M
+         DCX H
+         CPI 000h
+         JZ lnccc
+         CPI 048h
+         JZ ljmos
+         CPI 051h
+         JZ ljmos
+ljyrb:   MOV A,M
+         CPI 009h
+         JZ ljviz
+         CPI 012h
+         JZ ljviz
+         CPI 048h
+         JZ ljmef
+         CPI 051h
+         JZ ljmef
+         CPI 05Ah
+         JZ ljmef
+         CPI 02Dh
+         JNZ lnofv
+         LDA lcasp
+         CPI 000h
+         JNZ lnofv
+         MVI A,001h
+         STA lcasp
+         MVI M,000h
+lnofv:   CALL lnosz
+         LXI B,lkamd
+         INR D
+         CALL ljzah
+         CALL lnrwk
+         LXI B,lkajr
+         CALL lnrrx
+         JMP lnotk
+ljvql:   MOV A,M
+         CPI 024h
+         JZ ljyrq
+         CPI 02Dh
+         JNZ ljvjn
+         CALL ljvuz
+         JMP ljvjn
+ljjqg:   INX H
+         MOV A,M
+         CPI 024h
+         JZ lncek
+         DCX H
+         JMP ljvjn
+ljyrq:   CALL lnosz
+         DCX H
+         CALL lnovc
+         LXI B,lkakl
+         CALL ljzah
+         CALL lnrwk
+         CALL lnovc
+         CALL lnosz
+         LXI B,lkamh
+         CALL lnrrx
+         JMP lnotk
+lncek:   CALL lnosz
+         CALL lnfiy
+         LXI B,lkamh
+         CALL ljzah
+         CALL lnrwk
+         CALL lnfiy
+         CALL lnosz
+         LXI B,lkakl
+         CALL lnrrx
+         JMP lnotk
+ljjgo:   DCR D
+         JMP lnrqk
+ljmos:   INR D
+lnrqk:   LDA lcasp
+         CPI 000h
+         JZ ljyju
+         XRA A
+         STA lcasp
+         MVI M,02Dh
+         MOV A,M
+         PUSH D
+         INX D
+         INX D
+         CALL lncpd
+         POP D
+ljyju:   INX H
+         CALL lnosz
+         CALL lnfiy
+         CALL lnfiy
+         LXI B,lkamx
+         CALL lnrrx
+         JMP lnotk
+lnfcw:   DCR D
+         JMP ljyvp
+lnccc:   INR D
+ljyvp:   INX H
+         CALL lnosz
+         LXI B,lkamx
+         CALL lnfiy
+         CALL lnfiy
+         CALL ljzah
+         CALL lnrwk
+         CALL lnrrx
+         MOV A,M
+         CPI 02Dh
+         JZ ljvuf
+         CPI 000h
+         JNZ lnotk
+         JMP lncpt
+ljvuf:   CALL ljvuz
+lncpt:   INX H
+         MOV A,M
+         DCX H
+         CPI 02Dh
+         JZ lncnh
+         CPI 000h
+         JZ ljyvp
+         JMP lnotk
+lncnh:   CALL ljvuz
+         JNZ ljyvp
+         INX H
+         MVI M,000h
+         DCX H
+         JMP ljyvp
+ljvuz:   LDA lcasp
+         CPI 000h
+         RNZ
+         MVI M,000h
+         MVI A,001h
+         STA lcasp
+         RET
+lnrrx:   PUSH H
+         PUSH D
+         PUSH B
+         MOV A,M
+         STA lnrue
+         DCX H
+         MOV A,M
+         STA lnfrc
+         XCHG
+         SHLD ljvuu
+         XCHG
+         JMP lncsp
+lnosz:   PUSH D
+         PUSH H
+         LDA lnfrc
+         LHLD ljvuu
+         XCHG
+         CALL lnovc
+         CALL lncpd
+         LDA lnrue
+         CALL lncpd
+         POP H
+         POP D
+         RET
 
-luynujtm:   DB 06Eh, 088h
-lxwbmgot:   DB 0E3h, 094h
-lfdnwssu:   DB 000h
-letzwrkt:   DB 000h
-lbiqaedt:   DB 0E3h, 094h
-ladvtpti:   SHLD lynbewej
-            XCHG
-            SHLD lydhodbh
-            POP B
-            POP D
-            CALL lvbdgiwb
-            POP H
-            RET
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h
-lkxqztxm:   PUSH H
-            PUSH D
-            PUSH B
-            LDA lqdlxrlx
-            DCR A
-            JNZ lpvbtmlh
-            XCHG
-            SHLD logjohrr
-            MVI A,00Fh
-lpvbtmlh:   STA lqdlxrlx
-            LHLD logjohrr
-            PUSH H
-            POP B
-            LHLD lmsckcqv
-            XCHG
-            LHLD lggiqtpm
-            MOV A,M
-            CPI 05Ah
-            JZ louqqyix
-            MOV A,B
-            CMP D
-            JC lfmmnkpm
-            JZ ldqsvwuq
-            JMP lscdhgft
-louqqyix:   DCX H
-            MOV A,M
-            CPI 02Dh
-            JNZ ljifysdb
-            CALL laqurfpg
-ljifysdb:   INX H
-            JMP lyvmjqff
-ldqsvwuq:   MOV A,C
-            CMP E
-            JNZ lscdhgft
-            MVI A,001h
-            STA lpvyaczl
-            JMP loqgnghy
-lfmmnkpm:   MOV A,C
-            CMP E
-            JC lmyeawzo
-            JZ llmuygan
-            JMP lhrybakl
-lscdhgft:   MOV A,C
-            CMP E
-            JC lhmeinmq
-            JZ lhooqsoc
-            JMP lcjigjvd
-ltungrrq:   PUSH H
-            LXI H,lxazvrue
-            SHLD logjohrr
-            POP H
-            JMP lnutqluv
-lwhggzcf:   PUSH H
-            LXI H,00000h
-            SHLD logjohrr
-lxvsstta:   POP H
-lnutqluv:   MVI A,019h
-            STA lqdlxrlx
-lroucqvs:   LHLD ldnkzdbd
-            LXI B,leeinatx
-            CALL lemfnbwi
-            CALL lgrobscj
-            JMP loqgnghy
-llmuygan:   SHLD ldnkzdbd
-            CALL lkpeoxqk
-            MOV A,M
-            CPI 000h
-            JNZ lfrxzbwa
-            CALL llujgder
-            JZ lfrxzbwa
-            INX H
-            MOV A,M
-            DCX H
-            CPI 000h
-            JZ lxgvnsbr
-            CPI 048h
-            JZ lzxiphpm
-            CPI 051h
-            JZ lzxiphpm
-lfrxzbwa:   MOV A,M
-            CPI 009h
-            JZ ltungrrq
-            CPI 012h
-            JZ ltungrrq
-            CPI 048h
-            JZ lroucqvs
-            CPI 051h
-            JZ lroucqvs
-            CPI 05Ah
-            JZ lroucqvs
-            CPI 02Dh
-            JNZ ltvrgryu
-            LDA lcklcyzw
-            CPI 000h
-            JNZ ltvrgryu
-            MVI A,001h
-            STA lcklcyzw
-            MVI M,000h
-ltvrgryu:   CALL lxbqvlcz
-            LXI B,lovagmaj
-            DCR D
-            CALL ldfwcvon
-            CALL lgrobscj
-            LXI B,lxnlnoxo
-            CALL lemfnbwi
-            JMP loqgnghy
-lmyeawzo:   MOV A,M
-            CPI 024h
-            JZ lyvmjqff
-            CPI 02Dh
-            JNZ llmuygan
-            CALL laqurfpg
-            JMP llmuygan
-lhrybakl:   INX H
-            MOV A,M
-            CPI 024h
-            JZ lvghzhcl
-            DCX H
-            JMP llmuygan
-lhooqsoc:   SHLD ldnkzdbd
-            CALL laeosatg
-            MOV A,M
-            CPI 000h
-            JNZ ljtxmrfc
-            CALL linygdtg
-            JZ ljtxmrfc
-            INX H
-            MOV A,M
-            DCX H
-            CPI 000h
-            JZ ltanojij
-            CPI 048h
-            JZ lxrntryg
-            CPI 051h
-            JZ lxrntryg
-ljtxmrfc:   MOV A,M
-            CPI 009h
-            JZ lwhggzcf
-            CPI 012h
-            JZ lwhggzcf
-            CPI 048h
-            JZ lroucqvs
-            CPI 051h
-            JZ lroucqvs
-            CPI 05Ah
-            JZ lroucqvs
-            CPI 02Dh
-            JNZ liomdnet
-            LDA lcklcyzw
-            CPI 000h
-            JNZ liomdnet
-            MVI A,001h
-            STA lcklcyzw
-            MVI M,000h
-liomdnet:   CALL lxbqvlcz
-            LXI B,lfwlzngl
-            INR D
-            CALL ldfwcvon
-            CALL lgrobscj
-            LXI B,lsgemnce
-            CALL lemfnbwi
-            JMP loqgnghy
-lhmeinmq:   MOV A,M
-            CPI 024h
-            JZ lyvmjqff
-            CPI 02Dh
-            JNZ lhooqsoc
-            CALL laqurfpg
-            JMP lhooqsoc
-lcjigjvd:   INX H
-            MOV A,M
-            CPI 024h
-            JZ lvghzhcl
-            DCX H
-            JMP lhooqsoc
-lyvmjqff:   CALL lxbqvlcz
-            DCX H
-            CALL llgjbtok
-            LXI B,lwxtuhwd
-            CALL ldfwcvon
-            CALL lgrobscj
-            CALL llgjbtok
-            CALL lxbqvlcz
-            LXI B,lobnprrh
-            CALL lemfnbwi
-            JMP loqgnghy
-lvghzhcl:   CALL lxbqvlcz
-            CALL lllvbvtb
-            LXI B,lobnprrh
-            CALL ldfwcvon
-            CALL lgrobscj
-            CALL lllvbvtb
-            CALL lxbqvlcz
-            LXI B,lwxtuhwd
-            CALL lemfnbwi
-            JMP loqgnghy
-lzxiphpm:   DCR D
-            JMP lystzmen
-lxrntryg:   INR D
-lystzmen:   LDA lcklcyzw
-            CPI 000h
-            JZ lhwoyrxs
-            XRA A
-            STA lcklcyzw
-            MVI M,02Dh
-            MOV A,M
-            PUSH D
-            INX D
-            INX D
-            CALL ldpidlup
-            POP D
-lhwoyrxs:   INX H
-            CALL lxbqvlcz
-            CALL lllvbvtb
-            CALL lllvbvtb
-            LXI B,leeinatx
-            CALL lemfnbwi
-            JMP loqgnghy
-lxgvnsbr:   DCR D
-            JMP lqgezdco
-ltanojij:   INR D
-lqgezdco:   INX H
-            CALL lxbqvlcz
-            LXI B,leeinatx
-            CALL lllvbvtb
-            CALL lllvbvtb
-            CALL ldfwcvon
-            CALL lgrobscj
-            CALL lemfnbwi
-            MOV A,M
-            CPI 02Dh
-            JZ lsxsseqa
-            CPI 000h
-            JNZ loqgnghy
-            JMP laprxcvu
-lsxsseqa:   CALL laqurfpg
-laprxcvu:   INX H
-            MOV A,M
-            DCX H
-            CPI 02Dh
-            JZ lwuiifzz
-            CPI 000h
-            JZ lqgezdco
-            JMP loqgnghy
-lwuiifzz:   CALL laqurfpg
-            JNZ lqgezdco
-            INX H
-            MVI M,000h
-            DCX H
-            JMP lqgezdco
-laqurfpg:   LDA lcklcyzw
-            CPI 000h
-            RNZ
-            MVI M,000h
-            MVI A,001h
-            STA lcklcyzw
-            RET
-lemfnbwi:   PUSH H
-            PUSH D
-            PUSH B
-            MOV A,M
-            STA lhbuvxqm
-            DCX H
-            MOV A,M
-            STA lwbgnazc
-            XCHG
-            SHLD ltnfhafv
-            XCHG
-            JMP lesichct
-lxbqvlcz:   PUSH D
-            PUSH H
-            LDA lwbgnazc
-            LHLD ltnfhafv
-            XCHG
-            CALL llgjbtok
-            CALL ldpidlup
-            LDA lhbuvxqm
-            CALL ldpidlup
-            POP H
-            POP D
-            RET
+lnogr:   DB 06Eh, 088h
+ljyvo:   DB 0E3h, 094h
+lnrue:   DB 000h
+lnfrc:   DB 000h
+ljvuu:   DB 0E3h, 094h
+lnotk:   SHLD lcait
+         XCHG
+         SHLD lfqql
+         POP B
+         POP D
+         CALL lnrqt
+         POP H
+         RET
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h
+ljyuy:   PUSH H
+         PUSH D
+         PUSH B
+         LDA lbxrv
+         DCR A
+         JNZ ljysm
+         XCHG
+         SHLD ljyut
+         MVI A,00Fh
+ljysm:   STA lbxrv
+         LHLD ljyut
+         PUSH H
+         POP B
+         LHLD lfthj
+         XCHG
+         LHLD lbxhz
+         MOV A,M
+         CPI 05Ah
+         JZ ljytg
+         MOV A,B
+         CMP D
+         JC lnfgu
+         JZ lnohg
+         JMP lnoqm
+ljytg:   DCX H
+         MOV A,M
+         CPI 02Dh
+         JNZ lnria
+         CALL ljvua
+lnria:   INX H
+         JMP ljysf
+lnohg:   MOV A,C
+         CMP E
+         JNZ lnoqm
+         MVI A,001h
+         STA lkjnv
+         JMP lnosp
+lnfgu:   MOV A,C
+         CMP E
+         JC ljyte
+         JZ ljylf
+         JMP ljmry
+lnoqm:   MOV A,C
+         CMP E
+         JC ljvsb
+         JZ ljvkk
+         JMP ljjqv
+ljmsp:   PUSH H
+         LXI H,ldstf
+         SHLD ljyut
+         POP H
+         JMP ljvsl
+ljvlb:   PUSH H
+         LXI H,00000h
+         SHLD ljyut
+lnfot:   POP H
+ljvsl:   MVI A,019h
+         STA lbxrv
+ljmgh:   LHLD lnogx
+         LXI B,lkamx
+         CALL lnrqy
+         CALL lnrwk
+         JMP lnosp
+ljylf:   SHLD lnogx
+         CALL ljyqu
+         MOV A,M
+         CPI 000h
+         JNZ ljvlf
+         CALL lnfjw
+         JZ ljvlf
+         INX H
+         MOV A,M
+         DCX H
+         CPI 000h
+         JZ lnfem
+         CPI 048h
+         JZ ljjhd
+         CPI 051h
+         JZ ljjhd
+ljvlf:   MOV A,M
+         CPI 009h
+         JZ ljmsp
+         CPI 012h
+         JZ ljmsp
+         CPI 048h
+         JZ ljmgh
+         CPI 051h
+         JZ ljmgh
+         CPI 05Ah
+         JZ ljmgh
+         CPI 02Dh
+         JNZ lnrhn
+         LDA lgfuh
+         CPI 000h
+         JNZ lnrhn
+         MVI A,001h
+         STA lgfuh
+         MVI M,000h
+lnrhn:   CALL lnotf
+         LXI B,lkamt
+         DCR D
+         CALL ljzah
+         CALL lnrwk
+         LXI B,lkakh
+         CALL lnrqy
+         JMP lnosp
+ljyte:   MOV A,M
+         CPI 024h
+         JZ ljysf
+         CPI 02Dh
+         JNZ ljylf
+         CALL ljvua
+         JMP ljylf
+ljmry:   INX H
+         MOV A,M
+         CPI 024h
+         JZ lncgj
+         DCX H
+         JMP ljylf
+ljvkk:   SHLD lnogx
+         CALL lnclo
+         MOV A,M
+         CPI 000h
+         JNZ ljyti
+         CALL lnowa
+         JZ ljyti
+         INX H
+         MOV A,M
+         DCX H
+         CPI 000h
+         JZ lncds
+         CPI 048h
+         JZ ljmph
+         CPI 051h
+         JZ ljmph
+ljyti:   MOV A,M
+         CPI 009h
+         JZ ljvlb
+         CPI 012h
+         JZ ljvlb
+         CPI 048h
+         JZ ljmgh
+         CPI 051h
+         JZ ljmgh
+         CPI 05Ah
+         JZ ljmgh
+         CPI 02Dh
+         JNZ lnogs
+         LDA lgfuh
+         CPI 000h
+         JNZ lnogs
+         MVI A,001h
+         STA lgfuh
+         MVI M,000h
+lnogs:   CALL lnotf
+         LXI B,lkamd
+         INR D
+         CALL ljzah
+         CALL lnrwk
+         LXI B,lkajr
+         CALL lnrqy
+         JMP lnosp
+ljvsb:   MOV A,M
+         CPI 024h
+         JZ ljysf
+         CPI 02Dh
+         JNZ ljvkk
+         CALL ljvua
+         JMP ljvkk
+ljjqv:   INX H
+         MOV A,M
+         CPI 024h
+         JZ lncgj
+         DCX H
+         JMP ljvkk
+ljysf:   CALL lnotf
+         DCX H
+         CALL lnovc
+         LXI B,lkakl
+         CALL ljzah
+         CALL lnrwk
+         CALL lnovc
+         CALL lnotf
+         LXI B,lkamh
+         CALL lnrqy
+         JMP lnosp
+lncgj:   CALL lnotf
+         CALL lnfiy
+         LXI B,lkamh
+         CALL ljzah
+         CALL lnrwk
+         CALL lnfiy
+         CALL lnotf
+         LXI B,lkakl
+         CALL lnrqy
+         JMP lnosp
+ljjhd:   DCR D
+         JMP lnrqz
+ljmph:   INR D
+lnrqz:   LDA lgfuh
+         CPI 000h
+         JZ ljylk
+         XRA A
+         STA lgfuh
+         MVI M,02Dh
+         MOV A,M
+         PUSH D
+         INX D
+         INX D
+         CALL lncpd
+         POP D
+ljylk:   INX H
+         CALL lnotf
+         CALL lnfiy
+         CALL lnfiy
+         LXI B,lkamx
+         CALL lnrqy
+         JMP lnosp
+lnfem:   DCR D
+         JMP ljyuq
+lncds:   INR D
+ljyuq:   INX H
+         CALL lnotf
+         LXI B,lkamx
+         CALL lnfiy
+         CALL lnfiy
+         CALL ljzah
+         CALL lnrwk
+         CALL lnrqy
+         MOV A,M
+         CPI 02Dh
+         JZ ljvuq
+         CPI 000h
+         JNZ lnosp
+         JMP lncqe
+ljvuq:   CALL ljvua
+lncqe:   INX H
+         MOV A,M
+         DCX H
+         CPI 02Dh
+         JZ lncns
+         CPI 000h
+         JZ ljyuq
+         JMP lnosp
+lncns:   CALL ljvua
+         JNZ ljyuq
+         INX H
+         MVI M,000h
+         DCX H
+         JMP ljyuq
+ljvua:   LDA lgfuh
+         CPI 000h
+         RNZ
+         MVI M,000h
+         MVI A,001h
+         STA lgfuh
+         RET
+lnrqy:   PUSH H
+         PUSH D
+         PUSH B
+         MOV A,M
+         STA lnrtj
+         DCX H
+         MOV A,M
+         STA lnfqh
+         XCHG
+         SHLD ljvtz
+         XCHG
+         JMP lncsp
+lnotf:   PUSH D
+         PUSH H
+         LDA lnfqh
+         LHLD ljvtz
+         XCHG
+         CALL lnovc
+         CALL lncpd
+         LDA lnrtj
+         CALL lncpd
+         POP H
+         POP D
+         RET
 
-ldnkzdbd:   DB 066h, 08Bh
-logjohrr:   DB 0E3h, 094h
-lhbuvxqm:   DB 024h
-lwbgnazc:   DB 000h
-ltnfhafv:   DB 02Bh, 0B0h
-loqgnghy:   SHLD lggiqtpm
-            XCHG
-            SHLD lmsckcqv
-            POP B
-            POP D
-            CALL lvbdgiwb
-            POP H
-            RET
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h
-ltljixhm:   DB 00Fh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 0F9h
-            DB 0FBh, 0FBh, 0FBh, 000h, 0DFh, 0DFh, 0DFh, 000h, 00Eh, 0FFh
-            DB 0AAh, 055h, 000h, 000h, 000h, 000h, 000h, 0F9h, 0FBh, 0FBh
-            DB 0FBh, 000h, 0DFh, 0DFh, 0DFh, 000h, 00Dh, 0FFh, 081h, 081h
-            DB 081h, 0FFh, 081h, 081h, 081h, 00Dh, 03Ch, 042h, 0FFh, 0A5h
-            DB 0A5h, 0A5h, 0A5h, 0FFh, 0FDh, 000h, 07Eh, 078h, 05Eh, 07Eh
-            DB 078h, 07Eh, 000h, 00Dh, 0FFh, 081h, 081h, 081h, 0FFh, 081h
-            DB 081h, 081h, 009h, 081h, 000h, 081h, 000h, 081h, 0C3h, 0C3h
-            DB 000h, 009h, 081h, 0C3h, 071h, 000h, 0C3h, 0C7h, 0C3h, 000h
-            DB 009h, 073h, 0F3h, 0FBh, 000h, 0DFh, 0CFh, 0C7h, 000h, 009h
-            DB 005h, 040h, 024h, 008h, 042h, 024h, 081h, 04Ah, 009h, 086h
-            DB 049h, 042h, 092h, 05Ah, 038h, 046h, 091h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h
-lovagmaj:   DB 00Bh, 001h, 00Fh, 000h, 007h, 007h, 002h, 007h, 007h, 007h
-            DB 007h, 002h, 002h, 006h, 000h, 000h
-lxnlnoxo:   DB 00Bh, 001h, 00Fh, 000h, 070h, 070h, 020h, 078h, 074h, 0F4h
-            DB 070h, 050h, 04Ch, 0C4h, 000h, 000h
-lfwlzngl:   DB 00Bh, 001h, 00Fh, 000h, 0E0h, 0E0h, 040h, 0E0h, 0E0h, 0E0h
-            DB 0E0h, 040h, 040h, 060h, 000h, 000h
-lsgemnce:   DB 00Bh, 001h, 00Fh, 000h, 00Eh, 00Eh, 004h, 01Eh, 02Eh, 02Fh
-            DB 00Eh, 00Ah, 032h, 023h, 000h, 000h
-leeinatx:   DB 00Bh, 001h, 00Fh, 000h, 01Ch, 01Ch, 008h, 03Eh, 05Dh, 05Dh
-            DB 01Ch, 014h, 014h, 036h, 000h, 000h
-lwxtuhwd:   DB 00Bh, 001h, 00Fh, 000h, 01Ch, 01Dh, 009h, 03Eh, 05Ch, 05Ch
-            DB 01Ch, 014h, 016h, 030h, 000h, 000h
-lobnprrh:   DB 00Bh, 001h, 00Fh, 000h, 038h, 0B8h, 090h, 07Ch, 03Ah, 03Ah
-            DB 038h, 028h, 068h, 00Ch, 000h, 000h
-lcpbpaqo:   DB 010h, 007h, 0F7h, 01Ch, 03Eh, 063h, 0C1h, 0C0h, 0C0h, 060h
-            DB 03Eh, 003h, 001h, 001h, 041h, 061h, 03Eh, 01Ch, 000h, 000h
-            DB 000h, 000h, 007h, 00Fh, 018h, 030h, 030h, 030h, 0B0h, 0B0h
-            DB 0B0h, 018h, 00Fh, 007h, 000h, 000h, 000h, 000h, 003h, 087h
-            DB 0CCh, 058h, 018h, 018h, 018h, 018h, 058h, 0CCh, 087h, 003h
-            DB 000h, 000h, 000h, 000h, 086h, 0C6h, 067h, 037h, 036h, 036h
-            DB 036h, 036h, 036h, 066h, 0C6h, 086h, 000h, 000h, 000h, 000h
-            DB 078h, 0FDh, 085h, 001h, 001h, 001h, 001h, 001h, 001h, 001h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 078h, 0FCh, 086h, 086h
-            DB 086h, 08Ch, 0F8h, 080h, 082h, 086h, 0FCh, 078h, 000h, 000h
-            DB 000h, 000h, 038h, 038h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 038h, 038h, 000h, 000h
-lhqfxzza:   DB 010h, 006h, 0F7h, 0C0h, 0C0h, 0C0h, 0C0h, 0C0h, 0C0h, 0C0h
-            DB 0C0h, 0C0h, 0C0h, 0C0h, 0C0h, 0C1h, 0C1h, 0FFh, 000h, 000h
-            DB 000h, 000h, 030h, 000h, 030h, 030h, 030h, 030h, 030h, 030h
-            DB 030h, 0B0h, 099h, 08Fh, 000h, 000h, 000h, 000h, 070h, 038h
-            DB 018h, 018h, 018h, 018h, 018h, 018h, 0D8h, 0D8h, 08Ch, 007h
-            DB 000h, 000h, 000h, 018h, 031h, 063h, 066h, 066h, 066h, 066h
-            DB 067h, 066h, 066h, 066h, 0C3h, 081h, 000h, 000h, 000h, 000h
-            DB 0E0h, 0F0h, 018h, 018h, 018h, 030h, 0E0h, 000h, 008h, 018h
-            DB 0F0h, 0E0h, 000h, 000h, 000h, 000h, 0E0h, 0E0h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 0E0h, 0E0h, 000h, 000h
-lqlbrilp:   DB 010h, 005h, 0F7h, 01Fh, 03Fh, 031h, 031h, 030h, 030h, 0FCh
-            DB 0FCh, 030h, 030h, 030h, 030h, 030h, 030h, 030h, 000h, 000h
-            DB 08Ch, 09Ch, 0BCh, 00Ch, 00Ch, 00Ch, 00Ch, 00Ch, 00Ch, 00Ch
-            DB 00Ch, 00Ch, 00Ch, 01Eh, 000h, 000h, 000h, 000h, 01Ch, 03Eh
-            DB 063h, 0C1h, 0C1h, 0C1h, 0C1h, 0C1h, 0C1h, 063h, 03Eh, 01Ch
-            DB 000h, 000h, 000h, 000h, 033h, 037h, 03Ch, 0B8h, 0B0h, 0B0h
-            DB 0B0h, 0B0h, 0B0h, 030h, 030h, 030h, 000h, 000h, 000h, 000h
-            DB 0C7h, 0E7h, 020h, 000h, 000h, 000h, 000h, 000h, 000h, 007h
-            DB 007h, 000h, 000h
-lsjvrkba:   DB 010h, 006h, 0F7h, 030h, 030h, 030h, 030h, 030h, 030h, 0FCh
-            DB 0FCh, 030h, 030h, 030h, 031h, 031h, 03Fh, 01Fh, 000h, 000h
-            DB 000h, 000h, 030h, 000h, 030h, 030h, 030h, 030h, 030h, 030h
-            DB 0B0h, 0B0h, 099h, 00Fh, 000h, 000h, 000h, 018h, 01Bh, 01Fh
-            DB 01Dh, 019h, 019h, 019h, 019h, 019h, 0D9h, 0D9h, 099h, 019h
-            DB 000h, 000h, 000h, 000h, 070h, 0F9h, 09Bh, 09Bh, 09Bh, 09Bh
-            DB 09Bh, 09Bh, 09Bh, 09Bh, 099h, 08Ch, 000h, 000h, 000h, 000h
-            DB 0F0h, 0F8h, 00Ch, 00Ch, 00Ch, 018h, 0F0h, 000h, 004h, 00Ch
-            DB 0F8h, 0F0h, 000h, 000h, 000h, 000h, 070h, 070h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 070h, 070h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 010h, 001h, 0F7h, 07Ch, 0FEh, 0C6h, 0CEh
-            DB 0D6h, 0D6h, 0D6h, 0D6h, 0D6h, 0D6h, 0D6h, 0E6h, 0C6h, 0FEh
-            DB 07Ch, 000h, 010h, 001h, 0F7h, 018h, 038h, 078h, 0D8h, 098h
-            DB 018h, 018h, 018h, 018h, 018h, 018h, 018h, 018h
-lyaatwlk:   DB 018h, 07Eh, 000h, 010h, 001h, 0F7h, 07Ch, 0FEh, 0C6h, 0C6h
-            DB 006h, 00Ch, 00Ch, 018h, 030h, 060h, 060h, 0C0h, 0C0h, 0FEh
-            DB 0FEh, 000h, 010h, 001h, 0F7h, 07Ch, 0FEh, 0C6h, 0C6h, 006h
-            DB 00Ch, 038h, 03Ch, 00Eh, 006h, 006h, 0C6h, 0C6h, 0FEh, 07Ch
-            DB 000h, 010h, 001h, 0F7h, 066h, 066h, 066h, 066h, 066h, 066h
-            DB 0C6h, 0C6h, 0FEh, 0FEh, 006h, 006h, 006h, 006h, 006h, 000h
-            DB 010h, 001h, 0F7h, 0FEh, 0FEh, 0C0h, 0C0h, 0C0h, 0C0h, 0FCh
-            DB 0FEh, 006h, 006h, 006h, 0C6h, 0C6h, 0FEh, 07Ch, 000h, 010h
-            DB 001h, 0F7h, 07Ch, 0FEh, 0C6h, 0C6h, 0C0h, 0C0h, 0FCh, 0FEh
-            DB 0C6h, 0C6h, 0C6h, 0C6h, 0C6h, 0FEh, 07Ch, 000h, 010h, 001h
-            DB 0F7h, 0FEh, 0FEh, 006h, 006h, 006h, 00Ch, 018h, 030h, 060h
-            DB 0C0h, 0C0h, 0C0h, 0C0h, 0C0h, 0C0h, 000h, 010h, 001h, 0F7h
-            DB 07Ch, 0FEh, 0C6h, 0C6h, 0C6h, 0C6h, 07Ch, 0C6h, 0C6h, 0C6h
-            DB 0C6h, 0C6h, 0C6h, 0FEh, 07Ch, 000h, 010h, 001h, 0F7h, 07Ch
-            DB 0FEh, 0C6h, 0C6h, 0C6h, 0C6h, 0FEh, 07Eh, 006h, 006h, 006h
-            DB 0C6h, 0C6h, 0FEh, 07Ch, 000h, 000h, 000h, 000h, 097h, 0C0h
-            DB 097h, 0C0h, 097h, 0C0h, 097h, 0C0h, 097h, 0C0h, 097h, 0C0h
-            DB 097h, 0C0h, 097h, 0C0h, 097h, 0C0h, 097h, 0C0h, 097h, 0C0h
-            DB 097h, 0C0h, 097h, 0C0h, 097h, 0C0h, 002h, 033h, 05Fh, 000h
-            DB 000h, 000h, 0F0h, 000h, 085h, 0C1h, 01Fh, 007h, 0EEh, 000h
-            DB 05Ah, 0C1h, 097h, 0EEh, 01Fh, 007h, 03Bh, 000h, 000h, 010h
-            DB 0F0h, 0CEh, 0E3h, 0CEh, 056h, 01Fh, 038h, 007h, 025h, 000h
-            DB 000h
-lrdyqgak:   DB 008h, 00Bh, 07Fh, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h
-lbzhwyzy:   DB 0FFh, 0FEh, 000h, 000h, 000h, 000h, 001h, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0E0h, 000h, 000h, 003h, 000h, 00Fh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0C0h, 000h, 000h, 003h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 080h, 007h, 0FEh, 01Fh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 000h, 000h, 000h, 000h, 01Fh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 080h, 000h, 000h, 000h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0C0h, 000h, 000h, 001h, 0FFh, 0FFh, 0FFh, 0FFh, 0F8h, 000h
-            DB 000h, 000h, 000h, 0FFh, 0FFh, 0FFh, 0FFh, 0F8h, 000h, 000h
-            DB 000h, 000h, 003h, 0FFh, 0FEh, 003h, 0F0h, 000h, 03Eh, 003h
-            DB 0FCh, 000h, 0FFh, 003h, 0FFh, 000h, 0F0h, 00Ch, 000h, 07Fh
-            DB 000h, 0FFh, 080h, 0FFh, 000h, 0FCh, 003h, 000h, 07Fh, 000h
-            DB 0FFh, 080h, 0FFh, 000h, 0F8h, 000h, 000h, 01Fh, 080h, 0FFh
-            DB 080h, 0FFh, 001h, 0F8h, 00Fh, 000h, 03Fh, 001h, 0FFh, 000h
-            DB 0FCh, 003h, 0E0h, 03Ch, 000h, 07Fh, 003h, 0FFh, 003h, 0F0h
-            DB 03Fh, 0C0h, 0F0h, 000h, 0FCh, 00Fh, 0FCh, 00Fh, 0C0h, 0FFh
-            DB 000h, 080h, 003h, 0E0h, 07Fh, 0E0h, 07Fh, 003h, 0FCh, 007h
-            DB 000h, 01Fh, 080h, 0FFh, 080h, 0FCh, 03Fh, 0F0h, 018h, 000h
-            DB 07Fh, 007h, 0FFh, 007h, 0E0h, 0FCh, 000h, 080h, 000h, 0FEh
-            DB 01Fh, 0FCh, 00Fh, 080h, 0F0h, 00Fh, 000h, 020h, 0FCh, 03Fh
-            DB 0FCh, 03Fh, 003h, 0F0h, 03Fh, 000h, 000h, 0F0h, 07Fh, 0F0h
-            DB 07Fh, 007h, 0C0h, 07Eh, 000h, 003h, 0E0h, 0FFh, 060h, 0FCh
-            DB 00Fh, 080h, 0FCh, 001h, 007h, 0C0h, 0FFh, 0C0h, 0FCh, 01Fh
-            DB 080h, 0FCh, 003h, 007h, 080h, 0FFh, 0C0h, 0F8h, 03Fh, 000h
-            DB 0F0h, 006h, 00Fh, 080h, 0FFh, 080h, 0F0h, 03Fh, 001h, 0F0h
-            DB 01Ch, 00Fh, 001h, 0FFh, 001h, 0F0h, 03Fh, 001h, 0F0h, 01Ch
-            DB 00Fh, 081h, 0FFh, 001h, 0F0h, 07Fh, 001h, 0F0h, 01Eh, 00Fh
-            DB 081h, 0FFh, 001h, 0F0h, 03Fh, 001h, 0F0h, 01Eh, 007h, 0C0h
-            DB 0FFh, 080h, 0F8h, 01Fh, 000h, 0F8h, 00Fh, 001h, 0F0h, 07Fh
-            DB 0E0h, 0FEh, 007h, 0C0h, 0FEh, 003h, 080h, 0FCh, 00Fh, 0F0h
-            DB 01Fh, 000h, 0F8h, 01Fh, 000h, 0F0h, 01Fh, 001h, 0FEh, 003h
-            DB 0E0h, 07Fh, 003h, 0E0h, 03Eh, 003h, 0E0h, 07Fh, 000h, 0FEh
-            DB 00Fh, 0C0h, 0FCh, 007h, 080h, 07Eh, 007h, 0F0h, 00Fh, 080h
-            DB 0FEh, 00Fh, 080h, 0FCh, 003h, 0E0h, 0FFh, 000h, 0FCh, 00Fh
-            DB 0C0h, 0FCh, 007h, 080h, 01Fh, 001h, 0F8h, 003h, 0C0h, 0FFh
-            DB 007h, 0C0h, 03Ch, 000h, 0FCh, 00Fh, 0C0h, 01Fh, 003h, 0F8h
-            DB 01Fh, 000h, 0E0h, 000h, 0F8h, 03Fh, 000h, 07Eh, 00Fh, 0F8h
-            DB 03Fh, 000h, 080h, 001h, 0F0h, 07Fh, 000h, 0FCh, 01Fh, 0E0h
-            DB 0FCh, 001h, 000h, 001h, 0F0h, 07Fh, 000h, 0FCh, 01Fh, 0F0h
-            DB 0FEh, 001h, 000h, 000h, 0F8h, 03Fh, 000h, 0FEh, 00Fh, 0F0h
-            DB 07Eh, 000h, 080h, 000h, 0FCh, 00Fh, 0C0h, 03Fh, 003h, 0FEh
-            DB 01Fh, 000h, 000h, 000h, 07Fh, 007h, 0E0h, 01Fh, 001h, 0FEh
-            DB 00Fh, 080h, 008h, 000h, 00Fh, 080h, 0FCh, 003h, 0E0h, 0FFh
-            DB 081h, 0E0h, 000h, 000h, 001h, 0F0h, 07Fh, 060h, 0FCh, 01Fh
-            DB 0E0h, 0FEh, 000h, 000h, 000h, 07Fh, 007h, 0FCh, 01Fh, 001h
-            DB 0FEh, 01Fh, 000h, 00Eh, 000h, 00Fh, 080h, 0FFh, 003h, 0E0h
-            DB 0FFh, 001h, 0F0h, 003h, 080h, 000h, 0F8h, 03Fh, 0C0h, 0FCh
-            DB 001h, 0F0h, 0FFh, 000h, 0F0h, 000h, 07Fh, 027h, 0F8h, 03Fh
-            DB 020h, 0FEh, 01Fh, 0E0h, 03Eh, 000h, 01Fh, 000h, 0FFh, 007h
-            DB 0FCh, 01Fh, 000h, 0FEh, 001h, 0C0h, 003h, 0F0h, 03Fh, 0C0h
-            DB 0FFh, 003h, 0FCh, 00Fh, 000h, 03Eh, 000h, 0FEh, 006h, 0F8h
-            DB 027h, 0F0h, 0FFh, 080h, 0E0h, 003h, 000h, 01Fh, 000h, 03Fh
-            DB 000h, 0FFh, 00Ch, 0FCh, 00Ch, 080h, 0C0h, 00Fh, 0CCh, 01Fh
-            DB 0E0h, 03Fh, 0F0h, 0FFh, 0C0h, 000h, 000h, 007h, 0E6h, 007h
-            DB 0F8h, 003h, 0FDh, 000h, 0FCh, 000h, 000h, 001h, 0FFh, 000h
-            DB 0FFh, 000h, 0FFh, 0C0h, 01Fh, 000h, 000h, 001h, 0FFh, 000h
-            DB 0FFh, 0B0h, 0CFh, 0FCh, 006h, 0C0h, 000h, 001h, 0BFh, 000h
-            DB 01Fh, 0F8h, 003h, 0FFh, 080h, 000h, 000h, 000h, 0BFh, 0FCh
-            DB 000h, 0FFh, 0FFh, 000h, 07Fh, 000h, 000h, 003h, 07Fh, 0FFh
-            DB 063h, 073h, 0FFh, 0FFh, 000h, 000h, 000h, 000h, 00Fh, 0FFh
-            DB 0FFh, 0FFh, 080h, 000h, 000h, 000h, 000h, 00Fh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FCh, 000h, 000h, 000h, 000h, 003h, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0F8h, 000h, 000h, 000h, 000h, 000h, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0E0h, 000h, 000h, 000h, 07Fh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 080h, 000h, 000h, 000h, 000h, 01Fh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0E0h, 000h, 000h, 000h, 000h, 00Fh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FCh, 000h, 000h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0F0h, 000h, 000h, 000h, 000h, 000h, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0F8h, 000h, 000h, 000h, 000h, 000h
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0F0h, 000h, 003h, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0E7h, 0DCh, 01Bh, 0E4h, 023h, 0A2h, 000h
-            DB 000h, 0FFh, 0FFh, 0DDh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0F0h
-            DB 000h, 000h, 000h, 000h, 000h, 00Fh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0F9h, 000h, 000h, 000h, 03Fh, 0FBh, 05Fh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0F0h, 000h, 000h, 018h, 000h, 000h, 000h, 000h
-            DB 019h, 0FFh, 0FFh, 0FFh, 01Fh, 0FFh, 0F0h, 000h, 000h, 000h
-            DB 001h, 07Fh, 0FDh, 000h, 01Fh, 0FFh, 0FCh, 000h, 000h, 000h
-            DB 003h, 07Fh, 0F9h, 000h, 000h, 0FFh, 0F8h, 000h, 000h, 000h
-            DB 00Ch, 0FFh, 0FEh, 080h, 001h, 0FFh, 0FEh, 000h, 000h, 000h
-            DB 004h, 0FFh, 0FFh, 040h, 000h, 0FFh, 0FFh, 000h, 000h, 000h
-            DB 001h, 07Fh, 0FFh, 010h, 001h, 0FFh, 0FFh, 000h, 000h, 000h
-            DB 000h, 09Fh, 0FFh, 0CCh, 000h, 0FFh, 0FFh, 0C0h, 000h, 000h
-            DB 000h, 067h, 0FFh, 0F1h, 000h, 03Fh, 0FFh, 0F0h, 000h, 000h
-            DB 000h, 00Ch, 0DFh, 0FEh, 0C0h, 006h, 0FFh, 0FEh, 000h, 000h
-            DB 000h, 000h, 039h, 0FFh, 098h, 000h, 09Fh, 0FFh, 080h, 000h
-            DB 000h, 000h, 011h, 03Fh, 0FFh, 000h, 000h, 0FFh, 0FDh, 000h
-            DB 000h, 000h, 000h, 039h, 0FFh, 0F8h, 000h, 01Fh, 0FFh, 0F0h
-            DB 000h, 000h, 000h, 019h, 0BFh, 0FFh, 000h, 000h, 0FFh, 0FFh
-            DB 000h, 000h, 000h, 000h, 01Dh, 0FFh, 0F8h, 000h, 00Fh, 0FFh
-            DB 0F8h, 000h, 000h, 000h, 004h, 0DFh, 0FFh, 080h, 000h, 0FFh
-            DB 0FFh, 000h, 000h, 000h, 000h, 08Eh, 0FFh, 0FCh, 000h, 007h
-            DB 0FFh, 0FCh, 000h, 000h, 000h, 00Ch, 0DFh, 0FFh, 0C0h, 000h
-            DB 0FFh, 0FFh, 080h, 000h, 000h, 000h, 0CFh, 0FFh, 0FEh, 000h
-            DB 007h, 0FFh, 0FCh, 000h, 000h, 000h, 002h, 0E7h, 0FFh, 0E0h
-            DB 000h, 07Fh, 0FFh, 0C0h, 000h, 000h, 000h, 033h, 0FFh, 0FFh
-            DB 000h, 003h, 0FFh, 0FEh, 000h, 000h, 000h, 003h, 077h, 0FFh
-            DB 0E0h, 000h, 03Fh, 0FFh, 0E0h, 000h, 000h, 000h, 013h, 07Fh
-            DB 0FFh, 000h, 001h, 0FFh, 0FFh, 000h, 000h, 000h, 000h, 01Dh
-            DB 0FFh, 0F8h, 000h, 00Fh, 0FFh, 0F8h, 000h, 000h, 000h, 00Ch
-            DB 09Fh, 0FFh, 080h, 000h, 0FFh, 0FFh, 080h, 000h, 000h, 000h
-            DB 08Fh, 0FFh, 0FCh, 000h, 007h, 0FFh, 0FEh, 000h, 000h, 000h
-            DB 001h, 073h, 0FFh, 0E0h, 000h, 03Fh, 0FFh, 0E0h, 000h, 000h
-            DB 000h, 018h, 03Fh, 0FFh, 000h, 000h, 0FFh, 0FFh, 080h, 000h
-            DB 000h, 000h, 023h, 0FFh, 0FFh, 000h, 003h, 0FFh, 0FFh, 000h
-            DB 000h, 000h, 000h, 08Eh, 0FFh, 0FCh, 000h, 007h, 0FFh, 0FEh
-            DB 000h, 000h, 000h, 000h, 01Dh, 0FFh, 0F8h, 000h, 00Fh, 0FFh
-            DB 0FCh, 000h, 000h, 000h, 001h, 03Bh, 0FFh, 0F0h, 000h, 01Fh
-            DB 0FFh, 0F8h, 000h, 000h, 000h, 001h, 073h, 0FFh, 0F0h, 000h
-            DB 03Bh, 0FFh, 0F0h, 000h, 000h, 000h, 001h, 073h, 0FFh, 0F0h
-            DB 000h, 03Fh, 0FFh, 0F0h, 000h, 000h, 000h, 001h, 077h, 0FFh
-            DB 0E0h, 000h, 03Bh, 0FFh, 0F0h, 000h, 000h, 000h, 001h, 077h
-            DB 0FFh, 0E0h, 000h, 03Fh, 0FFh, 0F0h, 000h, 000h, 000h, 000h
-            DB 01Dh, 0FFh, 0F8h, 000h, 00Fh, 0FFh, 0FCh, 000h, 000h, 000h
-            DB 000h, 007h, 0FFh, 0FFh, 000h, 003h, 0FFh, 0FFh, 000h, 000h
-            DB 000h, 000h, 004h, 0CFh, 0FFh, 0C0h, 000h, 0FFh, 0FFh, 0C0h
-            DB 000h, 000h, 000h, 000h, 00Fh, 0FFh, 0FCh, 000h, 007h, 0FFh
-            DB 0FEh, 000h, 000h, 000h, 000h, 001h, 07Fh, 0FFh, 0E0h, 000h
-            DB 0FFh, 0FFh, 080h, 000h, 000h, 000h, 000h, 00Ch, 0FFh, 0FCh
-            DB 000h, 007h, 0FFh, 0FCh, 000h, 000h, 000h, 000h, 000h, 01Fh
-            DB 0FFh, 0FCh, 000h, 03Fh, 0FFh, 0FCh, 001h, 018h, 000h, 000h
-            DB 000h, 007h, 0FFh, 0FFh, 040h, 00Fh, 0FFh, 0FFh, 0FFh, 080h
-            DB 000h, 000h, 000h, 000h, 07Fh, 0FFh, 0FCh, 000h, 0FFh, 0FFh
-            DB 0FFh, 0E0h, 000h, 000h, 000h, 000h, 00Fh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 000h, 000h, 000h, 000h, 000h, 000h
-lsfeclfw:   DB 0FFh, 0F8h, 000h, 000h, 000h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0F8h, 0FFh, 0F9h, 0FCh, 07Fh
-            DB 007h, 0FCh, 07Fh, 0F0h, 0FFh, 0C0h, 0FFh, 003h, 000h, 07Eh
-            DB 006h, 07Ch, 03Eh, 07Fh, 0FFh, 0FFh, 0E0h, 07Eh, 000h, 0FCh
-            DB 07Fh, 0F8h, 0F8h, 0E0h, 0E0h, 01Fh, 087h, 0FEh, 00Fh, 004h
-            DB 00Ch, 01Fh, 00Fh, 07Eh, 00Fh, 000h, 03Ch, 07Ch, 03Eh, 0FCh
-            DB 03Ch, 060h, 0E0h, 0F8h, 0F9h, 0E0h, 0F0h, 0C0h, 083h, 0C0h
-            DB 0FFh, 081h, 0C0h, 000h, 00Fh, 003h, 0FFh, 00Fh, 006h, 000h
-            DB 03Eh, 00Fh, 0FCh, 03Eh, 000h, 0C1h, 0E0h, 0FFh, 0C0h, 0E0h
-            DB 001h, 01Fh, 007h, 0FCh, 03Fh, 000h, 0C0h, 0F0h, 0FFh, 081h
-            DB 0E0h, 006h, 01Fh, 007h, 0FCh, 03Eh, 000h, 001h, 0F0h, 0FFh
-            DB 003h, 080h, 010h, 07Eh, 03Fh, 0F0h, 0F8h, 03Ch, 01Fh, 007h
-            DB 0FCh, 03Fh, 007h, 003h, 081h, 0FFh, 007h, 001h, 080h, 0F8h
-            DB 0FFh, 081h, 0E0h, 030h, 07Ch, 01Fh, 0F0h, 0F8h, 000h, 00Fh
-            DB 003h, 0FEh, 01Fh, 008h, 001h, 0E0h, 0FFh, 003h, 0C0h, 0C0h
-            DB 0F8h, 03Fh, 0E0h, 0F8h, 000h, 00Fh, 007h, 0FEh, 01Fh, 001h
-            DB 001h, 0C0h, 0FFh, 003h, 080h, 080h, 07Eh, 01Fh, 0F0h, 0F8h
-            DB 018h, 00Fh, 003h, 0FEh, 01Fh, 018h, 000h, 0F0h, 0FFh, 001h
-            DB 0C0h, 090h, 07Ch, 01Fh, 0F0h, 0FCh, 000h, 007h, 081h, 0FFh
-            DB 00Fh, 000h, 000h, 0F0h, 07Fh, 0E0h, 0F0h, 000h, 01Fh, 007h
-            DB 0FCh, 03Eh, 030h, 0C1h, 0E0h, 0FFh, 083h, 0C0h, 080h, 07Ch
-            DB 01Fh, 0F0h, 0F8h, 030h, 007h, 001h, 0FFh, 00Fh, 000h, 060h
-            DB 0F0h, 0FFh, 0C1h, 0E0h, 0C0h, 03Fh, 00Fh, 0F8h, 07Eh, 070h
-            DB 083h, 0C0h, 0FFh, 007h, 003h, 000h, 0F8h, 03Fh, 0C0h, 0F0h
-            DB 07Fh, 00Fh, 003h, 0FCh, 01Fh, 003h, 000h, 0E0h, 0FFh, 081h
-            DB 0C1h, 080h, 01Eh, 00Fh, 0F0h, 07Ch, 078h, 007h, 081h, 0FEh
-            DB 00Fh, 007h, 000h, 0E0h, 0FFh, 001h, 0C0h, 0C0h, 03Eh, 00Fh
-            DB 0E0h, 0F8h, 038h, 00Fh, 003h, 0FCh, 01Fh, 00Fh, 001h, 0C0h
-            DB 0FFh, 007h, 001h, 000h, 0E0h, 07Fh, 000h, 0C0h, 0E0h, 03Eh
-            DB 00Fh, 0E0h, 078h, 038h, 00Fh, 003h, 0FCh, 01Fh, 00Fh, 000h
-            DB 0E0h, 07Fh, 001h, 080h, 0C0h, 0F8h, 03Fh, 080h, 0F0h, 0F8h
-            DB 0E0h, 0E0h, 0FFh, 003h, 080h, 084h, 0F0h, 07Fh, 0E0h, 0F0h
-            DB 0F0h, 083h, 0C1h, 0FEh, 00Fh, 000h, 081h, 080h, 0FFh, 083h
-            DB 080h, 0FEh, 007h, 0C0h, 0FEh, 00Fh, 001h, 080h, 0C0h, 0FFh
-            DB 081h, 0C0h, 0C0h, 00Fh, 003h, 0F8h, 03Eh, 003h, 00Fh, 007h
-            DB 038h, 01Eh, 00Fh, 0FCh, 07Ch, 0F0h, 07Eh, 00Fh, 00Fh, 000h
-            DB 0F0h, 07Fh, 000h, 0E0h, 0F8h, 00Fh, 003h, 0F8h, 03Eh, 000h
-            DB 007h, 003h, 01Ch, 01Fh, 007h, 0F8h, 03Ch, 0F0h, 03Eh, 00Fh
-            DB 000h, 07Ch, 078h, 03Ch, 0F0h, 0F0h, 07Ch, 01Eh, 007h, 0F0h
-            DB 078h, 01Ch, 0C7h, 001h, 09Eh, 00Fh, 083h, 0E0h, 0C0h, 0E7h
-            DB 003h, 080h, 0FFh, 007h, 00Fh, 01Fh, 080h, 0CCh, 00Fh, 00Fh
-            DB 007h, 07Ch, 03Eh, 00Ch, 083h, 001h, 09Eh, 00Fh, 003h, 03Fh
-            DB 01Fh, 083h, 0FEh, 01Fh, 00Ch, 0F0h, 0F0h, 079h, 080h, 0C0h
-            DB 000h, 078h, 03Ch, 0C0h, 0E0h, 038h, 03Ch, 00Eh, 0E0h, 078h
-            DB 019h, 007h, 001h, 03Ch, 01Eh, 003h, 070h, 0C0h, 0E7h, 001h
-            DB 086h, 000h, 0E0h, 079h, 000h, 0C0h, 0E3h, 03Ch, 00Eh, 0E0h
-            DB 0F0h, 008h, 01Eh, 007h, 070h, 03Ch, 00Eh, 0C3h, 080h, 0DEh
-            DB 00Fh, 001h, 001h, 080h, 0CFh, 007h, 001h, 09Fh, 01Fh, 007h
-            DB 0F0h, 0F8h, 000h, 03Ch, 00Eh, 0F0h, 078h, 01Ch, 0C3h, 090h
-            DB 0DEh, 00Fh, 000h, 007h, 001h, 09Ch, 00Fh, 003h, 07Eh, 03Fh
-            DB 000h, 0F8h, 07Eh, 000h, 01Eh, 007h, 078h, 03Eh, 01Fh, 001h
-            DB 0C8h, 0FFh, 007h, 000h, 003h, 000h, 08Eh, 007h, 000h, 03Eh
-            DB 00Fh, 003h, 0F8h, 07Fh, 080h, 078h, 01Eh, 0E0h, 0F8h, 07Dh
-            DB 087h, 063h, 078h, 03Fh, 000h, 01Eh, 00Fh, 0F0h, 078h, 01Fh
-            DB 0C1h, 0E0h, 0EFh, 007h, 081h, 003h, 000h, 0CEh, 007h, 003h
-            DB 008h, 0C6h, 0E7h, 003h, 000h, 080h, 0C0h, 0E3h, 001h, 0C0h
-            DB 000h, 0C0h, 0F3h, 003h, 000h, 080h, 0C2h, 0E3h, 001h, 080h
-            DB 0C4h, 0F1h, 039h, 080h, 0E0h, 000h, 0E0h, 0F3h, 003h, 080h
-            DB 0E0h, 0F1h, 071h, 080h, 0C0h, 060h, 0F0h, 039h, 080h, 0E0h
-            DB 0C0h, 0F0h, 03Ch, 0C0h, 0E0h, 070h, 070h, 038h, 0C0h, 0E0h
-            DB 060h, 078h, 01Ch, 0E0h, 0F0h, 038h, 078h, 03Ch, 0C0h, 0E0h
-            DB 078h, 038h, 01Eh, 0E0h, 0F0h, 008h, 03Ch, 01Eh, 0E0h, 0F0h
-            DB 038h, 03Ch, 01Eh, 0F0h, 0F0h, 030h, 01Ch, 00Fh, 0F0h, 078h
-            DB 01Ch, 01Eh, 007h, 078h, 03Ch, 018h, 087h, 023h, 03Ch, 01Eh
-            DB 003h, 007h, 003h, 01Eh, 01Fh, 007h, 061h, 080h, 0CFh, 007h
-            DB 001h, 080h, 0C0h, 0E3h, 001h, 080h, 0E0h, 0F0h, 03Ch, 0C0h
-            DB 0E0h, 070h, 03Ch, 01Eh, 0F0h, 0F0h, 012h, 087h, 003h, 01Eh
-            DB 01Eh, 003h, 003h, 001h, 08Fh, 00Fh, 000h, 0F8h, 0F8h, 039h
-            DB 0C0h, 0E0h, 078h, 078h, 01Ch, 0F8h, 0F8h, 038h, 0E1h, 0C0h
-            DB 0FFh, 003h, 007h, 001h, 080h, 0E7h, 083h, 0E0h, 0FDh, 083h
-            DB 0C0h, 0FEh, 01Fh, 007h, 003h, 000h, 0CFh, 087h, 001h, 088h
-            DB 01Fh, 007h, 0F8h, 03Fh, 080h, 03Eh, 00Fh, 0F6h, 07Fh, 01Fh
-            DB 01Ch, 03Eh, 00Fh, 0E0h, 0F0h, 078h, 03Ch, 00Fh, 0FEh, 07Fh
-            DB 01Fh, 000h, 0E0h, 07Fh, 001h, 081h, 080h, 0E0h, 079h, 0A0h
-            DB 0F8h, 0FBh, 000h, 0E0h, 0FFh, 003h, 080h, 0C0h, 0F0h, 079h
-            DB 0F0h, 0F0h, 063h, 003h, 080h, 0FFh, 00Fh, 001h, 000h, 0C0h
-            DB 0E3h, 0C1h, 0C0h, 0FEh, 00Fh, 003h, 07Ch, 03Eh, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h
-lmwpynyg:   DB 0AFh, 0D0h, 0DFh, 0D0h, 0AFh, 0D0h, 0DFh, 0D0h, 000h, 0D0h
-            DB 0DFh, 0D0h, 0C6h, 0D0h, 0AFh, 0D0h, 0C6h, 0D0h, 000h, 050h
-            DB 0AFh, 0D0h, 0C6h, 0D0h, 000h, 050h, 0DFh, 0D0h, 0AFh, 0D0h
-            DB 000h, 0FAh, 0FFh, 0FFh, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-ldncmvxv:   DB 0DFh, 080h, 0DFh, 080h, 0C6h, 080h, 0C6h, 080h, 000h, 050h
-            DB 0FAh, 080h, 0FAh, 080h, 0DFh, 080h, 0C6h, 080h, 0FFh, 0FFh
-            DB 0FFh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 063h, 098h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h
-lftnryxb:   DB 0FAh, 0D0h, 0DFh, 0D0h, 000h, 040h, 0FAh, 0F0h, 0DFh, 0F0h
-            DB 0C6h, 0F0h, 0DFh, 0F0h, 0FAh, 0F0h, 0FAh, 0F0h, 000h, 0F0h
-            DB 0FFh, 0FFh, 0FFh, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-lccbxedj:   DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 009h, 009h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 000h, 009h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 009h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 0FEh, 0D0h, 070h, 000h, 040h, 0A0h
-            DB 070h, 000h, 050h, 0B0h, 050h, 0C0h, 050h, 0D0h, 050h, 0E0h
-            DB 050h, 000h, 050h, 0D0h, 070h, 000h, 050h, 0C0h, 050h, 0B0h
-            DB 050h, 0A0h, 050h, 0E0h, 050h, 000h, 070h, 0D0h, 070h, 000h
-            DB 070h, 0D0h, 070h, 000h, 070h, 0A0h, 050h, 000h, 050h, 0B0h
-            DB 050h, 000h, 050h, 0C0h, 050h, 000h, 050h, 0D0h, 050h, 000h
-            DB 050h, 0E0h, 050h, 000h, 050h, 0D0h, 050h, 0FDh, 0D0h, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
-            DB 000h, 012h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h, 012h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 024h, 000h, 02Dh, 000h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
-            DB 02Dh, 009h, 000h, 000h, 024h, 000h, 02Dh, 000h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 02Dh, 009h
-            DB 000h, 000h, 024h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 000h, 000h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h
-            DB 000h, 012h, 000h, 02Dh, 000h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 02Dh, 009h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 012h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 012h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 024h, 024h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h
-            DB 024h, 024h, 024h, 009h, 000h, 000h, 02Dh, 009h, 01Bh, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 012h
-            DB 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 012h, 000h, 000h
-            DB 009h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 009h, 02Dh
-            DB 009h, 000h, 02Dh, 009h, 000h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 012h, 000h, 000h, 009h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 02Dh, 009h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h
-            DB 000h, 012h, 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 012h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h
-            DB 000h, 012h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 02Dh, 009h, 000h, 000h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 012h
-            DB 000h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 009h, 000h, 02Dh
-            DB 009h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 02Dh, 009h, 000h, 02Dh, 009h, 000h, 02Dh
-            DB 009h, 000h, 000h, 012h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 012h
-            DB 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 009h, 009h
-            DB 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 009h, 000h, 024h, 000h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 012h, 000h, 02Dh, 009h, 000h, 000h, 000h
-            DB 000h, 02Dh, 009h, 02Dh, 000h, 024h, 000h, 02Dh, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 01Bh, 000h
-            DB 000h, 012h, 000h, 02Dh, 009h, 000h, 000h, 000h, 02Dh, 009h
-            DB 009h, 000h, 000h, 024h, 000h, 000h, 009h, 009h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
-            DB 000h, 000h, 009h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h
-            DB 000h, 024h, 000h, 000h, 02Dh, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 000h, 000h, 000h, 024h, 024h, 024h
-            DB 024h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 02Dh, 009h, 000h, 000h, 000h, 024h, 000h, 000h
-            DB 000h, 02Dh, 000h, 000h, 000h, 012h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 02Dh, 009h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 024h, 000h, 000h, 009h, 009h
-            DB 000h, 000h, 000h, 012h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 02Dh, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 02Dh, 000h, 024h, 000h, 02Dh, 009h, 000h, 000h, 000h
-            DB 02Dh, 012h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 009h
-            DB 000h, 024h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 012h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 009h, 009h
-            DB 009h, 009h, 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 02Dh, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h
-            DB 000h, 000h, 000h, 012h, 000h, 000h, 02Dh, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 000h
-            DB 000h, 02Dh, 000h, 000h, 000h, 000h, 024h, 024h, 024h, 024h
-            DB 009h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 02Dh, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 0FEh, 0FAh, 0FAh, 0DFh, 0DFh, 000h
-            DB 0FAh, 0FAh, 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0DFh, 0DFh, 000h
-            DB 0C6h, 0C6h, 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0FAh, 0FAh, 0DFh
-            DB 0DFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 024h, 024h, 000h, 000h
-            DB 000h, 000h, 012h, 000h, 009h, 009h, 009h, 000h, 000h, 024h
-            DB 024h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 000h
-            DB 012h, 000h, 024h, 024h, 009h, 000h, 000h, 009h, 009h, 009h
-            DB 01Bh, 000h, 02Dh, 012h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h
-            DB 000h, 000h, 009h, 000h, 000h, 024h, 024h, 009h, 01Bh, 000h
-            DB 000h, 012h, 000h, 02Dh, 009h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 000h, 02Dh
-            DB 009h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 012h
-            DB 000h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 009h, 000h
-            DB 02Dh, 009h, 000h, 000h, 012h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h
-            DB 000h, 000h, 012h, 000h, 000h, 024h, 009h, 000h, 000h, 012h
-            DB 02Dh, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 024h, 009h, 009h, 009h, 000h, 000h
-            DB 012h, 000h, 000h, 009h, 009h, 000h, 000h, 012h, 000h, 009h
-            DB 01Bh, 000h, 000h, 024h, 024h, 024h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 02Dh, 009h, 009h, 009h, 000h, 000h, 012h, 000h
-            DB 000h, 012h, 000h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h
-            DB 000h, 024h, 009h, 009h, 000h, 02Dh, 012h, 000h, 02Dh, 012h
-            DB 000h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h, 02Dh, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 009h, 02Dh, 000h, 000h, 02Dh
-            DB 009h, 009h, 000h, 000h, 012h, 000h, 000h, 024h, 024h, 024h
-            DB 024h, 012h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 009h, 02Dh, 009h, 009h, 000h, 000h, 000h, 024h, 009h
-            DB 000h, 000h, 012h, 000h, 000h, 009h, 009h, 009h, 009h, 012h
-            DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 009h
-            DB 000h, 000h, 009h, 02Dh, 000h, 000h, 000h, 009h, 000h, 000h
-            DB 012h, 000h, 000h, 009h, 000h, 000h, 02Dh, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 02Dh
-            DB 009h, 009h, 009h, 000h, 000h, 024h, 024h, 024h, 012h, 000h
-            DB 000h, 009h, 000h, 000h, 02Dh, 000h, 02Dh, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 009h, 009h, 000h, 000h, 000h
-            DB 009h, 02Dh, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h
-            DB 009h, 000h, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h
-            DB 02Dh, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 000h, 012h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 000h, 009h, 000h, 000h, 000h
-            DB 012h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 009h, 000h, 000h, 000h, 012h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 009h, 009h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 02Dh, 009h, 009h, 000h, 000h, 012h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 02Dh, 012h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 024h, 024h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 02Dh, 009h, 000h, 000h, 024h, 024h, 024h, 009h
-            DB 000h, 02Dh, 012h, 000h, 000h, 000h, 000h, 000h, 024h, 024h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 012h, 000h, 000h, 000h, 000h, 024h, 024h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h
-            DB 000h, 000h, 024h, 024h, 012h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 000h, 024h
-            DB 024h, 000h, 012h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
-            DB 02Dh, 009h, 000h, 000h, 012h, 000h, 024h, 024h, 000h, 000h
-            DB 012h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h
-            DB 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 012h, 000h, 009h, 000h, 000h, 000h, 012h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 012h, 02Dh, 009h, 000h, 000h, 000h, 012h, 000h, 000h, 009h
-            DB 01Bh, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 012h, 000h
-            DB 009h, 000h, 000h, 02Dh, 012h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h
-            DB 000h, 000h, 012h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 02Dh
-            DB 012h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 024h, 024h, 024h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 012h, 02Dh, 009h, 000h, 000h, 000h, 012h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 009h
-            DB 009h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 012h, 000h, 009h, 000h, 000h, 000h, 012h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 009h, 009h, 009h
-            DB 000h, 02Dh, 009h, 000h, 02Dh, 009h, 000h, 000h, 012h, 000h
-            DB 024h, 024h, 000h, 000h, 012h, 000h, 02Dh, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 02Dh, 009h, 000h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 000h, 024h
-            DB 024h, 000h, 012h, 000h, 02Dh, 009h, 01Bh, 000h, 02Dh, 009h
-            DB 000h, 000h, 009h, 009h, 000h, 000h, 024h, 024h, 009h, 000h
-            DB 000h, 009h, 000h, 02Dh, 012h, 000h, 000h, 000h, 024h, 024h
-            DB 012h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 009h, 000h, 024h, 024h, 009h, 009h, 000h, 000h, 009h
-            DB 000h, 02Dh, 012h, 000h, 000h, 000h, 000h, 024h, 024h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 009h, 009h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 012h, 000h, 000h, 000h, 000h, 000h, 024h, 024h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 02Dh, 009h, 009h, 000h, 000h
-            DB 009h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 024h, 024h, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 02Dh, 009h, 000h, 000h, 012h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 0FEh, 0FAh, 0FAh, 0DFh, 0DFh, 0BAh
-            DB 0BAh, 000h, 0FAh, 0FAh, 0DFh, 0DFh, 0BAh, 0BAh, 000h, 0BAh
-            DB 0BAh, 000h, 0A5h, 0A5h, 000h, 0DFh, 0DFh, 000h, 0FAh, 0FAh
-            DB 0DFh, 0DFh, 0BAh, 0BAh, 000h, 0FAh, 0FAh, 0DFh, 0DFh, 0BAh
-            DB 0BAh, 000h, 0BAh, 0BAh, 000h, 0A5h, 0A5h, 000h, 0BAh, 0BAh
-            DB 000h, 0C6h, 0C6h, 000h, 0A5h, 0A5h, 000h, 093h, 093h, 093h
-            DB 000h, 0DFh, 0DFh, 000h, 0FFh, 0FFh, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 000h, 009h, 036h, 03Fh, 024h, 009h
-            DB 009h, 009h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 02Dh, 02Dh, 02Dh, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h
-            DB 000h, 000h, 009h, 009h, 000h, 000h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 000h, 02Dh
-            DB 009h, 009h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h
-            DB 01Bh, 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h, 009h
-            DB 000h, 02Dh, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 02Dh, 009h, 000h, 000h, 009h, 009h, 000h, 000h
-            DB 009h, 009h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 009h, 01Bh, 000h, 000h, 009h
-            DB 009h, 009h, 000h, 02Dh, 009h, 009h, 000h, 000h, 009h, 02Dh
-            DB 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h
-            DB 000h, 000h, 009h, 009h, 000h, 000h, 009h, 009h, 000h, 02Dh
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 000h, 000h
-            DB 009h, 009h, 000h, 000h, 009h, 009h, 000h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 009h, 009h, 000h, 000h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 009h, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 02Dh, 009h, 009h, 01Bh, 000h, 000h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 009h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 02Dh, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 01Bh, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h
-            DB 009h, 000h, 000h, 000h, 009h, 009h, 000h, 02Dh, 009h, 009h
-            DB 009h, 02Dh, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 01Bh, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 000h, 000h
-            DB 009h, 000h, 009h, 009h, 000h, 000h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 009h
-            DB 009h, 009h, 009h, 000h, 009h, 000h, 000h, 009h, 009h, 000h
-            DB 009h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 009h, 009h, 000h, 009h, 009h
-            DB 009h, 009h, 02Dh, 000h, 000h, 000h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 000h, 024h, 009h, 009h, 009h, 009h
-            DB 009h, 000h, 02Dh, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 02Dh
-            DB 009h, 000h, 024h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 02Dh, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 000h, 024h
-            DB 009h, 009h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 000h, 000h, 000h, 009h, 009h, 02Dh, 009h, 01Bh, 000h
-            DB 02Dh, 009h, 009h, 009h, 009h, 000h, 024h, 009h, 009h, 009h
-            DB 000h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 000h, 000h
-            DB 009h, 000h, 02Dh, 009h, 02Dh, 009h, 01Bh, 000h, 02Dh, 009h
-            DB 009h, 000h, 000h, 024h, 009h, 009h, 009h, 000h, 000h, 009h
-            DB 02Dh, 009h, 009h, 009h, 000h, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 009h, 000h, 009h, 01Bh, 000h, 02Dh, 009h, 009h, 000h
-            DB 02Dh, 009h, 009h, 009h, 000h, 000h, 009h, 009h, 02Dh, 009h
-            DB 009h, 000h, 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h, 02Dh, 009h
-            DB 009h, 000h, 000h, 009h, 009h, 009h, 000h, 009h, 009h, 000h
-            DB 000h, 009h, 009h, 02Dh, 009h, 000h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 009h, 000h, 000h, 009h, 009h, 000h
-            DB 009h, 009h, 009h, 009h, 000h, 009h, 009h, 000h, 000h, 009h
-            DB 009h, 02Dh, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 009h, 009h
-            DB 009h, 009h, 000h, 009h, 009h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h, 000h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 000h, 009h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 009h
-            DB 01Bh, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 02Dh, 02Dh
-            DB 009h, 000h, 02Dh, 009h, 009h, 009h, 009h, 000h, 000h, 009h
-            DB 009h, 02Dh, 009h, 009h, 009h, 009h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 009h, 009h, 009h, 02Dh, 009h, 01Bh, 000h, 02Dh, 009h
-            DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 000h, 000h, 009h, 009h, 009h, 000h, 000h
-            DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 000h, 02Dh, 009h, 009h, 02Dh, 009h, 02Dh, 009h, 009h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 02Dh
-            DB 009h, 009h, 009h, 009h, 02Dh, 009h, 000h, 009h, 009h, 000h
-            DB 000h, 009h, 009h, 02Dh, 009h, 000h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 000h, 009h, 009h, 000h, 000h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 009h, 009h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h, 02Dh, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 009h, 01Bh, 000h, 02Dh, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 000h, 009h, 01Bh, 000h, 02Dh, 009h, 009h, 009h, 009h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h
-            DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 0FEh, 0BAh, 0BAh, 0BAh, 0FAh, 0FAh
-            DB 0FAh, 000h, 0BAh, 0BAh, 0BAh, 0FAh, 0FAh, 0FAh, 000h, 0BAh
-            DB 0BAh, 0DFh, 0DFh, 0FAh, 0FAh, 0DFh, 0DFh, 0BAh, 0BAh, 000h
-            DB 0BAh, 0BAh, 0BAh, 0FAh, 0FAh, 0FAh, 000h, 0BAh, 0BAh, 0BAh
-            DB 0FAh, 0FAh, 0FAh, 000h, 0C6h, 0C6h, 0DFh, 0DFh, 0FAh, 0FAh
-            DB 0DFh, 0DFh, 0C6h, 0C6h, 000h, 0FFh, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 02Dh, 009h, 000h, 000h, 009h, 036h, 03Fh, 024h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 024h
-            DB 024h, 024h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h
-            DB 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 024h, 024h
-            DB 024h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h, 02Dh, 009h
-            DB 000h, 02Dh, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 02Dh, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 02Dh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 02Dh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 02Dh, 009h, 000h, 02Dh, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 024h, 024h, 024h, 009h, 000h, 000h, 024h, 024h, 024h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 02Dh
-            DB 009h, 000h, 000h, 024h, 024h, 024h, 009h, 000h, 02Dh, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
-            DB 000h, 000h, 024h, 024h, 024h, 009h, 000h, 02Dh, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh
-            DB 009h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 02Dh, 000h, 000h, 009h
-            DB 000h, 000h, 024h, 024h, 024h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 02Dh
-            DB 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh
-            DB 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 02Dh, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 024h
-            DB 024h, 024h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 024h, 024h, 024h, 009h, 000h, 000h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 02Dh, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 02Dh, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 0FEh, 0FAh, 0DFh, 000h, 0DFh, 0C6h
-            DB 000h, 0FAh, 0DFh, 000h, 0DFh, 0C6h, 000h, 0FAh, 0DFh, 0C6h
-            DB 000h, 0FAh, 0DFh, 0C6h, 000h, 0DFh, 0C6h, 000h, 0BAh, 0C6h
-            DB 000h, 0DFh, 0C6h, 000h, 0BAh, 0C6h, 000h, 0BAh, 0BAh, 0BAh
-            DB 000h, 0DFh, 0DFh, 0DFh, 000h, 0FAh, 0FAh, 0FAh, 000h, 0DFh
-            DB 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0BAh, 000h, 0DFh, 0DFh, 0DFh
-            DB 000h, 0FAh, 0FAh, 0FAh, 000h, 000h, 000h, 0FFh, 0FFh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h, 024h
-            DB 024h, 024h, 000h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h
-            DB 000h, 000h, 024h, 024h, 000h, 000h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h
-            DB 024h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h, 000h, 000h
-            DB 024h, 000h, 000h, 000h, 009h, 000h, 024h, 024h, 024h, 024h
-            DB 024h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 024h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h
-            DB 000h, 000h, 009h, 000h, 009h, 009h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 012h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 024h, 009h, 01Bh, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 02Dh, 009h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h
-            DB 024h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h
-            DB 024h, 024h, 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h, 000h
-            DB 024h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h
-            DB 000h, 000h, 024h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 024h
-            DB 000h, 000h, 000h, 02Dh, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 024h
-            DB 000h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h, 024h, 000h
-            DB 000h, 02Dh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 000h, 024h, 000h, 000h, 000h
-            DB 000h, 02Dh, 02Dh, 000h, 000h, 000h, 000h, 024h, 000h, 02Dh
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 024h, 000h, 000h, 000h, 000h, 000h, 02Dh
-            DB 02Dh, 000h, 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 012h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 02Dh
-            DB 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
-            DB 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h, 02Dh, 000h
-            DB 000h, 000h, 000h, 012h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 02Dh
-            DB 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h, 012h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 02Dh, 000h
-            DB 000h, 02Dh, 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h
-            DB 009h, 000h, 000h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h
-            DB 000h, 024h, 000h, 000h, 000h, 000h, 000h, 02Dh, 02Dh, 000h
-            DB 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h
-            DB 024h, 000h, 000h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h
-            DB 000h, 024h, 000h, 02Dh, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 024h
-            DB 000h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h, 024h, 000h
-            DB 000h, 02Dh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 024h, 000h
-            DB 000h, 02Dh, 02Dh, 000h, 000h, 024h, 000h, 000h, 000h, 02Dh
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 000h, 000h
-            DB 000h, 000h, 024h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h, 024h, 024h
-            DB 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 0D0h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 0D0h, 000h, 000h, 000h, 000h, 000h, 000h, 012h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 024h, 024h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 000h, 000h
-            DB 000h, 02Dh, 02Dh, 000h, 000h, 000h, 000h, 000h, 024h, 000h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 024h, 009h
-            DB 01Bh, 000h, 000h, 024h, 024h, 000h, 000h, 000h, 000h, 02Dh
-            DB 02Dh, 000h, 000h, 000h, 000h, 000h, 024h, 024h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 000h, 000h, 000h, 02Dh, 02Dh, 000h
-            DB 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 024h, 009h, 01Bh, 000h, 000h, 024h
-            DB 024h, 000h, 000h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h
-            DB 000h, 000h, 024h, 024h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h
-            DB 000h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h, 000h, 000h
-            DB 024h, 000h, 000h, 000h, 009h, 000h, 009h, 009h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h
-            DB 000h, 000h, 009h, 000h, 024h, 024h, 024h, 024h, 024h, 009h
-            DB 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 000h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 0FEh, 0BAh, 0BAh, 0DFh, 0DFh, 0BAh
-            DB 0BAh, 0DFh, 0DFh, 0FAh, 0FAh, 0BAh, 0BAh, 0DFh, 0DFh, 0BAh
-            DB 0BAh, 0FAh, 0FAh, 0DFh, 0DFh, 0BAh, 0BAh, 0BAh, 0BAh, 0A5h
-            DB 0A5h, 0DFh, 0DFh, 0DFh, 0DFh, 0A5h, 0A5h, 0FAh, 0FAh, 0BAh
-            DB 0BAh, 0A5h, 0A5h, 0DFh, 0DFh, 0FAh, 0FAh, 0BAh, 0BAh, 0A5h
-            DB 0A5h, 0DFh, 0DFh, 0BAh, 0BAh, 0FAh, 0FAh, 0DFh, 0DFh, 0C6h
-            DB 0C6h, 0DFh, 0DFh, 0BAh, 0BAh, 0C6h, 0C6h, 000h, 0FFh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
-            DB 000h, 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 012h, 012h, 000h, 02Dh, 012h
-            DB 000h, 000h, 02Dh, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 012h, 012h, 012h, 000h, 024h, 024h, 000h
-            DB 000h, 009h, 02Dh, 000h, 000h, 000h, 000h, 02Dh, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 012h, 000h, 012h, 012h, 000h, 024h, 024h, 000h, 000h
-            DB 009h, 009h, 000h, 000h, 000h, 02Dh, 009h, 000h, 02Dh, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
-            DB 000h, 000h, 012h, 012h, 000h, 024h, 024h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 000h
-            DB 000h, 012h, 012h, 000h, 024h, 024h, 000h, 02Dh, 009h, 000h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h
-            DB 012h, 012h, 000h, 024h, 024h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 02Dh, 012h, 000h, 000h, 000h, 000h, 000h, 012h
-            DB 012h, 000h, 024h, 024h, 000h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 02Dh, 012h, 000h, 000h, 000h, 02Dh, 000h, 000h, 012h, 012h
-            DB 000h, 024h, 024h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h
-            DB 024h, 024h, 012h, 000h, 000h, 000h, 000h, 012h, 012h, 000h
-            DB 024h, 024h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 02Dh
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 000h
-            DB 012h, 000h, 02Dh, 000h, 000h, 000h, 012h, 012h, 000h, 024h
-            DB 024h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 024h, 024h
-            DB 012h, 000h, 000h, 000h, 000h, 012h, 012h, 000h, 024h, 024h
-            DB 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 02Dh, 012h, 000h
-            DB 000h, 000h, 000h, 000h, 012h, 012h, 000h, 024h, 024h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 012h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 012h, 012h, 000h, 024h, 024h, 000h, 000h
-            DB 000h, 02Dh, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
-            DB 000h, 000h, 012h, 000h, 012h, 000h, 02Dh, 000h, 000h, 000h
-            DB 000h, 000h, 012h, 012h, 000h, 024h, 024h, 000h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 000h
-            DB 012h, 000h, 000h, 000h, 012h, 000h, 02Dh, 000h, 000h, 000h
-            DB 000h, 012h, 012h, 000h, 024h, 024h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 012h, 000h
-            DB 000h, 000h, 000h, 000h, 012h, 000h, 02Dh, 000h, 000h, 000h
-            DB 012h, 012h, 000h, 024h, 024h, 000h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 012h, 000h, 000h, 012h, 000h, 000h, 000h
-            DB 000h, 02Dh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 012h
-            DB 012h, 000h, 024h, 024h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 02Dh, 012h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h, 012h, 012h
-            DB 000h, 024h, 024h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 012h, 012h, 000h
-            DB 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h
-            DB 000h, 012h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 012h, 000h, 000h, 0C2h, 0C2h, 012h, 000h
-            DB 02Dh, 000h, 012h, 000h, 02Dh, 000h, 000h, 000h, 012h, 012h
-            DB 000h, 000h, 024h, 024h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 02Dh, 012h, 000h, 000h, 02Dh, 000h, 012h, 000h, 012h, 000h
-            DB 012h, 000h, 000h, 000h, 000h, 012h, 012h, 000h, 000h, 024h
-            DB 024h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
-            DB 000h, 000h, 012h, 000h, 02Dh, 000h, 012h, 000h, 000h, 02Dh
-            DB 000h, 000h, 012h, 012h, 000h, 000h, 024h, 024h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 000h
-            DB 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 012h
-            DB 012h, 000h, 000h, 024h, 024h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 000h, 012h, 000h
-            DB 02Dh, 000h, 012h, 000h, 000h, 000h, 012h, 012h, 000h, 000h
-            DB 024h, 024h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 012h, 000h
-            DB 02Dh, 000h, 000h, 012h, 012h, 000h, 000h, 024h, 024h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 02Dh, 012h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 000h
-            DB 012h, 012h, 000h, 000h, 024h, 024h, 000h, 000h, 000h, 009h
-            DB 000h, 02Dh, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h
-            DB 024h, 024h, 024h, 024h, 000h, 000h, 000h, 012h, 012h, 000h
-            DB 000h, 024h, 024h, 000h, 000h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 012h, 012h, 000h, 000h, 024h, 024h
-            DB 000h, 000h, 000h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h
-            DB 000h, 012h, 012h, 000h, 000h, 024h, 024h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 012h, 012h
-            DB 000h, 000h, 024h, 024h, 000h, 000h, 009h, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 02Dh, 000h, 000h, 000h, 012h, 012h, 000h, 000h, 024h
-            DB 024h, 000h, 02Dh, 009h, 009h, 000h, 000h, 000h, 000h, 009h
-            DB 000h, 02Dh, 009h, 000h, 000h, 009h, 01Bh, 000h, 02Dh, 012h
-            DB 000h, 000h, 012h, 012h, 000h, 000h, 024h, 024h, 000h, 000h
-            DB 009h, 009h, 000h, 02Dh, 009h, 000h, 02Dh, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 012h
-            DB 012h, 000h, 000h, 024h, 024h, 000h, 02Dh, 009h, 02Dh, 000h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 012h, 012h, 012h, 000h, 000h
-            DB 000h, 012h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 012h, 012h, 000h, 000h, 000h, 02Dh, 012h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 0FEh, 0BAh, 0BAh, 0BAh, 0DFh, 0DFh
-            DB 0DFh, 000h, 0FAh, 0FAh, 0FAh, 0DFh, 0DFh, 0DFh, 000h, 0FAh
-            DB 0DFh, 0FAh, 0FAh, 0DFh, 0DFh, 0DFh, 000h, 0FAh, 0FAh, 0FAh
-            DB 0DFh, 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0BAh, 000h, 0BAh, 0BAh
-            DB 0BAh, 000h, 0DFh, 0DFh, 0DFh, 000h, 0DFh, 0DFh, 0DFh, 000h
-            DB 0FAh, 0FAh, 0FAh, 000h, 0DFh, 0DFh, 0DFh, 000h, 0BAh, 0BAh
-            DB 0BAh, 0FAh, 0FAh, 0DFh, 0DFh, 0DFh, 000h, 000h, 0FFh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 012h
-            DB 000h, 024h, 024h, 024h, 009h, 000h, 000h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 012h, 000h, 009h, 036h, 03Fh, 024h, 000h
-            DB 000h, 02Dh, 009h, 000h, 000h, 000h, 000h, 012h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 000h, 000h, 012h, 02Dh, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 02Dh, 000h, 000h, 000h, 000h, 012h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 012h, 000h
-            DB 000h, 000h, 000h, 012h, 000h, 009h, 000h, 02Dh, 009h, 000h
-            DB 000h, 009h, 000h, 02Dh, 000h, 000h, 000h, 024h, 024h, 009h
-            DB 01Bh, 000h, 000h, 024h, 024h, 024h, 012h, 000h, 000h, 024h
-            DB 024h, 024h, 024h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 012h, 000h, 024h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 02Dh, 02Dh
-            DB 000h, 000h, 02Dh, 012h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 024h, 024h, 000h, 000h, 009h, 000h, 000h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 012h, 02Dh, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 012h, 000h
-            DB 000h, 012h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 012h
-            DB 000h, 009h, 01Bh, 000h, 02Dh, 009h, 000h, 02Dh, 009h, 009h
-            DB 000h, 02Dh, 009h, 000h, 000h, 000h, 012h, 000h, 02Dh, 012h
-            DB 000h, 009h, 000h, 000h, 024h, 024h, 024h, 012h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 024h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 000h, 012h, 000h, 000h, 012h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 000h, 012h, 000h, 000h, 012h, 02Dh, 009h, 000h, 02Dh
-            DB 009h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 024h
-            DB 024h, 024h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 024h
-            DB 012h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 009h, 01Bh, 000h, 000h, 000h, 012h, 000h
-            DB 000h, 009h, 000h, 000h, 012h, 000h, 02Dh, 000h, 012h, 000h
-            DB 024h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 009h, 01Bh, 000h, 000h, 000h, 012h, 000h, 000h, 009h
-            DB 000h, 000h, 012h, 000h, 000h, 000h, 012h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 009h
-            DB 01Bh, 000h, 000h, 000h, 012h, 000h, 000h, 024h, 024h, 024h
-            DB 012h, 000h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 024h
-            DB 024h, 024h, 009h, 000h, 02Dh, 009h, 000h, 009h, 01Bh, 000h
-            DB 000h, 02Dh, 012h, 000h, 000h, 009h, 000h, 000h, 012h, 000h
-            DB 000h, 000h, 012h, 02Dh, 009h, 000h, 000h, 012h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 000h, 009h, 01Bh, 000h, 000h, 000h
-            DB 012h, 000h, 02Dh, 009h, 000h, 000h, 012h, 000h, 000h, 000h
-            DB 012h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 009h, 000h, 009h, 01Bh, 000h, 000h, 000h, 012h, 000h
-            DB 000h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 012h, 000h
-            DB 009h, 000h, 000h, 012h, 000h, 009h, 000h, 02Dh, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 000h, 024h, 024h, 024h, 009h
-            DB 000h, 000h, 000h, 012h, 000h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 012h, 000h, 009h, 000h, 000h, 000h, 02Dh, 000h, 009h
-            DB 01Bh, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 012h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 012h
-            DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 012h
-            DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 012h, 02Dh, 009h
-            DB 000h, 000h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 000h
-            DB 009h, 000h, 000h, 024h, 012h, 000h, 02Dh, 012h, 000h, 009h
-            DB 000h, 000h, 024h, 024h, 024h, 012h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 000h, 012h, 000h, 000h, 012h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 012h, 000h, 009h, 000h, 02Dh, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 02Dh, 009h, 000h, 000h, 000h
-            DB 012h, 000h, 024h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
-            DB 000h, 012h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 024h, 009h, 000h, 000h, 02Dh, 012h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 024h
-            DB 024h, 024h, 024h, 024h, 009h, 000h, 02Dh, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 000h, 000h, 000h, 012h, 000h, 009h, 000h
-            DB 02Dh, 009h, 000h, 000h, 024h, 012h, 000h, 009h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 02Dh, 000h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 000h, 02Dh
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 024h, 024h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 012h, 02Dh, 009h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 012h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 02Dh
-            DB 009h, 000h, 000h, 024h, 024h, 024h, 024h, 000h, 000h, 012h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 02Dh, 009h, 000h
-            DB 000h, 000h, 012h, 000h, 009h, 000h, 000h, 012h, 000h, 009h
-            DB 000h, 02Dh, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 012h, 000h, 000h, 000h, 009h, 000h, 000h, 000h
-            DB 012h, 000h, 009h, 000h, 02Dh, 012h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 024h, 024h, 024h, 000h, 009h, 000h, 000h, 000h, 012h, 02Dh
-            DB 009h, 000h, 000h, 012h, 02Dh, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 000h, 012h, 000h, 009h, 000h
-            DB 000h, 012h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 009h
-            DB 01Bh, 000h, 000h, 024h, 024h, 024h, 009h, 000h, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 012h, 000h, 024h, 024h, 024h, 012h
-            DB 02Dh, 009h, 000h, 000h, 012h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 012h, 000h, 000h, 009h, 02Dh, 000h, 000h, 012h, 000h
-            DB 000h, 000h, 012h, 000h, 000h, 012h, 000h, 012h, 000h, 009h
-            DB 000h, 000h, 012h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
-            DB 000h, 000h, 009h, 000h, 000h, 000h, 012h, 000h, 000h, 02Dh
-            DB 012h, 000h, 000h, 012h, 000h, 012h, 000h, 009h, 000h, 000h
-            DB 012h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 012h, 000h, 000h, 02Dh, 012h, 000h
-            DB 000h, 012h, 000h, 012h, 000h, 009h, 000h, 000h, 012h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 02Dh, 009h
-            DB 000h, 000h, 012h, 000h, 000h, 000h, 012h, 000h, 000h, 012h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 009h, 000h, 000h, 012h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 009h, 000h, 000h
-            DB 02Dh, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 0FEh, 000h, 000h, 0FAh, 0FAh, 0FAh
-            DB 0FAh, 0BAh, 0BAh, 0BAh, 0BAh, 0BAh, 0BAh, 0FAh, 0FAh, 0FAh
-            DB 0FAh, 0FAh, 0FAh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 000h, 0FAh
-            DB 0FAh, 0FAh, 0FAh, 0BAh, 0BAh, 0BAh, 0BAh, 0FAh, 0FAh, 0FAh
-            DB 0FAh, 0DFh, 0DFh, 0DFh, 0DFh, 000h, 0FAh, 0FAh, 0DFh, 0DFh
-            DB 0FAh, 0FAh, 0DFh, 0DFh, 0FAh, 0FAh, 0BAh, 0BAh, 0FAh, 0FAh
-            DB 0BAh, 0BAh, 000h, 0DFh, 0FAh, 0BAh, 0FAh, 0FFh, 0FFh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
-            DB 000h, 012h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h
-            DB 000h, 000h, 012h, 000h, 024h, 024h, 024h, 024h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h, 012h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h
-            DB 012h, 000h, 009h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 009h
-            DB 009h, 009h, 009h, 000h, 000h, 009h, 000h, 02Dh, 012h, 000h
-            DB 009h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 009h, 02Dh, 009h
-            DB 009h, 000h, 000h, 009h, 000h, 02Dh, 012h, 000h, 009h, 02Dh
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 012h, 000h, 009h, 009h, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 012h, 000h, 024h, 009h, 000h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h
-            DB 000h, 012h, 000h, 02Dh, 000h, 000h, 000h, 009h, 009h, 009h
-            DB 000h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 02Dh, 000h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 012h
-            DB 000h, 000h, 000h, 000h, 000h, 024h, 024h, 000h, 000h, 024h
-            DB 024h, 009h, 000h, 000h, 012h, 000h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 012h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 024h, 024h, 000h, 000h, 000h
-            DB 000h, 000h, 012h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h
-            DB 024h, 024h, 012h, 000h, 009h, 000h, 02Dh, 009h, 01Bh, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 02Dh, 009h
-            DB 009h, 009h, 009h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 012h, 000h, 009h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 02Dh, 009h, 000h, 000h, 024h, 024h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 009h
-            DB 000h, 02Dh, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
-            DB 009h, 000h, 02Dh, 009h, 000h, 02Dh, 009h, 009h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 02Dh, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 024h, 024h
-            DB 024h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 024h
-            DB 024h, 024h, 024h, 012h, 000h, 012h, 000h, 009h, 01Bh, 000h
-            DB 000h, 012h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h
-            DB 000h, 012h, 02Dh, 012h, 000h, 009h, 01Bh, 000h, 000h, 012h
-            DB 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 012h
-            DB 000h, 012h, 02Dh, 009h, 01Bh, 000h, 000h, 012h, 02Dh, 009h
-            DB 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 02Dh
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 02Dh, 012h, 000h, 012h
-            DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 02Dh, 009h, 000h, 000h, 012h, 000h, 009h, 000h
-            DB 02Dh, 009h, 000h, 000h, 02Dh, 012h, 000h, 012h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 02Dh, 000h, 000h
-            DB 000h, 009h, 000h, 02Dh, 012h, 000h, 009h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 012h, 000h, 012h, 000h, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 009h, 000h, 000h, 024h, 009h, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 000h, 009h, 009h, 000h, 000h
-            DB 012h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 012h, 000h
-            DB 009h, 000h, 000h, 000h, 009h, 000h, 000h, 024h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 024h, 024h
-            DB 024h, 024h, 000h, 009h, 000h, 000h, 012h, 000h, 009h, 000h
-            DB 000h, 000h, 009h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 02Dh, 009h, 000h, 02Dh, 009h, 000h, 000h, 012h
-            DB 000h, 000h, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 000h, 009h, 000h, 02Dh, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 02Dh, 000h, 012h
-            DB 000h, 02Dh, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 012h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 02Dh, 009h, 000h, 000h, 000h, 012h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 009h, 000h, 000h, 000h, 012h, 000h, 024h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 012h, 000h, 009h, 009h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 02Dh, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 000h, 000h
-            DB 024h, 000h, 000h, 009h, 009h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 009h, 000h, 000h, 009h, 000h
-            DB 02Dh, 009h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 02Dh, 009h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 024h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 009h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 02Dh, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 009h
-            DB 000h, 02Dh, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 000h, 012h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 000h
-            DB 009h, 000h, 000h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h
-            DB 000h, 024h, 012h, 000h, 000h, 012h, 000h, 000h, 024h, 024h
-            DB 024h, 009h, 000h, 000h, 009h, 000h, 000h, 024h, 024h, 024h
-            DB 024h, 024h, 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 000h
-            DB 012h, 000h, 000h, 012h, 000h, 000h, 000h, 012h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 012h, 02Dh, 009h, 000h, 000h
-            DB 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 000h, 012h, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 012h, 000h, 009h, 000h, 000h
-            DB 024h, 024h, 024h, 012h, 02Dh, 009h, 000h, 000h, 02Dh, 012h
-            DB 000h, 009h, 01Bh, 000h, 000h, 000h, 012h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 012h, 02Dh, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 012h, 000h, 009h, 000h, 000h, 000h, 012h, 02Dh, 009h
-            DB 01Bh, 000h, 000h, 000h, 012h, 02Dh, 000h, 009h, 000h, 000h
-            DB 000h, 012h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 012h
-            DB 000h, 009h, 000h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h
-            DB 000h, 000h, 024h, 024h, 024h, 009h, 000h, 000h, 000h, 012h
-            DB 000h, 024h, 024h, 024h, 009h, 000h, 000h, 012h, 000h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 0FEh, 0BAh, 0BAh, 000h, 0DFh, 0DFh
-            DB 000h, 0FAh, 0DFh, 0C6h, 000h, 0FAh, 0DFh, 0C6h, 000h, 0FAh
-            DB 0DFh, 0C6h, 000h, 0DFh, 0BAh, 0A5h, 000h, 0DFh, 0BAh, 0A5h
-            DB 000h, 0FAh, 0DFh, 0C6h, 000h, 0DFh, 0BAh, 0A5h, 000h, 0BAh
-            DB 0BAh, 0A5h, 0A5h, 0DFh, 0DFh, 0FAh, 0FAh, 000h, 0FAh, 0DFh
-            DB 0C6h, 000h, 0FAh, 0DFh, 0C6h, 000h, 0DFh, 0FAh, 0BAh, 000h
-            DB 0DFh, 0FAh, 0BAh, 000h, 0FAh, 0DFh, 0C6h, 000h, 0FFh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
-            DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 009h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 000h, 009h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 012h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 02Dh, 012h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 000h, 012h, 000h, 024h, 009h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 012h, 000h, 009h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 02Dh
-            DB 009h, 000h, 000h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 009h, 000h
-            DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 009h
-            DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
-            DB 02Dh, 009h, 000h, 02Dh, 012h, 000h, 009h, 000h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 009h, 000h, 000h
-            DB 00Dh, 000h, 000h, 012h, 000h, 000h, 009h, 000h, 002h, 009h
-            DB 000h, 000h, 000h, 000h, 009h, 02Dh, 02Fh, 000h, 000h, 009h
-            DB 019h, 000h, 000h, 009h, 00Ch, 009h, 000h, 000h, 009h, 000h
-            DB 000h, 012h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
-            DB 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h, 01Ah, 000h
-            DB 000h, 000h, 000h, 029h, 000h, 000h, 009h, 000h, 000h, 012h
-            DB 000h, 000h, 009h, 000h, 002h, 009h, 000h, 000h, 010h, 000h
-            DB 024h, 020h, 00Bh, 000h, 000h, 009h, 019h, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 024h
-            DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 000h, 000h, 009h, 019h, 000h, 000h, 024h, 020h, 009h
-            DB 000h, 000h, 020h, 000h, 000h, 012h, 000h, 009h, 009h, 000h
-            DB 004h, 009h, 000h, 000h, 010h, 000h, 000h, 000h, 019h, 000h
-            DB 000h, 009h, 00Dh, 000h, 000h, 009h, 009h, 009h, 000h, 000h
-            DB 024h, 024h, 02Dh, 012h, 000h, 010h, 000h, 000h, 002h, 009h
-            DB 000h, 000h, 004h, 000h, 000h, 000h, 00Bh, 000h, 000h, 009h
-            DB 019h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 020h, 000h
-            DB 02Dh, 010h, 000h, 010h, 000h, 000h, 039h, 009h, 000h, 000h
-            DB 004h, 000h, 000h, 000h, 009h, 000h, 000h, 008h, 018h, 000h
-            DB 000h, 009h, 000h, 02Dh, 010h, 000h, 024h, 024h, 000h, 012h
-            DB 000h, 024h, 020h, 020h, 026h, 024h, 020h, 020h, 010h, 000h
-            DB 000h, 000h, 00Bh, 000h, 000h, 009h, 019h, 000h, 02Dh, 009h
-            DB 004h, 000h, 012h, 000h, 024h, 000h, 000h, 012h, 000h, 012h
-            DB 000h, 000h, 010h, 009h, 000h, 000h, 002h, 000h, 020h, 020h
-            DB 020h, 020h, 024h, 009h, 018h, 000h, 000h, 009h, 000h, 000h
-            DB 012h, 000h, 024h, 021h, 000h, 010h, 00Dh, 010h, 000h, 002h
-            DB 000h, 008h, 001h, 000h, 002h, 029h, 008h, 000h, 000h, 010h
-            DB 001h, 00Dh, 00Fh, 000h, 000h, 009h, 011h, 020h, 002h, 001h
-            DB 004h, 001h, 000h, 010h, 001h, 010h, 000h, 002h, 000h, 008h
-            DB 001h, 000h, 002h, 001h, 008h, 000h, 000h, 010h, 001h, 009h
-            DB 00Bh, 000h, 000h, 009h, 010h, 008h, 000h, 000h, 008h, 001h
-            DB 000h, 010h, 001h, 008h, 008h, 002h, 000h, 008h, 001h, 028h
-            DB 002h, 001h, 008h, 000h, 010h, 010h, 004h, 008h, 00Bh, 000h
-            DB 000h, 011h, 011h, 008h, 000h, 000h, 008h, 001h, 000h, 010h
-            DB 001h, 020h, 008h, 002h, 000h, 00Ch, 001h, 028h, 002h, 001h
-            DB 008h, 000h, 000h, 010h, 000h, 008h, 00Bh, 000h, 000h, 011h
-            DB 011h, 008h, 000h, 004h, 028h, 001h, 000h, 010h, 000h, 000h
-            DB 008h, 002h, 028h, 009h, 001h, 000h, 004h, 021h, 008h, 000h
-            DB 010h, 010h, 028h, 008h, 01Bh, 000h, 000h, 021h, 005h, 008h
-            DB 000h, 001h, 009h, 001h, 000h, 010h, 004h, 02Ch, 00Dh, 002h
-            DB 028h, 008h, 000h, 000h, 002h, 001h, 008h, 000h, 02Ch, 010h
-            DB 000h, 008h, 00Bh, 000h, 000h, 011h, 011h, 008h, 000h, 001h
-            DB 008h, 000h, 000h, 010h, 020h, 028h, 00Dh, 000h, 000h, 008h
-            DB 000h, 000h, 033h, 029h, 008h, 000h, 00Ch, 010h, 000h, 008h
-            DB 00Bh, 000h, 000h, 010h, 010h, 008h, 000h, 001h, 008h, 005h
-            DB 010h, 010h, 004h, 004h, 008h, 002h, 000h, 00Ch, 000h, 000h
-            DB 006h, 004h, 008h, 000h, 010h, 010h, 000h, 008h, 00Bh, 000h
-            DB 000h, 011h, 011h, 020h, 025h, 021h, 004h, 020h, 030h, 020h
-            DB 024h, 020h, 008h, 002h, 000h, 00Ah, 000h, 000h, 012h, 001h
-            DB 020h, 010h, 000h, 010h, 000h, 008h, 02Ah, 000h, 02Ch, 011h
-            DB 010h, 000h, 008h, 001h, 000h, 028h, 012h, 000h, 009h, 000h
-            DB 024h, 024h, 024h, 024h, 024h, 000h, 012h, 000h, 000h, 012h
-            DB 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 02Dh, 012h, 000h, 009h, 000h, 000h, 012h
-            DB 000h, 009h, 000h, 000h, 012h, 000h, 000h, 012h, 000h, 012h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
-            DB 000h, 000h, 012h, 000h, 009h, 000h, 000h, 012h, 000h, 009h
-            DB 000h, 000h, 012h, 000h, 000h, 012h, 02Dh, 012h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h
-            DB 012h, 02Dh, 009h, 000h, 000h, 012h, 000h, 009h, 000h, 000h
-            DB 012h, 000h, 000h, 012h, 000h, 012h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 012h, 02Dh
-            DB 009h, 000h, 02Dh, 012h, 000h, 009h, 000h, 000h, 012h, 000h
-            DB 000h, 012h, 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 012h, 000h, 009h, 000h
-            DB 000h, 012h, 000h, 009h, 000h, 02Dh, 012h, 000h, 024h, 024h
-            DB 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
-            DB 009h, 000h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 012h
-            DB 02Dh, 009h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
-            DB 000h, 000h, 012h, 000h, 009h, 000h, 000h, 012h, 02Dh, 009h
-            DB 000h, 000h, 012h, 000h, 009h, 000h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 02Dh
-            DB 012h, 000h, 024h, 024h, 024h, 012h, 000h, 009h, 000h, 000h
-            DB 012h, 02Dh, 009h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 012h, 000h
-            DB 009h, 000h, 000h, 009h, 000h, 009h, 000h, 000h, 012h, 000h
-            DB 009h, 000h, 000h, 02Dh, 000h, 009h, 01Bh, 000h, 000h, 012h
-            DB 000h, 000h, 02Dh, 009h, 000h, 000h, 012h, 000h, 009h, 000h
-            DB 000h, 009h, 000h, 009h, 000h, 000h, 012h, 000h, 009h, 000h
-            DB 000h, 02Dh, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
-            DB 000h, 009h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 009h
-            DB 000h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h, 000h
-            DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 009h
-            DB 000h, 000h, 012h, 02Dh, 009h, 000h, 02Dh, 009h, 000h, 000h
-            DB 000h, 000h, 009h, 000h, 009h, 000h, 000h, 000h, 000h, 009h
-            DB 01Bh, 000h, 02Dh, 012h, 000h, 000h, 000h, 009h, 000h, 000h
-            DB 012h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 02Dh
-            DB 009h, 000h, 009h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
-            DB 02Dh, 012h, 000h, 000h, 02Dh, 009h, 000h, 000h, 024h, 024h
-            DB 024h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 009h, 000h
-            DB 024h, 024h, 024h, 024h, 024h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 0FEh, 0BAh, 0BAh, 0BAh, 0DFh, 0DFh
-            DB 0DFh, 000h, 0BAh, 0BAh, 0BAh, 0DFh, 0DFh, 0DFh, 000h, 0FAh
-            DB 0DFh, 0C6h, 000h, 0FAh, 0DFh, 0C6h, 000h, 0BAh, 0BAh, 0BAh
-            DB 0DFh, 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0BAh, 0DFh, 0DFh, 0DFh
-            DB 000h, 0FAh, 0DFh, 0C6h, 000h, 0FAh, 0DFh, 0C6h, 000h, 0BAh
-            DB 0BAh, 0DFh, 0DFh, 0BAh, 0BAh, 0DFh, 0DFh, 000h, 0FAh, 0DFh
-            DB 0C6h, 000h, 0FAh, 0DFh, 0C6h, 000h, 0FFh, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 000h, 009h, 036h, 03Fh, 024h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 02Dh
-            DB 009h, 009h, 009h, 02Dh, 009h, 02Dh, 009h, 009h, 000h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 000h, 024h, 024h, 009h, 009h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 02Dh, 009h, 009h
-            DB 009h, 000h, 009h, 009h, 009h, 009h, 000h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 009h, 000h, 009h, 009h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 000h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h, 009h, 009h
-            DB 009h, 000h, 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 000h, 000h, 009h, 009h, 009h, 000h
-            DB 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 009h, 009h, 009h, 000h, 009h, 000h
-            DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 000h, 000h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h
-            DB 009h, 000h, 000h, 02Dh, 009h, 000h, 009h, 000h, 009h, 009h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h, 009h, 009h
-            DB 000h, 000h, 009h, 000h, 009h, 000h, 009h, 009h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 02Dh, 009h, 009h, 009h, 009h, 000h, 000h
-            DB 000h, 000h, 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h
-            DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 009h, 009h, 009h, 02Dh, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 000h
-            DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 02Dh, 009h, 02Dh, 009h, 000h, 009h, 009h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 000h
-            DB 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 009h, 009h, 009h
-            DB 009h, 02Dh, 009h, 02Dh, 009h, 000h, 009h, 009h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 009h, 009h
-            DB 02Dh, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 02Dh
-            DB 009h, 000h, 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 02Dh, 009h
-            DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 000h
-            DB 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h, 02Dh, 009h
-            DB 009h, 000h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 000h, 009h, 02Dh
-            DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h
-            DB 009h, 009h, 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 02Dh, 009h, 000h, 009h, 02Dh, 009h, 009h
-            DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h, 009h, 009h
-            DB 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 009h, 009h, 009h
-            DB 009h, 02Dh, 009h, 000h, 009h, 009h, 009h, 009h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 009h, 000h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 000h, 009h, 009h, 009h, 009h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 009h, 009h, 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h
-            DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h
-            DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 01Bh, 000h
-            DB 000h, 009h, 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 009h
-            DB 009h, 000h, 024h, 024h, 024h, 024h, 009h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h
-            DB 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 009h, 009h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h
-            DB 000h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h
-lpvyaczl:   DB 001h, 02Dh, 009h, 009h, 000h, 009h, 009h, 009h, 000h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 000h
-            DB 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 02Dh
-            DB 009h, 009h, 000h, 009h, 009h, 009h, 000h, 009h, 009h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 009h, 000h
-            DB 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 02Dh, 009h, 009h
-            DB 000h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 000h, 009h, 000h, 009h, 01Bh
-            DB 000h, 000h, 009h, 009h, 009h, 02Dh, 009h, 009h, 000h, 009h
-            DB 009h, 009h, 000h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 009h, 000h, 009h, 01Bh, 000h, 02Dh
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h
-            DB 000h, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h
-            DB 009h, 000h, 009h, 000h, 009h, 01Bh, 000h, 02Dh, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 02Dh, 009h
-            DB 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 000h
-            DB 024h, 024h, 024h, 009h, 009h, 009h, 02Dh, 009h, 000h, 000h
-            DB 000h, 000h, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 000h
-            DB 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 000h, 009h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 02Dh, 009h, 009h, 02Dh, 009h, 000h, 009h, 01Bh
-            DB 000h, 000h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 000h, 009h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 000h, 009h, 009h, 000h, 009h, 000h, 009h, 01Bh, 000h, 000h
-            DB 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 02Dh, 009h, 009h, 009h, 009h, 009h, 000h, 009h
-            DB 009h, 000h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h
-            DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 02Dh, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h, 000h
-            DB 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 000h
-            DB 009h, 009h, 009h, 02Dh, 02Dh, 009h, 009h, 009h, 000h, 009h
-            DB 009h, 009h, 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 000h
-            DB 009h, 01Bh, 000h, 02Dh, 009h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 009h, 01Bh
-            DB 000h, 02Dh, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 0FEh, 0DFh, 0DFh, 0FAh, 0FAh
-            DB 000h, 0FAh, 0DFh, 0FAh, 000h, 0DFh, 0DFh, 0FAh, 0FAh, 000h
-            DB 0FAh, 0DFh, 0FAh, 000h, 0DFh, 0DFh, 0BAh, 0BAh, 000h, 0FAh
-            DB 0DFh, 0C6h, 000h, 0DFh, 0DFh, 0BAh, 0BAh, 000h, 0FAh, 0DFh
-            DB 0C6h, 000h, 0DFh, 0DFh, 0FAh, 0FAh, 000h, 0FAh, 0DFh, 0FAh
-            DB 000h, 0DFh, 0DFh, 0FAh, 0FAh, 000h, 0FAh, 0DFh, 0FAh, 000h
-            DB 0DFh, 0DFh, 0FAh, 0FAh, 0DFh, 0DFh, 0FAh, 0FAh, 000h, 0FFh
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh
-            DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 009h, 036h, 03Fh, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h
-            DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 02Dh
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh
-            DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 02Dh, 024h, 024h, 000h, 009h, 01Bh, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 02Dh, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 02Dh, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h
-            DB 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 02Dh, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 009h, 01Bh
-            DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
-            DB 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 02Dh, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 000h
-            DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 009h, 01Bh
-            DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 02Dh, 02Dh, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 000h, 009h, 01Bh, 000h, 02Dh
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h
-            DB 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 02Dh
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 009h, 01Bh
-            DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
-            DB 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 02Dh
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 02Dh
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 000h
-            DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 02Dh, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 009h, 01Bh
-            DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 02Dh, 024h, 000h, 009h, 01Bh, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h
-            DB 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h
-            DB 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 024h
-            DB 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
-            DB 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h, 024h
-            DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 02Dh, 024h, 024h, 024h, 024h, 000h, 009h, 01Bh
-            DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 02Dh
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h
-            DB 009h, 01Bh, 000h, 000h, 024h, 02Dh, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh
-            DB 000h, 000h, 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 000h, 009h, 01Bh, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h
-            DB 024h, 02Dh, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h
-            DB 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 02Dh
-            DB 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
-            DB 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h
-            DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 02Dh
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 009h, 01Bh
-            DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 0FEh, 0FAh, 0FAh, 0DFh, 0DFh
-            DB 0FAh, 0FAh, 0DFh, 0DFh, 000h, 0FAh, 0FAh, 0DFh, 0DFh, 0FAh
-            DB 0FAh, 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0DFh, 0DFh, 0BAh, 0BAh
-            DB 0DFh, 0DFh, 000h, 0FAh, 0FAh, 0DFh, 0DFh, 0FAh, 0FAh, 0DFh
-            DB 0DFh, 000h, 0BAh, 0BAh, 0FAh, 0FAh, 0DFh, 0DFh, 000h, 0BAh
-            DB 0BAh, 0FAh, 0FAh, 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0DFh, 0DFh
-            DB 0FAh, 0FAh, 0DFh, 0DFh, 000h, 000h, 000h, 0FFh, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h
-            DB 024h, 024h, 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 000h, 000h
-            DB 000h, 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h, 009h, 009h
-            DB 009h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 024h, 009h, 009h, 009h, 009h, 009h, 02Dh
-            DB 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 024h, 000h, 024h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 024h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh
-            DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 009h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h
-            DB 000h, 000h, 000h, 000h, 009h, 009h, 009h, 01Bh, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 000h, 009h, 02Dh, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 009h, 000h, 009h, 009h, 009h, 01Bh, 000h, 000h, 000h, 000h
-            DB 000h, 009h, 000h, 009h, 02Dh, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 009h, 000h, 009h, 009h, 02Dh
-            DB 009h, 009h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 009h
-            DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 009h, 009h, 000h, 009h, 009h, 02Dh, 009h, 009h
-            DB 009h, 01Bh, 000h, 000h, 000h, 000h, 02Dh, 009h, 000h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 009h, 000h, 009h, 009h, 000h, 009h, 009h, 009h, 01Bh
-            DB 000h, 000h, 000h, 000h, 02Dh, 009h, 000h, 009h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 009h
-            DB 000h, 009h, 009h, 000h, 009h, 009h, 009h, 01Bh, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h
-            DB 009h, 000h, 009h, 009h, 009h, 01Bh, 000h, 000h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h
-            DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 081h, 009h, 009h, 000h
-            DB 009h, 01Bh, 000h, 000h, 012h, 000h, 02Dh, 009h, 000h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh
-            DB 009h, 009h, 009h, 009h, 081h, 009h, 009h, 000h, 009h, 01Bh
-            DB 000h, 000h, 012h, 000h, 02Dh, 009h, 000h, 009h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h
-            DB 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 01Bh, 000h, 000h
-            DB 012h, 000h, 000h, 009h, 000h, 009h, 02Dh, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h
-            DB 02Dh, 009h, 009h, 02Dh, 009h, 01Bh, 000h, 000h, 012h, 000h
-            DB 000h, 009h, 000h, 009h, 02Dh, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 009h
-            DB 009h, 02Dh, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 009h
-            DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h
-lhhaigpc:   DB 000h, 000h, 000h, 000h, 009h, 009h, 02Dh, 009h, 000h, 009h
-            DB 009h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 009h
-            DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 009h, 009h, 02Dh, 009h, 000h, 009h, 009h, 000h
-            DB 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 024h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 009h, 000h, 009h, 009h, 000h, 009h, 01Bh
-            DB 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h, 024h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h
-            DB 009h, 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h, 02Dh
-            DB 012h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h
-            DB 000h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 012h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 081h, 009h
-            DB 009h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 009h, 009h, 009h, 009h, 081h, 009h, 009h, 000h
-            DB 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h, 000h, 024h
-            DB 009h, 009h, 009h, 009h, 081h, 009h, 009h, 000h, 009h, 01Bh
-            DB 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 024h, 024h, 024h, 024h, 000h, 009h, 009h
-            DB 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 01Bh, 000h, 000h
-            DB 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h
-            DB 02Dh, 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h
-            DB 024h, 000h, 024h, 000h, 009h, 009h, 009h, 009h, 02Dh, 009h
-            DB 009h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h, 000h
-            DB 024h, 000h, 024h, 009h, 009h, 009h, 081h, 009h, 009h, 000h
-            DB 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 024h, 000h, 024h, 000h, 000h, 000h
-            DB 02Dh, 009h, 009h, 009h, 081h, 009h, 009h, 000h, 009h, 01Bh
-            DB 000h, 000h, 012h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h
-            DB 000h, 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h
-            DB 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 01Bh, 000h, 000h
-            DB 009h, 000h, 009h, 009h, 009h, 000h, 000h, 000h, 024h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 009h
-            DB 009h, 009h, 009h, 02Dh, 009h, 01Bh, 000h, 000h, 012h, 000h
-            DB 02Dh, 02Dh, 009h, 02Dh, 02Dh, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 024h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 01Bh, 000h, 000h, 012h, 000h, 02Dh, 02Dh
-            DB 009h, 02Dh, 02Dh, 009h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 02Dh, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 01Bh, 000h, 000h, 02Dh, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 024h, 009h, 009h, 009h, 009h, 009h, 01Bh
-            DB 000h, 000h, 000h, 009h, 02Dh, 02Dh, 009h, 02Dh, 02Dh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 02Dh, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h, 000h
-            DB 000h, 009h, 02Dh, 02Dh, 009h, 02Dh, 02Dh, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 024h, 009h, 009h, 009h, 009h, 01Bh, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h
-            DB 009h, 009h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 02Dh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 009h, 009h
-            DB 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 0FEh, 0FAh, 000h
-            DB 000h, 0DFh, 000h, 000h, 0FAh, 000h, 000h, 0DFh, 000h, 0FAh
-            DB 000h, 0C6h, 000h, 000h, 0FAh, 000h, 000h, 0DFh, 000h, 000h
-            DB 0FAh, 000h, 000h, 0DFh, 000h, 0FAh, 000h, 0C6h, 000h, 000h
-            DB 0DFh, 000h, 0C6h, 000h, 0DFh, 000h, 0DFh, 000h, 0C6h, 000h
-            DB 0DFh, 000h, 000h, 0DFh, 000h, 0BAh, 000h, 0C6h, 000h, 000h
-            DB 0C6h, 000h, 0DFh, 000h, 0FAh, 000h, 000h, 000h, 0FFh, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh
-            DB 000h, 000h, 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h
-            DB 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 036h, 024h, 024h, 024h
-            DB 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 01Bh, 000h, 000h, 024h, 024h, 000h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh
-            DB 000h, 000h, 024h, 000h, 000h, 000h, 000h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h
-            DB 024h, 024h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 036h, 024h
-            DB 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 000h
-            DB 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 000h, 000h
-            DB 009h, 009h, 009h, 02Dh, 02Dh, 02Dh, 02Dh, 02Dh, 009h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 01Bh, 000h, 000h, 024h, 000h, 000h, 000h, 009h, 009h
-            DB 009h, 02Dh, 02Dh, 02Dh, 02Dh, 02Dh, 009h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh
-            DB 000h, 000h, 024h, 024h, 000h, 009h, 009h, 009h, 009h, 02Dh
-            DB 02Dh, 02Dh, 02Dh, 02Dh, 009h, 009h, 009h, 009h, 000h, 000h
-            DB 036h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h
-            DB 024h, 000h, 000h, 024h, 024h, 024h, 024h, 02Dh, 02Dh, 02Dh
-            DB 02Dh, 02Dh, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 081h, 000h
-            DB 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h
-            DB 009h, 01Bh, 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 000h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh
-            DB 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 000h, 02Dh, 009h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h
-            DB 024h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 000h, 02Dh, 009h, 009h, 009h, 000h, 000h, 02Dh, 024h, 009h
-            DB 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 02Dh
-            DB 009h, 009h, 009h, 000h, 000h, 02Dh, 024h, 009h, 000h, 000h
-            DB 009h, 01Bh, 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 000h, 000h, 02Dh, 009h, 009h
-            DB 009h, 000h, 000h, 02Dh, 024h, 009h, 000h, 000h, 009h, 01Bh
-            DB 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 000h, 02Dh, 009h, 009h, 009h, 000h
-            DB 000h, 02Dh, 024h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h
-            DB 024h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 02Dh, 009h, 009h
-            DB 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 000h, 024h, 024h, 024h, 024h, 024h
-            DB 009h, 01Bh, 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 009h, 01Bh
-            DB 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h
-            DB 024h, 000h, 000h, 024h, 024h, 024h, 024h, 02Dh, 02Dh, 02Dh
-            DB 02Dh, 02Dh, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
-            DB 000h, 009h, 009h, 009h, 009h, 02Dh, 02Dh, 02Dh, 02Dh, 02Dh
-            DB 009h, 009h, 009h, 009h, 000h, 000h, 036h, 03Fh, 024h, 024h
-            DB 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 000h, 000h, 000h
-            DB 009h, 009h, 009h, 02Dh, 02Dh, 02Dh, 02Dh, 02Dh, 009h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 01Bh, 000h, 000h, 024h, 024h, 000h, 000h, 009h, 009h
-            DB 009h, 02Dh, 02Dh, 02Dh, 02Dh, 02Dh, 009h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh
-            DB 000h, 000h, 024h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h
-            DB 024h, 024h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 036h, 024h
-            DB 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 000h, 000h
-            DB 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 01Bh, 000h, 000h, 024h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh
-            DB 000h, 000h, 024h, 024h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 036h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h
-            DB 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
-            DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
-            DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 0FEh, 0FAh, 0FAh
-            DB 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0DFh
-            DB 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh
-            DB 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh
-            DB 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0C6h, 0C6h
-            DB 0C6h, 0C6h, 0C6h, 0C6h, 0C6h, 0C6h, 0C6h, 0C6h, 0C6h, 0C6h
-            DB 0C6h, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh
-            DB 0DFh, 0FFh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 090h, 094h, 04Eh, 052h, 04Ah, 04Ah
-            DB 090h, 08Ch, 090h, 094h, 04Eh, 052h, 04Eh, 04Ah, 090h, 0CCh
-            DB 090h, 094h, 04Eh, 012h, 04Eh, 04Ah, 090h, 0CCh, 090h, 094h
-            DB 04Eh, 052h, 04Eh, 04Ah, 090h, 08Ch, 090h, 094h, 008h, 002h
-            DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
-            DB 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch
-            DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
-            DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch
-            DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
-            DB 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h
-            DB 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h
-            DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
-            DB 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch
-            DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
-            DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 0FFh, 0FFh
-            DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
-            DB 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h
-            DB 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h
-            DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
-            DB 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch
-            DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
-            DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch
-            DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
-            DB 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h
-            DB 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h
-            DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
-            DB 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch
-            DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
-            DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch
-            DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
-            DB 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h
-            DB 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h
-            DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
-            DB 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch
-            DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
-            DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch
-            DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
-            DB 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h
-            DB 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h
-            DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
-            DB 098h, 08Ch, 091h, 002h, 0FFh, 0FFh, 011h, 008h, 098h, 08Ch
-            DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
-            DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch
-            DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
-            DB 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h
-            DB 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h
-            DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
-            DB 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch
-            DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
-            DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch
-            DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
-            DB 0EDh, 007h, 098h, 08Ch, 091h
-lnwtltqy:   JMP liscfqtt
-            DB 0C3h, 037h, 0C3h, 0C3h, 077h, 0C3h, 0C3h, 0A7h, 069h, 0C3h
-            DB 0D0h, 0C3h, 0C3h, 065h, 069h, 0C3h, 03Ah, 069h, 0C3h, 0B8h
-            DB 068h, 0C3h, 0E8h, 068h
-lmhhhokk:   JMP ltjhxeit
-            DB 02Ah, 0FCh, 08Fh, 0C9h, 000h, 000h, 0C3h, 0D2h, 068h, 0C3h
-            DB 082h, 068h, 0C3h, 046h, 069h, 0C9h, 000h, 000h, 02Ah, 0C8h
-            DB 06Bh, 022h, 0C8h, 06Bh, 0C9h
-lfydoayc:   ANI 0C0h
-            STA lskutmav
-            RET
-liscfqtt:   LXI H,lpxvrqhs
-            LXI D,lwwntqlb
-            LXI B,lultgnye
-            NOP
-            NOP
-            NOP
-            LXI SP,llpsmrbe
-            JMP lfxfkzwj
-            DB 07Ch, 0B8h, 0C0h, 07Dh, 0B9h, 0C9h, 0C5h, 04Fh, 0CDh, 0A7h
-            DB 069h, 0C1h, 0C9h, 07Eh, 0B9h, 023h, 0CAh, 069h, 068h, 0A7h
-            DB 0C8h, 023h, 023h, 0C3h, 05Ch, 068h, 0D1h, 05Eh, 023h, 056h
-            DB 0EBh, 0C1h, 0D1h, 0E3h, 0C9h, 0AFh, 032h, 0F3h, 08Fh, 0E5h
-            DB 021h, 003h, 0BDh, 03Dh, 0CDh, 077h, 0C3h, 036h, 0FFh, 0E1h
-            DB 0C9h, 0CDh, 0A8h, 068h, 07Dh, 0CDh, 0D0h, 0C3h, 07Ch, 0CDh
-            DB 0D0h, 0C3h, 07Bh, 0CDh, 0D0h, 0C3h, 07Ah, 0CDh, 0D0h, 0C3h
-            DB 07Eh, 0CDh, 0D0h, 0C3h, 0CDh, 027h, 0C4h, 023h, 0C2h, 095h
-            DB 068h, 079h, 0CDh, 0D0h, 0C3h, 078h, 0C3h, 0D0h, 0C3h, 0AFh
-            DB 0C5h, 047h, 0CDh, 0D0h, 0C3h, 005h, 0C2h, 0ABh, 068h, 0C1h
-            DB 03Eh, 0E6h, 0C3h, 0D0h, 0C3h, 0F5h, 00Fh, 00Fh, 00Fh, 00Fh
-            DB 0CDh, 0C1h, 068h, 0F1h, 0F5h, 0E6h, 00Fh, 0FEh, 00Ah, 0DAh
-            DB 0CBh, 068h, 0C6h, 007h, 0C6h, 030h, 0CDh, 055h, 068h, 0F1h
-            DB 0C9h, 0CDh, 072h, 068h, 0CDh, 0FEh, 0C3h, 03Eh, 008h, 0CDh
-            DB 077h, 0C3h, 04Fh, 03Eh, 008h, 0CDh, 077h, 0C3h, 047h, 02Ah
-            DB 0E3h, 08Fh, 0C9h, 07Eh, 0A7h, 0C8h, 0CDh, 055h, 068h, 023h
-            DB 0C3h, 0E8h, 068h
-ltjhxeit:   PUSH H
-            PUSH D
-            CALL lpcdfemz
-            LDA lkukegic
-            CMA
-            ANI 0FEh
-            ORI 002h
-            LXI H,lwsyhnle
-            LXI D,lmtmwmjm
-lyernvpm:   DAD D
-            ANA A
-            RAL
-            JNC lyernvpm
-            ANA A
-            JZ lawbnhfm
-            CALL lqboxtmt
-            LDA lxazvrue
-            CMA
-            MVI D,008h
-llwuisme:   RRC
-            DCR L
-            JC lkokmvkv
-            DCR D
-            JNZ llwuisme
-            LDA lskutmav
-            CMA
-lhwprcrl:   RRC
-            DCR L
-            JC lkokmvkv
-            JNZ lhwprcrl
-lawbnhfm:   MVI D,0FFh
-            JMP lmjzhwcj
-lkokmvkv:   MOV D,M
-lmjzhwcj:   CALL lpcdfemz
-            MOV A,D
-            POP D
-            POP H
-            RET
-            DB 0CDh, 054h, 0C2h, 03Ah, 001h, 0FFh, 02Fh, 0E6h, 0FCh, 0C8h
-            DB 03Dh, 0C9h, 0E5h, 0F5h, 001h, 000h, 000h, 07Eh, 081h, 04Fh
-            DB 0F5h, 0CDh, 027h, 0C4h, 0CAh, 061h, 069h, 0F1h, 078h, 08Eh
-            DB 047h, 0CDh, 027h, 0C4h, 023h, 0C2h, 04Bh, 069h, 0F5h, 0F1h
-            DB 0F1h, 0E1h, 0C9h, 044h, 04Dh, 0CDh, 037h, 0C3h, 0FEh, 08Bh
-            DB 0CAh, 000h, 0D0h, 0E6h, 07Fh, 0FEh, 01Fh, 0CAh, 000h, 0E0h
-            DB 0FEh, 008h, 0CAh, 099h, 069h, 0FEh, 018h, 0CAh, 086h, 069h
-            DB 0FEh, 00Dh, 0CAh, 0A5h, 069h, 077h, 0CDh, 027h, 0C4h, 0CAh
-            DB 067h, 069h, 07Eh, 0FEh, 020h, 0DAh, 067h, 069h, 023h, 0CDh
-            DB 055h, 068h, 0C3h, 067h, 069h, 0CDh, 04Fh, 068h, 0CAh, 067h
-            DB 069h, 02Bh, 03Eh, 008h, 0C3h, 093h, 069h, 077h, 0C9h, 0E5h
-            DB 0D5h, 0C5h, 0F5h, 02Ah, 0C6h, 06Bh, 0E9h, 02Ah, 0FCh, 08Fh
-            DB 079h, 0D6h, 020h, 0DAh, 004h, 06Bh, 04Fh, 07Ch, 0FEh, 0BFh
-            DB 0D4h, 01Fh, 06Bh, 047h, 00Fh, 00Fh, 0E6h, 03Fh, 0C6h, 090h
-            DB 067h, 0EBh, 079h, 0A7h, 0CAh, 07Eh, 06Ah, 02Ah, 0E7h, 08Fh
-            DB 085h, 06Fh, 029h, 029h, 029h, 03Eh, 007h, 0B5h, 06Fh, 078h
-            DB 0E6h, 003h, 0CAh, 0FCh, 069h, 0EAh, 01Ah, 06Ah, 01Fh, 0D2h
-            DB 03Ch, 06Ah, 001h, 0C0h, 004h, 01Ah, 0A1h, 0B6h, 012h, 02Bh
-            DB 01Bh, 01Ah, 0A1h, 0B6h, 012h, 02Bh, 01Bh, 005h, 0C2h, 0E9h
-            DB 069h, 0C3h, 05Ch, 06Ah, 001h, 003h, 004h, 01Ah, 0A1h, 00Fh
-            DB 00Fh, 0B6h, 007h, 007h, 012h, 01Bh, 02Bh, 01Ah, 0A1h, 00Fh
-            DB 00Fh, 0B6h, 007h, 007h, 012h, 01Bh, 02Bh, 005h, 0C2h, 0FFh
-            DB 069h, 0C3h, 05Ch, 06Ah, 001h, 0FCh, 008h, 0E5h, 06Eh, 026h
-            DB 000h, 029h, 029h, 029h, 029h, 01Ah, 0A1h, 0B4h, 012h, 014h
-            DB 01Ah, 0E6h, 00Fh, 0B5h, 012h, 015h, 0E1h, 01Bh, 02Bh, 005h
-            DB 0C2h, 01Dh, 06Ah, 006h, 0F0h, 0C3h, 05Ch, 06Ah, 001h, 0F0h
-            DB 008h, 07Eh, 00Fh, 00Fh, 0E5h, 067h, 0A1h, 06Fh, 0ACh, 067h
-            DB 01Ah, 0A1h, 0B4h, 012h, 014h, 01Ah, 0E6h, 03Fh, 0B5h, 012h
-            DB 015h, 01Bh, 0E1h, 02Bh, 005h, 0C2h, 03Fh, 06Ah, 006h, 0C0h
-            DB 03Ah, 0FAh, 08Fh, 0A7h, 0CAh, 075h, 06Ah, 079h, 02Fh, 04Fh
-            DB 026h, 008h, 013h, 01Ah, 0A9h, 012h, 014h, 01Ah, 0A8h, 012h
-            DB 015h, 025h, 0C2h, 068h, 06Ah, 021h, 0FDh, 08Fh, 034h, 034h
-            DB 034h, 0C3h, 09Eh, 0C0h, 078h, 001h, 003h, 004h, 021h, 03Fh
-            DB 0F0h, 0E6h, 003h, 0CAh, 093h, 06Ah, 0EAh, 0A2h, 06Ah, 01Fh
-            DB 0D2h, 0A5h, 06Ah, 00Eh, 0C0h, 01Ah, 0A1h, 012h, 01Dh, 01Ah
-            DB 0A1h, 012h, 01Dh, 005h, 0C2h, 093h, 06Ah, 0C3h, 05Ch, 06Ah
-            DB 021h, 00Fh, 0FCh, 01Ah, 0A4h, 012h, 014h, 01Ah, 0A5h, 012h
-            DB 01Dh, 01Ah, 0A5h, 012h, 015h, 01Ah, 0A4h, 012h, 01Dh, 005h
-            DB 0C2h, 0A5h, 06Ah, 04Ch, 07Dh, 02Fh, 047h, 0C3h, 05Ch, 06Ah
-            DB 0E5h, 0D5h, 0C5h, 0F5h, 021h, 000h, 000h, 039h, 022h, 0F6h
-            DB 08Fh, 031h, 00Ah, 090h, 026h, 090h, 006h, 030h, 00Eh, 029h
-            DB 02Eh, 000h, 0D1h, 073h, 023h, 072h, 023h, 0D1h, 073h, 023h
-            DB 072h, 023h, 0D1h, 073h, 023h, 072h, 023h, 00Dh, 0C2h, 0D6h
-            DB 06Ah, 07Ch, 02Ah, 0FAh, 08Fh, 0E5h, 0E5h, 0E5h, 0E5h, 0E5h
-            DB 021h, 014h, 000h, 039h, 0F9h, 067h, 024h, 005h, 0C2h, 0D2h
-            DB 06Ah, 02Ah, 0F6h, 08Fh, 0F9h, 0C3h, 09Eh, 0C0h, 021h, 019h
-            DB 06Bh, 0E5h, 02Ah, 0FCh, 08Fh, 0E5h, 0E5h, 0E5h, 021h, 0A7h
-            DB 06Bh, 04Fh, 0CDh, 05Ch, 068h, 0E1h, 0E1h, 0E1h, 0C1h, 022h
-            DB 0FCh, 08Fh, 0C3h, 09Eh, 0C0h, 07Dh, 0C6h, 00Ah, 0D2h, 02Ah
-            DB 06Bh, 0CDh, 0C0h, 06Ah, 0D6h, 00Ah, 06Fh, 032h, 0FCh, 08Fh
-            DB 0AFh, 067h, 032h, 0FDh, 08Fh, 0C9h, 07Ch, 0D6h, 003h, 0D2h
-            DB 03Fh, 06Bh, 0CDh, 04Fh, 06Bh, 03Eh, 0BDh, 067h, 0C9h, 07Ch
-            DB 0C6h, 003h, 0FEh, 0BFh, 0DAh, 04Dh, 06Bh, 0CDh, 059h, 06Bh
-            DB 0AFh, 067h, 0C9h, 07Dh, 0D6h, 00Ah, 0D2h, 057h, 06Bh, 03Eh
-            DB 0F8h, 06Fh, 0C9h, 07Dh, 0C6h, 00Ah, 0D2h, 061h, 06Bh, 03Eh
-            DB 008h, 06Fh, 0C9h, 0CDh, 010h, 0C0h, 021h, 008h, 000h, 0C9h
-            DB 026h, 000h, 0C9h, 021h, 074h, 06Bh, 022h, 0C6h, 06Bh, 0C9h
-            DB 021h, 07Dh, 06Bh, 022h, 0C6h, 06Bh, 0C3h, 09Eh, 0C0h, 021h
-            DB 092h, 06Bh, 022h, 0C6h, 06Bh, 0AFh, 0C6h, 00Ah, 00Dh, 0C2h
-            DB 084h, 06Bh, 0D6h, 038h, 032h, 0FCh, 08Fh, 0C3h, 09Eh, 0C0h
-            DB 021h, 0AFh, 069h, 022h, 0C6h, 06Bh, 0AFh, 0C6h, 003h, 00Dh
-            DB 0C2h, 099h, 06Bh, 0D6h, 060h, 032h, 0FDh, 08Fh, 0C3h, 09Eh
-            DB 0C0h, 0E7h, 070h, 0C1h, 0E8h, 034h, 06Bh, 0EAh, 01Fh, 06Bh
-            DB 0ECh, 066h, 06Bh, 0EDh, 06Ah, 06Bh, 0F8h, 041h, 06Bh, 0F9h
-            DB 04Fh, 06Bh, 0FAh, 059h, 06Bh, 0FBh, 06Dh, 06Bh, 0FFh, 063h
-            DB 06Bh, 000h, 05Fh, 091h, 04Eh, 011h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
-            DB 039h, 000h
+lnogx:   DB 066h, 08Bh
+ljyut:   DB 0E3h, 094h
+lnrtj:   DB 024h
+lnfqh:   DB 000h
+ljvtz:   DB 02Bh, 0B0h
+lnosp:   SHLD lbxhz
+         XCHG
+         SHLD lfthj
+         POP B
+         POP D
+         CALL lnrqt
+         POP H
+         RET
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h
+lkamr:   DB 00Fh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 0F9h
+         DB 0FBh, 0FBh, 0FBh, 000h, 0DFh, 0DFh, 0DFh, 000h, 00Eh, 0FFh
+         DB 0AAh, 055h, 000h, 000h, 000h, 000h, 000h, 0F9h, 0FBh, 0FBh
+         DB 0FBh, 000h, 0DFh, 0DFh, 0DFh, 000h, 00Dh, 0FFh, 081h, 081h
+         DB 081h, 0FFh, 081h, 081h, 081h, 00Dh, 03Ch, 042h, 0FFh, 0A5h
+         DB 0A5h, 0A5h, 0A5h, 0FFh, 0FDh, 000h, 07Eh, 078h, 05Eh, 07Eh
+         DB 078h, 07Eh, 000h, 00Dh, 0FFh, 081h, 081h, 081h, 0FFh, 081h
+         DB 081h, 081h, 009h, 081h, 000h, 081h, 000h, 081h, 0C3h, 0C3h
+         DB 000h, 009h, 081h, 0C3h, 071h, 000h, 0C3h, 0C7h, 0C3h, 000h
+         DB 009h, 073h, 0F3h, 0FBh, 000h, 0DFh, 0CFh, 0C7h, 000h, 009h
+         DB 005h, 040h, 024h, 008h, 042h, 024h, 081h, 04Ah, 009h, 086h
+         DB 049h, 042h, 092h, 05Ah, 038h, 046h, 091h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h
+lkamt:   DB 00Bh, 001h, 00Fh, 000h, 007h, 007h, 002h, 007h, 007h, 007h
+         DB 007h, 002h, 002h, 006h, 000h, 000h
+lkakh:   DB 00Bh, 001h, 00Fh, 000h, 070h, 070h, 020h, 078h, 074h, 0F4h
+         DB 070h, 050h, 04Ch, 0C4h, 000h, 000h
+lkamd:   DB 00Bh, 001h, 00Fh, 000h, 0E0h, 0E0h, 040h, 0E0h, 0E0h, 0E0h
+         DB 0E0h, 040h, 040h, 060h, 000h, 000h
+lkajr:   DB 00Bh, 001h, 00Fh, 000h, 00Eh, 00Eh, 004h, 01Eh, 02Eh, 02Fh
+         DB 00Eh, 00Ah, 032h, 023h, 000h, 000h
+lkamx:   DB 00Bh, 001h, 00Fh, 000h, 01Ch, 01Ch, 008h, 03Eh, 05Dh, 05Dh
+         DB 01Ch, 014h, 014h, 036h, 000h, 000h
+lkakl:   DB 00Bh, 001h, 00Fh, 000h, 01Ch, 01Dh, 009h, 03Eh, 05Ch, 05Ch
+         DB 01Ch, 014h, 016h, 030h, 000h, 000h
+lkamh:   DB 00Bh, 001h, 00Fh, 000h, 038h, 0B8h, 090h, 07Ch, 03Ah, 03Ah
+         DB 038h, 028h, 068h, 00Ch, 000h, 000h
+lkajv:   DB 010h, 007h, 0F7h, 01Ch, 03Eh, 063h, 0C1h, 0C0h, 0C0h, 060h
+         DB 03Eh, 003h, 001h, 001h, 041h, 061h, 03Eh, 01Ch, 000h, 000h
+         DB 000h, 000h, 007h, 00Fh, 018h, 030h, 030h, 030h, 0B0h, 0B0h
+         DB 0B0h, 018h, 00Fh, 007h, 000h, 000h, 000h, 000h, 003h, 087h
+         DB 0CCh, 058h, 018h, 018h, 018h, 018h, 058h, 0CCh, 087h, 003h
+         DB 000h, 000h, 000h, 000h, 086h, 0C6h, 067h, 037h, 036h, 036h
+         DB 036h, 036h, 036h, 066h, 0C6h, 086h, 000h, 000h, 000h, 000h
+         DB 078h, 0FDh, 085h, 001h, 001h, 001h, 001h, 001h, 001h, 001h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 078h, 0FCh, 086h, 086h
+         DB 086h, 08Ch, 0F8h, 080h, 082h, 086h, 0FCh, 078h, 000h, 000h
+         DB 000h, 000h, 038h, 038h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 038h, 038h, 000h, 000h
+lnhhu:   DB 010h, 006h, 0F7h, 0C0h, 0C0h, 0C0h, 0C0h, 0C0h, 0C0h, 0C0h
+         DB 0C0h, 0C0h, 0C0h, 0C0h, 0C0h, 0C1h, 0C1h, 0FFh, 000h, 000h
+         DB 000h, 000h, 030h, 000h, 030h, 030h, 030h, 030h, 030h, 030h
+         DB 030h, 0B0h, 099h, 08Fh, 000h, 000h, 000h, 000h, 070h, 038h
+         DB 018h, 018h, 018h, 018h, 018h, 018h, 0D8h, 0D8h, 08Ch, 007h
+         DB 000h, 000h, 000h, 018h, 031h, 063h, 066h, 066h, 066h, 066h
+         DB 067h, 066h, 066h, 066h, 0C3h, 081h, 000h, 000h, 000h, 000h
+         DB 0E0h, 0F0h, 018h, 018h, 018h, 030h, 0E0h, 000h, 008h, 018h
+         DB 0F0h, 0E0h, 000h, 000h, 000h, 000h, 0E0h, 0E0h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 0E0h, 0E0h, 000h, 000h
+lnqkj:   DB 010h, 005h, 0F7h, 01Fh, 03Fh, 031h, 031h, 030h, 030h, 0FCh
+         DB 0FCh, 030h, 030h, 030h, 030h, 030h, 030h, 030h, 000h, 000h
+         DB 08Ch, 09Ch, 0BCh, 00Ch, 00Ch, 00Ch, 00Ch, 00Ch, 00Ch, 00Ch
+         DB 00Ch, 00Ch, 00Ch, 01Eh, 000h, 000h, 000h, 000h, 01Ch, 03Eh
+         DB 063h, 0C1h, 0C1h, 0C1h, 0C1h, 0C1h, 0C1h, 063h, 03Eh, 01Ch
+         DB 000h, 000h, 000h, 000h, 033h, 037h, 03Ch, 0B8h, 0B0h, 0B0h
+         DB 0B0h, 0B0h, 0B0h, 030h, 030h, 030h, 000h, 000h, 000h, 000h
+         DB 0C7h, 0E7h, 020h, 000h, 000h, 000h, 000h, 000h, 000h, 007h
+         DB 007h, 000h, 000h
+ljnwy:   DB 010h, 006h, 0F7h, 030h, 030h, 030h, 030h, 030h, 030h, 0FCh
+         DB 0FCh, 030h, 030h, 030h, 031h, 031h, 03Fh, 01Fh, 000h, 000h
+         DB 000h, 000h, 030h, 000h, 030h, 030h, 030h, 030h, 030h, 030h
+         DB 0B0h, 0B0h, 099h, 00Fh, 000h, 000h, 000h, 018h, 01Bh, 01Fh
+         DB 01Dh, 019h, 019h, 019h, 019h, 019h, 0D9h, 0D9h, 099h, 019h
+         DB 000h, 000h, 000h, 000h, 070h, 0F9h, 09Bh, 09Bh, 09Bh, 09Bh
+         DB 09Bh, 09Bh, 09Bh, 09Bh, 099h, 08Ch, 000h, 000h, 000h, 000h
+         DB 0F0h, 0F8h, 00Ch, 00Ch, 00Ch, 018h, 0F0h, 000h, 004h, 00Ch
+         DB 0F8h, 0F0h, 000h, 000h, 000h, 000h, 070h, 070h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 070h, 070h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 010h, 001h, 0F7h, 07Ch, 0FEh, 0C6h, 0CEh
+         DB 0D6h, 0D6h, 0D6h, 0D6h, 0D6h, 0D6h, 0D6h, 0E6h, 0C6h, 0FEh
+         DB 07Ch, 000h, 010h, 001h, 0F7h, 018h, 038h, 078h, 0D8h, 098h
+         DB 018h, 018h, 018h, 018h, 018h, 018h, 018h, 018h
+lnhhj:   DB 018h, 07Eh, 000h, 010h, 001h, 0F7h, 07Ch, 0FEh, 0C6h, 0C6h
+         DB 006h, 00Ch, 00Ch, 018h, 030h, 060h, 060h, 0C0h, 0C0h, 0FEh
+         DB 0FEh, 000h, 010h, 001h, 0F7h, 07Ch, 0FEh, 0C6h, 0C6h, 006h
+         DB 00Ch, 038h, 03Ch, 00Eh, 006h, 006h, 0C6h, 0C6h, 0FEh, 07Ch
+         DB 000h, 010h, 001h, 0F7h, 066h, 066h, 066h, 066h, 066h, 066h
+         DB 0C6h, 0C6h, 0FEh, 0FEh, 006h, 006h, 006h, 006h, 006h, 000h
+         DB 010h, 001h, 0F7h, 0FEh, 0FEh, 0C0h, 0C0h, 0C0h, 0C0h, 0FCh
+         DB 0FEh, 006h, 006h, 006h, 0C6h, 0C6h, 0FEh, 07Ch, 000h, 010h
+         DB 001h, 0F7h, 07Ch, 0FEh, 0C6h, 0C6h, 0C0h, 0C0h, 0FCh, 0FEh
+         DB 0C6h, 0C6h, 0C6h, 0C6h, 0C6h, 0FEh, 07Ch, 000h, 010h, 001h
+         DB 0F7h, 0FEh, 0FEh, 006h, 006h, 006h, 00Ch, 018h, 030h, 060h
+         DB 0C0h, 0C0h, 0C0h, 0C0h, 0C0h, 0C0h, 000h, 010h, 001h, 0F7h
+         DB 07Ch, 0FEh, 0C6h, 0C6h, 0C6h, 0C6h, 07Ch, 0C6h, 0C6h, 0C6h
+         DB 0C6h, 0C6h, 0C6h, 0FEh, 07Ch, 000h, 010h, 001h, 0F7h, 07Ch
+         DB 0FEh, 0C6h, 0C6h, 0C6h, 0C6h, 0FEh, 07Eh, 006h, 006h, 006h
+         DB 0C6h, 0C6h, 0FEh, 07Ch, 000h, 000h, 000h, 000h, 097h, 0C0h
+         DB 097h, 0C0h, 097h, 0C0h, 097h, 0C0h, 097h, 0C0h, 097h, 0C0h
+         DB 097h, 0C0h, 097h, 0C0h, 097h, 0C0h, 097h, 0C0h, 097h, 0C0h
+         DB 097h, 0C0h, 097h, 0C0h, 097h, 0C0h, 002h, 033h, 05Fh, 000h
+         DB 000h, 000h, 0F0h, 000h, 085h, 0C1h, 01Fh, 007h, 0EEh, 000h
+         DB 05Ah, 0C1h, 097h, 0EEh, 01Fh, 007h, 03Bh, 000h, 000h, 010h
+         DB 0F0h, 0CEh, 0E3h, 0CEh, 056h, 01Fh, 038h, 007h, 025h, 000h
+         DB 000h
+lkanx:   DB 008h, 00Bh, 07Fh, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h
+lkanz:   DB 0FFh, 0FEh, 000h, 000h, 000h, 000h, 001h, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0E0h, 000h, 000h, 003h, 000h, 00Fh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0C0h, 000h, 000h, 003h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 080h, 007h, 0FEh, 01Fh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 000h, 000h, 000h, 000h, 01Fh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 080h, 000h, 000h, 000h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0C0h, 000h, 000h, 001h, 0FFh, 0FFh, 0FFh, 0FFh, 0F8h, 000h
+         DB 000h, 000h, 000h, 0FFh, 0FFh, 0FFh, 0FFh, 0F8h, 000h, 000h
+         DB 000h, 000h, 003h, 0FFh, 0FEh, 003h, 0F0h, 000h, 03Eh, 003h
+         DB 0FCh, 000h, 0FFh, 003h, 0FFh, 000h, 0F0h, 00Ch, 000h, 07Fh
+         DB 000h, 0FFh, 080h, 0FFh, 000h, 0FCh, 003h, 000h, 07Fh, 000h
+         DB 0FFh, 080h, 0FFh, 000h, 0F8h, 000h, 000h, 01Fh, 080h, 0FFh
+         DB 080h, 0FFh, 001h, 0F8h, 00Fh, 000h, 03Fh, 001h, 0FFh, 000h
+         DB 0FCh, 003h, 0E0h, 03Ch, 000h, 07Fh, 003h, 0FFh, 003h, 0F0h
+         DB 03Fh, 0C0h, 0F0h, 000h, 0FCh, 00Fh, 0FCh, 00Fh, 0C0h, 0FFh
+         DB 000h, 080h, 003h, 0E0h, 07Fh, 0E0h, 07Fh, 003h, 0FCh, 007h
+         DB 000h, 01Fh, 080h, 0FFh, 080h, 0FCh, 03Fh, 0F0h, 018h, 000h
+         DB 07Fh, 007h, 0FFh, 007h, 0E0h, 0FCh, 000h, 080h, 000h, 0FEh
+         DB 01Fh, 0FCh, 00Fh, 080h, 0F0h, 00Fh, 000h, 020h, 0FCh, 03Fh
+         DB 0FCh, 03Fh, 003h, 0F0h, 03Fh, 000h, 000h, 0F0h, 07Fh, 0F0h
+         DB 07Fh, 007h, 0C0h, 07Eh, 000h, 003h, 0E0h, 0FFh, 060h, 0FCh
+         DB 00Fh, 080h, 0FCh, 001h, 007h, 0C0h, 0FFh, 0C0h, 0FCh, 01Fh
+         DB 080h, 0FCh, 003h, 007h, 080h, 0FFh, 0C0h, 0F8h, 03Fh, 000h
+         DB 0F0h, 006h, 00Fh, 080h, 0FFh, 080h, 0F0h, 03Fh, 001h, 0F0h
+         DB 01Ch, 00Fh, 001h, 0FFh, 001h, 0F0h, 03Fh, 001h, 0F0h, 01Ch
+         DB 00Fh, 081h, 0FFh, 001h, 0F0h, 07Fh, 001h, 0F0h, 01Eh, 00Fh
+         DB 081h, 0FFh, 001h, 0F0h, 03Fh, 001h, 0F0h, 01Eh, 007h, 0C0h
+         DB 0FFh, 080h, 0F8h, 01Fh, 000h, 0F8h, 00Fh, 001h, 0F0h, 07Fh
+         DB 0E0h, 0FEh, 007h, 0C0h, 0FEh, 003h, 080h, 0FCh, 00Fh, 0F0h
+         DB 01Fh, 000h, 0F8h, 01Fh, 000h, 0F0h, 01Fh, 001h, 0FEh, 003h
+         DB 0E0h, 07Fh, 003h, 0E0h, 03Eh, 003h, 0E0h, 07Fh, 000h, 0FEh
+         DB 00Fh, 0C0h, 0FCh, 007h, 080h, 07Eh, 007h, 0F0h, 00Fh, 080h
+         DB 0FEh, 00Fh, 080h, 0FCh, 003h, 0E0h, 0FFh, 000h, 0FCh, 00Fh
+         DB 0C0h, 0FCh, 007h, 080h, 01Fh, 001h, 0F8h, 003h, 0C0h, 0FFh
+         DB 007h, 0C0h, 03Ch, 000h, 0FCh, 00Fh, 0C0h, 01Fh, 003h, 0F8h
+         DB 01Fh, 000h, 0E0h, 000h, 0F8h, 03Fh, 000h, 07Eh, 00Fh, 0F8h
+         DB 03Fh, 000h, 080h, 001h, 0F0h, 07Fh, 000h, 0FCh, 01Fh, 0E0h
+         DB 0FCh, 001h, 000h, 001h, 0F0h, 07Fh, 000h, 0FCh, 01Fh, 0F0h
+         DB 0FEh, 001h, 000h, 000h, 0F8h, 03Fh, 000h, 0FEh, 00Fh, 0F0h
+         DB 07Eh, 000h, 080h, 000h, 0FCh, 00Fh, 0C0h, 03Fh, 003h, 0FEh
+         DB 01Fh, 000h, 000h, 000h, 07Fh, 007h, 0E0h, 01Fh, 001h, 0FEh
+         DB 00Fh, 080h, 008h, 000h, 00Fh, 080h, 0FCh, 003h, 0E0h, 0FFh
+         DB 081h, 0E0h, 000h, 000h, 001h, 0F0h, 07Fh, 060h, 0FCh, 01Fh
+         DB 0E0h, 0FEh, 000h, 000h, 000h, 07Fh, 007h, 0FCh, 01Fh, 001h
+         DB 0FEh, 01Fh, 000h, 00Eh, 000h, 00Fh, 080h, 0FFh, 003h, 0E0h
+         DB 0FFh, 001h, 0F0h, 003h, 080h, 000h, 0F8h, 03Fh, 0C0h, 0FCh
+         DB 001h, 0F0h, 0FFh, 000h, 0F0h, 000h, 07Fh, 027h, 0F8h, 03Fh
+         DB 020h, 0FEh, 01Fh, 0E0h, 03Eh, 000h, 01Fh, 000h, 0FFh, 007h
+         DB 0FCh, 01Fh, 000h, 0FEh, 001h, 0C0h, 003h, 0F0h, 03Fh, 0C0h
+         DB 0FFh, 003h, 0FCh, 00Fh, 000h, 03Eh, 000h, 0FEh, 006h, 0F8h
+         DB 027h, 0F0h, 0FFh, 080h, 0E0h, 003h, 000h, 01Fh, 000h, 03Fh
+         DB 000h, 0FFh, 00Ch, 0FCh, 00Ch, 080h, 0C0h, 00Fh, 0CCh, 01Fh
+         DB 0E0h, 03Fh, 0F0h, 0FFh, 0C0h, 000h, 000h, 007h, 0E6h, 007h
+         DB 0F8h, 003h, 0FDh, 000h, 0FCh, 000h, 000h, 001h, 0FFh, 000h
+         DB 0FFh, 000h, 0FFh, 0C0h, 01Fh, 000h, 000h, 001h, 0FFh, 000h
+         DB 0FFh, 0B0h, 0CFh, 0FCh, 006h, 0C0h, 000h, 001h, 0BFh, 000h
+         DB 01Fh, 0F8h, 003h, 0FFh, 080h, 000h, 000h, 000h, 0BFh, 0FCh
+         DB 000h, 0FFh, 0FFh, 000h, 07Fh, 000h, 000h, 003h, 07Fh, 0FFh
+         DB 063h, 073h, 0FFh, 0FFh, 000h, 000h, 000h, 000h, 00Fh, 0FFh
+         DB 0FFh, 0FFh, 080h, 000h, 000h, 000h, 000h, 00Fh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FCh, 000h, 000h, 000h, 000h, 003h, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0F8h, 000h, 000h, 000h, 000h, 000h, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0E0h, 000h, 000h, 000h, 07Fh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 080h, 000h, 000h, 000h, 000h, 01Fh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0E0h, 000h, 000h, 000h, 000h, 00Fh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FCh, 000h, 000h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0F0h, 000h, 000h, 000h, 000h, 000h, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0F8h, 000h, 000h, 000h, 000h, 000h
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0F0h, 000h, 003h, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0E7h, 0DCh, 01Bh, 0E4h, 023h, 0A2h, 000h
+         DB 000h, 0FFh, 0FFh, 0DDh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0F0h
+         DB 000h, 000h, 000h, 000h, 000h, 00Fh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0F9h, 000h, 000h, 000h, 03Fh, 0FBh, 05Fh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0F0h, 000h, 000h, 018h, 000h, 000h, 000h, 000h
+         DB 019h, 0FFh, 0FFh, 0FFh, 01Fh, 0FFh, 0F0h, 000h, 000h, 000h
+         DB 001h, 07Fh, 0FDh, 000h, 01Fh, 0FFh, 0FCh, 000h, 000h, 000h
+         DB 003h, 07Fh, 0F9h, 000h, 000h, 0FFh, 0F8h, 000h, 000h, 000h
+         DB 00Ch, 0FFh, 0FEh, 080h, 001h, 0FFh, 0FEh, 000h, 000h, 000h
+         DB 004h, 0FFh, 0FFh, 040h, 000h, 0FFh, 0FFh, 000h, 000h, 000h
+         DB 001h, 07Fh, 0FFh, 010h, 001h, 0FFh, 0FFh, 000h, 000h, 000h
+         DB 000h, 09Fh, 0FFh, 0CCh, 000h, 0FFh, 0FFh, 0C0h, 000h, 000h
+         DB 000h, 067h, 0FFh, 0F1h, 000h, 03Fh, 0FFh, 0F0h, 000h, 000h
+         DB 000h, 00Ch, 0DFh, 0FEh, 0C0h, 006h, 0FFh, 0FEh, 000h, 000h
+         DB 000h, 000h, 039h, 0FFh, 098h, 000h, 09Fh, 0FFh, 080h, 000h
+         DB 000h, 000h, 011h, 03Fh, 0FFh, 000h, 000h, 0FFh, 0FDh, 000h
+         DB 000h, 000h, 000h, 039h, 0FFh, 0F8h, 000h, 01Fh, 0FFh, 0F0h
+         DB 000h, 000h, 000h, 019h, 0BFh, 0FFh, 000h, 000h, 0FFh, 0FFh
+         DB 000h, 000h, 000h, 000h, 01Dh, 0FFh, 0F8h, 000h, 00Fh, 0FFh
+         DB 0F8h, 000h, 000h, 000h, 004h, 0DFh, 0FFh, 080h, 000h, 0FFh
+         DB 0FFh, 000h, 000h, 000h, 000h, 08Eh, 0FFh, 0FCh, 000h, 007h
+         DB 0FFh, 0FCh, 000h, 000h, 000h, 00Ch, 0DFh, 0FFh, 0C0h, 000h
+         DB 0FFh, 0FFh, 080h, 000h, 000h, 000h, 0CFh, 0FFh, 0FEh, 000h
+         DB 007h, 0FFh, 0FCh, 000h, 000h, 000h, 002h, 0E7h, 0FFh, 0E0h
+         DB 000h, 07Fh, 0FFh, 0C0h, 000h, 000h, 000h, 033h, 0FFh, 0FFh
+         DB 000h, 003h, 0FFh, 0FEh, 000h, 000h, 000h, 003h, 077h, 0FFh
+         DB 0E0h, 000h, 03Fh, 0FFh, 0E0h, 000h, 000h, 000h, 013h, 07Fh
+         DB 0FFh, 000h, 001h, 0FFh, 0FFh, 000h, 000h, 000h, 000h, 01Dh
+         DB 0FFh, 0F8h, 000h, 00Fh, 0FFh, 0F8h, 000h, 000h, 000h, 00Ch
+         DB 09Fh, 0FFh, 080h, 000h, 0FFh, 0FFh, 080h, 000h, 000h, 000h
+         DB 08Fh, 0FFh, 0FCh, 000h, 007h, 0FFh, 0FEh, 000h, 000h, 000h
+         DB 001h, 073h, 0FFh, 0E0h, 000h, 03Fh, 0FFh, 0E0h, 000h, 000h
+         DB 000h, 018h, 03Fh, 0FFh, 000h, 000h, 0FFh, 0FFh, 080h, 000h
+         DB 000h, 000h, 023h, 0FFh, 0FFh, 000h, 003h, 0FFh, 0FFh, 000h
+         DB 000h, 000h, 000h, 08Eh, 0FFh, 0FCh, 000h, 007h, 0FFh, 0FEh
+         DB 000h, 000h, 000h, 000h, 01Dh, 0FFh, 0F8h, 000h, 00Fh, 0FFh
+         DB 0FCh, 000h, 000h, 000h, 001h, 03Bh, 0FFh, 0F0h, 000h, 01Fh
+         DB 0FFh, 0F8h, 000h, 000h, 000h, 001h, 073h, 0FFh, 0F0h, 000h
+         DB 03Bh, 0FFh, 0F0h, 000h, 000h, 000h, 001h, 073h, 0FFh, 0F0h
+         DB 000h, 03Fh, 0FFh, 0F0h, 000h, 000h, 000h, 001h, 077h, 0FFh
+         DB 0E0h, 000h, 03Bh, 0FFh, 0F0h, 000h, 000h, 000h, 001h, 077h
+         DB 0FFh, 0E0h, 000h, 03Fh, 0FFh, 0F0h, 000h, 000h, 000h, 000h
+         DB 01Dh, 0FFh, 0F8h, 000h, 00Fh, 0FFh, 0FCh, 000h, 000h, 000h
+         DB 000h, 007h, 0FFh, 0FFh, 000h, 003h, 0FFh, 0FFh, 000h, 000h
+         DB 000h, 000h, 004h, 0CFh, 0FFh, 0C0h, 000h, 0FFh, 0FFh, 0C0h
+         DB 000h, 000h, 000h, 000h, 00Fh, 0FFh, 0FCh, 000h, 007h, 0FFh
+         DB 0FEh, 000h, 000h, 000h, 000h, 001h, 07Fh, 0FFh, 0E0h, 000h
+         DB 0FFh, 0FFh, 080h, 000h, 000h, 000h, 000h, 00Ch, 0FFh, 0FCh
+         DB 000h, 007h, 0FFh, 0FCh, 000h, 000h, 000h, 000h, 000h, 01Fh
+         DB 0FFh, 0FCh, 000h, 03Fh, 0FFh, 0FCh, 001h, 018h, 000h, 000h
+         DB 000h, 007h, 0FFh, 0FFh, 040h, 00Fh, 0FFh, 0FFh, 0FFh, 080h
+         DB 000h, 000h, 000h, 000h, 07Fh, 0FFh, 0FCh, 000h, 0FFh, 0FFh
+         DB 0FFh, 0E0h, 000h, 000h, 000h, 000h, 00Fh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 000h, 000h, 000h, 000h, 000h, 000h
+lkahl:   DB 0FFh, 0F8h, 000h, 000h, 000h, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0F8h, 0FFh, 0F9h, 0FCh, 07Fh
+         DB 007h, 0FCh, 07Fh, 0F0h, 0FFh, 0C0h, 0FFh, 003h, 000h, 07Eh
+         DB 006h, 07Ch, 03Eh, 07Fh, 0FFh, 0FFh, 0E0h, 07Eh, 000h, 0FCh
+         DB 07Fh, 0F8h, 0F8h, 0E0h, 0E0h, 01Fh, 087h, 0FEh, 00Fh, 004h
+         DB 00Ch, 01Fh, 00Fh, 07Eh, 00Fh, 000h, 03Ch, 07Ch, 03Eh, 0FCh
+         DB 03Ch, 060h, 0E0h, 0F8h, 0F9h, 0E0h, 0F0h, 0C0h, 083h, 0C0h
+         DB 0FFh, 081h, 0C0h, 000h, 00Fh, 003h, 0FFh, 00Fh, 006h, 000h
+         DB 03Eh, 00Fh, 0FCh, 03Eh, 000h, 0C1h, 0E0h, 0FFh, 0C0h, 0E0h
+         DB 001h, 01Fh, 007h, 0FCh, 03Fh, 000h, 0C0h, 0F0h, 0FFh, 081h
+         DB 0E0h, 006h, 01Fh, 007h, 0FCh, 03Eh, 000h, 001h, 0F0h, 0FFh
+         DB 003h, 080h, 010h, 07Eh, 03Fh, 0F0h, 0F8h, 03Ch, 01Fh, 007h
+         DB 0FCh, 03Fh, 007h, 003h, 081h, 0FFh, 007h, 001h, 080h, 0F8h
+         DB 0FFh, 081h, 0E0h, 030h, 07Ch, 01Fh, 0F0h, 0F8h, 000h, 00Fh
+         DB 003h, 0FEh, 01Fh, 008h, 001h, 0E0h, 0FFh, 003h, 0C0h, 0C0h
+         DB 0F8h, 03Fh, 0E0h, 0F8h, 000h, 00Fh, 007h, 0FEh, 01Fh, 001h
+         DB 001h, 0C0h, 0FFh, 003h, 080h, 080h, 07Eh, 01Fh, 0F0h, 0F8h
+         DB 018h, 00Fh, 003h, 0FEh, 01Fh, 018h, 000h, 0F0h, 0FFh, 001h
+         DB 0C0h, 090h, 07Ch, 01Fh, 0F0h, 0FCh, 000h, 007h, 081h, 0FFh
+         DB 00Fh, 000h, 000h, 0F0h, 07Fh, 0E0h, 0F0h, 000h, 01Fh, 007h
+         DB 0FCh, 03Eh, 030h, 0C1h, 0E0h, 0FFh, 083h, 0C0h, 080h, 07Ch
+         DB 01Fh, 0F0h, 0F8h, 030h, 007h, 001h, 0FFh, 00Fh, 000h, 060h
+         DB 0F0h, 0FFh, 0C1h, 0E0h, 0C0h, 03Fh, 00Fh, 0F8h, 07Eh, 070h
+         DB 083h, 0C0h, 0FFh, 007h, 003h, 000h, 0F8h, 03Fh, 0C0h, 0F0h
+         DB 07Fh, 00Fh, 003h, 0FCh, 01Fh, 003h, 000h, 0E0h, 0FFh, 081h
+         DB 0C1h, 080h, 01Eh, 00Fh, 0F0h, 07Ch, 078h, 007h, 081h, 0FEh
+         DB 00Fh, 007h, 000h, 0E0h, 0FFh, 001h, 0C0h, 0C0h, 03Eh, 00Fh
+         DB 0E0h, 0F8h, 038h, 00Fh, 003h, 0FCh, 01Fh, 00Fh, 001h, 0C0h
+         DB 0FFh, 007h, 001h, 000h, 0E0h, 07Fh, 000h, 0C0h, 0E0h, 03Eh
+         DB 00Fh, 0E0h, 078h, 038h, 00Fh, 003h, 0FCh, 01Fh, 00Fh, 000h
+         DB 0E0h, 07Fh, 001h, 080h, 0C0h, 0F8h, 03Fh, 080h, 0F0h, 0F8h
+         DB 0E0h, 0E0h, 0FFh, 003h, 080h, 084h, 0F0h, 07Fh, 0E0h, 0F0h
+         DB 0F0h, 083h, 0C1h, 0FEh, 00Fh, 000h, 081h, 080h, 0FFh, 083h
+         DB 080h, 0FEh, 007h, 0C0h, 0FEh, 00Fh, 001h, 080h, 0C0h, 0FFh
+         DB 081h, 0C0h, 0C0h, 00Fh, 003h, 0F8h, 03Eh, 003h, 00Fh, 007h
+         DB 038h, 01Eh, 00Fh, 0FCh, 07Ch, 0F0h, 07Eh, 00Fh, 00Fh, 000h
+         DB 0F0h, 07Fh, 000h, 0E0h, 0F8h, 00Fh, 003h, 0F8h, 03Eh, 000h
+         DB 007h, 003h, 01Ch, 01Fh, 007h, 0F8h, 03Ch, 0F0h, 03Eh, 00Fh
+         DB 000h, 07Ch, 078h, 03Ch, 0F0h, 0F0h, 07Ch, 01Eh, 007h, 0F0h
+         DB 078h, 01Ch, 0C7h, 001h, 09Eh, 00Fh, 083h, 0E0h, 0C0h, 0E7h
+         DB 003h, 080h, 0FFh, 007h, 00Fh, 01Fh, 080h, 0CCh, 00Fh, 00Fh
+         DB 007h, 07Ch, 03Eh, 00Ch, 083h, 001h, 09Eh, 00Fh, 003h, 03Fh
+         DB 01Fh, 083h, 0FEh, 01Fh, 00Ch, 0F0h, 0F0h, 079h, 080h, 0C0h
+         DB 000h, 078h, 03Ch, 0C0h, 0E0h, 038h, 03Ch, 00Eh, 0E0h, 078h
+         DB 019h, 007h, 001h, 03Ch, 01Eh, 003h, 070h, 0C0h, 0E7h, 001h
+         DB 086h, 000h, 0E0h, 079h, 000h, 0C0h, 0E3h, 03Ch, 00Eh, 0E0h
+         DB 0F0h, 008h, 01Eh, 007h, 070h, 03Ch, 00Eh, 0C3h, 080h, 0DEh
+         DB 00Fh, 001h, 001h, 080h, 0CFh, 007h, 001h, 09Fh, 01Fh, 007h
+         DB 0F0h, 0F8h, 000h, 03Ch, 00Eh, 0F0h, 078h, 01Ch, 0C3h, 090h
+         DB 0DEh, 00Fh, 000h, 007h, 001h, 09Ch, 00Fh, 003h, 07Eh, 03Fh
+         DB 000h, 0F8h, 07Eh, 000h, 01Eh, 007h, 078h, 03Eh, 01Fh, 001h
+         DB 0C8h, 0FFh, 007h, 000h, 003h, 000h, 08Eh, 007h, 000h, 03Eh
+         DB 00Fh, 003h, 0F8h, 07Fh, 080h, 078h, 01Eh, 0E0h, 0F8h, 07Dh
+         DB 087h, 063h, 078h, 03Fh, 000h, 01Eh, 00Fh, 0F0h, 078h, 01Fh
+         DB 0C1h, 0E0h, 0EFh, 007h, 081h, 003h, 000h, 0CEh, 007h, 003h
+         DB 008h, 0C6h, 0E7h, 003h, 000h, 080h, 0C0h, 0E3h, 001h, 0C0h
+         DB 000h, 0C0h, 0F3h, 003h, 000h, 080h, 0C2h, 0E3h, 001h, 080h
+         DB 0C4h, 0F1h, 039h, 080h, 0E0h, 000h, 0E0h, 0F3h, 003h, 080h
+         DB 0E0h, 0F1h, 071h, 080h, 0C0h, 060h, 0F0h, 039h, 080h, 0E0h
+         DB 0C0h, 0F0h, 03Ch, 0C0h, 0E0h, 070h, 070h, 038h, 0C0h, 0E0h
+         DB 060h, 078h, 01Ch, 0E0h, 0F0h, 038h, 078h, 03Ch, 0C0h, 0E0h
+         DB 078h, 038h, 01Eh, 0E0h, 0F0h, 008h, 03Ch, 01Eh, 0E0h, 0F0h
+         DB 038h, 03Ch, 01Eh, 0F0h, 0F0h, 030h, 01Ch, 00Fh, 0F0h, 078h
+         DB 01Ch, 01Eh, 007h, 078h, 03Ch, 018h, 087h, 023h, 03Ch, 01Eh
+         DB 003h, 007h, 003h, 01Eh, 01Fh, 007h, 061h, 080h, 0CFh, 007h
+         DB 001h, 080h, 0C0h, 0E3h, 001h, 080h, 0E0h, 0F0h, 03Ch, 0C0h
+         DB 0E0h, 070h, 03Ch, 01Eh, 0F0h, 0F0h, 012h, 087h, 003h, 01Eh
+         DB 01Eh, 003h, 003h, 001h, 08Fh, 00Fh, 000h, 0F8h, 0F8h, 039h
+         DB 0C0h, 0E0h, 078h, 078h, 01Ch, 0F8h, 0F8h, 038h, 0E1h, 0C0h
+         DB 0FFh, 003h, 007h, 001h, 080h, 0E7h, 083h, 0E0h, 0FDh, 083h
+         DB 0C0h, 0FEh, 01Fh, 007h, 003h, 000h, 0CFh, 087h, 001h, 088h
+         DB 01Fh, 007h, 0F8h, 03Fh, 080h, 03Eh, 00Fh, 0F6h, 07Fh, 01Fh
+         DB 01Ch, 03Eh, 00Fh, 0E0h, 0F0h, 078h, 03Ch, 00Fh, 0FEh, 07Fh
+         DB 01Fh, 000h, 0E0h, 07Fh, 001h, 081h, 080h, 0E0h, 079h, 0A0h
+         DB 0F8h, 0FBh, 000h, 0E0h, 0FFh, 003h, 080h, 0C0h, 0F0h, 079h
+         DB 0F0h, 0F0h, 063h, 003h, 080h, 0FFh, 00Fh, 001h, 000h, 0C0h
+         DB 0E3h, 0C1h, 0C0h, 0FEh, 00Fh, 003h, 07Ch, 03Eh, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h
+lkair:   DB 0AFh, 0D0h, 0DFh, 0D0h, 0AFh, 0D0h, 0DFh, 0D0h, 000h, 0D0h
+         DB 0DFh, 0D0h, 0C6h, 0D0h, 0AFh, 0D0h, 0C6h, 0D0h, 000h, 050h
+         DB 0AFh, 0D0h, 0C6h, 0D0h, 000h, 050h, 0DFh, 0D0h, 0AFh, 0D0h
+         DB 000h, 0FAh, 0FFh, 0FFh, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+lkagi:   DB 0DFh, 080h, 0DFh, 080h, 0C6h, 080h, 0C6h, 080h, 000h, 050h
+         DB 0FAh, 080h, 0FAh, 080h, 0DFh, 080h, 0C6h, 080h, 0FFh, 0FFh
+         DB 0FFh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 063h, 098h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h
+lkais:   DB 0FAh, 0D0h, 0DFh, 0D0h, 000h, 040h, 0FAh, 0F0h, 0DFh, 0F0h
+         DB 0C6h, 0F0h, 0DFh, 0F0h, 0FAh, 0F0h, 0FAh, 0F0h, 000h, 0F0h
+         DB 0FFh, 0FFh, 0FFh, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+lkfav:   DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 009h, 009h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 000h, 009h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 009h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 0FEh, 0D0h, 070h, 000h, 040h, 0A0h
+         DB 070h, 000h, 050h, 0B0h, 050h, 0C0h, 050h, 0D0h, 050h, 0E0h
+         DB 050h, 000h, 050h, 0D0h, 070h, 000h, 050h, 0C0h, 050h, 0B0h
+         DB 050h, 0A0h, 050h, 0E0h, 050h, 000h, 070h, 0D0h, 070h, 000h
+         DB 070h, 0D0h, 070h, 000h, 070h, 0A0h, 050h, 000h, 050h, 0B0h
+         DB 050h, 000h, 050h, 0C0h, 050h, 000h, 050h, 0D0h, 050h, 000h
+         DB 050h, 0E0h, 050h, 000h, 050h, 0D0h, 050h, 0FDh, 0D0h, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
+         DB 000h, 012h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h, 012h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 024h, 000h, 02Dh, 000h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
+         DB 02Dh, 009h, 000h, 000h, 024h, 000h, 02Dh, 000h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 02Dh, 009h
+         DB 000h, 000h, 024h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 000h, 000h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h
+         DB 000h, 012h, 000h, 02Dh, 000h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 02Dh, 009h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 012h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 012h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 024h, 024h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h
+         DB 024h, 024h, 024h, 009h, 000h, 000h, 02Dh, 009h, 01Bh, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 012h
+         DB 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 012h, 000h, 000h
+         DB 009h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 009h, 02Dh
+         DB 009h, 000h, 02Dh, 009h, 000h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 012h, 000h, 000h, 009h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 02Dh, 009h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h
+         DB 000h, 012h, 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 012h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h
+         DB 000h, 012h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 02Dh, 009h, 000h, 000h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 012h
+         DB 000h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 009h, 000h, 02Dh
+         DB 009h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 02Dh, 009h, 000h, 02Dh, 009h, 000h, 02Dh
+         DB 009h, 000h, 000h, 012h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 012h
+         DB 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 009h, 009h
+         DB 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 009h, 000h, 024h, 000h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 012h, 000h, 02Dh, 009h, 000h, 000h, 000h
+         DB 000h, 02Dh, 009h, 02Dh, 000h, 024h, 000h, 02Dh, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 01Bh, 000h
+         DB 000h, 012h, 000h, 02Dh, 009h, 000h, 000h, 000h, 02Dh, 009h
+         DB 009h, 000h, 000h, 024h, 000h, 000h, 009h, 009h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
+         DB 000h, 000h, 009h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h
+         DB 000h, 024h, 000h, 000h, 02Dh, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 000h, 000h, 000h, 024h, 024h, 024h
+         DB 024h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 02Dh, 009h, 000h, 000h, 000h, 024h, 000h, 000h
+         DB 000h, 02Dh, 000h, 000h, 000h, 012h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 02Dh, 009h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 024h, 000h, 000h, 009h, 009h
+         DB 000h, 000h, 000h, 012h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 02Dh, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 02Dh, 000h, 024h, 000h, 02Dh, 009h, 000h, 000h, 000h
+         DB 02Dh, 012h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 009h
+         DB 000h, 024h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 012h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 009h, 009h
+         DB 009h, 009h, 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 02Dh, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h
+         DB 000h, 000h, 000h, 012h, 000h, 000h, 02Dh, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 000h
+         DB 000h, 02Dh, 000h, 000h, 000h, 000h, 024h, 024h, 024h, 024h
+         DB 009h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 02Dh, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 0FEh, 0FAh, 0FAh, 0DFh, 0DFh, 000h
+         DB 0FAh, 0FAh, 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0DFh, 0DFh, 000h
+         DB 0C6h, 0C6h, 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0FAh, 0FAh, 0DFh
+         DB 0DFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 024h, 024h, 000h, 000h
+         DB 000h, 000h, 012h, 000h, 009h, 009h, 009h, 000h, 000h, 024h
+         DB 024h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 000h
+         DB 012h, 000h, 024h, 024h, 009h, 000h, 000h, 009h, 009h, 009h
+         DB 01Bh, 000h, 02Dh, 012h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h
+         DB 000h, 000h, 009h, 000h, 000h, 024h, 024h, 009h, 01Bh, 000h
+         DB 000h, 012h, 000h, 02Dh, 009h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 000h, 02Dh
+         DB 009h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 012h
+         DB 000h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 009h, 000h
+         DB 02Dh, 009h, 000h, 000h, 012h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h
+         DB 000h, 000h, 012h, 000h, 000h, 024h, 009h, 000h, 000h, 012h
+         DB 02Dh, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 024h, 009h, 009h, 009h, 000h, 000h
+         DB 012h, 000h, 000h, 009h, 009h, 000h, 000h, 012h, 000h, 009h
+         DB 01Bh, 000h, 000h, 024h, 024h, 024h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 02Dh, 009h, 009h, 009h, 000h, 000h, 012h, 000h
+         DB 000h, 012h, 000h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h
+         DB 000h, 024h, 009h, 009h, 000h, 02Dh, 012h, 000h, 02Dh, 012h
+         DB 000h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h, 02Dh, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 009h, 02Dh, 000h, 000h, 02Dh
+         DB 009h, 009h, 000h, 000h, 012h, 000h, 000h, 024h, 024h, 024h
+         DB 024h, 012h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 009h, 02Dh, 009h, 009h, 000h, 000h, 000h, 024h, 009h
+         DB 000h, 000h, 012h, 000h, 000h, 009h, 009h, 009h, 009h, 012h
+         DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 009h
+         DB 000h, 000h, 009h, 02Dh, 000h, 000h, 000h, 009h, 000h, 000h
+         DB 012h, 000h, 000h, 009h, 000h, 000h, 02Dh, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 02Dh
+         DB 009h, 009h, 009h, 000h, 000h, 024h, 024h, 024h, 012h, 000h
+         DB 000h, 009h, 000h, 000h, 02Dh, 000h, 02Dh, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 009h, 009h, 000h, 000h, 000h
+         DB 009h, 02Dh, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h
+         DB 009h, 000h, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h
+         DB 02Dh, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 000h, 012h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 000h, 009h, 000h, 000h, 000h
+         DB 012h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 009h, 000h, 000h, 000h, 012h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 009h, 009h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 02Dh, 009h, 009h, 000h, 000h, 012h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 02Dh, 012h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 024h, 024h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 02Dh, 009h, 000h, 000h, 024h, 024h, 024h, 009h
+         DB 000h, 02Dh, 012h, 000h, 000h, 000h, 000h, 000h, 024h, 024h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 012h, 000h, 000h, 000h, 000h, 024h, 024h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h
+         DB 000h, 000h, 024h, 024h, 012h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 000h, 024h
+         DB 024h, 000h, 012h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
+         DB 02Dh, 009h, 000h, 000h, 012h, 000h, 024h, 024h, 000h, 000h
+         DB 012h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h
+         DB 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 012h, 000h, 009h, 000h, 000h, 000h, 012h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 012h, 02Dh, 009h, 000h, 000h, 000h, 012h, 000h, 000h, 009h
+         DB 01Bh, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 012h, 000h
+         DB 009h, 000h, 000h, 02Dh, 012h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h
+         DB 000h, 000h, 012h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 02Dh
+         DB 012h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 024h, 024h, 024h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 012h, 02Dh, 009h, 000h, 000h, 000h, 012h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 009h
+         DB 009h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 012h, 000h, 009h, 000h, 000h, 000h, 012h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 009h, 009h, 009h
+         DB 000h, 02Dh, 009h, 000h, 02Dh, 009h, 000h, 000h, 012h, 000h
+         DB 024h, 024h, 000h, 000h, 012h, 000h, 02Dh, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 02Dh, 009h, 000h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 000h, 024h
+         DB 024h, 000h, 012h, 000h, 02Dh, 009h, 01Bh, 000h, 02Dh, 009h
+         DB 000h, 000h, 009h, 009h, 000h, 000h, 024h, 024h, 009h, 000h
+         DB 000h, 009h, 000h, 02Dh, 012h, 000h, 000h, 000h, 024h, 024h
+         DB 012h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 009h, 000h, 024h, 024h, 009h, 009h, 000h, 000h, 009h
+         DB 000h, 02Dh, 012h, 000h, 000h, 000h, 000h, 024h, 024h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 009h, 009h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 012h, 000h, 000h, 000h, 000h, 000h, 024h, 024h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 02Dh, 009h, 009h, 000h, 000h
+         DB 009h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 024h, 024h, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 02Dh, 009h, 000h, 000h, 012h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 0FEh, 0FAh, 0FAh, 0DFh, 0DFh, 0BAh
+         DB 0BAh, 000h, 0FAh, 0FAh, 0DFh, 0DFh, 0BAh, 0BAh, 000h, 0BAh
+         DB 0BAh, 000h, 0A5h, 0A5h, 000h, 0DFh, 0DFh, 000h, 0FAh, 0FAh
+         DB 0DFh, 0DFh, 0BAh, 0BAh, 000h, 0FAh, 0FAh, 0DFh, 0DFh, 0BAh
+         DB 0BAh, 000h, 0BAh, 0BAh, 000h, 0A5h, 0A5h, 000h, 0BAh, 0BAh
+         DB 000h, 0C6h, 0C6h, 000h, 0A5h, 0A5h, 000h, 093h, 093h, 093h
+         DB 000h, 0DFh, 0DFh, 000h, 0FFh, 0FFh, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 000h, 009h, 036h, 03Fh, 024h, 009h
+         DB 009h, 009h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 02Dh, 02Dh, 02Dh, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h
+         DB 000h, 000h, 009h, 009h, 000h, 000h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 000h, 02Dh
+         DB 009h, 009h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h
+         DB 01Bh, 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h, 009h
+         DB 000h, 02Dh, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 02Dh, 009h, 000h, 000h, 009h, 009h, 000h, 000h
+         DB 009h, 009h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 009h, 01Bh, 000h, 000h, 009h
+         DB 009h, 009h, 000h, 02Dh, 009h, 009h, 000h, 000h, 009h, 02Dh
+         DB 000h, 000h, 009h, 009h, 000h, 000h, 000h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h
+         DB 000h, 000h, 009h, 009h, 000h, 000h, 009h, 009h, 000h, 02Dh
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 000h, 000h
+         DB 009h, 009h, 000h, 000h, 009h, 009h, 000h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 009h, 009h, 000h, 000h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 009h, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 02Dh, 009h, 009h, 01Bh, 000h, 000h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 009h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 02Dh, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 01Bh, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h
+         DB 009h, 000h, 000h, 000h, 009h, 009h, 000h, 02Dh, 009h, 009h
+         DB 009h, 02Dh, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 01Bh, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 000h, 000h
+         DB 009h, 000h, 009h, 009h, 000h, 000h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 009h
+         DB 009h, 009h, 009h, 000h, 009h, 000h, 000h, 009h, 009h, 000h
+         DB 009h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 009h, 009h, 000h, 009h, 009h
+         DB 009h, 009h, 02Dh, 000h, 000h, 000h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 000h, 024h, 009h, 009h, 009h, 009h
+         DB 009h, 000h, 02Dh, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 02Dh
+         DB 009h, 000h, 024h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 02Dh, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 000h, 024h
+         DB 009h, 009h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 000h, 000h, 000h, 009h, 009h, 02Dh, 009h, 01Bh, 000h
+         DB 02Dh, 009h, 009h, 009h, 009h, 000h, 024h, 009h, 009h, 009h
+         DB 000h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 000h, 000h
+         DB 009h, 000h, 02Dh, 009h, 02Dh, 009h, 01Bh, 000h, 02Dh, 009h
+         DB 009h, 000h, 000h, 024h, 009h, 009h, 009h, 000h, 000h, 009h
+         DB 02Dh, 009h, 009h, 009h, 000h, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 009h, 000h, 009h, 01Bh, 000h, 02Dh, 009h, 009h, 000h
+         DB 02Dh, 009h, 009h, 009h, 000h, 000h, 009h, 009h, 02Dh, 009h
+         DB 009h, 000h, 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h, 02Dh, 009h
+         DB 009h, 000h, 000h, 009h, 009h, 009h, 000h, 009h, 009h, 000h
+         DB 000h, 009h, 009h, 02Dh, 009h, 000h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 009h, 000h, 000h, 009h, 009h, 000h
+         DB 009h, 009h, 009h, 009h, 000h, 009h, 009h, 000h, 000h, 009h
+         DB 009h, 02Dh, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 000h, 000h, 009h, 009h
+         DB 009h, 009h, 000h, 009h, 009h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h, 000h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 000h, 009h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 009h
+         DB 01Bh, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 02Dh, 02Dh
+         DB 009h, 000h, 02Dh, 009h, 009h, 009h, 009h, 000h, 000h, 009h
+         DB 009h, 02Dh, 009h, 009h, 009h, 009h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 009h, 009h, 009h, 02Dh, 009h, 01Bh, 000h, 02Dh, 009h
+         DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 000h, 000h, 009h, 009h, 009h, 000h, 000h
+         DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 000h, 02Dh, 009h, 009h, 02Dh, 009h, 02Dh, 009h, 009h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 02Dh
+         DB 009h, 009h, 009h, 009h, 02Dh, 009h, 000h, 009h, 009h, 000h
+         DB 000h, 009h, 009h, 02Dh, 009h, 000h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 000h, 009h, 009h, 000h, 000h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 009h, 009h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h, 02Dh, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 009h, 01Bh, 000h, 02Dh, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 000h, 009h, 01Bh, 000h, 02Dh, 009h, 009h, 009h, 009h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h
+         DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 0FEh, 0BAh, 0BAh, 0BAh, 0FAh, 0FAh
+         DB 0FAh, 000h, 0BAh, 0BAh, 0BAh, 0FAh, 0FAh, 0FAh, 000h, 0BAh
+         DB 0BAh, 0DFh, 0DFh, 0FAh, 0FAh, 0DFh, 0DFh, 0BAh, 0BAh, 000h
+         DB 0BAh, 0BAh, 0BAh, 0FAh, 0FAh, 0FAh, 000h, 0BAh, 0BAh, 0BAh
+         DB 0FAh, 0FAh, 0FAh, 000h, 0C6h, 0C6h, 0DFh, 0DFh, 0FAh, 0FAh
+         DB 0DFh, 0DFh, 0C6h, 0C6h, 000h, 0FFh, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 02Dh, 009h, 000h, 000h, 009h, 036h, 03Fh, 024h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 024h
+         DB 024h, 024h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h
+         DB 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 024h, 024h
+         DB 024h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h, 02Dh, 009h
+         DB 000h, 02Dh, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 02Dh, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 02Dh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 02Dh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 02Dh, 009h, 000h, 02Dh, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 024h, 024h, 024h, 009h, 000h, 000h, 024h, 024h, 024h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 02Dh
+         DB 009h, 000h, 000h, 024h, 024h, 024h, 009h, 000h, 02Dh, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
+         DB 000h, 000h, 024h, 024h, 024h, 009h, 000h, 02Dh, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh
+         DB 009h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 02Dh, 000h, 000h, 009h
+         DB 000h, 000h, 024h, 024h, 024h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 02Dh
+         DB 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh
+         DB 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 02Dh, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 024h
+         DB 024h, 024h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 024h, 024h, 024h, 009h, 000h, 000h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 02Dh, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 02Dh, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 0FEh, 0FAh, 0DFh, 000h, 0DFh, 0C6h
+         DB 000h, 0FAh, 0DFh, 000h, 0DFh, 0C6h, 000h, 0FAh, 0DFh, 0C6h
+         DB 000h, 0FAh, 0DFh, 0C6h, 000h, 0DFh, 0C6h, 000h, 0BAh, 0C6h
+         DB 000h, 0DFh, 0C6h, 000h, 0BAh, 0C6h, 000h, 0BAh, 0BAh, 0BAh
+         DB 000h, 0DFh, 0DFh, 0DFh, 000h, 0FAh, 0FAh, 0FAh, 000h, 0DFh
+         DB 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0BAh, 000h, 0DFh, 0DFh, 0DFh
+         DB 000h, 0FAh, 0FAh, 0FAh, 000h, 000h, 000h, 0FFh, 0FFh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h, 024h
+         DB 024h, 024h, 000h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h
+         DB 000h, 000h, 024h, 024h, 000h, 000h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h
+         DB 024h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h, 000h, 000h
+         DB 024h, 000h, 000h, 000h, 009h, 000h, 024h, 024h, 024h, 024h
+         DB 024h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 024h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h
+         DB 000h, 000h, 009h, 000h, 009h, 009h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 012h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 024h, 009h, 01Bh, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 02Dh, 009h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h
+         DB 024h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h
+         DB 024h, 024h, 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h, 000h
+         DB 024h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h
+         DB 000h, 000h, 024h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 024h
+         DB 000h, 000h, 000h, 02Dh, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 024h
+         DB 000h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h, 024h, 000h
+         DB 000h, 02Dh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 000h, 024h, 000h, 000h, 000h
+         DB 000h, 02Dh, 02Dh, 000h, 000h, 000h, 000h, 024h, 000h, 02Dh
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 024h, 000h, 000h, 000h, 000h, 000h, 02Dh
+         DB 02Dh, 000h, 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 012h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 02Dh
+         DB 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
+         DB 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h, 02Dh, 000h
+         DB 000h, 000h, 000h, 012h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 02Dh
+         DB 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h, 012h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 02Dh, 000h
+         DB 000h, 02Dh, 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h
+         DB 009h, 000h, 000h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h
+         DB 000h, 024h, 000h, 000h, 000h, 000h, 000h, 02Dh, 02Dh, 000h
+         DB 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h
+         DB 024h, 000h, 000h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h
+         DB 000h, 024h, 000h, 02Dh, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 024h
+         DB 000h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h, 024h, 000h
+         DB 000h, 02Dh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 024h, 000h
+         DB 000h, 02Dh, 02Dh, 000h, 000h, 024h, 000h, 000h, 000h, 02Dh
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 000h, 000h
+         DB 000h, 000h, 024h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h, 024h, 024h
+         DB 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 0D0h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 0D0h, 000h, 000h, 000h, 000h, 000h, 000h, 012h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 024h, 024h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 000h, 000h
+         DB 000h, 02Dh, 02Dh, 000h, 000h, 000h, 000h, 000h, 024h, 000h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 024h, 009h
+         DB 01Bh, 000h, 000h, 024h, 024h, 000h, 000h, 000h, 000h, 02Dh
+         DB 02Dh, 000h, 000h, 000h, 000h, 000h, 024h, 024h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 000h, 000h, 000h, 02Dh, 02Dh, 000h
+         DB 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 024h, 009h, 01Bh, 000h, 000h, 024h
+         DB 024h, 000h, 000h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h
+         DB 000h, 000h, 024h, 024h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h
+         DB 000h, 000h, 000h, 02Dh, 02Dh, 000h, 000h, 000h, 000h, 000h
+         DB 024h, 000h, 000h, 000h, 009h, 000h, 009h, 009h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h
+         DB 000h, 000h, 009h, 000h, 024h, 024h, 024h, 024h, 024h, 009h
+         DB 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 000h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 0FEh, 0BAh, 0BAh, 0DFh, 0DFh, 0BAh
+         DB 0BAh, 0DFh, 0DFh, 0FAh, 0FAh, 0BAh, 0BAh, 0DFh, 0DFh, 0BAh
+         DB 0BAh, 0FAh, 0FAh, 0DFh, 0DFh, 0BAh, 0BAh, 0BAh, 0BAh, 0A5h
+         DB 0A5h, 0DFh, 0DFh, 0DFh, 0DFh, 0A5h, 0A5h, 0FAh, 0FAh, 0BAh
+         DB 0BAh, 0A5h, 0A5h, 0DFh, 0DFh, 0FAh, 0FAh, 0BAh, 0BAh, 0A5h
+         DB 0A5h, 0DFh, 0DFh, 0BAh, 0BAh, 0FAh, 0FAh, 0DFh, 0DFh, 0C6h
+         DB 0C6h, 0DFh, 0DFh, 0BAh, 0BAh, 0C6h, 0C6h, 000h, 0FFh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
+         DB 000h, 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 012h, 012h, 000h, 02Dh, 012h
+         DB 000h, 000h, 02Dh, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 012h, 012h, 012h, 000h, 024h, 024h, 000h
+         DB 000h, 009h, 02Dh, 000h, 000h, 000h, 000h, 02Dh, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 012h, 000h, 012h, 012h, 000h, 024h, 024h, 000h, 000h
+         DB 009h, 009h, 000h, 000h, 000h, 02Dh, 009h, 000h, 02Dh, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
+         DB 000h, 000h, 012h, 012h, 000h, 024h, 024h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 000h
+         DB 000h, 012h, 012h, 000h, 024h, 024h, 000h, 02Dh, 009h, 000h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h
+         DB 012h, 012h, 000h, 024h, 024h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 02Dh, 012h, 000h, 000h, 000h, 000h, 000h, 012h
+         DB 012h, 000h, 024h, 024h, 000h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 02Dh, 012h, 000h, 000h, 000h, 02Dh, 000h, 000h, 012h, 012h
+         DB 000h, 024h, 024h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h
+         DB 024h, 024h, 012h, 000h, 000h, 000h, 000h, 012h, 012h, 000h
+         DB 024h, 024h, 000h, 000h, 000h, 000h, 000h, 009h, 000h, 02Dh
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 000h
+         DB 012h, 000h, 02Dh, 000h, 000h, 000h, 012h, 012h, 000h, 024h
+         DB 024h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 024h, 024h
+         DB 012h, 000h, 000h, 000h, 000h, 012h, 012h, 000h, 024h, 024h
+         DB 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 02Dh, 012h, 000h
+         DB 000h, 000h, 000h, 000h, 012h, 012h, 000h, 024h, 024h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 012h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 012h, 012h, 000h, 024h, 024h, 000h, 000h
+         DB 000h, 02Dh, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
+         DB 000h, 000h, 012h, 000h, 012h, 000h, 02Dh, 000h, 000h, 000h
+         DB 000h, 000h, 012h, 012h, 000h, 024h, 024h, 000h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 000h
+         DB 012h, 000h, 000h, 000h, 012h, 000h, 02Dh, 000h, 000h, 000h
+         DB 000h, 012h, 012h, 000h, 024h, 024h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 012h, 000h
+         DB 000h, 000h, 000h, 000h, 012h, 000h, 02Dh, 000h, 000h, 000h
+         DB 012h, 012h, 000h, 024h, 024h, 000h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 012h, 000h, 000h, 012h, 000h, 000h, 000h
+         DB 000h, 02Dh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 012h
+         DB 012h, 000h, 024h, 024h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 02Dh, 012h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h, 012h, 012h
+         DB 000h, 024h, 024h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 012h, 012h, 000h
+         DB 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h, 000h
+         DB 000h, 012h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 012h, 000h, 000h, 0C2h, 0C2h, 012h, 000h
+         DB 02Dh, 000h, 012h, 000h, 02Dh, 000h, 000h, 000h, 012h, 012h
+         DB 000h, 000h, 024h, 024h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 02Dh, 012h, 000h, 000h, 02Dh, 000h, 012h, 000h, 012h, 000h
+         DB 012h, 000h, 000h, 000h, 000h, 012h, 012h, 000h, 000h, 024h
+         DB 024h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
+         DB 000h, 000h, 012h, 000h, 02Dh, 000h, 012h, 000h, 000h, 02Dh
+         DB 000h, 000h, 012h, 012h, 000h, 000h, 024h, 024h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 000h
+         DB 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 012h
+         DB 012h, 000h, 000h, 024h, 024h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 000h, 012h, 000h
+         DB 02Dh, 000h, 012h, 000h, 000h, 000h, 012h, 012h, 000h, 000h
+         DB 024h, 024h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 012h, 000h
+         DB 02Dh, 000h, 000h, 012h, 012h, 000h, 000h, 024h, 024h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 02Dh, 012h, 000h, 000h, 000h, 000h, 012h, 000h, 000h, 000h
+         DB 012h, 012h, 000h, 000h, 024h, 024h, 000h, 000h, 000h, 009h
+         DB 000h, 02Dh, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h
+         DB 024h, 024h, 024h, 024h, 000h, 000h, 000h, 012h, 012h, 000h
+         DB 000h, 024h, 024h, 000h, 000h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 012h, 012h, 000h, 000h, 024h, 024h
+         DB 000h, 000h, 000h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h
+         DB 000h, 012h, 012h, 000h, 000h, 024h, 024h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 012h, 012h
+         DB 000h, 000h, 024h, 024h, 000h, 000h, 009h, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 02Dh, 000h, 000h, 000h, 012h, 012h, 000h, 000h, 024h
+         DB 024h, 000h, 02Dh, 009h, 009h, 000h, 000h, 000h, 000h, 009h
+         DB 000h, 02Dh, 009h, 000h, 000h, 009h, 01Bh, 000h, 02Dh, 012h
+         DB 000h, 000h, 012h, 012h, 000h, 000h, 024h, 024h, 000h, 000h
+         DB 009h, 009h, 000h, 02Dh, 009h, 000h, 02Dh, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 012h
+         DB 012h, 000h, 000h, 024h, 024h, 000h, 02Dh, 009h, 02Dh, 000h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 012h, 012h, 012h, 000h, 000h
+         DB 000h, 012h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 012h, 012h, 000h, 000h, 000h, 02Dh, 012h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 0FEh, 0BAh, 0BAh, 0BAh, 0DFh, 0DFh
+         DB 0DFh, 000h, 0FAh, 0FAh, 0FAh, 0DFh, 0DFh, 0DFh, 000h, 0FAh
+         DB 0DFh, 0FAh, 0FAh, 0DFh, 0DFh, 0DFh, 000h, 0FAh, 0FAh, 0FAh
+         DB 0DFh, 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0BAh, 000h, 0BAh, 0BAh
+         DB 0BAh, 000h, 0DFh, 0DFh, 0DFh, 000h, 0DFh, 0DFh, 0DFh, 000h
+         DB 0FAh, 0FAh, 0FAh, 000h, 0DFh, 0DFh, 0DFh, 000h, 0BAh, 0BAh
+         DB 0BAh, 0FAh, 0FAh, 0DFh, 0DFh, 0DFh, 000h, 000h, 0FFh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 012h
+         DB 000h, 024h, 024h, 024h, 009h, 000h, 000h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 012h, 000h, 009h, 036h, 03Fh, 024h, 000h
+         DB 000h, 02Dh, 009h, 000h, 000h, 000h, 000h, 012h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 000h, 000h, 012h, 02Dh, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 02Dh, 000h, 000h, 000h, 000h, 012h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 012h, 000h
+         DB 000h, 000h, 000h, 012h, 000h, 009h, 000h, 02Dh, 009h, 000h
+         DB 000h, 009h, 000h, 02Dh, 000h, 000h, 000h, 024h, 024h, 009h
+         DB 01Bh, 000h, 000h, 024h, 024h, 024h, 012h, 000h, 000h, 024h
+         DB 024h, 024h, 024h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 012h, 000h, 024h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 02Dh, 02Dh
+         DB 000h, 000h, 02Dh, 012h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 024h, 024h, 000h, 000h, 009h, 000h, 000h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 012h, 02Dh, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 012h, 000h
+         DB 000h, 012h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 012h
+         DB 000h, 009h, 01Bh, 000h, 02Dh, 009h, 000h, 02Dh, 009h, 009h
+         DB 000h, 02Dh, 009h, 000h, 000h, 000h, 012h, 000h, 02Dh, 012h
+         DB 000h, 009h, 000h, 000h, 024h, 024h, 024h, 012h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 024h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 000h, 012h, 000h, 000h, 012h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 000h, 012h, 000h, 000h, 012h, 02Dh, 009h, 000h, 02Dh
+         DB 009h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 024h
+         DB 024h, 024h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 024h
+         DB 012h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 009h, 01Bh, 000h, 000h, 000h, 012h, 000h
+         DB 000h, 009h, 000h, 000h, 012h, 000h, 02Dh, 000h, 012h, 000h
+         DB 024h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 009h, 01Bh, 000h, 000h, 000h, 012h, 000h, 000h, 009h
+         DB 000h, 000h, 012h, 000h, 000h, 000h, 012h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 009h
+         DB 01Bh, 000h, 000h, 000h, 012h, 000h, 000h, 024h, 024h, 024h
+         DB 012h, 000h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 024h
+         DB 024h, 024h, 009h, 000h, 02Dh, 009h, 000h, 009h, 01Bh, 000h
+         DB 000h, 02Dh, 012h, 000h, 000h, 009h, 000h, 000h, 012h, 000h
+         DB 000h, 000h, 012h, 02Dh, 009h, 000h, 000h, 012h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 000h, 009h, 01Bh, 000h, 000h, 000h
+         DB 012h, 000h, 02Dh, 009h, 000h, 000h, 012h, 000h, 000h, 000h
+         DB 012h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 009h, 000h, 009h, 01Bh, 000h, 000h, 000h, 012h, 000h
+         DB 000h, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 012h, 000h
+         DB 009h, 000h, 000h, 012h, 000h, 009h, 000h, 02Dh, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 000h, 024h, 024h, 024h, 009h
+         DB 000h, 000h, 000h, 012h, 000h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 012h, 000h, 009h, 000h, 000h, 000h, 02Dh, 000h, 009h
+         DB 01Bh, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 012h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 012h
+         DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 012h
+         DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 012h, 02Dh, 009h
+         DB 000h, 000h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 000h
+         DB 009h, 000h, 000h, 024h, 012h, 000h, 02Dh, 012h, 000h, 009h
+         DB 000h, 000h, 024h, 024h, 024h, 012h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 000h, 012h, 000h, 000h, 012h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 012h, 000h, 009h, 000h, 02Dh, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 02Dh, 009h, 000h, 000h, 000h
+         DB 012h, 000h, 024h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
+         DB 000h, 012h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 024h, 009h, 000h, 000h, 02Dh, 012h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 024h
+         DB 024h, 024h, 024h, 024h, 009h, 000h, 02Dh, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 000h, 000h, 000h, 012h, 000h, 009h, 000h
+         DB 02Dh, 009h, 000h, 000h, 024h, 012h, 000h, 009h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 02Dh, 000h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 000h, 02Dh
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 024h, 024h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 012h, 02Dh, 009h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 012h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 02Dh
+         DB 009h, 000h, 000h, 024h, 024h, 024h, 024h, 000h, 000h, 012h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 02Dh, 009h, 000h
+         DB 000h, 000h, 012h, 000h, 009h, 000h, 000h, 012h, 000h, 009h
+         DB 000h, 02Dh, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 012h, 000h, 000h, 000h, 009h, 000h, 000h, 000h
+         DB 012h, 000h, 009h, 000h, 02Dh, 012h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 024h, 024h, 024h, 000h, 009h, 000h, 000h, 000h, 012h, 02Dh
+         DB 009h, 000h, 000h, 012h, 02Dh, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 000h, 012h, 000h, 009h, 000h
+         DB 000h, 012h, 000h, 009h, 000h, 000h, 024h, 024h, 024h, 009h
+         DB 01Bh, 000h, 000h, 024h, 024h, 024h, 009h, 000h, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 012h, 000h, 024h, 024h, 024h, 012h
+         DB 02Dh, 009h, 000h, 000h, 012h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 012h, 000h, 000h, 009h, 02Dh, 000h, 000h, 012h, 000h
+         DB 000h, 000h, 012h, 000h, 000h, 012h, 000h, 012h, 000h, 009h
+         DB 000h, 000h, 012h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h
+         DB 000h, 000h, 009h, 000h, 000h, 000h, 012h, 000h, 000h, 02Dh
+         DB 012h, 000h, 000h, 012h, 000h, 012h, 000h, 009h, 000h, 000h
+         DB 012h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 012h, 000h, 000h, 02Dh, 012h, 000h
+         DB 000h, 012h, 000h, 012h, 000h, 009h, 000h, 000h, 012h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 02Dh, 009h
+         DB 000h, 000h, 012h, 000h, 000h, 000h, 012h, 000h, 000h, 012h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 009h, 000h, 000h, 012h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 02Dh, 000h, 009h, 000h, 000h
+         DB 02Dh, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 0FEh, 000h, 000h, 0FAh, 0FAh, 0FAh
+         DB 0FAh, 0BAh, 0BAh, 0BAh, 0BAh, 0BAh, 0BAh, 0FAh, 0FAh, 0FAh
+         DB 0FAh, 0FAh, 0FAh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 000h, 0FAh
+         DB 0FAh, 0FAh, 0FAh, 0BAh, 0BAh, 0BAh, 0BAh, 0FAh, 0FAh, 0FAh
+         DB 0FAh, 0DFh, 0DFh, 0DFh, 0DFh, 000h, 0FAh, 0FAh, 0DFh, 0DFh
+         DB 0FAh, 0FAh, 0DFh, 0DFh, 0FAh, 0FAh, 0BAh, 0BAh, 0FAh, 0FAh
+         DB 0BAh, 0BAh, 000h, 0DFh, 0FAh, 0BAh, 0FAh, 0FFh, 0FFh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
+         DB 000h, 012h, 000h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h
+         DB 000h, 000h, 012h, 000h, 024h, 024h, 024h, 024h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h, 012h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h
+         DB 012h, 000h, 009h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 009h
+         DB 009h, 009h, 009h, 000h, 000h, 009h, 000h, 02Dh, 012h, 000h
+         DB 009h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 009h, 02Dh, 009h
+         DB 009h, 000h, 000h, 009h, 000h, 02Dh, 012h, 000h, 009h, 02Dh
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 012h, 000h, 009h, 009h, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 012h, 000h, 024h, 009h, 000h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h
+         DB 000h, 012h, 000h, 02Dh, 000h, 000h, 000h, 009h, 009h, 009h
+         DB 000h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 02Dh, 000h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 012h
+         DB 000h, 000h, 000h, 000h, 000h, 024h, 024h, 000h, 000h, 024h
+         DB 024h, 009h, 000h, 000h, 012h, 000h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 000h, 02Dh, 012h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 024h, 024h, 000h, 000h, 000h
+         DB 000h, 000h, 012h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h
+         DB 024h, 024h, 012h, 000h, 009h, 000h, 02Dh, 009h, 01Bh, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 02Dh, 009h
+         DB 009h, 009h, 009h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 012h, 000h, 009h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 02Dh, 009h, 000h, 000h, 024h, 024h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 009h
+         DB 000h, 02Dh, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 024h
+         DB 009h, 000h, 02Dh, 009h, 000h, 02Dh, 009h, 009h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 02Dh, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 024h, 024h
+         DB 024h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 024h
+         DB 024h, 024h, 024h, 012h, 000h, 012h, 000h, 009h, 01Bh, 000h
+         DB 000h, 012h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h
+         DB 000h, 012h, 02Dh, 012h, 000h, 009h, 01Bh, 000h, 000h, 012h
+         DB 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 012h
+         DB 000h, 012h, 02Dh, 009h, 01Bh, 000h, 000h, 012h, 02Dh, 009h
+         DB 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 02Dh
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 02Dh, 012h, 000h, 012h
+         DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 02Dh, 009h, 000h, 000h, 012h, 000h, 009h, 000h
+         DB 02Dh, 009h, 000h, 000h, 02Dh, 012h, 000h, 012h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 02Dh, 000h, 000h
+         DB 000h, 009h, 000h, 02Dh, 012h, 000h, 009h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 012h, 000h, 012h, 000h, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 009h, 000h, 000h, 024h, 009h, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 000h, 009h, 009h, 000h, 000h
+         DB 012h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 000h, 000h, 009h, 000h, 000h, 012h, 000h
+         DB 009h, 000h, 000h, 000h, 009h, 000h, 000h, 024h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 024h, 024h
+         DB 024h, 024h, 000h, 009h, 000h, 000h, 012h, 000h, 009h, 000h
+         DB 000h, 000h, 009h, 000h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 02Dh, 009h, 000h, 02Dh, 009h, 000h, 000h, 012h
+         DB 000h, 000h, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 000h, 009h, 000h, 02Dh, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 02Dh, 000h, 012h
+         DB 000h, 02Dh, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 012h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 02Dh, 009h, 000h, 000h, 000h, 012h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 009h, 000h, 000h, 000h, 012h, 000h, 024h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 012h, 000h, 009h, 009h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 02Dh, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 009h, 000h, 000h
+         DB 024h, 000h, 000h, 009h, 009h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 009h, 000h, 000h, 009h, 000h
+         DB 02Dh, 009h, 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 02Dh, 009h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 024h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 009h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 02Dh, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 009h
+         DB 000h, 02Dh, 009h, 000h, 000h, 024h, 024h, 024h, 024h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 000h, 012h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h, 000h, 000h
+         DB 009h, 000h, 000h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h
+         DB 000h, 024h, 012h, 000h, 000h, 012h, 000h, 000h, 024h, 024h
+         DB 024h, 009h, 000h, 000h, 009h, 000h, 000h, 024h, 024h, 024h
+         DB 024h, 024h, 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 000h
+         DB 012h, 000h, 000h, 012h, 000h, 000h, 000h, 012h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 012h, 02Dh, 009h, 000h, 000h
+         DB 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 000h, 012h, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 012h, 000h, 009h, 000h, 000h
+         DB 024h, 024h, 024h, 012h, 02Dh, 009h, 000h, 000h, 02Dh, 012h
+         DB 000h, 009h, 01Bh, 000h, 000h, 000h, 012h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 012h, 02Dh, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 012h, 000h, 009h, 000h, 000h, 000h, 012h, 02Dh, 009h
+         DB 01Bh, 000h, 000h, 000h, 012h, 02Dh, 000h, 009h, 000h, 000h
+         DB 000h, 012h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 012h
+         DB 000h, 009h, 000h, 000h, 000h, 012h, 000h, 009h, 01Bh, 000h
+         DB 000h, 000h, 024h, 024h, 024h, 009h, 000h, 000h, 000h, 012h
+         DB 000h, 024h, 024h, 024h, 009h, 000h, 000h, 012h, 000h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 0FEh, 0BAh, 0BAh, 000h, 0DFh, 0DFh
+         DB 000h, 0FAh, 0DFh, 0C6h, 000h, 0FAh, 0DFh, 0C6h, 000h, 0FAh
+         DB 0DFh, 0C6h, 000h, 0DFh, 0BAh, 0A5h, 000h, 0DFh, 0BAh, 0A5h
+         DB 000h, 0FAh, 0DFh, 0C6h, 000h, 0DFh, 0BAh, 0A5h, 000h, 0BAh
+         DB 0BAh, 0A5h, 0A5h, 0DFh, 0DFh, 0FAh, 0FAh, 000h, 0FAh, 0DFh
+         DB 0C6h, 000h, 0FAh, 0DFh, 0C6h, 000h, 0DFh, 0FAh, 0BAh, 000h
+         DB 0DFh, 0FAh, 0BAh, 000h, 0FAh, 0DFh, 0C6h, 000h, 0FFh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
+         DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 009h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 000h, 009h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 012h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 02Dh, 012h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 000h, 012h, 000h, 024h, 009h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 012h, 000h, 009h, 009h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 009h, 000h, 000h, 009h, 000h, 02Dh, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 02Dh
+         DB 009h, 000h, 000h, 000h, 02Dh, 009h, 01Bh, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 009h, 000h
+         DB 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 009h
+         DB 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 009h, 000h
+         DB 02Dh, 009h, 000h, 02Dh, 012h, 000h, 009h, 000h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 009h, 000h, 000h
+         DB 00Dh, 000h, 000h, 012h, 000h, 000h, 009h, 000h, 002h, 009h
+         DB 000h, 000h, 000h, 000h, 009h, 02Dh, 02Fh, 000h, 000h, 009h
+         DB 019h, 000h, 000h, 009h, 00Ch, 009h, 000h, 000h, 009h, 000h
+         DB 000h, 012h, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h
+         DB 000h, 000h, 009h, 009h, 009h, 000h, 000h, 009h, 01Ah, 000h
+         DB 000h, 000h, 000h, 029h, 000h, 000h, 009h, 000h, 000h, 012h
+         DB 000h, 000h, 009h, 000h, 002h, 009h, 000h, 000h, 010h, 000h
+         DB 024h, 020h, 00Bh, 000h, 000h, 009h, 019h, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 009h, 000h, 000h, 012h, 000h, 024h
+         DB 009h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 000h, 000h, 009h, 019h, 000h, 000h, 024h, 020h, 009h
+         DB 000h, 000h, 020h, 000h, 000h, 012h, 000h, 009h, 009h, 000h
+         DB 004h, 009h, 000h, 000h, 010h, 000h, 000h, 000h, 019h, 000h
+         DB 000h, 009h, 00Dh, 000h, 000h, 009h, 009h, 009h, 000h, 000h
+         DB 024h, 024h, 02Dh, 012h, 000h, 010h, 000h, 000h, 002h, 009h
+         DB 000h, 000h, 004h, 000h, 000h, 000h, 00Bh, 000h, 000h, 009h
+         DB 019h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 020h, 000h
+         DB 02Dh, 010h, 000h, 010h, 000h, 000h, 039h, 009h, 000h, 000h
+         DB 004h, 000h, 000h, 000h, 009h, 000h, 000h, 008h, 018h, 000h
+         DB 000h, 009h, 000h, 02Dh, 010h, 000h, 024h, 024h, 000h, 012h
+         DB 000h, 024h, 020h, 020h, 026h, 024h, 020h, 020h, 010h, 000h
+         DB 000h, 000h, 00Bh, 000h, 000h, 009h, 019h, 000h, 02Dh, 009h
+         DB 004h, 000h, 012h, 000h, 024h, 000h, 000h, 012h, 000h, 012h
+         DB 000h, 000h, 010h, 009h, 000h, 000h, 002h, 000h, 020h, 020h
+         DB 020h, 020h, 024h, 009h, 018h, 000h, 000h, 009h, 000h, 000h
+         DB 012h, 000h, 024h, 021h, 000h, 010h, 00Dh, 010h, 000h, 002h
+         DB 000h, 008h, 001h, 000h, 002h, 029h, 008h, 000h, 000h, 010h
+         DB 001h, 00Dh, 00Fh, 000h, 000h, 009h, 011h, 020h, 002h, 001h
+         DB 004h, 001h, 000h, 010h, 001h, 010h, 000h, 002h, 000h, 008h
+         DB 001h, 000h, 002h, 001h, 008h, 000h, 000h, 010h, 001h, 009h
+         DB 00Bh, 000h, 000h, 009h, 010h, 008h, 000h, 000h, 008h, 001h
+         DB 000h, 010h, 001h, 008h, 008h, 002h, 000h, 008h, 001h, 028h
+         DB 002h, 001h, 008h, 000h, 010h, 010h, 004h, 008h, 00Bh, 000h
+         DB 000h, 011h, 011h, 008h, 000h, 000h, 008h, 001h, 000h, 010h
+         DB 001h, 020h, 008h, 002h, 000h, 00Ch, 001h, 028h, 002h, 001h
+         DB 008h, 000h, 000h, 010h, 000h, 008h, 00Bh, 000h, 000h, 011h
+         DB 011h, 008h, 000h, 004h, 028h, 001h, 000h, 010h, 000h, 000h
+         DB 008h, 002h, 028h, 009h, 001h, 000h, 004h, 021h, 008h, 000h
+         DB 010h, 010h, 028h, 008h, 01Bh, 000h, 000h, 021h, 005h, 008h
+         DB 000h, 001h, 009h, 001h, 000h, 010h, 004h, 02Ch, 00Dh, 002h
+         DB 028h, 008h, 000h, 000h, 002h, 001h, 008h, 000h, 02Ch, 010h
+         DB 000h, 008h, 00Bh, 000h, 000h, 011h, 011h, 008h, 000h, 001h
+         DB 008h, 000h, 000h, 010h, 020h, 028h, 00Dh, 000h, 000h, 008h
+         DB 000h, 000h, 033h, 029h, 008h, 000h, 00Ch, 010h, 000h, 008h
+         DB 00Bh, 000h, 000h, 010h, 010h, 008h, 000h, 001h, 008h, 005h
+         DB 010h, 010h, 004h, 004h, 008h, 002h, 000h, 00Ch, 000h, 000h
+         DB 006h, 004h, 008h, 000h, 010h, 010h, 000h, 008h, 00Bh, 000h
+         DB 000h, 011h, 011h, 020h, 025h, 021h, 004h, 020h, 030h, 020h
+         DB 024h, 020h, 008h, 002h, 000h, 00Ah, 000h, 000h, 012h, 001h
+         DB 020h, 010h, 000h, 010h, 000h, 008h, 02Ah, 000h, 02Ch, 011h
+         DB 010h, 000h, 008h, 001h, 000h, 028h, 012h, 000h, 009h, 000h
+         DB 024h, 024h, 024h, 024h, 024h, 000h, 012h, 000h, 000h, 012h
+         DB 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 02Dh, 012h, 000h, 009h, 000h, 000h, 012h
+         DB 000h, 009h, 000h, 000h, 012h, 000h, 000h, 012h, 000h, 012h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
+         DB 000h, 000h, 012h, 000h, 009h, 000h, 000h, 012h, 000h, 009h
+         DB 000h, 000h, 012h, 000h, 000h, 012h, 02Dh, 012h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h
+         DB 012h, 02Dh, 009h, 000h, 000h, 012h, 000h, 009h, 000h, 000h
+         DB 012h, 000h, 000h, 012h, 000h, 012h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 012h, 02Dh
+         DB 009h, 000h, 02Dh, 012h, 000h, 009h, 000h, 000h, 012h, 000h
+         DB 000h, 012h, 000h, 012h, 000h, 009h, 01Bh, 000h, 000h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 012h, 000h, 009h, 000h
+         DB 000h, 012h, 000h, 009h, 000h, 02Dh, 012h, 000h, 024h, 024h
+         DB 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 009h, 000h, 000h
+         DB 009h, 000h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 012h
+         DB 02Dh, 009h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 000h, 02Dh, 009h, 000h
+         DB 000h, 000h, 012h, 000h, 009h, 000h, 000h, 012h, 02Dh, 009h
+         DB 000h, 000h, 012h, 000h, 009h, 000h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 02Dh
+         DB 012h, 000h, 024h, 024h, 024h, 012h, 000h, 009h, 000h, 000h
+         DB 012h, 02Dh, 009h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 000h, 000h, 012h, 000h
+         DB 009h, 000h, 000h, 009h, 000h, 009h, 000h, 000h, 012h, 000h
+         DB 009h, 000h, 000h, 02Dh, 000h, 009h, 01Bh, 000h, 000h, 012h
+         DB 000h, 000h, 02Dh, 009h, 000h, 000h, 012h, 000h, 009h, 000h
+         DB 000h, 009h, 000h, 009h, 000h, 000h, 012h, 000h, 009h, 000h
+         DB 000h, 02Dh, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h
+         DB 000h, 009h, 000h, 000h, 012h, 000h, 009h, 000h, 000h, 009h
+         DB 000h, 024h, 024h, 024h, 024h, 024h, 009h, 000h, 000h, 000h
+         DB 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 009h
+         DB 000h, 000h, 012h, 02Dh, 009h, 000h, 02Dh, 009h, 000h, 000h
+         DB 000h, 000h, 009h, 000h, 009h, 000h, 000h, 000h, 000h, 009h
+         DB 01Bh, 000h, 02Dh, 012h, 000h, 000h, 000h, 009h, 000h, 000h
+         DB 012h, 000h, 009h, 000h, 000h, 009h, 000h, 000h, 000h, 02Dh
+         DB 009h, 000h, 009h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h
+         DB 02Dh, 012h, 000h, 000h, 02Dh, 009h, 000h, 000h, 024h, 024h
+         DB 024h, 000h, 000h, 009h, 000h, 000h, 000h, 000h, 009h, 000h
+         DB 024h, 024h, 024h, 024h, 024h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 0FEh, 0BAh, 0BAh, 0BAh, 0DFh, 0DFh
+         DB 0DFh, 000h, 0BAh, 0BAh, 0BAh, 0DFh, 0DFh, 0DFh, 000h, 0FAh
+         DB 0DFh, 0C6h, 000h, 0FAh, 0DFh, 0C6h, 000h, 0BAh, 0BAh, 0BAh
+         DB 0DFh, 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0BAh, 0DFh, 0DFh, 0DFh
+         DB 000h, 0FAh, 0DFh, 0C6h, 000h, 0FAh, 0DFh, 0C6h, 000h, 0BAh
+         DB 0BAh, 0DFh, 0DFh, 0BAh, 0BAh, 0DFh, 0DFh, 000h, 0FAh, 0DFh
+         DB 0C6h, 000h, 0FAh, 0DFh, 0C6h, 000h, 0FFh, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 000h, 009h, 036h, 03Fh, 024h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 02Dh
+         DB 009h, 009h, 009h, 02Dh, 009h, 02Dh, 009h, 009h, 000h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 000h, 024h, 024h, 009h, 009h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 02Dh, 009h, 009h
+         DB 009h, 000h, 009h, 009h, 009h, 009h, 000h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 009h, 000h, 009h, 009h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 000h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h, 009h, 009h
+         DB 009h, 000h, 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 000h, 000h, 009h, 009h, 009h, 000h
+         DB 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 009h, 009h, 009h, 000h, 009h, 000h
+         DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 000h, 000h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h
+         DB 009h, 000h, 000h, 02Dh, 009h, 000h, 009h, 000h, 009h, 009h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h, 009h, 009h
+         DB 000h, 000h, 009h, 000h, 009h, 000h, 009h, 009h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 02Dh, 009h, 009h, 009h, 009h, 000h, 000h
+         DB 000h, 000h, 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h
+         DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 009h, 009h, 009h, 02Dh, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 000h
+         DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 02Dh, 009h, 02Dh, 009h, 000h, 009h, 009h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 000h
+         DB 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 009h, 009h, 009h
+         DB 009h, 02Dh, 009h, 02Dh, 009h, 000h, 009h, 009h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 009h, 000h, 000h, 000h, 009h, 009h
+         DB 02Dh, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 02Dh
+         DB 009h, 000h, 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 02Dh, 009h
+         DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 000h
+         DB 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h, 02Dh, 009h
+         DB 009h, 000h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 000h, 009h, 02Dh
+         DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h
+         DB 009h, 009h, 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 02Dh, 009h, 000h, 009h, 02Dh, 009h, 009h
+         DB 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 000h, 009h, 009h
+         DB 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 009h, 009h, 009h
+         DB 009h, 02Dh, 009h, 000h, 009h, 009h, 009h, 009h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 009h, 000h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 000h, 009h, 009h, 009h, 009h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 009h, 009h, 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h
+         DB 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h
+         DB 01Bh, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 01Bh, 000h
+         DB 000h, 009h, 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 009h
+         DB 009h, 000h, 024h, 024h, 024h, 024h, 009h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h
+         DB 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 009h, 009h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h
+         DB 000h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h
+lkjnv:   DB 001h, 02Dh, 009h, 009h, 000h, 009h, 009h, 009h, 000h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 000h
+         DB 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 02Dh
+         DB 009h, 009h, 000h, 009h, 009h, 009h, 000h, 009h, 009h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 009h, 009h, 000h, 009h, 000h
+         DB 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 02Dh, 009h, 009h
+         DB 000h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 000h, 009h, 000h, 009h, 01Bh
+         DB 000h, 000h, 009h, 009h, 009h, 02Dh, 009h, 009h, 000h, 009h
+         DB 009h, 009h, 000h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 009h, 000h, 009h, 01Bh, 000h, 02Dh
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h
+         DB 000h, 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h
+         DB 009h, 000h, 009h, 000h, 009h, 01Bh, 000h, 02Dh, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 02Dh, 009h
+         DB 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 000h
+         DB 024h, 024h, 024h, 009h, 009h, 009h, 02Dh, 009h, 000h, 000h
+         DB 000h, 000h, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 000h
+         DB 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 000h, 009h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 02Dh, 009h, 009h, 02Dh, 009h, 000h, 009h, 01Bh
+         DB 000h, 000h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 000h, 009h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 000h, 009h, 009h, 000h, 009h, 000h, 009h, 01Bh, 000h, 000h
+         DB 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 02Dh, 009h, 009h, 009h, 009h, 009h, 000h, 009h
+         DB 009h, 000h, 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h
+         DB 009h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 02Dh, 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 009h, 000h
+         DB 009h, 000h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 000h
+         DB 009h, 009h, 009h, 02Dh, 02Dh, 009h, 009h, 009h, 000h, 009h
+         DB 009h, 009h, 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 000h
+         DB 009h, 01Bh, 000h, 02Dh, 009h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 009h, 01Bh
+         DB 000h, 02Dh, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 0FEh, 0DFh, 0DFh, 0FAh, 0FAh
+         DB 000h, 0FAh, 0DFh, 0FAh, 000h, 0DFh, 0DFh, 0FAh, 0FAh, 000h
+         DB 0FAh, 0DFh, 0FAh, 000h, 0DFh, 0DFh, 0BAh, 0BAh, 000h, 0FAh
+         DB 0DFh, 0C6h, 000h, 0DFh, 0DFh, 0BAh, 0BAh, 000h, 0FAh, 0DFh
+         DB 0C6h, 000h, 0DFh, 0DFh, 0FAh, 0FAh, 000h, 0FAh, 0DFh, 0FAh
+         DB 000h, 0DFh, 0DFh, 0FAh, 0FAh, 000h, 0FAh, 0DFh, 0FAh, 000h
+         DB 0DFh, 0DFh, 0FAh, 0FAh, 0DFh, 0DFh, 0FAh, 0FAh, 000h, 0FFh
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh
+         DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 009h, 036h, 03Fh, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h
+         DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 02Dh
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh
+         DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 02Dh, 024h, 024h, 000h, 009h, 01Bh, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 02Dh, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 02Dh, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h
+         DB 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 02Dh, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 009h, 01Bh
+         DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
+         DB 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 02Dh, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 000h
+         DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 009h, 01Bh
+         DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 02Dh, 02Dh, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 000h, 009h, 01Bh, 000h, 02Dh
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h
+         DB 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 02Dh
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 009h, 01Bh
+         DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
+         DB 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 02Dh
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 02Dh
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 000h
+         DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 02Dh, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 009h, 01Bh
+         DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 02Dh, 024h, 000h, 009h, 01Bh, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h
+         DB 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h
+         DB 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 024h
+         DB 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
+         DB 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h, 024h
+         DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 02Dh, 024h, 024h, 024h, 024h, 000h, 009h, 01Bh
+         DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 02Dh
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h
+         DB 009h, 01Bh, 000h, 000h, 024h, 02Dh, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh
+         DB 000h, 000h, 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 000h, 009h, 01Bh, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h
+         DB 024h, 02Dh, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 024h
+         DB 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h, 024h, 02Dh
+         DB 024h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h
+         DB 024h, 02Dh, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 02Dh, 024h, 024h
+         DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 02Dh
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 000h, 009h, 01Bh
+         DB 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 0FEh, 0FAh, 0FAh, 0DFh, 0DFh
+         DB 0FAh, 0FAh, 0DFh, 0DFh, 000h, 0FAh, 0FAh, 0DFh, 0DFh, 0FAh
+         DB 0FAh, 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0DFh, 0DFh, 0BAh, 0BAh
+         DB 0DFh, 0DFh, 000h, 0FAh, 0FAh, 0DFh, 0DFh, 0FAh, 0FAh, 0DFh
+         DB 0DFh, 000h, 0BAh, 0BAh, 0FAh, 0FAh, 0DFh, 0DFh, 000h, 0BAh
+         DB 0BAh, 0FAh, 0FAh, 0DFh, 0DFh, 000h, 0BAh, 0BAh, 0DFh, 0DFh
+         DB 0FAh, 0FAh, 0DFh, 0DFh, 000h, 000h, 000h, 0FFh, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 036h, 03Fh, 024h
+         DB 024h, 024h, 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 000h, 000h
+         DB 000h, 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h, 009h, 009h
+         DB 009h, 000h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 024h, 009h, 009h, 009h, 009h, 009h, 02Dh
+         DB 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 024h, 000h, 024h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 024h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 01Bh
+         DB 000h, 000h, 000h, 000h, 000h, 009h, 000h, 009h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h
+         DB 000h, 000h, 000h, 000h, 009h, 009h, 009h, 01Bh, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 000h, 009h, 02Dh, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 009h, 000h, 009h, 009h, 009h, 01Bh, 000h, 000h, 000h, 000h
+         DB 000h, 009h, 000h, 009h, 02Dh, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 009h, 000h, 009h, 009h, 02Dh
+         DB 009h, 009h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 009h
+         DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 009h, 009h, 000h, 009h, 009h, 02Dh, 009h, 009h
+         DB 009h, 01Bh, 000h, 000h, 000h, 000h, 02Dh, 009h, 000h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 009h, 000h, 009h, 009h, 000h, 009h, 009h, 009h, 01Bh
+         DB 000h, 000h, 000h, 000h, 02Dh, 009h, 000h, 009h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 009h
+         DB 000h, 009h, 009h, 000h, 009h, 009h, 009h, 01Bh, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 009h
+         DB 009h, 000h, 009h, 009h, 009h, 01Bh, 000h, 000h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 009h, 01Bh, 000h, 000h, 009h, 009h, 009h, 009h
+         DB 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 081h, 009h, 009h, 000h
+         DB 009h, 01Bh, 000h, 000h, 012h, 000h, 02Dh, 009h, 000h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh
+         DB 009h, 009h, 009h, 009h, 081h, 009h, 009h, 000h, 009h, 01Bh
+         DB 000h, 000h, 012h, 000h, 02Dh, 009h, 000h, 009h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h
+         DB 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 01Bh, 000h, 000h
+         DB 012h, 000h, 000h, 009h, 000h, 009h, 02Dh, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h
+         DB 02Dh, 009h, 009h, 02Dh, 009h, 01Bh, 000h, 000h, 012h, 000h
+         DB 000h, 009h, 000h, 009h, 02Dh, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 000h, 009h
+         DB 009h, 02Dh, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 009h
+         DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h
+lofjt:   DB 000h, 000h, 000h, 000h, 009h, 009h, 02Dh, 009h, 000h, 009h
+         DB 009h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 009h
+         DB 000h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 009h, 009h, 02Dh, 009h, 000h, 009h, 009h, 000h
+         DB 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 024h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 009h, 000h, 009h, 009h, 000h, 009h, 01Bh
+         DB 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h, 024h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h
+         DB 009h, 009h, 000h, 009h, 009h, 000h, 009h, 01Bh, 000h, 02Dh
+         DB 012h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h
+         DB 000h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 012h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 081h, 009h
+         DB 009h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 009h, 009h, 009h, 009h, 081h, 009h, 009h, 000h
+         DB 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 024h, 000h, 000h, 000h, 000h, 024h
+         DB 009h, 009h, 009h, 009h, 081h, 009h, 009h, 000h, 009h, 01Bh
+         DB 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 024h, 024h, 024h, 024h, 000h, 009h, 009h
+         DB 009h, 009h, 02Dh, 009h, 009h, 000h, 009h, 01Bh, 000h, 000h
+         DB 012h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h
+         DB 02Dh, 009h, 009h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h
+         DB 024h, 000h, 024h, 000h, 009h, 009h, 009h, 009h, 02Dh, 009h
+         DB 009h, 000h, 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 024h, 000h
+         DB 024h, 000h, 024h, 009h, 009h, 009h, 081h, 009h, 009h, 000h
+         DB 009h, 01Bh, 000h, 000h, 012h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 024h, 000h, 024h, 000h, 000h, 000h
+         DB 02Dh, 009h, 009h, 009h, 081h, 009h, 009h, 000h, 009h, 01Bh
+         DB 000h, 000h, 012h, 000h, 000h, 000h, 02Dh, 000h, 000h, 000h
+         DB 000h, 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h
+         DB 009h, 009h, 009h, 009h, 009h, 02Dh, 009h, 01Bh, 000h, 000h
+         DB 009h, 000h, 009h, 009h, 009h, 000h, 000h, 000h, 024h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 009h
+         DB 009h, 009h, 009h, 02Dh, 009h, 01Bh, 000h, 000h, 012h, 000h
+         DB 02Dh, 02Dh, 009h, 02Dh, 02Dh, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 024h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 01Bh, 000h, 000h, 012h, 000h, 02Dh, 02Dh
+         DB 009h, 02Dh, 02Dh, 009h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 02Dh, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 01Bh, 000h, 000h, 02Dh, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 024h, 009h, 009h, 009h, 009h, 009h, 01Bh
+         DB 000h, 000h, 000h, 009h, 02Dh, 02Dh, 009h, 02Dh, 02Dh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 02Dh, 009h, 009h, 009h, 009h, 009h, 01Bh, 000h, 000h
+         DB 000h, 009h, 02Dh, 02Dh, 009h, 02Dh, 02Dh, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 024h, 009h, 009h, 009h, 009h, 01Bh, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 02Dh, 009h
+         DB 009h, 009h, 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 02Dh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 024h, 009h, 009h
+         DB 009h, 01Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 02Dh, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 0FEh, 0FAh, 000h
+         DB 000h, 0DFh, 000h, 000h, 0FAh, 000h, 000h, 0DFh, 000h, 0FAh
+         DB 000h, 0C6h, 000h, 000h, 0FAh, 000h, 000h, 0DFh, 000h, 000h
+         DB 0FAh, 000h, 000h, 0DFh, 000h, 0FAh, 000h, 0C6h, 000h, 000h
+         DB 0DFh, 000h, 0C6h, 000h, 0DFh, 000h, 0DFh, 000h, 0C6h, 000h
+         DB 0DFh, 000h, 000h, 0DFh, 000h, 0BAh, 000h, 0C6h, 000h, 000h
+         DB 0C6h, 000h, 0DFh, 000h, 0FAh, 000h, 000h, 000h, 0FFh, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh
+         DB 000h, 000h, 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h
+         DB 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 036h, 024h, 024h, 024h
+         DB 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 01Bh, 000h, 000h, 024h, 024h, 000h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh
+         DB 000h, 000h, 024h, 000h, 000h, 000h, 000h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h
+         DB 024h, 024h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 036h, 024h
+         DB 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 000h
+         DB 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 000h, 000h
+         DB 009h, 009h, 009h, 02Dh, 02Dh, 02Dh, 02Dh, 02Dh, 009h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 01Bh, 000h, 000h, 024h, 000h, 000h, 000h, 009h, 009h
+         DB 009h, 02Dh, 02Dh, 02Dh, 02Dh, 02Dh, 009h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh
+         DB 000h, 000h, 024h, 024h, 000h, 009h, 009h, 009h, 009h, 02Dh
+         DB 02Dh, 02Dh, 02Dh, 02Dh, 009h, 009h, 009h, 009h, 000h, 000h
+         DB 036h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h
+         DB 024h, 000h, 000h, 024h, 024h, 024h, 024h, 02Dh, 02Dh, 02Dh
+         DB 02Dh, 02Dh, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 081h, 000h
+         DB 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h
+         DB 009h, 01Bh, 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 000h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh
+         DB 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 000h, 02Dh, 009h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h
+         DB 024h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 000h, 02Dh, 009h, 009h, 009h, 000h, 000h, 02Dh, 024h, 009h
+         DB 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 02Dh
+         DB 009h, 009h, 009h, 000h, 000h, 02Dh, 024h, 009h, 000h, 000h
+         DB 009h, 01Bh, 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 000h, 000h, 02Dh, 009h, 009h
+         DB 009h, 000h, 000h, 02Dh, 024h, 009h, 000h, 000h, 009h, 01Bh
+         DB 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 000h, 02Dh, 009h, 009h, 009h, 000h
+         DB 000h, 02Dh, 024h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h
+         DB 024h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 009h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 02Dh, 009h, 009h
+         DB 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 000h, 024h, 024h, 024h, 024h, 024h
+         DB 009h, 01Bh, 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 009h, 01Bh
+         DB 000h, 000h, 024h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h
+         DB 024h, 000h, 000h, 024h, 024h, 024h, 024h, 02Dh, 02Dh, 02Dh
+         DB 02Dh, 02Dh, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
+         DB 000h, 009h, 009h, 009h, 009h, 02Dh, 02Dh, 02Dh, 02Dh, 02Dh
+         DB 009h, 009h, 009h, 009h, 000h, 000h, 036h, 03Fh, 024h, 024h
+         DB 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 000h, 000h, 000h
+         DB 009h, 009h, 009h, 02Dh, 02Dh, 02Dh, 02Dh, 02Dh, 009h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 01Bh, 000h, 000h, 024h, 024h, 000h, 000h, 009h, 009h
+         DB 009h, 02Dh, 02Dh, 02Dh, 02Dh, 02Dh, 009h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh
+         DB 000h, 000h, 024h, 000h, 000h, 000h, 000h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h
+         DB 024h, 024h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 000h, 000h, 000h, 000h, 036h, 024h
+         DB 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h, 024h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h, 000h, 000h
+         DB 000h, 000h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 01Bh, 000h, 000h, 024h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 009h, 01Bh
+         DB 000h, 000h, 024h, 024h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 036h, 024h, 024h, 024h, 024h, 024h, 009h, 01Bh, 000h, 000h
+         DB 024h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 024h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 009h, 01Bh, 000h, 000h, 024h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 009h, 01Bh, 000h, 000h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h
+         DB 024h, 024h, 024h, 024h, 024h, 024h, 024h, 024h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h, 009h
+         DB 009h, 009h, 009h, 009h, 009h, 009h, 009h, 0FEh, 0FAh, 0FAh
+         DB 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0DFh
+         DB 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh
+         DB 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh
+         DB 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0FAh, 0C6h, 0C6h
+         DB 0C6h, 0C6h, 0C6h, 0C6h, 0C6h, 0C6h, 0C6h, 0C6h, 0C6h, 0C6h
+         DB 0C6h, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh, 0DFh
+         DB 0DFh, 0FFh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 090h, 094h, 04Eh, 052h, 04Ah, 04Ah
+         DB 090h, 08Ch, 090h, 094h, 04Eh, 052h, 04Eh, 04Ah, 090h, 0CCh
+         DB 090h, 094h, 04Eh, 012h, 04Eh, 04Ah, 090h, 0CCh, 090h, 094h
+         DB 04Eh, 052h, 04Eh, 04Ah, 090h, 08Ch, 090h, 094h, 008h, 002h
+         DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
+         DB 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch
+         DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
+         DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch
+         DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
+         DB 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h
+         DB 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h
+         DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
+         DB 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch
+         DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
+         DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 0FFh, 0FFh
+         DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
+         DB 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h
+         DB 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h
+         DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
+         DB 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch
+         DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
+         DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch
+         DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
+         DB 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h
+         DB 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h
+         DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
+         DB 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch
+         DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
+         DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch
+         DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
+         DB 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h
+         DB 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h
+         DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
+         DB 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch
+         DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
+         DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch
+         DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
+         DB 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h
+         DB 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h
+         DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
+         DB 098h, 08Ch, 091h, 002h, 0FFh, 0FFh, 011h, 008h, 098h, 08Ch
+         DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
+         DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch
+         DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
+         DB 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h
+         DB 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h
+         DB 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h
+         DB 098h, 08Ch, 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch
+         DB 0FDh, 007h, 0EDh, 007h, 098h, 08Ch, 091h, 002h, 042h, 068h
+         DB 011h, 008h, 098h, 08Ch, 0FDh, 007h, 0EDh, 007h, 098h, 08Ch
+         DB 091h, 002h, 042h, 068h, 011h, 008h, 098h, 08Ch, 0FDh, 007h
+         DB 0EDh, 007h, 098h, 08Ch, 091h
+lldcb:   JMP lknlh
+         DB 0C3h, 037h, 0C3h, 0C3h, 077h, 0C3h, 0C3h, 0A7h, 069h, 0C3h
+         DB 0D0h, 0C3h, 0C3h, 065h, 069h, 0C3h, 03Ah, 069h, 0C3h, 0B8h
+         DB 068h, 0C3h, 0E8h, 068h
+lojlh:   JMP lovxs
+         DB 02Ah, 0FCh, 08Fh, 0C9h, 000h, 000h, 0C3h, 0D2h, 068h, 0C3h
+         DB 082h, 068h, 0C3h, 046h, 069h, 0C9h, 000h, 000h, 02Ah, 0C8h
+         DB 06Bh, 022h, 0C8h, 06Bh, 0C9h
+logtt:   ANI 0C0h
+         STA lhlrv
+         RET
+lknlh:   LXI H,lgscb
+         LXI D,ldlgy
+         LXI B,lftte
+         NOP
+         NOP
+         NOP
+         LXI SP,lohyk
+         JMP ljyyy
+         DB 07Ch, 0B8h, 0C0h, 07Dh, 0B9h, 0C9h, 0C5h, 04Fh, 0CDh, 0A7h
+         DB 069h, 0C1h, 0C9h, 07Eh, 0B9h, 023h, 0CAh, 069h, 068h, 0A7h
+         DB 0C8h, 023h, 023h, 0C3h, 05Ch, 068h, 0D1h, 05Eh, 023h, 056h
+         DB 0EBh, 0C1h, 0D1h, 0E3h, 0C9h, 0AFh, 032h, 0F3h, 08Fh, 0E5h
+         DB 021h, 003h, 0BDh, 03Dh, 0CDh, 077h, 0C3h, 036h, 0FFh, 0E1h
+         DB 0C9h, 0CDh, 0A8h, 068h, 07Dh, 0CDh, 0D0h, 0C3h, 07Ch, 0CDh
+         DB 0D0h, 0C3h, 07Bh, 0CDh, 0D0h, 0C3h, 07Ah, 0CDh, 0D0h, 0C3h
+         DB 07Eh, 0CDh, 0D0h, 0C3h, 0CDh, 027h, 0C4h, 023h, 0C2h, 095h
+         DB 068h, 079h, 0CDh, 0D0h, 0C3h, 078h, 0C3h, 0D0h, 0C3h, 0AFh
+         DB 0C5h, 047h, 0CDh, 0D0h, 0C3h, 005h, 0C2h, 0ABh, 068h, 0C1h
+         DB 03Eh, 0E6h, 0C3h, 0D0h, 0C3h, 0F5h, 00Fh, 00Fh, 00Fh, 00Fh
+         DB 0CDh, 0C1h, 068h, 0F1h, 0F5h, 0E6h, 00Fh, 0FEh, 00Ah, 0DAh
+         DB 0CBh, 068h, 0C6h, 007h, 0C6h, 030h, 0CDh, 055h, 068h, 0F1h
+         DB 0C9h, 0CDh, 072h, 068h, 0CDh, 0FEh, 0C3h, 03Eh, 008h, 0CDh
+         DB 077h, 0C3h, 04Fh, 03Eh, 008h, 0CDh, 077h, 0C3h, 047h, 02Ah
+         DB 0E3h, 08Fh, 0C9h, 07Eh, 0A7h, 0C8h, 0CDh, 055h, 068h, 023h
+         DB 0C3h, 0E8h, 068h
+lovxs:   PUSH H
+         PUSH D
+         CALL ldiev
+         LDA ldgqd
+         CMA
+         ANI 0FEh
+         ORI 002h
+         LXI H,ldhyx
+         LXI D,ldsqg
+lknyh:   DAD D
+         ANA A
+         RAL
+         JNC lknyh
+         ANA A
+         JZ lknnv
+         CALL lhduj
+         LDA ldstf
+         CMA
+         MVI D,008h
+llcpv:   RRC
+         DCR L
+         JC lovxr
+         DCR D
+         JNZ llcpv
+         LDA lhlrv
+         CMA
+lknxr:   RRC
+         DCR L
+         JC lovxr
+         JNZ lknxr
+lknnv:   MVI D,0FFh
+         JMP lojup
+lovxr:   MOV D,M
+lojup:   CALL ldiev
+         MOV A,D
+         POP D
+         POP H
+         RET
+         DB 0CDh, 054h, 0C2h, 03Ah, 001h, 0FFh, 02Fh, 0E6h, 0FCh, 0C8h
+         DB 03Dh, 0C9h, 0E5h, 0F5h, 001h, 000h, 000h, 07Eh, 081h, 04Fh
+         DB 0F5h, 0CDh, 027h, 0C4h, 0CAh, 061h, 069h, 0F1h, 078h, 08Eh
+         DB 047h, 0CDh, 027h, 0C4h, 023h, 0C2h, 04Bh, 069h, 0F5h, 0F1h
+         DB 0F1h, 0E1h, 0C9h, 044h, 04Dh, 0CDh, 037h, 0C3h, 0FEh, 08Bh
+         DB 0CAh, 000h, 0D0h, 0E6h, 07Fh, 0FEh, 01Fh, 0CAh, 000h, 0E0h
+         DB 0FEh, 008h, 0CAh, 099h, 069h, 0FEh, 018h, 0CAh, 086h, 069h
+         DB 0FEh, 00Dh, 0CAh, 0A5h, 069h, 077h, 0CDh, 027h, 0C4h, 0CAh
+         DB 067h, 069h, 07Eh, 0FEh, 020h, 0DAh, 067h, 069h, 023h, 0CDh
+         DB 055h, 068h, 0C3h, 067h, 069h, 0CDh, 04Fh, 068h, 0CAh, 067h
+         DB 069h, 02Bh, 03Eh, 008h, 0C3h, 093h, 069h, 077h, 0C9h, 0E5h
+         DB 0D5h, 0C5h, 0F5h, 02Ah, 0C6h, 06Bh, 0E9h, 02Ah, 0FCh, 08Fh
+         DB 079h, 0D6h, 020h, 0DAh, 004h, 06Bh, 04Fh, 07Ch, 0FEh, 0BFh
+         DB 0D4h, 01Fh, 06Bh, 047h, 00Fh, 00Fh, 0E6h, 03Fh, 0C6h, 090h
+         DB 067h, 0EBh, 079h, 0A7h, 0CAh, 07Eh, 06Ah, 02Ah, 0E7h, 08Fh
+         DB 085h, 06Fh, 029h, 029h, 029h, 03Eh, 007h, 0B5h, 06Fh, 078h
+         DB 0E6h, 003h, 0CAh, 0FCh, 069h, 0EAh, 01Ah, 06Ah, 01Fh, 0D2h
+         DB 03Ch, 06Ah, 001h, 0C0h, 004h, 01Ah, 0A1h, 0B6h, 012h, 02Bh
+         DB 01Bh, 01Ah, 0A1h, 0B6h, 012h, 02Bh, 01Bh, 005h, 0C2h, 0E9h
+         DB 069h, 0C3h, 05Ch, 06Ah, 001h, 003h, 004h, 01Ah, 0A1h, 00Fh
+         DB 00Fh, 0B6h, 007h, 007h, 012h, 01Bh, 02Bh, 01Ah, 0A1h, 00Fh
+         DB 00Fh, 0B6h, 007h, 007h, 012h, 01Bh, 02Bh, 005h, 0C2h, 0FFh
+         DB 069h, 0C3h, 05Ch, 06Ah, 001h, 0FCh, 008h, 0E5h, 06Eh, 026h
+         DB 000h, 029h, 029h, 029h, 029h, 01Ah, 0A1h, 0B4h, 012h, 014h
+         DB 01Ah, 0E6h, 00Fh, 0B5h, 012h, 015h, 0E1h, 01Bh, 02Bh, 005h
+         DB 0C2h, 01Dh, 06Ah, 006h, 0F0h, 0C3h, 05Ch, 06Ah, 001h, 0F0h
+         DB 008h, 07Eh, 00Fh, 00Fh, 0E5h, 067h, 0A1h, 06Fh, 0ACh, 067h
+         DB 01Ah, 0A1h, 0B4h, 012h, 014h, 01Ah, 0E6h, 03Fh, 0B5h, 012h
+         DB 015h, 01Bh, 0E1h, 02Bh, 005h, 0C2h, 03Fh, 06Ah, 006h, 0C0h
+         DB 03Ah, 0FAh, 08Fh, 0A7h, 0CAh, 075h, 06Ah, 079h, 02Fh, 04Fh
+         DB 026h, 008h, 013h, 01Ah, 0A9h, 012h, 014h, 01Ah, 0A8h, 012h
+         DB 015h, 025h, 0C2h, 068h, 06Ah, 021h, 0FDh, 08Fh, 034h, 034h
+         DB 034h, 0C3h, 09Eh, 0C0h, 078h, 001h, 003h, 004h, 021h, 03Fh
+         DB 0F0h, 0E6h, 003h, 0CAh, 093h, 06Ah, 0EAh, 0A2h, 06Ah, 01Fh
+         DB 0D2h, 0A5h, 06Ah, 00Eh, 0C0h, 01Ah, 0A1h, 012h, 01Dh, 01Ah
+         DB 0A1h, 012h, 01Dh, 005h, 0C2h, 093h, 06Ah, 0C3h, 05Ch, 06Ah
+         DB 021h, 00Fh, 0FCh, 01Ah, 0A4h, 012h, 014h, 01Ah, 0A5h, 012h
+         DB 01Dh, 01Ah, 0A5h, 012h, 015h, 01Ah, 0A4h, 012h, 01Dh, 005h
+         DB 0C2h, 0A5h, 06Ah, 04Ch, 07Dh, 02Fh, 047h, 0C3h, 05Ch, 06Ah
+         DB 0E5h, 0D5h, 0C5h, 0F5h, 021h, 000h, 000h, 039h, 022h, 0F6h
+         DB 08Fh, 031h, 00Ah, 090h, 026h, 090h, 006h, 030h, 00Eh, 029h
+         DB 02Eh, 000h, 0D1h, 073h, 023h, 072h, 023h, 0D1h, 073h, 023h
+         DB 072h, 023h, 0D1h, 073h, 023h, 072h, 023h, 00Dh, 0C2h, 0D6h
+         DB 06Ah, 07Ch, 02Ah, 0FAh, 08Fh, 0E5h, 0E5h, 0E5h, 0E5h, 0E5h
+         DB 021h, 014h, 000h, 039h, 0F9h, 067h, 024h, 005h, 0C2h, 0D2h
+         DB 06Ah, 02Ah, 0F6h, 08Fh, 0F9h, 0C3h, 09Eh, 0C0h, 021h, 019h
+         DB 06Bh, 0E5h, 02Ah, 0FCh, 08Fh, 0E5h, 0E5h, 0E5h, 021h, 0A7h
+         DB 06Bh, 04Fh, 0CDh, 05Ch, 068h, 0E1h, 0E1h, 0E1h, 0C1h, 022h
+         DB 0FCh, 08Fh, 0C3h, 09Eh, 0C0h, 07Dh, 0C6h, 00Ah, 0D2h, 02Ah
+         DB 06Bh, 0CDh, 0C0h, 06Ah, 0D6h, 00Ah, 06Fh, 032h, 0FCh, 08Fh
+         DB 0AFh, 067h, 032h, 0FDh, 08Fh, 0C9h, 07Ch, 0D6h, 003h, 0D2h
+         DB 03Fh, 06Bh, 0CDh, 04Fh, 06Bh, 03Eh, 0BDh, 067h, 0C9h, 07Ch
+         DB 0C6h, 003h, 0FEh, 0BFh, 0DAh, 04Dh, 06Bh, 0CDh, 059h, 06Bh
+         DB 0AFh, 067h, 0C9h, 07Dh, 0D6h, 00Ah, 0D2h, 057h, 06Bh, 03Eh
+         DB 0F8h, 06Fh, 0C9h, 07Dh, 0C6h, 00Ah, 0D2h, 061h, 06Bh, 03Eh
+         DB 008h, 06Fh, 0C9h, 0CDh, 010h, 0C0h, 021h, 008h, 000h, 0C9h
+         DB 026h, 000h, 0C9h, 021h, 074h, 06Bh, 022h, 0C6h, 06Bh, 0C9h
+         DB 021h, 07Dh, 06Bh, 022h, 0C6h, 06Bh, 0C3h, 09Eh, 0C0h, 021h
+         DB 092h, 06Bh, 022h, 0C6h, 06Bh, 0AFh, 0C6h, 00Ah, 00Dh, 0C2h
+         DB 084h, 06Bh, 0D6h, 038h, 032h, 0FCh, 08Fh, 0C3h, 09Eh, 0C0h
+         DB 021h, 0AFh, 069h, 022h, 0C6h, 06Bh, 0AFh, 0C6h, 003h, 00Dh
+         DB 0C2h, 099h, 06Bh, 0D6h, 060h, 032h, 0FDh, 08Fh, 0C3h, 09Eh
+         DB 0C0h, 0E7h, 070h, 0C1h, 0E8h, 034h, 06Bh, 0EAh, 01Fh, 06Bh
+         DB 0ECh, 066h, 06Bh, 0EDh, 06Ah, 06Bh, 0F8h, 041h, 06Bh, 0F9h
+         DB 04Fh, 06Bh, 0FAh, 059h, 06Bh, 0FBh, 06Dh, 06Bh, 0FFh, 063h
+         DB 06Bh, 000h, 05Fh, 091h, 04Eh, 011h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h, 039h, 000h
+         DB 039h, 000h
 END

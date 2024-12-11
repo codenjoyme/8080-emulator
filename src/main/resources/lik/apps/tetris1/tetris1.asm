@@ -7,1669 +7,1669 @@
 ; 
 ;*********************************************************************************************************
 
-            CPU  8080
-            .ORG 00000h
-lpwnynsd    EQU 0170Bh
-lyigpcjm    EQU 01D14h
-lhcvqrzo    EQU 02007h
-lirenijr    EQU 0240Bh
-lqyjqmwd    EQU 02601h
-lxnmjdyn    EQU 02603h
-lggbtanm    EQU 02605h
-llsbprnn    EQU 02786h
-lqlnnxeu    EQU 0278Eh
-lyqswkde    EQU 027CDh
-lzegfkze    EQU 03A4Fh
-laejtwrg    EQU 03E13h
-lnrorhcc    EQU 04000h
-lwlsnfxl    EQU 077AEh
-lveejhwk    EQU 07A13h
-lcaquzpc    EQU 07B13h
-lhdtzcza    EQU 08100h
-lrqpqlwi    EQU 08FFCh
-lxhjcbkn    EQU 09000h
-lzgtifbk    EQU 09004h
-ldixuppb    EQU 090FAh
-lfhuqlnn    EQU 090FEh
-lecudzsx    EQU 09318h
-lnwmvxfh    EQU 09418h
-lxvvdqxv    EQU 09618h
-lhxqvdem    EQU 09820h
-lrcbnjlt    EQU 0991Ch
-lmuwiqur    EQU 099A0h
-lbemjdnt    EQU 099C0h
-lpbxbixd    EQU 0AB20h
-lbnclcut    EQU 0AF30h
-luojjtfr    EQU 0B707h
-lqkksyfb    EQU 0B898h
-lkwbohoc    EQU 0B918h
-ljgowvcj    EQU 0BB18h
-lpslcfoi    EQU 0BC18h
-lnwlkxkx    EQU 0BF00h
-lhsaydhb    EQU 0C010h
-llzjlkhp    EQU 0C037h
-lmntdqys    EQU 0C0BEh
-lzifozry    EQU 0C337h
-lupzithy    EQU 0C427h
-lshjxqbw    EQU 0CAB7h
-lxazvrue    EQU 0FF00h
-lkukegic    EQU 0FF01h
-lskutmav    EQU 0FF02h
-lnsvwlwm    EQU 0FF03h
-lobivtnf    EQU 0FFE0h
-lmtmwmjm    EQU 0FFF0h
-lenicrit    EQU 0FFF7h
-ljybtgvj    EQU 0FFFFh
-            JMP lljligoj
-            DB 000h, 000h
-lvntviye:   LXI H,lktijofs
-            MVI M,02Bh
-            INX H
-            MVI A,080h
-lpmupxvh:   MVI M,000h
-            INX H
-            DCR A
-            JNZ lpmupxvh
-lpuczxbs:   XRA A
-            STA lfsrjzdm
-            STA lomfeksd
-            STA lovwilqh
-            STA lltljznn
-            LXI H,lnrorhcc
-            SHLD lzgtsyxf
-            STA lernfvjw
-            LXI H,00000h
-            SHLD lunjbiqs
-            SHLD lvaesgcw
-            SHLD lfuxaucy
-            MOV D,A
-            LXI B,00000h
-            LXI H,lhwxxacs
-            CALL llgjbtok
-            LXI H,lhbrlyqj
-            LXI B,00005h
-            MVI D,014h
-            CALL llgjbtok
-            MVI D,000h
-            LXI H,lvkvbhss
-            CALL llgjbtok
-            LXI H,lhmtsbmk
-            MVI E,001h
-ljodqgwn:   PUSH D
-            PUSH H
-            LXI B,lpwnynsd
-            MOV A,E
-            ADI 030h
-            CALL lqsupbjr
-            MVI A,03Eh
-            CALL lqsupbjr
-            MVI D,000h
-            CALL llgjbtok
-            LXI H,lwynavbt
-            CALL llgjbtok
-            POP H
-            PUSH H
-            LXI D,00009h
-            DAD D
-            LXI B,lirenijr
-            CALL ltmhlxem
-            POP H
-            LXI D,0000Ch
-            DAD D
-            LDA lomfeksd
-            ADI 00Eh
-            STA lomfeksd
-            POP D
-            INR E
-            MOV A,E
-            CPI 00Ah
-            JNZ ljodqgwn
-            XRA A
-            STA lomfeksd
-            LXI H,lkumqziz
-            MVI D,000h
-            CALL llgjbtok
-            LXI B,lhcvqrzo
-            LXI H,lktijofs
-            MVI D,009h
-lgffgena:   PUSH H
-            LXI H,lhsaydhb
-            SHLD lrqpqlwi
-            POP H
-            MVI A,001h
-            CALL ldhysnyg
-lilvlzhu:   CALL lzifozry
-            CPI 00Dh
-            JZ lnlgysxr
-            CPI 008h
-            JZ lpxeijby
-            DCR D
-            INR D
-            JZ lilvlzhu
-            CPI 020h
-            JNZ lgukodsn
-            MVI A,02Bh
-            JMP lxitqrgh
-lgukodsn:   CPI 041h
-            JC lilvlzhu
-            CPI 060h
-            JC lxitqrgh
-            SUI 020h
-lxitqrgh:   MOV M,A
-            CALL lqsupbjr
-            INX H
-            DCR D
-            JMP lgffgena
-lpxeijby:   MOV A,D
-            CPI 009h
-            JZ lilvlzhu
-            MVI A,00Bh
-            CALL ldhysnyg
-            DCR B
-            INR D
-            DCX H
-            JMP lgffgena
-lnlgysxr:   MOV A,D
-            CPI 009h
-            JNZ lummleqj
-            MVI D,000h
-            CALL llgjbtok
-            JMP ljdvzawz
-lummleqj:   MVI M,000h
-            MVI A,00Bh
-            CALL ldhysnyg
-ljdvzawz:   CALL lhxnvkis
-            CALL lriusybv
-            CPI 020h
-            JNZ ljdvzawz
-lebxkffq:   CALL lualuxbt
-            LXI H,00000h
-            SHLD luxlpwej
-            SHLD lwddzrjz
-            SHLD lfuxaucy
-            LXI B,lmdgrbia
-            LXI H,luxlpwej
-            CALL lttvjavz
-            CALL ljgxmzul
-            XRA A
-            STA lfamdeya
-            STA lsidzepv
-            LXI B,lqyjqmwd
-            CALL lbjulsnv
-            LXI H,lzgtsyxf
-            LXI B,lpshsytj
-            CALL lttvjavz
-            LDA lovwilqh
-            LXI B,lxnmjdyn
-            CALL lbjulsnv
-            LDA lovwilqh
-            ANI 00Fh
-            MVI B,007h
-            DCR A
-            JNZ ljkqunuz
-            MVI B,00Eh
-ljkqunuz:   DCR A
-            JNZ lfgvoogr
-            MVI B,015h
-lfgvoogr:   MOV A,B
-            STA lciumipi
-            LXI H,00120h
-            SHLD lhiufcny
-lteadsui:   CALL lltuhubv
-            CALL lhpdzogt
-            XRA A
-            STA lpbgavvz
-            LDA lovwilqh
-            ANI 00Fh
-            CPI 003h
-            JNC lplepgmk
-            INR A
-            MOV C,A
-            MVI A,030h
-            MOV B,A
-lsfgtloj:   DCR C
-            JZ lereumsg
-            ADD B
-            JMP lsfgtloj
-lplepgmk:   MVI A,060h
-lereumsg:   ADI 000h
-            DAA
-            STA lntpvbhm
-            CALL lcpwvbfg
-lzemtzps:   CALL lxtycveg
-            LDA lpbgavvz
-            ORA A
-            JNZ lzemtzps
-            LDA lpwtxfaf
-            ORA A
-            JNZ ltogkppg
-            LDA lntpvbhm
-            MVI B,099h
-            ADD B
-            DAA
-            STA lntpvbhm
-            CALL lcpwvbfg
-ltogkppg:   CALL lqivcvzu
-            CPI 010h
-            JZ lsntacdc
-            CPI 004h
-            JZ lyleoxnc
-            CPI 080h
-            JZ lzmsdyje
-            CPI 020h
-            JZ lxfyomhw
-            CPI 001h
-            JZ ldtswamw
-            CPI 002h
-lhuqerrf:   JZ lhdtzcza
-            JMP lzemtzps
-ldtswamw:   LHLD lhiufcny
-            SHLD ltzqhxmn
-            LXI H,00700h
-            SHLD lhiufcny
-            XRA A
-            STA lomfeksd
-            STA lltljznn
-lqzyhhcb:   LXI H,lclghuvi
-            CALL llgjbtok
-            CALL lqivcvzu
-            CPI 001h
-            JZ lphdrkei
-            LXI H,ldxrwupn
-            CALL llgjbtok
-            CALL lqivcvzu
-            CPI 001h
-            JNZ lqzyhhcb
-lphdrkei:   LXI H,lgpycuyl
-            CALL llgjbtok
-            LHLD ltzqhxmn
-            SHLD lhiufcny
-            JMP lzemtzps
-lmtrvsrh:   MVI B,003h
-            PUSH PSW
-ltzxvsdk:   POP PSW
-            LDAX D
-            CMP M
-            RNZ
-            PUSH PSW
-            DCR B
-            INX H
-            INX D
-            JNZ ltzxvsdk
-            POP PSW
-            RET
-lualuxbt:   LXI H,llwybygk
-            MVI C,01Ah
-lcfqozbw:   MVI B,010h
-            LXI D,lhauvyhs
-            CALL lwvckldr
-            DCR C
-            JNZ lcfqozbw
-            CALL ljjszphs
-            LXI H,lhtxtpbn
-            CALL llgjbtok
-            LDA lovwilqh
-            LXI B,lyzdhrbv
-            CALL lbjulsnv
-            LXI H,ljdqvizb
-            CALL llgjbtok
-            LXI H,lzgtsyxf
-            LXI B,ldkqhftl
-            CALL lttvjavz
-            LXI H,ljybtgvj
-            CALL ljojrsid
-            LXI H,ljybtgvj
-            CALL ljojrsid
-            LXI H,ljybtgvj
-            CALL ljojrsid
-            LXI H,llwybygk
-            MVI C,019h
-lyzpvtmu:   MVI B,010h
-            LXI D,leqqfxur
-            CALL lwvckldr
-            DCR C
-            JNZ lyzpvtmu
-            LXI D,lhjmrosk
-            MVI B,010h
-            CALL lwvckldr
-            LDA lovwilqh
-            ANI 00Fh
-            CPI 003h
-            JC ljjszphs
-            SUI 003h
-            RRC
-            RRC
-            RRC
-            LXI D,00000h
-            MOV E,A
-            LXI H,lgqvhipz
-            DAD D
-            LXI D,lonoinys
-            XCHG
-            MVI B,010h
-liwvmukl:   PUSH B
-            MVI B,002h
-lcofjrqv:   LDAX D
-            MVI C,008h
-lsxiyqch:   RAL
-            JNC lfpjaxhu
-            MVI M,002h
-lfpjaxhu:   INX H
-            DCR C
-            JNZ lsxiyqch
-            DCR B
-            INX D
-            JNZ lcofjrqv
-            POP B
-            DCR B
-            JNZ liwvmukl
-ljjszphs:   XRA A
-            STA lltljznn
-            STA lomfeksd
-            LXI B,00000h
-lotxbcec:   CALL ljxuophy
-            MOV A,M
-            CALL ldwigvqw
-            INX B
-            LXI H,001A0h
-            CALL leezbokb
-            JNZ lotxbcec
-            RET
-ljojrsid:   DCX H
-            MOV A,H
-            ORA L
-            JNZ ljojrsid
-            RET
-ljxuophy:   LXI H,llwybygk
-            DAD B
-            RET
-lwvckldr:   LDAX D
-            MOV M,A
-            INX D
-            INX H
-            DCR B
-            JNZ lwvckldr
-            RET
-ldhysnyg:   PUSH B
-            PUSH D
-            PUSH H
-            PUSH PSW
-            MOV A,B
-            ADI 090h
-            MOV D,A
-            MOV A,C
-            RLC
-            RLC
-            RLC
-            MOV C,A
-            LDA lomfeksd
-            ADD C
-            MOV E,A
-            POP PSW
-            PUSH PSW
-            MOV L,A
-            MVI H,000h
-            DAD H
-            DAD H
-            DAD H
-            LXI B,lugwtprc
-            DAD B
-            XCHG
-            LDA lfsrjzdm
-            ORA A
-lenjypaf:   JZ lhtqglku
-            DCR A
-            JZ laydkrdc
-lfyylaly:   LDAX D
-            XRA M
-            MOV M,A
-            JMP lvixeial
-laydkrdc:   LXI B,00007h
-            DAD B
-            JMP lfyylaly
-lhtqglku:   MVI B,008h
-luatbupb:   LDAX D
-            MOV C,A
-            LDA lltljznn
-            ANA M
-            XRA C
-            MOV M,A
-            INX H
-            INX D
-            DCR B
-            JNZ luatbupb
-lvixeial:   POP PSW
-            POP H
-            POP D
-            POP B
-            RET
-ldwigvqw:   PUSH B
-            PUSH D
-            PUSH PSW
-            MOV A,C
-            ANI 00Fh
-            ADI 003h
-            MOV D,A
-            MOV A,C
-            ANI 0F0h
-            ORA B
-            RRC
-            RRC
-            RRC
-            RRC
-            ADI 005h
-            MOV E,A
-            PUSH D
-            POP B
-            POP PSW
-            CALL ldhysnyg
-            POP D
-            POP B
-            RET
-leezbokb:   MOV A,H
-            CMP B
-            RNZ
-            MOV A,L
-            CMP C
-            RET
-lltuhubv:   CALL lhxnvkis
-            LDA lciumipi
-            MOV C,A
-            MOV A,L
-lmvtzeye:   CMP C
-            JC lwfpbyqv
-            SUB C
-            JMP lmvtzeye
-lwfpbyqv:   RLC
-            RLC
-            RLC
-            MOV L,A
-            MVI H,000h
-            LXI D,ldwfvpqt
-            DAD D
-            LXI D,lnisnhcg
-            MVI C,008h
-lepijuul:   MOV A,M
-            MVI B,008h
-lsqgvtbc:   RAL
-            PUSH PSW
-            MVI A,000h
-            RAL
-            STAX D
-            POP PSW
-            INX D
-            DCR B
-            JNZ lsqgvtbc
-            INX H
-            DCR C
-            JNZ lepijuul
-            XRA A
-            STA lpwtxfaf
-            LHLD lidzmzif
-            MOV A,H
-            ANI 003h
-            STA lxqsvoli
-            MOV A,H
-            RRC
-            RRC
-            ANI 007h
-            JZ lzzkpago
-            DCR A
-lzzkpago:   ADI 003h
-            MOV L,A
-            MVI H,000h
-            SHLD lwbesrgh
-            RET
-lhxnvkis:   LHLD lidzmzif
-            MVI C,010h
-lnnbtqge:   MOV A,H
-            DAD H
-            ANI 060h
-            JPE lweswugq
-            INX H
-lweswugq:   DCR C
-            JNZ lnnbtqge
-            SHLD lidzmzif
-            RET
-lhpdzogt:   CALL lzljyinl
-            JZ lnhirtkb
-            POP H
-            JMP lccdavhp
-lzljyinl:   CALL lsfwqxvj
-            XRA A
-            STA lritzlcq
-            CALL lbmdiwgp
-            LDA lpwtxfaf
-            ORA A
-            JZ lqrnmnaq
-            LXI B,00010h
-            DAD B
-            CALL lbmdiwgp
-lqrnmnaq:   LDA lritzlcq
-            ORA A
-            RET
-lbmdiwgp:   PUSH H
-            PUSH D
-            MVI B,004h
-lqaolpxy:   MVI C,004h
-laafohuk:   LDAX D
-            ORA A
-            JZ lwhhstrc
-            MOV A,M
-            ORA A
-            JZ lwhhstrc
-            MVI A,001h
-            STA lritzlcq
-            JMP lgmsbbfq
-lwhhstrc:   INX D
-            INX H
-            DCR C
-            JNZ laafohuk
-            PUSH B
-            LXI B,0000Ch
-            DAD B
-            POP B
-            DCR B
-            JNZ lqaolpxy
-lgmsbbfq:   POP D
-            POP H
-            RET
-lsfwqxvj:   LXI H,lnisnhcg
-            LDA lxqsvoli
-            RLC
-            RLC
-            RLC
-            RLC
-            MOV E,A
-            MVI D,000h
-            DAD D
-            XCHG
-            LHLD lwbesrgh
-            LXI B,llwybygk
-            DAD B
-            RET
-lnhirtkb:   CALL lsfwqxvj
-            LHLD lwbesrgh
-            LDA lpwtxfaf
-            STA lomfeksd
-            MVI A,0FFh
-            STA lltljznn
-            MVI B,004h
-lgreebkg:   MVI C,004h
-lgwtfawl:   PUSH B
-            PUSH H
-            POP B
-            LDAX D
-            ORA A
-            JZ lbxpetzq
-            CALL ldwigvqw
-lbxpetzq:   PUSH B
-            POP H
-            POP B
-            INX H
-            INX D
-            DCR C
-            JNZ lgwtfawl
-            PUSH B
-            LXI B,0000Ch
-            DAD B
-            POP B
-            DCR B
-            JNZ lgreebkg
-            RET
-lxtycveg:   MVI A,002h
-            STA lfsrjzdm
-            LDA lpbgavvz
-            ORA A
-            CZ lnhirtkb
-            LDA lpwtxfaf
-            ORA A
-            JZ lfnaqnsb
-lruppoum:   INR A
-            CPI 008h
-            JZ lfgvpjbh
-ldqdajwn:   STA lpwtxfaf
-            MVI A,001h
-            STA lfsrjzdm
-            LDA lpbgavvz
-            ORA A
-            CZ lnhirtkb
-            XRA A
-            STA lfsrjzdm
-            RET
-lfgvpjbh:   LHLD lwbesrgh
-            LXI B,00010h
-            DAD B
-            SHLD lwbesrgh
-            XRA A
-            JMP ldqdajwn
-lfnaqnsb:   LHLD lwbesrgh
-            SHLD lrtvkmmx
-            LXI B,00010h
-            DAD B
-            SHLD lwbesrgh
-            CALL lzljyinl
-            LHLD lrtvkmmx
-            SHLD lwbesrgh
-            JNZ ldzgiyrc
-            JMP lruppoum
-ldzgiyrc:   CALL lsfwqxvj
-            MVI B,004h
-lkcigyim:   MVI C,004h
-lcoawozk:   LDAX D
-            RLC
-            ORA A
-            JZ lkpeoxqk
-            MOV M,A
-lkpeoxqk:   INX H
-            INX D
-            DCR C
-            JNZ lcoawozk
-            PUSH B
-            LXI B,0000Ch
-            DAD B
-            POP B
-            DCR B
-            JNZ lkcigyim
-            XRA A
-            STA lfsrjzdm
-            CALL ljjszphs
-            CALL lwramzyb
-            JMP lteadsui
-lwramzyb:   LXI H,lxgtymsu
-            LXI D,lntpvbhm
-            CALL lvpmathj
-            LXI B,lmdgrbia
-            CALL lttvjavz
-            LXI H,lntgufaf
-            LXI D,lntpvbhm
-            CALL lvpmathj
-            LXI B,lksrjylg
-            CALL lttvjavz
-            XRA A
-            STA lazotato
-lsslltip:   LXI H,llatqknb
-lsnugoal:   CALL lukaiyuq
-            LXI B,lmtmwmjm
-            DAD B
-            LXI B,lonpythe
-            CALL leezbokb
-            JNZ lsnugoal
-            PUSH B
-            PUSH H
-            LDA lazotato
-            ORA A
-            JZ lbxlwobh
-            MOV B,A
-            LDA lsidzepv
-            ADD B
-            STA lsidzepv
-            CPI 008h
-            JC lwrrtiup
-            SUI 008h
-            STA lsidzepv
-            LDA lfamdeya
-            CPI 008h
-            JZ lwrrtiup
-            INR A
-            STA lfamdeya
-            LXI B,lqyjqmwd
-            CALL lbjulsnv
-            LHLD lhiufcny
-            LXI B,lobivtnf
-            DAD B
-            SHLD lhiufcny
-lwrrtiup:   LDA lazotato
-            MVI B,001h
-            DCR A
-            JZ lamyjvrv
-            MVI B,003h
-            DCR A
-            JZ lamyjvrv
-            MVI B,006h
-            DCR A
-            JZ lamyjvrv
-            MVI B,010h
-lamyjvrv:   MOV A,B
-            STA lrkjltxo
-            LXI D,lqimsrau
-            LXI H,lxgtymsu
-            CALL lvpmathj
-            LXI B,lmdgrbia
-            CALL lttvjavz
-            LXI H,lntgufaf
-            LXI D,lqimsrau
-            CALL lvpmathj
-            LXI B,lksrjylg
-            CALL lttvjavz
-            LDA lazotato
-            LHLD lfuxaucy
-            MOV E,A
-            MVI D,000h
-            CALL lxzecmxe
-            SHLD lfuxaucy
-            CALL ljgxmzul
-lbxlwobh:   POP H
-            POP B
-            RET
-lcpwvbfg:   LXI B,00303h
-            LDA lntpvbhm
-            JMP lbjulsnv
-ljgxmzul:   LHLD lfuxaucy
-            LXI B,lggbtanm
-            MOV A,H
-            CALL lbjulsnv
-            MOV A,L
-            JMP lbjulsnv
-lvpmathj:   LDAX D
-            ADD M
-            DAA
-            MOV M,A
-            DCX H
-            DCX D
-            LDAX D
-            ADC M
-            DAA
-            MOV M,A
-            DCX H
-            DCX D
-            LDAX D
-            ADC M
-            DAA
-            MOV M,A
-            RET
-lttvjavz:   MVI E,003h
-lezkzmck:   MOV A,M
-            CALL lbjulsnv
-            INX H
-            DCR E
-            JNZ lezkzmck
-            RET
-ltmhlxem:   MVI E,003h
-lqklodzd:   MOV A,M
-            CALL lxvzwmur
-            INX H
-            DCR E
-            JNZ lqklodzd
-            RET
-lbjulsnv:   PUSH PSW
-            XRA A
-            STA lltljznn
-            STA lomfeksd
-            POP PSW
-lxvzwmur:   MOV D,A
-            RRC
-            RRC
-            RRC
-            RRC
-            ANI 00Fh
-            ADI 030h
-            CALL lqsupbjr
-            MOV A,D
-            ANI 00Fh
-            ADI 030h
-            CALL lqsupbjr
-            RET
-lukaiyuq:   PUSH H
-            MVI B,00Ah
-lqtdqtcf:   MOV A,M
-            ORA A
-            JZ livifcau
-            INX H
-            DCR B
-            JNZ lqtdqtcf
-            POP H
-            PUSH H
-lzvctnaw:   PUSH H
-            LXI B,lmtmwmjm
-            PUSH H
-            POP D
-            DAD B
-            MVI B,00Ah
-levajvkv:   MOV A,M
-            STAX D
-            INX H
-            INX D
-            DCR B
-            JNZ levajvkv
-            POP H
-            LXI B,lonpythe
-            CALL leezbokb
-            JZ lrtlnnyw
-            LXI B,lmtmwmjm
-            DAD B
-            JMP lzvctnaw
-lrtlnnyw:   CALL ljjszphs
-            LDA lazotato
-            INR A
-            STA lazotato
-            POP H
-            POP H
-            JMP lsslltip
-livifcau:   POP H
-            RET
-lqivcvzu:   LHLD lhiufcny
-            XRA A
-            STA lwriwcie
-luzvrxem:   CALL lriusybv
-            ORA A
-            JNZ lzhitvby
-            STA lwztphbr
-            JMP llhyylls
-lzhitvby:   MOV B,A
-            LDA lwztphbr
-            ORA A
-            MOV A,B
-            STA lwztphbr
-            JNZ llhyylls
-            LDA lwriwcie
-            ORA A
-            JNZ llhyylls
-            MOV A,B
-            STA lwriwcie
-llhyylls:   DCX H
-            MOV A,H
-            ORA L
-            JNZ luzvrxem
-            LDA lwriwcie
-            ORA A
-            RET
-lriusybv:   MVI A,091h
-            STA lnsvwlwm
-            MVI A,0FBh
-            STA lkukegic
-            MVI C,00Fh
-lkuvsyib:   DCR C
-            JNZ lkuvsyib
-            LDA lxazvrue
-            ANI 03Fh
-            MOV B,A
-            LDA lskutmav
-            ANI 003h
-            RRC
-            RRC
-            ORA B
-            CMA
-            RET
-lsntacdc:   CALL lnhirtkb
-            LHLD lwbesrgh
-            SHLD lrtvkmmx
-            LXI B,ljybtgvj
-ldsougbi:   DAD B
-            SHLD lwbesrgh
-            CALL lzljyinl
-            JNZ lldcotvp
-            JMP lcesrtfh
-lldcotvp:   LHLD lrtvkmmx
-            SHLD lwbesrgh
-            JMP lcesrtfh
-lyleoxnc:   CALL lnhirtkb
-            LHLD lwbesrgh
-            SHLD lrtvkmmx
-            LXI B,00001h
-            JMP ldsougbi
-lxfyomhw:   MVI A,001h
-            STA lpbgavvz
-            JMP lzemtzps
-lzmsdyje:   CALL lnhirtkb
-            LDA lxqsvoli
-            STA lpnwafxv
-            INR A
-            CPI 004h
-            JC lyvzgzyl
-            XRA A
-lyvzgzyl:   STA lxqsvoli
-            CALL lzljyinl
-            JNZ lusgghpj
-lcesrtfh:   CALL lnhirtkb
-            JMP lzemtzps
-lusgghpj:   LDA lpnwafxv
-            STA lxqsvoli
-            JMP lcesrtfh
-llgjbtok:   PUSH H
-            PUSH B
-lohouhaz:   MOV A,M
-            ORA A
-            JZ lgsbmymo
-            CALL lqsupbjr
-            INX H
-            JMP lohouhaz
-lgsbmymo:   MOV A,D
-            ORA A
-            POP B
-            POP H
-            RZ
-            DCR D
-            INR C
-            JMP llgjbtok
-lqsupbjr:   CPI 020h
-            JNC lhsbfxih
-            CPI 01Fh
-            JZ lmhdxhpu
-            CPI 008h
-            JZ lqzrzlpu
-            CPI 018h
-            JZ lqzedypl
-            CPI 019h
-            JZ lavlpgrl
-            CPI 01Ah
-            JZ lquxmxnr
-            CPI 00Ah
-            JZ lhabyjcb
-            CPI 00Dh
-            JZ lpkhgfnt
-            CPI 007h
-            JZ lgabmczk
-            RET
-lhsbfxih:   PUSH PSW
-            ANI 07Fh
-            SUI 020h
-            CALL ldhysnyg
-            POP PSW
-            CPI 080h
-            JNC lgpkyted
-            INR B
-            RET
-lgpkyted:   INR C
-            RET
-lqzrzlpu:   DCR B
-            RET
-lqzedypl:   INR B
-            RET
-lquxmxnr:   INR C
-            RET
-lavlpgrl:   DCR C
-            RET
-lpkhgfnt:   MVI B,000h
-            RET
-lhabyjcb:   INR C
-            MVI B,000h
-            RET
-lgabmczk:   INX H
-            MOV B,M
-            INX H
-            MOV C,M
-            RET
-lmhdxhpu:   PUSH B
-            MVI C,01Fh
-            CALL llzjlkhp
-            POP B
-            RET
-lccdavhp:   LXI D,lzgtsyxf
-            LXI H,luxlpwej
-            CALL lmtrvsrh
-            JNC lbceyaga
-            LDA lovwilqh
-            ADI 001h
-            DAA
-            STA lovwilqh
-            ANI 00Fh
-            JNZ lebxkffq
-            LXI H,00040h
-            LXI D,00015h
-            LDA lovwilqh
-lnesdhqf:   CALL lxzecmxe
-            SUI 010h
-            JNZ lnesdhqf
-            MOV A,H
-            MOV H,L
-            MOV L,A
-            SHLD lzgtsyxf
-            JMP lebxkffq
-lxzecmxe:   PUSH PSW
-            MOV A,L
-            ADD E
-            DAA
-            MOV L,A
-            MOV A,H
-            ADC D
-            DAA
-            MOV H,A
-            POP PSW
-            RET
-lbceyaga:   LXI H,leofoxxz
-            MVI D,009h
-lbbygwrg:   PUSH H
-            PUSH D
-            LXI D,lunjbiqs
-            CALL lmtrvsrh
-            JNC lgmvkmpi
-            POP D
-            POP H
-            LXI B,0000Ch
-            DAD B
-            DCR D
-            JNZ lbbygwrg
-            JMP lpuczxbs
-lgmvkmpi:   POP D
-            MOV A,D
-            CPI 001h
-            JZ ldjhttdh
-            POP H
-            PUSH H
-            LXI B,lenicrit
-            DAD B
-            XCHG
-            LXI B,lmgpfvkd
-            LXI H,lhxmxdbn
-lyxxivyh:   DCX B
-            DCX H
-            MOV A,M
-            STAX B
-            CALL lupzithy
-            JNZ lyxxivyh
-ldjhttdh:   POP H
-            LXI B,lenicrit
-            DAD B
-            LXI D,lktijofs
-            MVI B,009h
-            CALL lwvckldr
-            LXI D,lunjbiqs
-            MVI B,003h
-            CALL lwvckldr
-            JMP lpuczxbs
+         CPU  8080
+         .ORG 00000h
+lngzj    EQU 0170Bh
+ljxfv    EQU 01D14h
+lnivp    EQU 02007h
+lnlnt    EQU 0240Bh
+ljsyr    EQU 02601h
+lnlxh    EQU 02603h
+ljpxx    EQU 02605h
+lnuzq    EQU 02786h
+lnupu    EQU 0278Eh
+ljpog    EQU 027CDh
+lnjub    EQU 03A4Fh
+lnndh    EQU 03E13h
+lkxfl    EQU 04000h
+louis    EQU 077AEh
+lolif    EQU 07A13h
+lolih    EQU 07B13h
+lcncd    EQU 08100h
+lcjko    EQU 08FFCh
+lcopl    EQU 09000h
+lclor    EQU 09004h
+lghbg    EQU 090FAh
+lgeam    EQU 090FEh
+lcocx    EQU 09318h
+lcoej    EQU 09418h
+lcoeb    EQU 09618h
+lcojx    EQU 09820h
+lckxn    EQU 0991Ch
+lcojy    EQU 099A0h
+lcoks    EQU 099C0h
+lcsxv    EQU 0AB20h
+lcswp    EQU 0AF30h
+lfymt    EQU 0B707h
+lctzs    EQU 0B898h
+lctzv    EQU 0B918h
+lctzn    EQU 0BB18h
+lcuaz    EQU 0BC18h
+lcunb    EQU 0BF00h
+ldlft    EQU 0C010h
+lgozx    EQU 0C037h
+lhatc    EQU 0C0BEh
+lgozr    EQU 0C337h
+lgpdp    EQU 0C427h
+lgouq    EQU 0CAB7h
+ldstf    EQU 0FF00h
+ldgqd    EQU 0FF01h
+lhlrv    EQU 0FF02h
+lgzot    EQU 0FF03h
+ldsss    EQU 0FFE0h
+ldsqg    EQU 0FFF0h
+lgwla    EQU 0FFF7h
+lgwbe    EQU 0FFFFh
+         JMP lkamj
+         DB 000h, 000h
+ljjvl:   LXI H,ljvru
+         MVI M,02Bh
+         INX H
+         MVI A,080h
+ljjlp:   MVI M,000h
+         INX H
+         DCR A
+         JNZ ljjlp
+ljvwb:   XRA A
+         STA lnffw
+         STA lnfps
+         STA lnoie
+         STA lnriy
+         LXI H,lkxfl
+         SHLD lnork
+         STA ljyjs
+         LXI H,00000h
+         SHLD ljmgq
+         SHLD lnrii
+         SHLD ljyhw
+         MOV D,A
+         LXI B,00000h
+         LXI H,ljvms
+         CALL lnovc
+         LXI H,lnoga
+         LXI B,00005h
+         MVI D,014h
+         CALL lnovc
+         MVI D,000h
+         LXI H,lnfgd
+         CALL lnovc
+         LXI H,ljjew
+         MVI E,001h
+ljynd:   PUSH D
+         PUSH H
+         LXI B,lngzj
+         MOV A,E
+         ADI 030h
+         CALL lnooh
+         MVI A,03Eh
+         CALL lnooh
+         MVI D,000h
+         CALL lnovc
+         LXI H,lnfcq
+         CALL lnovc
+         POP H
+         PUSH H
+         LXI D,00009h
+         DAD D
+         LXI B,lnlnt
+         CALL lnftu
+         POP H
+         LXI D,0000Ch
+         DAD D
+         LDA lnfps
+         ADI 00Eh
+         STA lnfps
+         POP D
+         INR E
+         MOV A,E
+         CPI 00Ah
+         JNZ ljynd
+         XRA A
+         STA lnfps
+         LXI H,ljjnx
+         MVI D,000h
+         CALL lnovc
+         LXI B,lnivp
+         LXI H,ljvru
+         MVI D,009h
+ljyou:   PUSH H
+         LXI H,ldlft
+         SHLD lcjko
+         POP H
+         MVI A,001h
+         CALL ljywa
+ljjsi:   CALL lgozr
+         CPI 00Dh
+         JZ lncrc
+         CPI 008h
+         JZ lnowq
+         DCR D
+         INR D
+         JZ ljjsi
+         CPI 020h
+         JNZ ljmtw
+         MVI A,02Bh
+         JMP ljjjg
+ljmtw:   CPI 041h
+         JC ljjsi
+         CPI 060h
+         JC ljjjg
+         SUI 020h
+ljjjg:   MOV M,A
+         CALL lnooh
+         INX H
+         DCR D
+         JMP ljyou
+lnowq:   MOV A,D
+         CPI 009h
+         JZ ljjsi
+         MVI A,00Bh
+         CALL ljywa
+         DCR B
+         INR D
+         DCX H
+         JMP ljyou
+lncrc:   MOV A,D
+         CPI 009h
+         JNZ ljjvn
+         MVI D,000h
+         CALL lnovc
+         JMP ljvot
+ljjvn:   MVI M,000h
+         MVI A,00Bh
+         CALL ljywa
+ljvot:   CALL ljmsw
+         CALL ljjtl
+         CPI 020h
+         JNZ ljvot
+lncrr:   CALL lnrnd
+         LXI H,00000h
+         SHLD ljvhc
+         SHLD ljjea
+         SHLD ljyhw
+         LXI B,ljmsn
+         LXI H,ljvhc
+         CALL lncvm
+         CALL ljyqc
+         XRA A
+         STA ljvsu
+         STA lnfpc
+         LXI B,ljsyr
+         CALL lncje
+         LXI H,lnork
+         LXI B,lnfrd
+         CALL lncvm
+         LDA lnoie
+         LXI B,lnlxh
+         CALL lncje
+         LDA lnoie
+         ANI 00Fh
+         MVI B,007h
+         DCR A
+         JNZ lnolb
+         MVI B,00Eh
+lnolb:   DCR A
+         JNZ ljvyd
+         MVI B,015h
+ljvyd:   MOV A,B
+         STA ljjps
+         LXI H,00120h
+         SHLD ljvqy
+lnomx:   CALL lnchr
+         CALL lnoxa
+         XRA A
+         STA lnrqi
+         LDA lnoie
+         ANI 00Fh
+         CPI 003h
+         JNC lnckg
+         INR A
+         MOV C,A
+         MVI A,030h
+         MOV B,A
+lncuc:   DCR C
+         JZ ljmtu
+         ADD B
+         JMP lncuc
+lnckg:   MVI A,060h
+ljmtu:   ADI 000h
+         DAA
+         STA ljmoq
+         CALL lncja
+lnrlq:   CALL lnfvp
+         LDA lnrqi
+         ORA A
+         JNZ lnrlq
+         LDA lnrsu
+         ORA A
+         JNZ ljymk
+         LDA ljmoq
+         MVI B,099h
+         ADD B
+         DAA
+         STA ljmoq
+         CALL lncja
+ljymk:   CALL lncib
+         CPI 010h
+         JZ ljjtw
+         CPI 004h
+         JZ lncrw
+         CPI 080h
+         JZ lnooi
+         CPI 020h
+         JZ lnoye
+         CPI 001h
+         JZ ljvmk
+         CPI 002h
+lnouw:   JZ lcncd
+         JMP lnrlq
+ljvmk:   LHLD ljvqy
+         SHLD lnopo
+         LXI H,00700h
+         SHLD ljvqy
+         XRA A
+         STA lnfps
+         STA lnriy
+lncju:   LXI H,ljvgz
+         CALL lnovc
+         CALL lncib
+         CPI 001h
+         JZ lnfkr
+         LXI H,lnrpp
+         CALL lnovc
+         CALL lncib
+         CPI 001h
+         JNZ lncju
+lnfkr:   LXI H,lncof
+         CALL lnovc
+         LHLD lnopo
+         SHLD ljvqy
+         JMP lnrlq
+lnrlh:   MVI B,003h
+         PUSH PSW
+ljjiv:   POP PSW
+         LDAX D
+         CMP M
+         RNZ
+         PUSH PSW
+         DCR B
+         INX H
+         INX D
+         JNZ ljjiv
+         POP PSW
+         RET
+lnrnd:   LXI H,ljvsj
+         MVI C,01Ah
+lncjh:   MVI B,010h
+         LXI D,ljvjn
+         CALL lnctg
+         DCR C
+         JNZ lncjh
+         CALL lncgu
+         LXI H,ljjdh
+         CALL lnovc
+         LDA lnoie
+         LXI B,ljmqd
+         CALL lncje
+         LXI H,lnffx
+         CALL lnovc
+         LXI H,lnork
+         LXI B,lnfnn
+         CALL lncvm
+         LXI H,lgwbe
+         CALL lnfii
+         LXI H,lgwbe
+         CALL lnfii
+         LXI H,lgwbe
+         CALL lnfii
+         LXI H,ljvsj
+         MVI C,019h
+lnfrp:   MVI B,010h
+         LXI D,ljvgm
+         CALL lnctg
+         DCR C
+         JNZ lnfrp
+         LXI D,ljviy
+         MVI B,010h
+         CALL lnctg
+         LDA lnoie
+         ANI 00Fh
+         CPI 003h
+         JC lncgu
+         SUI 003h
+         RRC
+         RRC
+         RRC
+         LXI D,00000h
+         MOV E,A
+         LXI H,ljyvg
+         DAD D
+         LXI D,ljvue
+         XCHG
+         MVI B,010h
+ljvxo:   PUSH B
+         MVI B,002h
+lnctc:   LDAX D
+         MVI C,008h
+lnrnc:   RAL
+         JNC ljyvw
+         MVI M,002h
+ljyvw:   INX H
+         DCR C
+         JNZ lnrnc
+         DCR B
+         INX D
+         JNZ lnctc
+         POP B
+         DCR B
+         JNZ ljvxo
+lncgu:   XRA A
+         STA lnriy
+         STA lnfps
+         LXI B,00000h
+ljmme:   CALL lnrxc
+         MOV A,M
+         CALL ljvlj
+         INX B
+         LXI H,001A0h
+         CALL ljmjv
+         JNZ ljmme
+         RET
+lnfii:   DCX H
+         MOV A,H
+         ORA L
+         JNZ lnfii
+         RET
+lnrxc:   LXI H,ljvsj
+         DAD B
+         RET
+lnctg:   LDAX D
+         MOV M,A
+         INX D
+         INX H
+         DCR B
+         JNZ lnctg
+         RET
+ljywa:   PUSH B
+         PUSH D
+         PUSH H
+         PUSH PSW
+         MOV A,B
+         ADI 090h
+         MOV D,A
+         MOV A,C
+         RLC
+         RLC
+         RLC
+         MOV C,A
+         LDA lnfps
+         ADD C
+         MOV E,A
+         POP PSW
+         PUSH PSW
+         MOV L,A
+         MVI H,000h
+         DAD H
+         DAD H
+         DAD H
+         LXI B,ljyvi
+         DAD B
+         XCHG
+         LDA lnffw
+         ORA A
+lnfsd:   JZ lnctf
+         DCR A
+         JZ ljyyl
+lnrlj:   LDAX D
+         XRA M
+         MOV M,A
+         JMP lncqt
+ljyyl:   LXI B,00007h
+         DAD B
+         JMP lnrlj
+lnctf:   MVI B,008h
+ljmln:   LDAX D
+         MOV C,A
+         LDA lnriy
+         ANA M
+         XRA C
+         MOV M,A
+         INX H
+         INX D
+         DCR B
+         JNZ ljmln
+lncqt:   POP PSW
+         POP H
+         POP D
+         POP B
+         RET
+ljvlj:   PUSH B
+         PUSH D
+         PUSH PSW
+         MOV A,C
+         ANI 00Fh
+         ADI 003h
+         MOV D,A
+         MOV A,C
+         ANI 0F0h
+         ORA B
+         RRC
+         RRC
+         RRC
+         RRC
+         ADI 005h
+         MOV E,A
+         PUSH D
+         POP B
+         POP PSW
+         CALL ljywa
+         POP D
+         POP B
+         RET
+ljmjv:   MOV A,H
+         CMP B
+         RNZ
+         MOV A,L
+         CMP C
+         RET
+lnchr:   CALL ljmsw
+         LDA ljjps
+         MOV C,A
+         MOV A,L
+lnctj:   CMP C
+         JC lncjn
+         SUB C
+         JMP lnctj
+lncjn:   RLC
+         RLC
+         RLC
+         MOV L,A
+         MVI H,000h
+         LXI D,ljvhb
+         DAD D
+         LXI D,ljvtm
+         MVI C,008h
+lnokd:   MOV A,M
+         MVI B,008h
+ljmvy:   RAL
+         PUSH PSW
+         MVI A,000h
+         RAL
+         STAX D
+         POP PSW
+         INX D
+         DCR B
+         JNZ ljmvy
+         INX H
+         DCR C
+         JNZ lnokd
+         XRA A
+         STA lnrsu
+         LHLD ljvjo
+         MOV A,H
+         ANI 003h
+         STA ljvtk
+         MOV A,H
+         RRC
+         RRC
+         ANI 007h
+         JZ ljyoo
+         DCR A
+ljyoo:   ADI 003h
+         MOV L,A
+         MVI H,000h
+         SHLD lnosa
+         RET
+ljmsw:   LHLD ljvjo
+         MVI C,010h
+lnotu:   MOV A,H
+         DAD H
+         ANI 060h
+         JPE lnojy
+         INX H
+lnojy:   DCR C
+         JNZ lnotu
+         SHLD ljvjo
+         RET
+lnoxa:   CALL ljyws
+         JZ lnckv
+         POP H
+         JMP lnrop
+ljyws:   CALL ljyof
+         XRA A
+         STA lnfng
+         CALL ljjkw
+         LDA lnrsu
+         ORA A
+         JZ ljyos
+         LXI B,00010h
+         DAD B
+         CALL ljjkw
+ljyos:   LDA lnfng
+         ORA A
+         RET
+ljjkw:   PUSH H
+         PUSH D
+         MVI B,004h
+ljmta:   MVI C,004h
+lnfrq:   LDAX D
+         ORA A
+         JZ ljjwr
+         MOV A,M
+         ORA A
+         JZ ljjwr
+         MVI A,001h
+         STA lnfng
+         JMP ljjuf
+ljjwr:   INX D
+         INX H
+         DCR C
+         JNZ lnfrq
+         PUSH B
+         LXI B,0000Ch
+         DAD B
+         POP B
+         DCR B
+         JNZ ljmta
+ljjuf:   POP D
+         POP H
+         RET
+ljyof:   LXI H,ljvtm
+         LDA ljvtk
+         RLC
+         RLC
+         RLC
+         RLC
+         MOV E,A
+         MVI D,000h
+         DAD D
+         XCHG
+         LHLD lnosa
+         LXI B,ljvsj
+         DAD B
+         RET
+lnckv:   CALL ljyof
+         LHLD lnosa
+         LDA lnrsu
+         STA lnfps
+         MVI A,0FFh
+         STA lnriy
+         MVI B,004h
+lnrzh:   MVI C,004h
+ljvzx:   PUSH B
+         PUSH H
+         POP B
+         LDAX D
+         ORA A
+         JZ lnclp
+         CALL ljvlj
+lnclp:   PUSH B
+         POP H
+         POP B
+         INX H
+         INX D
+         DCR C
+         JNZ ljvzx
+         PUSH B
+         LXI B,0000Ch
+         DAD B
+         POP B
+         DCR B
+         JNZ lnrzh
+         RET
+lnfvp:   MVI A,002h
+         STA lnffw
+         LDA lnrqi
+         ORA A
+         CZ lnckv
+         LDA lnrsu
+         ORA A
+         JZ lnoma
+lnovl:   INR A
+         CPI 008h
+         JZ ljyya
+ljvmz:   STA lnrsu
+         MVI A,001h
+         STA lnffw
+         LDA lnrqi
+         ORA A
+         CZ lnckv
+         XRA A
+         STA lnffw
+         RET
+ljyya:   LHLD lnosa
+         LXI B,00010h
+         DAD B
+         SHLD lnosa
+         XRA A
+         JMP ljvmz
+lnoma:   LHLD lnosa
+         SHLD ljyki
+         LXI B,00010h
+         DAD B
+         SHLD lnosa
+         CALL ljyws
+         LHLD ljyki
+         SHLD lnosa
+         JNZ lnrme
+         JMP lnovl
+lnrme:   CALL ljyof
+         MVI B,004h
+lncii:   MVI C,004h
+ljmxo:   LDAX D
+         RLC
+         ORA A
+         JZ ljyqu
+         MOV M,A
+ljyqu:   INX H
+         INX D
+         DCR C
+         JNZ ljmxo
+         PUSH B
+         LXI B,0000Ch
+         DAD B
+         POP B
+         DCR B
+         JNZ lncii
+         XRA A
+         STA lnffw
+         CALL lncgu
+         CALL ljjwe
+         JMP lnomx
+ljjwe:   LXI H,lnofs
+         LXI D,ljmoq
+         CALL lnovi
+         LXI B,ljmsn
+         CALL lncvm
+         LXI H,lnffg
+         LXI D,ljmoq
+         CALL lnovi
+         LXI B,lnhjl
+         CALL lncvm
+         XRA A
+         STA lnrse
+lncvj:   LXI H,lncny
+lnrpj:   CALL ljjjy
+         LXI B,ldsqg
+         DAD B
+         LXI B,lncnx
+         CALL ljmjv
+         JNZ lnrpj
+         PUSH B
+         PUSH H
+         LDA lnrse
+         ORA A
+         JZ ljvnm
+         MOV B,A
+         LDA lnfpc
+         ADD B
+         STA lnfpc
+         CPI 008h
+         JC ljmvf
+         SUI 008h
+         STA lnfpc
+         LDA ljvsu
+         CPI 008h
+         JZ ljmvf
+         INR A
+         STA ljvsu
+         LXI B,ljsyr
+         CALL lncje
+         LHLD ljvqy
+         LXI B,ldsss
+         DAD B
+         SHLD ljvqy
+ljmvf:   LDA lnrse
+         MVI B,001h
+         DCR A
+         JZ ljyqh
+         MVI B,003h
+         DCR A
+         JZ ljyqh
+         MVI B,006h
+         DCR A
+         JZ ljyqh
+         MVI B,010h
+ljyqh:   MOV A,B
+         STA ljyto
+         LXI D,ljmqm
+         LXI H,lnofs
+         CALL lnovi
+         LXI B,ljmsn
+         CALL lncvm
+         LXI H,lnffg
+         LXI D,ljmqm
+         CALL lnovi
+         LXI B,lnhjl
+         CALL lncvm
+         LDA lnrse
+         LHLD ljyhw
+         MOV E,A
+         MVI D,000h
+         CALL lnolu
+         SHLD ljyhw
+         CALL ljyqc
+ljvnm:   POP H
+         POP B
+         RET
+lncja:   LXI B,00303h
+         LDA ljmoq
+         JMP lncje
+ljyqc:   LHLD ljyhw
+         LXI B,ljpxx
+         MOV A,H
+         CALL lncje
+         MOV A,L
+         JMP lncje
+lnovi:   LDAX D
+         ADD M
+         DAA
+         MOV M,A
+         DCX H
+         DCX D
+         LDAX D
+         ADC M
+         DAA
+         MOV M,A
+         DCX H
+         DCX D
+         LDAX D
+         ADC M
+         DAA
+         MOV M,A
+         RET
+lncvm:   MVI E,003h
+ljmnu:   MOV A,M
+         CALL lncje
+         INX H
+         DCR E
+         JNZ ljmnu
+         RET
+lnftu:   MVI E,003h
+ljjuk:   MOV A,M
+         CALL ljyqg
+         INX H
+         DCR E
+         JNZ ljjuk
+         RET
+lncje:   PUSH PSW
+         XRA A
+         STA lnriy
+         STA lnfps
+         POP PSW
+ljyqg:   MOV D,A
+         RRC
+         RRC
+         RRC
+         RRC
+         ANI 00Fh
+         ADI 030h
+         CALL lnooh
+         MOV A,D
+         ANI 00Fh
+         ADI 030h
+         CALL lnooh
+         RET
+ljjjy:   PUSH H
+         MVI B,00Ah
+ljzaf:   MOV A,M
+         ORA A
+         JZ ljjjl
+         INX H
+         DCR B
+         JNZ ljzaf
+         POP H
+         PUSH H
+ljvpp:   PUSH H
+         LXI B,ldsqg
+         PUSH H
+         POP D
+         DAD B
+         MVI B,00Ah
+ljjtx:   MOV A,M
+         STAX D
+         INX H
+         INX D
+         DCR B
+         JNZ ljjtx
+         POP H
+         LXI B,lncnx
+         CALL ljmjv
+         JZ lnonp
+         LXI B,ldsqg
+         DAD B
+         JMP ljvpp
+lnonp:   CALL lncgu
+         LDA lnrse
+         INR A
+         STA lnrse
+         POP H
+         POP H
+         JMP lncvj
+ljjjl:   POP H
+         RET
+lncib:   LHLD ljvqy
+         XRA A
+         STA lnfdk
+lnoyf:   CALL ljjtl
+         ORA A
+         JNZ lnftl
+         STA lnrgm
+         JMP lnron
+lnftl:   MOV B,A
+         LDA lnrgm
+         ORA A
+         MOV A,B
+         STA lnrgm
+         JNZ lnron
+         LDA lnfdk
+         ORA A
+         JNZ lnron
+         MOV A,B
+         STA lnfdk
+lnron:   DCX H
+         MOV A,H
+         ORA L
+         JNZ lnoyf
+         LDA lnfdk
+         ORA A
+         RET
+ljjtl:   MVI A,091h
+         STA lgzot
+         MVI A,0FBh
+         STA ldgqd
+         MVI C,00Fh
+ljmxc:   DCR C
+         JNZ ljmxc
+         LDA ldstf
+         ANI 03Fh
+         MOV B,A
+         LDA lhlrv
+         ANI 003h
+         RRC
+         RRC
+         ORA B
+         CMA
+         RET
+ljjtw:   CALL lnckv
+         LHLD lnosa
+         SHLD ljyki
+         LXI B,lgwbe
+ljmwm:   DAD B
+         SHLD lnosa
+         CALL ljyws
+         JNZ lnono
+         JMP lncum
+lnono:   LHLD ljyki
+         SHLD lnosa
+         JMP lncum
+lncrw:   CALL lnckv
+         LHLD lnosa
+         SHLD ljyki
+         LXI B,00001h
+         JMP ljmwm
+lnoye:   MVI A,001h
+         STA lnrqi
+         JMP lnrlq
+lnooi:   CALL lnckv
+         LDA ljvtk
+         STA ljjqi
+         INR A
+         CPI 004h
+         JC lnolw
+         XRA A
+lnolw:   STA ljvtk
+         CALL ljyws
+         JNZ ljjma
+lncum:   CALL lnckv
+         JMP lnrlq
+ljjma:   LDA ljjqi
+         STA ljvtk
+         JMP lncum
+lnovc:   PUSH H
+         PUSH B
+ljynk:   MOV A,M
+         ORA A
+         JZ ljvzn
+         CALL lnooh
+         INX H
+         JMP ljynk
+ljvzn:   MOV A,D
+         ORA A
+         POP B
+         POP H
+         RZ
+         DCR D
+         INR C
+         JMP lnovc
+lnooh:   CPI 020h
+         JNC ljvmp
+         CPI 01Fh
+         JZ lnryl
+         CPI 008h
+         JZ lnool
+         CPI 018h
+         JZ ljyxz
+         CPI 019h
+         JZ ljvxf
+         CPI 01Ah
+         JZ lnrwp
+         CPI 00Ah
+         JZ ljmlb
+         CPI 00Dh
+         JZ lnovv
+         CPI 007h
+         JZ ljjkh
+         RET
+ljvmp:   PUSH PSW
+         ANI 07Fh
+         SUI 020h
+         CALL ljywa
+         POP PSW
+         CPI 080h
+         JNC ljvpv
+         INR B
+         RET
+ljvpv:   INR C
+         RET
+lnool:   DCR B
+         RET
+ljyxz:   INR B
+         RET
+lnrwp:   INR C
+         RET
+ljvxf:   DCR C
+         RET
+lnovv:   MVI B,000h
+         RET
+ljmlb:   INR C
+         MVI B,000h
+         RET
+ljjkh:   INX H
+         MOV B,M
+         INX H
+         MOV C,M
+         RET
+lnryl:   PUSH B
+         MVI C,01Fh
+         CALL lgozx
+         POP B
+         RET
+lnrop:   LXI D,lnork
+         LXI H,ljvhc
+         CALL lnrlh
+         JNC ljmms
+         LDA lnoie
+         ADI 001h
+         DAA
+         STA lnoie
+         ANI 00Fh
+         JNZ lncrr
+         LXI H,00040h
+         LXI D,00015h
+         LDA lnoie
+ljjmo:   CALL lnolu
+         SUI 010h
+         JNZ ljjmo
+         MOV A,H
+         MOV H,L
+         MOV L,A
+         SHLD lnork
+         JMP lncrr
+lnolu:   PUSH PSW
+         MOV A,L
+         ADD E
+         DAA
+         MOV L,A
+         MOV A,H
+         ADC D
+         DAA
+         MOV H,A
+         POP PSW
+         RET
+ljmms:   LXI H,lnotq
+         MVI D,009h
+lnonq:   PUSH H
+         PUSH D
+         LXI D,ljmgq
+         CALL lnrlh
+         JNC lnoyg
+         POP D
+         POP H
+         LXI B,0000Ch
+         DAD B
+         DCR D
+         JNZ lnonq
+         JMP ljvwb
+lnoyg:   POP D
+         MOV A,D
+         CPI 001h
+         JZ ljvza
+         POP H
+         PUSH H
+         LXI B,lgwla
+         DAD B
+         XCHG
+         LXI B,ljjoj
+         LXI H,ljmht
+lnrms:   DCX B
+         DCX H
+         MOV A,M
+         STAX B
+         CALL lgpdp
+         JNZ lnrms
+ljvza:   POP H
+         LXI B,lgwla
+         DAD B
+         LXI D,ljvru
+         MVI B,009h
+         CALL lnctg
+         LXI D,ljmgq
+         MVI B,003h
+         CALL lnctg
+         JMP ljvwb
 
-lhwxxacs:   DB 02Ch, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-            DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-llstmnje:   DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-            DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-            DB 060h, 060h, 060h, 060h, 060h, 02Dh, 00Ah, 061h, 02Bh, 052h
-            DB 045h, 05Ah, 055h, 04Ch, 058h, 054h, 041h, 054h, 03Ah, 030h
-            DB 030h, 030h, 030h, 030h, 030h, 02Bh, 02Bh, 04Fh, 05Eh, 04Bh
-            DB 049h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 053h, 04Bh, 04Fh, 052h
-            DB 04Fh, 053h, 054h, 058h, 03Dh, 030h, 030h, 02Bh, 02Bh, 02Bh
-            DB 061h, 00Ah, 062h, 060h, 060h, 060h, 060h, 060h, 02Dh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 061h, 00Ah, 061h, 02Bh, 030h
-            DB 030h, 030h, 02Bh, 061h, 043h, 045h, 04Ch, 058h, 03Ah, 030h
-            DB 030h, 030h, 030h, 030h, 030h, 02Bh, 02Bh, 030h, 030h, 030h
-            DB 030h, 030h, 030h, 02Bh, 02Bh, 02Bh, 02Bh, 055h, 052h, 04Fh
-            DB 057h, 045h, 04Eh, 058h, 03Dh, 030h, 030h, 02Bh, 02Bh, 02Bh
-            DB 061h, 00Ah, 062h, 060h, 060h, 060h, 060h, 060h, 065h, 060h
-            DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-            DB 060h, 060h, 060h, 063h, 060h, 060h, 060h, 060h, 060h, 060h
-            DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-            DB 060h, 060h, 060h, 060h, 060h, 064h, 00Ah, 000h
-lhbrlyqj:   DB 061h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 061h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 061h, 000h
-lvkvbhss:   DB 007h, 000h, 01Ah, 061h, 02Bh, 02Bh, 02Bh, 02Bh
-ldkqhftl:   DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 062h, 060h, 060h, 060h
-            DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-            DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 064h, 00Ah
-            DB 061h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 061h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 061h, 00Ah, 061h, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 061h, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 061h, 00Ah
-            DB 061h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 061h, 02Bh, 053h, 04Bh, 054h, 042h, 02Bh, 057h, 054h
-            DB 02Bh, 02Bh, 04Fh, 054h, 044h, 02Bh, 031h, 030h, 030h, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 061h, 00Ah, 061h, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 061h, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 061h, 00Ah
-            DB 02Fh, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-            DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-            DB 060h, 065h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-            DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-            DB 060h, 060h, 060h, 02Eh, 000h
-lclghuvi:   DB 007h, 007h, 01Eh, 02Bh, 050h, 041h, 055h, 05Ah, 041h, 02Bh
-            DB 000h
-lgpycuyl:   DB 007h, 007h, 01Eh, 023h, 023h, 023h, 023h, 023h, 023h, 023h
-            DB 000h
-ldxrwupn:   DB 007h, 007h, 01Eh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
-            DB 000h
-lhtxtpbn:   DB 007h, 003h, 011h, 055h, 052h, 04Fh, 057h, 045h, 04Eh, 058h
-            DB 03Dh, 02Bh, 02Bh, 000h
-ljdqvizb:   DB 007h, 003h, 013h, 043h, 045h, 04Ch, 058h, 03Dh, 02Bh, 000h
-lkumqziz:   DB 007h, 016h, 008h, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh
-            DB 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh
-            DB 03Dh, 03Dh, 03Dh, 03Dh, 007h, 018h, 009h, 054h, 041h, 042h
-            DB 04Ch, 049h, 043h, 041h, 02Bh, 052h, 045h, 04Bh, 04Fh, 052h
-            DB 044h, 04Fh, 057h, 007h, 017h, 005h, 053h, 042h, 052h, 04Fh
-            DB 05Bh, 045h, 04Eh, 04Fh, 02Bh, 052h, 051h, 044h, 04Fh, 057h
-            DB 03Ah, 030h, 030h, 030h, 030h, 007h, 015h, 006h, 062h, 060h
-            DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-            DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
-            DB 064h, 007h, 019h, 007h, 049h, 047h, 052h, 041h, 045h, 054h
-            DB 03Ah, 000h
-lwynavbt:   DB 007h, 021h, 00Bh, 02Bh, 03Dh, 02Bh, 000h
-lpwtxfaf:   DB 000h
-lomfeksd:   DB 000h
-lxqsvoli:   DB 000h
-lpnwafxv:   DB 000h
-lwbesrgh:   DB 008h, 000h
-lrtvkmmx:   DB 018h, 000h
-lltljznn:   DB 000h
-lfsrjzdm:   DB 000h
-lidzmzif:   DB 038h, 018h
-lovwilqh:   DB 000h, 000h, 000h
-lntpvbhm:   DB 030h
-lpbgavvz:   DB 001h
-lritzlcq:   DB 001h
-lhiufcny:   DB 020h, 001h
-ltzqhxmn:   DB 000h, 000h
-lfuxaucy:   DB 000h, 000h
-lwztphbr:   DB 020h
-lwriwcie:   DB 020h
-luxlpwej:   DB 000h
-lwddzrjz:   DB 004h
-lxgtymsu:   DB 066h, 000h
-lrkjltxo:   DB 000h
-lqimsrau:   DB 000h
-lazotato:   DB 000h
-lsidzepv:   DB 000h
-lfamdeya:   DB 000h
-lciumipi:   DB 007h
-lzgtsyxf:   DB 000h, 040h
-lernfvjw:   DB 000h
-lunjbiqs:   DB 000h
-lvaesgcw:   DB 000h
-lntgufaf:   DB 000h
-lhjmrosk:   DB 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h
-            DB 003h, 003h, 003h, 003h, 003h, 003h
-leqqfxur:   DB 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 003h, 003h, 003h
-lhauvyhs:   DB 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh
-            DB 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh
-ldwfvpqt:   DB 027h, 000h, 023h, 020h, 072h, 000h, 013h, 010h, 00Fh, 000h
-            DB 022h, 022h, 00Fh, 000h, 022h, 022h, 047h, 000h, 032h, 020h
-            DB 071h, 000h, 011h, 030h, 074h, 000h, 031h, 010h, 017h, 000h
-            DB 022h, 030h, 033h, 000h, 033h, 000h, 033h, 000h, 033h, 000h
-            DB 036h, 000h, 023h, 010h, 036h, 000h, 023h, 010h, 063h, 000h
-            DB 013h, 020h, 063h, 000h, 013h, 020h, 027h, 020h, 027h, 020h
-            DB 027h, 020h, 027h, 020h, 076h, 000h, 033h, 010h, 037h, 000h
-            DB 023h, 030h, 067h, 000h, 033h, 020h, 073h, 000h, 013h, 030h
-            DB 022h, 070h, 047h, 040h, 072h, 020h, 017h, 010h, 075h, 000h
-            DB 031h, 030h, 057h, 000h, 032h, 030h, 064h, 044h, 00Fh, 010h
-            DB 022h, 026h, 008h, 0F0h, 062h, 022h, 001h, 0F0h, 044h, 046h
-            DB 00Fh, 080h, 047h, 010h, 032h, 060h, 047h, 010h, 032h, 060h
-            DB 017h, 040h, 062h, 030h, 017h, 040h, 062h, 030h, 022h, 062h
-            DB 004h, 0F0h, 046h, 044h, 00Fh, 020h, 044h, 064h, 00Fh, 040h
-            DB 026h, 022h, 002h, 0F0h, 044h, 070h, 074h, 040h, 071h, 010h
-            DB 011h, 070h, 023h, 060h, 047h, 020h, 036h, 020h, 027h, 010h
-            DB 026h, 030h, 027h, 040h, 063h, 020h, 017h, 020h
-lnisnhcg:   DB 000h, 000h, 001h, 000h, 000h, 001h, 001h, 001h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 001h, 000h
-            DB 000h, 000h, 001h, 001h, 000h, 000h, 001h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 001h, 001h, 001h, 000h, 000h, 001h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 001h, 000h, 000h, 001h, 001h, 000h, 000h, 000h, 001h
-            DB 000h
-lmdgrbia:   DB 000h, 000h
-lpshsytj:   DB 000h, 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 003h, 003h, 003h
-llwybygk:   DB 003h, 003h, 003h
-lonpythe:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 002h, 000h, 003h, 003h, 003h, 003h
-            DB 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 002h
-            DB 002h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 002h, 000h, 000h, 003h, 003h
-            DB 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h, 002h, 002h
-            DB 002h, 002h, 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 002h, 000h, 000h
-            DB 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 002h, 000h, 000h, 003h, 003h, 003h, 003h
-            DB 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 002h
-            DB 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 002h, 000h, 000h, 003h, 003h
-            DB 003h
-lonoinys:   DB 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 002h, 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 002h, 000h, 000h, 003h
-            DB 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 002h, 000h, 000h, 003h, 003h, 003h, 003h, 003h
-            DB 003h, 000h, 002h, 002h, 000h, 000h, 000h, 000h, 002h, 000h
-            DB 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 002h
-            DB 002h, 002h, 002h, 002h, 002h, 000h, 000h, 003h, 003h, 003h
-            DB 003h, 003h, 003h, 000h, 000h, 002h, 002h, 002h, 002h, 000h
-            DB 000h, 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h
-            DB 000h, 000h, 000h, 000h, 002h, 000h, 000h, 000h, 000h
-lyzdhrbv:   DB 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h
-            DB 002h, 002h, 002h, 000h, 000h, 000h, 003h, 003h, 003h, 003h
-            DB 003h, 003h, 000h, 000h, 002h, 002h, 000h, 002h, 000h, 000h
-            DB 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h
-            DB 002h, 002h, 000h, 002h, 000h, 000h, 000h, 000h, 003h, 003h
-            DB 003h, 003h, 003h, 003h, 000h, 002h, 002h, 002h, 002h, 002h
-            DB 002h, 002h, 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h
-            DB 000h, 000h, 000h, 000h, 002h, 000h, 002h, 002h, 002h, 000h
-            DB 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h
-            DB 002h, 000h, 000h, 002h, 000h, 000h, 003h, 003h, 003h, 003h
-            DB 003h, 003h, 000h, 000h, 000h, 002h, 002h, 002h, 000h, 002h
-            DB 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h
-            DB 000h, 002h, 002h, 002h, 000h, 002h, 000h, 000h, 003h, 003h
-            DB 003h, 003h, 003h, 003h
-llatqknb:   DB 000h, 000h, 002h, 002h, 000h, 002h, 002h, 002h, 000h, 000h
-            DB 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h
-            DB 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h
-lktijofs:   DB 02Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-lhmtsbmk:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-leofoxxz:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-lhxmxdbn:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h
-lmgpfvkd:   DB 000h, 00Eh, 00Eh, 020h, 0CDh, 05Eh, 00Eh, 02Ah, 00Ah, 010h
-            DB 0CDh, 056h, 00Eh, 00Eh, 029h, 0CDh, 05Eh, 00Eh, 001h, 020h
-            DB 004h, 0C9h, 006h, 00Ch, 0C3h, 056h, 00Eh, 0C5h, 0CDh, 067h
-            DB 00Eh, 0C1h, 0C9h, 07Ch, 0CDh, 050h, 00Eh, 07Dh, 0CDh, 050h
-            DB 00Eh, 0C3h, 037h, 0C0h, 0C3h, 037h, 0C3h, 0AFh, 0C9h, 0F8h
-            DB 0C3h, 027h, 006h, 0C3h, 038h, 0C4h, 0C3h, 000h, 000h, 00Bh
-            DB 000h, 008h, 001h, 02Eh, 001h, 000h, 001h, 016h, 002h, 00Eh
-            DB 001h, 026h, 002h, 02Bh, 001h
-lgqvhipz:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 010h, 008h, 010h, 008h, 018h, 018h, 01Ch, 038h
-            DB 01Eh, 078h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 011h, 088h, 011h, 088h, 011h, 088h, 011h, 088h, 011h, 088h
-            DB 011h, 088h, 011h, 088h, 011h, 088h, 011h, 088h, 011h, 088h
-            DB 011h, 088h, 011h, 088h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 010h, 008h, 000h, 000h
-            DB 000h, 000h, 018h, 018h, 000h, 000h, 000h, 000h, 01Ch, 038h
-            DB 000h, 000h, 000h, 000h, 01Eh, 078h, 000h, 000h, 000h, 000h
-            DB 003h, 0F8h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 01Fh, 0C0h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 003h, 0F8h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 01Eh, 078h, 01Eh, 078h
-            DB 01Eh, 078h, 01Eh, 008h, 01Eh, 078h, 000h, 000h, 000h, 000h
-            DB 01Eh, 078h, 01Eh, 078h, 01Eh, 078h, 01Eh, 078h, 01Eh, 078h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 010h, 008h, 018h, 018h, 01Ch, 038h, 01Eh, 078h, 01Eh, 078h
-            DB 01Eh, 078h, 01Eh, 078h, 01Eh, 078h, 01Ch, 038h, 018h, 018h
-            DB 010h, 008h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 01Bh, 0D8h, 017h, 0B8h, 00Fh, 078h, 01Eh, 0F0h, 01Bh, 0D8h
-            DB 017h, 0B8h, 00Fh, 078h, 01Eh, 0F0h, 01Bh, 0D8h, 017h, 0B8h
-            DB 00Fh, 078h, 01Eh, 0F0h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h
-lugwtprc:   DB 055h, 000h, 001h, 000h, 001h, 000h, 001h, 000h, 0FFh, 0FFh
-            DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0C3h, 0A5h, 099h
-            DB 099h, 0A5h, 0C3h, 0FFh, 049h, 092h, 024h, 0C9h, 092h, 024h
-            DB 049h, 092h, 000h, 000h, 001h, 002h, 007h, 007h, 00Fh, 00Fh
-            DB 07Fh, 083h, 005h, 009h, 0F1h, 0F3h, 0F3h, 0F7h, 01Eh, 026h
-            DB 04Ch, 094h, 0E8h, 0C8h, 0CCh, 094h, 01Eh, 01Eh, 03Ch, 03Dh
-            DB 07Ah, 07Ch, 0F8h, 0F0h, 0F7h, 0FFh, 0FFh, 0F7h, 0F7h, 0F7h
-            DB 0FBh, 0F1h, 0A2h, 042h, 081h, 082h, 084h, 0C8h, 0D0h, 0E0h
-            DB 03Ch, 042h, 099h, 0A1h, 0A1h, 099h, 042h, 03Ch, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 01Fh
-            DB 01Fh, 018h, 018h, 018h, 000h, 000h, 000h, 0F8h, 0F8h, 018h
-            DB 018h, 018h, 018h, 018h, 018h, 0F8h, 0F8h, 000h, 000h, 000h
-            DB 018h, 018h, 018h, 01Fh, 01Fh, 000h, 000h, 000h, 0FEh, 082h
-            DB 082h, 082h, 0C2h, 0C2h, 0C2h, 0FEh, 008h, 008h, 018h, 018h
-            DB 018h, 018h, 018h, 018h, 07Eh, 002h, 002h, 0FEh, 080h, 0C0h
-            DB 0C2h, 0FEh, 03Eh, 002h, 002h, 03Eh, 002h, 006h, 006h, 0FEh
-            DB 082h, 082h, 0C2h, 0C2h, 0FEh, 006h, 006h, 006h, 0FCh, 080h
-            DB 080h, 0FEh, 002h, 006h, 086h, 0FEh, 0F8h, 0C8h, 0C0h, 0FEh
-            DB 082h, 086h, 086h, 0FEh, 0FEh, 082h, 002h, 002h, 006h, 006h
-            DB 006h, 006h, 07Ch, 064h, 064h, 0FEh, 082h, 0C2h, 0C2h, 0FEh
-            DB 0FEh, 082h, 0C2h, 0C2h, 0FEh, 006h, 026h, 03Eh, 000h, 018h
-            DB 018h, 000h, 000h, 018h, 018h, 000h, 000h, 018h, 018h, 0FEh
-            DB 0FEh, 018h, 018h, 000h, 000h, 000h, 000h, 038h, 038h, 038h
-            DB 010h, 020h, 000h, 000h, 000h, 07Eh, 07Eh, 000h, 000h, 000h
-            DB 000h, 000h, 000h, 000h, 000h, 038h, 038h, 038h, 0FEh, 006h
-            DB 002h, 01Eh, 030h, 030h, 000h, 030h, 09Eh, 092h, 092h, 0F2h
-            DB 096h, 0D6h, 0D6h, 0DEh, 03Eh, 022h, 022h, 0FEh, 082h, 0C2h
-            DB 0C2h, 0C2h, 0F8h, 080h, 080h, 0FEh, 082h, 0C2h, 0C2h, 0FEh
-            DB 084h, 084h, 084h, 084h, 0C4h, 0C4h, 0C4h, 0FEh, 01Ch, 014h
-            DB 024h, 044h, 064h, 064h, 064h, 0FEh, 0FEh, 080h, 080h, 0F8h
-            DB 0C0h, 0C0h, 0C0h, 0FEh, 0FEh, 092h, 092h, 0D2h, 0D2h, 0FEh
-            DB 010h, 020h, 0FEh, 080h, 080h, 080h, 0C0h, 0C0h, 0C0h, 0C0h
-            DB 044h, 044h, 044h, 038h, 044h, 0C6h, 0C6h, 0C6h, 082h, 086h
-            DB 08Ah, 092h, 0A2h, 0C6h, 086h, 086h, 038h, 082h, 086h, 08Ah
-            DB 092h, 0A6h, 0C6h, 086h, 088h, 088h, 088h, 0FEh, 0C2h, 0C2h
-            DB 0C2h, 0C2h, 00Eh, 012h, 012h, 012h, 026h, 026h, 066h, 066h
-            DB 082h, 0C6h, 0AAh, 092h, 0C2h, 0C2h, 0C2h, 0C2h, 082h, 082h
-            DB 082h, 0FEh, 0C2h, 0C2h, 0C2h, 0C2h, 0FEh, 08Eh, 086h, 082h
-            DB 082h, 082h, 082h, 0FEh, 0FEh, 082h, 082h, 082h, 0C2h, 0C2h
-            DB 0C2h, 0C2h, 0FEh, 082h, 0C2h, 0C2h, 0FEh, 026h, 046h, 086h
-            DB 0FEh, 082h, 0C2h, 0C2h, 0FEh, 080h, 080h, 080h, 0FEh, 080h
-            DB 080h, 080h, 0C0h, 0C0h, 0C0h, 0FEh, 0FEh, 010h, 010h, 010h
-            DB 018h, 018h, 018h, 018h, 082h, 082h, 0C2h, 0C2h, 0FEh, 002h
-            DB 062h, 07Eh, 054h, 054h, 054h, 07Ch, 054h, 0D6h, 0D6h, 0D6h
-            DB 0FCh, 084h, 084h, 0FEh, 0C2h, 0C2h, 0C2h, 0FEh, 080h, 080h
-            DB 080h, 0FEh, 082h, 0C2h, 0C2h, 0FEh, 082h, 082h, 082h, 0FAh
-            DB 08Ah, 0CAh, 0CAh, 0FAh, 0F8h, 018h, 018h, 07Eh, 002h, 006h
-            DB 086h, 0FEh, 092h, 092h, 092h, 092h, 0D2h, 0D2h, 0D2h, 0FEh
-            DB 0FEh, 082h, 002h, 01Eh, 006h, 006h, 086h, 0FEh, 094h, 094h
-            DB 094h, 094h, 0D4h, 0D4h, 0D4h, 0FEh, 082h, 082h, 0C2h, 0C2h
-            DB 0FEh, 006h, 006h, 006h, 0C0h, 040h, 040h, 07Eh, 042h, 062h
-            DB 062h, 07Eh, 000h, 000h, 000h, 0FFh, 0FFh, 000h, 000h, 000h
-            DB 018h, 018h, 018h, 018h, 018h, 018h, 018h, 018h, 018h, 018h
-            DB 018h, 01Fh, 01Fh, 018h, 018h, 018h, 000h, 000h, 000h, 0FFh
-            DB 0FFh, 018h, 018h, 018h, 018h, 018h, 018h, 0F8h, 0F8h, 018h
-            DB 018h, 018h, 018h, 018h, 018h, 0FFh, 0FFh, 000h, 000h, 000h
-            DB 03Eh, 001h, 0CDh, 0F0h, 002h, 0CDh, 037h, 0C3h, 0FEh, 00Dh
-            DB 0CAh, 0F7h, 000h, 0FEh, 008h, 0CAh, 0E6h, 000h, 015h, 014h
-            DB 0CAh, 0B5h, 000h, 0FEh, 020h, 0C2h, 0D1h, 000h, 03Eh, 02Bh
-            DB 0C3h, 0DDh, 000h, 0FEh, 041h, 0DAh, 0B5h, 000h, 0FEh, 060h
-            DB 0DAh, 0DDh, 000h, 0D6h, 020h, 077h, 0CDh, 00Eh, 007h, 023h
-            DB 015h, 0C3h, 0A8h, 000h, 07Ah, 0FEh, 009h, 0CAh, 0B5h, 000h
-            DB 03Eh, 00Bh, 0CDh, 0F0h, 002h, 005h, 014h, 02Bh, 0C3h, 0A8h
-            DB 000h, 07Ah, 0FEh, 009h, 0C2h, 005h, 001h, 016h, 000h, 0CDh
-lljligoj:   CALL lhsaydhb
-            LXI D,lxhjcbkn
-lwnzrrar:   MVI A,066h
-            STAX D
-            INX D
-            MOV A,D
-            CPI 091h
-            JNZ lwnzrrar
-            LXI D,lnwlkxkx
-llnslmhw:   MVI A,066h
-            STAX D
-            INX D
-            MOV A,D
-            CPI 0C0h
-            JNZ llnslmhw
-            LXI D,lxhjcbkn
-            CALL lploxwhv
-            JMP lomadhxa
-lploxwhv:   MVI A,0FFh
-            STAX D
-            INX D
-            STAX D
-            INR D
-            DCR E
-            MOV A,D
-            CPI 0C0h
-            JNZ lploxwhv
-            RET
-lomadhxa:   LXI D,lzgtifbk
-            CALL lploxwhv
-            LXI D,ldixuppb
-            CALL lploxwhv
-            LXI D,lfhuqlnn
-            CALL lploxwhv
-            LXI D,lnwmvxfh
-            CALL ljdagjgm
-            JMP lajskucd
-ljdagjgm:   MVI A,0FFh
-            STAX D
-            INX D
-            MVI A,066h
-            STAX D
-            INX D
-            STAX D
-            INX D
-            STAX D
-            INX D
-            MOV A,E
-            CPI 0E4h
-            JNZ ljdagjgm
-            RET
-lajskucd:   LXI D,lecudzsx
-            CALL ljdagjgm
-            LXI D,lxvvdqxv
-            CALL ljdagjgm
-            LXI D,lkwbohoc
-            CALL ljdagjgm
-            LXI D,ljgowvcj
-            CALL ljdagjgm
-            LXI D,lpslcfoi
-            CALL ljdagjgm
-            LXI B,lopzufzm
-            LXI D,lhxqvdem
-            MVI H,000h
-lqmofexu:   LDAX B
-            SUI 001h
-            JZ luvxgexj
-            ADI 001h
-            STAX D
-            INX D
-            INX B
-            INR H
-            MOV A,H
-            CPI 008h
-            JNZ lqmofexu
-            INR D
-            INR D
-            MVI H,000h
-            JMP lqmofexu
-luvxgexj:   LXI B,lbaymddu
-            LXI D,lpbxbixd
-            MVI H,000h
-lkdwsetc:   LDAX B
-            SUI 001h
-            JZ ljvyxxzk
-            CALL lgwviyie
-            JNZ lkdwsetc
-            INR D
-            INR D
-            MVI H,000h
-            MVI E,020h
-            JMP lkdwsetc
-ljvyxxzk:   LXI B,lbzhwyzy
-            LXI D,lmuwiqur
-            MVI H,000h
-lpfpxjme:   LDAX B
-            SUI 001h
-            JZ llxhlypa
-            CALL lgwviyie
-            JMP ltsesgdu
-lgwviyie:   ADI 001h
-            STAX D
-            INX D
-            INX B
-            INR H
-            MOV A,H
-            CPI 008h
-            RET
-ltsesgdu:   JNZ lpfpxjme
-            INR D
-            INR D
-            MVI H,000h
-            MVI E,0A0h
-            JMP lpfpxjme
-llxhlypa:   LXI B,lbmdmblj
-            LXI D,lrcbnjlt
-            MVI L,000h
-lcmjzobk:   PUSH B
-            PUSH D
-            MVI H,000h
-lasorouv:   LDAX B
-            SUI 001h
-            JZ lsndwvnh
-            CALL lgwviyie
-            JNZ lasorouv
-lsndwvnh:   CALL lncmnppf
-            POP D
-            LXI B,linlxfgs
-            MVI H,000h
-lhvxcmyw:   LDAX B
-            SUI 001h
-            JZ ldbtdzkb
-            CALL lgwviyie
-            JNZ lhvxcmyw
-ldbtdzkb:   POP B
-            MOV A,C
-            CPI 078h
-            JNZ loedryop
-            MVI C,048h
-            INR L
-            MOV A,L
-            CPI 00Ah
-            JZ lkjfuabh
-loedryop:   MOV A,C
-            ADI 010h
-            MOV C,A
-            INR D
-            DCR E
-            DCR E
-            DCR E
-            DCR E
-            JMP lcmjzobk
-lncmnppf:   MVI A,001h
-lrywprmw:   MVI D,0E0h
-ldbdugnv:   MVI E,080h
-lfnqlpnd:   DCR E
-            JNZ lfnqlpnd
-            DCR D
-            JNZ ldbdugnv
-            DCR A
-            JNZ lrywprmw
-            RET
-lcyobsbi:   LXI B,ltxxjeya
-            LXI D,lbnclcut
-            MVI H,000h
-lihgkgse:   LDAX B
-            SUI 001h
-            JZ lcdhhnqi
-            CALL lgwviyie
-            JNZ lihgkgse
-            INR D
-            MVI H,000h
-            MVI E,030h
-            JMP lihgkgse
-lkjfuabh:   LXI B,llkghdfg
-            LXI D,lqkksyfb
-            LXI H,00000h
-ldbgaimh:   PUSH B
-            PUSH D
-            MVI H,000h
-llcfotos:   LDAX B
-            SUI 001h
-            JZ lsduyvin
-            CALL lgwviyie
-            JNZ llcfotos
-lsduyvin:   CALL lncmnppf
-            POP D
-            LXI B,linlxfgs
-            MVI H,000h
-lqxoejma:   LDAX B
-            SUI 001h
-            JZ lqeuriav
-            CALL lgwviyie
-            JNZ lqxoejma
-lqeuriav:   POP B
-            MOV A,C
-            CPI 0F0h
-            JNZ lyhwpgrs
-            MVI C,0E0h
-            INR L
-            MOV A,L
-            CPI 009h
-            JZ lcyobsbi
-            JMP ljakpcww
-lyhwpgrs:   MOV A,C
-            ADI 010h
-            MOV C,A
-ljakpcww:   LXI D,lqkksyfb
-            JMP ldbgaimh
-lcdhhnqi:   LXI B,lumupsuf
-            LXI D,lbemjdnt
-            MVI H,000h
-lxlolpxw:   LDAX B
-            SUI 001h
-            JZ luyeqloc
-            ADI 001h
-            STAX D
-            INX D
-            STAX D
-            INX D
-            INX B
-            INR H
-            MOV A,H
-            CPI 008h
-            JNZ lxlolpxw
-            INR D
-            INR D
-            INR D
-            INR D
-            MVI H,000h
-            MVI E,0C0h
-            JMP lxlolpxw
-luyeqloc:   MVI A,00Fh
-            CALL lrywprmw
-            CALL lhsaydhb
-            MVI C,01Fh
-            CALL llzjlkhp
-            JMP lvntviye
-            DB 007h, 06Bh, 0BBh, 0B6h, 0BBh, 0B7h, 0B7h, 0B7h, 000h, 0B0h
-            DB 07Bh, 04Bh, 0B7h, 0B7h, 0BBh
-lqlhexry:   DB 07Bh, 0B7h, 00Bh, 020h, 0B4h, 0B0h, 0B7h, 0B7h, 0B7h, 000h
-            DB 0B0h, 07Bh, 0B0h, 007h, 007h, 0BBh, 070h, 0BBh
-lksrjylg:   DB 0BBh, 0B7h, 07Bh, 001h, 0B7h, 0B7h, 0BBh, 0B0h, 0B0h, 07Bh
-            DB 0B7h, 0BBh, 0B7h, 011h, 07Bh, 010h, 000h, 01Bh, 071h, 07Bh
-            DB 044h, 0B7h, 0B0h, 000h, 0BBh, 07Bh, 0B7h, 00Bh, 0BBh, 0BBh
-            DB 0BBh, 0B7h, 07Bh, 0BBh, 0BBh, 070h, 0BBh
-lopzufzm:   DB 066h, 066h, 066h, 066h, 03Eh, 006h, 006h, 006h, 07Eh, 066h
-            DB 066h, 066h, 066h, 066h, 066h, 066h, 03Ch, 066h, 066h, 066h
-            DB 066h, 066h, 066h, 03Ch, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 000h, 000h, 066h, 066h, 066h, 000h, 000h, 000h, 000h, 000h
-            DB 03Ch, 066h, 006h, 006h, 03Eh, 006h, 066h, 03Ch, 03Eh, 066h
-            DB 066h, 066h, 066h, 066h, 0C6h, 0C6h, 0FEh, 060h, 060h, 060h
-            DB 07Ch, 060h, 060h, 0FEh, 063h, 066h, 06Ch, 078h, 07Ch, 066h
-            DB 063h, 063h, 0FEh, 0FEh, 030h, 030h, 030h, 030h, 030h, 030h
-            DB 07Eh, 066h, 066h, 066h, 07Eh, 060h, 060h, 060h, 03Ch, 066h
-            DB 066h, 066h, 066h, 066h, 066h, 03Ch, 066h, 066h, 066h, 066h
-            DB 07Eh, 066h, 066h, 066h, 0C3h, 0E7h, 0FFh, 0DBh, 0C3h, 0C3h
-            DB 0C3h, 0C3h, 03Eh, 066h, 066h, 066h, 07Eh, 066h, 066h, 066h
-            DB 0DBh, 0DBh, 0DBh, 0DBh, 0DBh, 0DBh, 0FFh, 0FFh, 066h, 066h
-            DB 066h, 000h, 000h, 000h, 000h, 000h, 001h, 007h, 0BBh, 0BBh
-            DB 01Ah, 007h, 066h, 066h, 060h, 000h, 007h, 000h, 000h, 066h
-            DB 066h, 067h
-lbaymddu:   DB 03Ch, 066h, 060h, 060h, 060h, 060h, 066h, 03Ch, 063h, 066h
-            DB 06Ch, 078h, 07Ch, 066h, 063h, 063h, 0FEh, 0FEh, 030h, 030h
-            DB 030h, 030h, 030h, 030h, 07Eh, 060h, 060h, 07Eh, 066h, 066h
-            DB 066h, 07Ch, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 07Eh, 066h, 064h, 07Eh, 066h, 066h, 066h, 07Ch, 0FEh, 0FEh
-            DB 030h, 030h, 030h, 030h, 030h, 030h, 001h, 000h, 001h, 000h
-            DB 001h, 000h, 001h, 000h
-lbzhwyzy:   DB 066h, 066h, 066h, 066h, 03Eh, 006h, 006h, 006h, 0FEh, 060h
-            DB 060h, 060h, 07Ch, 060h, 060h, 0FEh, 07Eh, 066h, 066h, 066h
-            DB 07Eh, 060h, 060h, 060h, 066h, 066h, 066h, 066h, 07Eh, 066h
-            DB 066h, 066h, 03Ch, 066h, 066h, 066h, 066h, 066h, 066h, 03Ch
-            DB 07Eh, 066h, 064h, 07Eh, 066h, 066h, 066h, 07Ch, 066h, 066h
-            DB 066h, 066h, 066h, 066h, 07Fh, 07Fh, 063h, 063h, 063h, 073h
-            DB 06Bh, 06Bh, 06Bh, 073h, 001h, 007h, 0BBh, 0BBh, 000h, 000h
-            DB 000h, 000h
-lbmdmblj:   DB 00Eh, 00Eh, 03Ch, 02Fh, 02Ch, 00Eh, 005h, 00Ah, 001h, 007h
-            DB 0BBh, 0BBh, 000h, 000h, 07Bh, 07Bh, 007h, 007h, 00Eh, 03Eh
-            DB 00Eh, 007h, 01Eh, 006h, 001h, 070h, 0BBh, 0BBh, 07Bh, 07Bh
-            DB 07Bh, 072h, 00Eh, 00Eh, 03Ch, 02Fh, 02Ch, 00Eh, 005h, 00Ah
-            DB 001h, 070h, 0BBh, 0BBh, 07Bh, 070h, 07Bh, 0BBh, 00Eh, 00Eh
-            DB 0FCh, 01Fh, 038h, 0F6h, 002h, 003h, 001h, 070h, 0BBh, 0BBh
-            DB 070h, 0AAh, 0AAh, 000h
-linlxfgs:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 001h, 070h
-            DB 0BBh, 0BBh, 0BBh, 0BBh, 0BBh, 0BBh
-ltxxjeya:   DB 03Ch, 066h, 066h, 066h, 066h, 066h, 066h, 03Ch, 0FEh, 0FEh
-            DB 030h, 030h, 030h, 030h, 030h, 030h, 03Eh, 066h, 066h, 066h
-            DB 066h, 066h, 0FFh, 0FFh, 000h, 000h, 000h, 000h, 000h, 060h
-            DB 060h, 060h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
-            DB 006h, 006h, 006h, 006h, 006h, 006h, 006h, 006h, 03Ch, 066h
-            DB 066h, 066h, 066h, 066h, 066h, 03Ch, 03Ch, 066h, 066h, 066h
-            DB 066h, 066h, 066h, 03Ch, 001h, 066h, 066h, 066h, 066h, 066h
-            DB 066h, 067h
-llkghdfg:   DB 04Eh, 04Eh, 024h, 01Eh, 00Eh, 00Dh, 00Ah, 00Ah, 001h, 000h
-            DB 000h, 000h, 000h, 007h, 000h, 007h, 02Eh, 02Eh, 024h, 01Eh
-            DB 00Eh, 00Dh, 00Ah, 00Ah, 001h, 0AAh, 07Ah, 000h, 007h, 000h
-            DB 007h, 0BBh
-lumupsuf:   DB 066h, 066h, 066h, 000h, 000h, 000h, 000h, 000h, 0FEh, 0FEh
-            DB 030h, 030h, 030h, 030h, 030h, 030h, 0FEh, 060h, 060h, 060h
-            DB 07Ch, 060h, 060h, 0FEh, 0FEh, 0FEh, 030h, 030h, 030h, 030h
-            DB 030h, 030h, 07Ch, 066h, 066h, 066h, 07Eh, 07Ch, 066h, 066h
-            DB 030h, 030h, 000h, 030h, 030h, 030h, 030h, 030h, 03Ch, 066h
-            DB 060h, 030h, 00Ch, 006h, 066h, 03Ch, 066h, 066h, 066h, 000h
-            DB 000h, 000h, 000h, 000h, 001h
+ljvms:   DB 02Ch, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+lnoij:   DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+         DB 060h, 060h, 060h, 060h, 060h, 02Dh, 00Ah, 061h, 02Bh, 052h
+         DB 045h, 05Ah, 055h, 04Ch, 058h, 054h, 041h, 054h, 03Ah, 030h
+         DB 030h, 030h, 030h, 030h, 030h, 02Bh, 02Bh, 04Fh, 05Eh, 04Bh
+         DB 049h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 053h, 04Bh, 04Fh, 052h
+         DB 04Fh, 053h, 054h, 058h, 03Dh, 030h, 030h, 02Bh, 02Bh, 02Bh
+         DB 061h, 00Ah, 062h, 060h, 060h, 060h, 060h, 060h, 02Dh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 061h, 00Ah, 061h, 02Bh, 030h
+         DB 030h, 030h, 02Bh, 061h, 043h, 045h, 04Ch, 058h, 03Ah, 030h
+         DB 030h, 030h, 030h, 030h, 030h, 02Bh, 02Bh, 030h, 030h, 030h
+         DB 030h, 030h, 030h, 02Bh, 02Bh, 02Bh, 02Bh, 055h, 052h, 04Fh
+         DB 057h, 045h, 04Eh, 058h, 03Dh, 030h, 030h, 02Bh, 02Bh, 02Bh
+         DB 061h, 00Ah, 062h, 060h, 060h, 060h, 060h, 060h, 065h, 060h
+         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+         DB 060h, 060h, 060h, 063h, 060h, 060h, 060h, 060h, 060h, 060h
+         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+         DB 060h, 060h, 060h, 060h, 060h, 064h, 00Ah, 000h
+lnoga:   DB 061h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 061h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 061h, 000h
+lnfgd:   DB 007h, 000h, 01Ah, 061h, 02Bh, 02Bh, 02Bh, 02Bh
+lnfnn:   DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 062h, 060h, 060h, 060h
+         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 064h, 00Ah
+         DB 061h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 061h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 061h, 00Ah, 061h, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 061h, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 061h, 00Ah
+         DB 061h, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 061h, 02Bh, 053h, 04Bh, 054h, 042h, 02Bh, 057h, 054h
+         DB 02Bh, 02Bh, 04Fh, 054h, 044h, 02Bh, 031h, 030h, 030h, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 061h, 00Ah, 061h, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 061h, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 061h, 00Ah
+         DB 02Fh, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+         DB 060h, 065h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+         DB 060h, 060h, 060h, 02Eh, 000h
+ljvgz:   DB 007h, 007h, 01Eh, 02Bh, 050h, 041h, 055h, 05Ah, 041h, 02Bh
+         DB 000h
+lncof:   DB 007h, 007h, 01Eh, 023h, 023h, 023h, 023h, 023h, 023h, 023h
+         DB 000h
+lnrpp:   DB 007h, 007h, 01Eh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh, 02Bh
+         DB 000h
+ljjdh:   DB 007h, 003h, 011h, 055h, 052h, 04Fh, 057h, 045h, 04Eh, 058h
+         DB 03Dh, 02Bh, 02Bh, 000h
+lnffx:   DB 007h, 003h, 013h, 043h, 045h, 04Ch, 058h, 03Dh, 02Bh, 000h
+ljjnx:   DB 007h, 016h, 008h, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh
+         DB 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh, 03Dh
+         DB 03Dh, 03Dh, 03Dh, 03Dh, 007h, 018h, 009h, 054h, 041h, 042h
+         DB 04Ch, 049h, 043h, 041h, 02Bh, 052h, 045h, 04Bh, 04Fh, 052h
+         DB 044h, 04Fh, 057h, 007h, 017h, 005h, 053h, 042h, 052h, 04Fh
+         DB 05Bh, 045h, 04Eh, 04Fh, 02Bh, 052h, 051h, 044h, 04Fh, 057h
+         DB 03Ah, 030h, 030h, 030h, 030h, 007h, 015h, 006h, 062h, 060h
+         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+         DB 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h, 060h
+         DB 064h, 007h, 019h, 007h, 049h, 047h, 052h, 041h, 045h, 054h
+         DB 03Ah, 000h
+lnfcq:   DB 007h, 021h, 00Bh, 02Bh, 03Dh, 02Bh, 000h
+lnrsu:   DB 000h
+lnfps:   DB 000h
+ljvtk:   DB 000h
+ljjqi:   DB 000h
+lnosa:   DB 008h, 000h
+ljyki:   DB 018h, 000h
+lnriy:   DB 000h
+lnffw:   DB 000h
+ljvjo:   DB 038h, 018h
+lnoie:   DB 000h, 000h, 000h
+ljmoq:   DB 030h
+lnrqi:   DB 001h
+lnfng:   DB 001h
+ljvqy:   DB 020h, 001h
+lnopo:   DB 000h, 000h
+ljyhw:   DB 000h, 000h
+lnrgm:   DB 020h
+lnfdk:   DB 020h
+ljvhc:   DB 000h
+ljjea:   DB 004h
+lnofs:   DB 066h, 000h
+ljyto:   DB 000h
+ljmqm:   DB 000h
+lnrse:   DB 000h
+lnfpc:   DB 000h
+ljvsu:   DB 000h
+ljjps:   DB 007h
+lnork:   DB 000h, 040h
+ljyjs:   DB 000h
+ljmgq:   DB 000h
+lnrii:   DB 000h
+lnffg:   DB 000h
+ljviy:   DB 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h
+         DB 003h, 003h, 003h, 003h, 003h, 003h
+ljvgm:   DB 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 003h, 003h, 003h
+ljvjn:   DB 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh
+         DB 00Bh, 00Bh, 00Bh, 00Bh, 00Bh, 00Bh
+ljvhb:   DB 027h, 000h, 023h, 020h, 072h, 000h, 013h, 010h, 00Fh, 000h
+         DB 022h, 022h, 00Fh, 000h, 022h, 022h, 047h, 000h, 032h, 020h
+         DB 071h, 000h, 011h, 030h, 074h, 000h, 031h, 010h, 017h, 000h
+         DB 022h, 030h, 033h, 000h, 033h, 000h, 033h, 000h, 033h, 000h
+         DB 036h, 000h, 023h, 010h, 036h, 000h, 023h, 010h, 063h, 000h
+         DB 013h, 020h, 063h, 000h, 013h, 020h, 027h, 020h, 027h, 020h
+         DB 027h, 020h, 027h, 020h, 076h, 000h, 033h, 010h, 037h, 000h
+         DB 023h, 030h, 067h, 000h, 033h, 020h, 073h, 000h, 013h, 030h
+         DB 022h, 070h, 047h, 040h, 072h, 020h, 017h, 010h, 075h, 000h
+         DB 031h, 030h, 057h, 000h, 032h, 030h, 064h, 044h, 00Fh, 010h
+         DB 022h, 026h, 008h, 0F0h, 062h, 022h, 001h, 0F0h, 044h, 046h
+         DB 00Fh, 080h, 047h, 010h, 032h, 060h, 047h, 010h, 032h, 060h
+         DB 017h, 040h, 062h, 030h, 017h, 040h, 062h, 030h, 022h, 062h
+         DB 004h, 0F0h, 046h, 044h, 00Fh, 020h, 044h, 064h, 00Fh, 040h
+         DB 026h, 022h, 002h, 0F0h, 044h, 070h, 074h, 040h, 071h, 010h
+         DB 011h, 070h, 023h, 060h, 047h, 020h, 036h, 020h, 027h, 010h
+         DB 026h, 030h, 027h, 040h, 063h, 020h, 017h, 020h
+ljvtm:   DB 000h, 000h, 001h, 000h, 000h, 001h, 001h, 001h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 001h, 000h
+         DB 000h, 000h, 001h, 001h, 000h, 000h, 001h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 001h, 001h, 001h, 000h, 000h, 001h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 001h, 000h, 000h, 001h, 001h, 000h, 000h, 000h, 001h
+         DB 000h
+ljmsn:   DB 000h, 000h
+lnfrd:   DB 000h, 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 003h, 003h, 003h
+ljvsj:   DB 003h, 003h, 003h
+lncnx:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 002h, 000h, 003h, 003h, 003h, 003h
+         DB 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 002h
+         DB 002h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 002h, 000h, 000h, 003h, 003h
+         DB 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h, 002h, 002h
+         DB 002h, 002h, 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 002h, 000h, 000h
+         DB 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 002h, 000h, 000h, 003h, 003h, 003h, 003h
+         DB 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 002h
+         DB 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 002h, 000h, 000h, 003h, 003h
+         DB 003h
+ljvue:   DB 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 002h, 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 002h, 000h, 000h, 003h
+         DB 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 002h, 000h, 000h, 003h, 003h, 003h, 003h, 003h
+         DB 003h, 000h, 002h, 002h, 000h, 000h, 000h, 000h, 002h, 000h
+         DB 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 002h
+         DB 002h, 002h, 002h, 002h, 002h, 000h, 000h, 003h, 003h, 003h
+         DB 003h, 003h, 003h, 000h, 000h, 002h, 002h, 002h, 002h, 000h
+         DB 000h, 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h
+         DB 000h, 000h, 000h, 000h, 002h, 000h, 000h, 000h, 000h
+ljmqd:   DB 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h
+         DB 002h, 002h, 002h, 000h, 000h, 000h, 003h, 003h, 003h, 003h
+         DB 003h, 003h, 000h, 000h, 002h, 002h, 000h, 002h, 000h, 000h
+         DB 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h
+         DB 002h, 002h, 000h, 002h, 000h, 000h, 000h, 000h, 003h, 003h
+         DB 003h, 003h, 003h, 003h, 000h, 002h, 002h, 002h, 002h, 002h
+         DB 002h, 002h, 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h
+         DB 000h, 000h, 000h, 000h, 002h, 000h, 002h, 002h, 002h, 000h
+         DB 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h, 000h, 000h
+         DB 002h, 000h, 000h, 002h, 000h, 000h, 003h, 003h, 003h, 003h
+         DB 003h, 003h, 000h, 000h, 000h, 002h, 002h, 002h, 000h, 002h
+         DB 000h, 000h, 003h, 003h, 003h, 003h, 003h, 003h, 000h, 000h
+         DB 000h, 002h, 002h, 002h, 000h, 002h, 000h, 000h, 003h, 003h
+         DB 003h, 003h, 003h, 003h
+lncny:   DB 000h, 000h, 002h, 002h, 000h, 002h, 002h, 002h, 000h, 000h
+         DB 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h
+         DB 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h, 003h
+ljvru:   DB 02Bh, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+ljjew:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+lnotq:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+ljmht:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h
+ljjoj:   DB 000h, 00Eh, 00Eh, 020h, 0CDh, 05Eh, 00Eh, 02Ah, 00Ah, 010h
+         DB 0CDh, 056h, 00Eh, 00Eh, 029h, 0CDh, 05Eh, 00Eh, 001h, 020h
+         DB 004h, 0C9h, 006h, 00Ch, 0C3h, 056h, 00Eh, 0C5h, 0CDh, 067h
+         DB 00Eh, 0C1h, 0C9h, 07Ch, 0CDh, 050h, 00Eh, 07Dh, 0CDh, 050h
+         DB 00Eh, 0C3h, 037h, 0C0h, 0C3h, 037h, 0C3h, 0AFh, 0C9h, 0F8h
+         DB 0C3h, 027h, 006h, 0C3h, 038h, 0C4h, 0C3h, 000h, 000h, 00Bh
+         DB 000h, 008h, 001h, 02Eh, 001h, 000h, 001h, 016h, 002h, 00Eh
+         DB 001h, 026h, 002h, 02Bh, 001h
+ljyvg:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 010h, 008h, 010h, 008h, 018h, 018h, 01Ch, 038h
+         DB 01Eh, 078h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 011h, 088h, 011h, 088h, 011h, 088h, 011h, 088h, 011h, 088h
+         DB 011h, 088h, 011h, 088h, 011h, 088h, 011h, 088h, 011h, 088h
+         DB 011h, 088h, 011h, 088h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 010h, 008h, 000h, 000h
+         DB 000h, 000h, 018h, 018h, 000h, 000h, 000h, 000h, 01Ch, 038h
+         DB 000h, 000h, 000h, 000h, 01Eh, 078h, 000h, 000h, 000h, 000h
+         DB 003h, 0F8h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 01Fh, 0C0h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 003h, 0F8h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 01Eh, 078h, 01Eh, 078h
+         DB 01Eh, 078h, 01Eh, 008h, 01Eh, 078h, 000h, 000h, 000h, 000h
+         DB 01Eh, 078h, 01Eh, 078h, 01Eh, 078h, 01Eh, 078h, 01Eh, 078h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 010h, 008h, 018h, 018h, 01Ch, 038h, 01Eh, 078h, 01Eh, 078h
+         DB 01Eh, 078h, 01Eh, 078h, 01Eh, 078h, 01Ch, 038h, 018h, 018h
+         DB 010h, 008h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 01Bh, 0D8h, 017h, 0B8h, 00Fh, 078h, 01Eh, 0F0h, 01Bh, 0D8h
+         DB 017h, 0B8h, 00Fh, 078h, 01Eh, 0F0h, 01Bh, 0D8h, 017h, 0B8h
+         DB 00Fh, 078h, 01Eh, 0F0h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h
+ljyvi:   DB 055h, 000h, 001h, 000h, 001h, 000h, 001h, 000h, 0FFh, 0FFh
+         DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0C3h, 0A5h, 099h
+         DB 099h, 0A5h, 0C3h, 0FFh, 049h, 092h, 024h, 0C9h, 092h, 024h
+         DB 049h, 092h, 000h, 000h, 001h, 002h, 007h, 007h, 00Fh, 00Fh
+         DB 07Fh, 083h, 005h, 009h, 0F1h, 0F3h, 0F3h, 0F7h, 01Eh, 026h
+         DB 04Ch, 094h, 0E8h, 0C8h, 0CCh, 094h, 01Eh, 01Eh, 03Ch, 03Dh
+         DB 07Ah, 07Ch, 0F8h, 0F0h, 0F7h, 0FFh, 0FFh, 0F7h, 0F7h, 0F7h
+         DB 0FBh, 0F1h, 0A2h, 042h, 081h, 082h, 084h, 0C8h, 0D0h, 0E0h
+         DB 03Ch, 042h, 099h, 0A1h, 0A1h, 099h, 042h, 03Ch, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 01Fh
+         DB 01Fh, 018h, 018h, 018h, 000h, 000h, 000h, 0F8h, 0F8h, 018h
+         DB 018h, 018h, 018h, 018h, 018h, 0F8h, 0F8h, 000h, 000h, 000h
+         DB 018h, 018h, 018h, 01Fh, 01Fh, 000h, 000h, 000h, 0FEh, 082h
+         DB 082h, 082h, 0C2h, 0C2h, 0C2h, 0FEh, 008h, 008h, 018h, 018h
+         DB 018h, 018h, 018h, 018h, 07Eh, 002h, 002h, 0FEh, 080h, 0C0h
+         DB 0C2h, 0FEh, 03Eh, 002h, 002h, 03Eh, 002h, 006h, 006h, 0FEh
+         DB 082h, 082h, 0C2h, 0C2h, 0FEh, 006h, 006h, 006h, 0FCh, 080h
+         DB 080h, 0FEh, 002h, 006h, 086h, 0FEh, 0F8h, 0C8h, 0C0h, 0FEh
+         DB 082h, 086h, 086h, 0FEh, 0FEh, 082h, 002h, 002h, 006h, 006h
+         DB 006h, 006h, 07Ch, 064h, 064h, 0FEh, 082h, 0C2h, 0C2h, 0FEh
+         DB 0FEh, 082h, 0C2h, 0C2h, 0FEh, 006h, 026h, 03Eh, 000h, 018h
+         DB 018h, 000h, 000h, 018h, 018h, 000h, 000h, 018h, 018h, 0FEh
+         DB 0FEh, 018h, 018h, 000h, 000h, 000h, 000h, 038h, 038h, 038h
+         DB 010h, 020h, 000h, 000h, 000h, 07Eh, 07Eh, 000h, 000h, 000h
+         DB 000h, 000h, 000h, 000h, 000h, 038h, 038h, 038h, 0FEh, 006h
+         DB 002h, 01Eh, 030h, 030h, 000h, 030h, 09Eh, 092h, 092h, 0F2h
+         DB 096h, 0D6h, 0D6h, 0DEh, 03Eh, 022h, 022h, 0FEh, 082h, 0C2h
+         DB 0C2h, 0C2h, 0F8h, 080h, 080h, 0FEh, 082h, 0C2h, 0C2h, 0FEh
+         DB 084h, 084h, 084h, 084h, 0C4h, 0C4h, 0C4h, 0FEh, 01Ch, 014h
+         DB 024h, 044h, 064h, 064h, 064h, 0FEh, 0FEh, 080h, 080h, 0F8h
+         DB 0C0h, 0C0h, 0C0h, 0FEh, 0FEh, 092h, 092h, 0D2h, 0D2h, 0FEh
+         DB 010h, 020h, 0FEh, 080h, 080h, 080h, 0C0h, 0C0h, 0C0h, 0C0h
+         DB 044h, 044h, 044h, 038h, 044h, 0C6h, 0C6h, 0C6h, 082h, 086h
+         DB 08Ah, 092h, 0A2h, 0C6h, 086h, 086h, 038h, 082h, 086h, 08Ah
+         DB 092h, 0A6h, 0C6h, 086h, 088h, 088h, 088h, 0FEh, 0C2h, 0C2h
+         DB 0C2h, 0C2h, 00Eh, 012h, 012h, 012h, 026h, 026h, 066h, 066h
+         DB 082h, 0C6h, 0AAh, 092h, 0C2h, 0C2h, 0C2h, 0C2h, 082h, 082h
+         DB 082h, 0FEh, 0C2h, 0C2h, 0C2h, 0C2h, 0FEh, 08Eh, 086h, 082h
+         DB 082h, 082h, 082h, 0FEh, 0FEh, 082h, 082h, 082h, 0C2h, 0C2h
+         DB 0C2h, 0C2h, 0FEh, 082h, 0C2h, 0C2h, 0FEh, 026h, 046h, 086h
+         DB 0FEh, 082h, 0C2h, 0C2h, 0FEh, 080h, 080h, 080h, 0FEh, 080h
+         DB 080h, 080h, 0C0h, 0C0h, 0C0h, 0FEh, 0FEh, 010h, 010h, 010h
+         DB 018h, 018h, 018h, 018h, 082h, 082h, 0C2h, 0C2h, 0FEh, 002h
+         DB 062h, 07Eh, 054h, 054h, 054h, 07Ch, 054h, 0D6h, 0D6h, 0D6h
+         DB 0FCh, 084h, 084h, 0FEh, 0C2h, 0C2h, 0C2h, 0FEh, 080h, 080h
+         DB 080h, 0FEh, 082h, 0C2h, 0C2h, 0FEh, 082h, 082h, 082h, 0FAh
+         DB 08Ah, 0CAh, 0CAh, 0FAh, 0F8h, 018h, 018h, 07Eh, 002h, 006h
+         DB 086h, 0FEh, 092h, 092h, 092h, 092h, 0D2h, 0D2h, 0D2h, 0FEh
+         DB 0FEh, 082h, 002h, 01Eh, 006h, 006h, 086h, 0FEh, 094h, 094h
+         DB 094h, 094h, 0D4h, 0D4h, 0D4h, 0FEh, 082h, 082h, 0C2h, 0C2h
+         DB 0FEh, 006h, 006h, 006h, 0C0h, 040h, 040h, 07Eh, 042h, 062h
+         DB 062h, 07Eh, 000h, 000h, 000h, 0FFh, 0FFh, 000h, 000h, 000h
+         DB 018h, 018h, 018h, 018h, 018h, 018h, 018h, 018h, 018h, 018h
+         DB 018h, 01Fh, 01Fh, 018h, 018h, 018h, 000h, 000h, 000h, 0FFh
+         DB 0FFh, 018h, 018h, 018h, 018h, 018h, 018h, 0F8h, 0F8h, 018h
+         DB 018h, 018h, 018h, 018h, 018h, 0FFh, 0FFh, 000h, 000h, 000h
+         DB 03Eh, 001h, 0CDh, 0F0h, 002h, 0CDh, 037h, 0C3h, 0FEh, 00Dh
+         DB 0CAh, 0F7h, 000h, 0FEh, 008h, 0CAh, 0E6h, 000h, 015h, 014h
+         DB 0CAh, 0B5h, 000h, 0FEh, 020h, 0C2h, 0D1h, 000h, 03Eh, 02Bh
+         DB 0C3h, 0DDh, 000h, 0FEh, 041h, 0DAh, 0B5h, 000h, 0FEh, 060h
+         DB 0DAh, 0DDh, 000h, 0D6h, 020h, 077h, 0CDh, 00Eh, 007h, 023h
+         DB 015h, 0C3h, 0A8h, 000h, 07Ah, 0FEh, 009h, 0CAh, 0B5h, 000h
+         DB 03Eh, 00Bh, 0CDh, 0F0h, 002h, 005h, 014h, 02Bh, 0C3h, 0A8h
+         DB 000h, 07Ah, 0FEh, 009h, 0C2h, 005h, 001h, 016h, 000h, 0CDh
+lkamj:   CALL ldlft
+         LXI D,lcopl
+lnqkf:   MVI A,066h
+         STAX D
+         INX D
+         MOV A,D
+         CPI 091h
+         JNZ lnqkf
+         LXI D,lcunb
+lnhfl:   MVI A,066h
+         STAX D
+         INX D
+         MOV A,D
+         CPI 0C0h
+         JNZ lnhfl
+         LXI D,lcopl
+         CALL lnqjp
+         JMP ljxin
+lnqjp:   MVI A,0FFh
+         STAX D
+         INX D
+         STAX D
+         INR D
+         DCR E
+         MOV A,D
+         CPI 0C0h
+         JNZ lnqjp
+         RET
+ljxin:   LXI D,lclor
+         CALL lnqjp
+         LXI D,lghbg
+         CALL lnqjp
+         LXI D,lgeam
+         CALL lnqjp
+         LXI D,lcoej
+         CALL lndxl
+         JMP lntkn
+lndxl:   MVI A,0FFh
+         STAX D
+         INX D
+         MVI A,066h
+         STAX D
+         INX D
+         STAX D
+         INX D
+         STAX D
+         INX D
+         MOV A,E
+         CPI 0E4h
+         JNZ lndxl
+         RET
+lntkn:   LXI D,lcocx
+         CALL lndxl
+         LXI D,lcoeb
+         CALL lndxl
+         LXI D,lctzv
+         CALL lndxl
+         LXI D,lctzn
+         CALL lndxl
+         LXI D,lcuaz
+         CALL lndxl
+         LXI B,lkadl
+         LXI D,lcojx
+         MVI H,000h
+lkacm:   LDAX B
+         SUI 001h
+         JZ ljoiq
+         ADI 001h
+         STAX D
+         INX D
+         INX B
+         INR H
+         MOV A,H
+         CPI 008h
+         JNZ lkacm
+         INR D
+         INR D
+         MVI H,000h
+         JMP lkacm
+ljoiq:   LXI B,lkaoa
+         LXI D,lcsxv
+         MVI H,000h
+ljnyu:   LDAX B
+         SUI 001h
+         JZ lnpxg
+         CALL lntiq
+         JNZ ljnyu
+         INR D
+         INR D
+         MVI H,000h
+         MVI E,020h
+         JMP ljnyu
+lnpxg:   LXI B,lkanz
+         LXI D,lcojy
+         MVI H,000h
+lnqki:   LDAX B
+         SUI 001h
+         JZ lkaca
+         CALL lntiq
+         JMP ljwzk
+lntiq:   ADI 001h
+         STAX D
+         INX D
+         INX B
+         INR H
+         MOV A,H
+         CPI 008h
+         RET
+ljwzk:   JNZ lnqki
+         INR D
+         INR D
+         MVI H,000h
+         MVI E,0A0h
+         JMP lnqki
+lkaca:   LXI B,lkaeh
+         LXI D,lckxn
+         MVI L,000h
+lkajk:   PUSH B
+         PUSH D
+         MVI H,000h
+ljxiq:   LDAX B
+         SUI 001h
+         JZ lkaml
+         CALL lntiq
+         JNZ ljxiq
+lkaml:   CALL ljogh
+         POP D
+         LXI B,lkaec
+         MVI H,000h
+ljnzn:   LDAX B
+         SUI 001h
+         JZ ljlgd
+         CALL lntiq
+         JNZ ljnzn
+ljlgd:   POP B
+         MOV A,C
+         CPI 078h
+         JNZ ljlhz
+         MVI C,048h
+         INR L
+         MOV A,L
+         CPI 00Ah
+         JZ lkalz
+ljlhz:   MOV A,C
+         ADI 010h
+         MOV C,A
+         INR D
+         DCR E
+         DCR E
+         DCR E
+         DCR E
+         JMP lkajk
+ljogh:   MVI A,001h
+lnhex:   MVI D,0E0h
+ljlfn:   MVI E,080h
+lneed:   DCR E
+         JNZ lneed
+         DCR D
+         JNZ ljlfn
+         DCR A
+         JNZ lnhex
+         RET
+ljxlv:   LXI B,lkabq
+         LXI D,lcswp
+         MVI H,000h
+ljxbz:   LDAX B
+         SUI 001h
+         JZ lngxm
+         CALL lntiq
+         JNZ ljxbz
+         INR D
+         MVI H,000h
+         MVI E,030h
+         JMP ljxbz
+lkalz:   LXI B,lkanm
+         LXI D,lctzs
+         LXI H,00000h
+ljnzb:   PUSH B
+         PUSH D
+         MVI H,000h
+ljkyh:   LDAX B
+         SUI 001h
+         JZ ljnwp
+         CALL lntiq
+         JNZ ljkyh
+ljnwp:   CALL ljogh
+         POP D
+         LXI B,lkaec
+         MVI H,000h
+lntla:   LDAX B
+         SUI 001h
+         JZ lnqak
+         CALL lntiq
+         JNZ lntla
+lnqak:   POP B
+         MOV A,C
+         CPI 0F0h
+         JNZ ljois
+         MVI C,0E0h
+         INR L
+         MOV A,L
+         CPI 009h
+         JZ ljxlv
+         JMP ljlhy
+ljois:   MOV A,C
+         ADI 010h
+         MOV C,A
+ljlhy:   LXI D,lctzs
+         JMP ljnzb
+lngxm:   LXI B,lkanp
+         LXI D,lcoks
+         MVI H,000h
+lnhew:   LDAX B
+         SUI 001h
+         JZ lntis
+         ADI 001h
+         STAX D
+         INX D
+         STAX D
+         INX D
+         INX B
+         INR H
+         MOV A,H
+         CPI 008h
+         JNZ lnhew
+         INR D
+         INR D
+         INR D
+         INR D
+         MVI H,000h
+         MVI E,0C0h
+         JMP lnhew
+lntis:   MVI A,00Fh
+         CALL lnhex
+         CALL ldlft
+         MVI C,01Fh
+         CALL lgozx
+         JMP ljjvl
+         DB 007h, 06Bh, 0BBh, 0B6h, 0BBh, 0B7h, 0B7h, 0B7h, 000h, 0B0h
+         DB 07Bh, 04Bh, 0B7h, 0B7h, 0BBh
+ljogk:   DB 07Bh, 0B7h, 00Bh, 020h, 0B4h, 0B0h, 0B7h, 0B7h, 0B7h, 000h
+         DB 0B0h, 07Bh, 0B0h, 007h, 007h, 0BBh, 070h, 0BBh
+lnhjl:   DB 0BBh, 0B7h, 07Bh, 001h, 0B7h, 0B7h, 0BBh, 0B0h, 0B0h, 07Bh
+         DB 0B7h, 0BBh, 0B7h, 011h, 07Bh, 010h, 000h, 01Bh, 071h, 07Bh
+         DB 044h, 0B7h, 0B0h, 000h, 0BBh, 07Bh, 0B7h, 00Bh, 0BBh, 0BBh
+         DB 0BBh, 0B7h, 07Bh, 0BBh, 0BBh, 070h, 0BBh
+lkadl:   DB 066h, 066h, 066h, 066h, 03Eh, 006h, 006h, 006h, 07Eh, 066h
+         DB 066h, 066h, 066h, 066h, 066h, 066h, 03Ch, 066h, 066h, 066h
+         DB 066h, 066h, 066h, 03Ch, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 000h, 000h, 066h, 066h, 066h, 000h, 000h, 000h, 000h, 000h
+         DB 03Ch, 066h, 006h, 006h, 03Eh, 006h, 066h, 03Ch, 03Eh, 066h
+         DB 066h, 066h, 066h, 066h, 0C6h, 0C6h, 0FEh, 060h, 060h, 060h
+         DB 07Ch, 060h, 060h, 0FEh, 063h, 066h, 06Ch, 078h, 07Ch, 066h
+         DB 063h, 063h, 0FEh, 0FEh, 030h, 030h, 030h, 030h, 030h, 030h
+         DB 07Eh, 066h, 066h, 066h, 07Eh, 060h, 060h, 060h, 03Ch, 066h
+         DB 066h, 066h, 066h, 066h, 066h, 03Ch, 066h, 066h, 066h, 066h
+         DB 07Eh, 066h, 066h, 066h, 0C3h, 0E7h, 0FFh, 0DBh, 0C3h, 0C3h
+         DB 0C3h, 0C3h, 03Eh, 066h, 066h, 066h, 07Eh, 066h, 066h, 066h
+         DB 0DBh, 0DBh, 0DBh, 0DBh, 0DBh, 0DBh, 0FFh, 0FFh, 066h, 066h
+         DB 066h, 000h, 000h, 000h, 000h, 000h, 001h, 007h, 0BBh, 0BBh
+         DB 01Ah, 007h, 066h, 066h, 060h, 000h, 007h, 000h, 000h, 066h
+         DB 066h, 067h
+lkaoa:   DB 03Ch, 066h, 060h, 060h, 060h, 060h, 066h, 03Ch, 063h, 066h
+         DB 06Ch, 078h, 07Ch, 066h, 063h, 063h, 0FEh, 0FEh, 030h, 030h
+         DB 030h, 030h, 030h, 030h, 07Eh, 060h, 060h, 07Eh, 066h, 066h
+         DB 066h, 07Ch, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 07Eh, 066h, 064h, 07Eh, 066h, 066h, 066h, 07Ch, 0FEh, 0FEh
+         DB 030h, 030h, 030h, 030h, 030h, 030h, 001h, 000h, 001h, 000h
+         DB 001h, 000h, 001h, 000h
+lkanz:   DB 066h, 066h, 066h, 066h, 03Eh, 006h, 006h, 006h, 0FEh, 060h
+         DB 060h, 060h, 07Ch, 060h, 060h, 0FEh, 07Eh, 066h, 066h, 066h
+         DB 07Eh, 060h, 060h, 060h, 066h, 066h, 066h, 066h, 07Eh, 066h
+         DB 066h, 066h, 03Ch, 066h, 066h, 066h, 066h, 066h, 066h, 03Ch
+         DB 07Eh, 066h, 064h, 07Eh, 066h, 066h, 066h, 07Ch, 066h, 066h
+         DB 066h, 066h, 066h, 066h, 07Fh, 07Fh, 063h, 063h, 063h, 073h
+         DB 06Bh, 06Bh, 06Bh, 073h, 001h, 007h, 0BBh, 0BBh, 000h, 000h
+         DB 000h, 000h
+lkaeh:   DB 00Eh, 00Eh, 03Ch, 02Fh, 02Ch, 00Eh, 005h, 00Ah, 001h, 007h
+         DB 0BBh, 0BBh, 000h, 000h, 07Bh, 07Bh, 007h, 007h, 00Eh, 03Eh
+         DB 00Eh, 007h, 01Eh, 006h, 001h, 070h, 0BBh, 0BBh, 07Bh, 07Bh
+         DB 07Bh, 072h, 00Eh, 00Eh, 03Ch, 02Fh, 02Ch, 00Eh, 005h, 00Ah
+         DB 001h, 070h, 0BBh, 0BBh, 07Bh, 070h, 07Bh, 0BBh, 00Eh, 00Eh
+         DB 0FCh, 01Fh, 038h, 0F6h, 002h, 003h, 001h, 070h, 0BBh, 0BBh
+         DB 070h, 0AAh, 0AAh, 000h
+lkaec:   DB 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 001h, 070h
+         DB 0BBh, 0BBh, 0BBh, 0BBh, 0BBh, 0BBh
+lkabq:   DB 03Ch, 066h, 066h, 066h, 066h, 066h, 066h, 03Ch, 0FEh, 0FEh
+         DB 030h, 030h, 030h, 030h, 030h, 030h, 03Eh, 066h, 066h, 066h
+         DB 066h, 066h, 0FFh, 0FFh, 000h, 000h, 000h, 000h, 000h, 060h
+         DB 060h, 060h, 000h, 000h, 000h, 000h, 000h, 000h, 000h, 000h
+         DB 006h, 006h, 006h, 006h, 006h, 006h, 006h, 006h, 03Ch, 066h
+         DB 066h, 066h, 066h, 066h, 066h, 03Ch, 03Ch, 066h, 066h, 066h
+         DB 066h, 066h, 066h, 03Ch, 001h, 066h, 066h, 066h, 066h, 066h
+         DB 066h, 067h
+lkanm:   DB 04Eh, 04Eh, 024h, 01Eh, 00Eh, 00Dh, 00Ah, 00Ah, 001h, 000h
+         DB 000h, 000h, 000h, 007h, 000h, 007h, 02Eh, 02Eh, 024h, 01Eh
+         DB 00Eh, 00Dh, 00Ah, 00Ah, 001h, 0AAh, 07Ah, 000h, 007h, 000h
+         DB 007h, 0BBh
+lkanp:   DB 066h, 066h, 066h, 000h, 000h, 000h, 000h, 000h, 0FEh, 0FEh
+         DB 030h, 030h, 030h, 030h, 030h, 030h, 0FEh, 060h, 060h, 060h
+         DB 07Ch, 060h, 060h, 0FEh, 0FEh, 0FEh, 030h, 030h, 030h, 030h
+         DB 030h, 030h, 07Ch, 066h, 066h, 066h, 07Eh, 07Ch, 066h, 066h
+         DB 030h, 030h, 000h, 030h, 030h, 030h, 030h, 030h, 03Ch, 066h
+         DB 060h, 030h, 00Ch, 006h, 066h, 03Ch, 066h, 066h, 066h, 000h
+         DB 000h, 000h, 000h, 000h, 001h
 END

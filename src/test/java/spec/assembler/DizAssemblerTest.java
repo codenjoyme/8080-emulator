@@ -136,21 +136,36 @@ public class DizAssemblerTest extends AbstractTest {
     @Test
     public void testToLabel() {
         assertLabels(
-                "00000 > ljbtkier\n" +
-                "01323 > lyaatwlk\n" +
-                "02477 > ldtezjnk\n" +
-                "027CD > lyqswkde\n" +
-                "07FFF > llpsmrbe\n" +
-                "08F50 > lkvdzimz\n" +
-                "08F51 > lqzveojc\n" +
-                "08F70 > lenzoetc\n" +
-                "08FE1 > lxukwwpc\n" +
-                "08FFC > lrqpqlwi\n" +
-                "0C037 > llzjlkhp\n" +
-                "0C337 > lzifozry\n" +
-                "0C427 > lupzithy\n" +
-                "08F19 > lynbewej\n" +
-                "005C9 > lezkzmck\n");
+                "00000 > ljyzh\n" +
+                "01323 > lnhhj\n" +
+                "02477 > lnitx\n" +
+                "027CD > ljpog\n" +
+                "03EF3 > lnncu\n" +
+                "03123 > lnnjf\n" +
+                "03345 > ljrkh\n" +
+                "04567 > lobbb\n" +
+                "04FFF > loajm\n" +
+                "051FF > locaw\n" +
+                "05F1F > lobxj\n" +
+                "0511F > locbj\n" +
+                "06666 > lotfh\n" +
+                "07FFF > lohyk\n" +
+                "08F50 > lcmvv\n" +
+                "08F51 > lcast\n" +
+                "08F70 > lcmvf\n" +
+                "08FE1 > lcauo\n" +
+                "08FFC > lcjko\n" +
+                "09999 > lcbve\n" +
+                "09000 > lcopl\n" +
+                "0A0A0 > lctcy\n" +
+                "0BBA0 > lcule\n" +
+                "0C037 > lgozx\n" +
+                "0C337 > lgozr\n" +
+                "0C427 > lgpdp\n" +
+                "0CBA0 > ldlck\n" +
+                "0DF19 > ldach\n" +
+                "0E5C9 > ldeyg\n" +
+                "0FFFF > lgwbe\n");
 
         Map<String, Set<String>> map = new LinkedHashMap<>();
         for (int addr = 0; addr < x10000; addr++) {
@@ -161,11 +176,17 @@ public class DizAssemblerTest extends AbstractTest {
             map.get(result).add(hex16(addr));
         }
 
-        String collisions = map.entrySet().stream()
+        // чтобы небыло 2х и более адресов приводящих к одной метке
+        assertEquals("", map.entrySet().stream()
                 .filter(entry -> entry.getValue().size() > 1)
                 .map(entry -> entry.getKey() + " > " + entry.getValue())
-                .collect(Collectors.joining("\n"));
-        assertEquals("", collisions);
+                .collect(Collectors.joining("\n")));
+
+        // чтобы небыло ни одной метки в диапазоне 16 бит длинной больше 4
+        assertEquals("", map.entrySet().stream()
+                .filter(entry -> entry.getKey().length() > 5)
+                .map(entry -> entry.getValue().toString() + " > " + entry.getKey())
+                .collect(Collectors.joining("\n")));
     }
 
     private static void assertLabels(String addresses) {
