@@ -6,6 +6,7 @@ import spec.Logger;
 import spec.Range;
 import spec.math.Bites;
 import spec.mods.WhereIsData;
+import spec.platforms.Lik;
 import spec.platforms.Platform;
 import spec.stuff.AbstractTest;
 
@@ -76,8 +77,31 @@ public class DizAssemblerTest extends AbstractTest {
     public void testDecompileTest_lik_romZagruzchik() {
         // given
         String binPath = lik().platform() + "/roms/01_zagr.bin";
-        Range range = roms.loadROM(base, binPath, 0xC000);
+        Range range = roms.loadROM(base, binPath, Lik.START_ZAGRUZCHIK);
         String asmPath = binPath.replaceAll(".bin", ".asm");
+
+        // when then
+        assertDizAssembly(binPath, asmPath, range);
+    }
+
+    @Test
+    public void testDecompileTest_lik_romMonitor() {
+        // given
+        String binPath1 = lik().platform() + "/roms/02_mon-1m.bin";
+        Range range1 = roms.loadROM(base, binPath1, Lik.START_MONITOR_1M);
+
+        String binPath2 = lik().platform() + "/roms/03_mon-1m_basicLik.bin";
+        Range range2 = roms.loadROM(base, binPath1, Lik.START_ROM3);
+
+        // так как монитор частично попадает на 3ю ПЗУ микросхему, приходится тут загружать 2 файла
+        Range range = new Range(range1.begin(), Lik.START_BASIC_LIK_V2 - 1);
+
+        String asmPath = binPath1.replaceAll(".bin", ".asm").replaceAll("02_", "02-03_");
+        String binPath = String.format(
+                "'%s' in range %s\n" +
+                ";       and partially '%s' in range: %s",
+                binPath1, range1,
+                binPath2, new Range(range2.begin(), range.end()));
 
         // when then
         assertDizAssembly(binPath, asmPath, range);
