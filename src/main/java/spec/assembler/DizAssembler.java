@@ -1,11 +1,15 @@
 package spec.assembler;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import spec.Data;
 import spec.Range;
 import spec.mods.Info;
 
 import java.util.*;
 
+import static spec.Constants.x10000;
 import static spec.math.WordMath.*;
 import static spec.mods.WhereIsData.Type.*;
 import static spec.mods.WhereIsData.markCommand;
@@ -17,6 +21,7 @@ public class DizAssembler {
     private Range range;
     private Info[] infoData;
     private Map<Integer, String> labels;
+    private Map<String, Integer> labels2;
     private int pad;
 
     public DizAssembler(Data data) {
@@ -77,6 +82,7 @@ public class DizAssembler {
 
     private void arrangeLabels(Range range) {
         labels = new TreeMap<>();
+        labels2 = new LinkedHashMap<>();
         for (int addr = range.begin(); addr <= range.end(); addr++) {
             Info info = infoData[addr];
 
@@ -92,11 +98,21 @@ public class DizAssembler {
                     int newAddr = info.data;
                     String label = labels.get(newAddr);
                     if (label == null) {
-                        // TODO если я хочу, чтобы имена лейблов отражали адреса, надо поставить, но это ломает тесты ассемблера
-                        // label = toLabel(newAddr);
-                        label = toLabel(labels.size());
+                        label = toLabel(newAddr);
                         labels.put(newAddr, label);
+                        if (labels2.containsKey(label)) {
+                            throw new RuntimeException(String.format(
+                                    "Found collision: label '%s' already exists for address '%s' but new one is '%s'",
+                                    label, hex16(labels2.get(label)), hex16(newAddr)));
+                        }
+                        labels2.put(label, newAddr);
                         infoData[newAddr].label = label;
+                    } else {
+                        if (!label.equals(toLabel(newAddr))) {
+                            throw new RuntimeException(String.format(
+                                    "Found collision: we already have label '%s' for address '%s' but valid one is '%s'",
+                                    label, hex16(newAddr), toLabel(newAddr)));
+                        }
                     }
                     info.labelTo = label;
                 }
@@ -105,29 +121,31 @@ public class DizAssembler {
     }
 
     public static String toLabel(int value) {
-        int input = value;
-        if (value < 0) {
-            throw new IllegalArgumentException("Value must be between 1 and " + Integer.MAX_VALUE);
-        }
+        try {
+            // Инициализируем MessageDigest для SHA-256
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
-        final int base = 26;
-        final int maxLength = 3;
-        char[] chars = new char[base];
-        for (int i = 0; i < base; i++) {
-            chars[i] = (char) ('a' + i);
-        }
+            // Создаем соль на основе значения, изменяем соль каждый раз разным образом
+            String salt = "Salt" + (value % 100); // Пример простого изменения соли
+            String toHash = value + salt; // Комбинируем значение и соль перед хэшированием
 
-        StringBuilder label = new StringBuilder("l");
-        int shift = value % base;
-        for (int i = 0; i < maxLength; i++) {
-            int index = (shift + value) % base;
-            label.append(chars[index]);
-            shift = (shift + 1) % base;
-            value /= base;
-        }
+            byte[] hash = digest.digest(toHash.getBytes(StandardCharsets.UTF_8));
 
-        // System.out.println("for value " + hex16(input) + " label is " + label);
-        return label.toString();
+            final int base = 26;
+            final int numChars = 7; // Увеличиваем длину метки
+            StringBuilder label = new StringBuilder("l");
+
+            for (int i = 0; i < numChars; i++) {
+                int byteIndex = (i * 2) % hash.length;
+                int index = ((hash[byteIndex] & 0xFF) + (hash[(byteIndex + 1) % hash.length] & 0xFF)) % base;
+                label.append((char) ('a' + index));
+            }
+
+            return label.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void dizAssembly(Range range, boolean canonical) {
@@ -149,7 +167,7 @@ public class DizAssembler {
     private String buildProgram(Range range, boolean canonicalData) {
         StringBuilder result = new StringBuilder();
 
-        pad = "lab: lxxx".length() - 1;
+        pad = ("lab: " + toLabel(x10000 - 1)).length() - 1;
 
         // настройка ассемблера
         String start = hex16(range.begin());
@@ -161,18 +179,16 @@ public class DizAssembler {
         for (Map.Entry<Integer, String> entry : labels.entrySet()) {
             int addr = entry.getKey();
             if (range.includes(addr)) {
-                //continue; // не записываем его как EQU поскольку будет внутри программы ссылка на него
+                continue; // не записываем его как EQU поскольку будет внутри программы ссылка на него
             }
 
             String label = entry.getValue();
-            if (!range.includes(addr)) {
-                String hex = hex16(addr);
-                hex = canonicalData ? canonical(hex) : hex;
-                result.append(pad(label))
-                        .append("EQU ")
-                        .append(hex)
-                        .append('\n');
-            }
+            String hex = hex16(addr);
+            hex = canonicalData ? canonical(hex) : hex;
+            result.append(pad(label))
+                    .append("EQU ")
+                    .append(hex)
+                    .append('\n');
         }
 
         // текст программы

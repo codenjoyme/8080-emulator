@@ -10,10 +10,11 @@ import spec.platforms.Lik;
 import spec.platforms.Platform;
 import spec.stuff.AbstractTest;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import static spec.Constants.x10000;
+import static spec.math.WordMath.hex16;
 import static spec.platforms.Platform.RESOURCES;
 import static spec.stuff.SmartAssert.assertEquals;
 import static spec.stuff.SmartAssert.fail;
@@ -52,8 +53,8 @@ public class DizAssemblerTest extends AbstractTest {
             fail(String.format("For: %s, we got: %s", test, exception.toString()));
 
             if (asmPath != null) {
-                new File(asmPath).delete();
-                Logger.info("Deleted '%s' because of error", asmPath);
+//                new File(asmPath).delete();
+//                Logger.info("Deleted '%s' because of error", asmPath);
             }
         }
     }
@@ -135,19 +136,36 @@ public class DizAssemblerTest extends AbstractTest {
     @Test
     public void testToLabel() {
         assertLabels(
-                "00000 > labc\n" +
-                "01323 > lwsu\n" +
-                "02477 > lcxq\n" +
-                "027CD > luzo\n" +
-                "07FFF > louf\n" +
-                "08F50 > lekg\n" +
-                "08F51 > lglh\n" +
-                "08F70 > lqrm\n" +
-                "08FE1 > liev\n" +
-                "08FFC > lkgw\n" +
-                "0C037 > lekl\n" +
-                "0C337 > lgca\n" +
-                "0C427 > lsrh\n");
+                "00000 > ljbtkier\n" +
+                "01323 > lyaatwlk\n" +
+                "02477 > ldtezjnk\n" +
+                "027CD > lyqswkde\n" +
+                "07FFF > llpsmrbe\n" +
+                "08F50 > lkvdzimz\n" +
+                "08F51 > lqzveojc\n" +
+                "08F70 > lenzoetc\n" +
+                "08FE1 > lxukwwpc\n" +
+                "08FFC > lrqpqlwi\n" +
+                "0C037 > llzjlkhp\n" +
+                "0C337 > lzifozry\n" +
+                "0C427 > lupzithy\n" +
+                "08F19 > lynbewej\n" +
+                "005C9 > lezkzmck\n");
+
+        Map<String, Set<String>> map = new LinkedHashMap<>();
+        for (int addr = 0; addr < x10000; addr++) {
+            String result = DizAssembler.toLabel(addr);
+            if (!map.containsKey(result)) {
+                map.put(result, new HashSet<>());
+            }
+            map.get(result).add(hex16(addr));
+        }
+
+        String collisions = map.entrySet().stream()
+                .filter(entry -> entry.getValue().size() > 1)
+                .map(entry -> entry.getKey() + " > " + entry.getValue())
+                .collect(Collectors.joining("\n"));
+        assertEquals("", collisions);
     }
 
     private static void assertLabels(String addresses) {
