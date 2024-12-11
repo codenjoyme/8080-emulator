@@ -74,6 +74,7 @@ public class WhereIsData implements CpuMod {
             Type type = (i == 0) ? COMMAND : COMMAND_DATA;
             Info info = infos[addr + i];
             if (check && info.type != DATA && info.type != type) {
+                // TODO это странный мессадж, проработать его
                 throw new IllegalArgumentException("Mark error: " +
                         info.type.name() + ">" + type.name() + " " + hex16(addr + i));
             }
@@ -82,7 +83,7 @@ public class WhereIsData implements CpuMod {
             info.increase();
         }
         infos[addr].code(data.read8(addr));
-        infos[addr].data(data.read16(addr + 1));
+        infos[addr].data(data.read16(wordShift(addr + 1)));
         return infos[addr];
     }
 

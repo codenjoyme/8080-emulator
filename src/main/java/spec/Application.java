@@ -169,7 +169,7 @@ public class Application {
         hard.ports().processKey(key);
     }
 
-    private String toRelative(URL base, File file) {
+    public static String toRelative(URL base, File file) {
         try {
             return Paths.get(base.toURI()).relativize(Paths.get(file.getPath())).toString();
         } catch (Exception e) {

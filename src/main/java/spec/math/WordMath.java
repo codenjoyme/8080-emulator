@@ -2,8 +2,7 @@ package spec.math;
 
 import spec.Range;
 
-import java.util.Collections;
-import java.util.List;
+import static spec.Constants.x10000;
 
 public class WordMath {
 
@@ -42,6 +41,16 @@ public class WordMath {
 
     public static int word(int word) {
         return word & WORD;
+    }
+
+    public static int wordShift(int word) {
+        if (word < 0) {
+            return word + x10000;
+        } else if (word > WORD) {
+            return word - x10000;
+        } else {
+            return word;
+        }
     }
 
     public static String hex8(int bite) {

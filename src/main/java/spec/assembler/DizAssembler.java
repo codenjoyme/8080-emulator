@@ -47,6 +47,7 @@ public class DizAssembler {
                 }
 
                 addr += command.size();
+                addr = wordShift(addr);
             } while (true);
         }
     }

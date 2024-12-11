@@ -1350,7 +1350,7 @@ public class Assembler {
         } catch (ScriptException exception) {
             exception.printStackTrace();
             System.out.println("Expression was: " + expr);
-            System.out.print(exception.toString());
+            System.out.println(exception.toString());
         }
 
         return null;
