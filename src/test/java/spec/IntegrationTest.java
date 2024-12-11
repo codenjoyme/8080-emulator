@@ -17,6 +17,8 @@ import static spec.KeyCode.*;
 
 public class IntegrationTest extends AbstractTest {
 
+    public static final String KLAD = "klad";
+
     private static final int K10 = 10_000;
 
     @Override
@@ -66,7 +68,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_scenario() {
         // given
         lik().loadRom(base, roms);
-        lik().loadGame(base, roms, "klad");
+        lik().loadGame(base, roms, KLAD);
 
         // when
         record.after(12 * K10).down(0x23)
@@ -95,7 +97,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_game_klad_levels() {
         // given
         lik().loadRom(base, roms);
-        lik().loadGame(base, roms, "klad");
+        lik().loadGame(base, roms, KLAD);
 
         // when then
         record.shoot("logo", it -> it.after(200 * K10))
@@ -136,7 +138,8 @@ public class IntegrationTest extends AbstractTest {
         WhereIsData.PRINT_RW = true;
 
         lik().loadRom(base, roms);
-        Range range = lik().loadGame(base, roms, "klad");
+        Range range = lik().loadGame(base, roms, KLAD);
+        String binPath = lik().app(KLAD, ".rks");
         WhereIsData data = new WhereIsData(range);
         cpu.modAdd(data);
 
@@ -180,13 +183,13 @@ public class IntegrationTest extends AbstractTest {
 
         // check that all program was the same after running
         // when then
-        String sourceCode = assertDizAssembly(data, "launchedProgram.asm");
+        String sourceCode = assertDizAssembly(data, binPath, "launchedProgram.asm");
         assertAssembly(sourceCode, "recompiled.mem");
         assertPngMemory(range, "recompiled.png");
 
         // when then
-        lik().loadGame(base, roms, "klad");
-        assertDizAssembly(data, "newProgram.asm");
+        lik().loadGame(base, roms, KLAD);
+        assertDizAssembly(data, binPath, "newProgram.asm");
         assertPngMemory(range, "original.png");
 
         // when then

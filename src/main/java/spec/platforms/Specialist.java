@@ -23,7 +23,7 @@ public class Specialist implements Platform {
 
     @Override
     public Range loadGame(URL base, RomLoader roms, String name) {
-        return roms.loadRKS(base, platform() + "/apps/" + name + "/" + name + ".rks");
+        return roms.loadRKS(base, app(name, ".rks"));
     }
 
     @Override

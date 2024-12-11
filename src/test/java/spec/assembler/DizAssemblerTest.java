@@ -34,22 +34,23 @@ public class DizAssemblerTest extends AbstractTest {
             return; // TODO debug all errors
         }
 
-        String fileName = null;
+        String asmPath = null;
         try {
             // given
             platform.loadRom(base, roms);
             Range range = platform.loadGame(base, roms, name);
-            fileName = platform.app(name, ".asm");
+            String binPath = platform.app(name, ".rks");
+            asmPath = platform.app(name, ".asm");
 
             // when then
-            assertDizAssembly(fileName, range);
+            assertDizAssembly(binPath, asmPath, range);
         } catch (Exception exception) {
             exception.printStackTrace();
             fail(String.format("For: %s, we got: %s", test, exception.toString()));
 
-            if (fileName != null) {
-                new File(fileName).delete();
-                Logger.info("Deleted '%s' because of error", fileName);
+            if (asmPath != null) {
+                new File(asmPath).delete();
+                Logger.info("Deleted '%s' because of error", asmPath);
             }
         }
     }
@@ -59,31 +60,30 @@ public class DizAssemblerTest extends AbstractTest {
     public void testDecompileTest_cputest() {
         // given
         lik().loadRom(base, roms);
-        String path = RESOURCES + "test/cputest/cputest.com";
-        Range range = roms.loadROM(base, path, 0x0000);
-        path = path.replaceAll(".com", ".asm");
+        String binPath = RESOURCES + "test/cputest/cputest.com";
+        Range range = roms.loadROM(base, binPath, 0x0000);
+        String asmPath = binPath.replaceAll(".com", ".asm");
 
         // TODO по какой-то причине он пытается воспринимать блок данных как команды
         // TODO я не уверен так же, что его стоит загружать в 0x0000 но в 0x0100 он не работает точно
         // TODO так же при дизассемблировании переполняется 0xFFFF что странно
 
         // when then
-        assertDizAssembly(path, range);
+        assertDizAssembly(binPath, asmPath, range);
     }
 
     @Test
-    @Ignore
     public void testDecompileTest_lik_romZagruzchik() {
         // given
-        String path = lik().platform() + "/roms/01_zagr.bin";
-        Range range = roms.loadROM(base, path, 0xC000);
-        path = path.replaceAll(".bin", ".asm");
+        String binPath = lik().platform() + "/roms/01_zagr.bin";
+        Range range = roms.loadROM(base, binPath, 0xC000);
+        String asmPath = binPath.replaceAll(".bin", ".asm");
 
         // when then
-        assertDizAssembly(path, range);
+        assertDizAssembly(binPath, asmPath, range);
     }
 
-    private void assertDizAssembly(String fileName, Range range) {
+    private void assertDizAssembly(String binPath, String asmPath, Range range) {
         Bites original = memory.read8arr(range);
 
         WhereIsData data = new WhereIsData(range);
@@ -91,7 +91,7 @@ public class DizAssemblerTest extends AbstractTest {
 
         // when
 
-        String sourceCode = assertDizAssembly(data, fileName);
+        String sourceCode = super.assertDizAssembly(data, binPath, asmPath);
         Bites recompiled = assertAssembly(sourceCode, null);
 
         // then
