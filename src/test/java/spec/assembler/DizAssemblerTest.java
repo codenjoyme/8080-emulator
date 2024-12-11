@@ -105,7 +105,7 @@ public class DizAssemblerTest extends AbstractTest {
                 binPath2, new Range(range2.begin(), range.end()));
 
         // when then
-        assertDizAssembly(binPath, asmPath, range, 0xC9B6);
+        assertDizAssembly(binPath, asmPath, range, 0xC9B6, 0xC9BC);
     }
 
     private void assertDizAssembly(String binPath, String asmPath, Range range, Integer... probablyCommands) {
