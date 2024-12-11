@@ -28,6 +28,12 @@ public class DizAssembler {
         List<Integer> processed = new LinkedList<>();
         Queue<Integer> toProcess = new LinkedList<>();
         toProcess.add(range.begin());
+        for (int addr = range.begin(); addr <= range.end(); addr++) {
+            Info info = infoData[addr];
+            if (info.type == COMMAND || info.type == PROBABLE_COMMAND) {
+                toProcess.add(addr);
+            }
+        }
         while (!toProcess.isEmpty()) {
             int addr = toProcess.remove();
             if (processed.contains(addr)) {

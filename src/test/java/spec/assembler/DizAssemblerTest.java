@@ -11,6 +11,7 @@ import spec.platforms.Platform;
 import spec.stuff.AbstractTest;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import static spec.platforms.Platform.RESOURCES;
@@ -104,17 +105,19 @@ public class DizAssemblerTest extends AbstractTest {
                 binPath2, new Range(range2.begin(), range.end()));
 
         // when then
-        assertDizAssembly(binPath, asmPath, range);
+        assertDizAssembly(binPath, asmPath, range, 0xC9B6);
     }
 
-    private void assertDizAssembly(String binPath, String asmPath, Range range) {
+    private void assertDizAssembly(String binPath, String asmPath, Range range, Integer... probablyCommands) {
         Bites original = memory.read8arr(range);
 
         WhereIsData data = new WhereIsData(range);
+        Arrays.stream(probablyCommands)
+                .forEach(addr ->
+                        data.info()[addr].type(WhereIsData.Type.PROBABLE_COMMAND));
         cpu.modAdd(data);
 
         // when
-
         String sourceCode = super.assertDizAssembly(data, binPath, asmPath);
         Bites recompiled = assertAssembly(sourceCode, null);
 

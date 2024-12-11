@@ -73,10 +73,13 @@ public class WhereIsData implements CpuMod {
         for (int i = 0; i < command.size(); i++) {
             Type type = (i == 0) ? COMMAND : COMMAND_DATA;
             Info info = infos[addr + i];
-            if (check && info.type != DATA && info.type != type) {
-                // TODO это странный мессадж, проработать его
-                throw new IllegalArgumentException("Mark error: " +
-                        info.type.name() + ">" + type.name() + " " + hex16(addr + i));
+            boolean isMarkAsNotData = info.type != DATA;
+            boolean isTriedMarkAsDifferentType = info.type != type;
+            boolean isMarkProbableCommandAsCommand = info.type == PROBABLE_COMMAND && type == COMMAND;
+
+            if (check && isMarkAsNotData && isTriedMarkAsDifferentType && !isMarkProbableCommandAsCommand) {
+                throw new IllegalArgumentException("Mark error. Tried to mark old command as new: " +
+                        info.type.name() + " > " + type.name() + " " + hex16(addr + i));
             }
             info.command(command); // TODO why I cant set here if (info.command == null) info.command(command);
             info.type(type);       // TODO and same here. This will improve performance
@@ -104,6 +107,7 @@ public class WhereIsData implements CpuMod {
 
     public enum Type {
 
+        PROBABLE_COMMAND,
         COMMAND,
         COMMAND_DATA,
         DATA,
