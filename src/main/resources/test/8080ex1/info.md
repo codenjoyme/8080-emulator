@@ -63,7 +63,9 @@ All files are provided in three different formats:
 - hex - the source assembled into a CP/M (Intel format) hex file.
 
 List of them:
-- These files contain a modified version, for the 8080/8085, of Frank Cringles original preliminary test file. The purpose of this additional test, to be run before the main exerciser (both 8080 and 8085 versions), is just to test that the emulator is performing basic operations correctly (jmp, call, mvi etc).
+- These files contain a modified version, for the 8080/8085, of Frank Cringles original preliminary test file. 
+  The purpose of this additional test, to be run before the main exerciser (both 8080 and 8085 versions), 
+  is just to test that the emulator is performing basic operations correctly (jmp, call, mvi etc).
   + [8080PRE.MAC (5 KB)](http://web.archive.org/web/20151108135453/http://www.idb.me.uk/sunhillow/files/8080PRE.MAC)
   + [8080PRE.COM (1 KB)](http://web.archive.org/web/20151108135453/http://www.idb.me.uk/sunhillow/files/8080PRE.COM)
   + [8080PRE.HEX (3 KB)](http://web.archive.org/web/20151108135453/http://www.idb.me.uk/sunhillow/files/8080PRE.HEX)
@@ -170,3 +172,28 @@ an 8080 or 8085 CPU the please consider running the basic emulator and forwardin
 results to me; it really would be appreciated. Apart from the help it would provide to 
 emulator writers it would be nice, even at this late stage, to document some of the 
 differences between the various implementations of the 8080 and 8085 CPUs.
+
+From Alexander Demins 
+------------------
+
+[Source is here](https://demin.ws/blog/english/2012/12/24/my-i8080-collection/)
+
+I started programming twenty year ago coding in machine codes for Intel 8080. This microprocessor 
+was my lucky pass to the fascinating world of bits and bytes. Years later developing various 
+emulators of i8080 and tackling with undocumented and partially documented features of this 
+processor I decided to collect real chips from different manufacturers and examine them using 
+the [8080 CPU Exerciser](http://www.idb.me.uk/sunhillow/8080.html).
+
+At the moment I have 20 processors (from Intel, AMD, National Semiconductor, NEC, Samsung, 
+Texas Instruments, and also manufactured in the Soviet Union and Czechoslovakia). Amongst 
+chips having a year on the label the earliest is dated back to 1974 and the latest is 1980. 
+All CPUs except one are fully functional. I tested them on my 
+[Радио-86РК](https://demin.ws/blog/russian/2012/10/07/rk86-sram/).
+
+Testing revealed that all processors are identical according to the CPU Exerciser except 
+clones from AMD. The AMD processors, AM8080 and AM9080A, behave differently performing the 
+bitwise AND operation (ANA and ANI instruction). The original Intel CPUs and non-AMD clones 
+set the AC (half-carry) flag to the value of the 3rd bit (A3) from the bitwise OR between the 
+accumulator and the argument of ANA or ANI. The AMD clones always zero the AC flag in the ANA 
+and ANI instructions. I don’t know why the original Intel CPU calculates the AC flag in such 
+a weird way.
