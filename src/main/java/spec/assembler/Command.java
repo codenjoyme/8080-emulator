@@ -90,13 +90,13 @@ public abstract class Command {
         }
         if (size() == 3) {
             String bites = params.length == 1 ? params[0] : params[1];
-            Bites arr = hex8(bites);
+            Bites arr = Bites.of(bites);
             result.set(2, arr.get(0));
             result.set(1, arr.get(1));
         }
         if (size() == 2) {
             String param = registers().isEmpty() ? params[0] : params[1];
-            Bites arr = hex8(param);
+            Bites arr = Bites.of(param);
             result.set(1, arr.get(0));
         }
         return result;

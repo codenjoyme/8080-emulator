@@ -25,8 +25,8 @@ import spec.math.Bites;
 import java.util.LinkedList;
 import java.util.List;
 
+import static spec.math.Bites.of;
 import static spec.math.WordMath.hex;
-import static spec.math.WordMath.toBites;
 
 public class Assembler {
 
@@ -193,7 +193,7 @@ public class Assembler {
     }
 
     public List<Bites> split(String bites) {
-        Bites array = toBites(bites);
+        Bites array = of(bites);
         int index = 0;
 
         List<Bites> result = new LinkedList<>();

@@ -6405,7 +6405,7 @@ public class CpuTest extends AbstractTest {
                 "14\n" +
                 "15\n" +
                 "16 17\n" +
-                "18");
+                "18\n");
 
         memory.resetChanges();
 

@@ -19,6 +19,7 @@ public class Lik implements Platform {
     public static final int START_ROM4 = 0xD800;
     public static final int START_ROM5 = 0xE000;
     public static final int START_ROM6 = 0xE800;
+    public static final int FINISH_ROM6 = 0xF000;
 
     @Override
     public String name() {

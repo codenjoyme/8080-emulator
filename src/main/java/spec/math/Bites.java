@@ -28,16 +28,27 @@ public class Bites implements Iterable<Integer> {
         return new Bites(data);
     }
 
+    public static Bites of(String bites) {
+        bites = bites.replaceAll("[ \n]", "");
+        Bites result = new Bites(bites.length() / 2);
+        for (int i = 0; i < result.size(); i++) {
+            String hex = bites.substring(i * 2, (i + 1) * 2);
+            int bite = Integer.parseInt(hex, 16);
+            result.set(i, bite);
+        }
+        return result;
+    }
+
     public Bites array(Range range) {
         int length = range.length();
-        int begin = range.begin();
 
         Bites bytes = new Bites(length);
         for (int i = 0; i < length; i++) {
-            bytes.set(i, get(begin + i));
+            bytes.set(i, get(range.offset(i)));
         }
         return bytes;
     }
+
 
     public Bites array() {
         int length = size();
@@ -49,11 +60,10 @@ public class Bites implements Iterable<Integer> {
     // TODO remove code duplicate
     public byte[] byteArray(Range range) {
         int length = range.length();
-        int begin = range.begin();
 
         byte[] bytes = new byte[length];
         for (int i = 0; i < length; i++) {
-            bytes[i] = (byte) data[begin + i];
+            bytes[i] = (byte) data[range.offset(i)];
         }
         return bytes;
     }
@@ -83,10 +93,9 @@ public class Bites implements Iterable<Integer> {
 
     public void set(Range range, Bites bites) {
         int length = range.length();
-        int begin = range.begin();
 
         for (int i = 0; i < length; i++) {
-            set(begin + i, bites.get(i));
+            set(range.offset(i), bites.get(i));
         }
     }
 
@@ -130,10 +139,14 @@ public class Bites implements Iterable<Integer> {
 
     @Override
     public String toString() {
-        return toString(-1, -1);
+        return toString(true, true);
     }
 
-    public String toString(int start, int end) {
+    public String toString(boolean withHeader, boolean withAddress) {
+        return toString(-1, -1, withHeader, withAddress);
+    }
+
+    public String toString(int start, int end, boolean withHeader, boolean withAddress) {
         if (start == -1) {
             start = 0;
         }
@@ -143,21 +156,32 @@ public class Bites implements Iterable<Integer> {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append("      ");
-        for (int i = 0; i < 16; i++) {
-            sb.append(hex8(i))
-                    .append(" ");
-        }
-        sb.append("\n");
-
-        for (int line = start; line < end; line += 16) {
-            sb.append(hex16(line))
-                    .append(": ");
-            for (int i = line; i < line + 16 && i < end; i++) {
-                sb.append(hex8(get(i)))
+        if (withHeader) {
+            sb.append("      ");
+            for (int i = 0; i < 16; i++) {
+                sb.append(hex8(i))
                         .append(" ");
             }
             sb.append("\n");
+        }
+
+        for (int line = start; line < end; line += 16) {
+            boolean isLast = line + 16 >= end;
+
+            if (withAddress) {
+                sb.append(hex16(line))
+                        .append(": ");
+            }
+            for (int i = line; i < line + 16 && i < end; i++) {
+                boolean isLast2 = i + 1 >= end;
+                sb.append(hex8(get(i)));
+                if (!isLast2) {
+                    sb.append(" ");
+                }
+            }
+            if (!isLast) {
+                sb.append("\n");
+            }
         }
 
         return sb.toString();

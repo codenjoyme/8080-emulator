@@ -3,6 +3,7 @@ package spec;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import spec.math.Bites;
 import spec.mods.StopWhen;
 import spec.mods.WhenPC;
 import spec.mods.WhereIsData;
@@ -14,6 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
+import static spec.platforms.Lik.FINISH_ROM6;
+import static spec.platforms.Lik.START_BASIC_LIK_V2;
 
 public class IntegrationTest extends AbstractTest {
 
@@ -65,28 +68,53 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
+    public void testLik_basic() {
+        // given
+        lik().loadRom(base, roms);
+
+        // when
+        record.reset()
+                .shoot("runcom", it -> it.after(2 * K10))
+                .shoot("stop", it -> it.press(END).after(2 * K10))
+                .shoot("monitor", it -> it.press(ENTER).after(5 * K10))
+                .shoot("basic", it -> it.enter("B").press(ENTER).after(20 * K10))
+                .stopCpu();
+
+        cpu.PC(START_POINT);
+        start();
+
+        // then
+        // проверяем что при выполнении команды `B` монитора
+        // весь бейсик просто копируется в новую область памяти as is
+        Range range = new Range(START_BASIC_LIK_V2, FINISH_ROM6);
+        Bites original = memory.read8arr(range);
+        Bites copied = memory.read8arr(range.shift(- START_BASIC_LIK_V2));
+        assertMemoryChanges("", "", range, original, copied);
+    }
+
+    @Test
     public void testLik_scenario() {
         // given
         lik().loadRom(base, roms);
         lik().loadGame(base, roms, KLAD);
 
         // when
-        record.after(12 * K10).down(0x23)
-                .after(5 * K10).up(0x23).shoot("")
-                .after(10 * K10).down(0x0A)
-                .after(5 * K10).up(0x0A).shoot("")
-                .after(34 * K10).down(0x4A)
-                .after(4 * K10).up(0x4A).shoot("")
-                .after(4 * K10).down(0x0A)
-                .after(10 * K10).up(0x0A).shoot("")
-                .after(400 * K10).down(0x27)
-                .after(59 * K10).up(0x27).shoot("")
-                .after(1 * K10).down(0x26)
-                .after(24 * K10).up(0x26).shoot("")
-                .after(127 * K10).down(0x27)
-                .after(53 * K10).up(0x27).shoot("")
-                .after(1 * K10).down(0x26)
-                .after(28 * K10).up(0x26).shoot("")
+        record.after(12 * K10).down(END)
+                .after(5 * K10).up(END).shoot("")
+                .after(10 * K10).down(ENTER)
+                .after(5 * K10).up(ENTER).shoot("")
+                .after(34 * K10).down(KEY_J)
+                .after(4 * K10).up(KEY_J).shoot("")
+                .after(4 * K10).down(ENTER)
+                .after(10 * K10).up(ENTER).shoot("")
+                .after(400 * K10).down(RIGHT)
+                .after(59 * K10).up(RIGHT).shoot("")
+                .after(1 * K10).down(UP)
+                .after(24 * K10).up(UP).shoot("")
+                .after(127 * K10).down(RIGHT)
+                .after(53 * K10).up(RIGHT).shoot("")
+                .after(1 * K10).down(UP)
+                .after(28 * K10).up(UP).shoot("")
                 .stopCpu();
 
         cpu.PC(START_POINT);

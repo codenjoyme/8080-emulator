@@ -260,7 +260,7 @@ public abstract class AbstractTest {
         int end = (begin < endOrLength)
                 ? endOrLength
                 : begin + endOrLength - 1;
-        assertEquals(expected, memory.read8srt(new Range(begin, end)));
+        assertEquals(expected, memory.read8str(new Range(begin, end)));
     }
 
     public void assertTrace(String expected) {

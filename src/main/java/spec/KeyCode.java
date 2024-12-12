@@ -55,4 +55,7 @@ public class KeyCode {
     public static final int NUM_8 = 0x68;
     public static final int NUM_9 = 0x69;
     public static final int NUM_0 = 0x60;
+
+    public static final int KEY_J = 0x4A;
+    // TODO continue with this
 }

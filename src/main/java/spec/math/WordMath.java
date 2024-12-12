@@ -69,14 +69,6 @@ public class WordMath {
         return hex(bite, 4);
     }
 
-    public static Bites hex8(String bites) {
-        Bites result = new Bites(bites.length() / 2);
-        for (int i = 0; i < result.size(); i++) {
-            result.set(i, Integer.parseInt(bites.substring(i * 2, (i + 1) * 2), 16));
-        }
-        return result;
-    }
-
     public static String bits(int bite) {
         return String.format("%8s", Integer.toBinaryString(bite)).replaceAll(" ", "0");
     }
@@ -105,17 +97,6 @@ public class WordMath {
             }
             result.append(hex8(bite));
         }
-    }
-
-    public static Bites toBites(String bites) {
-        bites = bites.replace(" ", "");
-        Bites result = new Bites(bites.length() / 2);
-        for (int i = 0; i < result.size(); i++) {
-            String hex = bites.substring(i * 2, (i + 1) * 2);
-            int bite = Integer.parseInt(hex, 16);
-            result.set(i, bite);
-        }
-        return result;
     }
 
     public static String padRight(String string, int length, char ch) {

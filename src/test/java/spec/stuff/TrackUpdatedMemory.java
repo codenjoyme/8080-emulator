@@ -132,6 +132,6 @@ public class TrackUpdatedMemory extends Memory {
         if (start == Integer.MAX_VALUE || end == Integer.MIN_VALUE) {
             return "";
         }
-        return read8srt(new Range(start, end));
+        return read8str(new Range(start, end));
     }
 }
