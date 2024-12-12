@@ -117,7 +117,7 @@ public class DizAssemblerTest extends AbstractTest {
         assertDizAssembly(binPath, asmPath, range,
                 // адреса что я вручную методом тыка пробовал, последовательно изучая
                 // области с данными после дизассемблирования на предмет - а не код ли это?
-                0xC9B6, 0xC9BC/*, 0xC9C7*/);
+                0xC9B6, 0xC9BC, 0xC9C7);
     }
 
     private void assertDizAssembly(String binPath, String asmPath, Range range, Integer... probablyCommands) {
