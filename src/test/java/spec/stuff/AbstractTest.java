@@ -8,6 +8,7 @@ import org.junit.rules.TestName;
 import spec.*;
 import spec.assembler.Assembler;
 import spec.assembler.DizAssembler;
+import spec.image.PngScreenToText;
 import spec.math.Bites;
 import spec.mods.WhereIsData;
 import spec.platforms.Lik;
@@ -73,6 +74,7 @@ public abstract class AbstractTest {
     protected FileAssert fileAssert;
     protected URL base;
     protected URL targetBase;
+    protected PngScreenToText scanner;
 
     @Before
     public void setup() {
@@ -83,10 +85,12 @@ public abstract class AbstractTest {
     public void before() {
         Logger.DEBUG = false;
 
-        base = getBase();
-        targetBase = getTargetBase();
+        scanner = new PngScreenToText();
 
-        fileAssert = new FileAssert(TEST_RESOURCES + "/" + getTestResultFolder());
+        base = base();
+        targetBase = targetBase();
+
+        fileAssert = new FileAssert(testBase());
         fileAssert.removeTestsData();
 
         hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, null) {
@@ -174,7 +178,7 @@ public abstract class AbstractTest {
         SmartAssert.checkResult();
     }
 
-    public URL getBase()  {
+    public URL base()  {
         try {
             return new File(".").toURI().toURL();
         } catch (MalformedURLException e) {
@@ -182,12 +186,16 @@ public abstract class AbstractTest {
         }
     }
 
-    public URL getTargetBase()  {
+    public URL targetBase()  {
         try {
             return new File(TARGET_RESOURCES).toURI().toURL();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String testBase() {
+        return TEST_RESOURCES + "/" + getTestResultFolder();
     }
 
     protected String getTestResultFolder() {
@@ -332,7 +340,7 @@ public abstract class AbstractTest {
 
     public void assertPngMemory(Range range, String image) {
         PngVideo.drawToFile(range, SCREEN_WIDTH, memory,
-                new File(TEST_RESOURCES + getTestResultFolder() + "/" + image));
+                new File(testBase() + "/" + image));
     }
 
     public Bites assertAssembly(String sourceCode, String recompiledFile, String detailsFile) {

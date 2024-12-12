@@ -24,7 +24,7 @@ public class FileAssert {
         this.base = base;
     }
 
-    private File testDir() {
+    public File testDir() {
         File result = new File(base);
         if (!result.exists()) {
             result.mkdir();
