@@ -104,7 +104,7 @@ public class DizAssemblerTest extends AbstractTest {
         Range range1 = roms.loadROM(base, binPath1, Lik.START_MONITOR_1M);
 
         String binPath2 = lik().platform() + "/roms/03_mon-1m_basicLik.bin";
-        Range range2 = roms.loadROM(base, binPath1, Lik.START_ROM3);
+        Range range2 = roms.loadROM(base, binPath2, Lik.START_ROM3);
 
         // так как монитор частично попадает на 3ю ПЗУ микросхему, приходится тут загружать 2 файла
         Range range = new Range(range1.begin(), Lik.START_BASIC_LIK_V2 - 1);
@@ -123,8 +123,7 @@ public class DizAssemblerTest extends AbstractTest {
                 // области с данными после дизассемблирования на предмет - а не код ли это?
                 0xC9B6, 0xC9BC, 0xC9C7, 0xCA08, 0xCA0C, 0xCA31, 0xCA5F, 0xCCD4, 0xCCFF,
                 0xCD25, 0xCD33, 0xCD39, 0xCD3F, 0xCD45, 0xCD60, 0xCDBB, 0xCDC1, 0xCDCA,
-                0xCE18, 0xCE25, 0xCE57, 0xCE80, 0xCECA, 0xCF63, 0xD066, 0xD06F, 0xD07D,
-                0xD08D, 0xD09B, 0xD0A9, 0xD0C8);
+                0xCE18, 0xCE25, 0xCE57, 0xCE80, 0xCECA, 0xCF63);
     }
 
     private void assertDizAssembly(String binPath, String asmPath, String detailsPath, Range range, Integer... probablyCommands) {
