@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import static spec.Constants.x10000;
 import static spec.math.WordMath.hex16;
+import static spec.platforms.Lik.START_BASIC_LIK_V2;
 import static spec.platforms.Platform.RESOURCES;
 import static spec.stuff.SmartAssert.assertEquals;
 import static spec.stuff.SmartAssert.fail;
@@ -83,7 +84,8 @@ public class DizAssemblerTest extends AbstractTest {
     public void testDecompileTest_lik_romZagruzchik() {
         // given
         String binPath = lik().platform() + "/roms/01_zagr.bin";
-        Range range = roms.loadROM(base, binPath, Lik.START_ZAGRUZCHIK);
+        Range range = roms.loadROM(base, binPath, Lik.START_ROM1);
+
         String asmPath = binPath.replaceAll(".bin", ".asm");
         String detailsPath = asmPath.replaceAll(".asm", ".log");
 
@@ -101,13 +103,13 @@ public class DizAssemblerTest extends AbstractTest {
     public void testDecompileTest_lik_romMonitor() {
         // given
         String binPath1 = lik().platform() + "/roms/02_mon-1m.bin";
-        Range range1 = roms.loadROM(base, binPath1, Lik.START_MONITOR_1M);
+        Range range1 = roms.loadROM(base, binPath1, Lik.START_ROM2);
 
         String binPath2 = lik().platform() + "/roms/03_mon-1m_basicLik.bin";
         Range range2 = roms.loadROM(base, binPath2, Lik.START_ROM3);
 
         // так как монитор частично попадает на 3ю ПЗУ микросхему, приходится тут загружать 2 файла
-        Range range = new Range(range1.begin(), Lik.START_BASIC_LIK_V2 - 1);
+        Range range = new Range(range1.begin(), START_BASIC_LIK_V2 - 1);
 
         String asmPath = binPath1.replaceAll(".bin", ".asm").replaceAll("02_", "02-03_");
         String detailsPath = asmPath.replaceAll(".asm", ".log");
@@ -124,6 +126,48 @@ public class DizAssemblerTest extends AbstractTest {
                 0xC9B6, 0xC9BC, 0xC9C7, 0xCA08, 0xCA0C, 0xCA31, 0xCA5F, 0xCCD4, 0xCCFF,
                 0xCD25, 0xCD33, 0xCD39, 0xCD3F, 0xCD45, 0xCD60, 0xCDBB, 0xCDC1, 0xCDCA,
                 0xCE18, 0xCE25, 0xCE57, 0xCE80, 0xCECA, 0xCF63);
+    }
+
+    @Test
+    @Ignore
+    public void testDecompileTest_lik_basic() {
+        // given
+        String binPath1 = lik().platform() + "/roms/03_mon-1m_basicLik.bin";
+        Range range1 = roms.loadROM(base, binPath1, Lik.START_ROM3);
+
+        String binPath2 = lik().platform() + "/roms/04_basicLik.bin";
+        Range range2 = roms.loadROM(base, binPath2, Lik.START_ROM4);
+
+        String binPath3 = lik().platform() + "/roms/05_basicLik.bin";
+        Range range3 = roms.loadROM(base, binPath3, Lik.START_ROM5);
+
+        String binPath4 = lik().platform() + "/roms/06_basicLik.bin";
+        Range range4 = roms.loadROM(base, binPath4, Lik.START_ROM6);
+
+        // так как монитор частично попадает на 3ю ПЗУ микросхему и с 4й по 6ю, приходится тут загружать несколько файлов
+        Range range = new Range(Lik.START_BASIC_LIK_V2, range4.end());
+
+        String asmPath = binPath2.replaceAll(".bin", ".asm").replaceAll("04_", "03-04-05-06_");
+        String detailsPath = asmPath.replaceAll(".asm", ".log");
+        String binPath = String.format(
+                "'%s' partially in range %s\n" +
+                ";       '%s' in range: %s\n" +
+                ";       '%s' in range: %s\n" +
+                ";       '%s' in range: %s",
+                binPath1, range1,
+                binPath2, range2,
+                binPath3, range3,
+                binPath4, range4);
+
+        // копируем бейсик, как он копируется при выполнении команды `B` монитора
+        Range newRange = range.shift(-Lik.START_BASIC_LIK_V2);
+        memory.all().set(newRange, memory.all().array(range));
+
+        // when then
+        assertDizAssembly(binPath, asmPath, detailsPath, newRange
+                // адреса что я вручную методом тыка пробовал, последовательно изучая
+                // области с данными после дизассемблирования на предмет - а не код ли это?
+                );
     }
 
     private void assertDizAssembly(String binPath, String asmPath, String detailsPath, Range range, Integer... probablyCommands) {
