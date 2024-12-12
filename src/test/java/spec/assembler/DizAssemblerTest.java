@@ -46,9 +46,10 @@ public class DizAssemblerTest extends AbstractTest {
             Range range = platform.loadGame(base, roms, name);
             String binPath = platform.app(name, ".rks");
             asmPath = platform.app(name, ".asm");
+            String detailsPath = asmPath.replaceAll(".asm", ".log");
 
             // when then
-            assertDizAssembly(binPath, asmPath, range);
+            assertDizAssembly(binPath, asmPath, detailsPath, range);
         } catch (Exception exception) {
             exception.printStackTrace();
             fail(String.format("For: %s, we got: %s", test, exception.toString()));
@@ -68,13 +69,14 @@ public class DizAssemblerTest extends AbstractTest {
         String binPath = RESOURCES + "test/cputest/cputest.com";
         Range range = roms.loadROM(base, binPath, 0x0000);
         String asmPath = binPath.replaceAll(".com", ".asm");
+        String detailsPath = asmPath.replaceAll(".asm", ".log");
 
         // TODO по какой-то причине он пытается воспринимать блок данных как команды
         // TODO я не уверен так же, что его стоит загружать в 0x0000 но в 0x0100 он не работает точно
         // TODO так же при дизассемблировании переполняется 0xFFFF что странно
 
         // when then
-        assertDizAssembly(binPath, asmPath, range);
+        assertDizAssembly(binPath, asmPath, detailsPath, range);
     }
 
     @Test
@@ -83,9 +85,10 @@ public class DizAssemblerTest extends AbstractTest {
         String binPath = lik().platform() + "/roms/01_zagr.bin";
         Range range = roms.loadROM(base, binPath, Lik.START_ZAGRUZCHIK);
         String asmPath = binPath.replaceAll(".bin", ".asm");
+        String detailsPath = asmPath.replaceAll(".asm", ".log");
 
         // when then
-        assertDizAssembly(binPath, asmPath, range,
+        assertDizAssembly(binPath, asmPath, detailsPath, range,
                 // те адреса куда ссылались игрушки
                 // TODO изучить как они это делали, и что полезного там есть
                 0xC427, 0xC438, 0xC337, 0xC25A, 0xC254, 0xC010, 0xC037, 0xC170,
@@ -107,6 +110,7 @@ public class DizAssemblerTest extends AbstractTest {
         Range range = new Range(range1.begin(), Lik.START_BASIC_LIK_V2 - 1);
 
         String asmPath = binPath1.replaceAll(".bin", ".asm").replaceAll("02_", "02-03_");
+        String detailsPath = asmPath.replaceAll(".asm", ".log");
         String binPath = String.format(
                 "'%s' in range %s\n" +
                 ";       and partially '%s' in range: %s",
@@ -114,13 +118,16 @@ public class DizAssemblerTest extends AbstractTest {
                 binPath2, new Range(range2.begin(), range.end()));
 
         // when then
-        assertDizAssembly(binPath, asmPath, range,
+        assertDizAssembly(binPath, asmPath, detailsPath, range,
                 // адреса что я вручную методом тыка пробовал, последовательно изучая
                 // области с данными после дизассемблирования на предмет - а не код ли это?
-                0xC9B6, 0xC9BC, 0xC9C7);
+                0xC9B6, 0xC9BC, 0xC9C7, 0xCA08, 0xCA0C, 0xCA31, 0xCA5F, 0xCCD4, 0xCCFF,
+                0xCD25, 0xCD33, 0xCD39, 0xCD3F, 0xCD45, 0xCD60, 0xCDBB, 0xCDC1, 0xCDCA,
+                0xCE18, 0xCE25, 0xCE57, 0xCE80, 0xCECA, 0xCF63, 0xD066, 0xD06F, 0xD07D,
+                0xD08D, 0xD09B, 0xD0A9, 0xD0C8);
     }
 
-    private void assertDizAssembly(String binPath, String asmPath, Range range, Integer... probablyCommands) {
+    private void assertDizAssembly(String binPath, String asmPath, String detailsPath, Range range, Integer... probablyCommands) {
         Bites original = memory.read8arr(range);
 
         WhereIsData data = new WhereIsData(range);
@@ -131,7 +138,7 @@ public class DizAssemblerTest extends AbstractTest {
 
         // when
         String sourceCode = super.assertDizAssembly(data, binPath, asmPath);
-        Bites recompiled = assertAssembly(sourceCode, null);
+        Bites recompiled = assertAssembly(sourceCode, null, detailsPath);
 
         // then
         assertMemoryChanges("", "", range, original, recompiled);

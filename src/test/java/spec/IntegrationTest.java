@@ -184,7 +184,8 @@ public class IntegrationTest extends AbstractTest {
         // check that all program was the same after running
         // when then
         String sourceCode = assertDizAssembly(data, binPath, "launchedProgram.asm");
-        assertAssembly(sourceCode, "recompiled.mem");
+        String recompiledFile = TEST_RESOURCES + getTestResultFolder() + "/" + "recompiled.mem";
+        assertAssembly(sourceCode, recompiledFile, null);
         assertPngMemory(range, "recompiled.png");
 
         // when then

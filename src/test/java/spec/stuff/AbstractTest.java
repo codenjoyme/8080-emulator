@@ -26,6 +26,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -334,13 +335,19 @@ public abstract class AbstractTest {
                 new File(TEST_RESOURCES + getTestResultFolder() + "/" + image));
     }
 
-    public Bites assertAssembly(String sourceCode, String recompiledFile) {
+    public Bites assertAssembly(String sourceCode, String recompiledFile, String detailsFile) {
         svofski.Assembler assembler = new svofski.Assembler();
-        Bites result = assembler.compile(sourceCode);
+        Map<String, Object> map = assembler.process(sourceCode);
+        Bites result = (Bites) map.get("bin");
+        String listing = (String) map.get("listing");
         byte[] bytes = result.byteArray();
 
         if (recompiledFile != null) {
-            fileAssert.write(new File(TEST_RESOURCES + getTestResultFolder() + "/" + recompiledFile), bytes);
+            fileAssert.write(new File(recompiledFile), bytes);
+        }
+
+        if (detailsFile != null) {
+            fileAssert.write(new File(detailsFile), listing);
         }
         return result;
     }
