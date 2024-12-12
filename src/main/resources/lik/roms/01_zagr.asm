@@ -35,6 +35,7 @@ lcmli    EQU 08FF8h
 lgfjy    EQU 08FFAh
 lcjko    EQU 08FFCh
 lbxhm    EQU 08FFDh
+lgcje    EQU 08FFEh
 lfqgc    EQU 08FFFh
 ldldh    EQU 0C800h
 ldstf    EQU 0FF00h
@@ -527,13 +528,32 @@ lhasw:   DCR D
          POP B
          RET
 lcyve:   LDA lfqgc
-         MOV B,A
+ldhxm:   MOV B,A
          JMP ldlfu
-         DB 0C5h, 0D5h, 0F5h, 057h, 00Eh, 008h, 07Ah, 007h, 057h, 0E6h
-         DB 001h, 0F6h, 00Eh, 032h, 003h, 0FFh, 05Fh, 0CDh, 084h, 0C4h
-         DB 07Bh, 0EEh, 001h, 032h, 003h, 0FFh, 0CDh, 084h, 0C4h, 00Dh
-         DB 0C2h, 0D6h, 0C3h, 0F1h, 0D1h, 0C1h, 0C9h, 000h, 000h, 000h
-         DB 000h
+         PUSH B
+         PUSH D
+         PUSH PSW
+         MOV D,A
+         MVI C,008h
+lhbdm:   MOV A,D
+         RLC
+         MOV D,A
+         ANI 001h
+         ORI 00Eh
+         STA lgzot
+         MOV E,A
+         CALL ldiiq
+         MOV A,E
+         XRI 001h
+         STA lgzot
+         CALL ldiiq
+         DCR C
+         JNZ lhbdm
+         POP PSW
+         POP D
+         POP B
+         RET
+         DB 000h, 000h, 000h, 000h
 lcysc:   MVI A,0FFh
          CALL lgozv
          MOV L,A
@@ -595,8 +615,10 @@ lgotx:   LHLD lcauo
          PCHL
 
 lgscb:   DB 000h, 0C0h, 0C8h, 0C2h, 0A0h, 018h, 000h, 000h, 000h, 000h
-         DB 054h, 0C3h, 020h, 020h, 050h, 040h, 000h, 03Ah, 0FEh, 08Fh
-         DB 0C3h, 0CCh, 0C3h, 000h, 000h, 000h, 000h, 028h, 03Ch
+         DB 054h, 0C3h, 020h, 020h, 050h, 040h, 000h
+ldiiq:   LDA lgcje
+         JMP ldhxm
+         DB 000h, 000h, 000h, 000h, 028h, 03Ch
 ldlgy:   DB 01Fh, 02Ah, 020h, 052h, 055h, 04Eh, 022h, 043h, 04Fh, 04Dh
          DB 03Ah, 022h, 000h, 0FFh, 0FFh, 0FFh, 081h, 00Ch, 019h, 01Ah
          DB 020h, 020h, 020h, 008h, 080h, 018h, 00Ah, 00Dh, 000h, 000h
