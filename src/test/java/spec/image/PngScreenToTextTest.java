@@ -29,7 +29,7 @@ public class PngScreenToTextTest extends AbstractTest {
                 "9070:   45  45  3D  05  09  70  00  00    EE=..П..\n" +
                 "9078:   00  38  45  45  3D  05  09  70    .8EE=..П\n" +
                 "===>\n" +
-                "* MOНИТOP-1M *\n" +
+                "* МОНИТОР-1M *\n" +
                 "===>█");
     }
 

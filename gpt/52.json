@@ -80,8 +80,7 @@ public class PngScreenToText {
                     }
                 }
             }
-            text.append("\
-");
+            text.append("\n");
         }
 
         return text.toString();

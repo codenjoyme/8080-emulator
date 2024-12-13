@@ -182,8 +182,7 @@ public class Util {
 
                 if (((b + 1) % 16) == 0) {
                     hexes += "  " + chars;
-                    hexes += "\
-";
+                    hexes += "\n";
                 }
             }
         }

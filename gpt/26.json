@@ -220,10 +220,7 @@ A: Ваш настройки для запуска тестов Jest в IDE вы
 
 ===============================================================================================
 Q: я поправил js -> javascript но по прежнему
-C:\Java\
-odejs\
-ode.exe --require C:\Java\ideaIU-2024.2.4\plugins\javascript-plugin\helpers\jest-intellij\lib\jest-intellij-stdin-fix.js C:\Java\8080-emulator\
-ode_modules\jest\bin\jest.js --colors --reporters C:\Java\ideaIU-2024.2.4\plugins\javascript-plugin\helpers\jest-intellij\lib\jest-intellij-reporter.js --verbose --testPathPattern=^C:.Java.8080-emulator.src.test.javascript.
+C:\Java\nodejs\node.exe --require C:\Java\ideaIU-2024.2.4\plugins\javascript-plugin\helpers\jest-intellij\lib\jest-intellij-stdin-fix.js C:\Java\8080-emulator\node_modules\jest\bin\jest.js --colors --reporters C:\Java\ideaIU-2024.2.4\plugins\javascript-plugin\helpers\jest-intellij\lib\jest-intellij-reporter.js --verbose --testPathPattern=^C:.Java.8080-emulator.src.test.javascript.
 ● Validation Error:
 
   Module @swc/jest in the transform option was not found.

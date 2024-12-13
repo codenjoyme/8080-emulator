@@ -135,45 +135,66 @@ public class PngScreenToText {
                 // trim right only
                 .map(s -> s.replaceAll("\\s+$", ""))
                 .filter(s -> !s.isEmpty())
-                .map(s -> changeToCyr(s))
+                .map(s -> changeToCyr(s, 3))
                 .collect(joining("\n"));
     }
 
-    private String changeToCyr(String line) {
-        // есть найден хоть один LAT_SYNONYM символ, это может значит что это кириллица
-        // чтобы это проверить надо посмотреть на символы вокруг - если слева или справа
-        // кириллица CYR, то текущий символ стоит заменить LAT_SYNONYM на CYR_SYNONYM
-        // если слева и справа латиница LAT, то оставить как есть
+    private String changeToCyr(String line, int maxDepth) {
+        boolean changes;
+        String currentLine = line;
 
-        StringBuilder modifiedLine = new StringBuilder();
+        do {
+            changes = false;
+            StringBuilder modifiedLine = new StringBuilder(currentLine);
 
-        for (int i = 0; i < line.length(); i++) {
-            char c = line.charAt(i);
-            int synonymIndex = LAT_SYNONYM.indexOf(c);
+            for (int i = 0; i < currentLine.length(); i++) {
+                char currentChar = currentLine.charAt(i);
+                int synonymIndex = LAT_SYNONYM.indexOf(currentChar);
 
-            // Check if the character is a Latin synonym for a Cyrillic character
-            if (synonymIndex != -1) {
-                // Determine surrounding characters
-                char prev = i > 0 ? line.charAt(i - 1) : ' ';
-                char next = i < line.length() - 1 ? line.charAt(i + 1) : ' ';
+                if (synonymIndex != -1) {
+                    boolean influencedByCyrillic = checkForCyrillicInfluence(currentLine, i, maxDepth);
 
-                // Check if surrounding characters are Cyrillic
-                boolean nearCyrillicOrDigits = (CYR.indexOf(prev) != -1 || CYR.indexOf(next) != -1);
-
-                if (nearCyrillicOrDigits) {
-                    // If surrounded by Cyrillic or digits, assume it's a Cyrillic context
-                    modifiedLine.append(CYR_SYNONYM.charAt(synonymIndex));
-                } else {
-                    // Otherwise, it remains as the original Latin character
-                    modifiedLine.append(c);
+                    if (influencedByCyrillic) {
+                        char cyrillicChar = CYR_SYNONYM.charAt(synonymIndex);
+                        modifiedLine.setCharAt(i, cyrillicChar);
+                        if (currentChar != cyrillicChar) {
+                            changes = true;
+                        }
+                    }
                 }
-            } else {
-                // If not a synonym character, append as is
-                modifiedLine.append(c);
+            }
+
+            currentLine = modifiedLine.toString();
+        } while (changes);
+
+        return currentLine;
+    }
+
+    private boolean checkForCyrillicInfluence(String line, int index, int maxDepth) {
+        // Проверка влево от текущего символа
+        for (int i = index - 1; i >= Math.max(0, index - maxDepth); i--) {
+            if (isStoppingCharacter(line.charAt(i))) {
+                break;
+            }
+            if (CYR.contains(String.valueOf(line.charAt(i)))) {
+                return true;
+            }
+        }
+        // Проверка вправо от текущего символа
+        for (int i = index + 1; i < Math.min(line.length(), index + maxDepth + 1); i++) {
+            if (isStoppingCharacter(line.charAt(i))) {
+                break;
+            }
+            if (CYR.contains(String.valueOf(line.charAt(i)))) {
+                return true;
             }
         }
 
-        return modifiedLine.toString();
+        return false;
+    }
+
+    private boolean isStoppingCharacter(char ch) {
+        return !Character.isLetter(ch) || Character.isWhitespace(ch);
     }
 
     public static void main(String[] args) {
