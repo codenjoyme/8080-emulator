@@ -1,8 +1,10 @@
 package spec.image;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
@@ -18,6 +20,7 @@ public class PngScreenToText {
 
     private static final String LAT_SYNONYM = "ABCEHKMOPTX";
     private static final String CYR_SYNONYM = "АВСЕНКМОРТХ";
+    private static final char UNKNOWN = '¤';
 
     private Map<String, Character> map = new LinkedHashMap<>();
 
@@ -34,6 +37,19 @@ public class PngScreenToText {
             CYR + "\n" +     // кириллица
             "█ \n" +         // курсор и пробел
             "ЪЁ");           // символы несуществующие в ЛИК
+
+        map.put(
+                "......\n" +
+                ".█..█.\n" +
+                "..██..\n" +
+                ".█..█.\n" +
+                ".█..█.\n" +
+                ".█..█.\n" +
+                "..██..\n" +
+                ".█..█.\n" +
+                "......\n" +
+                "......",
+                UNKNOWN);
     }
 
     private static final int CHAR_WIDTH = 6;
@@ -122,7 +138,7 @@ public class PngScreenToText {
             Character ch = map.get(mask);
             last.set(ch);
             if (ch == null) {
-                ch = '¤';
+                ch = UNKNOWN;
             }
             if (newLine) {
                 result.append("\n");
@@ -195,6 +211,64 @@ public class PngScreenToText {
 
     private boolean isStoppingCharacter(char ch) {
         return !Character.isLetter(ch) || Character.isWhitespace(ch);
+    }
+
+    public void drawPng(String text, String outputPath) {
+        String[] lines = text.split("\n");
+
+        BufferedImage image = new BufferedImage(pxWidth, pxHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = image.createGraphics();
+
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, pxWidth, pxHeight);
+
+        for (int lineNum = 0; lineNum < lines.length; lineNum++) {
+            String line = lines[lineNum];
+            for (int charNum = 0; charNum < line.length(); charNum++) {
+                char ch = line.charAt(charNum);
+                String mask = getMaskByChar(ch);
+                if (mask == null) {
+                    mask = getMaskByChar(' ');
+                }
+                drawChar(mask, g, charNum * CHAR_WIDTH, lineNum * CHAR_HEIGHT);
+            }
+        }
+
+        g.dispose();
+
+        try {
+            ImageIO.write(image, "PNG", new File(outputPath));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save image: " + outputPath, e);
+        }
+    }
+
+    private void drawChar(String mask, Graphics2D g, int x, int y) {
+        String[] maskLines = mask.split("\n");
+        g.setColor(Color.WHITE);
+        for (int i = 0; i < maskLines.length; i++) {
+            for (int j = 0; j < maskLines[i].length(); j++) {
+                if (maskLines[i].charAt(j) == '█') {
+                    g.fillRect(x + j, y + i, 1, 1);
+                }
+            }
+        }
+    }
+
+    private String getMaskByChar(char ch) {
+        for (Map.Entry<String, Character> entry : map.entrySet()) {
+            int index = CYR_SYNONYM.indexOf(ch);
+            if (index != -1) {
+                char ch2 = LAT_SYNONYM.charAt(index);
+                if (entry.getValue().equals(ch2)) {
+                    return entry.getKey();
+                }
+            }
+            if (entry.getValue().equals(ch)) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     public static void main(String[] args) {
