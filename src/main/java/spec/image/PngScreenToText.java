@@ -6,12 +6,18 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 public class PngScreenToText {
 
-    private static final String EN = "ABCEHKMOPTX";
-    private static final String RU = "АВСЕНКМОРТХ";
+    private static final String LAT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String CYR = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЫЭЮЯ";
+    private static final String NUMBERS = "1234567890";
+    private static final String SYMBOLS = "!\"#$%&'()-=+;:[]^*/?<,.>:\\";
+
+    private static final String LAT_SYNONYM = "ABCEHKMOPTX";
+    private static final String CYR_SYNONYM = "АВСЕНКМОРТХ";
 
     private Map<String, Character> map = new LinkedHashMap<>();
 
@@ -22,12 +28,12 @@ public class PngScreenToText {
 
     public PngScreenToText() {
         process(new File("./src/main/resources/lik/docs/chars-map.png").getAbsolutePath(),
-            "1234567890\n" +
-            "!\"#$%&'()-=+;:[]^*/?<,.>:\\\n" +
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ\n" +
-            "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЫЭЮЯ\n" +
-            "█ \n" +
-            "ЪЁ");
+            NUMBERS + "\n" + // цифры
+            SYMBOLS + "\n" + // спецсимволы
+            LAT + "\n" +     // латиница
+            CYR + "\n" +     // кириллица
+            "█ \n" +         // курсор и пробел
+            "ЪЁ");           // символы несуществующие в ЛИК
     }
 
     private static final int CHAR_WIDTH = 6;
@@ -114,11 +120,6 @@ public class PngScreenToText {
         AtomicReference<Character> last = new AtomicReference<>();
         process(image, (mask, newLine) -> {
             Character ch = map.get(mask);
-            if (EN.contains(String.valueOf(ch))) {
-                if (last.get() != null && RU.contains(String.valueOf(last.get()))) {
-                    ch = RU.charAt(EN.indexOf(ch));
-                }
-            }
             last.set(ch);
             if (ch == null) {
                 ch = '¤';
@@ -134,7 +135,45 @@ public class PngScreenToText {
                 // trim right only
                 .map(s -> s.replaceAll("\\s+$", ""))
                 .filter(s -> !s.isEmpty())
-                .collect(Collectors.joining("\n"));
+                .map(s -> changeToCyr(s))
+                .collect(joining("\n"));
+    }
+
+    private String changeToCyr(String line) {
+        // есть найден хоть один LAT_SYNONYM символ, это может значит что это кириллица
+        // чтобы это проверить надо посмотреть на символы вокруг - если слева или справа
+        // кириллица CYR, то текущий символ стоит заменить LAT_SYNONYM на CYR_SYNONYM
+        // если слева и справа латиница LAT, то оставить как есть
+
+        StringBuilder modifiedLine = new StringBuilder();
+
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            int synonymIndex = LAT_SYNONYM.indexOf(c);
+
+            // Check if the character is a Latin synonym for a Cyrillic character
+            if (synonymIndex != -1) {
+                // Determine surrounding characters
+                char prev = i > 0 ? line.charAt(i - 1) : ' ';
+                char next = i < line.length() - 1 ? line.charAt(i + 1) : ' ';
+
+                // Check if surrounding characters are Cyrillic
+                boolean nearCyrillicOrDigits = (CYR.indexOf(prev) != -1 || CYR.indexOf(next) != -1);
+
+                if (nearCyrillicOrDigits) {
+                    // If surrounded by Cyrillic or digits, assume it's a Cyrillic context
+                    modifiedLine.append(CYR_SYNONYM.charAt(synonymIndex));
+                } else {
+                    // Otherwise, it remains as the original Latin character
+                    modifiedLine.append(c);
+                }
+            } else {
+                // If not a synonym character, append as is
+                modifiedLine.append(c);
+            }
+        }
+
+        return modifiedLine.toString();
     }
 
     public static void main(String[] args) {

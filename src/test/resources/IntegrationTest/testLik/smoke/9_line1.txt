@@ -1,4 +1,4 @@
-* BASIC ЛИK V2 *
+* BASIC ЛИК V2 *
 OK
 10 CLS2
 █

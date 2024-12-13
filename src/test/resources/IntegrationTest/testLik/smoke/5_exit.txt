@@ -19,5 +19,5 @@ C024  E5        .    PUSH H
 C025  E5        .    PUSH H
 C026  E5        .    PUSH H
 C027  E5        .    PUSH H
-* MOHИTOP-1M *
+* MOНИТOP-1M *
 ===>█
