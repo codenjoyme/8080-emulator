@@ -429,15 +429,17 @@ asm файлов для всех игр всех платформ.
 --------------
 
 Для распознавания текста на экране используется класс `PngScreenToText`. Пример использования в `main` методе.
-Так же можно изучить тест `IntegrationTest.testLik_smoke()` там есть примеры использования в тестах.
+Возможна и обраатная процедура. 
+Так же логику работы изучить с помощью теста `PngScreenToTextest` там есть примеры использования. 
 ```
 public static void main(String[] args) {
     PngScreenToText scanner = new PngScreenToText();
 
+    // парсим картинку в текст
     String parse = scanner.parse("./src/test/resources/IntegrationTest/testLik/smoke/7_exit.png");
 
+    // печатаем на экран
     System.out.println(parse);
-    // prints 
     //         0   1   2   3   4   5   6   7     01234567
     //         8   9   A   B   C   D   E   F     89ABCDEF
     // 9000:   00  00  00  00  00  00  00  00    ........
@@ -459,6 +461,9 @@ public static void main(String[] args) {
     // ===>
     // * MOHИTOP-1M *
     // ===>█
+
+    // сохраняем текст в картинку
+    scanner.draw(parse, new File("target/screen.txt").getAbsolutePath());
 }
 ```
 

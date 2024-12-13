@@ -10,13 +10,14 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 
 import static java.util.stream.Collectors.joining;
+import static spec.platforms.Platform.RESOURCES;
 
 public class PngScreenToText {
 
     private static final String LAT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String CYR = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЫЭЮЯ";
     private static final String NUMBERS = "1234567890";
-    private static final String SYMBOLS = "!\"#$%&'()-=+;:[]^*/?<,.>:\\";
+    private static final String SYMBOLS = "!\"#$%&'()-=+;:[]^*/?<,.>_\\@";
 
     private static final String LAT_SYNONYM = "ABCEHKMOPTX";
     private static final String CYR_SYNONYM = "АВСЕНКМОРТХ";
@@ -30,7 +31,7 @@ public class PngScreenToText {
     private int pxHeight;
 
     public PngScreenToText() {
-        process(new File("./src/main/resources/lik/docs/chars-map.png").getAbsolutePath(),
+        process(new File(RESOURCES + "/lik/docs/screen/chars-map.png").getAbsolutePath(),
             NUMBERS + "\n" + // цифры
             SYMBOLS + "\n" + // спецсимволы
             LAT + "\n" +     // латиница
@@ -140,19 +141,21 @@ public class PngScreenToText {
             if (ch == null) {
                 ch = UNKNOWN;
             }
-            if (newLine) {
+            if (newLine && result.length() > 0) {
                 result.append("\n");
             }
             result.append(ch);
         });
 
         String string = result.toString();
-        return Arrays.stream(string.split("\n"))
+        string = Arrays.stream(string.split("\n"))
                 // trim right only
                 .map(s -> s.replaceAll("\\s+$", ""))
-                .filter(s -> !s.isEmpty())
                 .map(s -> changeToCyr(s, 3))
                 .collect(joining("\n"));
+        // replace all last empty lines to ""
+        string = string.replaceAll("(\n\\s*)+$", "");
+        return string;
     }
 
     private String changeToCyr(String line, int maxDepth) {
@@ -213,7 +216,7 @@ public class PngScreenToText {
         return !Character.isLetter(ch) || Character.isWhitespace(ch);
     }
 
-    public void drawPng(String text, String outputPath) {
+    public void draw(String text, String outputPath) {
         String[] lines = text.split("\n");
 
         BufferedImage image = new BufferedImage(pxWidth, pxHeight, BufferedImage.TYPE_INT_ARGB);
@@ -274,10 +277,11 @@ public class PngScreenToText {
     public static void main(String[] args) {
         PngScreenToText scanner = new PngScreenToText();
 
+        // парсим картинку в текст
         String parse = scanner.parse("./src/test/resources/IntegrationTest/testLik/smoke/7_exit.png");
 
+        // печатаем на экран
         System.out.println(parse);
-        // prints
         //         0   1   2   3   4   5   6   7     01234567
         //         8   9   A   B   C   D   E   F     89ABCDEF
         // 9000:   00  00  00  00  00  00  00  00    ........
@@ -299,5 +303,10 @@ public class PngScreenToText {
         // ===>
         // * MOHИTOP-1M *
         // ===>█
+
+        // сохраняем текст в картинку
+        String path = new File("target/screen.png").getAbsolutePath();
+        scanner.draw(parse, path);
+        System.out.println("Saved to: " + path);
     }
 }

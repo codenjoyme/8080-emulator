@@ -22,8 +22,6 @@ public class IntegrationTest extends AbstractTest {
 
     public static final String KLAD = "klad";
 
-    private static final int K10 = 10_000;
-
     @Override
     @Before
     public void before() {
@@ -52,33 +50,34 @@ public class IntegrationTest extends AbstractTest {
                 .shoot("stop", it -> it.press(END).after(2 * K10))
                 .shoot("monitor", it -> it.press(ENTER).after(5 * K10))
                 .shoot("assembler", it -> it.enter("AC000").press(ENTER).after(20 * K10))
-                .shoot("exit", it -> it.down(ENTER).after(5 * K10).press(END).after(5 * K10).up(ENTER).after(15 * K10))
+                .shoot("assembler-exit", it -> it.down(ENTER).after(5 * K10).press(END).after(5 * K10).up(ENTER).after(15 * K10))
                 .shoot("memory", it -> it.enter("D9000").press(ENTER).after(30 * K10))
-                .shoot("exit", it -> it.press(ESC).after(5 * K10))
+                .shoot("memory-exit", it -> it.press(ESC).after(5 * K10))
                 .shoot("basic", it -> it.enter("B").press(ENTER).after(20 * K10))
-                .shoot("line1", it -> it.enter("10 CLS2").press(ENTER).after(10 * K10))
-                .shoot("line2", it -> it.enter("20 CLS1").press(ENTER).after(10 * K10))
-                .shoot("line3", it -> it.enter("30 GOTO10").press(ENTER).after(10 * K10))
-                .shoot("list", it -> it.enter("LIST").press(ENTER).after(10 * K10))
-                .shoot("run", it -> it.enter("RUN").press(ENTER).after(1 * K10))
+                .shoot("basic-line1", it -> it.enter("10 CLS2").press(ENTER).after(10 * K10))
+                .shoot("basic-line2", it -> it.enter("20 CLS1").press(ENTER).after(10 * K10))
+                .shoot("basic-line3", it -> it.enter("30 GOTO10").press(ENTER).after(10 * K10))
+                .shoot("basic-list", it -> it.enter("LIST").press(ENTER).after(10 * K10))
+                .shoot("basic-run", it -> it.enter("RUN").press(ENTER).after(1 * K10))
                 .stopCpu();
 
         cpu.PC(START_POINT);
         start();
 
         // then
-        assertScreenText("runcom");
-        assertScreenText("stop");
-        assertScreenText("monitor");
-        assertScreenText("assembler");
-        assertScreenText("exit");
-        assertScreenText("memory");
-        assertScreenText("basic");
-        assertScreenText("line1");
-        assertScreenText("line2");
-        assertScreenText("line3");
-        assertScreenText("list");
-        assertScreenText("run");
+        assertFromPng(pngPath("runcom"));
+        assertFromPng(pngPath("stop"));
+        assertFromPng(pngPath("monitor"));
+        assertFromPng(pngPath("assembler"));
+        assertFromPng(pngPath("assembler-exit"));
+        assertFromPng(pngPath("memory"));
+        assertFromPng(pngPath("memory-exit"));
+        assertFromPng(pngPath("basic"));
+        assertFromPng(pngPath("basic-line1"));
+        assertFromPng(pngPath("basic-line2"));
+        assertFromPng(pngPath("basic-line3"));
+        assertFromPng(pngPath("basic-list"));
+        assertFromPng(pngPath("basic-run"));
     }
 
     @Test

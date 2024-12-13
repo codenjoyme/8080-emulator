@@ -40,6 +40,8 @@ import static spec.stuff.TrackUpdatedMemory.TRACK_ONLY_UPDATED_VALUES;
 
 public abstract class AbstractTest {
 
+    public static final int K10 = 10_000;
+
     public static int START = 0x0000;
 
     public static final int TICKS = 10_000_000;
@@ -340,7 +342,7 @@ public abstract class AbstractTest {
                 new File(testBase() + "/" + image));
     }
 
-    private String pngPath(String name) {
+    public String pngPath(String name) {
         return Arrays.stream(Objects.requireNonNull(fileAssert.testDir().listFiles()))
                 .filter(it -> it.getName().contains(name))
                 .map(File::getAbsolutePath)
@@ -348,8 +350,7 @@ public abstract class AbstractTest {
                 .orElseThrow(() -> new RuntimeException("File not found: " + name));
     }
 
-    public String assertScreenText(String name) {
-        String sourceFile = pngPath(name);
+    public String assertFromPng(String sourceFile) {
         String destFile = new File(sourceFile).getName().replace(".png", ".txt");
         return fileAssert.check("Screen text", destFile,
                 file -> fileAssert.write(file, scanner.parse(sourceFile)));

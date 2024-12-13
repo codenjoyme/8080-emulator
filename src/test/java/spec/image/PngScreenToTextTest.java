@@ -1,81 +1,98 @@
 package spec.image;
 
 import org.junit.Test;
+import spec.math.Bites;
 import spec.stuff.AbstractTest;
 
-import static org.junit.Assert.assertEquals;
+import java.io.File;
+import java.util.stream.IntStream;
+
+import static spec.Constants.START_POINT;
+import static spec.KeyCode.END;
+import static spec.KeyCode.ENTER;
+import static spec.stuff.SmartAssert.assertEquals;
 
 public class PngScreenToTextTest extends AbstractTest {
 
     @Test
-    public void testPngScreenToText() {
-        assertScreen("/IntegrationTest/testLik/smoke/7_exit.png",
-                "        0   1   2   3   4   5   6   7     01234567\n" +
-                "        8   9   A   B   C   D   E   F     89ABCDEF\n" +
-                "9000:   00  00  00  00  00  00  00  00    ........\n" +
-                "9008:   00  00  00  00  00  00  00  00    ........\n" +
-                "9010:   00  00  00  00  00  00  00  00    ........\n" +
-                "9018:   00  00  00  00  00  00  00  38    .......8\n" +
-                "9020:   45  45  3D  05  09  70  00  00    EE=..П..\n" +
-                "9028:   00  38  45  45  3D  05  09  70    .8EE=..П\n" +
-                "9030:   00  00  00  38  45  45  3D  05    ...8EE=.\n" +
-                "9038:   09  70  00  00  00  38  45  45    .П...8EE\n" +
-                "9040:   3D  05  09  70  00  00  00  38    =..П...8\n" +
-                "9048:   45  45  3D  05  09  70  00  00    EE=..П..\n" +
-                "9050:   00  38  45  45  3D  05  09  70    .8EE=..П\n" +
-                "9058:   00  00  00  38  45  45  3D  05    ...8EE=.\n" +
-                "9060:   09  70  00  00  00  38  45  45    .П...8EE\n" +
-                "9068:   3D  05  09  70  00  00  00  38    =..П...8\n" +
-                "9070:   45  45  3D  05  09  70  00  00    EE=..П..\n" +
-                "9078:   00  38  45  45  3D  05  09  70    .8EE=..П\n" +
-                "===>\n" +
-                "* МОНИТОР-1M *\n" +
-                "===>█");
+    public void testAlphabetically() {
+        // given
+        lik().loadRom(base, roms);
+
+        memory.all().set(0x1000, Bites.of(
+                "31  32  33  34  35  36  37  38\n" +
+                "39  30  00  00  00  00  00  00\n" +
+                "41  42  43  44  45  46  47  48\n" +
+                "49  4A  4B  4C  4D  4E  4F  50\n" +
+                "51  52  53  54  55  56  57  58\n" +
+                "59  5A  00  00  00  00  00  00\n" +
+                "61  62  77  67  64  65  76  7A\n" +
+                "69  6A  6B  6C  6D  6E  6F  70\n" +
+                "72  73  74  75  66  68  63  7E\n" +
+                "78  79  7C  60  71  00  00  00\n" +
+                "21  22  23  24  25  26  27  28\n" +
+                "29  2D  3D  2B  3B  3A  5B  5D\n" +
+                "5E  2A  2F  3F  3C  2C  2E  3E\n" +
+                "5F  5C  40  00  00  00  00  00\n" +
+                "00  00  00  00  00  00  00  00\n" +
+                "00  00  00  00  00  00  00  00"));
+
+        // when then
+        assertParseDraw(showMemoryScreen("D1000", "memory"));
     }
 
     @Test
-    public void testTextToPngScreen() {
+    public void testAllChars() {
         // given
-        String text =
-                "        0   1   2   3   4   5   6   7     01234567\n" +
-                "        8   9   A   B   C   D   E   F     89ABCDEF\n" +
-                "9000:   FF  FF  FF  FF  FF  FF  FF  FF    QWERTYUI\n" +
-                "9008:   00  00  00  00  00  00  00  00    ASDFGHJK\n" +
-                "9010:   FF  FF  FF  FF  FF  FF  FF  FF    ZXCVBNM.\n" +
-                "9018:   00  00  00  00  00  00  00  00    ЙЦУКЕНГШ\n" +
-                "9020:   FF  FF  FF  FF  FF  FF  FF  FF    ЩЗХФЫВАП\n" +
-                "9028:   00  00  00  00  00  00  00  00    РОЛДЖЭЯЧ\n" +
-                "9030:   FF  FF  FF  FF  FF  FF  FF  FF    СМИТЬБЮ.\n" +
-                "9038:   00  00  00  00  00  00  00  00    12345678\n" +
-                "9040:   FF  FF  FF  FF  FF  FF  FF  FF    90!\"#$%\n" +
-                "9048:   00  00  00  00  00  00  00  00    ^&*()-=+\n" +
-                "9050:   FF  FF  FF  FF  FF  FF  FF  FF    []'\\/.,\n" +
-                "9058:   00  00  00  00  00  00  00  00    ><?:;...\n" +
-                "9060:   FF  FF  FF  FF  FF  FF  FF  FF    ЁЪ█ ....\n" +
-                "9068:   00  00  00  00  00  00  00  00    ........\n" +
-                "9070:   FF  FF  FF  FF  FF  FF  FF  FF    ........\n" +
-                "9078:   00  00  00  00  00  00  00  00    ........\n" +
-                "===>\n" +
-                "* МОНИТОР-1M *\n" +
-                "===>█";
+        lik().loadRom(base, roms);
 
-        // when
-        assertPng(text);
+        memory.all().set(0x1000, Bites.of(
+                IntStream.iterate(0, i -> i + 1)
+                        .limit(256)
+                        .toArray()));
 
-        // then
-        assertScreen(getTestResultFolder() + "/screen.png", text);
+        // when then
+        assertParseDraw(showMemoryScreen("D1000", "memory-page1"));
+
+        // when then
+        assertParseDraw(showMemoryScreen("D1080", "memory-page2"));
     }
 
-    private void assertPng(String text) {
-        fileAssert.check("Screenshot", testBase() + "/screen.png",
+    private void assertParseDraw(String name) {
+        String sourceFile = pngPath(name);
+
+        String text = assertFromPng(sourceFile);
+        String file = assertToPng(text, new File(sourceFile).getName().replace(".png", "_2.png"));
+        assertScreen(file, text);
+    }
+
+    private String showMemoryScreen(String command, String name) {
+        record.reset()
+                .shoot("runcom", it -> it.after(2 * K10))
+                .shoot("stop", it -> it.press(END).after(2 * K10))
+                .shoot("monitor", it -> it.press(ENTER).after(5 * K10))
+                .shoot(name, it -> it.enter(command).press(ENTER).after(30 * K10))
+                .stopCpu();
+
+        cpu.reset();
+        cpu.PC(START_POINT);
+        start();
+
+        return name;
+    }
+
+    private String assertToPng(String text, String name) {
+        String fileName = testBase() + "/" + name;
+        fileAssert.check("Screenshot", fileName,
                 file -> {
-                    scanner.drawPng(text, file.getAbsolutePath());
+                    scanner.draw(text, file.getAbsolutePath());
                     return null;
                 });
+        return fileName;
     }
 
     private void assertScreen(String file, String expected) {
-        String text = scanner.parse(TEST_RESOURCES + file);
+        String text = scanner.parse(file);
         assertEquals(expected, text);
     }
 }
