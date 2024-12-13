@@ -3,7 +3,6 @@ package spec;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import spec.image.PngScreenToText;
 import spec.math.Bites;
 import spec.mods.StopWhen;
 import spec.mods.WhenPC;
@@ -63,7 +62,7 @@ public class IntegrationTest extends AbstractTest {
                 .shoot("basic", it -> it.enter("B").press(ENTER).after(20 * K10))
                 .shoot("line1", it -> it.enter("10 CLS2").press(ENTER).after(10 * K10))
                 .shoot("line2", it -> it.enter("20 CLS1").press(ENTER).after(10 * K10))
-                .shoot("line2", it -> it.enter("30 GOTO10").press(ENTER).after(10 * K10))
+                .shoot("line3", it -> it.enter("30 GOTO10").press(ENTER).after(10 * K10))
                 .shoot("list", it -> it.enter("LIST").press(ENTER).after(10 * K10))
                 .shoot("run", it -> it.enter("RUN").press(ENTER).after(1 * K10))
                 .stopCpu();
@@ -72,163 +71,18 @@ public class IntegrationTest extends AbstractTest {
         start();
 
         // then
-        assertEquals(
-                "* RUN\"COM:\"",
-                scanner.parse(pngPath("runcom")));
-
-        assertEquals(
-                "* RUN\"COM:\"█",
-                scanner.parse(pngPath("stop")));
-
-        assertEquals(
-                "* RUN\"COM:\"\n" +
-                "* MOHИTOP-1M *\n" +
-                "===>█",
-        scanner.parse(pngPath("monitor")));
-
-        assertEquals(
-                "* MOHИTOP-1M *\n" +
-                "===>AC000\n" +
-                "C000  C3 03 C0  ...  JMP C003\n" +
-                "C003  31 FF 7F  1..  LXI SP,7FFF\n" +
-                "C006  3E 82     >.   MVI A,82\n" +
-                "C008  32 03 FF  2..  STA FF03\n" +
-                "C00B  C3 44 C4  .D.  JMP C444\n" +
-                "C00E  00        .    NOP\n" +
-                "C00F  00        .    NOP\n" +
-                "C00F  00        .    NOP\n" +
-                "C010  E5        .    PUSH H\n" +
-                "C011  C5        .    PUSH B\n" +
-                "C012  21 00 00  !..  LXI H,0000\n" +
-                "C015  39        9    DAD SP\n" +
-                "C016  22 F6 8F  \"..  SHLD 8FF6\n" +
-                "C019  31 00 C0  1..  LXI SP,C000\n" +
-                "C01C  2A FA 8F  *..  LHLD 8FFA\n" +
-                "C01F  01 00 03  ...  LXI B,0300\n" +
-                "C022  E5        .    PUSH H\n" +
-                "C023  E5        .    PUSH H\n" +
-                "C024  E5        .    PUSH H\n" +
-                "C025  E5        .    PUSH H\n" +
-                "C026  E5        .    PUSH H\n" +
-                "C027  E5        .    PUSH H",
-                scanner.parse(pngPath("assembler")));
-
-        assertEquals(
-                "C000  C3 03 C0  ...  JMP C003\n" +
-                "C003  31 FF 7F  1..  LXI SP,7FFF\n" +
-                "C006  3E 82     >.   MVI A,82\n" +
-                "C008  32 03 FF  2..  STA FF03\n" +
-                "C00B  C3 44 C4  .D.  JMP C444\n" +
-                "C00E  00        .    NOP\n" +
-                "C00F  00        .    NOP\n" +
-                "C010  E5        .    PUSH H\n" +
-                "C011  C5        .    PUSH B\n" +
-                "C012  21 00 00  !..  LXI H,0000\n" +
-                "C015  39        9    DAD SP\n" +
-                "C016  22 F6 8F  \"..  SHLD 8FF6\n" +
-                "C019  31 00 C0  1..  LXI SP,C000\n" +
-                "C01C  2A FA 8F  *..  LHLD 8FFA\n" +
-                "C01F  01 00 03  ...  LXI B,0300\n" +
-                "C022  E5        .    PUSH H\n" +
-                "C023  E5        .    PUSH H\n" +
-                "C024  E5        .    PUSH H\n" +
-                "C025  E5        .    PUSH H\n" +
-                "C026  E5        .    PUSH H\n" +
-                "C027  E5        .    PUSH H\n" +
-                "* MOHИTOP-1M *\n" +
-                "===>█",
-                scanner.parse(pngPath("exit")));
-
-        assertEquals(
-                "        0   1   2   3   4   5   6   7     01234567\n" +
-                "        8   9   A   B   C   D   E   F     89ABCDEF\n" +
-                "9000:   00  00  00  00  00  00  00  00    ........\n" +
-                "9008:   00  00  00  00  00  00  00  00    ........\n" +
-                "9010:   00  00  00  00  00  00  00  00    ........\n" +
-                "9018:   00  00  00  00  00  00  00  38    .......8\n" +
-                "9020:   45  45  3D  05  09  70  00  00    EE=..П..\n" +
-                "9028:   00  38  45  45  3D  05  09  70    .8EE=..П\n" +
-                "9030:   00  00  00  38  45  45  3D  05    ...8EE=.\n" +
-                "9038:   09  70  00  00  00  38  45  45    .П...8EE\n" +
-                "9040:   3D  05  09  70  00  00  00  38    =..П...8\n" +
-                "9048:   45  45  3D  05  09  70  00  00    EE=..П..\n" +
-                "9050:   00  38  45  45  3D  05  09  70    .8EE=..П\n" +
-                "9058:   00  00  00  38  45  45  3D  05    ...8EE=.\n" +
-                "9060:   09  70  00  00  00  38  45  45    .П...8EE\n" +
-                "9068:   3D  05  09  70  00  00  00  38    =..П...8\n" +
-                "9070:   45  45  3D  05  09  70  00  00    EE=..П..\n" +
-                "9078:   00  38  45  45  3D  05  09  70    .8EE=..П\n" +
-                "===>█",
-                scanner.parse(pngPath("memory")));
-
-        assertEquals(
-                "* BASIC ЛИK V2 *\n" +
-                "OK\n" +
-                "█",
-                scanner.parse(pngPath("basic")));
-
-        assertEquals(
-                "* BASIC ЛИK V2 *\n" +
-                "OK\n" +
-                "10 CLS2\n" +
-                "█",
-                scanner.parse(pngPath("line1")));
-
-        assertEquals(
-                "* BASIC ЛИK V2 *\n" +
-                "OK\n" +
-                "10 CLS2\n" +
-                "20 CLS1\n" +
-                "█",
-                scanner.parse(pngPath("line2")));
-
-        assertEquals(
-                "* BASIC ЛИK V2 *\n" +
-                "OK\n" +
-                "10 CLS2\n" +
-                "20 CLS1\n" +
-                "30 GOTO10\n" +
-                "LIST\n" +
-                "10 CLS2\n" +
-                "20 CLS1\n" +
-                "30 GOTO10\n" +
-                "OK\n" +
-                "█",
-                scanner.parse(pngPath("list")));
-
-        assertEquals(
-                "* BASIC ЛИK V2 *\n" +
-                "OK\n" +
-                "10 CLS2\n" +
-                "20 CLS1\n" +
-                "30 GOTO10\n" +
-                "LIST\n" +
-                "10 CLS2\n" +
-                "20 CLS1\n" +
-                "30 GOTO10\n" +
-                "OK\n" +
-                "RUN           ¤¤\n" +
-                "              ¤\n" +
-                "              ¤\n" +
-                "              ¤\n" +
-                "              ¤\n" +
-                "              ¤\n" +
-                "              ¤\n" +
-                "              ¤\n" +
-                "              ¤\n" +
-                "              ¤\n" +
-                "              ¤\n" +
-                "              ¤\n" +
-                "              ¤",
-                scanner.parse(pngPath("run")));
-    }
-
-    private String pngPath(String name) {
-        return Arrays.stream(Objects.requireNonNull(fileAssert.testDir().listFiles()))
-                .filter(it -> it.getName().contains(name))
-                .map(File::getAbsolutePath)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("File not found: " + name));
+        assertScreenText("runcom");
+        assertScreenText("stop");
+        assertScreenText("monitor");
+        assertScreenText("assembler");
+        assertScreenText("exit");
+        assertScreenText("memory");
+        assertScreenText("basic");
+        assertScreenText("line1");
+        assertScreenText("line2");
+        assertScreenText("line3");
+        assertScreenText("list");
+        assertScreenText("run");
     }
 
     @Test
