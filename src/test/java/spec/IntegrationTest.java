@@ -10,17 +10,13 @@ import spec.mods.WhereIsData;
 import spec.platforms.Lik;
 import spec.stuff.AbstractTest;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
 import static spec.platforms.Lik.FINISH_ROM6;
 import static spec.platforms.Lik.START_BASIC_LIK_V2;
-import static spec.stuff.SmartAssert.assertEquals;
 
 public class IntegrationTest extends AbstractTest {
 

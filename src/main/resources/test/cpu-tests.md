@@ -87,7 +87,7 @@
 - Скаченный браузером файл с расширением `*.mem` копируем в соответствующую 
   тесту папку [`src/main/resources/test/test`](../../../../src/main/resources/test/test).
 
-Алгоритм компиляции на локальном компиляторе:
+Алгоритм компиляции на локальном компиляторе: <a name="compile-asm"></a> 
 ```java
     public static void main(String[] args) throws IOException {
         Assembler assembler = new Assembler();
