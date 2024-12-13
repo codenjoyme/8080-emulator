@@ -47,6 +47,7 @@ public class PngScreenToText {
             String mask = masks.get(x + y * width);
             if (!map.containsKey(mask)) {
                 map.put(mask, ch);
+                map.put(invert(mask), ch);
             }
             x++;
         }
@@ -66,6 +67,12 @@ public class PngScreenToText {
         });
 
         return result;
+    }
+
+    private String invert(String mask) {
+        return mask.replace("█", "_")
+                .replace(".", "█")
+                .replace("_", ".");
     }
 
     private void process(BufferedImage image, BiConsumer<String, Boolean> set) {
@@ -114,7 +121,7 @@ public class PngScreenToText {
             }
             last.set(ch);
             if (ch == null) {
-                ch = '?';
+                ch = '¤';
             }
             if (newLine) {
                 result.append("\n");
@@ -124,7 +131,8 @@ public class PngScreenToText {
 
         String string = result.toString();
         return Arrays.stream(string.split("\n"))
-                .map(s -> s.trim())
+                // trim right only
+                .map(s -> s.replaceAll("\\s+$", ""))
                 .filter(s -> !s.isEmpty())
                 .collect(Collectors.joining("\n"));
     }
