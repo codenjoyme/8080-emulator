@@ -80,13 +80,13 @@ public class IOPorts implements StateProvider {
                     if (Ain) {
                         // если порт B - на вывод
                         if (!Bin) {
-                            // по битам порта B от 2 до 7
-                            for (int i = 0; i < 6; i++) {
-                                // по битам порта A от 0 до 7
-                                for (int j = 0; j < 8; j++) {
+                            // по битам порта A от 0 до 7
+                            for (int i = 0; i < 8; i++) {
+                                // по битам порта B от 0 до 7
+                                for (int j = 0; j < 6; j++) {
                                     // если такая нажата  и  такой бит порта B = 0, ставим бит A = 0
-                                    if (keyboard.keyStatus(j, i) && (B() & msk.get(i + 2)) == 0) {
-                                        result &= bit.get(j);
+                                    if (keyboard.keyStatus(i, j) && (B() & msk.get(j + 2)) == 0) {
+                                        result &= bit.get(i);
                                     }
                                 }
                             }
@@ -156,13 +156,13 @@ public class IOPorts implements StateProvider {
                     if (C0in) {
                         // если порт B - на вывод
                         if (!Bin) {
-                            // по битам порта B от 2 до 7
-                            for (int i = 0; i < 6; i++) {
-                                // по битам порта CLow от 0 до 3
-                                for (int j = 0; j < 4; j++) {
+                            // по битам порта CLow от 0 до 3
+                            for (int i = 0; i < 4; i++) {
+                                // по битам порта B от 2 до 7
+                                for (int j = 0; j < 6; j++) {
                                     // если такая нажата  и  такой бит порта В = 0, ставим бит C = 0
-                                    if (keyboard.keyStatus(j + 8, i) && !isSet(B(), msk.get(i + 2))) {
-                                        result = result & bit.get(j);
+                                    if (keyboard.keyStatus(i + 8, j) && (B() & msk.get(j + 2)) == 0) {
+                                        result &= bit.get(i);
                                     }
                                 }
                             }
