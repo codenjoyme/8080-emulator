@@ -1,5 +1,6 @@
 package spec;
 
+import org.apache.commons.lang3.tuple.Pair;
 import spec.math.Bites;
 
 import java.util.HashMap;
@@ -22,19 +23,22 @@ public class Keyboard implements StateProvider {
     // 12 x 6 + Shift + Reset
     private boolean[][] keyStatus = new boolean[12][6];
 
-    private Map<Integer, Integer> keys;
+    private Map<Integer, Pair<Integer, Boolean>> keys;
 
     // зажата ли клавиша
     private boolean shift;
     private boolean alt;
     private boolean ctrl;
 
+    // захата ли клавиша на эмулируемой клавиатуре
+    private boolean shiftEmu;
+
     public Keyboard(BiConsumer<Key, Integer> keyLogger) {
         this.keys = new HashMap<>();
         this.keyLogger = keyLogger;
     }
 
-    public Integer key(int code) {
+    public Pair<Integer, Boolean> key(int code) {
         return keys.get(code);
     }
 
@@ -51,46 +55,54 @@ public class Keyboard implements StateProvider {
     }
 
     public void putNorm(int code, int pt) {
-        keys.put(code, pt);
+        keys.put(code, noMods(pt));
+    }
+
+    private Pair<Integer, Boolean> withShift(int pt) {
+        return Pair.of(pt, true);
+    }
+
+    private Pair<Integer, Boolean> noMods(int pt) {
+        return Pair.of(pt, false);
     }
 
     public void putNorm(char code, int pt) {
-        keys.put((int) code, pt);
+        keys.put((int) code, noMods(pt));
     }
 
     public void putShft(char code, int pt) {
-        keys.put((int) code | SHIFT_MASK, pt);
+        keys.put((int) code | SHIFT_MASK, withShift(pt));
     }
 
     public void putAlt_(char code, int pt) {
-        keys.put((int) code | ALT_MASK, pt);
+        keys.put((int) code | ALT_MASK, noMods(pt));
     }
 
     // Этот воркераунд метод используется, когда чтобы достать до символа надо его вместе
     // с шифтом зажать на клавиатуре внутри виртуальной машины, но мы жмем эту клавишу
     // на хостовой машине без шифта TODO подумать может можно поправить как-то
     public void putAltS(char code, int pt) {
-        keys.put((int) code | ALT_MASK | SHIFT_MASK, pt);
+        keys.put((int) code | ALT_MASK | SHIFT_MASK, withShift(pt));
     }
 
     public void putCtrlS(char code, int pt) {
-        keys.put((int) code | CTRL_MASK | SHIFT_MASK, pt);
+        keys.put((int) code | CTRL_MASK | SHIFT_MASK, withShift(pt));
     }
 
     public void putCtrl(char code, int pt) {
-        keys.put((int) code | CTRL_MASK, pt);
+        keys.put((int) code | CTRL_MASK, noMods(pt));
     }
 
     public void putCyCt(char code, int pt) {
-        keys.put((int) code | CYRILLIC_MASK | CTRL_MASK, pt);
+        keys.put((int) code | CYRILLIC_MASK | CTRL_MASK, noMods(pt));
     }
 
     public void putCyrl(char code, int pt) {
-        keys.put((int) code | CYRILLIC_MASK, pt);
+        keys.put((int) code | CYRILLIC_MASK, noMods(pt));
     }
 
     public void putCySh(char code, int pt) {
-        keys.put((int) code | CYRILLIC_MASK | SHIFT_MASK, pt);
+        keys.put((int) code | CYRILLIC_MASK | SHIFT_MASK, withShift(pt));
     }
 
     @Override
@@ -144,9 +156,17 @@ public class Keyboard implements StateProvider {
     }
 
     private void pressKey(Key key) {
-        Integer point = key(key.joint());
-        if (point == null) {
+        Pair<Integer, Boolean> value = key(key.joint());
+        if (value == null) {
             return;
+        }
+        int point = value.getLeft();
+        if (key.pressed()) {
+            shiftEmu = value.getRight();
+        } else {
+            if (value.getRight()) {
+                shiftEmu = false;
+            }
         }
 
         int x = (point & 0xF0) >> 4;
@@ -252,7 +272,6 @@ public class Keyboard implements StateProvider {
     public boolean shift() {
         return shift;
     }
-
 
     private void shift(int bite) {
         shift = isSet(bite, b1000_0000);

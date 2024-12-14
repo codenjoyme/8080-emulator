@@ -2,6 +2,7 @@ package spec;
 
 public class Constants {
 
+    public static final int b0000_0000 = 0b0000_0000;
     public static final int b0000_0001 = 0b0000_0001;
     public static final int b0000_0010 = 0b0000_0010;
     public static final int b0000_0100 = 0b0000_0100;
