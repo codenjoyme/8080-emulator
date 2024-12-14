@@ -61,6 +61,7 @@ public abstract class AbstractTest {
     protected FileRecorder fileRecorder;
     protected CpuDebug debug;
     protected KeyLogger keyLogger;
+    protected Keyboard keyboard;
     protected IOPorts ports;
     protected GraphicControl graphic;
     protected Timings timings;
@@ -125,6 +126,8 @@ public abstract class AbstractTest {
                 // делаем все по быстрому
             }
         };
+
+        keyboard = hard.keyboard();
 
         fileRecorder = hard.fileRecorder();
         fileRecorder.stopWriting();

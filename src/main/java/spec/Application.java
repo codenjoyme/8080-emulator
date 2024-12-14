@@ -41,13 +41,13 @@ public class Application {
     public void lostFocus() {
         Logger.debug("Lost focus");
         hard.graphic().printIO(BORDER_PORT, 0x50);
-        hard.ports().resetKeyboard();
+        hard.keyboard().reset();
     }
 
     public void gotFocus() {
         Logger.debug("Got focus");
         hard.graphic().printIO(BORDER_PORT, 0x30);
-        hard.ports().resetKeyboard();
+        hard.keyboard().reset();
     }
 
     public void handleKey(Key key) {
@@ -166,7 +166,7 @@ public class Application {
             return;
         }
 
-        hard.ports().processKey(key);
+        hard.keyboard().processKey(key);
     }
 
     public static String toRelative(URL base, File file) {

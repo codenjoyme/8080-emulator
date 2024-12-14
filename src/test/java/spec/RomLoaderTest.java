@@ -97,7 +97,8 @@ public class RomLoaderTest extends AbstractTest {
         cpu.interrupt = 0x1216;
 
         ports.reset();
-        ports.state(new Bites(new int[]{
+
+        keyboard.state(Bites.of(
                 0b1010_0101,
                 0b1100_0011,
                 0b1001_0110,
@@ -110,8 +111,12 @@ public class RomLoaderTest extends AbstractTest {
                 0b1011_1101,
                 0b0110_1001,
                 0b0101_1010,
-                0b1010_0101 // flags
-        }));
+                0b1010_0000 // flags
+        ));
+
+        ports.state(Bites.of(
+                0b0000_0101 // ports
+        ));
 
         graphic.nextDrawMode();
         graphic.nextDrawMode();

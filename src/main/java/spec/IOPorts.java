@@ -2,24 +2,17 @@ package spec;
 
 import spec.math.Bites;
 
-import java.util.function.BiConsumer;
-
 import static spec.Constants.*;
-import static spec.KeyCode.*;
+import static spec.math.WordMath.*;
 
 public class IOPorts implements StateProvider {
 
-    public static final int SNAPSHOT_IO_PORTS_SIZE = 13;
+    public static final int SNAPSHOT_IO_PORTS_SIZE = 1;
 
     private boolean Ain;   // порт A на ввод
     private boolean Bin;   // порт B на ввод
     private boolean C0in;  // порт C0 на ввод
     private boolean C1in;  // порт C1 на ввод
-
-    // зажата ли клавиша
-    private boolean shift;
-    private boolean alt;
-    private boolean ctrl;
 
     public static final int PortA = 0xFFE0; // Порт А ППА
     public static final int PortB = 0xFFE1; // Порт В ППА
@@ -35,42 +28,13 @@ public class IOPorts implements StateProvider {
     // биты установки
     private final Bites msk = Bites.of(b0000_0001, b0000_0010, b0000_0100, b0000_1000, b0001_0000, b0010_0000, b0100_0000, b1000_0000);
 
-    // массив матрицы клавиш "Специалиста" (true - нажата, false - отпущена)
-    // 12 x 6 + Shift + Reset
-    private boolean[][] keyStatus = new boolean[12][6];
-
     private Memory memory;
     private Keyboard keyboard;
-    private BiConsumer<Key, Integer> keyLogger;
 
-    public IOPorts(Memory memory, Layout layout, BiConsumer<Key, Integer> keyLogger) {
+    public IOPorts(Memory memory, Keyboard keyboard) {
         this.memory = memory;
-        this.keyLogger = keyLogger;
-        keyboard = new Keyboard();
-        layout.setup(keyboard);
+        this.keyboard = keyboard;
         reset();
-    }
-
-    public void bitesState(int bite) {
-        // 0b__shift_alt_ctrl_A__C1_0_B_C0
-        Ain(bite);
-        Bin(bite);
-        C0in(bite);
-        C1in(bite);
-        shift(bite);
-        alt(bite);
-        ctrl(bite);
-    }
-
-    public int bitesState() {
-        // 0b__shift_alt_ctrl_A__C1_0_B_C0
-        return (Ain ? b0001_0000 : 0)
-                | (Bin ? b0000_0010 : 0)
-                | (C0in ? b0000_0001 : 0)
-                | (C1in ? b0000_1000 : 0)
-                | (shift ? b1000_0000 : 0)
-                | (alt ? b0100_0000 : 0)
-                | (ctrl ? b0010_0000 : 0);
     }
 
     @Override
@@ -82,28 +46,23 @@ public class IOPorts implements StateProvider {
     public void state(Bites bites) {
         validateState("I/O ports", bites);
 
-        int lastIndex = bites.size() - 1;
-        for (int i = 0; i < lastIndex; i++) {
-            for (int j = 0; j < 6; j++) {
-                keyStatus[i][j] = isSet(bites.get(i), b0000_0001 << j);
-            }
-        }
-        bitesState(bites.get(lastIndex));
+        int bite = bites.get(0);
+
+        // 0b__0_0_0_A__C1_0_B_C0
+        Ain(bite);
+        Bin(bite);
+        C0in(bite);
+        C1in(bite);
     }
 
     @Override
     public Bites state() {
-        Bites bites = new Bites(stateSize());
-        int lastIndex = bites.size() - 1;
-        for (int i = 0; i < lastIndex; i++) {
-            int bite = 0;
-            for (int j = 0; j < 6; j++) {
-                bite |= keyStatus[i][j] ? (b0000_0001 << j) : 0;
-            }
-            bites.set(i, bite);
-        }
-        bites.set(lastIndex, bitesState());
-        return bites;
+        // 0b__0_0_0_A__C1_0_B_C0
+        return Bites.of(
+                (Ain ? b0001_0000 : 0)
+                | (Bin ? b0000_0010 : 0)
+                | (C0in ? b0000_0001 : 0)
+                | (C1in ? b0000_1000 : 0));
     }
 
     // ввод из порта памяти КР580ВВ55
@@ -126,7 +85,7 @@ public class IOPorts implements StateProvider {
                                 // по битам порта A от 0 до 7
                                 for (int j = 0; j < 8; j++) {
                                     // если такая нажата  и  такой бит порта B = 0, ставим бит A = 0
-                                    if (keyStatus[j][i] && (B() & msk.get(i + 2)) == 0) {
+                                    if (keyboard.keyStatus(j, i) && (B() & msk.get(i + 2)) == 0) {
                                         result &= bit.get(j);
                                     }
                                 }
@@ -151,7 +110,7 @@ public class IOPorts implements StateProvider {
                                 // по битам порта В от 2 до 7
                                 for (int j = 0; j < 6; j++) {
                                     // если такая нажата  и  такой бит порта A = 0, ставим бит В = 0
-                                    if (keyStatus[i][j] && (A() & msk.get(i)) == 0) {
+                                    if (keyboard.keyStatus(i, j) && (A() & msk.get(i)) == 0) {
                                         result &= bit.get(j + 2);
                                     }
                                 }
@@ -165,7 +124,7 @@ public class IOPorts implements StateProvider {
                                 // по битам порта В от 2 до 7
                                 for (int j = 0; j < 6; j++) {
                                     // если такая нажата  и  такой бит порта C = 0, ставим бит В = 0
-                                    if (keyStatus[i + 8][j] && (C() & msk.get(i)) == 0) {
+                                    if (keyboard.keyStatus(i + 8, j) && (C() & msk.get(i)) == 0) {
                                         result &= bit.get(j + 2);
                                     }
                                 }
@@ -178,7 +137,7 @@ public class IOPorts implements StateProvider {
                         // КАКОЙ_ТО КОНФЛИКТ СО <CapsLock> - он работает наоборот
                         // <CpsLk> = Р/Л ЭТО ДАЁТ СБОЙ ЗДЕСЬ Т.К. ВЛИЯЕТ НА КОД КЛАВИШИ!!!
                         // в Мониторе "Shift" не влияет на клавишу. Влияет РУС/ЛАТ (НР.ФИКС) !!!
-                        if (shift) {
+                        if (keyboard.shift()) {
                             result &= 0b1111_1101; // выставим состояние Shift: B1 = 0
                         } else {
                             result |= b0000_0010; // выставим состояние Shift: B1 = 1
@@ -202,7 +161,7 @@ public class IOPorts implements StateProvider {
                                 // по битам порта CLow от 0 до 3
                                 for (int j = 0; j < 4; j++) {
                                     // если такая нажата  и  такой бит порта В = 0, ставим бит C = 0
-                                    if (keyStatus[j + 8][i] && !isSet(B(), msk.get(i + 2))) {
+                                    if (keyboard.keyStatus(j + 8, i) && !isSet(B(), msk.get(i + 2))) {
                                         result = result & bit.get(j);
                                     }
                                 }
@@ -313,9 +272,6 @@ public class IOPorts implements StateProvider {
         R(bite);
     }
 
-    private boolean isSet(int bite, int mask) {
-        return (bite & mask) != 0;
-    }
 
     private void Ain(int bite) {
         Ain = isSet(bite, b0001_0000);
@@ -331,18 +287,6 @@ public class IOPorts implements StateProvider {
 
     private void C0in(int bite) {
         C0in = isSet(bite, b0000_0001);
-    }
-
-    private void shift(int bite) {
-        shift = isSet(bite, b1000_0000);
-    }
-
-    private void alt(int bite) {
-        alt = isSet(bite, b0100_0000);
-    }
-
-    private void ctrl(int bite) {
-        ctrl = isSet(bite, b0010_0000);
     }
 
     public int A() {
@@ -391,93 +335,11 @@ public class IOPorts implements StateProvider {
                 | 0b1111_1111_1110_0000;
     }
 
-    // переменные-заготовки для полу-рядов матрицы клавиатуры .
-    // значение в них устанавливается при нажатии-отпускании клавиши.
-    // в порт клавиатуры - xxfeh они записываются во время его опроса
-    // согласно "0", выбирающему конкретный полуряд: public int inb( int port )
-
-    public synchronized void resetKeyboard() {
-        for (int i = 0; i < 12; i++) {  // все кнопки не нажаты
-            for (int j = 0; j < 6; j++) {
-                keyStatus[i][j] = false;
-            }
-        }
-    }
-
-    public synchronized void processKey(Key key) {
-        if (!key.system()) {
-            if (key.pressed()) {
-                // если кнопка нажата, то мы изменяем оригинальную с учетом модификатора
-                // и кликаем кнопку (возможно уже иную) на виртуальной машине
-                pressKey(key);
-            } else {
-                // если кнопка отпущена, то нам надо отжать потенциально сразу все
-                // возможные зажатые кнопки (с модификаторами или без)
-                for (Key key2 : key.allKeysWithMods()) {
-                    pressKey(key2);
-                }
-            }
-        }
-
-        if (key.pause()) {
-            logKey(key, 0xFF);
-            return;
-        }
-
-        if (key.code() == SHIFT && shift != key.pressed()) {
-            shift = key.pressed();
-            logKey(key, 0xFA);
-            return;
-        }
-
-
-        if (key.code() == CTRL && ctrl != key.pressed()) {
-            ctrl = key.pressed();
-            logKey(key, 0xFB);
-            return;
-        }
-
-        if (key.code() == ALT && alt != key.pressed()) {
-            alt = key.pressed();
-            logKey(key, 0xFC);
-            return;
-        }
-    }
-
-    private void logKey(Key key, int point) {
-        if (keyLogger == null) return;
-
-        keyLogger.accept(key, point);
-    }
-
-    private void pressKey(Key key) {
-        Integer point = keyboard.key(key.joint());
-        if (point == null) {
-            return;
-        }
-
-        int x = (point & 0xF0) >> 4;
-        int y = point & 0x0F;
-        if (keyStatus[x][y] == key.pressed()) {
-            return;
-        }
-
-        logKey(key, point);
-        keyStatus[x][y] = key.pressed();
-    }
-
     public synchronized void reset() {
-        shift = false;
-        alt = false;
-        ctrl = false;
-
         Ain = true;
         Bin = true;
         C0in = true;
         C1in = true;
-
-        // все кнопки не нажаты
-        resetKeyboard();
 
         // порт RYC[0xFFE3] = 9Bh (все на ввод)
         memory.write16(RgRYS, 0x009B);
@@ -493,42 +355,11 @@ public class IOPorts implements StateProvider {
                 "C0in  : %s\n" +
                 "C1in  : %s\n" +
                 "\n" +
-                "shift : %s\n" +
-                "alt   : %s\n" +
-                "ctrl  : %s\n" +
-                "\n" +
-                "keyStatus:\n" +
                 "%s",
                 bitToString(Ain),
                 bitToString(Bin),
                 bitToString(C0in),
                 bitToString(C1in),
-                bitToString(shift),
-                bitToString(alt),
-                bitToString(ctrl),
-                toString(keyStatus));
-    }
-
-    private String bitToString(boolean bit) {
-        return bit ? "-" : "+";
-    }
-
-    private String toString(boolean[][] keyStatus) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("       | | | | | | | | | | |1|1|\n")
-          .append("       |0|1|2|3|4|5|6|7|8|9|0|1|\n");
-
-        for (int i = 0; i < keyStatus[0].length; i++) {
-            sb.append("    |").append(i).append("|");
-            for (int j = 0; j < keyStatus.length; j++) {
-                if (keyStatus[j][i]) {
-                    sb.append(" +");
-                } else {
-                    sb.append(" -");
-                }
-            }
-            sb.append("\n");
-        }
-        return sb.toString();
+                keyboard.toString());
     }
 }

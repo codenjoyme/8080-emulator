@@ -332,16 +332,18 @@ cache: MemoryCache: removed entry http://localhost:8080/spec.jnlp
      - 4 bytes for int     - `interrupt`
      - 4 bytes for int     - `tick`
      - 4 bytes for int     - `tact` 
-   * I/O ports state: 
-     - 12*6 bytes          - keyboard state 12 x 6 for all keys - is key pressed 
-     - 1 byte              - flags `0b__shift_alt_ctrl_A__C1_0_B_C0` 
-       + Ain               - `0b_000x_0000` 
-       + Bin               - `0b_0000_00x0` 
-       + C0in              - `0b_0000_000x` 
-       + C1in              - `0b_0000_x000` 
-       + shift             - `0b_x000_0000` is shift key pressed 
-       + alt               - `0b_0x00_0000` is alt key pressed 
-       + ctrl              - `0b_00x0_0000` is ctrl key pressed 
+   * Keyboard state:
+     - 12*6 bytes          - keyboard state 12 x 6 for all keys - is key pressed
+     - 1 byte              - flags `0b__shift_alt_ctrl_0__0_0_0_0`
+       + shift             - `0b_x000_0000` is shift key pressed
+       + alt               - `0b_0x00_0000` is alt key pressed
+       + ctrl              - `0b_00x0_0000` is ctrl key pressed
+   * I/O ports state:
+     - 1 byte              - flags `0b__0_0_0_A__C1_0_B_C0`
+       + Ain               - `0b_000x_0000`
+       + Bin               - `0b_0000_00x0`
+       + C0in              - `0b_0000_000x`
+       + C1in              - `0b_0000_x000`
    * GraphicControl state: 
      - 1 byte for int      - `ioDrawMode` 
    * Timings state: 

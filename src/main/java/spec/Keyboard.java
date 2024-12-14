@@ -1,16 +1,37 @@
 package spec;
 
+import spec.math.Bites;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
+import static spec.Constants.*;
 import static spec.Key.*;
+import static spec.KeyCode.*;
+import static spec.math.WordMath.bitToString;
+import static spec.math.WordMath.isSet;
 
-public class Keyboard {
+public class Keyboard implements StateProvider {
+
+    public static final int SNAPSHOT_KEYBOARD_SIZE = 13;
+
+    private BiConsumer<Key, Integer> keyLogger;
+
+    // массив матрицы клавиш "Специалиста" (true - нажата, false - отпущена)
+    // 12 x 6 + Shift + Reset
+    private boolean[][] keyStatus = new boolean[12][6];
 
     private Map<Integer, Integer> keys;
 
-    public Keyboard() {
+    // зажата ли клавиша
+    private boolean shift;
+    private boolean alt;
+    private boolean ctrl;
+
+    public Keyboard(BiConsumer<Key, Integer> keyLogger) {
         this.keys = new HashMap<>();
+        this.keyLogger = keyLogger;
     }
 
     public Integer key(int code) {
@@ -71,6 +92,185 @@ public class Keyboard {
     public void putCySh(char code, int pt) {
         keys.put((int) code | CYRILLIC_MASK | SHIFT_MASK, pt);
     }
+
+    @Override
+    public int stateSize() {
+        return SNAPSHOT_KEYBOARD_SIZE;
+    }
+
+    @Override
+    public void state(Bites bites) {
+        validateState("Keyboard", bites);
+
+        int lastIndex = bites.size() - 1;
+        for (int i = 0; i < lastIndex; i++) {
+            for (int j = 0; j < 6; j++) {
+                keyStatus[i][j] = isSet(bites.get(i), b0000_0001 << j);
+            }
+        }
+        bitesState(bites.get(lastIndex));
+    }
+
+    @Override
+    public Bites state() {
+        Bites bites = new Bites(stateSize());
+        int lastIndex = bites.size() - 1;
+        for (int i = 0; i < lastIndex; i++) {
+            int bite = 0;
+            for (int j = 0; j < 6; j++) {
+                bite |= keyStatus[i][j] ? (b0000_0001 << j) : 0;
+            }
+            bites.set(i, bite);
+        }
+        bites.set(lastIndex, bitesState());
+        return bites;
+    }
+
+    // переменные-заготовки для полу-рядов матрицы клавиатуры .
+    // значение в них устанавливается при нажатии-отпускании клавиши.
+    // в порт клавиатуры - xxfeh они записываются во время его опроса
+    // согласно "0", выбирающему конкретный полуряд: public int inb( int port )
+
+    public synchronized void reset() {
+        shift = false;
+        alt = false;
+        ctrl = false;
+
+        for (int i = 0; i < 12; i++) {  // все кнопки не нажаты
+            for (int j = 0; j < 6; j++) {
+                keyStatus[i][j] = false;
+            }
+        }
+    }
+
+    private void pressKey(Key key) {
+        Integer point = key(key.joint());
+        if (point == null) {
+            return;
+        }
+
+        int x = (point & 0xF0) >> 4;
+        int y = point & 0x0F;
+        if (keyStatus[x][y] == key.pressed()) {
+            return;
+        }
+
+        logKey(key, point);
+        keyStatus[x][y] = key.pressed();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("       | | | | | | | | | | |1|1|\n")
+                .append("       |0|1|2|3|4|5|6|7|8|9|0|1|\n");
+
+        for (int i = 0; i < keyStatus[0].length; i++) {
+            sb.append("    |").append(i).append("|");
+            for (int j = 0; j < keyStatus.length; j++) {
+                if (keyStatus[j][i]) {
+                    sb.append(" +");
+                } else {
+                    sb.append(" -");
+                }
+            }
+            sb.append("\n");
+        }
+
+        return String.format(
+                "shift : %s\n" +
+                "alt   : %s\n" +
+                "ctrl  : %s\n" +
+                "\n" +
+                "keyStatus:\n" +
+                "%s",
+                bitToString(shift),
+                bitToString(alt),
+                bitToString(ctrl),
+                sb);
+    }
+
+    public synchronized void processKey(Key key) {
+        if (!key.system()) {
+            if (key.pressed()) {
+                // если кнопка нажата, то мы изменяем оригинальную с учетом модификатора
+                // и кликаем кнопку (возможно уже иную) на виртуальной машине
+                pressKey(key);
+            } else {
+                // если кнопка отпущена, то нам надо отжать потенциально сразу все
+                // возможные зажатые кнопки (с модификаторами или без)
+                for (Key key2 : key.allKeysWithMods()) {
+                    pressKey(key2);
+                }
+            }
+        }
+
+        if (key.pause()) {
+            logKey(key, 0xFF);
+            return;
+        }
+
+        if (key.code() == SHIFT && shift != key.pressed()) {
+            shift = key.pressed();
+            logKey(key, 0xFA);
+            return;
+        }
+
+
+        if (key.code() == CTRL && ctrl != key.pressed()) {
+            ctrl = key.pressed();
+            logKey(key, 0xFB);
+            return;
+        }
+
+        if (key.code() == ALT && alt != key.pressed()) {
+            alt = key.pressed();
+            logKey(key, 0xFC);
+            return;
+        }
+    }
+
+    private void logKey(Key key, int point) {
+        if (keyLogger == null) return;
+
+        keyLogger.accept(key, point);
+    }
+
+    public void bitesState(int bite) {
+        // 0b__shift_alt_ctrl_0__0_0_0_0
+        shift(bite);
+        alt(bite);
+        ctrl(bite);
+    }
+
+    public int bitesState() {
+        // 0b__shift_alt_ctrl_0__0_0_0_0
+        return (shift ? b1000_0000 : 0)
+                | (alt ? b0100_0000 : 0)
+                | (ctrl ? b0010_0000 : 0);
+    }
+
+    public boolean keyStatus(int j, int i) {
+        return keyStatus[j][i];
+    }
+
+    public boolean shift() {
+        return shift;
+    }
+
+
+    private void shift(int bite) {
+        shift = isSet(bite, b1000_0000);
+    }
+
+    private void alt(int bite) {
+        alt = isSet(bite, b0100_0000);
+    }
+
+    private void ctrl(int bite) {
+        ctrl = isSet(bite, b0010_0000);
+    }
+
 
     /**
      * Матрица клавиш 12х6. True = замкнуто, False = разомкнуто

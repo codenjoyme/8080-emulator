@@ -16,15 +16,17 @@ public class RomLoader {
 
     private Cpu cpu;
     private IOPorts ports;
+    private Keyboard keyboard;
     private GraphicControl graphic;
     private Timings timings;
     private Memory memory;
     private RomSwitcher romSwitcher;
 
-    public RomLoader(Memory memory, Cpu cpu, IOPorts ports, GraphicControl graphic, Timings timings, RomSwitcher romSwitcher) {
+    public RomLoader(Memory memory, Cpu cpu, IOPorts ports, Keyboard keyboard, GraphicControl graphic, Timings timings, RomSwitcher romSwitcher) {
         this.memory = memory;
         this.cpu = cpu;
         this.ports = ports;
+        this.keyboard = keyboard;
         this.graphic = graphic;
         this.timings = timings;
         this.romSwitcher = romSwitcher;
@@ -140,16 +142,18 @@ public class RomLoader {
      *   - 4 bytes for int     - `interrupt`
      *   - 4 bytes for int     - `tick`
      *   - 4 bytes for int     - `tact`
-     * * I/O ports state:
+     * * Keyboard state:
      *   - 12*6 bytes          - keyboard state 12 x 6 for all keys - is key pressed
-     *   - 1 byte              - flags `0b__shift_alt_ctrl_A__C1_0_B_C0`
+     *   - 1 byte              - flags `0b__shift_alt_ctrl_0__0_0_0_0`
+     *     + shift             - `0b_x000_0000` is shift key pressed
+     *     + alt               - `0b_0x00_0000` is alt key pressed
+     *     + ctrl              - `0b_00x0_0000` is ctrl key pressed
+     * * I/O ports state:
+     *   - 1 byte              - flags `0b__0_0_0_A__C1_0_B_C0`
      *     + Ain               - `0b_000x_0000`
      *     + Bin               - `0b_0000_00x0`
      *     + C0in              - `0b_0000_000x`
      *     + C1in              - `0b_0000_x000`
-     *     + shift             - `0b_x000_0000` is shift key pressed
-     *     + alt               - `0b_0x00_0000` is alt key pressed
-     *     + ctrl              - `0b_00x0_0000` is ctrl key pressed
      * * GraphicControl state:
      *   - 1 byte for int      - `ioDrawMode`
      * * Timings state:
@@ -215,6 +219,7 @@ public class RomLoader {
     private List<StateProvider> allStates() {
         return List.of(
                 cpu,
+                keyboard,
                 ports,
                 graphic,
                 timings,

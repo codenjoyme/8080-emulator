@@ -14,16 +14,16 @@ public class KeyRecord {
     public static final int KEY_PRESS_DELTA = 20_000;
     private Map<Integer, Action> scenario;
     private FileRecorder fileRecorder;
-    private IOPorts ports;
+    private Keyboard keyboard;
     private Consumer<String> screenshot;
     private Runnable stopCpu;
     private Runnable pauseCpu;
     private int shootIndex; // индекс сделанного скриншота
     private Integer lastRecordedTick;
 
-    public KeyRecord(FileRecorder fileRecorder, IOPorts ports, Runnable stopCpu, Runnable pauseCpu) {
+    public KeyRecord(FileRecorder fileRecorder, Keyboard keyboard, Runnable stopCpu, Runnable pauseCpu) {
         this.fileRecorder = fileRecorder;
-        this.ports = ports;
+        this.keyboard = keyboard;
         this.stopCpu = stopCpu;
         this.pauseCpu = pauseCpu;
         this.shootIndex = 0;
@@ -192,7 +192,7 @@ public class KeyRecord {
             }
             if (action.keyCode != null) {
                 Logger.debugLine("[%s] ", action.index);
-                ports.processKey(new Key(action.keyCode, action.press, action.mode));
+                keyboard.processKey(new Key(action.keyCode, action.press, action.mode));
             }
             if (action.stopCpu) {
                 stopCpu.run();

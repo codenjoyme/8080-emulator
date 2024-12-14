@@ -27,6 +27,7 @@ public class Hardware {
     private Video video;
     private Audio audio;
     private KeyLogger keyLogger;
+    private Keyboard keyboard;
     private KeyRecord record;
     private FileRecorder fileRecorder;
     private GraphicControl graphtic;
@@ -46,6 +47,7 @@ public class Hardware {
         memory = createMemory();
         fileRecorder = createFileRecorder();
         keyLogger = createKeyLogger();
+        keyboard = createKeyboard();
         ports = createIoPorts();
         record = createKeyRecord();
         video = createVideo(screenWidth, screenHeight);
@@ -84,7 +86,7 @@ public class Hardware {
     }
 
     protected RomLoader createRomLoader() {
-        return new RomLoader(memory, cpu, ports, graphtic, timings, romSwitcher);
+        return new RomLoader(memory, cpu, ports, keyboard, graphtic, timings, romSwitcher);
     }
 
     protected Video createVideo(int width, int height) {
@@ -117,11 +119,11 @@ public class Hardware {
     }
 
     protected KeyRecord createKeyRecord() {
-        return new KeyRecord(fileRecorder, ports, this::stop, this::pause);
+        return new KeyRecord(fileRecorder, keyboard, this::stop, this::pause);
     }
 
     protected IOPorts createIoPorts() {
-        return new IOPorts(memory, new Layout(), keyLogger::process){
+        return new IOPorts(memory, keyboard){
 
             @Override
             protected void A(int bite) {
@@ -170,6 +172,12 @@ public class Hardware {
 
     protected KeyLogger createKeyLogger() {
         return new KeyLogger(fileRecorder, () -> cpu.tick());
+    }
+
+    protected Keyboard createKeyboard() {
+        Keyboard result = new Keyboard(keyLogger::process);
+        new Layout().setup(result);
+        return result;
     }
 
     protected Memory createMemory() {
@@ -240,6 +248,7 @@ public class Hardware {
     private void justReset() {
         cpu.reset();
         ports.reset();
+        keyboard.reset();
         keyLogger.reset();
     }
 
@@ -326,6 +335,10 @@ public class Hardware {
 
     public IOPorts ports() {
         return ports;
+    }
+
+    public Keyboard keyboard() {
+        return keyboard;
     }
 
     public Video video() {

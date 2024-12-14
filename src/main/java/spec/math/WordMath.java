@@ -117,4 +117,12 @@ public class WordMath {
         }
         return string;
     }
+
+    public static boolean isSet(int bite, int mask) {
+        return (bite & mask) != 0;
+    }
+
+    public static String bitToString(boolean bit) {
+        return bit ? "-" : "+";
+    }
 }
