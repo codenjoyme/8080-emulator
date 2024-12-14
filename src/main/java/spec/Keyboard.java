@@ -191,43 +191,38 @@ public class Keyboard implements StateProvider {
     }
 
     public synchronized void processKey(Key key) {
-        if (!key.system()) {
-            if (key.pressed()) {
-                // если кнопка нажата, то мы изменяем оригинальную с учетом модификатора
-                // и кликаем кнопку (возможно уже иную) на виртуальной машине
-                pressKey(key);
-            } else {
-                // если кнопка отпущена, то нам надо отжать потенциально сразу все
-                // возможные зажатые кнопки (с модификаторами или без)
-                for (Key key2 : key.allKeysWithMods()) {
-                    pressKey(key2);
-                }
-            }
-        }
-
         if (key.pause()) {
             logKey(key, 0xFF);
             return;
         }
-
-        if (key.code() == SHIFT && shift != key.pressed()) {
-            shift = key.pressed();
-            logKey(key, 0xFA);
+        if (key.mods()) {
+            if (key.code() == SHIFT && shift != key.pressed()) {
+                shift = key.pressed();
+                logKey(key, 0xFA);
+            }
+            if (key.code() == CTRL && ctrl != key.pressed()) {
+                ctrl = key.pressed();
+                logKey(key, 0xFB);
+            }
+            if (key.code() == ALT && alt != key.pressed()) {
+                alt = key.pressed();
+                logKey(key, 0xFC);
+            }
             return;
         }
 
-
-        if (key.code() == CTRL && ctrl != key.pressed()) {
-            ctrl = key.pressed();
-            logKey(key, 0xFB);
-            return;
+        if (key.pressed()) {
+            // если кнопка нажата, то мы изменяем оригинальную с учетом модификатора
+            // и кликаем кнопку (возможно уже иную) на виртуальной машине
+            pressKey(key);
+        } else {
+            // если кнопка отпущена, то нам надо отжать потенциально сразу все
+            // возможные зажатые кнопки (с модификаторами или без)
+            for (Key key2 : key.allKeysWithMods()) {
+                pressKey(key2);
+            }
         }
 
-        if (key.code() == ALT && alt != key.pressed()) {
-            alt = key.pressed();
-            logKey(key, 0xFC);
-            return;
-        }
     }
 
     private void logKey(Key key, int point) {

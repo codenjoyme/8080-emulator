@@ -134,17 +134,25 @@ public class Key {
         ));
     }
 
-    public boolean system() {
+    public boolean mods() {
         return code == CTRL
                 || code == ALT
-                || code == SHIFT
-                || pause()
+                || code == SHIFT;
+    }
+
+    public boolean system() {
+        return pause()
                 || numSlash()
                 || numStar()
                 || numMinus()
                 || numPlus()
                 || numComma()
                 || numZero()
-                || numOne();
+                || numOne()
+                || numTwo()
+                || numThree()
+                || numFour()
+                || numFive()
+                || numSix();
     }
 }

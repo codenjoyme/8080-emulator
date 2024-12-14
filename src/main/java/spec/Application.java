@@ -51,122 +51,91 @@ public class Application {
     }
 
     public void handleKey(Key key) {
-        if (key.numZero()) {
-            if (key.pressed()) {
-                hard.romSwitcher().nextRom(base);
-            }
+        if (!key.system()) {
+            hard.keyboard().processKey(key);
             return;
+        }
+
+        if (!key.pressed()) {
+            return;
+        }
+
+        if (key.numZero()) {
+            hard.romSwitcher().nextRom(base);
         }
 
         if (key.numOne()) {
-            if (key.pressed()) {
-                hard.pauseResume();
-            }
-            return;
+            hard.pauseResume();
         }
 
         if (key.numTwo()) {
-            if (key.pressed()) {
-                hard.graphic().nextDrawMode();
-            }
-            return;
+            hard.graphic().nextDrawMode();
         }
 
         if (key.numThree()) {
-            if (key.pressed()) {
-                File file = Files.newScreenshot();
-                Logger.debug("Save screenshot to %s", file.getAbsolutePath());
-                hard.png().drawToFile(SCREEN.begin(), file);
-            }
-            return;
+            File file = Files.newScreenshot();
+            Logger.debug("Save screenshot to %s", file.getAbsolutePath());
+            hard.png().drawToFile(SCREEN.begin(), file);
         }
 
         if (key.numFour()) {
-            if (key.pressed()) {
-                Logger.debug("Stop record/replay");
-                hard.record().reset();
-            }
-            return;
+            Logger.debug("Stop record/replay");
+            hard.record().reset();
         }
 
         if (key.numFive()) {
-            if (key.pressed()) {
-                // TODO как сделать рабочим в веб версии?
-                if (base.toString().startsWith("http")) return;
+            // TODO как сделать рабочим в веб версии?
+            if (base.toString().startsWith("http")) return;
 
-                openFileDialog(file -> hard.loadSnapshot(base, toRelative(base, file)),
-                        base.getFile() + SNAPSHOTS,
-                        "Snapshot file",
-                        "snp");
-            }
-            return;
+            openFileDialog(file -> hard.loadSnapshot(base, toRelative(base, file)),
+                    base.getFile() + SNAPSHOTS,
+                    "Snapshot file",
+                    "snp");
         }
 
         if (key.numSix()) {
-            if (key.pressed()) {
-                File file = Files.newSnapshot();
-                hard.saveSnapshot(base, file.getPath());
-            }
-            return;
+            File file = Files.newSnapshot();
+            hard.saveSnapshot(base, file.getPath());
         }
 
         if (key.numSlash()) {
-            if (key.pressed()) {
-                // TODO как сделать рабочим в веб версии?
-                if (base.toString().startsWith("http")) return;
+            // TODO как сделать рабочим в веб версии?
+            if (base.toString().startsWith("http")) return;
 
-                openFileDialog(file -> hard.loadRecord(file.getAbsolutePath()),
-                        base.getFile() + RECORDS,
-                        "Recording file",
-                        "rec");
-            }
-            return;
+            openFileDialog(file -> hard.loadRecord(file.getAbsolutePath()),
+                    base.getFile() + RECORDS,
+                    "Recording file",
+                    "rec");
         }
 
         if (key.numComma()) {
-            if (key.pressed()) {
-                // TODO как сделать рабочим в веб версии?
-                if (base.toString().startsWith("http")) return;
+            // TODO как сделать рабочим в веб версии?
+            if (base.toString().startsWith("http")) return;
 
-                RomSwitcher switcher = hard.romSwitcher();
-                Platform platform = switcher.current();
-                openFileDialog(file -> switcher.load(base, toRelative(base, file)),
-                        base.getFile() + platform.apps(),
-                        "Data file",
-                        "com", "rom", "rks", "bin", "mem");
-            }
-            return;
+            RomSwitcher switcher = hard.romSwitcher();
+            Platform platform = switcher.current();
+            openFileDialog(file -> switcher.load(base, toRelative(base, file)),
+                    base.getFile() + platform.apps(),
+                    "Data file",
+                    "com", "rom", "rks", "bin", "mem");
         }
 
         if (key.numStar()) {
-            if (key.pressed()) {
-                hard.timings().changeFullSpeed();
-            }
-            return;
+            hard.timings().changeFullSpeed();
         }
 
         if (key.pause()) {
-            if (key.pressed()) {
-                hard.timings().willReset();
-            }
-            return;
+            hard.timings().willReset();
         }
 
         if (key.numMinus()) {
-            if (key.pressed()) {
-                hard.timings().increaseDelay();
-            }
-            return;
+            hard.timings().increaseDelay();
         }
 
         if (key.numPlus()) {
-            if (key.pressed()) {
-                hard.timings().decreaseDelay();
-            }
-            return;
+            hard.timings().decreaseDelay();
         }
-
-        hard.keyboard().processKey(key);
+        return;
     }
 
     public static String toRelative(URL base, File file) {
