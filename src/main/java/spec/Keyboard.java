@@ -52,6 +52,10 @@ public class Keyboard {
         keys.put((int) code | ALT_MASK | SHIFT_MASK, pt);
     }
 
+    public void putCtrlS(char code, int pt) {
+        keys.put((int) code | CTRL_MASK | SHIFT_MASK, pt);
+    }
+
     public void putCtrl(char code, int pt) {
         keys.put((int) code | CTRL_MASK, pt);
     }
@@ -99,7 +103,7 @@ public class Keyboard {
     public static final int H_F10 = 0x15;
 
     public static final int H_RIGHT = 0x20;
-    public static final int HH_SYMB6 = 0x21;
+    public static final int H_SYMB1 = 0x21;
     public static final int H_V = 0x22;
     public static final int H_Z = 0x23;
     public static final int H_9 = 0x24;
@@ -120,7 +124,7 @@ public class Keyboard {
     public static final int H_F7 = 0x45;
 
     public static final int H_SPACE = 0x50;
-    public static final int H_SYMB1 = 0x51;
+    public static final int H_X = 0x51;
     public static final int H_O = 0x52;
     public static final int H_G = 0x53;
     public static final int H_6 = 0x54;

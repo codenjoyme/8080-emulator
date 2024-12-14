@@ -16,15 +16,15 @@ public class Layout {
         keyboard.putNorm('1',   H_1); // 1 -> 1
         keyboard.putShft('1',   H_1); // shift 1 -> !
 
-        keyboard.putNorm('2',   H_2); // 2 -> 2
+        keyboard.putNorm('2',   H_2);     // 2 -> 2
         keyboard.putShft('2',   H_SYMB8); // shift 2 -> @ [Ю]
-        keyboard.putAltS('2',   H_2); // alt shift 2 -> "
+        keyboard.putAltS('2',   H_2);     // alt shift 2 -> "
 
-        keyboard.putNorm('3',   H_3); // 3 -> 3
-        keyboard.putShft('3',   H_3); // # -> #
+        keyboard.putNorm('3',   H_3);     // 3 -> 3
+        keyboard.putShft('3',   H_3);     // shift 3 -> #
 
-        keyboard.putNorm('4',   H_4); // 4 -> 4
-        keyboard.putShft('4',   H_4); // shift 4 -> $
+        keyboard.putNorm('4',   H_4);     // 4 -> 4
+        keyboard.putShft('4',   H_4);     // shift 4 -> $
         keyboard.putCtrl('4',   H_SYMB2); // ctrl 4 -> :
         keyboard.putAlt_('4',   H_SYMB3); // alt 4 -> ;
 
@@ -36,11 +36,12 @@ public class Layout {
         keyboard.putCtrl('6',   H_SYMB2); // ctrl 6 -> :
         keyboard.putAlt_('6',   H_SYMB3); // alt 6 -> ;
 
-        keyboard.putNorm('7',   H_7); // 7 -> 7
-        keyboard.putShft('7',   H_6); // shift 7 -> &
+        keyboard.putNorm('7',   H_7);     // 7 -> 7
+        keyboard.putShft('7',   H_6);     // shift 7 -> &
         keyboard.putAltS('7',   H_SYMB6); // alt shift 7 -> ?
+        keyboard.putCtrlS('7',  H_7);     // ctrl shift 7 -> '
 
-        keyboard.putNorm('8',   H_8); // 8 -> 8
+        keyboard.putNorm('8',   H_8);     // 8 -> 8
         keyboard.putShft('8',   H_SYMB2); // shift 8 -> *
 
         keyboard.putNorm('9',   H_9); // 9 -> 9
@@ -48,6 +49,7 @@ public class Layout {
 
         keyboard.putNorm('0',   H_SYMB11); // 0 -> 0
         keyboard.putShft('0',   H_9); // shift 0 -> )
+        keyboard.putAltS('0',   H_SYMB11); // 0 -> ' '
 
         keyboard.putNorm('-',   H_SYMB9); // - -> -
         keyboard.putShft('-',   H_SYMB9); // shift - -> =
@@ -97,7 +99,7 @@ public class Layout {
                                       // ctrl (Г) -> У [U]
 
         keyboard.putChar('I',   H_I,  //  I  -> I [И]
-                         'ш',    H_RIGHT_SQUARE_BRACKET); // (Ш) -> [ [Ш]
+                         'ш',   H_RIGHT_SQUARE_BRACKET); // (Ш) -> [ [Ш]
                                       // ctrl  I  -> [ [Ш]
                                       // ctrl (Ш) -> И [I]
 
@@ -112,7 +114,7 @@ public class Layout {
                                       // ctrl (З) -> П [P]
 
         keyboard.putChar('[',   H_RIGHT_SQUARE_BRACKET,  //  [  -> [ [Ш]
-                         'х',   H_SYMB1); // (Х) -> Ь [Х]
+                         'х',   H_X); // (Х) -> Ь [Х]
                                       // ctrl  [  -> Ь [Х]
                                       // ctrl (Х) -> Ш [[]
 
@@ -167,9 +169,9 @@ public class Layout {
                                       // ctrl (Д) -> Л [L]
 
         keyboard.putChar(';',   H_SYMB2,  // ;   -> :
-                         'ж',   H_V); // (Ж) -> V [Ж]
-                                      // ctrl  ;  -> V [Ж]
-                                      // ctrl (Ж) -> :
+                         'ж',   H_V);     // (Ж) -> V [Ж]
+                                          // ctrl  ;  -> V [Ж]
+                                          // ctrl (Ж) -> :
         keyboard.putShft(';',   H_SYMB3); // shift ;  -> +
         keyboard.putAlt_(';',   H_SYMB3); // alt ; -> ;
 
@@ -177,10 +179,11 @@ public class Layout {
                          'э',   H_SYMB5); // Э -> \ [Э]
                                           // ctrl  '  -> \ [Э]
                                           // ctrl (Э) -> Ч [^]
-        keyboard.putShft('Þ',   H_2);  // shift ' -> "
+        keyboard.putShft('Þ',   H_2);     // shift ' -> "
+        keyboard.putAltS('Þ',   H_7);     // alt shift ' -> '
 
-        keyboard.putNorm('\\',   H_SYMB6); // \ -> /
-        keyboard.putShft('\\',   H_SYMB5); // shift \ -> \ [Э]
+        keyboard.putNorm('\\',  H_SYMB6); // \ -> /
+        keyboard.putShft('\\',  H_SYMB5); // shift \ -> \ [Э]
 
         // четвертая линия стандартной клавиатуры
 
@@ -191,7 +194,7 @@ public class Layout {
                                       // ctrl  Z  -> Q [Я]
                                       // ctrl (Я) -> З [Z]
 
-        keyboard.putChar('X',   H_SYMB1,  //  X  -> X [Ь]
+        keyboard.putChar('X',   H_X,  //  X  -> X [Ь]
                          'ч',   H_SYMB4); // (Ч) -> ^ [Ч]
                                           // ctrl  X  -> ^ [Ч]
                                           // ctrl (Ч) -> Ь [X]
@@ -217,15 +220,15 @@ public class Layout {
                                       // ctrl (Т) -> Н [N]
 
         keyboard.putChar('M',   H_M,  //  M  -> M [М]
-                         'ь',   H_SYMB1); // (Ь) -> X [Ь]
+                         'ь',   H_X); // (Ь) -> X [Ь]
                                       // ctrl  M  -> X [Ь]
                                       // ctrl (Ь) -> М [M]
 
-        keyboard.putChar(',',   HH_SYMB6,  //  ,  -> ,
+        keyboard.putChar(',',   H_SYMB1,   //  ,  -> ,
                          'б',   H_B);      // (Б) -> B [Б]
                                            // ctrl  ,  -> B [Б]
                                            // ctrl (Б) -> ,
-        keyboard.putShft(',',   HH_SYMB6); // shift , -> <
+        keyboard.putShft(',',   H_SYMB1);  // shift , -> <
         keyboard.putCtrl(',',   H_SYMB7);  // ctrl , -> >
 
         keyboard.putChar('.',   H_SYMB7,   //  .  -> .
@@ -233,7 +236,7 @@ public class Layout {
                                            // ctrl  .  -> @ [Ю]
                                            // ctrl (Ю) -> .
         keyboard.putShft('.',   H_SYMB7);  // shift . -> >
-        keyboard.putCtrl('.',   HH_SYMB6); // ctrl . -> <
+        keyboard.putCtrl('.',   H_SYMB1);  // ctrl . -> <
 
         keyboard.putNorm('/',   H_SYMB6); // /  -> /
         keyboard.putCtrl('/',   H_SYMB5); // ctrl /  -> \
