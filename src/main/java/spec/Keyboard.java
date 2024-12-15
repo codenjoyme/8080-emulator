@@ -3,10 +3,8 @@ package spec;
 import org.apache.commons.lang3.tuple.Pair;
 import spec.math.Bites;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 
 import static spec.Constants.*;
@@ -20,12 +18,11 @@ public class Keyboard implements StateProvider {
     public static final int SNAPSHOT_KEYBOARD_SIZE = 13;
 
     private BiConsumer<Key, Integer> keyLogger;
+    private Layout layout;
 
     // массив матрицы клавиш "Специалиста" (true - нажата, false - отпущена)
     // 12 x 6 + Shift + Reset
     private boolean[][] keyStatus = new boolean[12][6];
-
-    private Map<Integer, Pair<Integer, Boolean>> keys;
 
     // зажата ли клавиша
     private boolean shift;
@@ -43,77 +40,13 @@ public class Keyboard implements StateProvider {
      */
     private List<Pair<Integer, Key>> points = new LinkedList<>();
 
-    public Keyboard(BiConsumer<Key, Integer> keyLogger) {
-        this.keys = new HashMap<>();
+    public Keyboard(BiConsumer<Key, Integer> keyLogger, Layout layout) {
+        this.layout = layout;
         this.keyLogger = keyLogger;
     }
 
     public Pair<Integer, Boolean> key(int code) {
-        return keys.get(code);
-    }
-
-    public void put(char en, int enPt, char cr, int crPt) {
-        // '1        ->  ...'      просто нажатая клавиша в english регистре хостовой машины
-        // '...      ->  1 ...'    результат нажатия в english регистре виртуальной машины
-        // '...      ->  ... [3]'  результат нажатия в cyrillic регистре виртуальной машины
-        // '(4)      ->  ...'      нажатая клавиша в cyrillic раскладка хостовой машины
-        // 'ctrl ... ->  ...'      нажатая c control клавиша на хостовой машине
-        put(non(en),      nonH(enPt)); //  1       ->  1 [3]
-        put(cyr(cr),      nonH(crPt)); // (4)      ->  2 [4]
-        put(ctr(en),      nonH(crPt)); // ctrl  1  ->  2 [4]
-        put(ctr(cyr(cr)), nonH(enPt)); // ctrl (4) ->  3 [1]
-    }
-
-    public static Pair<Integer, Boolean> nonH(int point) {
-        return Pair.of(point, false);
-    }
-
-    public static Pair<Integer, Boolean> shfH(int point) {
-        return Pair.of(point, true);
-    }
-
-    public static int non(int code) {
-        return code;
-    }
-
-    public static int non(char code) {
-        return code;
-    }
-
-    public static int cyr(char code) {
-        return cyr((int) code);
-    }
-
-    public static int cyr(int code) {
-        return code | CYRILLIC_MASK;
-    }
-
-    public static int alt(char code) {
-        return alt((int) code);
-    }
-
-    public static int alt(int code) {
-        return code | ALT_MASK;
-    }
-
-    public static int ctr(char code) {
-        return ctr((int) code);
-    }
-
-    public static int ctr(int code) {
-        return code | CTRL_MASK;
-    }
-
-    public static int shf(char code) {
-        return shf((int) code);
-    }
-
-    public static int shf(int code) {
-        return code | SHIFT_MASK;
-    }
-
-    public void put(Integer codeOnHost, Pair<Integer, Boolean> codeOnEmulator) {
-        keys.put(codeOnHost, codeOnEmulator);
+        return layout.get(code, rusLat);
     }
 
     @Override

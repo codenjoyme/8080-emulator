@@ -175,9 +175,7 @@ public class Hardware {
     }
 
     protected Keyboard createKeyboard() {
-        Keyboard result = new Keyboard(keyLogger::process);
-        new Layout().setup(result);
-        return result;
+        return new Keyboard(keyLogger::process, new Layout());
     }
 
     protected Memory createMemory() {

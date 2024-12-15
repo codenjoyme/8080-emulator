@@ -1,11 +1,15 @@
 package spec;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import static spec.KeyCode.*;
 import static spec.Keyboard.*;
 
-public class Layout {
+public class Layout extends AbstractLayout {
 
-    public void setup(Keyboard keyboard) {
+    public Pair<Integer, Boolean> get(int code, boolean rusLat) {
+        Pair<Integer, Boolean> result = null;
+
         // первая линия стандартной клавиатуры
 
         //keyboard.putNorm('À', 0x00); // первая клавиша ~/[Ё]
@@ -15,78 +19,78 @@ public class Layout {
 
         // 1        ->  1
         // shift 1  ->  !
-        keyboard.put(non('1'), nonH(H_1));
-        keyboard.put(shf('1'), shfH(H_1));
+        if (code == non('1')) return nonH(H_1);
+        if (code == shf('1')) return shfH(H_1);
 
         // 2        ->  2
         // shift 2  ->  @ [Ю]                  // TODO от Ю надо как-то избавиться
         // alt   2  ->  "
-        keyboard.put(non('2'), nonH(H_2));
-        keyboard.put(shf('2'), nonH(H_SYMB8));
-        keyboard.put(alt('2'), shfH(H_2));
+        if (code == non('2')) return nonH(H_2);
+        if (code == shf('2')) return nonH(H_SYMB8);
+        if (code == alt('2')) return shfH(H_2);
 
         // 3        ->  3
         // shift 3  ->  #
-        keyboard.put(non('3'), nonH(H_3));
-        keyboard.put(shf('3'), shfH(H_3));
+        if (code == non('3')) return nonH(H_3);
+        if (code == shf('3')) return shfH(H_3);
 
         // 4        ->  4
         // shift 4  ->  $
         // ctrl  4  ->  ;
         // alt   4  ->  :
-        keyboard.put(non('4'), nonH(H_4));
-        keyboard.put(shf('4'), shfH(H_4));
-        keyboard.put(ctr('4'), nonH(H_SYMB3));
-        keyboard.put(alt('4'), nonH(H_SYMB2));
+        if (code == non('4')) return nonH(H_4);
+        if (code == shf('4')) return shfH(H_4);
+        if (code == ctr('4')) return nonH(H_SYMB3);
+        if (code == alt('4')) return nonH(H_SYMB2);
 
         // 5        ->  5
         // shift 5  ->  %
-        keyboard.put(non('5'), nonH(H_5));
-        keyboard.put(shf('5'), shfH(H_5));
+        if (code == non('5')) return nonH(H_5);
+        if (code == shf('5')) return shfH(H_5);
 
         // 6        ->  6
         // shift 6  ->  ^ [Ч]                   // TODO от Ч надо как-то избавиться
         // ctrl  6  ->  :
         // alt   6  ->  ;
-        keyboard.put(non('6'), nonH(H_6));
-        keyboard.put(shf('6'), nonH(H_SYMB4));
-        keyboard.put(ctr('6'), nonH(H_SYMB2));
-        keyboard.put(alt('6'), nonH(H_SYMB3));
+        if (code == non('6')) return nonH(H_6);
+        if (code == shf('6')) return nonH(H_SYMB4);
+        if (code == ctr('6')) return nonH(H_SYMB2);
+        if (code == alt('6')) return nonH(H_SYMB3);
 
         // 7        ->  7
         // shift 7  ->  &
         // alt   7  ->  ?
         // ctrl  7  ->  '
-        keyboard.put(non('7'), nonH(H_7));
-        keyboard.put(shf('7'), shfH(H_6));
-        keyboard.put(alt('7'), shfH(H_SYMB6));
-        keyboard.put(ctr('7'), shfH(H_7));
+        if (code == non('7')) return nonH(H_7);
+        if (code == shf('7')) return shfH(H_6);
+        if (code == alt('7')) return shfH(H_SYMB6);
+        if (code == ctr('7')) return shfH(H_7);
 
         // 8        ->  8
         // shift 8  ->  *
-        keyboard.put(non('8'), nonH(H_8));
-        keyboard.put(shf('8'), shfH(H_SYMB2));
+        if (code == non('8')) return nonH(H_8);
+        if (code == shf('8')) return shfH(H_SYMB2);
 
         // 9        ->  9
         // shift 9  ->  (
-        keyboard.put(non('9'), nonH(H_9));
-        keyboard.put(shf('9'), shfH(H_8));
+        if (code == non('9')) return nonH(H_9);
+        if (code == shf('9')) return shfH(H_8);
 
         // 0        ->  0
         // shift 0  ->  )
         // alt 0    ->  ' '
-        keyboard.put(non('0'), nonH(H_SYMB11));
-        keyboard.put(shf('0'), shfH(H_9));
-        keyboard.put(alt('0'), shfH(H_SYMB11));
+        if (code == non('0')) return nonH(H_SYMB11);
+        if (code == shf('0')) return shfH(H_9);
+        if (code == alt('0')) return shfH(H_SYMB11);
 
         // -        ->  -
         // shift -  ->  _ TODO должен быть прочерк, но его кода не нашел
-        keyboard.put(non('-'), nonH(H_SYMB9));
+        if (code == non('-')) return nonH(H_SYMB9);
 
         // =        ->  =
         // shift =  ->  +
-        keyboard.put(non('='), shfH(H_SYMB9));
-        keyboard.put(shf('='), shfH(H_SYMB3));
+        if (code == non('=')) return shfH(H_SYMB9);
+        if (code == shf('=')) return shfH(H_SYMB3);
 
         // вторая линия стандартной клавиатуры
 
@@ -96,82 +100,104 @@ public class Layout {
         // (Й)      ->  J [Й]
         // ctrl  Q  ->  J [Й]
         // ctrl (Й) ->  Я [Q]
-        keyboard.put('Q', H_Q,
-                     'й', H_J);
+        result = is(code, rusLat, 
+                'Q', H_Q,
+                'й', H_J);
+        if (result != null) return result;
 
         //  W       ->  W [В]
         // (Ц)      ->  С [Ц]
         // ctrl  W  ->  С [Ц]
         // ctrl (Ц) ->  В [W]
-        keyboard.put('W', H_W,
-                     'ц', H_C);
+        result = is(code, rusLat, 
+                'W', H_W,
+                'ц', H_C);
+        if (result != null) return result;
 
         //  E       ->  E [E]
         // (У)      ->  U [У]
         // ctrl  E  ->  U [У]
         // ctrl (У) ->  E [E]
-        keyboard.put('E', H_E,
-                     'у', H_U);
+        result = is(code, rusLat, 
+                'E', H_E,
+                'у', H_U);
+        if (result != null) return result;
 
         //  R       ->  R [Р]
         // (К)      ->  К [К]
         // ctrl  R  ->  К [К]
         // ctrl (К) ->  Р [R]
-        keyboard.put('R', H_R,
-                     'к', H_K);
+        result = is(code, rusLat, 
+                'R', H_R,
+                'к', H_K);
+        if (result != null) return result;
 
         //  T       ->  T [Т]
         // (Е)      ->  Е [Е]
         // ctrl  T  ->  Е [Е]
         // ctrl (Е) ->  Т [T]
-        keyboard.put('T', H_T,
-                     'е', H_E);
+        result = is(code, rusLat, 
+                'T', H_T,
+                'е', H_E);
+        if (result != null) return result;
 
         //  Y       ->  Y [Ы]
         // (Н)      ->  N [Н]
         // ctrl  Y  ->  N [Н]
         // ctrl (Н) ->  Ы [Y]
-        keyboard.put('Y', H_Y,
-                     'н', H_N);
+        result = is(code, rusLat, 
+                'Y', H_Y,
+                'н', H_N);
+        if (result != null) return result;
 
         //  U       ->  U [У]
         // (Г)      ->  G [Г]
         // ctrl  U  ->  G [Г]
         // ctrl (Г) ->  У [U]
-        keyboard.put('U', H_U,
-                     'г', H_G);
+        result = is(code, rusLat, 
+                'U', H_U,
+                'г', H_G);
+        if (result != null) return result;
 
         //  I       ->  I [И]
         // (Ш)      ->  [ [Ш]
         // ctrl  I  ->  [ [Ш]
         // ctrl (Ш) ->  И [I]
-        keyboard.put('I', H_I,
-                     'ш', H_RIGHT_SQUARE_BRACKET);
+        result = is(code, rusLat, 
+                'I', H_I,
+                'ш', H_RIGHT_SQUARE_BRACKET);
+        if (result != null) return result;
 
         //  O       ->  O [О]
         // (Щ)      ->  ] [Щ]
         // ctrl  O  ->  ] [Щ]
         // ctrl (Щ) ->  О [O]
-        keyboard.put('O', H_O,
-                     'щ', H_LEFT_SQUARE_BRACKET);
+        result = is(code, rusLat, 
+                'O', H_O,
+                'щ', H_LEFT_SQUARE_BRACKET);
+        if (result != null) return result;
 
         //  P       ->  P [П]
         // (З)      ->  Z [З]
         // ctrl  P  ->  Z [З]
         // ctrl (З) ->  П [P]
-        keyboard.put('P', H_P,
-                     'з', H_Z);
+        result = is(code, rusLat, 
+                'P', H_P,
+                'з', H_Z);
+        if (result != null) return result;
 
         //  [       ->  [ [Ш]
         // (Х)      ->  Ь [Х]
         // ctrl  [  ->  Ь [Х]
         // ctrl (Х) ->  Ш [[]
-        keyboard.put('[', H_RIGHT_SQUARE_BRACKET,
-                     'х', H_X);
+        result = is(code, rusLat, 
+                '[', H_RIGHT_SQUARE_BRACKET,
+                'х', H_X);
+        if (result != null) return result;
 
         //  ]       ->  ] [Щ]
-        keyboard.put(non(']'), nonH(H_LEFT_SQUARE_BRACKET));
-        // keyboard.put(cyr('ъ'), 0x00);  // нет такого знака
+        if (code == non(']')) return nonH(H_LEFT_SQUARE_BRACKET);
+        // if (code == cyr('ъ')) return 0x00);  // нет такого знака
 
         // третья линия стандартной клавиатуры
 
@@ -179,85 +205,105 @@ public class Layout {
         // (Ф)      ->  F [Ф]
         // ctrl  A  ->  F [Ф]
         // ctrl (Ф) ->  А [A]
-        keyboard.put('A', H_A,
-                     'ф', H_F);
+        result = is(code, rusLat, 
+                'A', H_A,
+                'ф', H_F);
+        if (result != null) return result;
 
         //  S       ->  S [С]
         // (Ы)      ->  Y [Ы]
         // ctrl  S  ->  Y [Ы]
         // ctrl (Ы) ->  С [S]
-        keyboard.put('S', H_S,
-                     'ы', H_Y);
+        result = is(code, rusLat, 
+                'S', H_S,
+                'ы', H_Y);
+        if (result != null) return result;
 
         //  D       ->  D [Д]
         // (В)      ->  W [В]
         // ctrl  D  ->  W [В]
         // ctrl (В) ->  Д [D]
-        keyboard.put('D', H_D,
-                     'в', H_W);
+        result = is(code, rusLat, 
+                'D', H_D,
+                'в', H_W);
+        if (result != null) return result;
 
         //  F       ->  F [Ф]
         // (А)      ->  A [А]
         // ctrl  F  ->  A [А]
         // ctrl (А) ->  Ф [F]
-        keyboard.put('F', H_F,
-                     'а', H_A);
+        result = is(code, rusLat, 
+                'F', H_F,
+                'а', H_A);
+        if (result != null) return result;
 
         //  G       ->  G [Г]
         // (П)      ->  P [П]
         // ctrl  G  ->  P [П]
         // ctrl (П) ->  Г [G]
-        keyboard.put('G', H_G,
-                     'п', H_P);
+        result = is(code, rusLat, 
+                'G', H_G,
+                'п', H_P);
+        if (result != null) return result;
 
         //  H       ->  H [Х]
         // (Р)      ->  R [Р]
         // ctrl  H  ->  R [Р]
         // ctrl (Р) ->  Х [H]
-        keyboard.put('H', H_H,
-                     'р', H_R);
+        result = is(code, rusLat, 
+                'H', H_H,
+                'р', H_R);
+        if (result != null) return result;
 
         //  J       ->  J [Й]
         // (О)      ->  O [О]
         // ctrl  J  ->  O [О]
         // ctrl (О) ->  Й [J]
-        keyboard.put('J', H_J,
-                     'о', H_O);
+        result = is(code, rusLat, 
+                'J', H_J,
+                'о', H_O);
+        if (result != null) return result;
 
         //  K       ->  K [К]
         // (Л)      ->  L [Л]
         // ctrl  K  ->  L [Л]
         // ctrl (Л) ->  К [K]
-        keyboard.put('K', H_K,
-                     'л', H_L);
+        result = is(code, rusLat, 
+                'K', H_K,
+                'л', H_L);
+        if (result != null) return result;
 
         //  L       ->  L [Л]
         // (Д)      ->  D [Д]
         // ctrl  L  ->  D [Д]
         // ctrl (Д) ->  Л [L]
-        keyboard.put('L', H_L,
-                     'д', H_D);
+        result = is(code, rusLat, 
+                'L', H_L,
+                'д', H_D);
+        if (result != null) return result;
 
         //  ;       ->  ;
         // shift ;  ->  :
         // (Ж)      ->  V [Ж]
         // ctrl  ;  ->  V [Ж]
         // ctrl (Ж) ->  : [;]
-        keyboard.put(';', H_SYMB3,          // TODO тут с Ж проблемы вместо нее печатается ;
-                     'ж', H_V);
-        keyboard.put(shf(';'), nonH(H_SYMB2));
+        result = is(code, rusLat, 
+                ';', H_SYMB3,          // TODO тут с Ж проблемы вместо нее печатается ;
+                'ж', H_V);
+        if (result != null) return result;
+        if (code == shf(';')) return nonH(H_SYMB2);
 
         // '        ->  '
         // shift '  ->  "
-        keyboard.put(non('Þ'), shfH(H_7));
-        keyboard.put(shf('Þ'), shfH(H_2));
-        //keyboard.put(cyr('э'),      nonH(H_SYMB5));  // TODO разобраться с Э
-        //keyboard.put(ctr(cyr('э')), nonH(H_SYMB4));
+        if (code == non('Þ')) return shfH(H_7);
+        if (code == shf('Þ')) return shfH(H_2);
+        //if (code == cyr('э')) return      nonH(H_SYMB5);  // TODO разобраться с Э
+        //if (code == ctr(cyr('э'))) return nonH(H_SYMB4);
 
         // \        ->  \ [Э]
         // ctrl \   ->  /
-        keyboard.put(non('\\'), shfH(H_SYMB5));
-        keyboard.put(ctr('\\'), nonH(H_SYMB6));
+        if (code == non('\\')) return shfH(H_SYMB5);
+        if (code == ctr('\\')) return nonH(H_SYMB6);
 
         // четвертая линия стандартной клавиатуры
 
@@ -265,50 +311,64 @@ public class Layout {
         // (Я)      ->  Q [Я]
         // ctrl  Z  ->  Q [Я]
         // ctrl (Я) ->  З [Z]
-        keyboard.put('Z', H_Z,
-                     'я', H_Q);
+        result = is(code, rusLat, 
+                'Z', H_Z,
+                'я', H_Q);
+        if (result != null) return result;
 
         //  X       ->  X [Ь]
         // (Ч)      ->  ^ [Ч]
         // ctrl  X  ->  ^ [Ч]
         // ctrl (Ч) ->  Ь [X]
-        keyboard.put('X', H_X,
-                     'ч', H_SYMB4);
+        result = is(code, rusLat, 
+                'X', H_X,
+                'ч', H_SYMB4);
+        if (result != null) return result;
 
         //  C       ->  C [Ц]
         // (С)      ->  S [С]
         // ctrl  C  ->  S [С]
         // ctrl (С) ->  Ц [C]
-        keyboard.put('C', H_C,
-                     'с', H_S);
+        result = is(code, rusLat, 
+                'C', H_C,
+                'с', H_S);
+        if (result != null) return result;
 
         //  V       ->  V [Ж]
         // (М)      ->  M [М]
         // ctrl  V  ->  M [М]
         // ctrl (М) ->  Ж [V]
-        keyboard.put('V', H_V,
-                     'м', H_M);
+        result = is(code, rusLat, 
+                'V', H_V,
+                'м', H_M);
+        if (result != null) return result;
 
         //  B       ->  B [Б]
         // (И)      ->  I [И]
         // ctrl  B  ->  I [И]
         // ctrl (И) ->  Б [B]
-        keyboard.put('B', H_B,
-                     'и', H_I);
+        result = is(code, rusLat, 
+                'B', H_B,
+                'и', H_I);
+        if (result != null) return result;
 
         //  N       ->  N [Н]
         // (Т)      ->  T [Т]
         // ctrl  N  ->  T [Т]
         // ctrl (Т) ->  Н [N]
-        keyboard.put('N', H_N,
-                     'т', H_T);
+        result = is(code, rusLat, 
+                'N', H_N,
+                'т', H_T);
+        if (result != null) return result;
 
         //  M       ->  M [М]
         // (Ь)      ->  X [Ь]
         // ctrl  M  ->  X [Ь]
         // ctrl (Ь) ->  М [M]
-        keyboard.put('M', H_M,
-                     'ь', H_X);
+        result = is(code, rusLat, 
+                'M', H_M,
+                'ь', H_X);
+        if (result != null) return result;
 
         //  ,       ->  ,
         // (Б)      ->  B [Б]
@@ -316,10 +376,12 @@ public class Layout {
         // ctrl (Б) ->  ,
         // shift ,  ->  <
         // ctrl  ,  ->  >
-        keyboard.put(',', H_SYMB1,
-                     'б', H_B);
-        keyboard.put(shf(','), shfH(H_SYMB1));
-        keyboard.put(ctr(','), nonH(H_SYMB7));
+        result = is(code, rusLat, 
+                ',', H_SYMB1,
+                'б', H_B);
+        if (result != null) return result;
+        if (code == shf(',')) return shfH(H_SYMB1);
+        if (code == ctr(',')) return nonH(H_SYMB7);
 
         //  .       ->  .
         // (Ю)      ->  @ [Ю]
@@ -327,52 +389,55 @@ public class Layout {
         // ctrl (Ю) ->  .
         // shift .  ->  >
         // ctrl .   ->  <
-        keyboard.put('.', H_SYMB7,
-                     'ю', H_SYMB8);
-        keyboard.put(shf('.'), shfH(H_SYMB7));
-        keyboard.put(ctr('.'), nonH(H_SYMB1));
+        result = is(code, rusLat, 
+                '.', H_SYMB7,
+                'ю', H_SYMB8);
+        if (result != null) return result;
+        if (code == shf('.')) return shfH(H_SYMB7);
+        if (code == ctr('.')) return nonH(H_SYMB1);
 
         // /        ->  /
         // ctrl  /  ->  \
         // shift /  ->  ?
-        keyboard.put(non('/'), nonH(H_SYMB6));
-        keyboard.put(ctr('/'), nonH(H_SYMB5));
-        keyboard.put(shf('/'), shfH(H_SYMB6));
+        if (code == non('/')) return nonH(H_SYMB6);
+        if (code == ctr('/')) return nonH(H_SYMB5);
+        if (code == shf('/')) return shfH(H_SYMB6);
 
         // другие клавиши
 
-        keyboard.put(non(ENTER),       nonH(H_ВК));      // enter     -> ввод каретки
-        keyboard.put(alt(ENTER),       nonH(H_ПС)); // alt enter -> перевод строки
-        keyboard.put(non(BACKSPACE),   nonH(H_ЗБ));      // backspace -> забой
-        keyboard.put(non(CAPS_LOCK),   nonH(H_РУС_ЛАТ)); // caps_lock -> рус/лат
+        if (code == non(ENTER)) return       nonH(H_ВК);      // enter     -> ввод каретки
+        if (code == alt(ENTER)) return       nonH(H_ПС); // alt enter -> перевод строки
+        if (code == non(BACKSPACE)) return   nonH(H_ЗБ);      // backspace -> забой
+        if (code == non(CAPS_LOCK)) return   nonH(H_РУС_ЛАТ); // caps_lock -> рус/лат
 
-        keyboard.put(non(ESC),     nonH(H_ESC));   // esc   ->  esc
-        keyboard.put(non(SPACE),   nonH(H_SPACE)); // space ->  space
+        if (code == non(ESC)) return     nonH(H_ESC);   // esc   ->  esc
+        if (code == non(SPACE)) return   nonH(H_SPACE); // space ->  space
 
-        keyboard.put(non(INS),     nonH(H_ПВ));    // ins       ->  повтор
-        keyboard.put(non(HOME),    nonH(H_HOME));  // home      ->  home
-        keyboard.put(non(PG_UP),   nonH(H_TAB));   // page up   ->  tab
-        keyboard.put(non(DEL),     nonH(H_ЗБ));    // delete    ->  забой
-        keyboard.put(non(END),     nonH(H_F11));   // end       ->  F11
-        keyboard.put(non(PG_DOWN), nonH(H_F10));   // page down ->  F10
+        if (code == non(INS)) return     nonH(H_ПВ);    // ins       ->  повтор
+        if (code == non(HOME)) return    nonH(H_HOME);  // home      ->  home
+        if (code == non(PG_UP)) return   nonH(H_TAB);   // page up   ->  tab
+        if (code == non(DEL)) return     nonH(H_ЗБ);    // delete    ->  забой
+        if (code == non(END)) return     nonH(H_F11);   // end       ->  F11
+        if (code == non(PG_DOWN)) return nonH(H_F10);   // page down ->  F10
 
-        keyboard.put(non(UP),      nonH(H_UP));    // up    ->  вверх
-        keyboard.put(non(DOWN),    nonH(H_DOWN));  // down  ->  вних
-        keyboard.put(non(LEFT),    nonH(H_LEFT));  // left  ->  влево
-        keyboard.put(non(RIGHT),   nonH(H_RIGHT)); // right ->  вправо
+        if (code == non(UP)) return      nonH(H_UP);    // up    ->  вверх
+        if (code == non(DOWN)) return    nonH(H_DOWN);  // down  ->  вних
+        if (code == non(LEFT)) return    nonH(H_LEFT);  // left  ->  влево
+        if (code == non(RIGHT)) return   nonH(H_RIGHT); // right ->  вправо
 
-        keyboard.put(non(F1),  nonH(H_F1));  // F1  ->  F1
-        keyboard.put(non(F2),  nonH(H_F2));  // F2  ->  F2
-        keyboard.put(non(F3),  nonH(H_F3));  // F3  ->  F3
-        keyboard.put(non(F4),  nonH(H_F4));  // F4  ->  F4
-        keyboard.put(non(F5),  nonH(H_F5));  // F5  ->  F5
-        keyboard.put(non(F6),  nonH(H_F6));  // F6  ->  F6
-        keyboard.put(non(F7),  nonH(H_F7));  // F7  ->  F7
-        keyboard.put(non(F8),  nonH(H_F8));  // F8  ->  F8
-        keyboard.put(non(F9),  nonH(H_F9));  // F9  ->  F9
-        keyboard.put(non(F10), nonH(H_F10)); // F10 ->  F10
-        keyboard.put(non(F11), nonH(H_F11)); // F11 ->  F11
-        keyboard.put(non(F12), nonH(H_F12)); // F12 ->  F12
+        if (code == non(F1)) return  nonH(H_F1);  // F1  ->  F1
+        if (code == non(F2)) return  nonH(H_F2);  // F2  ->  F2
+        if (code == non(F3)) return  nonH(H_F3);  // F3  ->  F3
+        if (code == non(F4)) return  nonH(H_F4);  // F4  ->  F4
+        if (code == non(F5)) return  nonH(H_F5);  // F5  ->  F5
+        if (code == non(F6)) return  nonH(H_F6);  // F6  ->  F6
+        if (code == non(F7)) return  nonH(H_F7);  // F7  ->  F7
+        if (code == non(F8)) return  nonH(H_F8);  // F8  ->  F8
+        if (code == non(F9)) return  nonH(H_F9);  // F9  ->  F9
+        if (code == non(F10)) return nonH(H_F10); // F10 ->  F10
+        if (code == non(F11)) return nonH(H_F11); // F11 ->  F11
+        if (code == non(F12)) return nonH(H_F12); // F12 ->  F12
 
-    } 
+        return null;
+    }
 }
