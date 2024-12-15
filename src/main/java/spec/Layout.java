@@ -238,32 +238,26 @@ public class Layout {
         keyboard.put('L', H_L,
                      'д', H_D);
 
-        //  ;       ->  : [Ж]
+        //  ;       ->  ;
+        // shift ;  ->  :
         // (Ж)      ->  V [Ж]
         // ctrl  ;  ->  V [Ж]
         // ctrl (Ж) ->  : [;]
-        // shift ;  ->  +
-        // alt   ;  ->  ;
-        keyboard.put(';', H_SYMB2,
+        keyboard.put(';', H_SYMB3,          // TODO тут с Ж проблемы вместо нее печатается ;
                      'ж', H_V);
-        keyboard.put(shf(';'), nonH(H_SYMB3));
-        keyboard.put(alt(';'), nonH(H_SYMB3));
+        keyboard.put(shf(';'), nonH(H_SYMB2));
 
-        // '        ->  ^ [Ч]
-        // (Э)      ->  \ [Э]
-        // ctrl  '  ->  \ [Э]
-        // ctrl (Э) ->  Ч [^]
+        // '        ->  '
         // shift '  ->  "
-        // alt   '  ->  '
-        keyboard.put('Þ', H_SYMB4,
-                     'э', H_SYMB5);
+        keyboard.put(non('Þ'), shfH(H_7));
         keyboard.put(shf('Þ'), shfH(H_2));
-        keyboard.put(alt('Þ'), shfH(H_7));
+        //keyboard.put(cyr('э'),      nonH(H_SYMB5));  // TODO разобраться с Э
+        //keyboard.put(ctr(cyr('э')), nonH(H_SYMB4));
 
-        // \        ->  /
-        // shift \  ->  \ [Э]
-        keyboard.put(non('\\'), nonH(H_SYMB6));
-        keyboard.put(shf('\\'), shfH(H_SYMB5));
+        // \        ->  \ [Э]
+        // ctrl \   ->  /
+        keyboard.put(non('\\'), shfH(H_SYMB5));
+        keyboard.put(ctr('\\'), nonH(H_SYMB6));
 
         // четвертая линия стандартной клавиатуры
 
