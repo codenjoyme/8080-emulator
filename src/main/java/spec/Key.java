@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static spec.KeyCode.*;
+import static spec.math.WordMath.*;
 
 public class Key {
 
@@ -40,6 +41,10 @@ public class Key {
 
     public boolean pause() {
         return code == PAUSE;
+    }
+
+    public boolean capsLock() {
+        return code == CAPS_LOCK;
     }
 
     public boolean numSlash() {
@@ -155,4 +160,14 @@ public class Key {
                 || numFive()
                 || numSix();
     }
+
+    @Override
+    public String toString() {
+        return String.format("Key{code=0x%s / '%s', press=%s, mods=%s}",
+                hex8(code),
+                (char) code,
+                bitToString(press),
+                bits(mods));
+    }
+
 }

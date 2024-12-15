@@ -15,82 +15,78 @@ public class Layout {
 
         // 1        ->  1
         // shift 1  ->  !
-        keyboard.put(non('1'), non(H_1));
-        keyboard.put(shf('1'), shf(H_1));
+        keyboard.put(non('1'), nonH(H_1));
+        keyboard.put(shf('1'), shfH(H_1));
 
         // 2        ->  2
         // shift 2  ->  @ [Ю]                  // TODO от Ю надо как-то избавиться
         // alt   2  ->  "
-        keyboard.put(non('2'), non(H_2));
-        keyboard.put(shf('2'), non(H_SYMB8));
-        keyboard.put(alt('2'), shf(H_2));      // TODO не работает
+        keyboard.put(non('2'), nonH(H_2));
+        keyboard.put(shf('2'), nonH(H_SYMB8));
+        keyboard.put(alt('2'), shfH(H_2));
 
         // 3        ->  3
         // shift 3  ->  #
-        keyboard.put(non('3'), non(H_3));
-        keyboard.put(shf('3'), shf(H_3));
+        keyboard.put(non('3'), nonH(H_3));
+        keyboard.put(shf('3'), shfH(H_3));
 
         // 4        ->  4
         // shift 4  ->  $
-        // ctrl  4  ->  :
-        // alt   4  ->  ;
-        keyboard.put(non('4'), non(H_4));
-        keyboard.put(shf('4'), shf(H_4));
-        keyboard.put(ctr('4'), non(H_SYMB2));
-        keyboard.put(alt('4'), non(H_SYMB3));
+        // ctrl  4  ->  ;
+        // alt   4  ->  :
+        keyboard.put(non('4'), nonH(H_4));
+        keyboard.put(shf('4'), shfH(H_4));
+        keyboard.put(ctr('4'), nonH(H_SYMB3));
+        keyboard.put(alt('4'), nonH(H_SYMB2));
 
         // 5        ->  5
         // shift 5  ->  %
-        keyboard.put(non('5'), non(H_5));
-        keyboard.put(shf('5'), shf(H_5));
+        keyboard.put(non('5'), nonH(H_5));
+        keyboard.put(shf('5'), shfH(H_5));
 
         // 6        ->  6
         // shift 6  ->  ^ [Ч]                   // TODO от Ч надо как-то избавиться
         // ctrl  6  ->  :
         // alt   6  ->  ;
-        keyboard.put(non('6'), non(H_6));
-        keyboard.put(shf('6'), non(H_SYMB4));
-        keyboard.put(ctr('6'), non(H_SYMB2));
-        keyboard.put(alt('6'), non(H_SYMB3));
+        keyboard.put(non('6'), nonH(H_6));
+        keyboard.put(shf('6'), nonH(H_SYMB4));
+        keyboard.put(ctr('6'), nonH(H_SYMB2));
+        keyboard.put(alt('6'), nonH(H_SYMB3));
 
         // 7        ->  7
         // shift 7  ->  &
         // alt   7  ->  ?
         // ctrl  7  ->  '
-        keyboard.put(non('7'), non(H_7));
-        keyboard.put(shf('7'), shf(H_6));
-        keyboard.put(alt('7'), shf(H_SYMB6));
-        keyboard.put(ctr('7'), shf(H_7));
+        keyboard.put(non('7'), nonH(H_7));
+        keyboard.put(shf('7'), shfH(H_6));
+        keyboard.put(alt('7'), shfH(H_SYMB6));
+        keyboard.put(ctr('7'), shfH(H_7));
 
         // 8        ->  8
         // shift 8  ->  *
-        keyboard.put(non('8'), non(H_8));
-        keyboard.put(shf('8'), non(H_SYMB2));
+        keyboard.put(non('8'), nonH(H_8));
+        keyboard.put(shf('8'), shfH(H_SYMB2));
 
         // 9        ->  9
         // shift 9  ->  (
-        keyboard.put(non('9'), non(H_9));
-        keyboard.put(shf('9'), shf(H_8));
+        keyboard.put(non('9'), nonH(H_9));
+        keyboard.put(shf('9'), shfH(H_8));
 
         // 0        ->  0
         // shift 0  ->  )
         // alt 0    ->  ' '
-        keyboard.put(non('0'), non(H_SYMB11));
-        keyboard.put(shf('0'), shf(H_9));
-        keyboard.put(alt('0'), shf(H_SYMB11));
+        keyboard.put(non('0'), nonH(H_SYMB11));
+        keyboard.put(shf('0'), shfH(H_9));
+        keyboard.put(alt('0'), shfH(H_SYMB11));
 
         // -        ->  -
         // shift -  ->  _ TODO должен быть прочерк, но его кода не нашел
-        keyboard.put(non('-'), non(H_SYMB9));
+        keyboard.put(non('-'), nonH(H_SYMB9));
 
-        // =        ->  ;
+        // =        ->  =
         // shift =  ->  +
-        // ctrl  =  ->  :
-        // alt   =  ->  ;
-        keyboard.put(non('='), non(H_SYMB3));
-        keyboard.put(shf('='), non(H_SYMB3));
-        keyboard.put(ctr('='), non(H_SYMB2));
-        keyboard.put(alt('='), non(H_SYMB3));
+        keyboard.put(non('='), shfH(H_SYMB9));
+        keyboard.put(shf('='), shfH(H_SYMB3));
 
         // вторая линия стандартной клавиатуры
 
@@ -174,7 +170,7 @@ public class Layout {
                      'х', H_X);
 
         //  ]       ->  ] [Щ]
-        keyboard.put(non(']'), non(H_LEFT_SQUARE_BRACKET));
+        keyboard.put(non(']'), nonH(H_LEFT_SQUARE_BRACKET));
         // keyboard.put(cyr('ъ'), 0x00);  // нет такого знака
 
         // третья линия стандартной клавиатуры
@@ -250,8 +246,8 @@ public class Layout {
         // alt   ;  ->  ;
         keyboard.put(';', H_SYMB2,
                      'ж', H_V);
-        keyboard.put(shf(';'), non(H_SYMB3));
-        keyboard.put(alt(';'), non(H_SYMB3));
+        keyboard.put(shf(';'), nonH(H_SYMB3));
+        keyboard.put(alt(';'), nonH(H_SYMB3));
 
         // '        ->  ^ [Ч]
         // (Э)      ->  \ [Э]
@@ -261,13 +257,13 @@ public class Layout {
         // alt   '  ->  '
         keyboard.put('Þ', H_SYMB4,
                      'э', H_SYMB5);
-        keyboard.put(shf('Þ'), shf(H_2));
-        keyboard.put(alt('Þ'), shf(H_7));
+        keyboard.put(shf('Þ'), shfH(H_2));
+        keyboard.put(alt('Þ'), shfH(H_7));
 
         // \        ->  /
         // shift \  ->  \ [Э]
-        keyboard.put(non('\\'), non(H_SYMB6));
-        keyboard.put(shf('\\'), shf(H_SYMB5));
+        keyboard.put(non('\\'), nonH(H_SYMB6));
+        keyboard.put(shf('\\'), shfH(H_SYMB5));
 
         // четвертая линия стандартной клавиатуры
 
@@ -328,8 +324,8 @@ public class Layout {
         // ctrl  ,  ->  >
         keyboard.put(',', H_SYMB1,
                      'б', H_B);
-        keyboard.put(shf(','), shf(H_SYMB1));
-        keyboard.put(ctr(','), non(H_SYMB7));
+        keyboard.put(shf(','), shfH(H_SYMB1));
+        keyboard.put(ctr(','), nonH(H_SYMB7));
 
         //  .       ->  .
         // (Ю)      ->  @ [Ю]
@@ -339,50 +335,50 @@ public class Layout {
         // ctrl .   ->  <
         keyboard.put('.', H_SYMB7,
                      'ю', H_SYMB8);
-        keyboard.put(shf('.'), shf(H_SYMB7));
-        keyboard.put(ctr('.'), non(H_SYMB1));
+        keyboard.put(shf('.'), shfH(H_SYMB7));
+        keyboard.put(ctr('.'), nonH(H_SYMB1));
 
         // /        ->  /
         // ctrl  /  ->  \
         // shift /  ->  ?
-        keyboard.put(non('/'), non(H_SYMB6));
-        keyboard.put(ctr('/'), non(H_SYMB5));
-        keyboard.put(shf('/'), shf(H_SYMB6));
+        keyboard.put(non('/'), nonH(H_SYMB6));
+        keyboard.put(ctr('/'), nonH(H_SYMB5));
+        keyboard.put(shf('/'), shfH(H_SYMB6));
 
         // другие клавиши
 
-        keyboard.put(ENTER,       non(H_ВК));      // enter     -> ввод каретки
-        keyboard.put(alt((char)ENTER), non(H_ПС)); // alt enter -> перевод строки
-        keyboard.put(BACKSPACE,   non(H_ЗБ));      // backspace -> забой
-        keyboard.put(CAPS_LOCK,   non(H_РУС_ЛАТ)); // caps_lock -> рус/лат
+        keyboard.put(non(ENTER),       nonH(H_ВК));      // enter     -> ввод каретки
+        keyboard.put(alt(ENTER),       nonH(H_ПС)); // alt enter -> перевод строки
+        keyboard.put(non(BACKSPACE),   nonH(H_ЗБ));      // backspace -> забой
+        keyboard.put(non(CAPS_LOCK),   nonH(H_РУС_ЛАТ)); // caps_lock -> рус/лат
 
-        keyboard.put(ESC,     non(H_ESC));   // esc   ->  esc
-        keyboard.put(SPACE,   non(H_SPACE)); // space ->  space
+        keyboard.put(non(ESC),     nonH(H_ESC));   // esc   ->  esc
+        keyboard.put(non(SPACE),   nonH(H_SPACE)); // space ->  space
 
-        keyboard.put(INS,     non(H_ПВ));    // ins       ->  повтор
-        keyboard.put(HOME,    non(H_HOME));  // home      ->  home
-        keyboard.put(PG_UP,   non(H_TAB));   // page up   ->  tab
-        keyboard.put(DEL,     non(H_ЗБ));    // delete    ->  забой
-        keyboard.put(END,     non(H_F11));   // end       ->  F11
-        keyboard.put(PG_DOWN, non(H_F10));   // page down ->  F10
+        keyboard.put(non(INS),     nonH(H_ПВ));    // ins       ->  повтор
+        keyboard.put(non(HOME),    nonH(H_HOME));  // home      ->  home
+        keyboard.put(non(PG_UP),   nonH(H_TAB));   // page up   ->  tab
+        keyboard.put(non(DEL),     nonH(H_ЗБ));    // delete    ->  забой
+        keyboard.put(non(END),     nonH(H_F11));   // end       ->  F11
+        keyboard.put(non(PG_DOWN), nonH(H_F10));   // page down ->  F10
 
-        keyboard.put(UP,      non(H_UP));    // up    ->  вверх
-        keyboard.put(DOWN,    non(H_DOWN));  // down  ->  вних
-        keyboard.put(LEFT,    non(H_LEFT));  // left  ->  влево
-        keyboard.put(RIGHT,   non(H_RIGHT)); // right ->  вправо
+        keyboard.put(non(UP),      nonH(H_UP));    // up    ->  вверх
+        keyboard.put(non(DOWN),    nonH(H_DOWN));  // down  ->  вних
+        keyboard.put(non(LEFT),    nonH(H_LEFT));  // left  ->  влево
+        keyboard.put(non(RIGHT),   nonH(H_RIGHT)); // right ->  вправо
 
-        keyboard.put(F1,  non(H_F1));  // F1  ->  F1
-        keyboard.put(F2,  non(H_F2));  // F2  ->  F2
-        keyboard.put(F3,  non(H_F3));  // F3  ->  F3
-        keyboard.put(F4,  non(H_F4));  // F4  ->  F4
-        keyboard.put(F5,  non(H_F5));  // F5  ->  F5
-        keyboard.put(F6,  non(H_F6));  // F6  ->  F6
-        keyboard.put(F7,  non(H_F7));  // F7  ->  F7
-        keyboard.put(F8,  non(H_F8));  // F8  ->  F8
-        keyboard.put(F9,  non(H_F9));  // F9  ->  F9
-        keyboard.put(F10, non(H_F10)); // F10 ->  F10
-        keyboard.put(F11, non(H_F11)); // F11 ->  F11
-        keyboard.put(F12, non(H_F12)); // F12 ->  F12
+        keyboard.put(non(F1),  nonH(H_F1));  // F1  ->  F1
+        keyboard.put(non(F2),  nonH(H_F2));  // F2  ->  F2
+        keyboard.put(non(F3),  nonH(H_F3));  // F3  ->  F3
+        keyboard.put(non(F4),  nonH(H_F4));  // F4  ->  F4
+        keyboard.put(non(F5),  nonH(H_F5));  // F5  ->  F5
+        keyboard.put(non(F6),  nonH(H_F6));  // F6  ->  F6
+        keyboard.put(non(F7),  nonH(H_F7));  // F7  ->  F7
+        keyboard.put(non(F8),  nonH(H_F8));  // F8  ->  F8
+        keyboard.put(non(F9),  nonH(H_F9));  // F9  ->  F9
+        keyboard.put(non(F10), nonH(H_F10)); // F10 ->  F10
+        keyboard.put(non(F11), nonH(H_F11)); // F11 ->  F11
+        keyboard.put(non(F12), nonH(H_F12)); // F12 ->  F12
 
     } 
 }

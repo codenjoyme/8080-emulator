@@ -1,5 +1,7 @@
 package spec;
 
+import spec.math.WordMath;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -107,6 +109,16 @@ public class KeyRecord {
         public Action(int tick) {
             this.tick = tick;
             this.index = KeyRecord.this.scenario.size();
+        }
+
+        @Override
+        public String toString() {
+            return "Action{" +
+                    "tick=" + tick +
+                    ", keyCode='" + (char) keyCode.intValue() +
+                    "', press=" + press +
+                    ", mode=" + WordMath.bits(mode) +
+                    '}';
         }
 
         public Action shoot(String name) {

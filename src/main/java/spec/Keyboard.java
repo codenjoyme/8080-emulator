@@ -35,6 +35,9 @@ public class Keyboard implements StateProvider {
     // захата ли клавиша на эмулируемой клавиатуре
     private boolean shiftEmu;
 
+    // переключение рус/лат клавиатуры
+    private boolean rusLat;
+
     /**
      * @see #shift()
      */
@@ -50,43 +53,63 @@ public class Keyboard implements StateProvider {
     }
 
     public void put(char en, int enPt, char cr, int crPt) {
-        // '1 -> ...'        просто нажатая клавиша в english регистре хостовой машины
-        // '... -> 1 ...'    результат нажатия в english регистре виртуальной машины
-        // '... -> ... [3]'  результат нажатия в cyrillic регистре виртуальной машины
-        // '(4) -> ...'      нажатая клавиша в cyrillic раскладка хостовой машины
-        // 'ctrl ... -> ...' нажатая c control клавиша на хостовой машине
-        put(non(en), non(enPt)); //  1  -> 1 [3]
-        put(cyr(cr), non(crPt)); // (4) -> 2 [4]
-        put(non(en), non(crPt)); // ctrl  1  -> 2 [4]
-        put(cyr(cr), non(enPt)); // ctrl (4) -> 3 [1]
+        // '1        ->  ...'      просто нажатая клавиша в english регистре хостовой машины
+        // '...      ->  1 ...'    результат нажатия в english регистре виртуальной машины
+        // '...      ->  ... [3]'  результат нажатия в cyrillic регистре виртуальной машины
+        // '(4)      ->  ...'      нажатая клавиша в cyrillic раскладка хостовой машины
+        // 'ctrl ... ->  ...'      нажатая c control клавиша на хостовой машине
+        put(non(en),      nonH(enPt)); //  1       ->  1 [3]
+        put(cyr(cr),      nonH(crPt)); // (4)      ->  2 [4]
+        put(ctr(en),      nonH(crPt)); // ctrl  1  ->  2 [4]
+        put(ctr(cyr(cr)), nonH(enPt)); // ctrl (4) ->  3 [1]
     }
 
-    public static Pair<Integer, Boolean> non(int point) {
+    public static Pair<Integer, Boolean> nonH(int point) {
         return Pair.of(point, false);
     }
 
-    public static Pair<Integer, Boolean> shf(int point) {
+    public static Pair<Integer, Boolean> shfH(int point) {
         return Pair.of(point, true);
     }
 
-    public static Integer non(char code) {
-        return (int) code;
+    public static int non(int code) {
+        return code;
     }
 
-    public static Integer cyr(char code) {
-        return (int) code | CYRILLIC_MASK;
+    public static int non(char code) {
+        return code;
     }
 
-    public static Integer alt(char code) {
-        return (int) code | ALT_MASK;
+    public static int cyr(char code) {
+        return cyr((int) code);
     }
 
-    public static Integer ctr(char code) {
-        return (int) code | CTRL_MASK;
+    public static int cyr(int code) {
+        return code | CYRILLIC_MASK;
     }
 
-    public static Integer shf(char code) {
-        return (int) code | SHIFT_MASK;
+    public static int alt(char code) {
+        return alt((int) code);
+    }
+
+    public static int alt(int code) {
+        return code | ALT_MASK;
+    }
+
+    public static int ctr(char code) {
+        return ctr((int) code);
+    }
+
+    public static int ctr(int code) {
+        return code | CTRL_MASK;
+    }
+
+    public static int shf(char code) {
+        return shf((int) code);
+    }
+
+    public static int shf(int code) {
+        return code | SHIFT_MASK;
     }
 
     public void put(Integer codeOnHost, Pair<Integer, Boolean> codeOnEmulator) {
@@ -135,6 +158,7 @@ public class Keyboard implements StateProvider {
         shift = false;
         alt = false;
         ctrl = false;
+        rusLat = false;
 
         for (int i = 0; i < 12; i++) {  // все кнопки не нажаты
             for (int j = 0; j < 6; j++) {
@@ -144,6 +168,10 @@ public class Keyboard implements StateProvider {
     }
 
     private void pressKey(Key key) {
+        if (key.capsLock()) {
+            rusLat = !rusLat;
+        }
+
         Pair<Integer, Boolean> value = key(key.joint());
         if (value == null) {
             return;
@@ -155,6 +183,12 @@ public class Keyboard implements StateProvider {
             if (value.getRight()) {
                 shiftEmu = false;
             }
+        }
+
+        int x = (point & 0xF0) >> 4;
+        int y = point & 0x0F;
+        if (keyStatus[x][y] != key.pressed()) {
+            logKey(key, point);
         }
 
         /**
@@ -237,9 +271,9 @@ public class Keyboard implements StateProvider {
 
     public void bitesState(int bite) {
         // 0b__shift_alt_ctrl_0__0_0_0_0
-        shift(bite);
-        alt(bite);
-        ctrl(bite);
+        setShift(bite);
+        setAlt(bite);
+        setCtrl(bite);
     }
 
     public int bitesState() {
@@ -265,15 +299,15 @@ public class Keyboard implements StateProvider {
         return shiftEmu;
     }
 
-    private void shift(int bite) {
+    private void setShift(int bite) {
         shift = isSet(bite, b1000_0000);
     }
 
-    private void alt(int bite) {
+    private void setAlt(int bite) {
         alt = isSet(bite, b0100_0000);
     }
 
-    private void ctrl(int bite) {
+    private void setCtrl(int bite) {
         ctrl = isSet(bite, b0010_0000);
     }
 
@@ -296,7 +330,6 @@ public class Keyboard implements StateProvider {
                 return;
             }
 
-            logKey(key, point);
             keyStatus[x][y] = key.pressed();
         }
     }

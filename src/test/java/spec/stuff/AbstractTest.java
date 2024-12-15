@@ -218,6 +218,7 @@ public abstract class AbstractTest {
             @Override
             public void updateState() {
                 // делаем все по быстрому
+                hard.keyboard().tick();
             }
 
             @Override
