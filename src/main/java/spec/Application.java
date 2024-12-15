@@ -41,13 +41,13 @@ public class Application {
     public void lostFocus() {
         Logger.debug("Lost focus");
         hard.graphic().printIO(BORDER_PORT, 0x50);
-        hard.keyboard().reset();
+        hard.keyboard().reset(false);
     }
 
     public void gotFocus() {
         Logger.debug("Got focus");
         hard.graphic().printIO(BORDER_PORT, 0x30);
-        hard.keyboard().reset();
+        hard.keyboard().reset(false);
     }
 
     public void handleKey(Key key) {

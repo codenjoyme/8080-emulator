@@ -246,7 +246,7 @@ public class Hardware {
     private void justReset() {
         cpu.reset();
         ports.reset();
-        keyboard.reset();
+        keyboard.reset(true);
         keyLogger.reset();
     }
 

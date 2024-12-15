@@ -7,7 +7,7 @@ import static spec.Keyboard.*;
 
 public class Layout extends AbstractLayout {
 
-    public Pair<Integer, Boolean> get(int code, boolean rusLat) {
+    public Pair<Integer, Boolean> get(int code, boolean cyrLat) {
         Pair<Integer, Boolean> result = null;
 
         // первая линия стандартной клавиатуры
@@ -17,396 +17,542 @@ public class Layout extends AbstractLayout {
         //keyboard.putCyrl('ё', 0x00);
         //keyboard.putCrSh('ё', 0x00);
 
-        // 1        ->  1
-        // shift 1  ->  !
-        if (code == non('1')) return nonH(H_1);
-        if (code == shf('1')) return shfH(H_1);
+        //              cyr | lat
+        // 1        ->   1     1
+        // shift 1  ->   !     !
+        // ctrl  1  ->
+        // alt   1  ->
+        if (code == non('1')) return HS_1;
+        if (code == shf('1')) return HS_EXCLAMATION_MARK;
+        if (code == ctr('1')) ;
+        if (code == alt('1')) ;
 
-        // 2        ->  2
-        // shift 2  ->  @ [Ю]                  // TODO от Ю надо как-то избавиться
-        // alt   2  ->  "
-        if (code == non('2')) return nonH(H_2);
-        if (code == shf('2')) return nonH(H_SYMB8);
-        if (code == alt('2')) return shfH(H_2);
+        //              cyr | lat
+        // 2        ->   2     2
+        // shift 2  ->   "     @
+        // ctrl  2  ->         "
+        // alt   2  ->
+        if (code == non('2')) return HS_2;
+        if (cyrLat) {
+            if (code == shf('2')) return HS_QUOTE;
+            if (code == ctr('2')) ; // TODO в кириллице нет символа @, то вместо него возвращается 'Ю'
+            if (code == alt('2')) ;
+        } else {
+            if (code == shf('2')) return HS_LAT_AT;
+            if (code == ctr('2')) return HS_QUOTE;
+            if (code == alt('2')) ;
+        }
 
-        // 3        ->  3
-        // shift 3  ->  #
-        if (code == non('3')) return nonH(H_3);
-        if (code == shf('3')) return shfH(H_3);
+        //              cyr | lat
+        // 3        ->   3     3
+        // shift 3  ->   #     #
+        // ctrl  3  ->
+        // alt   3  ->
+        if (code == non('3')) return HS_3;
+        if (code == shf('3')) return HS_NUMBER_SIGN; // TODO в реальной клавиатуре в cyr должен быть '№' но в ЛИКе нет такого символа
+        if (code == ctr('3')) ;
+        if (code == alt('3')) ;
 
-        // 4        ->  4
-        // shift 4  ->  $
-        // ctrl  4  ->  ;
-        // alt   4  ->  :
-        if (code == non('4')) return nonH(H_4);
-        if (code == shf('4')) return shfH(H_4);
-        if (code == ctr('4')) return nonH(H_SYMB3);
-        if (code == alt('4')) return nonH(H_SYMB2);
+        //              cyr | lat
+        // 4        ->   4     4
+        // shift 4  ->   ;     $
+        // ctrl  4  ->   :     ;
+        // alt   4  ->   $     :
+        if (code == non('4')) return HS_4;
+        if (cyrLat) {
+            if (code == shf('4')) return HS_SEMICOLON;
+            if (code == ctr('4')) return HS_COLON;
+            if (code == alt('4')) return HS_DOLLAR;
+        } else {
+            if (code == shf('4')) return HS_DOLLAR;
+            if (code == ctr('4')) return HS_SEMICOLON;
+            if (code == alt('4')) return HS_COLON;
+        }
 
-        // 5        ->  5
-        // shift 5  ->  %
-        if (code == non('5')) return nonH(H_5);
-        if (code == shf('5')) return shfH(H_5);
+        //              cyr | lat
+        // 5        ->   5     5
+        // shift 5  ->   %     %
+        // ctrl  5  ->
+        // alt   5  ->
+        if (code == non('5')) return HS_5;
+        if (code == shf('5')) return HS_PERCENT;
+        if (code == ctr('5')) ;
+        if (code == alt('5')) ;
 
-        // 6        ->  6
-        // shift 6  ->  ^ [Ч]                   // TODO от Ч надо как-то избавиться
-        // ctrl  6  ->  :
-        // alt   6  ->  ;
-        if (code == non('6')) return nonH(H_6);
-        if (code == shf('6')) return nonH(H_SYMB4);
-        if (code == ctr('6')) return nonH(H_SYMB2);
-        if (code == alt('6')) return nonH(H_SYMB3);
+        //              cyr | lat
+        // 6        ->   6     6
+        // shift 6  ->   :     ^
+        // ctrl  6  ->   ;     :
+        // alt   6  ->         ;
+        if (code == non('6')) return HS_6;
+        if (cyrLat) {
+            if (code == shf('6')) return HS_COLON;
+            if (code == ctr('6')) return HS_SEMICOLON;
+            if (code == alt('6')) ; // TODO в кириллице нет символа '^', то вместо него возвращается 'Ч'
+        } else {
+            if (code == shf('6')) return HS_LAT_CIRCUMFLEX;
+            if (code == ctr('6')) return HS_COLON;
+            if (code == alt('6')) return HS_SEMICOLON;
+        }
 
-        // 7        ->  7
-        // shift 7  ->  &
-        // alt   7  ->  ?
-        // ctrl  7  ->  '
-        if (code == non('7')) return nonH(H_7);
-        if (code == shf('7')) return shfH(H_6);
-        if (code == alt('7')) return shfH(H_SYMB6);
-        if (code == ctr('7')) return shfH(H_7);
+        //              cyr | lat
+        // 7        ->   7     7
+        // shift 7  ->   ?     &
+        // ctrl  7  ->   &     ?
+        // alt   7  ->   '     '
+        if (code == non('7')) return HS_7;
+        if (cyrLat) {
+            if (code == shf('7')) return HS_QUESTION_MARK;
+            if (code == ctr('7')) return HS_AMPERSAND;
+            if (code == alt('7')) return HS_APOSTROPHE;
+        } else {
+            if (code == shf('7')) return HS_AMPERSAND;
+            if (code == ctr('7')) return HS_QUESTION_MARK;
+            if (code == alt('7')) return HS_APOSTROPHE;
+        }
 
-        // 8        ->  8
-        // shift 8  ->  *
-        if (code == non('8')) return nonH(H_8);
-        if (code == shf('8')) return shfH(H_SYMB2);
+        //              cyr | lat
+        // 8        ->   8     8
+        // shift 8  ->   *     *
+        // ctrl  8  ->
+        // alt   8  ->
+        if (code == non('8')) return HS_8;
+        if (code == shf('8')) return HS_ASTERISK;
+        if (code == ctr('8')) ;
+        if (code == alt('8')) ;
 
-        // 9        ->  9
-        // shift 9  ->  (
-        if (code == non('9')) return nonH(H_9);
-        if (code == shf('9')) return shfH(H_8);
+        //              cyr | lat
+        // 9        ->   9     9
+        // shift 9  ->   (     (
+        // ctrl  9  ->
+        // alt   9  ->
+        if (code == non('9')) return HS_9;
+        if (code == shf('9')) return HS_LEFT_PARENTHESIS;
+        if (code == ctr('9')) ;
+        if (code == alt('9')) ;
 
-        // 0        ->  0
-        // shift 0  ->  )
-        // alt 0    ->  ' '
-        if (code == non('0')) return nonH(H_SYMB11);
-        if (code == shf('0')) return shfH(H_9);
-        if (code == alt('0')) return shfH(H_SYMB11);
+        //              cyr | lat
+        // 0        ->   0     0
+        // shift 0  ->   )     )
+        // ctrl  0  ->
+        // alt 0    ->  ' '   ' '
+        if (code == non('0')) return HS_ZERO;
+        if (code == shf('0')) return HS_RIGHT_PARENTHESIS;
+        if (code == ctr('0')) ;
+        if (code == alt('0')) return HS_SPACE;  // TODO так у самого ЛИКа c shift 0
 
-        // -        ->  -
-        // shift -  ->  _ TODO должен быть прочерк, но его кода не нашел
-        if (code == non('-')) return nonH(H_SYMB9);
+        //              cyr | lat
+        // -        ->   -
+        // shift -  ->
+        // ctrl  -  ->
+        // alt   -  ->
+        if (code == non('-')) return HS_MINUS;
+        if (code == shf('-')) ; // TODO должен быть прочерк, но его кода не нашел
+        if (code == ctr('-')) ;
+        if (code == alt('-')) ;
 
-        // =        ->  =
-        // shift =  ->  +
-        if (code == non('=')) return shfH(H_SYMB9);
-        if (code == shf('=')) return shfH(H_SYMB3);
+        //              cyr | lat
+        // =        ->   =     =
+        // shift =  ->   +     +
+        // ctrl  =  ->
+        // alt   =  ->
+        if (code == non('=')) return HS_EQUALS;
+        if (code == shf('=')) return HS_PLUS;
+        if (code == ctr('=')) ;
+        if (code == alt('=')) ;
 
         // вторая линия стандартной клавиатуры
 
         // Tab не определяется в Swing
 
-        //  Q       ->  Q [Я]
-        // (Й)      ->  J [Й]
-        // ctrl  Q  ->  J [Й]
-        // ctrl (Й) ->  Я [Q]
-        result = is(code, rusLat, 
-                'Q', H_Q,
-                'й', H_J);
+        //              cyr | lat
+        //  Q       ->   Й     Q
+        // ctrl  Q  ->   Я     J
+        // (Й)      ->   Я     J
+        // ctrl (Й) ->   Й     Q
+        result = is(code, cyrLat,
+                'Q', H_cyr_Я_OR_lat_Q,
+                'й', H_cyr_Й_OR_lat_J);
         if (result != null) return result;
 
-        //  W       ->  W [В]
-        // (Ц)      ->  С [Ц]
-        // ctrl  W  ->  С [Ц]
-        // ctrl (Ц) ->  В [W]
-        result = is(code, rusLat, 
-                'W', H_W,
-                'ц', H_C);
+        //              cyr | lat
+        //  W       ->   Ц     W
+        // ctrl  W  ->   В     C
+        // (Ц)      ->   В     C
+        // ctrl (Ц) ->   Ц     W
+        result = is(code, cyrLat,
+                'W', H_cyr_В_OR_lat_W,
+                'ц', H_cyr_Ц_OR_lat_C);
         if (result != null) return result;
 
-        //  E       ->  E [E]
-        // (У)      ->  U [У]
-        // ctrl  E  ->  U [У]
-        // ctrl (У) ->  E [E]
-        result = is(code, rusLat, 
-                'E', H_E,
-                'у', H_U);
+        //              cyr | lat
+        //  E       ->   У     E
+        // ctrl  E  ->   Е     U
+        // (У)      ->   Е     U
+        // ctrl (У) ->   У     E
+        result = is(code, cyrLat,
+                'E', H_cyr_Е_OR_lat_E,
+                'у', H_cyr_У_OR_lat_U);
         if (result != null) return result;
 
-        //  R       ->  R [Р]
-        // (К)      ->  К [К]
-        // ctrl  R  ->  К [К]
-        // ctrl (К) ->  Р [R]
-        result = is(code, rusLat, 
-                'R', H_R,
-                'к', H_K);
+        //              cyr | lat
+        //  R       ->   К     R
+        // ctrl  R  ->   Р     K    
+        // (К)      ->   Р     K
+        // ctrl (К) ->   К     R
+        result = is(code, cyrLat,
+                'R', H_cyr_Р_OR_lat_R,
+                'к', H_cyr_К_OR_lat_K);
         if (result != null) return result;
 
-        //  T       ->  T [Т]
-        // (Е)      ->  Е [Е]
-        // ctrl  T  ->  Е [Е]
-        // ctrl (Е) ->  Т [T]
-        result = is(code, rusLat, 
-                'T', H_T,
-                'е', H_E);
+        //              cyr | lat
+        //  T       ->   Е     T
+        // ctrl  T  ->   Т     E
+        // (Е)      ->   Т     E
+        // ctrl (Е) ->   Е     T
+        result = is(code, cyrLat,
+                'T', H_cyr_Т_OR_lat_T,
+                'е', H_cyr_Е_OR_lat_E);
         if (result != null) return result;
 
-        //  Y       ->  Y [Ы]
-        // (Н)      ->  N [Н]
-        // ctrl  Y  ->  N [Н]
-        // ctrl (Н) ->  Ы [Y]
-        result = is(code, rusLat, 
-                'Y', H_Y,
-                'н', H_N);
+
+        //              cyr | lat
+        //  Y       ->   Н     Y
+        // ctrl  Y  ->   Ы     N
+        // (Н)      ->   Ы     N
+        // ctrl (Н) ->   Н     Y
+        result = is(code, cyrLat,
+                'Y', H_cyr_Ы_OR_lat_Y,
+                'н', H_cyr_Н_OR_lat_N);
         if (result != null) return result;
 
-        //  U       ->  U [У]
-        // (Г)      ->  G [Г]
-        // ctrl  U  ->  G [Г]
-        // ctrl (Г) ->  У [U]
-        result = is(code, rusLat, 
-                'U', H_U,
-                'г', H_G);
+        //              cyr | lat
+        //  U       ->   Г     U
+        // ctrl  U  ->   У     G
+        // (Г)      ->   У     G
+        // ctrl (Г) ->   Г     U
+        result = is(code, cyrLat,
+                'U', H_cyr_У_OR_lat_U,
+                'г', H_cyr_Г_OR_lat_G);
         if (result != null) return result;
 
-        //  I       ->  I [И]
-        // (Ш)      ->  [ [Ш]
-        // ctrl  I  ->  [ [Ш]
-        // ctrl (Ш) ->  И [I]
-        result = is(code, rusLat, 
-                'I', H_I,
-                'ш', H_RIGHT_SQUARE_BRACKET);
+        //              cyr | lat
+        //  I       ->   Ш     I
+        // ctrl  I  ->   И     [
+        // (Ш)      ->   И     [
+        // ctrl (Ш) ->   Ш     I
+        result = is(code, cyrLat,
+                'I', H_cyr_И_OR_lat_I,
+                'ш', H_cyr_Ш_OR_lat_LeftSquareBracket);
         if (result != null) return result;
 
-        //  O       ->  O [О]
-        // (Щ)      ->  ] [Щ]
-        // ctrl  O  ->  ] [Щ]
-        // ctrl (Щ) ->  О [O]
-        result = is(code, rusLat, 
-                'O', H_O,
-                'щ', H_LEFT_SQUARE_BRACKET);
+        //              cyr | lat
+        //  O       ->   Щ     O
+        // ctrl  O  ->   О     ]
+        // (Щ)      ->   О     ]
+        // ctrl (Щ) ->   Щ     O
+        result = is(code, cyrLat,
+                'O', H_cyr_О_OR_lat_O,
+                'щ', H_cyr_Щ_OR_lat_RightSquareBracket);
         if (result != null) return result;
 
-        //  P       ->  P [П]
-        // (З)      ->  Z [З]
-        // ctrl  P  ->  Z [З]
-        // ctrl (З) ->  П [P]
-        result = is(code, rusLat, 
-                'P', H_P,
-                'з', H_Z);
+        //              cyr | lat
+        //  P       ->   З     P
+        // ctrl  P  ->   П     Z
+        // (З)      ->   П     Z
+        // ctrl (З) ->   З     P
+        result = is(code, cyrLat,
+                'P', H_cyr_П_OR_lat_P,
+                'з', H_cyr_З_OR_lat_Z);
         if (result != null) return result;
 
-        //  [       ->  [ [Ш]
-        // (Х)      ->  Ь [Х]
-        // ctrl  [  ->  Ь [Х]
-        // ctrl (Х) ->  Ш [[]
-        result = is(code, rusLat, 
-                '[', H_RIGHT_SQUARE_BRACKET,
-                'х', H_X);
+        //              cyr | lat
+        // [        ->   Ь     [
+        // ctrl  ]  ->   Щ     X
+        // (Ь)      ->   Щ     X
+        // ctrl (Ь) ->   Ь     [
+        result = is(code, cyrLat,
+                '[', H_cyr_Ш_OR_lat_LeftSquareBracket,
+                'х', H_cyr_Ь_OR_lat_X);
         if (result != null) return result;
 
-        //  ]       ->  ] [Щ]
-        if (code == non(']')) return nonH(H_LEFT_SQUARE_BRACKET);
-        // if (code == cyr('ъ')) return 0x00);  // нет такого знака
+        //              cyr | lat
+        // ]        ->         ]
+        if (cyrLat) {
+            if (code == cyr('ъ')) ; // TODO нет такого знака в ЛИКе
+        } else {
+            if (code == non(']')) return HS_LAT_RIGHT_SQUARE_BRACKET;
+        }
 
         // третья линия стандартной клавиатуры
 
-        //  A       ->  A [А]
-        // (Ф)      ->  F [Ф]
-        // ctrl  A  ->  F [Ф]
-        // ctrl (Ф) ->  А [A]
-        result = is(code, rusLat, 
-                'A', H_A,
-                'ф', H_F);
+        //              cyr | lat
+        //  A       ->   Ф     A
+        // ctrl  A  ->   А     F
+        // (Ф)      ->   А     F
+        // ctrl (Ф) ->   Ф     A
+        result = is(code, cyrLat,
+                'A', H_cyr_А_OR_lat_A,
+                'ф', H_cyr_Ф_OR_lat_F);
         if (result != null) return result;
 
-        //  S       ->  S [С]
-        // (Ы)      ->  Y [Ы]
-        // ctrl  S  ->  Y [Ы]
-        // ctrl (Ы) ->  С [S]
-        result = is(code, rusLat, 
-                'S', H_S,
-                'ы', H_Y);
+        //              cyr | lat
+        //  S       ->   Ы     S
+        // ctrl  S  ->   С     Y
+        // (Ы)      ->   С     Y
+        // ctrl (Ы) ->   Ы     S
+        result = is(code, cyrLat,
+                'S', H_cyr_С_OR_lat_S,
+                'ы', H_cyr_Ы_OR_lat_Y);
         if (result != null) return result;
 
-        //  D       ->  D [Д]
-        // (В)      ->  W [В]
-        // ctrl  D  ->  W [В]
-        // ctrl (В) ->  Д [D]
-        result = is(code, rusLat, 
-                'D', H_D,
-                'в', H_W);
+        //              cyr | lat
+        //  D       ->   В     D
+        // ctrl  D  ->   Д     W
+        // (В)      ->   Д     W
+        // ctrl (В) ->   В     D
+        result = is(code, cyrLat,
+                'D', H_cyr_Д_OR_lat_D,
+                'в', H_cyr_В_OR_lat_W);
         if (result != null) return result;
 
-        //  F       ->  F [Ф]
-        // (А)      ->  A [А]
-        // ctrl  F  ->  A [А]
-        // ctrl (А) ->  Ф [F]
-        result = is(code, rusLat, 
-                'F', H_F,
-                'а', H_A);
+        //              cyr | lat
+        //  F       ->   А     F
+        // ctrl  F  ->   Ф     A
+        // (А)      ->   Ф     A
+        // ctrl (А) ->   А     F
+        result = is(code, cyrLat,
+                'F', H_cyr_Ф_OR_lat_F,
+                'а', H_cyr_А_OR_lat_A);
         if (result != null) return result;
 
-        //  G       ->  G [Г]
-        // (П)      ->  P [П]
-        // ctrl  G  ->  P [П]
-        // ctrl (П) ->  Г [G]
-        result = is(code, rusLat, 
-                'G', H_G,
-                'п', H_P);
+        //              cyr | lat
+        //  G       ->   П     G
+        // ctrl  G  ->   Г     P
+        // (П)      ->   Г     P
+        // ctrl (П) ->   П     G
+        result = is(code, cyrLat,
+                'G', H_cyr_Г_OR_lat_G,
+                'п', H_cyr_П_OR_lat_P);
         if (result != null) return result;
 
-        //  H       ->  H [Х]
-        // (Р)      ->  R [Р]
-        // ctrl  H  ->  R [Р]
-        // ctrl (Р) ->  Х [H]
-        result = is(code, rusLat, 
-                'H', H_H,
-                'р', H_R);
+        //              cyr | lat
+        //  H       ->   Р     H
+        // ctrl  H  ->   Х     R
+        // (Р)      ->   Х     R
+        // ctrl (Р) ->   Р     H
+        result = is(code, cyrLat,
+                'H', H_cyr_Х_OR_lat_H,
+                'р', H_cyr_Р_OR_lat_R);
         if (result != null) return result;
 
-        //  J       ->  J [Й]
-        // (О)      ->  O [О]
-        // ctrl  J  ->  O [О]
-        // ctrl (О) ->  Й [J]
-        result = is(code, rusLat, 
-                'J', H_J,
-                'о', H_O);
+        //              cyr | lat
+        //  J       ->   О     J
+        // ctrl  J  ->   Й     O
+        // (О)      ->   Й     O
+        // ctrl (О) ->   О     J
+        result = is(code, cyrLat,
+                'J', H_cyr_Й_OR_lat_J,
+                'о', H_cyr_О_OR_lat_O);
         if (result != null) return result;
 
-        //  K       ->  K [К]
-        // (Л)      ->  L [Л]
-        // ctrl  K  ->  L [Л]
-        // ctrl (Л) ->  К [K]
-        result = is(code, rusLat, 
-                'K', H_K,
-                'л', H_L);
+        //              cyr | lat
+        //  K       ->   Л     K
+        // ctrl  K  ->   К     L
+        // (Л)      ->   К     L
+        // ctrl (Л) ->   Л     K
+        result = is(code, cyrLat,
+                'K', H_cyr_К_OR_lat_K,
+                'л', H_cyr_Л_OR_lat_L);
         if (result != null) return result;
 
-        //  L       ->  L [Л]
-        // (Д)      ->  D [Д]
-        // ctrl  L  ->  D [Д]
-        // ctrl (Д) ->  Л [L]
-        result = is(code, rusLat, 
-                'L', H_L,
-                'д', H_D);
+        //              cyr | lat
+        //  L       ->   Д     L
+        // ctrl  L  ->   Л     D
+        // (Д)      ->   Л     D
+        // ctrl (Д) ->   Д     L
+        result = is(code, cyrLat,
+                'L', H_cyr_Л_OR_lat_L,
+                'д', H_cyr_Д_OR_lat_D);
         if (result != null) return result;
 
-        //  ;       ->  ;
-        // shift ;  ->  :
-        // (Ж)      ->  V [Ж]
-        // ctrl  ;  ->  V [Ж]
-        // ctrl (Ж) ->  : [;]
-        result = is(code, rusLat, 
-                ';', H_SYMB3,          // TODO тут с Ж проблемы вместо нее печатается ;
-                'ж', H_V);
+        //              cyr | lat
+        // shift ;  ->   :     :
+        // ;        ->   Ж     ;
+        // ctrl  ;  ->   ;     V
+        // (Ж)      ->   ;     V
+        // ctrl (Ж) ->   Ж     ;
+        result = is(code, cyrLat,
+                ';', H_none_Semicolon_OR_shift_Plus,   // TODO вот не совсем понятно надо ли тут так сложно
+                'ж', H_cyr_Ж_OR_lat_V);
         if (result != null) return result;
-        if (code == shf(';')) return nonH(H_SYMB2);
+        if (code == shf(';')) return HS_COLON;
 
-        // '        ->  '
-        // shift '  ->  "
-        if (code == non('Þ')) return shfH(H_7);
-        if (code == shf('Þ')) return shfH(H_2);
-        //if (code == cyr('э')) return      nonH(H_SYMB5);  // TODO разобраться с Э
-        //if (code == ctr(cyr('э'))) return nonH(H_SYMB4);
+        //              cyr | lat
+        // '        ->   Э     '
+        // shift '  ->         "
+        // ctrl  '  ->
+        // alt   '  ->
+        if (cyrLat) {
+            if (code == non('Þ')) return HS_CYR_Э;
+            if (code == shf('Þ')) ;
+            if (code == ctr('Þ')) ;
+            if (code == alt('Þ')) ;
+        } else {
+            if (code == non('Þ')) return HS_APOSTROPHE;
+            if (code == shf('Þ')) return HS_QUOTE;
+            if (code == ctr('Þ')) ;
+            if (code == alt('Þ')) ;
+        }
 
-        // \        ->  \ [Э]
-        // ctrl \   ->  /
-        if (code == non('\\')) return shfH(H_SYMB5);
-        if (code == ctr('\\')) return nonH(H_SYMB6);
+        //              cyr | lat
+        // \        ->   /     \
+        // shift \  ->   /
+        // ctrl  \  ->         /
+        // alt   \  ->
+        if (cyrLat) {
+            if (code == non('\\')) return HS_SLASH; // TODO тут должно быть '\' но в кириллице там вылетает 'Э' вместо '\'
+            if (code == shf('\\')) return HS_SLASH;
+            if (code == ctr('\\')) ;
+            if (code == alt('\\')) ;
+        } else {
+            if (code == non('\\')) return HS_LAT_BACKSLASH;
+            if (code == shf('\\')) ; // TODO тут должно быть '|' но такого символа нет в ЛИКе
+            if (code == ctr('\\')) return HS_SLASH;
+            if (code == alt('\\')) ;
+        }
 
         // четвертая линия стандартной клавиатуры
 
-        //  Z       ->  Z [З]
-        // (Я)      ->  Q [Я]
-        // ctrl  Z  ->  Q [Я]
-        // ctrl (Я) ->  З [Z]
-        result = is(code, rusLat, 
-                'Z', H_Z,
-                'я', H_Q);
+        //              cyr | lat
+        //  H       ->   Р     H
+        // ctrl  H  ->   Х     R
+        // (Р)      ->   Х     R
+        // ctrl (Р) ->   Р     H
+        result = is(code, cyrLat,
+                'H', H_cyr_Х_OR_lat_H,
+                'р', H_cyr_Р_OR_lat_R);
         if (result != null) return result;
 
-        //  X       ->  X [Ь]
-        // (Ч)      ->  ^ [Ч]
-        // ctrl  X  ->  ^ [Ч]
-        // ctrl (Ч) ->  Ь [X]
-        result = is(code, rusLat, 
-                'X', H_X,
-                'ч', H_SYMB4);
+        //              cyr | lat
+        //  Z       ->   Я     Z
+        // ctrl  Z  ->   З     Q
+        // (Я)      ->   З     Q
+        // ctrl (Я) ->   Я     Z
+        result = is(code, cyrLat,
+                'Z', H_cyr_З_OR_lat_Z,
+                'я', H_cyr_Я_OR_lat_Q);
         if (result != null) return result;
 
-        //  C       ->  C [Ц]
-        // (С)      ->  S [С]
-        // ctrl  C  ->  S [С]
-        // ctrl (С) ->  Ц [C]
-        result = is(code, rusLat, 
-                'C', H_C,
-                'с', H_S);
+        //              cyr | lat
+        //  X       ->   Ч     X
+        // ctrl  X  ->   Ь     ^
+        // (Ч)      ->   Ь     ^
+        // ctrl (Ч) ->   Ч     X
+        result = is(code, cyrLat,
+                'X', H_cyr_Ь_OR_lat_X,
+                'ч', H_cyr_Ч_OR_lat_Circumflex);
         if (result != null) return result;
 
-        //  V       ->  V [Ж]
-        // (М)      ->  M [М]
-        // ctrl  V  ->  M [М]
-        // ctrl (М) ->  Ж [V]
-        result = is(code, rusLat, 
-                'V', H_V,
-                'м', H_M);
+        //              cyr | lat
+        //  C       ->   С     C
+        // ctrl  C  ->   Ц     S
+        // (С)      ->   Ц     S
+        // ctrl (С) ->   С     C
+        result = is(code, cyrLat,
+                'C', H_cyr_Ц_OR_lat_C,
+                'с', H_cyr_С_OR_lat_S);
         if (result != null) return result;
 
-        //  B       ->  B [Б]
-        // (И)      ->  I [И]
-        // ctrl  B  ->  I [И]
-        // ctrl (И) ->  Б [B]
-        result = is(code, rusLat, 
-                'B', H_B,
-                'и', H_I);
+        //              cyr | lat
+        //  V       ->   М     V
+        // ctrl  V  ->   Ж     M
+        // (М)      ->   Ж     M
+        // ctrl (М) ->   М     V
+        result = is(code, cyrLat,
+                'V', H_cyr_Ж_OR_lat_V,
+                'м', H_cyr_М_OR_lat_M);
         if (result != null) return result;
 
-        //  N       ->  N [Н]
-        // (Т)      ->  T [Т]
-        // ctrl  N  ->  T [Т]
-        // ctrl (Т) ->  Н [N]
-        result = is(code, rusLat, 
-                'N', H_N,
-                'т', H_T);
+        //              cyr | lat
+        //  B       ->   И     B
+        // ctrl  B  ->   Б     I
+        // (И)      ->   Б     I
+        // ctrl (И) ->   И     B
+        result = is(code, cyrLat,
+                'B', H_cyr_Б_OR_lat_B,
+                'и', H_cyr_И_OR_lat_I);
         if (result != null) return result;
 
-        //  M       ->  M [М]
-        // (Ь)      ->  X [Ь]
-        // ctrl  M  ->  X [Ь]
-        // ctrl (Ь) ->  М [M]
-        result = is(code, rusLat, 
-                'M', H_M,
-                'ь', H_X);
+        //              cyr | lat
+        //  N       ->   Т     N
+        // ctrl  N  ->   Н     T
+        // (Т)      ->   Н     T
+        // ctrl (Т) ->   Т     N
+        result = is(code, cyrLat,
+                'N', H_cyr_Н_OR_lat_N,
+                'т', H_cyr_Т_OR_lat_T);
         if (result != null) return result;
 
-        //  ,       ->  ,
-        // (Б)      ->  B [Б]
-        // ctrl  ,  ->  B [Б]
-        // ctrl (Б) ->  ,
-        // shift ,  ->  <
-        // ctrl  ,  ->  >
-        result = is(code, rusLat, 
-                ',', H_SYMB1,
-                'б', H_B);
+        //              cyr | lat
+        //  M       ->   Ь     M
+        // ctrl  M  ->   М     X
+        // (Ь)      ->   М     X
+        // ctrl (Ь) ->   Ь     M
+        result = is(code, cyrLat,
+                'M', H_cyr_М_OR_lat_M,
+                'ь', H_cyr_Ь_OR_lat_X);
         if (result != null) return result;
-        if (code == shf(',')) return shfH(H_SYMB1);
-        if (code == ctr(',')) return nonH(H_SYMB7);
 
-        //  .       ->  .
-        // (Ю)      ->  @ [Ю]
-        // ctrl  .  ->  @ [Ю]
-        // ctrl (Ю) ->  .
-        // shift .  ->  >
-        // ctrl .   ->  <
-        result = is(code, rusLat, 
-                '.', H_SYMB7,
-                'ю', H_SYMB8);
+        //              cyr | lat
+        // ,        ->   Б     <
+        // ctrl ,   ->   ,     B
+        // (Б)      ->   ,     B
+        // ctrl (Б) ->   Б     <
+        // shift ,  ->   <     <
+        // alt   ,  ->   .     .
+        result = is(code, cyrLat,
+                ',', H_none_Comma_OR_shift_LeftAngleBracket, // TODO вот не совсем понятно надо ли тут так сложно
+                'б', H_cyr_Б_OR_lat_B);
         if (result != null) return result;
-        if (code == shf('.')) return shfH(H_SYMB7);
-        if (code == ctr('.')) return nonH(H_SYMB1);
+        if (code == shf(',')) return HS_LEFT_ANGLE_BRACKET;
+        if (code == alt(',')) return HS_DOT;
 
-        // /        ->  /
-        // ctrl  /  ->  \
-        // shift /  ->  ?
-        if (code == non('/')) return nonH(H_SYMB6);
-        if (code == ctr('/')) return nonH(H_SYMB5);
-        if (code == shf('/')) return shfH(H_SYMB6);
+        //              cyr | lat
+        // .        ->   Ю     >
+        // ctrl .   ->   .     N
+        // (Ю)      ->   .     N
+        // ctrl (Ю) ->   Ю     >
+        // shift .  ->   >     >
+        // alt   .  ->   ,     ,
+        result = is(code, cyrLat,
+                '.', H_none_Dot_OR_shift_RightAngleBracket, // TODO вот не совсем понятно надо ли тут так сложно
+                'ю', H_cyr_Ю_OR_lat_At);
+        if (result != null) return result;
+        if (code == shf('.')) return HS_RIGHT_ANGLE_BRACKET;
+        if (code == alt('.')) return HS_COMMA;
+
+        //              cyr | lat
+        // /        ->   .     /
+        // shift /  ->   ,     ?
+        // ctrl  /  ->         \
+        // alt   /  ->
+        if (cyrLat) {
+            if (code == non('/')) return HS_DOT;
+            if (code == shf('/')) return HS_COMMA;
+            if (code == ctr('/')) ;
+            if (code == alt('/')) ;
+        } else {
+            if (code == non('/')) return HS_SLASH;
+            if (code == shf('/')) return HS_QUESTION_MARK;
+            if (code == ctr('/')) return HS_LAT_BACKSLASH;
+            if (code == alt('/')) ;
+        }
 
         // другие клавиши
 
         if (code == non(ENTER)) return       nonH(H_ВК);      // enter     -> ввод каретки
-        if (code == alt(ENTER)) return       nonH(H_ПС); // alt enter -> перевод строки
+        if (code == shf(ENTER)) return       nonH(H_ПС); // alt enter -> перевод строки
         if (code == non(BACKSPACE)) return   nonH(H_ЗБ);      // backspace -> забой
         if (code == non(CAPS_LOCK)) return   nonH(H_РУС_ЛАТ); // caps_lock -> рус/лат
 
