@@ -4,6 +4,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import spec.math.Bites;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -33,6 +35,11 @@ public class Keyboard implements StateProvider {
     // захата ли клавиша на эмулируемой клавиатуре
     private boolean shiftEmu;
 
+    /**
+     * @see #shift()
+     */
+    private List<Pair<Integer, Key>> points = new LinkedList<>();
+
     public Keyboard(BiConsumer<Key, Integer> keyLogger) {
         this.keys = new HashMap<>();
         this.keyLogger = keyLogger;
@@ -42,67 +49,48 @@ public class Keyboard implements StateProvider {
         return keys.get(code);
     }
 
-    public void putChar(char en, int enPt, char cyr, int cyrPt) {
+    public void put(char en, int enPt, char cr, int crPt) {
         // '1 -> ...'        просто нажатая клавиша в english регистре хостовой машины
         // '... -> 1 ...'    результат нажатия в english регистре виртуальной машины
         // '... -> ... [3]'  результат нажатия в cyrillic регистре виртуальной машины
         // '(4) -> ...'      нажатая клавиша в cyrillic раскладка хостовой машины
         // 'ctrl ... -> ...' нажатая c control клавиша на хостовой машине
-        putNorm(en, enPt);   //  1  -> 1 [3]
-        putCyrl(cyr, cyrPt); // (4) -> 2 [4]
-        putCtrl(en, cyrPt);  // ctrl  1  -> 2 [4]
-        putCyCt(cyr, enPt);  // ctrl (4) -> 3 [1]
+        put(non(en), non(enPt)); //  1  -> 1 [3]
+        put(cyr(cr), non(crPt)); // (4) -> 2 [4]
+        put(non(en), non(crPt)); // ctrl  1  -> 2 [4]
+        put(cyr(cr), non(enPt)); // ctrl (4) -> 3 [1]
     }
 
-    public void putNorm(int code, int pt) {
-        keys.put(code, noMods(pt));
+    public static Pair<Integer, Boolean> non(int point) {
+        return Pair.of(point, false);
     }
 
-    private Pair<Integer, Boolean> withShift(int pt) {
-        return Pair.of(pt, true);
+    public static Pair<Integer, Boolean> shf(int point) {
+        return Pair.of(point, true);
     }
 
-    private Pair<Integer, Boolean> noMods(int pt) {
-        return Pair.of(pt, false);
+    public static Integer non(char code) {
+        return (int) code;
     }
 
-    public void putNorm(char code, int pt) {
-        keys.put((int) code, noMods(pt));
+    public static Integer cyr(char code) {
+        return (int) code | CYRILLIC_MASK;
     }
 
-    public void putShft(char code, int pt) {
-        keys.put((int) code | SHIFT_MASK, withShift(pt));
+    public static Integer alt(char code) {
+        return (int) code | ALT_MASK;
     }
 
-    public void putAlt_(char code, int pt) {
-        keys.put((int) code | ALT_MASK, noMods(pt));
+    public static Integer ctr(char code) {
+        return (int) code | CTRL_MASK;
     }
 
-    // Этот воркераунд метод используется, когда чтобы достать до символа надо его вместе
-    // с шифтом зажать на клавиатуре внутри виртуальной машины, но мы жмем эту клавишу
-    // на хостовой машине без шифта TODO подумать может можно поправить как-то
-    public void putAltS(char code, int pt) {
-        keys.put((int) code | ALT_MASK | SHIFT_MASK, withShift(pt));
+    public static Integer shf(char code) {
+        return (int) code | SHIFT_MASK;
     }
 
-    public void putCtrlS(char code, int pt) {
-        keys.put((int) code | CTRL_MASK | SHIFT_MASK, withShift(pt));
-    }
-
-    public void putCtrl(char code, int pt) {
-        keys.put((int) code | CTRL_MASK, noMods(pt));
-    }
-
-    public void putCyCt(char code, int pt) {
-        keys.put((int) code | CYRILLIC_MASK | CTRL_MASK, noMods(pt));
-    }
-
-    public void putCyrl(char code, int pt) {
-        keys.put((int) code | CYRILLIC_MASK, noMods(pt));
-    }
-
-    public void putCySh(char code, int pt) {
-        keys.put((int) code | CYRILLIC_MASK | SHIFT_MASK, withShift(pt));
+    public void put(Integer codeOnHost, Pair<Integer, Boolean> codeOnEmulator) {
+        keys.put(codeOnHost, codeOnEmulator);
     }
 
     @Override
@@ -169,14 +157,10 @@ public class Keyboard implements StateProvider {
             }
         }
 
-        int x = (point & 0xF0) >> 4;
-        int y = point & 0x0F;
-        if (keyStatus[x][y] == key.pressed()) {
-            return;
-        }
-
-        logKey(key, point);
-        keyStatus[x][y] = key.pressed();
+        /**
+         * @see #shift()
+         */
+        points.add(Pair.of(point, key));
     }
 
     @Override
@@ -269,8 +253,16 @@ public class Keyboard implements StateProvider {
         return keyStatus[j][i];
     }
 
+    /**
+     * Этот флаг опрашивается IOPorts в свое какое-то известное программе время.
+     * Так как мы эмулируем поведение шифта на эмулируемой машине и он не зависит
+     * от нажатия шифта на хостовой машине, то мы должны его сохранить и передать
+     * в нужный момент. Вся магия в том, что вначале должен отработать этот метод,
+     * а уже потом с течением времени (когда процессор интераптентся) должен
+     *  отработать метод tick() и обработать нажатые клавиши.
+     */
     public boolean shift() {
-        return shift;
+        return shiftEmu;
     }
 
     private void shift(int bite) {
@@ -285,6 +277,29 @@ public class Keyboard implements StateProvider {
         ctrl = isSet(bite, b0010_0000);
     }
 
+    /**
+     * @see #shift()
+     */
+    public void tick() {
+        if (points.isEmpty()) {
+            return;
+        }
+
+        while (!points.isEmpty()) {
+            Pair<Integer, Key> data = points.remove(0);
+            Key key = data.getRight();
+            int point = data.getLeft();
+
+            int x = (point & 0xF0) >> 4;
+            int y = point & 0x0F;
+            if (keyStatus[x][y] == key.pressed()) {
+                return;
+            }
+
+            logKey(key, point);
+            keyStatus[x][y] = key.pressed();
+        }
+    }
 
     /**
      * Матрица клавиш 12х6. True = замкнуто, False = разомкнуто

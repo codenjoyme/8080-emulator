@@ -45,6 +45,7 @@ public class Timings implements StateProvider{
         }
 
         hard.audio().tick();
+        hard.keyboard().tick();
 
         if (!fullSpeed) {
             sleep();
