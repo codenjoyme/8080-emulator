@@ -113,10 +113,6 @@ public class Keyboard implements StateProvider {
     }
 
     private void pressKey(Key key) {
-        if (key.capsLock()) {
-            cyrLat = !cyrLat;
-        }
-
         Pair<Integer, Boolean> value = key(key.joint());
         if (value == null) {
             return;
@@ -194,6 +190,14 @@ public class Keyboard implements StateProvider {
                 logKey(key, 0xFC);
             }
             return;
+        }
+
+        if (key.capsLock() && key.pressed()) {
+            cyrLat = !cyrLat;
+            // TODO проблема тут такая, что если на незапущенном мониторе
+            //      переключить язык, то потом при включенном мониторе
+            //      вместо QWE будет печататься JCU, то есть язык переключается
+            //      только при включенном мониторе получается, а не аппаратно
         }
 
         if (key.pressed()) {
