@@ -18,6 +18,13 @@ public class Keyboard implements StateProvider {
 
     public static final int SNAPSHOT_KEYBOARD_SIZE = 13;
 
+    // 0b__shift_alt_ctrl_shiftEmu__cyrLat_0_0_0
+    public static final int SHIFT_BIT = b1000_0000;
+    public static final int ALT_BIT = b0100_0000;
+    public static final int CTRL_BIT = b0010_0000;
+    public static final int SHIFT_EMU_BIT = b0001_0000;
+    public static final int CYL_LAT_BIT = b0000_1000;
+
     private BiConsumer<Key, Integer> keyLogger;
     private Layout layout;
 
@@ -155,12 +162,16 @@ public class Keyboard implements StateProvider {
                 "shift : %s\n" +
                 "alt   : %s\n" +
                 "ctrl  : %s\n" +
+                "shiftEmu : %s\n" +
+                "cyrLat : %s\n" +
                 "\n" +
                 "keyStatus:\n" +
                 "%s",
                 bitToString(shift),
                 bitToString(alt),
                 bitToString(ctrl),
+                bitToString(shiftEmu),
+                bitToString(cyrLat),
                 sb);
     }
 
@@ -206,17 +217,21 @@ public class Keyboard implements StateProvider {
     }
 
     public void bitesState(int bite) {
-        // 0b__shift_alt_ctrl_0__0_0_0_0
+        // 0b__shift_alt_ctrl_shiftEmu__cyrLat_0_0_0
         setShift(bite);
         setAlt(bite);
         setCtrl(bite);
+        setShiftEmu(bite);
+        setRusLat(bite);
     }
 
     public int bitesState() {
-        // 0b__shift_alt_ctrl_0__0_0_0_0
-        return (shift ? b1000_0000 : 0)
-                | (alt ? b0100_0000 : 0)
-                | (ctrl ? b0010_0000 : 0);
+        // 0b__shift_alt_ctrl_shiftEmu__cyrLat_0_0_0
+        return (shift ? SHIFT_BIT : 0)
+                | (alt ? ALT_BIT : 0)
+                | (ctrl ? CTRL_BIT : 0)
+                | (shiftEmu ? SHIFT_EMU_BIT : 0)
+                | (cyrLat ? CYL_LAT_BIT : 0);
     }
 
     public boolean keyStatus(int j, int i) {
@@ -241,15 +256,23 @@ public class Keyboard implements StateProvider {
     }
 
     private void setShift(int bite) {
-        shift = isSet(bite, b1000_0000);
+        shift = isSet(bite, SHIFT_BIT);
     }
 
     private void setAlt(int bite) {
-        alt = isSet(bite, b0100_0000);
+        alt = isSet(bite, ALT_BIT);
     }
 
     private void setCtrl(int bite) {
-        ctrl = isSet(bite, b0010_0000);
+        ctrl = isSet(bite, CTRL_BIT);
+    }
+
+    private void setShiftEmu(int bite) {
+        shiftEmu = isSet(bite, SHIFT_EMU_BIT);
+    }
+
+    private void setRusLat(int bite) {
+        cyrLat = isSet(bite, CYL_LAT_BIT);
     }
 
     /**

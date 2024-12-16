@@ -123,6 +123,6 @@ public class WordMath {
     }
 
     public static String bitToString(boolean bit) {
-        return bit ? "-" : "+";
+        return bit ? "+" : "-";
     }
 }

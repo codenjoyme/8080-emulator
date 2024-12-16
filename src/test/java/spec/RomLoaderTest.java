@@ -111,7 +111,7 @@ public class RomLoaderTest extends AbstractTest {
                 0b1011_1101,
                 0b0110_1001,
                 0b0101_1010,
-                0b1010_0000 // flags
+                0b1010_1000 // flags
         ));
 
         ports.state(Bites.of(
@@ -173,14 +173,16 @@ public class RomLoaderTest extends AbstractTest {
                 "tc:  false\n";
 
         String expectedPorts =
-                "Ain   : +\n" +
-                "Bin   : +\n" +
-                "C0in  : -\n" +
-                "C1in  : +\n" +
+                "Ain   : -\n" +
+                "Bin   : -\n" +
+                "C0in  : +\n" +
+                "C1in  : -\n" +
                 "\n" +
-                "shift : -\n" +
-                "alt   : +\n" +
-                "ctrl  : -\n" +
+                "shift : +\n" +
+                "alt   : -\n" +
+                "ctrl  : +\n" +
+                "shiftEmu : -\n" +
+                "cyrLat : +\n" +
                 "\n" +
                 "keyStatus:\n" +
                 "       | | | | | | | | | | |1|1|\n" +

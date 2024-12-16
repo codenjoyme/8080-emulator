@@ -336,10 +336,12 @@ cache: MemoryCache: removed entry http://localhost:8080/spec.jnlp
      - 4 bytes for int     - `tact` 
    * Keyboard state:
      - 12*6 bytes          - keyboard state 12 x 6 for all keys - is key pressed
-     - 1 byte              - flags `0b__shift_alt_ctrl_0__0_0_0_0`
+     - 1 byte              - flags `0b__shift_alt_ctrl_shiftEmu__cyrLat_0_0_0`
        + shift             - `0b_x000_0000` is shift key pressed
        + alt               - `0b_0x00_0000` is alt key pressed
        + ctrl              - `0b_00x0_0000` is ctrl key pressed
+       + shiftEmu          - `0b_000x_0000` is shiftEmu flag is set
+       + cyrLat            - `0b_0000_x000` is cyrLat is cyrillic or latin
    * I/O ports state:
      - 1 byte              - flags `0b__0_0_0_A__C1_0_B_C0`
        + Ain               - `0b_000x_0000`
