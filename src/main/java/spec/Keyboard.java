@@ -46,7 +46,7 @@ public class Keyboard implements StateProvider {
     /**
      * @see #shift() - так IOPorts узнает о том, что нажат шифт на эмулируемой машине
      * @see #tick() - тут обрабатываются нажатые клавиши с задержкой после нажатия и обработки shift с помощью IOPorts
-     * @see #pressKey(Key) - тут обрабатываются нажатые клавиши сразу Как приходят из хостовой машины
+     * @see #pressKey(Key, Pair)  - тут обрабатываются нажатые клавиши сразу Как приходят из хостовой машины
      */
     private List<Pair<Integer, Key>> points = new LinkedList<>();
 
@@ -112,26 +112,22 @@ public class Keyboard implements StateProvider {
         }
     }
 
-    private void pressKey(Key key) {
-        Pair<Integer, Boolean> value = key(key.joint());
-        if (value == null) {
-            return;
-        }
+    private void pressKey(Key key, Pair<Integer, Boolean> value) {
         int point = value.getLeft();
+        Boolean shift = value.getRight();
+
         if (key.pressed()) {
-            shiftEmu = value.getRight();
+            shiftEmu = shift;
         } else {
-            if (value.getRight()) {
+            if (shift) {
                 shiftEmu = false;
             }
         }
 
-        logKey(key, point);
-
         /**
          * @see #shift() - так IOPorts узнает о том, что нажат шифт на эмулируемой машине
          * @see #tick() - тут обрабатываются нажатые клавиши с задержкой после нажатия и обработки shift с помощью IOPorts
-         * @see #pressKey(Key) - тут обрабатываются нажатые клавиши сразу Как приходят из хостовой машины
+         * @see #pressKey(Key, Pair)  - тут обрабатываются нажатые клавиши сразу Как приходят из хостовой машины
          */
         points.add(Pair.of(point, key));
     }
@@ -176,7 +172,7 @@ public class Keyboard implements StateProvider {
             logKey(key, 0xFF);
             return;
         }
-        if (key.mods()) {
+        if (key.withMods()) {
             if (key.code() == SHIFT && shift != key.pressed()) {
                 shift = key.pressed();
                 logKey(key, 0xFA);
@@ -200,15 +196,28 @@ public class Keyboard implements StateProvider {
             //      только при включенном мониторе получается, а не аппаратно
         }
 
+        Pair<Integer, Boolean> keyParsed = key(key.joint());
+        if (keyParsed == null) {
+            // мы не знаем что это за клавиша, Layout не распознал ее - пропускаем
+            return;
+        }
+
+        int point = keyParsed.getLeft();
+        logKey(key, point);
+
         if (key.pressed()) {
             // если кнопка нажата, то мы изменяем оригинальную с учетом модификатора
             // и кликаем кнопку (возможно уже иную) на виртуальной машине
-            pressKey(key);
+            pressKey(key, keyParsed);
         } else {
             // если кнопка отпущена, то нам надо отжать потенциально сразу все
             // возможные зажатые кнопки (с модификаторами или без)
+            // TODO вот тут мутно, потому что Layout может сильно исказить картинку и отжимать будем уже не те кнопки
             for (Key key2 : key.allKeysWithMods()) {
-                pressKey(key2);
+                Pair<Integer, Boolean> keyParsed2 = key(key2.joint());
+                if (keyParsed2 != null) {
+                pressKey(key2, keyParsed2);
+                }
             }
         }
 
@@ -253,7 +262,7 @@ public class Keyboard implements StateProvider {
     /**
      * @see #shift() - так IOPorts узнает о том, что нажат шифт на эмулируемой машине
      * @see #tick() - тут обрабатываются нажатые клавиши с задержкой после нажатия и обработки shift с помощью IOPorts
-     * @see #pressKey(Key) - тут обрабатываются нажатые клавиши сразу Как приходят из хостовой машины
+     * @see #pressKey(Key, Pair)  - тут обрабатываются нажатые клавиши сразу Как приходят из хостовой машины
      */
     public boolean shift() {
         return shiftEmu;
@@ -282,7 +291,7 @@ public class Keyboard implements StateProvider {
     /**
      * @see #shift() - так IOPorts узнает о том, что нажат шифт на эмулируемой машине
      * @see #tick() - тут обрабатываются нажатые клавиши с задержкой после нажатия и обработки shift с помощью IOPorts
-     * @see #pressKey(Key) - тут обрабатываются нажатые клавиши сразу Как приходят из хостовой машины
+     * @see #pressKey(Key, Pair)  - тут обрабатываются нажатые клавиши сразу Как приходят из хостовой машины
      */
     public void tick() {
         if (points.isEmpty()) {

@@ -9,11 +9,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static spec.KeyCode.PAUSE;
+import static spec.math.WordMath.hex16;
 import static spec.math.WordMath.hex8;
 
 public class FileRecorder {
 
-    public static final Pattern RECORD_LINE = Pattern.compile("after\\((.*)\\).(up|down)\\(0x(.*)\\);|stop\\(\\);");
+    // жадный квантификатор Вместо '(.*)' - будет '(.+)'
+    public static final Pattern RECORD_LINE = Pattern.compile("after\\((.+?)\\).(up|down)\\(0x(.+?)(, 0x(.+?))?\\);|stop\\(\\);");
     private File file;
     private boolean writing;
 
@@ -25,10 +27,11 @@ public class FileRecorder {
         if (!writing) return;
 
         writeLine(String.format(
-                "after(%s).%s(0x%s);",
+                "after(%s).%s(0x%s%s);",
                 (delta == 0) ? 1 : delta,
                 key.pressed() ? "down" : "up",
-                hex8(key.code())));
+                hex8(key.code()),  // TODO тут пишется на самом деле не 1 байт, а up to 4 байт
+                (key.mods() != 0x0000) ? (", 0x" + hex16(key.mods())) : ""));
     }
 
     private void writeLine(String string) {
@@ -65,7 +68,7 @@ public class FileRecorder {
                 }
 
                 Matcher matcher = RECORD_LINE.matcher(line);
-                if (!matcher.matches() || matcher.groupCount() != 3) {
+                if (!matcher.matches() || (matcher.groupCount() != 3 && matcher.groupCount() != 5)) {
                     throw new IllegalArgumentException(String.format(
                             "Error reading key record file at %s: %s",
                             index, line));
@@ -73,8 +76,8 @@ public class FileRecorder {
 
                 int delta = Integer.parseInt(matcher.group(1));
                 boolean press = matcher.group(2).equals("down");
-                int mods = 0x00; // TODO save mods also
                 int code = Integer.parseInt(matcher.group(3), 16);
+                int mods = (matcher.group(5) == null) ? 0x00 : Integer.parseInt(matcher.group(5), 16);
 
                 Key key = new Key(code, press, mods);
                 onLine.accept(delta, key);

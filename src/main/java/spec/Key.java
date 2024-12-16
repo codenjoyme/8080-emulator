@@ -139,7 +139,11 @@ public class Key {
         ));
     }
 
-    public boolean mods() {
+    public int mods() {
+        return mods;
+    }
+
+    public boolean withMods() {
         return code == CTRL
                 || code == ALT
                 || code == SHIFT;

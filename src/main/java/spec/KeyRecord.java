@@ -71,10 +71,10 @@ public class KeyRecord {
                 if (key.pause()) {
                     after.set(it.pauseCpu());
                 } else {
-                    after.set(it.down(key.code()));
+                    after.set(it.down(key.code(), key.mods()));
                 }
             } else {
-                after.set(it.up(key.code()));
+                after.set(it.up(key.code(), key.mods()));
             }
         });
         lastRecordedTick = scenario.keySet().stream()

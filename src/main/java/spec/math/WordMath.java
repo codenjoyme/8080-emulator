@@ -53,6 +53,7 @@ public class WordMath {
         }
     }
 
+    // TODO для чисел больше 0xFF он не работает верно, а возвращает большее число. Надо ли обрезать?
     public static String hex8(int bite) {
         return hex(bite, 2);
     }
@@ -65,6 +66,7 @@ public class WordMath {
         return padLeft(Integer.toString(bite, 16).toUpperCase(), length, '0');
     }
 
+    // TODO для чисел больше 0xFFFF он не работает верно, а возвращает большее число. Надо ли обрезать?
     public static String hex16(int bite) {
         return hex(bite, 4);
     }
