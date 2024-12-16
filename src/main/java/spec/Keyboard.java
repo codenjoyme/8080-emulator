@@ -37,7 +37,9 @@ public class Keyboard implements StateProvider {
     private boolean cyrLat;
 
     /**
-     * @see #shift()
+     * @see #shift() - так IOPorts узнает о том, что нажат шифт на эмулируемой машине
+     * @see #tick() - тут обрабатываются нажатые клавиши с задержкой после нажатия и обработки shift с помощью IOPorts
+     * @see #pressKey(Key) - тут обрабатываются нажатые клавиши сразу Как приходят из хостовой машины
      */
     private List<Pair<Integer, Key>> points = new LinkedList<>();
 
@@ -121,14 +123,12 @@ public class Keyboard implements StateProvider {
             }
         }
 
-        int x = (point & 0xF0) >> 4;
-        int y = point & 0x0F;
-        if (keyStatus[x][y] != key.pressed()) {
-            logKey(key, point);
-        }
+        logKey(key, point);
 
         /**
-         * @see #shift()
+         * @see #shift() - так IOPorts узнает о том, что нажат шифт на эмулируемой машине
+         * @see #tick() - тут обрабатываются нажатые клавиши с задержкой после нажатия и обработки shift с помощью IOPorts
+         * @see #pressKey(Key) - тут обрабатываются нажатые клавиши сразу Как приходят из хостовой машины
          */
         points.add(Pair.of(point, key));
     }
@@ -231,6 +231,11 @@ public class Keyboard implements StateProvider {
      * а уже потом с течением времени (когда процессор интераптентся) должен
      *  отработать метод tick() и обработать нажатые клавиши.
      */
+    /**
+     * @see #shift() - так IOPorts узнает о том, что нажат шифт на эмулируемой машине
+     * @see #tick() - тут обрабатываются нажатые клавиши с задержкой после нажатия и обработки shift с помощью IOPorts
+     * @see #pressKey(Key) - тут обрабатываются нажатые клавиши сразу Как приходят из хостовой машины
+     */
     public boolean shift() {
         return shiftEmu;
     }
@@ -248,7 +253,9 @@ public class Keyboard implements StateProvider {
     }
 
     /**
-     * @see #shift()
+     * @see #shift() - так IOPorts узнает о том, что нажат шифт на эмулируемой машине
+     * @see #tick() - тут обрабатываются нажатые клавиши с задержкой после нажатия и обработки shift с помощью IOPorts
+     * @see #pressKey(Key) - тут обрабатываются нажатые клавиши сразу Как приходят из хостовой машины
      */
     public void tick() {
         if (points.isEmpty()) {
