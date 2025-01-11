@@ -127,17 +127,6 @@ public class IntegrationTest extends AbstractTest {
         lik().loadRom(base, roms);
         lik().loadGame(base, roms, "basic");
 
-        // when
-        record.reset()
-                .shoot("runcom", it -> it.after(2 * K10))
-                .shoot("stop", it -> it.press(END).after(2 * K10))
-                .shoot("monitor", pressEnterAndWait())
-                .shoot("basic", it -> it.enter("J").press(ENTER).after(20 * K10))
-                .stopCpu();
-
-        cpu.PC(START_POINT);
-        start();
-
         // then
         // проверяем что эта программа соответсвует basic что находится в ROM
         // за некоторыми исключениями
@@ -145,8 +134,34 @@ public class IntegrationTest extends AbstractTest {
                 "       00     01     02     03     04     05     06     07     08     09     0A     0B     0C     0D     0E     0F     \n" +
                 "D400:  -      -      -      -      -      -      -      -      -      -      -      -      -      -      -      95>9A \n" +
                 "D410:  B6>00  28>00  31>00  29>44  -      -      -      -      -      -      -      -      -      -      -      -     \n" +
-                "D470:  -      -      -      -      -      -      -      D4>60  01>1E  -      -      -      -      -      -      -     \n",
+                "D460:  -      -      -      -      -      -      -      -      -      23>D4  02>01  -      -      -      -      -     \n" +
+                "D470:  -      -      -      -      -      -      -      D4>60  01>1E  -      -      -      -      -      -      -     \n" +
+                "D480:  -      -      -      -      -      -      -      -      -      -      -      -      -      1F>00  -      -     \n",
                 new Range(START_BASIC_LIK_V2, FINISH_ROM6));
+
+        // when
+        record.reset()
+                .shoot("runcom", it -> it.after(2 * K10))
+                .shoot("stop", it -> it.press(END).after(2 * K10))
+                .shoot("monitor", pressEnterAndWait())
+                .shoot("basic", it -> it.enter("J").press(ENTER).after(20 * K10))
+                .shoot("line-10", it -> it.enter("10 CLS 1").press(ENTER).after(20 * K10))
+                .shoot("line-20", it -> it.enter("20 CLS 2").press(ENTER).after(20 * K10))
+                .shoot("line-30", it -> it.enter("30 GOTO 10").press(ENTER).after(20 * K10))
+                .shoot("list", it -> it.enter("LIST").press(ENTER).after(20 * K10))
+                .shoot("run", it -> it.enter("RUN").press(ENTER).after(20 * K10))
+                .stopCpu();
+
+        cpu.PC(START_POINT);
+        start();
+
+        // then
+        assertEquals(
+                "      00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F \n" +
+                "1E60: 00 69 1E 0A 00 80 20 31 00 71 1E 14 00 80 20 32 \n" +
+                "1E70: 00 7A 1E 1E 00 88 20 31 30 00 00 00 00 00 00 00 \n" +
+                "1E80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+                memory.all().toString(0x1E60, 0x1E90, true, true));
     }
 
     @Test
@@ -170,14 +185,11 @@ public class IntegrationTest extends AbstractTest {
         start();
 
         // then
-        // проверяем что эта программа соответсвует basic что находится в ROM
-        // за некоторыми исключениями
-        assertCopiedTo0000(
-                "       00     01     02     03     04     05     06     07     08     09     0A     0B     0C     0D     0E     0F     \n" +
-                        "D400:  -      -      -      -      -      -      -      -      -      -      -      -      -      -      -      95>9A \n" +
-                        "D410:  B6>00  28>00  31>00  29>44  -      -      -      -      -      -      -      -      -      -      -      -     \n" +
-                        "D470:  -      -      -      -      -      -      -      D4>60  01>1E  -      -      -      -      -      -      -     \n",
-                new Range(START_BASIC_LIK_V2, FINISH_ROM6));
+        assertEquals("      00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F \n" +
+                    "1E60: 00 69 1E 0A 00 80 20 31 00 71 1E 14 00 80 20 32 \n" +
+                    "1E70: 00 7A 1E 1E 00 88 20 31 30 00 00 00 00 00 00 00 \n" +
+                    "1E80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+                memory.all().toString(0x1E60, 0x1E90, true, true));
     }
 
     @Test
