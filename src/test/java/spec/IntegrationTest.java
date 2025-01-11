@@ -277,6 +277,14 @@ public class IntegrationTest extends AbstractTest {
 
     @Test
     public void testLik_game_chess_play() {
+        givenChessGameSession();
+
+        // when then
+        assertEquals("E7-E5", nextTurn("E2-E4"));
+        assertEquals("G8-F6", nextTurn("A2-A4"));
+    }
+
+    private void givenChessGameSession() {
         // given
         lik().loadRom(base, roms);
         lik().loadGame(base, roms, "chess");
@@ -291,32 +299,24 @@ public class IntegrationTest extends AbstractTest {
                 .shoot("select-level", it -> it.enter("1"))
                 .shoot("choose-black-white", pressEnterAndWait())
                 .shoot("select-black-white", it -> it.enter("1"))
-                .shoot("choose-first-move", pressEnterAndWait())
+                .shoot("choose-move", pressEnterAndWait())
                 .stopCpu();
 
         cpu.PC(START_POINT);
-
         start();
+    }
 
+    public String nextTurn(String turn) {
         record.afterLast().after(K10)
-                .shoot("select-first-move", it -> it.enter("E2-E4"))
+                .shoot("select-move", it -> it.enter(turn))
                 .shoot("opponent-answer", pressEnterAndWait(10 * M1))
                 .stopCpu();
 
         start();
 
-        String answer1 = scanner.parse(pngsPath("opponent-answer").getLast()).split("\n")[1];
-        assertEquals("E7-E5", answer1);
-
-        record.afterLast().after(K10)
-                .shoot("select-second-move", it -> it.enter("A2-A4"))
-                .shoot("opponent-answer", pressEnterAndWait(10 * M1))
-                .stopCpu();
-
-        start();
-
-        String answer2 = scanner.parse(pngsPath("opponent-answer").getLast()).split("\n")[1];
-        assertEquals("G8-F6", answer2);
+        String screen = pngsPath("opponent-answer").getLast();
+        return scanner.parse(screen)
+                .split("\n")[1];
     }
 
     @Test
