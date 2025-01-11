@@ -3,7 +3,7 @@ package spec;
 import spec.math.WordMath;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -37,10 +37,18 @@ public class KeyRecord {
     }
 
     public Action after(int tick) {
-        scenario = (scenario == null) ? new HashMap<>() : scenario;
+        scenario = (scenario == null) ? new LinkedHashMap<>() : scenario;
         Action action = new Action(tick);
         scenario.put(tick, action);
         return action;
+    }
+
+    public Action afterLast() {
+        Integer lastKey = scenario.keySet().stream().max(Integer::compareTo).orElse(null);
+        if (lastKey == null) {
+            return after(0);
+        }
+        return scenario.get(lastKey);
     }
 
     public Action shoot(String name, Function<Action, Action> actions) {
@@ -113,6 +121,14 @@ public class KeyRecord {
 
         @Override
         public String toString() {
+            if (stopCpu || pauseCpu || resetRecord) {
+                return "Action{" +
+                        "tick=" + tick +
+                        ", stopCpu=" + stopCpu +
+                        ", pauseCpu=" + pauseCpu +
+                        ", resetRecord=" + resetRecord +
+                        '}';
+            }
             return "Action{" +
                     "tick=" + tick +
                     ", keyCode='" + (char) keyCode.intValue() +

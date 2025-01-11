@@ -298,6 +298,13 @@ public class IntegrationTest extends AbstractTest {
 
         cpu.PC(START_POINT);
         start();
+
+        record.afterLast().after(K10)
+                .shoot("select-second-move", it -> it.enter("A2-A4"))
+                .shoot("opponent-answer", pressEnterAndWait(10 * M1))
+                .stopCpu();
+
+        start();
     }
 
     @Test
