@@ -10,7 +10,7 @@ import static spec.Constants.x08;
 import static spec.Registry.T7s;
 import static spec.assembler.Parity.parity;
 
-// TODO test me
+// FIXME test me
 public class ANA_R extends Command {
 
     private static final List<Integer> CODES = from(

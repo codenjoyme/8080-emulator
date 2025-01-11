@@ -7,7 +7,7 @@ import java.util.List;
 
 import static spec.assembler.command.math.logic.ORA_R.or8;
 
-// TODO test me
+// FIXME test me
 public class ORI_XX extends Command {
 
     private static final List<Integer> CODES = from(

@@ -43,7 +43,7 @@ public class AssemblerTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return findAllFiles(base, ".asm").stream()
-                // TODO продолжить с этим тестом тоже, пока что у него asm неверный
+                // TODO #2 продолжить с тестом cputest, пока что у него asm неверный
                 //      стоит начать с теста DizAssemblerTest.testDecompileTest
                 .filter(it -> !((String) it[0]).contains("cputest"))
                 .collect(toList());
@@ -104,7 +104,7 @@ public class AssemblerTest {
                 (input, getField) -> {
                     Map labels = getField.apply("labels");
 
-                    // TODO setup Gson to convert Double to Integer automatically
+                    // TODO #3 setup Gson to convert Double to Integer automatically
                     labels.forEach((key, value) -> {
                         if (value instanceof Double) {
                             labels.put(key, ((Double) value).intValue());

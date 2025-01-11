@@ -10,7 +10,7 @@ import static spec.Constants.*;
 import static spec.assembler.Parity.parity;
 import static spec.assembler.command.math.sum.ADC_R.add8;
 
-// TODO test me
+// FIXME test me
 public class DAA extends Command {
 
     private static final List<Integer> CODES = from(

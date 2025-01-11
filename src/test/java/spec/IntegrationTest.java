@@ -170,7 +170,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
-    public void testLik_game_klad_recording() throws IOException {
+    public void testLik_game_klad_recording() {
         // about 36 sec
 
         // given
@@ -215,7 +215,7 @@ public class IntegrationTest extends AbstractTest {
                 () -> record.at(2314).shoot("screeen28"),
                 () -> record.at(2315).shoot("screeen29"),
                 () -> record.at(2316).shoot("screeen30"),
-                () -> record.at(2317).shoot("screeen31"), // TODO тут почему-то в режиме теста game over а в реальной игре нет
+                () -> record.at(2317).shoot("screeen31"), // TODO #8 тут почему-то в режиме теста game over а в реальной игре нет
                 () -> record.at(2318).shoot("screeen32"),
                 () -> record.at(2319).shoot("screeen33")
         );
@@ -266,7 +266,7 @@ public class IntegrationTest extends AbstractTest {
         assertRecord("keyboard.rec");
     }
 
-    // TODO изучить почему этот тест не прошел нормально - риплей или рекорд не работает верно с клавишами
+    // TODO #9 изучить почему этот тест не прошел нормально - риплей или рекорд не работает верно с клавишами
     @Test
     public void testLik_keyboardLine1() {
         // given
@@ -280,7 +280,7 @@ public class IntegrationTest extends AbstractTest {
         assertFromPng(testBase() + "/end.png");
     }
 
-    // TODO сделать так же для всех остальных линий подробный тест
+    // TODO #10 сделать так же для всех остальных линий клавиатуры подробный `testLik_keyboardLine1` тест
 
     @Test
     public void testSpecialist_monitor() {

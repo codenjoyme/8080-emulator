@@ -27,7 +27,7 @@ msge:   POP     PSW               ; Pop state
  * XCHG          [EB]
  *    HL <-> DE
  */
-// TODO test me
+// TOD test me
 public class XCHG extends Command {
 
     private static final List<Integer> CODES = from(

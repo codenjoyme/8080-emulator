@@ -22,7 +22,7 @@ Util.isWhitespace = function(c) {
 };
 
 Util.toTargetEncoding = function(str, encoding) {
-    return str; // TODO we dont need this anymore
+    return str; // TODO #27 we dont need this anymore
     // return toEncoding(str, encoding);
 };
 

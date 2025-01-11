@@ -84,7 +84,7 @@ public class Application {
         }
 
         if (key.numFive()) {
-            // TODO как сделать рабочим в веб версии?
+            // TODO #1 как сделать рабочим в веб версии?
             if (base.toString().startsWith("http")) return;
 
             openFileDialog(file -> hard.loadSnapshot(base, toRelative(base, file)),
@@ -99,7 +99,7 @@ public class Application {
         }
 
         if (key.numSlash()) {
-            // TODO как сделать рабочим в веб версии?
+            // TODO #1 как сделать рабочим в веб версии?
             if (base.toString().startsWith("http")) return;
 
             openFileDialog(file -> hard.loadRecord(file.getAbsolutePath()),
@@ -109,7 +109,7 @@ public class Application {
         }
 
         if (key.numComma()) {
-            // TODO как сделать рабочим в веб версии?
+            // TODO #1 как сделать рабочим в веб версии?
             if (base.toString().startsWith("http")) return;
 
             RomSwitcher switcher = hard.romSwitcher();

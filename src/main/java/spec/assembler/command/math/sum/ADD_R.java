@@ -8,7 +8,7 @@ import java.util.List;
 
 import static spec.assembler.command.math.sum.ADC_R.add8;
 
-// TODO test me
+// FIXME test me
 public class ADD_R extends Command {
 
     private static final List<Integer> CODES = from(

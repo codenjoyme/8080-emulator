@@ -7,7 +7,7 @@ import java.util.List;
 
 import static spec.assembler.command.math.sum.SBB_R.sub8;
 
-// TODO test me
+// FIXME test me
 public class CPI_XX extends Command {
 
     private static final List<Integer> CODES = from(

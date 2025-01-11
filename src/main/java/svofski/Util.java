@@ -23,7 +23,7 @@ public class Util {
     }
 
     public static String toTargetEncoding(String str, String encoding) {
-        return str; // TODO skip encoding stuff
+        return str; // TODO #27 skip encoding stuff -> remove dead code
     }
 
     public static String replaceExt(String path, String newext) {

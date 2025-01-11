@@ -7,7 +7,7 @@ import java.util.List;
 
 import static spec.assembler.command.jump.JMP_XXYY.jmp_if;
 
-// TODO test me
+// FIXME test me
 public class JPO_XXYY extends Command {
 
     private static final List<Integer> CODES = from(

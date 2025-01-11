@@ -212,7 +212,7 @@ Q:     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         // найти все файлы APP_RESOURCES + "/test/" которые в разрешении asm
         // и вернуть их имена с папками относительно APP_RESOURCES + "/test/"
-        // TODO no this return Arrays.stream(Objects.requireNonNull(new File(APP_RESOURCES + "/test/").listFiles()))
+        // TOD no this return Arrays.stream(Objects.requireNonNull(new File(APP_RESOURCES + "/test/").listFiles()))
         // deep find all files in all folders
         return ...
 

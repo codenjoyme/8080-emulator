@@ -348,7 +348,7 @@ public class PngScreenToText {
         // чтобы это проверить надо посмотреть на символы вокруг - если слева или справа
         // кириллица CYR, то текущий символ стоит заменить LAT_SYNONYM на CYR_SYNONYM
         // если слева и справа латиница LAT, то оставить как есть
-        // TODO
+        // TOD
     }
 
     public static void main(String[] args) {

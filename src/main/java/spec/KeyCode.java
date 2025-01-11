@@ -31,7 +31,7 @@ public class KeyCode {
     public static final int RIGHT = 0x27;
     public static final int PG_DOWN = 0x22;
     public static final int DEL = 0x7F;
-    public static final int PG_UP = 0x21; // TODO нажатие на него печатает 0
+    public static final int PG_UP = 0x21; // TODO #13 нажатие на него печатает 0
     public static final int INS = 0x9B;
     public static final int SPACE = ' ';
     public static final int BACKSPACE = 0x08;

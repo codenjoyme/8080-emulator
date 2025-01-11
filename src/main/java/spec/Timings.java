@@ -14,7 +14,7 @@ public class Timings implements StateProvider{
     private int interrupt = 0;
     private int refreshRate = REFRESH_RATE;
 
-    // TODO а точно тут надо так заморачиваться с многопоточностью?
+    // TODO #26 а точно тут надо так заморачиваться с многопоточностью?
     private boolean willReset = false;
 
     private long last = 0;

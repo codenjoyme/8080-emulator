@@ -7,7 +7,7 @@ import java.util.List;
 
 import static spec.assembler.command.math.logic.XRA_R.xor8;
 
-// TODO test me
+// FIXME test me
 public class XRI_XX extends Command {
 
     private static final List<Integer> CODES = from(

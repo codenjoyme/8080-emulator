@@ -8,7 +8,7 @@ import java.util.List;
 
 import static spec.assembler.command.procedure.call.CALL_XXYY.call;
 
-// TODO test me
+// FIXME test me
 public class RST_N extends Command {
 
     private static final List<Integer> CODES = from(

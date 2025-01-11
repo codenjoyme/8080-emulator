@@ -8,7 +8,7 @@ import java.util.List;
 
 import static spec.assembler.command.math.sum.ADC_R.add_flag;
 
-// TODO test me
+// FIXME test me
 public class SBB_R extends Command {
 
     private static final List<Integer> CODES = from(

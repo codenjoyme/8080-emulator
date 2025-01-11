@@ -29,7 +29,7 @@ public class FileRecorder {
                 "after(%s).%s(0x%s%s);",
                 (delta == 0) ? 1 : delta,
                 key.pressed() ? "down" : "up",
-                hex8(key.code()),  // TODO тут пишется на самом деле не 1 байт, а up to 4 байт
+                hex8(key.code()),  // TODO #7 тут пишется на самом деле не 1 байт, а up to 4 байт
                 (key.mods() != 0x0000) ? (", 0x" + hex16(key.mods())) : ""));
     }
 

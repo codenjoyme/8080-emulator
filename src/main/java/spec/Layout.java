@@ -35,7 +35,7 @@ public class Layout extends AbstractLayout {
         if (code == non('2')) return HS_2;
         if (cyrLat) {
             if (code == shf('2')) return HS_QUOTE;
-            if (code == ctr('2')) ; // TODO в кириллице нет символа @, то вместо него возвращается 'Ю'
+            if (code == ctr('2')) ; // TODO #14 в кириллице нет символа @, то вместо него возвращается 'Ю'
             if (code == alt('2')) ;
         } else {
             if (code == shf('2')) return HS_LAT_AT;
@@ -49,7 +49,7 @@ public class Layout extends AbstractLayout {
         // ctrl  3  ->
         // alt   3  ->
         if (code == non('3')) return HS_3;
-        if (code == shf('3')) return HS_NUMBER_SIGN; // TODO в реальной клавиатуре в cyr должен быть '№' но в ЛИКе нет такого символа
+        if (code == shf('3')) return HS_NUMBER_SIGN; // TODO #15 в реальной клавиатуре в cyr должен быть '№' но в ЛИКе нет такого символа
         if (code == ctr('3')) ;
         if (code == alt('3')) ;
 
@@ -88,7 +88,7 @@ public class Layout extends AbstractLayout {
         if (cyrLat) {
             if (code == shf('6')) return HS_COLON;
             if (code == ctr('6')) return HS_SEMICOLON;
-            if (code == alt('6')) ; // TODO в кириллице нет символа '^', то вместо него возвращается 'Ч'
+            if (code == alt('6')) ; // TODO #14 в кириллице нет символа '^', то вместо него возвращается 'Ч'
         } else {
             if (code == shf('6')) return HS_LAT_CIRCUMFLEX;
             if (code == ctr('6')) return HS_COLON;
@@ -139,7 +139,7 @@ public class Layout extends AbstractLayout {
         if (code == non('0')) return HS_ZERO;
         if (code == shf('0')) return HS_RIGHT_PARENTHESIS;
         if (code == ctr('0')) ;
-        if (code == alt('0')) return HS_SPACE;  // TODO так у самого ЛИКа c shift 0
+        if (code == alt('0')) return HS_SPACE;  // TODO #16 так у самого ЛИКа c shift 0
 
         //              cyr | lat
         // -        ->   -
@@ -147,7 +147,7 @@ public class Layout extends AbstractLayout {
         // ctrl  -  ->
         // alt   -  ->
         if (code == non('-')) return HS_MINUS;
-        if (code == shf('-')) ; // TODO должен быть прочерк, но его кода не нашел
+        if (code == shf('-')) ; // TODO #17 должен быть прочерк, но его кода не нашел
         if (code == ctr('-')) ;
         if (code == alt('-')) ;
 
@@ -279,7 +279,7 @@ public class Layout extends AbstractLayout {
         //              cyr | lat
         // ]        ->         ]
         if (cyrLat) {
-            if (code == cyr('ъ')) ; // TODO нет такого знака в ЛИКе
+            if (code == cyr('ъ')) ; // TODO #18 нет такого `ъ` знака в ЛИКе
         } else {
             if (code == non(']')) return HS_LAT_RIGHT_SQUARE_BRACKET;
         }
@@ -383,7 +383,7 @@ public class Layout extends AbstractLayout {
         // (Ж)      ->   ;     V
         // ctrl (Ж) ->   Ж     ;
         result = is(code, cyrLat,
-                ';', H_none_Semicolon_OR_shift_Plus,   // TODO вот не совсем понятно надо ли тут так сложно
+                ';', H_none_Semicolon_OR_shift_Plus,   // TODO #19 вот не совсем понятно надо ли тут так сложно
                 'ж', H_cyr_Ж_OR_lat_V);
         if (result != null) return result;
         if (code == shf(';')) return HS_COLON;
@@ -411,13 +411,13 @@ public class Layout extends AbstractLayout {
         // ctrl  \  ->         /
         // alt   \  ->
         if (cyrLat) {
-            if (code == non('\\')) return HS_SLASH; // TODO тут должно быть '\' но в кириллице там вылетает 'Э' вместо '\'
+            if (code == non('\\')) return HS_SLASH; // TODO #20 тут должно быть '\' но в кириллице там вылетает 'Э' вместо '\'
             if (code == shf('\\')) return HS_SLASH;
             if (code == ctr('\\')) ;
             if (code == alt('\\')) ;
         } else {
             if (code == non('\\')) return HS_LAT_BACKSLASH;
-            if (code == shf('\\')) ; // TODO тут должно быть '|' но такого символа нет в ЛИКе
+            if (code == shf('\\')) ; // #21 TODO тут должно быть '|' но такого символа нет в ЛИКе
             if (code == ctr('\\')) return HS_SLASH;
             if (code == alt('\\')) ;
         }
@@ -512,7 +512,7 @@ public class Layout extends AbstractLayout {
         // shift ,  ->   <     <
         // alt   ,  ->   .     .
         result = is(code, cyrLat,
-                ',', H_none_Comma_OR_shift_LeftAngleBracket, // TODO вот не совсем понятно надо ли тут так сложно
+                ',', H_none_Comma_OR_shift_LeftAngleBracket, // TODO #19 вот не совсем понятно надо ли тут так сложно
                 'б', H_cyr_Б_OR_lat_B);
         if (result != null) return result;
         if (code == shf(',')) return HS_LEFT_ANGLE_BRACKET;
@@ -526,7 +526,7 @@ public class Layout extends AbstractLayout {
         // shift .  ->   >     >
         // alt   .  ->   ,     ,
         result = is(code, cyrLat,
-                '.', H_none_Dot_OR_shift_RightAngleBracket, // TODO вот не совсем понятно надо ли тут так сложно
+                '.', H_none_Dot_OR_shift_RightAngleBracket, // TODO #19 вот не совсем понятно надо ли тут так сложно
                 'ю', H_cyr_Ю_OR_lat_At);
         if (result != null) return result;
         if (code == shf('.')) return HS_RIGHT_ANGLE_BRACKET;

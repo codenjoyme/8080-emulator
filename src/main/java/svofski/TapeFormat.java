@@ -309,7 +309,7 @@ public class TapeFormat {
 
         /* Preamble */
         for (int i = 0; i < 200; ++i) {
-            data[dofs++] = (byte) (((i / 25 % 2 == 0) ? 0x00 : 0x55) & 0xff); // TODO added cast to byte from int
+            data[dofs++] = (byte) (((i / 25 % 2 == 0) ? 0x00 : 0x55) & 0xff); // TODO #25 to add cast to byte from int
         }
 
         int cs = 0;

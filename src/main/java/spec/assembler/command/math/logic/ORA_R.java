@@ -8,7 +8,7 @@ import java.util.List;
 
 import static spec.assembler.command.math.logic.ANA_R.and_flags;
 
-// TODO test me
+// FIXME test me
 public class ORA_R extends Command {
 
     private static final List<Integer> CODES = from(

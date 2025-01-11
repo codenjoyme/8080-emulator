@@ -57,19 +57,19 @@ public class RomLoader {
         }
     }
 
-    // TODO сделать преобразователь mem -> rks
+    // TODO #23 сделать преобразователь mem -> rks
 
     // Разновидность 1 для ПК "Специалист":
     // 2 байта  - адресс начала памяти (low byte, high byte)
     // 2 байта  - адресс конца памяти (low byte, high byte)
     // массив байтов прпограммы длинной между началом и концом
-    // 2 байта  - контрольная сумма (low byte, high byte) TODO реализовать проверку
+    // 2 байта  - контрольная сумма (low byte, high byte) TODO #24 реализовать проверку контрольной суммы в rks
 
     // Разновидность 2
     // 4 байта  - 0x70 0x8F 0x82 0x8F (префикс)
     // 16 байт  - 0x00
     // 1 байт   - 0xBC
-    // 2 байта  - контрольная сумма (low byte, high byte) TODO реализовать проверку
+    // 2 байта  - контрольная сумма (low byte, high byte) TODO #24 реализовать проверку контрольной суммы в rks
     // 255 байт - 0x00
     // 1 байт   - 0xE6
     // 2 байта  - адресс начала памяти (low byte, high byte)
@@ -102,7 +102,7 @@ public class RomLoader {
             cpu.PC(range.begin());
             readBytes(is, memory.all(), range);
             return range;
-            // Bites data = read8arr(is, 4); // TODO в конце еще два байта, контрольная сумма - реализовать проверку
+            // Bites data = read8arr(is, 4); // TODO #24 в конце еще два байта, контрольная сумма - реализовать проверку
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

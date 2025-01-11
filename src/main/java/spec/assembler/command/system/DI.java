@@ -5,7 +5,7 @@ import spec.assembler.Command;
 
 import java.util.List;
 
-// TODO test me
+// FIXME test me
 public class DI extends Command {
 
     private static final List<Integer> CODES = from(
@@ -23,6 +23,6 @@ public class DI extends Command {
 
     @Override
     public void apply(int command, Registry r) {
-        // TODO понять что делает команда
+        // TODO #7 понять что делает команда
     }
 }

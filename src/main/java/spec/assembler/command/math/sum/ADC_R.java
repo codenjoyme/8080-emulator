@@ -9,7 +9,7 @@ import java.util.List;
 import static spec.Constants.*;
 import static spec.assembler.Parity.*;
 
-// TODO test me
+// FIXME test me
 public class ADC_R extends Command {
 
     private static final List<Integer> CODES = from(

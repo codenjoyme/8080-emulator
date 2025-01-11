@@ -6,7 +6,7 @@ import spec.assembler.Command;
 import java.util.List;
 import java.util.function.Predicate;
 
-// TODO test me
+// FIXME test me
 public class JMP_XXYY extends Command {
 
     private static final List<Integer> CODES = from(

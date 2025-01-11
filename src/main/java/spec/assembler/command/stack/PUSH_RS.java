@@ -12,7 +12,7 @@ import java.util.List;
  *    (SP-2)<-R2  R2=[C|E|L|A]
  *    SP<-SP-2
  */
-// TODO test me
+// FIXME test me
 public class PUSH_RS extends Command {
 
     private static final List<Integer> CODES = from(

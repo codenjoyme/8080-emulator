@@ -57,7 +57,7 @@ public class Bites implements Iterable<Integer> {
         return array(new Range(begin, -length));
     }
 
-    // TODO remove code duplicate
+    // TODO #4 remove code duplicate
     public byte[] byteArray(Range range) {
         int length = range.length();
 

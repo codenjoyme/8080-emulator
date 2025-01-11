@@ -12,7 +12,7 @@ import java.util.List;
  *    R1<-(SP)   R1=[B|D|H|PSW]
  *    SP<-SP+2
  */
-// TODO test me
+// FIXME test me
 public class POP_RS extends Command {
 
     private static final List<Integer> CODES = from(

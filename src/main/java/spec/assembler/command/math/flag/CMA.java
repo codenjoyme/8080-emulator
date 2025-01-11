@@ -8,7 +8,7 @@ import java.util.List;
 
 import static spec.math.WordMath.BITE;
 
-// TODO test me
+// FIXME test me
 public class CMA extends Command {
 
     private static final List<Integer> CODES = from(

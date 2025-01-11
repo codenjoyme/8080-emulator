@@ -7,7 +7,7 @@ import java.util.List;
 
 import static spec.assembler.command.math.logic.ANA_R.and8;
 
-// TODO test me
+// FIXME test me
 public class ANI_XX extends Command {
 
     private static final List<Integer> CODES = from(

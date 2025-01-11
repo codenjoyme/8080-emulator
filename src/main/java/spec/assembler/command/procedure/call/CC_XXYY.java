@@ -7,7 +7,7 @@ import java.util.List;
 
 import static spec.assembler.command.procedure.call.CALL_XXYY.call_if;
 
-// TODO test me
+// FIXME test me
 public class CC_XXYY extends Command {
 
     private static final List<Integer> CODES = from(
@@ -25,7 +25,7 @@ public class CC_XXYY extends Command {
 
     @Override
     public int ticks(int command) {
-        return 17; // TODO если условие не прошло то 10
+        return 17; // TODO #5 если условие не прошло то 10
     }
 
     @Override

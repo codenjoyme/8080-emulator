@@ -81,8 +81,8 @@ public class WhereIsData implements CpuMod {
                 throw new IllegalArgumentException("Mark error. Tried to mark old command as new: " +
                         info.type.name() + " > " + type.name() + " " + hex16(addr + i));
             }
-            info.command(command); // TODO why I cant set here if (info.command == null) info.command(command);
-            info.type(type);       // TODO and same here. This will improve performance
+            info.command(command); // TODO #28 why I cant set here if (info.command == null) info.command(command);
+            info.type(type);       // TODO #28 and same here. This will improve performance
             info.increase();
         }
         infos[addr].code(data.read8(addr));
