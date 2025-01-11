@@ -41,6 +41,7 @@ import static spec.stuff.TrackUpdatedMemory.TRACK_ONLY_UPDATED_VALUES;
 public abstract class AbstractTest {
 
     public static final int K10 = 10_000;
+    public static final int M1 = 1_000_000;
 
     public static int START = 0x0000;
 

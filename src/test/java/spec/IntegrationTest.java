@@ -10,8 +10,8 @@ import spec.mods.WhereIsData;
 import spec.platforms.Lik;
 import spec.stuff.AbstractTest;
 
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
@@ -48,7 +48,7 @@ public class IntegrationTest extends AbstractTest {
         record.reset()
                 .shoot("runcom", it -> it.after(2 * K10))
                 .shoot("stop", it -> it.press(END).after(2 * K10))
-                .shoot("monitor", it -> it.press(ENTER).after(5 * K10))
+                .shoot("monitor", pressEnterAndWait())
                 .shoot("assembler", it -> it.enter("AC000").press(ENTER).after(20 * K10))
                 .shoot("assembler-exit", it -> it.down(ENTER).after(5 * K10).press(END).after(5 * K10).up(ENTER).after(15 * K10))
                 .shoot("memory", it -> it.enter("D9000").press(ENTER).after(30 * K10))
@@ -80,6 +80,15 @@ public class IntegrationTest extends AbstractTest {
         assertFromPng(pngPath("basic-run"));
     }
 
+    private static Function<KeyRecord.Action, KeyRecord.Action> pressEnterAndWait() {
+        return pressEnterAndWait(5 * K10);
+    }
+
+    private static Function<KeyRecord.Action, KeyRecord.Action> pressEnterAndWait(int ticks) {
+        return it -> it.press(ENTER).after(ticks);
+    }
+
+
     @Test
     public void testLik_basic() {
         // given
@@ -89,7 +98,7 @@ public class IntegrationTest extends AbstractTest {
         record.reset()
                 .shoot("runcom", it -> it.after(2 * K10))
                 .shoot("stop", it -> it.press(END).after(2 * K10))
-                .shoot("monitor", it -> it.press(ENTER).after(5 * K10))
+                .shoot("monitor", pressEnterAndWait())
                 .shoot("basic", it -> it.enter("B").press(ENTER).after(20 * K10))
                 .stopCpu();
 
@@ -113,20 +122,28 @@ public class IntegrationTest extends AbstractTest {
         // when
         record.after(12 * K10).down(END)
                 .after(5 * K10).up(END).shoot("")
+
                 .after(10 * K10).down(ENTER)
                 .after(5 * K10).up(ENTER).shoot("")
+
                 .after(34 * K10).down(J)
                 .after(4 * K10).up(J).shoot("")
+
                 .after(4 * K10).down(ENTER)
                 .after(10 * K10).up(ENTER).shoot("")
+
                 .after(400 * K10).down(RIGHT)
                 .after(59 * K10).up(RIGHT).shoot("")
+
                 .after(1 * K10).down(UP)
                 .after(24 * K10).up(UP).shoot("")
+
                 .after(127 * K10).down(RIGHT)
                 .after(53 * K10).up(RIGHT).shoot("")
+
                 .after(1 * K10).down(UP)
                 .after(28 * K10).up(UP).shoot("")
+
                 .stopCpu();
 
         cpu.PC(START_POINT);
@@ -255,6 +272,32 @@ public class IntegrationTest extends AbstractTest {
 
         // when
         assertRecord("reversi2.rec");
+    }
+
+    @Test
+    public void testLik_game_chess_play() {
+        // given
+        lik().loadRom(base, roms);
+        lik().loadGame(base, roms, "chess");
+
+        // when
+
+        record.reset()
+                .shoot("runcom", it -> it.after(2 * K10))
+                .shoot("stop", it -> it.press(END).after(2 * K10))
+                .shoot("monitor", pressEnterAndWait())
+                .shoot("j", it -> it.enter("J"))
+                .shoot("choose-level", pressEnterAndWait())
+                .shoot("select-level", it -> it.enter("1"))
+                .shoot("choose-black-white", pressEnterAndWait())
+                .shoot("select-black-white", it -> it.enter("1"))
+                .shoot("choose-first-move", pressEnterAndWait())
+                .shoot("select-first-move", it -> it.enter("E2-E4"))
+                .shoot("opponent-answer", pressEnterAndWait(10 * M1))
+                .stopCpu();
+
+        cpu.PC(START_POINT);
+        start();
     }
 
     @Test
