@@ -48,6 +48,11 @@ public class Lik implements Platform {
     }
 
     @Override
+    public Range loadBasic(URL base, RomLoader roms, String name) {
+        return roms.loadBSS(base, basic(name, ".bss"));
+    }
+
+    @Override
     public Range loadTest(URL base, RomLoader roms, String name) {
         if (name.endsWith(".com")) {
             return roms.loadROM(base, platform() + "/test/" + name, 0x0000);

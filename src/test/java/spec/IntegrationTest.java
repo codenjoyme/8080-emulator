@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
+import static spec.Constants.BASIC_LIK_V2_PROGRAM_START;
 import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
 import static spec.platforms.Lik.FINISH_ROM6;
@@ -161,7 +162,29 @@ public class IntegrationTest extends AbstractTest {
                 "1E60: 00 69 1E 0A 00 80 20 31 00 71 1E 14 00 80 20 32 \n" +
                 "1E70: 00 7A 1E 1E 00 88 20 31 30 00 00 00 00 00 00 00 \n" +
                 "1E80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
-                memory.all().toString(0x1E60, 0x1E90, true, true));
+                memory.all().toString(BASIC_LIK_V2_PROGRAM_START, BASIC_LIK_V2_PROGRAM_START + 30, true, true));
+    }
+
+    @Test
+    public void testLik_basic_program_president() {
+        // given
+        lik().loadRom(base, roms);
+        lik().loadGame(base, roms, "basic");
+        lik().loadBasic(base, roms, "president");
+
+        // when
+        record.reset()
+                .shoot("runcom", it -> it.after(2 * K10))
+                .shoot("stop", it -> it.press(END).after(2 * K10))
+                .shoot("monitor", pressEnterAndWait())
+                .shoot("basic", it -> it.enter("J").press(ENTER).after(20 * K10))
+                // TODO #31 Разобраться, почему не работает программа на бейсике, может бейсик не тот?
+                .shoot("run", it -> it.enter("RUN").press(ENTER).after(10 * K10))
+                .shoot("list", it -> it.enter("LIST").press(ENTER).after(66 * K10))
+                .stopCpu();
+
+        cpu.PC(START_POINT);
+        start();
     }
 
     @Test

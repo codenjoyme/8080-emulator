@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
+import static spec.Constants.BASIC_LIK_V2_PROGRAM_START;
 import static spec.math.WordMath.BITE;
 
 public class RomLoader {
@@ -46,11 +47,35 @@ public class RomLoader {
         try {
             URL url = new URL(base, path);
             InputStream is = url.openStream();
-            int length = is.available();
-            Range range = new Range(offset, -length);
-            logLoading(url.toString(), range);
             cpu.PC(offset);
-            readBytes(is, all, range);
+            Range range = readAll(all, offset, is, url);
+            return range;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Range readAll(Bites all, int offset, InputStream is, URL url) throws Exception {
+        int length = is.available();
+        Range range = new Range(offset, -length);
+        logLoading(url.toString(), range);
+        readBytes(is, all, range);
+        return range;
+    }
+
+    // для ПК `Специалист`/`ЛИК` и `BASIC ЛИК V2` (BSS) файл содержит программу в машинных кодах
+    // 3 байта - 0xD3 0xD3 0xD3
+    // массив байтов программы загружается в память начиная с 0x1E60
+    public Range loadBSS(URL base, String path) {
+        try {
+            URL url = new URL(base, path);
+            InputStream is = url.openStream();
+
+            Bites header = read8arr(is, 3);
+            header.equals(new Bites(0xD3, 0xD3, 0xD3));
+
+            int offset = BASIC_LIK_V2_PROGRAM_START;
+            Range range = readAll(memory.all(), offset, is, url);
             return range;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -256,6 +281,10 @@ public class RomLoader {
             }
             case "snp": {
                 return loadSnapshot(base, path);
+            }
+            case "bss": {
+                loadBSS(base, path);
+                return new Range(0, BASIC_LIK_V2_PROGRAM_START);
             }
             case "mem":
             default: {

@@ -17,6 +17,8 @@ public interface Platform {
 
     Range loadGame(URL base, RomLoader roms, String name);
 
+    Range loadBasic(URL base, RomLoader roms, String name);
+
     Range loadTest(URL base, RomLoader roms, String name);
 
     default String platform() {
@@ -29,5 +31,9 @@ public interface Platform {
 
     default String app(String name, String type) {
         return apps() + "/" + name + "/" + name + type;
+    }
+
+    default String basic(String name, String type) {
+        return apps() + "/basic/program/" + name + "/" + name + type;
     }
 }
