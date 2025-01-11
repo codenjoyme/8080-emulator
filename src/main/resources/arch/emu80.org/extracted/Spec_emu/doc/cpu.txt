@@ -10,7 +10,7 @@ Segments:       CSEG            CS
                 SCREEN          ES
                 SPECIAL         DS,SS
 
-Š« ¢¨è¨:        ScrollLock      ([418h]&10h) Toggle mode.
+ÐšÐ»Ð°Ð²Ð¸ÑˆÐ¸:        ScrollLock      ([418h]&10h) Toggle mode.
                   F1  - help
                   F2  - trace into
                   F3  - step over

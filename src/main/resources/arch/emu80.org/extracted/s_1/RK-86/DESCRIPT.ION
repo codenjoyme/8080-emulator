@@ -1,29 +1,29 @@
 BASIC_OK.RKR Basic
-MUZUKRED.RKR Музыкальный редактор
-REDASM.RKR Редактор+ассемблер
+MUZUKRED.RKR ╨Ь╤Г╨╖╤Л╨║╨░╨╗╤М╨╜╤Л╨╣ ╤А╨╡╨┤╨░╨║╤В╨╛╤А
+REDASM.RKR ╨а╨╡╨┤╨░╨║╤В╨╛╤А+╨░╤Б╤Б╨╡╨╝╨▒╨╗╨╡╤А
 BASMIKR.RKR Basic Micron
-BASICMUS.RKR Музыкальный Basic
+BASICMUS.RKR ╨Ь╤Г╨╖╤Л╨║╨░╨╗╤М╨╜╤Л╨╣ Basic
 BASICPC.RKR Basic PC
-BASIC_PR.RKR Basic-сервис
-BASICSER.RKR Basic сервис - 2
-BASIC80.RKR Бейсик 80
-MUSIC.RKR Музыкальный редактор
-DEBUG.RKR Отладчик
-ASM_ED.RKR Редактор+Ассемблер Micron
-ED-DSSM.RKR Редактор+Дизассемблер Micron
-CPM.RKR Загрузчик СР/М
-DSSM-CPM.RKR Дизассемблер под СРМ
-HEXEDIT1.RKR DumpCorr+программатор - 1
-HEXEDIT2.RKR DumpCorr+программатор - 2
-LINKRK.RKR Связь 2 РК через ППА
-PROGR1.RKR Программатор
-PROGR2.RKR Программатор
-PROGR3.RKR Программатор
-PASCAL.RKR Паскаль - МФТИ
+BASIC_PR.RKR Basic-╤Б╨╡╤А╨▓╨╕╤Б
+BASICSER.RKR Basic ╤Б╨╡╤А╨▓╨╕╤Б - 2
+BASIC80.RKR ╨С╨╡╨╣╤Б╨╕╨║ 80
+MUSIC.RKR ╨Ь╤Г╨╖╤Л╨║╨░╨╗╤М╨╜╤Л╨╣ ╤А╨╡╨┤╨░╨║╤В╨╛╤А
+DEBUG.RKR ╨Ю╤В╨╗╨░╨┤╤З╨╕╨║
+ASM_ED.RKR ╨а╨╡╨┤╨░╨║╤В╨╛╤А+╨Р╤Б╤Б╨╡╨╝╨▒╨╗╨╡╤А Micron
+ED-DSSM.RKR ╨а╨╡╨┤╨░╨║╤В╨╛╤А+╨Ф╨╕╨╖╨░╤Б╤Б╨╡╨╝╨▒╨╗╨╡╤А Micron
+CPM.RKR ╨Ч╨░╨│╤А╤Г╨╖╤З╨╕╨║ ╨б╨а/╨Ь
+DSSM-CPM.RKR ╨Ф╨╕╨╖╨░╤Б╤Б╨╡╨╝╨▒╨╗╨╡╤А ╨┐╨╛╨┤ ╨б╨а╨Ь
+HEXEDIT1.RKR DumpCorr+╨┐╤А╨╛╨│╤А╨░╨╝╨╝╨░╤В╨╛╤А - 1
+HEXEDIT2.RKR DumpCorr+╨┐╤А╨╛╨│╤А╨░╨╝╨╝╨░╤В╨╛╤А - 2
+LINKRK.RKR ╨б╨▓╤П╨╖╤М 2 ╨а╨Ъ ╤З╨╡╤А╨╡╨╖ ╨Я╨Я╨Р
+PROGR1.RKR ╨Я╤А╨╛╨│╤А╨░╨╝╨╝╨░╤В╨╛╤А
+PROGR2.RKR ╨Я╤А╨╛╨│╤А╨░╨╝╨╝╨░╤В╨╛╤А
+PROGR3.RKR ╨Я╤А╨╛╨│╤А╨░╨╝╨╝╨░╤В╨╛╤А
+PASCAL.RKR ╨Я╨░╤Б╨║╨░╨╗╤М - ╨Ь╨д╨в╨Ш
 C.RKR Best C Compiler
-ED-DSSM2.RKR Редактор+Дизассемблер Micron
+ED-DSSM2.RKR ╨а╨╡╨┤╨░╨║╤В╨╛╤А+╨Ф╨╕╨╖╨░╤Б╤Б╨╡╨╝╨▒╨╗╨╡╤А Micron
 DUMPED.RKR Dump Editor
-ED-SORT.RKR Редактор+Сортировка
-EDMASM.RKR Редактор+Ассемблер
-FORTH.RKR ЛС-Форт
-FULLEDIT.RKR Расширенный редактор Micron
+ED-SORT.RKR ╨а╨╡╨┤╨░╨║╤В╨╛╤А+╨б╨╛╤А╤В╨╕╤А╨╛╨▓╨║╨░
+EDMASM.RKR ╨а╨╡╨┤╨░╨║╤В╨╛╤А+╨Р╤Б╤Б╨╡╨╝╨▒╨╗╨╡╤А
+FORTH.RKR ╨Ы╨б-╨д╨╛╤А╤В
+FULLEDIT.RKR ╨а╨░╤Б╤И╨╕╤А╨╡╨╜╨╜╤Л╨╣ ╤А╨╡╨┤╨░╨║╤В╨╛╤А Micron

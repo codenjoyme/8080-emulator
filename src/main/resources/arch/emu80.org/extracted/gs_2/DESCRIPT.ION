@@ -1,56 +1,56 @@
 ADVENTUR.RKS Adventure
-ALMAZ.RKS Ä´¨†ß
+ALMAZ.RKS –ê–ª–º–∞–∑
 ARCANOID.RKS Arcanoid
-BKT.RKS Å†‡Ï•‡Î, copter, tetris
-CHESS2.RKS ò†Â¨†‚Î
-CHESS3.RKS ò†Â¨†‚Î
-CIRCUS.RKS ñ®‡™
+BKT.RKS –ë–∞—Ä—å–µ—Ä—ã, copter, tetris
+CHESS2.RKS –®–∞—Ö–º–∞—Ç—ã
+CHESS3.RKS –®–∞—Ö–º–∞—Ç—ã
+CIRCUS.RKS –¶–∏—Ä–∫
 COOKY.RKS Cooky
 COPTER.RKS Copter
 COSMAN.RKS Cosman
-FOOTBALL.RKS î„‚°Æ´
+FOOTBALL.RKS –§—É—Ç–±–æ–ª
 GOLD.RKS Gold
-GR_DEMO.RKS É‡†‰®Á•·™†Ô §•¨Æ≠·‚‡†Ë™†
+GR_DEMO.RKS –ì—Ä–∞—Ñ–∏—á–µ—Å–∫–∞—è –¥–µ–º–æ–Ω—Å—Ç—Ä–∞—à–∫–∞
 HARRIER.RKS Harrier
-HELICOPT.RKS ë°®¢†‚Ï ¢•‡‚Æ´•‚Î
+HELICOPT.RKS –°–±–∏–≤–∞—Ç—å –≤–µ—Ä—Ç–æ–ª–µ—Ç—ã
 JUMPJEK.RKS JumpJek
 KAMIKADZ.RKS Kamikadze
-KLAD2.RKS ÖÈ• Æ§®≠ Land (c ®≠·‚‡„™Ê®•©)
-KROT.RKS ä‡Æ‚
+KLAD2.RKS –ï—â–µ –æ–¥–∏–Ω Land (c –∏–Ω—Å—Ç—Ä—É–∫—Ü–∏–µ–π)
+KROT.RKS –ö—Ä–æ—Ç
 LADDER.RKS Ladder
-LAMP.RKS ë°®¢†‚Ï ´†¨ØÆÁ™„
-LAND_C.RKS Land §´Ô Ê¢•‚≠Æ£Æ "ëØ•™‚‡„¨†"
-LAND_S.RKS Land ·Æ ß¢„™Æ¨
-MANAGER.RKS å•≠•§¶•‡
-MARS.RKS ÇÆ©≠† · ¨†‡·®†≠†¨®
-MUSIC.RKS å„ßÎ™†´Ï≠†Ô §•¨Æ≠·‚‡†Ë™†
-PACMAN2.RKS Pacman - 2 ¢†‡®†≠‚
-PAKET.RKS í•‚‡®·, Ø®‚Æ≠, METX
+LAMP.RKS –°–±–∏–≤–∞—Ç—å –ª–∞–º–ø–æ—á–∫—É
+LAND_C.RKS Land –¥–ª—è —Ü–≤–µ—Ç–Ω–æ–≥–æ "–°–ø–µ–∫—Ç—Ä—É–º–∞"
+LAND_S.RKS Land —Å–æ –∑–≤—É–∫–æ–º
+MANAGER.RKS –ú–µ–Ω–µ–¥–∂–µ—Ä
+MARS.RKS –í–æ–π–Ω–∞ —Å –º–∞—Ä—Å–∏–∞–Ω–∞–º–∏
+MUSIC.RKS –ú—É–∑—ã–∫–∞–ª—å–Ω–∞—è –¥–µ–º–æ–Ω—Å—Ç—Ä–∞—à–∫–∞
+PACMAN2.RKS Pacman - 2 –≤–∞—Ä–∏–∞–Ω—Ç
+PAKET.RKS –¢–µ—Ç—Ä–∏—Å, –ø–∏—Ç–æ–Ω, METX
 PENTAX.RKS Pentax
-PEREGON.RKS è•‡•£Æ≠Ô‚Ï Ë†‡®™®
-PITON1.RKS è®‚Æ≠ - 1 ¢†‡®†≠‚
-PITON2.RKS è®‚Æ≠ - 2 ¢†‡®†≠‚
-PITON3.RKS è®‚Æ≠ - 3 ¢†‡®†≠‚
-POGONYA.RKS èÆ£Æ≠Ô
-POOL.RKS Å®´ÏÔ‡§
-POPCORN.RKS ë‚•≠™†
+PEREGON.RKS –ü–µ—Ä–µ–≥–æ–Ω—è—Ç—å —à–∞—Ä–∏–∫–∏
+PITON1.RKS –ü–∏—Ç–æ–Ω - 1 –≤–∞—Ä–∏–∞–Ω—Ç
+PITON2.RKS –ü–∏—Ç–æ–Ω - 2 –≤–∞—Ä–∏–∞–Ω—Ç
+PITON3.RKS –ü–∏—Ç–æ–Ω - 3 –≤–∞—Ä–∏–∞–Ω—Ç
+POGONYA.RKS –ü–æ–≥–æ–Ω—è
+POOL.RKS –ë–∏–ª—å—è—Ä–¥
+POPCORN.RKS –°—Ç–µ–Ω–∫–∞
 PSST.RKS Psst
 PUSHER.RKS Pusher-2
-R-TEST.RKS í•·‚ ‡•†™Ê®®
-REVERSI.RKS ê•¢•‡·®
-REVERSI2.RKS ê•¢•‡·®
-SKACHKI.RKS ë™†Á™®
-SONATA.RKS ã„≠≠†Ô ·Æ≠†‚† Å•‚ÂÆ¢•≠†
+R-TEST.RKS –¢–µ—Å—Ç —Ä–µ–∞–∫—Ü–∏–∏
+REVERSI.RKS –†–µ–≤–µ—Ä—Å–∏
+REVERSI2.RKS –†–µ–≤–µ—Ä—Å–∏
+SKACHKI.RKS –°–∫–∞—á–∫–∏
+SONATA.RKS –õ—É–Ω–Ω–∞—è —Å–æ–Ω–∞—Ç–∞ –ë–µ—Ç—Ö–æ–≤–µ–Ω–∞
 SP_KING.RKS Space King
-STARWAR2.RKS á¢•ß§≠Î• ¢Æ©≠Î (3D)
-STENA.RKS ë‚•≠†
-TENNIS2.RKS í•≠≠®· - 2 ¢†‡®†≠‚
-TETRIS1.RKS í•‚‡®·
-TETRIS2.RKS í•‚‡®·
-TETRIS3.RKS í•‚‡®·
-TIP-TOP.RKS í®Ø-‚ÆØ
-UDAV.RKS ì§†¢
-V-PEREHV.RKS ÇÆß§„Ë≠Î© Ø•‡•Â¢†‚
-VERTOLET.RKS ë°®¢†‚Ï ¢•‡‚Æ´•‚Î
-WWAR.RKS ÇÆ©≠† ¨®‡Æ¢
+STARWAR2.RKS –ó–≤–µ–∑–¥–Ω—ã–µ –≤–æ–π–Ω—ã (3D)
+STENA.RKS –°—Ç–µ–Ω–∞
+TENNIS2.RKS –¢–µ–Ω–Ω–∏—Å - 2 –≤–∞—Ä–∏–∞–Ω—Ç
+TETRIS1.RKS –¢–µ—Ç—Ä–∏—Å
+TETRIS2.RKS –¢–µ—Ç—Ä–∏—Å
+TETRIS3.RKS –¢–µ—Ç—Ä–∏—Å
+TIP-TOP.RKS –¢–∏–ø-—Ç–æ–ø
+UDAV.RKS –£–¥–∞–≤
+V-PEREHV.RKS –í–æ–∑–¥—É—à–Ω—ã–π –ø–µ—Ä–µ—Ö–≤–∞—Ç
+VERTOLET.RKS –°–±–∏–≤–∞—Ç—å –≤–µ—Ä—Ç–æ–ª–µ—Ç—ã
+WWAR.RKS –í–æ–π–Ω–∞ –º–∏—Ä–æ–≤
 XONIX.RKS Xonix

@@ -1,7 +1,7 @@
-ASM-ED1.RKS Редактор+ассемблер
-ASM-ED2.RKS Редактор+ассемблер
+ASM-ED1.RKS ╨а╨╡╨┤╨░╨║╤В╨╛╤А+╨░╤Б╤Б╨╡╨╝╨▒╨╗╨╡╤А
+ASM-ED2.RKS ╨а╨╡╨┤╨░╨║╤В╨╛╤А+╨░╤Б╤Б╨╡╨╝╨▒╨╗╨╡╤А
 BAS-CIR.RKS Basic - circle
-BAS-GR.RKS Бейсик - графический
+BAS-GR.RKS ╨С╨╡╨╣╤Б╨╕╨║ - ╨│╤А╨░╤Д╨╕╤З╨╡╤Б╨║╨╕╨╣
 BAS-KBH.RKS Basic KBH
 BAS-MAG.RKS Basic-magic
 BAS-MAG2.RKS Basic-magic
@@ -9,20 +9,20 @@ BAS-MIC2.RKS Basic *Micron*
 BAS-MICR.RKS Basic *MICRON*
 BAS-NEW.RKS Basic-new
 BAS-RDK.RKS RDK Prompt Basic
-BAS-S.RKS Basic - 4 вариант
+BAS-S.RKS Basic - 4 ╨▓╨░╤А╨╕╨░╨╜╤В
 BAS-SG.RKS Basic-service (+graph. ed.)
-BAS-SPEC.RKS Basic-специалист
-BAS-SRV.RKS Бейсик-сервис
+BAS-SPEC.RKS Basic-╤Б╨┐╨╡╤Ж╨╕╨░╨╗╨╕╤Б╤В
+BAS-SRV.RKS ╨С╨╡╨╣╤Б╨╕╨║-╤Б╨╡╤А╨▓╨╕╤Б
 BASIC-A.RKS Astron-88 Basic
-BASIC2.RKS Basic - 2 вариант
-BASIC3.RKS Basic - 3 вариант
-BASMIC87.RKS Basic-micron-87 с описанием
-CONST1.RKS Определение константы чтения - 1
-CONST2.RKS Определение константы чтения - 2\
-DEBUG2.RKS Отладчик
-DSSM2.RKS Дизассемблер
-FORTH.RKS Форт
-MUS-SYST.RKS Музыкальная система
-PROGR1.RKS Программатор ПЗУ - 1
-PROGR2.RKS Программатор ПЗУ - 2
-RENUM.RKS Renum для бейсикаэ
+BASIC2.RKS Basic - 2 ╨▓╨░╤А╨╕╨░╨╜╤В
+BASIC3.RKS Basic - 3 ╨▓╨░╤А╨╕╨░╨╜╤В
+BASMIC87.RKS Basic-micron-87 ╤Б ╨╛╨┐╨╕╤Б╨░╨╜╨╕╨╡╨╝
+CONST1.RKS ╨Ю╨┐╤А╨╡╨┤╨╡╨╗╨╡╨╜╨╕╨╡ ╨║╨╛╨╜╤Б╤В╨░╨╜╤В╤Л ╤З╤В╨╡╨╜╨╕╤П - 1
+CONST2.RKS ╨Ю╨┐╤А╨╡╨┤╨╡╨╗╨╡╨╜╨╕╨╡ ╨║╨╛╨╜╤Б╤В╨░╨╜╤В╤Л ╤З╤В╨╡╨╜╨╕╤П - 2\
+DEBUG2.RKS ╨Ю╤В╨╗╨░╨┤╤З╨╕╨║
+DSSM2.RKS ╨Ф╨╕╨╖╨░╤Б╤Б╨╡╨╝╨▒╨╗╨╡╤А
+FORTH.RKS ╨д╨╛╤А╤В
+MUS-SYST.RKS ╨Ь╤Г╨╖╤Л╨║╨░╨╗╤М╨╜╨░╤П ╤Б╨╕╤Б╤В╨╡╨╝╨░
+PROGR1.RKS ╨Я╤А╨╛╨│╤А╨░╨╝╨╝╨░╤В╨╛╤А ╨Я╨Ч╨г - 1
+PROGR2.RKS ╨Я╤А╨╛╨│╤А╨░╨╝╨╝╨░╤В╨╛╤А ╨Я╨Ч╨г - 2
+RENUM.RKS Renum ╨┤╨╗╤П ╨▒╨╡╨╣╤Б╨╕╨║╨░╤Н

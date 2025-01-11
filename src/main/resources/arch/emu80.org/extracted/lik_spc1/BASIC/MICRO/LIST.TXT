@@ -1,4 +1,4 @@
-BEEPP    RKS   - §•¨Æ≠·‚‡†Ê®Ô ÆØ•‡†‚Æ‡† Beep
-BEEPP2   RKS   - §•¨Æ≠·‚‡†Ê®Ô ÆØ•‡†‚Æ‡† Beep
-BIZNES   RKS   - "åÆ≠ÆØÆ´®Ô"
-BASICMIC RKS   - ®¨Ô Ø‡Æ£‡†¨¨Î: BASIC-MICRON
+BEEPP    RKS   - –¥–µ–º–æ–Ω—Å—Ç—Ä–∞—Ü–∏—è –æ–ø–µ—Ä–∞—Ç–æ—Ä–∞ Beep
+BEEPP2   RKS   - –¥–µ–º–æ–Ω—Å—Ç—Ä–∞—Ü–∏—è –æ–ø–µ—Ä–∞—Ç–æ—Ä–∞ Beep
+BIZNES   RKS   - "–ú–æ–Ω–æ–ø–æ–ª–∏—è"
+BASICMIC RKS   - –∏–º—è –ø—Ä–æ–≥—Ä–∞–º–º—ã: BASIC-MICRON
