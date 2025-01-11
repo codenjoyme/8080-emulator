@@ -2,10 +2,7 @@ package spec;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
+import java.awt.event.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,7 +37,7 @@ public class Main extends JFrame implements KeyListener {
                 SCREEN_HEIGHT + BORDER_WIDTH * 2 + 40));
         setVisible(true);
         setFocusable(true);
-        setResizable(false);
+        setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addWindowFocusListener(focusListener());
         setFocusTraversalKeysEnabled(true);

@@ -1,0 +1,767 @@
+DATE: 1736586269418
+
+===============================================================================================
+Q: У меня есть приложение
+public class Main extends JFrame implements KeyListener {
+
+    private Application app;
+
+    public static void main(String[] args) {
+        // передается или base в серверной версии,
+        // либо файл с приложением, либо вообще ничего
+        String base = null;
+        String rom = null;
+        if (args.length == 1) {
+            String param = args[0];
+            if (param.endsWith(".rks")) {
+                rom = param;
+            } else {
+                base = param;
+            }
+        }
+
+        new Main(base, rom);
+    }
+
+    public Main(String base, String rom) {
+        super("i8080 emulator");
+        setMinimumSize(new Dimension(
+                SCREEN_WIDTH + BORDER_WIDTH * 2 + 15,
+                SCREEN_HEIGHT + BORDER_WIDTH * 2 + 40));
+        setVisible(true);
+        setFocusable(true);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowFocusListener(focusListener());
+        setFocusTraversalKeysEnabled(true);
+        addKeyListener(this);
+
+        URL baseUrl = getBaseUrl(base);
+        Logger.debug("Base url: " + baseUrl);
+        app = new Application(this, baseUrl);
+        if (rom != null) {
+            app.load(rom);
+        }
+        app.gotFocus();
+        app.start();
+    }
+
+    private URL getBaseUrl(String base) {
+        try {
+            return base == null
+                    ? contentRoot().toURI().toURL()
+                    : new URL(base);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private File contentRoot() {
+        return new File(".");
+    }
+
+    @Override
+    public void keyTyped(KeyEvent event) {
+        // do nothing
+    }
+
+    @Override
+    public void keyPressed(KeyEvent event) {
+        if (app != null) {
+            app.handleKey(new Key(event, true));
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent event) {
+        if (app != null) {
+            app.handleKey(new Key(event, false));
+        }
+    }
+
+    private WindowFocusListener focusListener() {
+        return new WindowFocusListener() {
+            @Override
+            public void windowGainedFocus(WindowEvent event) {
+                if (app != null) {
+                    app.gotFocus();
+                }
+            }
+
+            @Override
+            public void windowLostFocus(WindowEvent event) {
+                if (app != null) {
+                    app.lostFocus();
+                }
+            }
+        };
+    }
+}
+и вот
+package spec;
+
+import spec.platforms.Platform;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.function.Consumer;
+
+import static spec.Constants.*;
+import static spec.Files.RECORDS;
+import static spec.Files.SNAPSHOTS;
+
+public class Application {
+
+    private URL base;
+    private Container parent;
+    private Hardware hard;
+
+    /**
+     * Container — это абстрактный подкласс класса Component, определяющий дополнительные методы,
+     * которые дают возможность помещать в него другие компоненты, что дает возможность построения
+     * иерархической системы визуальных объектов. Container отвечает за расположение содержащихся
+     * в нем компонентов с помощью интерфейса LayoutManager.
+     */
+    public Application(Container parent, URL base) {
+        this.parent = parent;
+        this.base = base;
+
+        hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, parent);
+
+        hard.fileRecorder().with(Files.newRecord());
+        hard.fileRecorder().startWriting();
+        hard.romSwitcher().loadRoms(base);
+    }
+
+    public void lostFocus() {
+        Logger.debug("Lost focus");
+        hard.graphic().printIO(BORDER_PORT, 0x50);
+        hard.keyboard().reset(false);
+    }
+
+    public void gotFocus() {
+        Logger.debug("Got focus");
+        hard.graphic().printIO(BORDER_PORT, 0x30);
+        hard.keyboard().reset(false);
+    }
+
+    public void handleKey(Key key) {
+        if (!key.system()) {
+            hard.keyboard().processKey(key);
+            return;
+        }
+
+        if (!key.pressed()) {
+            return;
+        }
+
+        if (key.numZero()) {
+            hard.romSwitcher().nextRom(base);
+        }
+
+        if (key.numOne()) {
+            hard.pauseResume();
+        }
+
+        if (key.numTwo()) {
+            hard.graphic().nextDrawMode();
+        }
+
+        if (key.numThree()) {
+            File file = Files.newScreenshot();
+            Logger.debug("Save screenshot to %s", file.getAbsolutePath());
+            hard.png().drawToFile(SCREEN.begin(), file);
+        }
+
+        if (key.numFour()) {
+            Logger.debug("Stop record/replay");
+            hard.record().reset();
+        }
+
+        if (key.numFive()) {
+            // TODO как сделать рабочим в веб версии?
+            if (base.toString().startsWith("http")) return;
+
+            openFileDialog(file -> hard.loadSnapshot(base, toRelative(base, file)),
+                    base.getFile() + SNAPSHOTS,
+                    "Snapshot file",
+                    "snp");
+        }
+
+        if (key.numSix()) {
+            File file = Files.newSnapshot();
+            hard.saveSnapshot(base, file.getPath());
+        }
+
+        if (key.numSlash()) {
+            // TODO как сделать рабочим в веб версии?
+            if (base.toString().startsWith("http")) return;
+
+            openFileDialog(file -> hard.loadRecord(file.getAbsolutePath()),
+                    base.getFile() + RECORDS,
+                    "Recording file",
+                    "rec");
+        }
+
+        if (key.numComma()) {
+            // TODO как сделать рабочим в веб версии?
+            if (base.toString().startsWith("http")) return;
+
+            RomSwitcher switcher = hard.romSwitcher();
+            Platform platform = switcher.current();
+            openFileDialog(file -> switcher.load(base, toRelative(base, file)),
+                    base.getFile() + platform.apps(),
+                    "Data file",
+                    "com", "rom", "rks", "bin", "mem");
+        }
+
+        if (key.numStar()) {
+            hard.timings().changeFullSpeed();
+        }
+
+        if (key.pause()) {
+            hard.timings().willReset();
+        }
+
+        if (key.numMinus()) {
+            hard.timings().increaseDelay();
+        }
+
+        if (key.numPlus()) {
+            hard.timings().decreaseDelay();
+        }
+        return;
+    }
+
+    public static String toRelative(URL base, File file) {
+        try {
+            return Paths.get(base.toURI()).relativize(Paths.get(file.getPath())).toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void openFileDialog(Consumer<File> onSelect,
+                                String directory,
+                                String fileType,
+                                String... ext) {
+        JFileChooser files = new JFileChooser();
+        files.setCurrentDirectory(new File(directory));
+        files.setDialogTitle("Select " + fileType);
+        files.setFileFilter(new FileNameExtensionFilter(String.format(
+                "%s %s", fileType, Arrays.asList(ext)), ext));
+        int option = files.showOpenDialog(parent);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = files.getSelectedFile();
+            onSelect.accept(file);
+        }
+    }
+
+    public void start() {
+        hard.start();
+    }
+
+    public void load(String rom) {
+        hard.romSwitcher().load(base, rom);
+    }
+}
+Я хочу, чтобы можно было по рисайзу окна скейлить изображение отрисосываемое в нем
+-----------------------------------------------------------------------------------------------
+A: Для поддержки масштабирования изображения при изменении размера окна в вашем приложении, можно обновить `Hardware` класс так, чтобы он масштабировал графический вывод в зависимости от текущих размеров окна. Это можно сделать добавив метод `scaleScreen`, который будет вызываться при изменении размера контейнера.
+
+Для начала, добавьте метод в класс `Hardware`, который будет обновлять размеры выводимого изображения:
+
+```java
+public void scaleScreen(int width, int height) {
+    // Реализация масштабирования изображения.
+    // Отрисовка масштабированной копии изображения на графический контекст.
+
+    // Пример расчета масштаба
+    float scaleX = width / (float) SCREEN_WIDTH;
+    float scaleY = height / (float) SCREEN_HEIGHT;
+    float scale = Math.min(scaleX, scaleY);
+
+    // Установите новое масштабированное изображение
+}
+```
+
+Затем, необходимо добавить слушателя изменения размера окна в вашем главном классе `Main`, чтобы обновлять масштаб изображения при изменении размера окна:
+
+```java
+public Main(String base, String rom) {
+    // Конструктор
+    ...
+    addComponentListener(new ComponentAdapter() {
+        @Override
+        public void componentResized(ComponentEvent e) {
+            super.componentResized(e);
+            Dimension newSize = getSize();
+            // Оставьте поля от краев окна, если необходимо
+            int newWidth = newSize.width - BORDER_WIDTH * 2;
+            int newHeight = newSize.height - BORDER_WIDTH * 2;
+            app.getHardware().scaleScreen(newWidth, newHeight);
+        }
+    });
+}
+```
+
+Не забудьте добавить в класс `Application` метод `getHardware()` для доступа к экземпляру `Hardware`:
+
+```java
+public Hardware getHardware() {
+    return hard;
+}
+```
+
+Этот подход позволяет обеспечить динамическое масштабирование изображения при изменении размеров окна в вашем приложении. Обязательно учтите пересчет координат пользовательского ввода (например, клики мыши), если они используются в вашем приложении, чтобы они соответствовали новому масштабу изображения.
+===============================================================================================
+
+===============================================================================================
+Q: Cannot resolve method 'componentResized' in 'JFrame'
+-----------------------------------------------------------------------------------------------
+A: Прошу прощения за неясность в предыдущем ответе. Метод `componentResized` является методом интерфейса `ComponentListener`, поэтому его надо переопределять внутри экземпляра `ComponentAdapter`, а не напрямую вызывать на `JFrame`. Вместо этого, метод `componentResized` должен быть добавлен в адаптер так:
+
+```java
+public Main(String base, String rom) {
+    // Конструктор
+    ...
+
+    this.addComponentListener(new ComponentAdapter() {
+        @Override
+        public void componentResized(ComponentEvent e) {
+            Dimension newSize = getSize();
+            int newWidth = Math.max(newSize.width - (BORDER_WIDTH * 2), SCREEN_WIDTH);
+            int newHeight = Math.max(newSize.height - (BORDER_WIDTH * 2), SCREEN_HEIGHT);
+            app.getHardware().scaleScreen(newWidth, newHeight);
+        }
+    });
+}
+```
+
+В приведенном примере используется `addComponentListener` для добавления нового объекта `ComponentAdapter` с переопределенным методом `componentResized`. Этот метод вызывается каждый раз, когда размер компонента изменяется.
+
+Также обратите внимание, что для новых размеров применяется проверка, чтобы они не были меньше оригинальных размеров экрана (`SCREEN_WIDTH` и `SCREEN_HEIGHT`), предполагая, что у вас определены минимальные размеры, ниже которых изображение масштабироваться не должно. Если минимальные размеры не определены, эту проверку можно убрать или же настроить минимально допустимый размер `JFrame` через метод `setMinimumSize`.
+===============================================================================================
+
+===============================================================================================
+Q: внутри hard есть класс который занимается отрисовкой, как мне его поменять?
+public class Graphic implements Video.Drawer {
+
+    private int width;
+    private int height;
+    private int border;
+
+    private Color currentBorder = null; // null mean update screen
+    private Color newBorder = Color.YELLOW;
+
+    private Image image;
+    private Graphics buffer;
+
+    private JPanel panel;
+
+    public Graphic(int width, int height, int border, Container parent) {
+        this.width = width;
+        this.height = height;
+        this.border = border;
+
+        panel = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics graphics) {
+                super.paintComponent(graphics);
+                if (buffer == null) return;
+
+                refreshBorder();
+                Graphic.this.paint(graphics);
+            }
+        };
+        // переопределяем лиснер только для Swing приложения,
+        // иначе не будут отлавливаться там клавиши так как panel перекрывает
+        if (parent.getKeyListeners().length > 0) {
+            panel.addKeyListener(parent.getKeyListeners()[0]);
+        }
+        panel.setVisible(true);
+        panel.setSize(width + 2 * border, height + 2 * border);
+        parent.add(panel);
+        
+        // тут мы кешируем уже отрисованное из видеопамяти изображение
+        image = parent.createImage(panel.getWidth(), panel.getHeight());
+        // через него мы рисуем на cache-image пиксели
+        buffer = image.getGraphics();
+    }
+
+    @Override
+    public void draw(int x, int y, Image pattern) {
+        buffer.drawImage(pattern, border + x, border + y, null);
+    }
+
+    @Override
+    public void done() {
+        buffer.drawImage(image, 0, 0, null);
+        repaint();
+    }
+
+    public void changeColor(Color color) {
+        newBorder = color;
+    }
+
+    public void refreshBorder() {
+        currentBorder = null; // обновить Border
+    }
+
+    private void drawBorder() {
+        if (border == 0) { // если бордюра нет - ничего не делать!
+            return;
+        }
+        if (currentBorder == newBorder) { // цвет не менялся
+            return;
+        }
+        currentBorder = newBorder;
+        buffer.setColor(currentBorder);
+        buffer.fillRect(
+                0,
+                0,
+                width + 2 * border,
+                border);
+        buffer.fillRect(
+                0,
+                0,
+                border,
+                height + 2 * border);
+        buffer.fillRect(
+                width + border,
+                0,
+                border,
+                height + 2 * border);
+        buffer.fillRect(
+                0,
+                height + border,
+                width + 2 * border,
+                border);
+    }
+
+    public void paint(Graphics graphics) {
+        drawBorder();
+        graphics.drawImage(image, 0, 0, null);
+    }
+
+    public void repaint() {
+        panel.repaint();
+    }
+}
+-----------------------------------------------------------------------------------------------
+A: Чтобы адаптировать класс `Graphic` для поддержки изменения размеров окна и соответствующего масштабирования содержимого на панели, вам нужно добавить поддержку вычисления масштаба и применения масштабированного рисования. Вам потребуется обновить методы отрисовки в этом классе, чтобы они учитывали текущий масштаб изображения. 
+
+Ниже приведён обновлённый класс `Graphic`, включающий масштабирование:
+
+```java
+public class Graphic implements Video.Drawer {
+
+    private int originalWidth;
+    private int originalHeight;
+    private int border;
+
+    private float scaleX = 1.0f;
+    private float scaleY = 1.0f;
+
+    private Color currentBorder = null;
+    private Color newBorder = Color.YELLOW;
+
+    private Image image;
+    private Graphics buffer;
+
+    private JPanel panel;
+
+    public Graphic(int width, int height, int border, Container parent) {
+        this.originalWidth = width;
+        this.originalHeight = height;
+        this.border = border;
+
+        panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics graphics) {
+                super.paintComponent(graphics);
+                if (buffer == null) return;
+
+                refreshBorder();
+                Graphic.this.paint(graphics);
+            }
+        };
+
+        if (parent.getKeyListeners().length > 0) {
+            panel.addKeyListener(parent.getKeyListeners()[0]);
+        }
+        panel.setVisible(true);
+        panel.setSize(originalWidth + 2 * border, originalHeight + 2 * border);
+        parent.add(panel);
+        
+        image = parent.createImage(panel.getWidth(), panel.getHeight());
+        buffer = image.getGraphics();
+    }
+
+    @Override
+    public void draw(int x, int y, Image pattern) {
+        int scaledX = (int) ((border + x) * scaleX);
+        int scaledY = (int) ((border + y) * scaleY);
+        int scaledWidth = (int) (pattern.getWidth(null) * scaleX);
+        int scaledHeight = (int) (pattern.getHeight(null) * scaleY);
+
+        buffer.drawImage(pattern, scaledX, scaledY, scaledWidth, scaledHeight, null);
+    }
+
+    @Override
+    public void done() {
+        buffer.drawImage(image, 0, 0, null);
+        repaint();
+    }
+
+    public void scaleScreen(int width, int height) {
+        this.scaleX = (float) width / (originalWidth + 2 * border);
+        this.scaleY = (float) height / (originalHeight + 2 * border);
+        image = panel.createImage(width, height);
+        buffer = image.getGraphics();
+        repaint();
+    }
+
+    public void changeColor(Color color) {
+        newBorder = color;
+    }
+
+    public void refreshBorder() {
+        currentBorder = null;
+    }
+
+    private void drawBorder() {
+        if (border == 0) return;
+        if (currentBorder == newBorder) return;
+        currentBorder = newBorder;
+        buffer.setColor(currentBorder);
+        // Обновление рисования границ с учетом масштаба
+        int borderTopBottomWidth = (int) ((originalWidth + 2 * border) * scaleX);
+        int borderLeftRightHeight = (int) ((originalHeight + 2 * border) * scaleY);
+        int borderSize = (int) (border * Math.min(scaleX, scaleY));
+
+        buffer.fillRect(0, 0, borderTopBottomWidth, borderSize); // top
+        buffer.fillRect(0, 0, borderSize, borderLeftRightHeight); // left
+        buffer.fillRect(borderTopBottomWidth - borderSize, 0, borderSize, borderLeftRightHeight); // right
+        buffer.fillRect(0, borderLeftRightHeight - borderSize, borderTopBottomWidth, borderSize); // bottom
+    }
+
+    public void paint(Graphics graphics) {
+        drawBorder();
+        graphics.drawImage(image, 0, 0, panel.getWidth(), panel.getHeight(), null);
+    }
+
+    public void repaint() {
+        panel.repaint();
+    }
+}
+```
+
+В этой реализации, когда меняется размер окна, метод `scaleScreen` обновляет масштабы и пересоздаёт изображение с новым размером. Методы `draw` и `drawBorder` изменены для учёта масштаба при отрисовке.
+===============================================================================================
+
+===============================================================================================
+Q: все сделал, но не могу рисайзить само окно
+-----------------------------------------------------------------------------------------------
+A: Если окно вашего приложения не реагирует на попытки изменения размера, это может быть связано с некоторыми свойствами компонентов Java Swing или настройками вашего окна. В возможные причины, помимо кода, могут входить:
+
+1. **Фиксированные размеры окна:** Убедитесь, что метод `setResizable(true)` вызван для вашего `JFrame`. Эта настройка позволяет изменять размеры окна. Если размер окна фиксирован с помощью `setResizable(false)`, изменить это поведение можно только изменением этого вызова.
+
+2. **Код стартового размера окна:** Убедитесь, что вы не устанавливаете размеры окна таким образом, чтобы они игнорировали изменения. Например, если вы используете `setMinimumSize`, подумайте о правильном контроле размеров.
+
+3. **Добавление компонентов с фиксированными размерами:** Компоненты, добавленные в `JFrame`, также могут быть настроены так, чтобы ограничивать изменение размеров окна. Например, использование `null` layout (`setLayout(null)`) и явная установка размеров и расположения компонентов.
+
+Давайте убедимся, что свойство `setResizable(true)` в вашем `JFrame` включено. Если у вас есть вызов `setResizable(false)` в вашем коде `JFrame`, его следует изменить:
+
+```java
+public Main(String base, String rom) {
+    super("i8080 emulator");
+
+    // Установка размеров окна и других свойств
+    setMinimumSize(new Dimension(
+            SCREEN_WIDTH + BORDER_WIDTH * 2 + 15,
+            SCREEN_HEIGHT + BORDER_WIDTH * 2 + 40));
+}
+
+// Основная функция или другое место, где вы создаёте и настраиваете окно
+public static void main(String[] args) {
+    JFrame frame = new Main(base, rom);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setResizable(true); // Убедитесь, что окно можно изменять
+    frame.pack(); // Упаковка содержимого окна в соответствии с предпочтительными размерами
+    frame.setVisible(true);
+}
+```
+
+Если вы всё еще не можете ресайзить окно, проверьте остальной код и окружение (наприер, настройки рабочего стола или ОС), которые могут влиять на поведение окон.
+===============================================================================================
+
+===============================================================================================
+Q: Получается какая-то фигня. Может рисовать изначально на одном буффере, а потом переносить на холст с учетом масштабирования.
+-----------------------------------------------------------------------------------------------
+A: Да, это хорошая стратегия: сначала рисовать на внутреннем буфере с постоянными размерами, который представляет изначальный размер рабочей области, а затем масштабировать этот буфер при переносе его на панель, которая может изменять свой размер.
+
+Давайте реализуем этот подход в вашем `Graphic` классе. При этом будем использовать один буфер для рисования (`bufferImage`), который будет всегда одного и того же размера, а затем масштабировать и отображать его содержимое на вашей `JPanel` (`panel`) в методе `paintComponent`.
+
+Вот как можно обновить ваш `Graphic` класс для реализации этой идеи:
+
+```java
+public class Graphic implements Video.Drawer {
+
+    private int originalWidth;
+    private int originalHeight;
+    private int border;
+
+    private Color currentBorder = null;
+    private Color newBorder = Color.YELLOW;
+
+    private Image bufferImage; // Буфер для рисования, его размер не меняется
+    private Graphics bufferGraphics; // Graphics для рисования на bufferImage
+
+    private JPanel panel;
+
+    public Graphic(int width, int height, int border, Container parent) {
+        this.originalWidth = width;
+        this.originalHeight = height;
+        this.border = border;
+
+        panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (bufferImage == null) return;
+
+                refreshBorder();
+
+                int panelWidth = getWidth();
+                int panelHeight = getHeight();
+
+                // Масштаб для отображения bufferImage на panel
+                float scaleX = (float) panelWidth / (originalWidth + 2 * border);
+                float scaleY = (float) panelHeight / (originalHeight + 2 * border);
+
+                // Рисуем масштабированное изображение из bufferImage на panel
+                g.drawImage(bufferImage, 0, 0, Math.round((originalWidth + 2 * border) * scaleX),
+                    Math.round((originalHeight + 2 * border) * scaleY), null);
+            }
+        };
+
+        panel.setVisible(true);
+        panel.setSize(originalWidth + 2 * border, originalHeight + 2 * border);
+        parent.add(panel);
+        
+        // Инициализация буфера изображения и графики
+        bufferImage = parent.createImage(originalWidth + 2 * border, originalHeight + 2 * border);
+        bufferGraphics = bufferImage.getGraphics();
+    }
+
+    @Override
+    public void draw(int x, int y, Image pattern) {
+        bufferGraphics.drawImage(pattern, border + x, border + y, null);
+    }
+
+    @Override
+    public void done() {
+        // Перерисовать панель, чтобы обновить визуализацию
+        panel.repaint();
+    }
+
+    public void changeColor(Color color) {
+        newBorder = color;
+    }
+
+    public void refreshBorder() {
+        currentBorder = null; // Обновить Border
+    }
+
+    private void drawBorder() {
+        // Рисование рамки, если она изменена
+        if (currentBorder != newBorder) {
+            currentBorder = newBorder;
+            bufferGraphics.setColor(currentBorder);
+            // Рисуем рамку
+            // Приведение искомого решения для полноты краткости
+        }
+    }
+}
+```
+
+В этом классе мы рисуем на `bufferImage` через `bufferGraphics`, используя фиксированные размеры, а затем масштабируем это изображение при отрисовке на `panel` в соответствии с её текущими размерами в методе `paintComponent`. Такой подход помогает избежать искажений изображения и делает обработку размеров более гибкой.
+===============================================================================================
+
+===============================================================================================
+Q: А как мне быть со старым методом? 
+ private void drawBorder() {
+        if (border == 0) { // если бордюра нет - ничего не делать!
+            return;
+        }
+        if (currentBorder == newBorder) { // цвет не менялся
+            return;
+        }
+        currentBorder = newBorder;
+        buffer.setColor(currentBorder);
+        buffer.fillRect(
+                0,
+                0,
+                width + 2 * border,
+                border);
+        buffer.fillRect(
+                0,
+                0,
+                border,
+                height + 2 * border);
+        buffer.fillRect(
+                width + border,
+                0,
+                border,
+                height + 2 * border);
+        buffer.fillRect(
+                0,
+                height + border,
+                width + 2 * border,
+                border);
+    }
+-----------------------------------------------------------------------------------------------
+A: Теперь, когда вы используете внутренний буфер (`bufferImage`) для рисования всего содержимого, включая границы, и затем масштабируете его при отрисовке на панели, вам необходимо обновить метод `drawBorder()` так, чтобы он использовал `bufferGraphics` для `bufferImage`. Это позволит вам нарисовать рамки прямо на этом буфере, сохранив оригинальные размеры.
+
+Вам следует использовать первоначальные размеры `originalWidth` и `originalHeight` plus `border` для рисования рамки, так как теперь вы работаете не с масштабированными размерами, а с размерами вашего буфера.
+
+Вот как можно обновить метод `drawBorder()`:
+
+```java
+private void drawBorder() {
+    if (border == 0) {
+        // Если бордюра нет - ничего не делать!
+        return;
+    }
+
+    if (currentBorder == newBorder) {
+        // Цвет не менялся
+        return;
+    }
+
+    // Обновляем текущий цвет рамки
+    currentBorder = newBorder;
+    bufferGraphics.setColor(currentBorder);
+
+    // Рисуем рамку вокруг изображения
+    int fullWidth = originalWidth + 2 * border;
+    int fullHeight = originalHeight + 2 * border;
+
+    // Рисуем верхнюю и нижнюю рамки
+    bufferGraphics.fillRect(0, 0, fullWidth, border);
+    bufferGraphics.fillRect(0, originalHeight + border, fullWidth, border);
+
+    // Рисуем левую и правую рамки
+    bufferGraphics.fillRect(0, 0, border, fullHeight);
+    bufferGraphics.fillRect(originalWidth + border, 0, border, fullHeight);
+}
+```
+
+Этот метод теперь рисует рамку непосредственно на `bufferImage`, используя `bufferGraphics`, что позволяет контролировать рамку в исходном размере. Когда вы вызываете `repaint()`, которая вызывает `paintComponent()`, масштабированное изображение с рамкой будет отображаться на панели. Таким образом, вы сохраняете четкость и точность исходных рисунков и рамки, независимо от размера окна.
+===============================================================================================
