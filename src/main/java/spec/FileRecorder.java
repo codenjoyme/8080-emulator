@@ -14,7 +14,6 @@ import static spec.math.WordMath.hex8;
 
 public class FileRecorder {
 
-    // жадный квантификатор Вместо '(.*)' - будет '(.+)'
     public static final Pattern RECORD_LINE = Pattern.compile("after\\((.+?)\\).(up|down)\\(0x(.+?)(, 0x(.+?))?\\);|stop\\(\\);");
     private File file;
     private boolean writing;

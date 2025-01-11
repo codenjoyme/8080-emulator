@@ -268,13 +268,16 @@ public class IntegrationTest extends AbstractTest {
 
     // TODO изучить почему этот тест не прошел нормально - риплей или рекорд не работает верно с клавишами
     @Test
-    @Ignore
     public void testLik_keyboardLine1() {
         // given
         lik().loadRom(base, roms);
 
         // when
         assertRecord("keyboard-line1.rec");
+
+        // then
+        assertScreen("end");
+        assertFromPng(testBase() + "/end.png");
     }
 
     // TODO сделать так же для всех остальных линий подробный тест
