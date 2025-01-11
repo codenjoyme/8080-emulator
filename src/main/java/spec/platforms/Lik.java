@@ -27,6 +27,11 @@ public class Lik implements Platform {
     }
 
     @Override
+    public boolean isLikOrSpecialist() {
+        return true;
+    }
+
+    @Override
     public Range loadRom(URL base, RomLoader roms) {
         return Range.of(
             roms.loadROM(base, platform() + "/roms/01_zagr.bin", START_ROM1),

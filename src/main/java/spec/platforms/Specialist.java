@@ -15,6 +15,11 @@ public class Specialist implements Platform {
     }
 
     @Override
+    public boolean isLikOrSpecialist() {
+        return false;
+    }
+
+    @Override
     public Range loadRom(URL base, RomLoader roms) {
         return Range.of(
                 roms.loadROM(base, platform() + "/roms/monitor0.rom", 0xC000),

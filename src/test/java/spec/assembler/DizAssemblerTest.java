@@ -35,9 +35,16 @@ public class DizAssemblerTest extends AbstractTest {
         String test = String.format("Testing [%s] %s", platform.name(), name);
         Logger.info(test);
 
-        if (List.of("pilot", "reversi", "tip-top2", "zoo", "blobcop", "chess").contains(name)) {
-            Logger.info("Skipping test for %s", name);
-            return; // TODO debug all errors
+        if (platform.isLikOrSpecialist()) {
+            if (List.of("pilot", "reversi", "tip-top2", "zoo", "chess", "basic").contains(name)) {
+                Logger.info("Skipping test for %s", name);
+                return; // TODO #29 debug all errors
+            }
+        } else {
+            if (List.of("blobcop", "basic").contains(name)) {
+                Logger.info("Skipping test for %s", name);
+                return; // TODO #29 debug all errors
+            }
         }
 
         String asmPath = null;

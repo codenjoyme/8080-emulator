@@ -11,6 +11,8 @@ public interface Platform {
 
     String name();
 
+    boolean isLikOrSpecialist();
+
     Range loadRom(URL base, RomLoader roms);
 
     Range loadGame(URL base, RomLoader roms, String name);
