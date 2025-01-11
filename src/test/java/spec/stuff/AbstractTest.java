@@ -76,6 +76,7 @@ public abstract class AbstractTest {
     protected URL base;
     protected URL targetBase;
     protected PngScreenToText scanner;
+    protected String subFolder;
 
     @Before
     public void setup() {
@@ -198,7 +199,7 @@ public abstract class AbstractTest {
     }
 
     public String testBase() {
-        return TEST_RESOURCES + "/" + getTestResultFolder();
+        return TEST_RESOURCES + "/" + getTestResultFolder() + ((subFolder != null) ? "/" + subFolder : "");
     }
 
     protected String getTestResultFolder() {

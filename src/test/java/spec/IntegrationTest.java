@@ -1,5 +1,6 @@
 package spec;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +11,8 @@ import spec.mods.WhereIsData;
 import spec.platforms.Lik;
 import spec.stuff.AbstractTest;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
@@ -277,15 +280,69 @@ public class IntegrationTest extends AbstractTest {
 
     @Test
     public void testLik_game_chess_play() {
-        givenChessGameSession();
+        // given
+        IntegrationTest white = givenChessGameSession("white", true, true);
+        IntegrationTest black = givenChessGameSession("black", false, false);
 
         // when then
-        assertEquals("E7-E5", nextTurn("E2-E4"));
-        assertEquals("G8-F6", nextTurn("A2-A4"));
+        List<String> game = new LinkedList<>();
+        String whiteTurn = "E2-E4";
+        for (int i = 0; i < 30; i++) {
+            String blackTurn = white.nextTurn(whiteTurn);
+            whiteTurn = black.nextTurn(blackTurn);
+
+            String turn = String.format("W: %s B: %s",
+                    StringUtils.rightPad(whiteTurn, 6),
+                    StringUtils.rightPad(blackTurn, 6));
+            System.out.println(turn);
+            game.add(turn);
+        }
+        assertEquals("W: E7-E5  B: E2-E4 \n" +
+                "W: G8-F6  B: G1-F3 \n" +
+                "W: B8-C6  B: B1-C3 \n" +
+                "W: F8-B4  B: F1-B5 \n" +
+                "W: B4-C3  B: B5-C6 \n" +
+                "W: B7-C6  B: B2-C3 \n" +
+                "W: O-O    B: O-O   \n" +
+                "W: D7-D6  B: D2-D3 \n" +
+                "W: C8-G4  B: C1-G5 \n" +
+                "W: D8-E7  B: C3-C4 \n" +
+                "W: G4-F3  B: D1-D2 \n" +
+                "W: D6-D5  B: G2-F3 \n" +
+                "W: H7-H6  B: C4-D5 \n" +
+                "W: E7-F6  B: G5-F6 \n" +
+                "W: C6-D5  B: C2-C4 \n" +
+                "W: F6-F4  B: C4-D5 \n" +
+                "W: E5-F4  B: D2-F4 \n" +
+                "W: F7-F5  B: G1-G2 \n" +
+                "W: F8-F5  B: E4-F5 \n" +
+                "W: G8-F7  B: G2-H3 \n" +
+                "W: F5-H5  B: A1-C1 \n" +
+                "W: H5-G5  B: H3-G2 \n" +
+                "W: G5-H5  B: G2-H3 \n" +
+                "W: H5-G5  B: H3-G2 \n" +
+                "W: G5-H5  B: G2-H3 \n" +
+                "W: H5-G5  B: H3-G2 \n" +
+                "W: G5-H5  B: G2-H3 \n" +
+                "W: H5-G5  B: H3-G2 \n" +
+                "W: G5-H5  B: G2-H3 \n" +
+                "W: H5-G5  B: H3-G2 ",
+                StringUtils.join(game, "\n"));
     }
 
-    private void givenChessGameSession() {
+    private IntegrationTest givenChessGameSession(String name, boolean isHard, boolean isWhite) {
         // given
+        IntegrationTest result = new IntegrationTest();
+        result.test = this.test;
+        result.subFolder = name;
+        result.before();
+
+        result.runChessGame(isHard, isWhite);
+
+        return result;
+    }
+
+    private void runChessGame(boolean isHard, boolean isWhite) {
         lik().loadRom(base, roms);
         lik().loadGame(base, roms, "chess");
 
@@ -296,9 +353,9 @@ public class IntegrationTest extends AbstractTest {
                 .shoot("monitor", pressEnterAndWait())
                 .shoot("j", it -> it.enter("J"))
                 .shoot("choose-level", pressEnterAndWait())
-                .shoot("select-level", it -> it.enter("1"))
+                .shoot("select-level", it -> it.enter(isHard ? "1" : "0"))
                 .shoot("choose-black-white", pressEnterAndWait())
-                .shoot("select-black-white", it -> it.enter("1"))
+                .shoot("select-black-white", it -> it.enter(isWhite ? "0" : "1"))
                 .shoot("choose-move", pressEnterAndWait())
                 .stopCpu();
 
@@ -315,8 +372,8 @@ public class IntegrationTest extends AbstractTest {
         start();
 
         String screen = pngsPath("opponent-answer").getLast();
-        return scanner.parse(screen)
-                .split("\n")[1];
+        String answer = scanner.parse(screen).split("\n")[1].replace(':', '-');
+        return answer;
     }
 
     @Test
