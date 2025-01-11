@@ -355,11 +355,11 @@ public abstract class AbstractTest {
         return found.get(0);
     }
 
-    public List<String> pngsPath(String name) {
+    public LinkedList<String> pngsPath(String name) {
         return Arrays.stream(Objects.requireNonNull(fileAssert.testDir().listFiles()))
                 .filter(it -> it.getName().contains(name))
                 .map(File::getAbsolutePath)
-                .collect(toList());
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 
     public String assertFromPng(String sourceFile) {

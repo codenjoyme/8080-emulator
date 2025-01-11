@@ -295,6 +295,7 @@ public class IntegrationTest extends AbstractTest {
                 .stopCpu();
 
         cpu.PC(START_POINT);
+
         start();
 
         record.afterLast().after(K10)
@@ -304,7 +305,7 @@ public class IntegrationTest extends AbstractTest {
 
         start();
 
-        String answer1 = scanner.parse(pngsPath("opponent-answer").get(0)).split("\n")[1];
+        String answer1 = scanner.parse(pngsPath("opponent-answer").getLast()).split("\n")[1];
         assertEquals("E7-E5", answer1);
 
         record.afterLast().after(K10)
@@ -314,7 +315,7 @@ public class IntegrationTest extends AbstractTest {
 
         start();
 
-        String answer2 = scanner.parse(pngsPath("opponent-answer").get(1)).split("\n")[1];
+        String answer2 = scanner.parse(pngsPath("opponent-answer").getLast()).split("\n")[1];
         assertEquals("G8-F6", answer2);
     }
 
