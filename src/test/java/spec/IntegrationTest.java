@@ -17,6 +17,7 @@ import static spec.Constants.START_POINT;
 import static spec.KeyCode.*;
 import static spec.platforms.Lik.FINISH_ROM6;
 import static spec.platforms.Lik.START_BASIC_LIK_V2;
+import static spec.stuff.SmartAssert.assertEquals;
 
 public class IntegrationTest extends AbstractTest {
 
@@ -281,7 +282,6 @@ public class IntegrationTest extends AbstractTest {
         lik().loadGame(base, roms, "chess");
 
         // when
-
         record.reset()
                 .shoot("runcom", it -> it.after(2 * K10))
                 .shoot("stop", it -> it.press(END).after(2 * K10))
@@ -292,12 +292,20 @@ public class IntegrationTest extends AbstractTest {
                 .shoot("choose-black-white", pressEnterAndWait())
                 .shoot("select-black-white", it -> it.enter("1"))
                 .shoot("choose-first-move", pressEnterAndWait())
-                .shoot("select-first-move", it -> it.enter("E2-E4"))
-                .shoot("opponent-answer", pressEnterAndWait(10 * M1))
                 .stopCpu();
 
         cpu.PC(START_POINT);
         start();
+
+        record.afterLast().after(K10)
+                .shoot("select-first-move", it -> it.enter("E2-E4"))
+                .shoot("opponent-answer", pressEnterAndWait(10 * M1))
+                .stopCpu();
+
+        start();
+
+        String answer1 = scanner.parse(pngsPath("opponent-answer").get(0)).split("\n")[1];
+        assertEquals("E7-E5", answer1);
 
         record.afterLast().after(K10)
                 .shoot("select-second-move", it -> it.enter("A2-A4"))
@@ -305,6 +313,9 @@ public class IntegrationTest extends AbstractTest {
                 .stopCpu();
 
         start();
+
+        String answer2 = scanner.parse(pngsPath("opponent-answer").get(1)).split("\n")[1];
+        assertEquals("G8-F6", answer2);
     }
 
     @Test

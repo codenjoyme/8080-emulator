@@ -348,11 +348,18 @@ public abstract class AbstractTest {
     }
 
     public String pngPath(String name) {
+        List<String> found = pngsPath(name);
+        if (found.isEmpty()) {
+            throw new RuntimeException("File not found: " + name);
+        }
+        return found.get(0);
+    }
+
+    public List<String> pngsPath(String name) {
         return Arrays.stream(Objects.requireNonNull(fileAssert.testDir().listFiles()))
                 .filter(it -> it.getName().contains(name))
                 .map(File::getAbsolutePath)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("File not found: " + name));
+                .collect(toList());
     }
 
     public String assertFromPng(String sourceFile) {
