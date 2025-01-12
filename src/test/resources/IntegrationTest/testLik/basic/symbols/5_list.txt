@@ -1,0 +1,25 @@
+* BASIC ЛИК V2 *
+OK
+LIST
+
+1  - - - - - - - - - - - - - - - -
+2  - - - - - - - - - - - - - - - -
+3  -!-"-#-$-%-&-'-(-)-*-+-,---.-/-
+4 0-1-2-3-4-5-6-7-8-9-:-;-<-=->-?-
+5 @-A-B-C-D-E-F-G-H-I-J-C-L-M-N-O-
+6 P-Q-R-S-T-U-V-W-X-Y-Z-[-\-]-^-_-
+7 Ю-A-Б-Ц-Д-E-Ф-Г-X-И-Й-K-Л-M-H-O-
+8 П-Я-P-C-T-У-Ж-B-Ь-Ы-З-Ш-Э-Щ-Ч- -
+9 CLS-FOR-NEXT-DATA-INPUT-DIM-READ-CUR-GOTO-RUN-IF-RESTORE-GOSUB
+-RETURN-REM-STOP-
+10 DPL-ON-PLOT-LINE-POKE-PRINT-DEF-CONT-LIST-CLEAR-MLOAD-MSAVE-N
+EW-TAB(-TO-SPC(-
+11 FN-THEN-NOT-STEP-+---*-/-^-AND-OR->-=-<-SGN-INT-
+12 ABS-USR-FRE-INP-POS-SQR-RND-LOG-EXP-COS-SIN-TAN-ATN-PEEK-LEN-
+STR$-
+13 VAL-ASC-CHR$-LEFT$-RIGHT$-MID$- - - - - - - - - - -
+14  - - - - - - - - - - - - - - - -
+15  - - - - - - - - - - - - - - - -
+16  - - - - - - - - - - - - - - - -
+OK
+█

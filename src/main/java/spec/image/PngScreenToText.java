@@ -169,16 +169,15 @@ public class PngScreenToText {
             for (int i = 0; i < currentLine.length(); i++) {
                 char currentChar = currentLine.charAt(i);
                 int synonymIndex = LAT_SYNONYM.indexOf(currentChar);
+                if (synonymIndex == -1) continue;
 
-                if (synonymIndex != -1) {
-                    boolean influencedByCyrillic = checkForCyrillicInfluence(currentLine, i, maxDepth);
+                boolean influencedByCyrillic = checkForCyrillicInfluence(currentLine, i, maxDepth);
 
-                    if (influencedByCyrillic) {
-                        char cyrillicChar = CYR_SYNONYM.charAt(synonymIndex);
-                        modifiedLine.setCharAt(i, cyrillicChar);
-                        if (currentChar != cyrillicChar) {
-                            changes = true;
-                        }
+                if (influencedByCyrillic) {
+                    char cyrillicChar = CYR_SYNONYM.charAt(synonymIndex);
+                    modifiedLine.setCharAt(i, cyrillicChar);
+                    if (currentChar != cyrillicChar) {
+                        changes = true;
                     }
                 }
             }

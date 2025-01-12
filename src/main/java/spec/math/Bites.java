@@ -87,8 +87,10 @@ public class Bites implements Iterable<Integer> {
         set(0, bites);
     }
 
-    public void set(int offset, Bites bites) {
-        set(new Range(offset, -bites.size()), bites);
+    public Range set(int offset, Bites bites) {
+        Range range = new Range(offset, -bites.size());
+        set(range, bites);
+        return range;
     }
 
     public void set(Range range, Bites bites) {
