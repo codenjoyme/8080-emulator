@@ -23,6 +23,10 @@ public class RomLoader {
     private Memory memory;
     private RomSwitcher romSwitcher;
 
+    public RomLoader(Memory memory) {
+        this.memory = memory;
+    }
+
     public RomLoader(Memory memory, Cpu cpu, IOPorts ports, Keyboard keyboard, GraphicControl graphic, Timings timings, RomSwitcher romSwitcher) {
         this.memory = memory;
         this.cpu = cpu;
@@ -47,9 +51,8 @@ public class RomLoader {
         try {
             URL url = new URL(base, path);
             InputStream is = url.openStream();
-            cpu.PC(offset);
-            Range range = readAll(all, offset, is, url);
-            return range;
+            cpuPC(offset);
+            return readAll(all, offset, is, url);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -67,6 +70,10 @@ public class RomLoader {
     // 3 байта - 0xD3 0xD3 0xD3
     // массив байтов программы загружается в память начиная с 0x1E60
     public Range loadBSS(URL base, String path) {
+        return loadBSS(base, path, memory.all(), BASIC_LIK_V2_PROGRAM_START);
+    }
+
+    public Range loadBSS(URL base, String path, Bites all, int offset) {
         try {
             URL url = new URL(base, path);
             InputStream is = url.openStream();
@@ -74,9 +81,7 @@ public class RomLoader {
             Bites header = read8arr(is, 3);
             header.equals(new Bites(0xD3, 0xD3, 0xD3));
 
-            int offset = BASIC_LIK_V2_PROGRAM_START;
-            Range range = readAll(memory.all(), offset, is, url);
-            return range;
+            return readAll(memory.all(), offset, is, url);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -124,12 +129,18 @@ public class RomLoader {
             }
 
             logLoading(url.toString(), range);
-            cpu.PC(range.begin());
+            cpuPC(range.begin());
             readBytes(is, memory.all(), range);
             return range;
             // Bites data = read8arr(is, 4); // TODO #24 в конце еще два байта, контрольная сумма - реализовать проверку
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void cpuPC(int begin) {
+        if (cpu != null) {
+            cpu.PC(begin);
         }
     }
 

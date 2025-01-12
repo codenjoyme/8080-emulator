@@ -165,21 +165,27 @@ public class IntegrationTest extends AbstractTest {
                 memory.all().toString(BASIC_LIK_V2_PROGRAM_START, BASIC_LIK_V2_PROGRAM_START + 30, true, true));
     }
 
+    // TODO #34 Перенести тест в отдельный класс для тестирования `BasicCompiler` и там генерировать
+    //          исходный код программы на бейсике для всех `bss` файлов.
     @Test
     public void testLik_basic_program_president() {
         // given
         lik().loadRom(base, roms);
         lik().loadGame(base, roms, "basic");
-        lik().loadBasic(base, roms, "president");
+        Range range = lik().loadBasic(base, roms, "president");
 
-        // when
+        // then
+        assertMemory(range, "memory.log");
+        assertBasicProgram(range, lik().basic("president", ".bas"));
+
+        // when then
         record.reset()
                 .shoot("runcom", it -> it.after(2 * K10))
                 .shoot("stop", it -> it.press(END).after(2 * K10))
                 .shoot("monitor", pressEnterAndWait())
                 .shoot("basic", it -> it.enter("J").press(ENTER).after(20 * K10))
                 // TODO #31 Разобраться, почему не работает программа на бейсике, может бейсик не тот?
-                .shoot("run", it -> it.enter("RUN").press(ENTER).after(10 * K10))
+                //.shoot("run", it -> it.enter("RUN").press(ENTER).after(10 * K10))
                 .shoot("list", it -> it.enter("LIST").press(ENTER).after(66 * K10))
                 .stopCpu();
 

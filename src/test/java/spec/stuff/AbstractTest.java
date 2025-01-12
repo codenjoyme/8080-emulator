@@ -1,5 +1,6 @@
 package spec.stuff;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.After;
 import org.junit.Before;
@@ -8,6 +9,7 @@ import org.junit.rules.TestName;
 import spec.*;
 import spec.assembler.Assembler;
 import spec.assembler.DizAssembler;
+import spec.basic.BasicCompiler;
 import spec.image.PngScreenToText;
 import spec.math.Bites;
 import spec.mods.WhereIsData;
@@ -402,6 +404,32 @@ public abstract class AbstractTest {
         fileAssert.check("Diff", diffFileName,
                 file -> fileAssert.write(file, source.detailsTable()));
         return source;
+    }
+
+    /**
+     * Проверка состояни памяти в определенном диапазоне.
+     * @param range Диапазон памяти.
+     * @param name В окрежнии теста с этим именем будет создан файл с содержимым памяти.
+     *             В последствии с ним будет происходить сравнение.
+     * @return Строка с результатом проверки.
+     */
+    public String assertMemory(Range range, String name) {
+        return fileAssert.check("Memory in range: " + range, name,
+                file -> fileAssert.write(file, memory.all().toString(range, true, true)));
+    }
+
+    /**
+     * Парсит программу на `BASIC ЛИК V2` в машинных кодах в текст
+     * @param range диапазон памяти, где находится программа
+     * @param name имя файла, куда запишется результат
+     * @return тест программы на бейсике
+     */
+    public String assertBasicProgram(Range range, String name) {
+        BasicCompiler basic = new BasicCompiler();
+        List<String> lines = basic.getSource(memory.all(), range);
+
+        return fileAssert.check("Memory in range: " + range, name,
+                file -> fileAssert.write(file, StringUtils.join(lines, "\n")));
     }
 
     public void assertRecord(String path, Runnable... configure) {

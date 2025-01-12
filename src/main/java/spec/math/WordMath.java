@@ -35,6 +35,10 @@ public class WordMath {
         return result;
     }
 
+    public static int merge(Bites bites, int offset) {
+        return merge(bites.get(offset + 1), bites.get(offset));
+    }
+
     public static int merge(int bite1, int bite2) {
         return (bite1 << 8) | bite2;
     }

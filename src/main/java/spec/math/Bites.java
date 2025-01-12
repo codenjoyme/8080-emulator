@@ -146,6 +146,10 @@ public class Bites implements Iterable<Integer> {
         return toString(-1, -1, withHeader, withAddress);
     }
 
+    public String toString(Range range, boolean withHeader, boolean withAddress) {
+        return toString(range.begin(), range.end(), withHeader, withAddress);
+    }
+
     public String toString(int start, int end, boolean withHeader, boolean withAddress) {
         if (start == -1) {
             start = 0;
@@ -193,5 +197,33 @@ public class Bites implements Iterable<Integer> {
 
     public Bites cutFrom(int org) {
         return array(new Range(org, -(size() - org)));
+    }
+
+    public class BitesReader {
+        private int index = 0;
+
+        public Bites read(int count) {
+            if (index + count > size()) {
+                throw new IllegalArgumentException("Reading out of bounds");
+            }
+            Range range = new Range(index, -count);
+            index += count;
+            return array(range);
+        }
+
+        public boolean hasNext() {
+            return index < size();
+        }
+
+        public Bites readTill(int addr) {
+            if (addr < index) {
+                throw new IllegalArgumentException("Address is less than current index");
+            }
+            return read(addr - index);
+        }
+    }
+
+    public BitesReader reader() {
+        return new BitesReader();
     }
 }
