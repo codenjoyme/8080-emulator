@@ -208,6 +208,9 @@ public class Bites implements Iterable<Integer> {
             if (index + count > size()) {
                 throw new IllegalArgumentException("Reading out of bounds");
             }
+            if (count == 0) {
+                return new Bites();
+            }
             Range range = new Range(index, -count);
             index += count;
             return array(range);

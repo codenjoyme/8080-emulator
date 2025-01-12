@@ -195,6 +195,31 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
+    public void testLik_basic_program_sokoban() {
+        // given
+        lik().loadRom(base, roms);
+        lik().loadGame(base, roms, "basic");
+        Range range = lik().loadBasic2(base, roms, "sokoban");
+
+        // then
+        assertMemory(range, "memory.log");
+        assertBasicProgram(range, lik().basic("basic", "sokoban", ".bas"));
+
+        // when then
+        record.reset()
+                .shoot("runcom", it -> it.after(2 * K10))
+                .shoot("stop", it -> it.press(END).after(2 * K10))
+                .shoot("monitor", pressEnterAndWait())
+                .shoot("basic", it -> it.enter("J").press(ENTER).after(20 * K10))
+                //.shoot("run", it -> it.enter("RUN").press(ENTER).after(10 * K10))
+                .shoot("list", it -> it.enter("LIST").press(ENTER).after(66 * K10))
+                .stopCpu();
+
+        cpu.PC(START_POINT);
+        start();
+    }
+
+    @Test
     public void testLik_basic_program_dialog() {
         // given
         lik().loadRom(base, roms);

@@ -30,6 +30,7 @@ public class BasicCompiler {
             int lineNumber = WordMath.merge(reader.read(2), 0); // number of line            [lo] [hi] 0x0A 0x00 -> 0x000A
             Bites lineEncoded = reader.readTill(nextLine);      // program line with commands encoded
             String line = lineNumber + " " + decodeLine(lineEncoded);
+//            System.out.println(line);
             lines.add(line);
         }
         return lines;
