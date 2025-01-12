@@ -117,7 +117,7 @@ public class Application {
             openFileDialog(file -> switcher.load(base, toRelative(base, file)),
                     base.getFile() + platform.apps(),
                     "Data file",
-                    "com", "rom", "rks", "bin", "mem", "bss");
+                    "com", "rom", "rks", "bin", "mem", "bss", "bs1");
         }
 
         if (key.numStar()) {

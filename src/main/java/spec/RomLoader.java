@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.List;
 
 import static spec.Constants.BASIC_LIK_V2_PROGRAM_START;
+import static spec.Constants.BASIC_V1_PROGRAM_START;
 import static spec.math.WordMath.BITE;
 
 public class RomLoader {
@@ -70,10 +71,17 @@ public class RomLoader {
     // 3 байта - 0xD3 0xD3 0xD3
     // массив байтов программы загружается в память начиная с 0x1E60
     public Range loadBSS(URL base, String path) {
-        return loadBSS(base, path, memory.all(), BASIC_LIK_V2_PROGRAM_START);
+        return loadBSx(base, path, memory.all(), BASIC_LIK_V2_PROGRAM_START);
     }
 
-    public Range loadBSS(URL base, String path, Bites all, int offset) {
+    // для ПК `Специалист`/`ЛИК` и `BASIC` (BS1) файл содержит программу в машинных кодах
+    // 3 байта - 0xD3 0xD3 0xD3
+    // массив байтов программы загружается в память начиная с 0x2000
+    public Range loadBS1(URL base, String path) {
+        return loadBSx(base, path, memory.all(), BASIC_V1_PROGRAM_START);
+    }
+
+    public Range loadBSx(URL base, String path, Bites all, int offset) {
         try {
             URL url = new URL(base, path);
             InputStream is = url.openStream();
@@ -81,7 +89,7 @@ public class RomLoader {
             Bites header = read8arr(is, 3);
             header.equals(new Bites(0xD3, 0xD3, 0xD3));
 
-            return readAll(memory.all(), offset, is, url);
+            return readAll(all, offset, is, url);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -296,6 +304,10 @@ public class RomLoader {
             case "bss": {
                 loadBSS(base, path);
                 return new Range(0, BASIC_LIK_V2_PROGRAM_START);
+            }
+            case "bs1": {
+                loadBS1(base, path);
+                return new Range(0, BASIC_V1_PROGRAM_START);
             }
             case "mem":
             default: {
