@@ -240,7 +240,7 @@ Intro
 - [ ] TODO #29 `zoo`
 - [ ] TODO #29 `blobcop`
 - [ ] TODO #29 `chess` 
-- [ ] TODO #30 Разобраться как загружать правильно другую версию бейсика 
+- [x] TODO #30 Разобраться как загружать правильно другую версию бейсика 
       `\src\main\resources\arch\emu80.org\extracted\lik_spc1\BASIC\SPEC\BASSPEC.RKS`
       Известно, что оно грузится по адресу `Cnstants.BASIC_V1_PROGRAM_START`
 - [ ] TODO #31 Разобраться, почему не работает программа `president` на бейсике, может бейсик не тот?

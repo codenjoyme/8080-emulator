@@ -36,7 +36,6 @@ public class Constants {
     public static final int SCREEN_HEIGHT = 256;
 
     public static final int BASIC_LIK_V2_PROGRAM_START = 0x1E60;
-    // TODO #30 Разобраться как загружать правильно другую версию бейсика
     public static final int BASIC_V1_PROGRAM_START = 0x2000;
 
     public static final int SCREEN_MEMORY_START = 0x9000;
