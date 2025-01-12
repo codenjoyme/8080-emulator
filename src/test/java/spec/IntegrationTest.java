@@ -162,8 +162,7 @@ public class IntegrationTest extends AbstractTest {
         assertEquals(
                 "      00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F \n" +
                 "1E60: 00 69 1E 0A 00 80 20 31 00 71 1E 14 00 80 20 32 \n" +
-                "1E70: 00 7A 1E 1E 00 88 20 31 30 00 00 00 00 00 00 00 \n" +
-                "1E80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+                "1E70: 00 7A 1E 1E 00 88 20 31 30 00 00 00 00 00",
                 memory.all().toString(BASIC_LIK_V2_PROGRAM_START, BASIC_LIK_V2_PROGRAM_START + 30, true, true));
     }
 
