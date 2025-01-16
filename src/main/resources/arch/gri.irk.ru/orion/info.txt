@@ -1,0 +1,82 @@
+1. Эмулятор и утилиты
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/8080b022.zip
+	(153 K)	Эмулятор i8080 "Орион-128", сборка 022 (11.11.1999)
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/(c)sollo.zip	
+	(34 K)	Пробная версия эмулятора от Sollo (97 год)
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/utils.zip
+	(30 K)	Утилиты работы с дискетами "Орион" и их файлами-образами.
+
+2. Образы дискет "Ориона"
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/odi1.zip
+	(224 K)	Набор программ ╧1
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/odi2.zip
+	(159 K)	Набор программ ╧2
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/odi4.zip
+	(94 K)	Набор программ ╧4
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/odi6.zip
+	(114 K)	Набор программ ╧6
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/odi7.zip
+	(109 K)	Набор программ ╧7
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/odi8.zip
+	(144 K)	Набор программ ╧8
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/odi9.zip
+	(287 K)	Набор программ ╧9
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/odi10.zip
+	(99 K)	Набор программ ╧10
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/odi11.zip
+	(146 K)	Набор программ ╧11
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/odi12.zip
+	(224 K)	Набор программ ╧12
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/odi13.zip
+	(164 K)	Набор программ ╧13
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/odi14.zip
+	(36 K)	Набор программ ╧14
+
+3. Архивы программ для ORDOS (дискета, ROM-диск)
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/gamecas2.zip
+	(54 K)	Набор игр для ORDOS
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/syscass1.zip
+	(122 K)	Набор системных программ для ORDOS
+
+4. Архивы программ для CP/M
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/cpm_utl0.zip
+	(34 K)	4 базовые утилиты CP/M
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/cpm_utl.zip
+	(112 K)	Расширенный набор утилит CP/M
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/ws.zip
+	(46 K)	Текстовый процессор WordStar
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/sc.zip
+	(30 K)	Электронные таблицы SuperCalc
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/pas80.zip
+	(24 K)	Turbo Pascal (требуется Z80)
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/rebus.zip
+	(103 K)	СУБД Ребус
+
+https://web.archive.org/web/20050209195751fw_/http://gri.irk.ru/orion/files/dbase.zip
+	(59 K)	СУБД dBASE
+
+* * *
+(c) 1999 Березовский Г.
