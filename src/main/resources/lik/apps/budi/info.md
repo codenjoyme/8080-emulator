@@ -1,7 +1,9 @@
 # Общая информация
 
-Игра `BUDI`
+Игра `BUDI`.
+
 Запуск через загрузчик `Монитор-1М`.
+
 Игра располагается:
 - в [web archive](https://web.archive.org/web/20170318070429fw_/http://www.pk-info.ru/arhiv/spec/budi.zip)
 - в архиве `\src\main\resources\arch\pk-info.ru\Игры\Специалист\gs_3.zip\BUDI.RKS`

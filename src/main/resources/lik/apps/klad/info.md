@@ -1,7 +1,9 @@
 # Общая информация
 
-Игра `Клад`
+Игра `Клад`.
+
 Запуск через загрузчик `Монитор-1М`.
+
 Игра располагается: 
 - в архиве `\src\main\resources\arch\emu80.org\extracted\gs_3.zip\KLAD.RKS`.
 - в архиве `\src\main\resources\arch\pk-info.ru\Игры\Специалист\gs_3.zip\KLAD.RKS`
