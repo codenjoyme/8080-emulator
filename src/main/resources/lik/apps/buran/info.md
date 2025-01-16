@@ -1,6 +1,6 @@
 # Общая информация
 
-Игра клад
+Игра `Буран`
 Запуск через загрузчик `Монитор-1М`.
 Игра располагается:
 - в [web archive](https://web.archive.org/web/20170318070429fw_/http://www.pk-info.ru/arhiv/spec/buran.zip)
