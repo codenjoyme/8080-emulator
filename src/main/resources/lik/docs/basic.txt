@@ -1,3 +1,5 @@
+# Расположено в архиве `\src\main\resources\arch\Alex_B\ROM_LIK.ZIP\LIK_DOC\BASIC.TXT`
+
 Основные отличия команд редактирования языка "Basic Лик" от других:
 
 EDIT   -        редатктирование строки
