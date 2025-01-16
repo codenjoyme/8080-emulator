@@ -1,2 +1,2 @@
-BMSP     BSS  - демонстрация
+BMSP     BSP  - демонстрация
 BASICPOS RKS  - имя программы: BASIC-MC.POSOL
