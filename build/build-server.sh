@@ -27,7 +27,8 @@ eval_echo "ROOT=$(pwd)"
 
 color "Please run 'http://$HOST:$PORT/' after build"
 
-eval_echo "$ROOT/mvnw clean jetty:run -DskipTests=true -Dserver.host=$HOST -Dserver.port=$PORT -Prun-server"
+eval_echo "$ROOT/mvnw clean package -DskipTests=true -Pjar-with-dependencies"
+eval_echo "$ROOT/mvnw clean package jetty:run -DskipTests=true -Dserver.host=$HOST -Dserver.port=$PORT -Prun-server"
 
 echo
 color "Press Enter to continue"

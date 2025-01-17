@@ -35,12 +35,12 @@ public class DizAssemblerTest extends AbstractTest {
         Logger.info(test);
 
         if (platform.isLikOrSpecialist()) {
-            if (List.of("pilot", "reversi", "tip-top2", "zoo", "chess", "basic", "basic2").contains(name)) {
+            if (Arrays.asList("pilot", "reversi", "tip-top2", "zoo", "chess", "basic", "basic2").contains(name)) {
                 Logger.info("Skipping test for %s", name);
                 return; // TODO #29 debug all errors
             }
         } else {
-            if (List.of("blobcop", "basic", "basic2").contains(name)) {
+            if (Arrays.asList("blobcop", "basic", "basic2").contains(name)) {
                 Logger.info("Skipping test for %s", name);
                 return; // TODO #29 debug all errors
             }

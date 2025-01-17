@@ -15,7 +15,7 @@ import static spec.math.WordMath.hex8;
 public class FileRecorder {
 
     public static final Pattern RECORD_LINE = Pattern.compile("after\\((.+?)\\).(up|down)\\(0x(.+?)(, 0x(.+?))?\\);|stop\\(\\);");
-    private File file;
+    private String path;
     private boolean writing;
 
     public FileRecorder() {
@@ -34,7 +34,7 @@ public class FileRecorder {
     }
 
     private void writeLine(String string) {
-        try (FileWriter writer = new FileWriter(file.getAbsolutePath(), true)) {
+        try (FileWriter writer = new FileWriter(path, true)) {
             writer.write(string + "\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -58,7 +58,7 @@ public class FileRecorder {
     public void read(BiConsumer<Integer, Key> onLine) {
         try {
             int index = 0;
-            for (String line : Files.readAllLines(file.toPath())) {
+            for (String line : Files.readAllLines(new File(path).toPath())) {
                 index++;
                 if (line.startsWith("//")) continue;
                 if (line.equals("stop();")) {
@@ -90,7 +90,9 @@ public class FileRecorder {
         // do nothing
     }
 
-    public void with(File file) {
-        this.file = file;
+    public void with(String path) {
+        Logger.info("Saving records to %s", path);
+
+        this.path = path;
     }
 }

@@ -17,7 +17,7 @@ import static spec.Files.SNAPSHOTS;
 
 public class Application {
 
-    private URL base;
+    private String base;
     private Container parent;
     private Hardware hard;
 
@@ -27,13 +27,15 @@ public class Application {
      * иерархической системы визуальных объектов. Container отвечает за расположение содержащихся
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
-    public Application(Container parent, URL base, String platform, String rom) {
+    public Application(Container parent, String base, String platform, String rom) {
         this.parent = parent;
         this.base = base;
 
+        Files.createFolders(base);
+
         hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, parent);
 
-        hard.fileRecorder().with(Files.newRecord());
+        hard.fileRecorder().with(Files.newRecord(base));
         hard.fileRecorder().startWriting();
         load(platform, rom);
     }
@@ -73,8 +75,7 @@ public class Application {
         }
 
         if (key.numThree()) {
-            File file = Files.newScreenshot();
-            Logger.debug("Save screenshot to %s", file.getAbsolutePath());
+            String file = Files.newScreenshot(base);
             hard.png().drawToFile(SCREEN.begin(), file);
         }
 
@@ -84,38 +85,29 @@ public class Application {
         }
 
         if (key.numFive()) {
-            // TODO #1 как сделать рабочим в веб версии?
-            if (base.toString().startsWith("http")) return;
-
             openFileDialog(file -> hard.loadSnapshot(base, toRelative(base, file)),
-                    base.getFile() + SNAPSHOTS,
+                    base + SNAPSHOTS,
                     "Snapshot file",
                     "snp");
         }
 
         if (key.numSix()) {
-            File file = Files.newSnapshot();
-            hard.saveSnapshot(base, file.getPath());
+            String file = Files.newSnapshot(base);
+            hard.saveSnapshot(file);
         }
 
         if (key.numSlash()) {
-            // TODO #1 как сделать рабочим в веб версии?
-            if (base.toString().startsWith("http")) return;
-
-            openFileDialog(file -> hard.loadRecord(file.getAbsolutePath()),
-                    base.getFile() + RECORDS,
+            openFileDialog(file -> hard.loadRecord(base, toRelative(base, file)),
+                    base + RECORDS,
                     "Recording file",
                     "rec");
         }
 
         if (key.numComma()) {
-            // TODO #1 как сделать рабочим в веб версии?
-            if (base.toString().startsWith("http")) return;
-
             RomSwitcher switcher = hard.romSwitcher();
             Platform platform = switcher.current();
             openFileDialog(file -> switcher.load(base, toRelative(base, file)),
-                    base.getFile() + platform.apps(),
+                    base + platform.apps(),
                     "Data file",
                     "com", "rom", "rks", "bin", "mem", "bss", "bs1");
         }
@@ -137,9 +129,14 @@ public class Application {
         }
     }
 
-    public static String toRelative(URL base, File file) {
+    public static String toRelative(String base, File file) {
         try {
-            return Paths.get(base.toURI()).relativize(Paths.get(file.getPath())).toString();
+            String result = Paths.get(base).toAbsolutePath().relativize(Paths.get(file.getPath())).toString();
+            // TODO это надо только для того, чтобы иметь возможность запускать приложение в веб версии, там с путями не все просто
+            if (result.startsWith("../")) {
+                return result.substring(3);
+            }
+            return result;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

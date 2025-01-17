@@ -12,3 +12,7 @@ records/
 /src/main/resources/arch/pk-info.ru/Программы #2/SP580_Tape_SIDE1.7z
 /src/main/resources/arch/pk-info.ru/Программы #2/SP580_Tape_SIDE2.7z
 /src/main/resources/arch/LIK.zip
+/src/main/resources/records/*
+/src/main/resources/screenshots/*
+/src/main/resources/snapshots/*
+/src/main/webapp/emulator-*.jar

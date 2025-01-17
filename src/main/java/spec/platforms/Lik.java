@@ -3,8 +3,6 @@ package spec.platforms;
 import spec.Range;
 import spec.RomLoader;
 
-import java.net.URL;
-
 public class Lik implements Platform {
 
     public static final String NAME = "lik";
@@ -32,7 +30,7 @@ public class Lik implements Platform {
     }
 
     @Override
-    public Range loadRom(URL base, RomLoader roms) {
+    public Range loadRom(String base, RomLoader roms) {
         return Range.of(
             roms.loadROM(base, platform() + "/roms/01_zagr.bin", START_ROM1),
             roms.loadROM(base, platform() + "/roms/02_mon-1m.bin", START_ROM2),
@@ -43,7 +41,7 @@ public class Lik implements Platform {
     }
 
     @Override
-    public Range loadTest(URL base, RomLoader roms, String name) {
+    public Range loadTest(String base, RomLoader roms, String name) {
         if (name.endsWith(".com")) {
             return roms.loadROM(base, platform() + "/test/" + name, 0x0000);
         } else {

@@ -6,6 +6,7 @@ import spec.Logger;
 import spec.Range;
 import spec.assembler.Command;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static spec.math.WordMath.*;
@@ -28,7 +29,7 @@ public class WhereIsData implements CpuMod {
 
     @Override
     public List<Event> supports() {
-        return List.of(CHANGE_PC, WRITE_MEM, READ_MEM);
+        return Arrays.asList(CHANGE_PC, WRITE_MEM, READ_MEM);
     }
 
     @Override

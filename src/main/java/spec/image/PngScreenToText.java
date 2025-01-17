@@ -30,8 +30,8 @@ public class PngScreenToText {
     private int pxWidth;
     private int pxHeight;
 
-    public PngScreenToText(URL base) {
-        process(new File(base.getFile() + "/lik/docs/screen/chars-map.png").getAbsolutePath(),
+    public PngScreenToText(String base) {
+        process(new File(base + "/lik/docs/screen/chars-map.png").getAbsolutePath(),
             NUMBERS + "\n" + // цифры
             SYMBOLS + "\n" + // спецсимволы
             LAT + "\n" +     // латиница
@@ -274,8 +274,7 @@ public class PngScreenToText {
     }
 
     public static void main(String[] args) throws Exception {
-        URL base = new File("src/main/resources").toURI().toURL();
-        PngScreenToText scanner = new PngScreenToText(base);
+        PngScreenToText scanner = new PngScreenToText("src/main/resources");
 
         // парсим картинку в текст
         String parse = scanner.parse("./src/test/resources/IntegrationTest/testLik/smoke/7_memory-exit.png");

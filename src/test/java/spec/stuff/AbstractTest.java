@@ -75,8 +75,8 @@ public abstract class AbstractTest {
     @Rule
     public TestName test = new TestName();
     protected FileAssert fileAssert;
-    protected URL base;
-    protected URL targetBase;
+    protected String base;
+    protected String targetBase;
     protected PngScreenToText scanner;
     protected String subFolder;
 
@@ -184,20 +184,12 @@ public abstract class AbstractTest {
         SmartAssert.checkResult();
     }
 
-    public URL base()  {
-        try {
-            return new File(MAIN_RESOURCES).toURI().toURL();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+    public String base()  {
+        return MAIN_RESOURCES;
     }
 
-    public URL targetBase()  {
-        try {
-            return new File(TARGET_RESOURCES).toURI().toURL();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+    public String targetBase()  {
+        return TARGET_RESOURCES;
     }
 
     public String testBase() {
@@ -303,7 +295,7 @@ public abstract class AbstractTest {
     public void assertScreen(String name) {
         fileAssert.check("Screenshots", name + ".png",
                 file -> {
-                    video.drawToFile(SCREEN.begin(), file);
+                    video.drawToFile(SCREEN.begin(), file.getAbsolutePath());
                     return null;
                 });
     }
@@ -347,7 +339,7 @@ public abstract class AbstractTest {
 
     public void assertPngMemory(Range range, String image) {
         PngVideo.drawToFile(range, SCREEN_WIDTH, memory,
-                new File(testBase() + "/" + image));
+                testBase() + "/" + image);
     }
 
     public String pngPath(String name) {
@@ -392,8 +384,7 @@ public abstract class AbstractTest {
     public Memory assertMemory(Range range, String romFileName, String diffFileName) {
         TrackUpdatedMemory source = new TrackUpdatedMemory(0x10000, TRACK_ONLY_UPDATED_VALUES);
         try {
-            URL base = new File(TEST_RESOURCES).toURI().toURL();
-            roms.loadROM(base, getTestResultFolder() + "/" + romFileName, source.all(), 0x0000);
+            roms.loadROM(TEST_RESOURCES, getTestResultFolder() + "/" + romFileName, source.all(), 0x0000);
             source.resetChanges();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -435,7 +426,7 @@ public abstract class AbstractTest {
 
     public void assertRecord(String path, Runnable... configure) {
         fileRecorder.startWriting();
-        int lastTick = hard.loadRecord(TEST_RESOURCES + "inputs/" + path);
+        int lastTick = hard.loadRecord(TEST_RESOURCES, "inputs/" + path);
         record.after(lastTick).stopCpu();
         Arrays.asList(configure).forEach(Runnable::run);
         cpu.PC(0xC000);

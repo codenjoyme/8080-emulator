@@ -2,7 +2,7 @@
   <configuration default="false" name="run-emulator-specialist" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="spec.Main" />
     <module name="emulator" />
-    <option name="PROGRAM_PARAMETERS" value="./src/main/resources specialist" />
+    <option name="PROGRAM_PARAMETERS" value="./src/main/resources/ specialist" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.codenjoy.*" />

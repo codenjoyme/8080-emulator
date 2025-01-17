@@ -103,7 +103,7 @@ public class Bites implements Iterable<Integer> {
 
     @Override
     public Iterator<Integer> iterator() {
-        return new Iterator<>() {
+        return new Iterator<Integer>() {
             private int index = 0;
 
             @Override

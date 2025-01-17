@@ -30,9 +30,9 @@ public class PngVideo implements Video.Drawer {
      * @param range    range of memory to print
      * @param maxWidth maximum width of the image
      * @param memory   memory to read from
-     * @param file     file to write to
+     * @param path     file to write to
      */
-    public static void drawToFile(Range range, int maxWidth, Memory memory, File file) {
+    public static void drawToFile(Range range, int maxWidth, Memory memory, String path) {
         int width = maxWidth - maxWidth % Video.PATTERN;
         int pwidth = width / Video.PATTERN;
         int notEnoughBytes = Math.floorMod(range.length(), pwidth);
@@ -47,7 +47,7 @@ public class PngVideo implements Video.Drawer {
         };
 
         PngVideo png = new PngVideo(video, memory);
-        png.drawToFile(range.begin(), file);
+        png.drawToFile(range.begin(), path);
     }
 
     @Override
@@ -60,11 +60,13 @@ public class PngVideo implements Video.Drawer {
         // do nothing
     }
 
-    public void drawToFile(int start, File file) {
+    public void drawToFile(int start, String path) {
+        Logger.debug("Saving screenshot to %s", path);
+
         video.redraw(start, memory);
 
         try {
-            ImageIO.write(image, "PNG", file);
+            ImageIO.write(image, "PNG", new File(path));
         } catch (IOException e) {
             e.printStackTrace();
         }

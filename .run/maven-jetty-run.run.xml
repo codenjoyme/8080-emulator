@@ -12,8 +12,12 @@
           <option name="goals">
             <list>
               <option value="clean" />
+              <option value="package" />
               <option value="jetty:run" />
               <option value="-Prun-server" />
+              <option value="-DskipTests=true" />
+              <option value="-Dserver.host=localhost" />
+              <option value="-Dserver.port=8080" />
             </list>
           </option>
           <option name="multimoduleDir" />

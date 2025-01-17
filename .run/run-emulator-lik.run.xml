@@ -2,7 +2,7 @@
   <configuration default="false" name="run-emulator-lik" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="spec.Main" />
     <module name="emulator" />
-    <option name="PROGRAM_PARAMETERS" value="./src/main/resources lik" />
+    <option name="PROGRAM_PARAMETERS" value="./src/main/resources/ lik" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.codenjoy.*" />

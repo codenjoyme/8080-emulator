@@ -11,12 +11,13 @@
 
     <properties>
         <module.name>emulator</module.name>
+        <build.file.name>${project.artifactId}-${project.version}</build.file.name>
 
         <server.host>localhost</server.host>
         <server.port>8080</server.port>
         <server.hostname>http://${server.host}:${server.port}</server.hostname>
 
-        <java.version>9</java.version>
+        <java.version>8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Production -->
@@ -84,7 +85,45 @@
             <build>
                 <plugins>
                     <plugin>
-                        <!-- Плагин отвечает за запуск jetty -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>3.4.0</version>
+                        <configuration>
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
+                            <warName>${build.file.name}</warName>
+                            <webResources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/webapp</directory>
+                                </resource>
+                                <resource>
+                                    <directory>${jetty-webapp-folder}</directory>
+                                    <includes>
+                                        <include>${build.file.name}.jar</include>
+                                    </includes>
+                                    <targetPath>/</targetPath>
+                                </resource>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/resources</directory>
+                                    <includes>
+                                        <include>lik</include>
+                                        <include>specialist</include>
+                                        <include>test</include>
+                                    </includes>
+                                    <filtering>false</filtering>
+                                    <targetPath>/</targetPath>
+                                </resource>
+                            </webResources>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>war</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.eclipse.jetty</groupId>
                         <artifactId>jetty-maven-plugin</artifactId>
                         <version>${maven-jetty.version}</version>
@@ -93,6 +132,11 @@
                                 <host>${server.host}</host>
                                 <port>${server.port}</port>
                             </httpConnector>
+                            <webApp>
+                                <contextPath>/</contextPath>
+                                <war>${project.build.directory}/${build.file.name}.war</war>
+                            </webApp>
+                            <supportedPackagings>jar</supportedPackagings>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -101,8 +145,19 @@
         <profile>
             <id>jar-with-dependencies</id>
             <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>lik/**</include>
+                            <include>specialist/**</include>
+                            <include>test/**</include>
+                        </includes>
+                    </resource>
+                </resources>
                 <plugins>
                     <plugin>
+                        <!-- Плагин отвечает за сборку jar с зависимостями -->
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-shade-plugin</artifactId>
                         <version>3.2.4</version>
@@ -119,7 +174,7 @@
                                         </transformer>
                                     </transformers>
                                     <artifactSet/>
-                                    <outputFile>${jetty-webapp-folder}/${project.artifactId}-${project.version}.jar</outputFile>
+                                    <outputFile>${project.basedir}/src/main/webapp/${build.file.name}.jar</outputFile>
                                 </configuration>
                             </execution>
                         </executions>
@@ -159,19 +214,10 @@
                                 <resource>
                                     <directory>src/main/resources</directory>
                                     <includes>
-                                        <include>**/*</include>
+                                        <include>lik/**</include>
+                                        <include>specialist/**</include>
+                                        <include>test/**</include>
                                     </includes>
-                                    <excludes>
-                                        <exclude>application.jnlp</exclude>
-                                        <exclude>arch/**</exclude>
-                                    </excludes>
-                                </resource>
-                                <resource>
-                                    <directory>src/main/resources</directory>
-                                    <includes>
-                                        <include>application.jnlp</include>
-                                    </includes>
-                                    <filtering>true</filtering>
                                 </resource>
                             </resources>
                         </configuration>

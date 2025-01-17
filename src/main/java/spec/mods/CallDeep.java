@@ -1,5 +1,6 @@
 package spec.mods;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static spec.mods.Event.RUN_CALL;
@@ -11,7 +12,7 @@ public class CallDeep implements CpuMod {
 
     @Override
     public List<Event> supports() {
-        return List.of(RUN_CALL, RUN_RET);
+        return Arrays.asList(RUN_CALL, RUN_RET);
     }
 
     @Override

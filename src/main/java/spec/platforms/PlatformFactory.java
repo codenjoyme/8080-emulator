@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class PlatformFactory {
 
-    private static Map<String, Platform> PLATFORMS = new LinkedHashMap<>(){{
+    private static Map<String, Platform> PLATFORMS = new LinkedHashMap<String, Platform>(){{
         put("lik", new Lik());
         put("specialist", new Specialist());
     }};

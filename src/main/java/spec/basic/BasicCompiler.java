@@ -580,8 +580,7 @@ public class BasicCompiler {
         // загружаем программу в память
         Memory memory = new Memory(0x10000);
         RomLoader roms = new RomLoader(memory);
-        URL base = new File(".").toURI().toURL();
-        Range range = roms.loadBSS(base, "src/main/resources/lik/apps/basic/program/president/president.bss");
+        Range range = roms.loadBSS(".", "src/main/resources/lik/apps/basic/program/president/president.bss");
 
         // получаем исходники
         List<String> source = basic.getSource(memory.all(), range);

@@ -5,8 +5,6 @@ import spec.platforms.Lik;
 import spec.platforms.Platform;
 import spec.platforms.PlatformFactory;
 
-import java.net.URL;
-
 public class RomSwitcher implements StateProvider {
 
     protected String platform = Lik.NAME;
@@ -17,21 +15,21 @@ public class RomSwitcher implements StateProvider {
         this.hard = hard;
     }
 
-    public void load(URL base, String rom) {
+    public void load(String base, String rom) {
         hard.loadData(base, rom, platform);
     }
 
-    public void loadRoms(URL base) {
+    public void loadRoms(String base) {
         PlatformFactory.platform(platform)
                 .loadRom(base, hard.roms());
         hard.reset();
     }
 
-    public void nextRom(URL base) {
+    public void nextRom(String base) {
         selectRom(base, PlatformFactory.next(platform));
     }
 
-    public void selectRom(URL base, String platform) {
+    public void selectRom(String base, String platform) {
         this.platform = platform;
         Logger.debug("Switch to %s", platform);
         hard.pause();

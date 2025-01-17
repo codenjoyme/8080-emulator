@@ -6,8 +6,10 @@ import spec.math.Bites;
 import spec.math.WordMath;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.substringAfter;
@@ -54,25 +56,36 @@ public class RomLoader {
 
     // для ПК "Специалист"/"ЛИК"
     // чтение ПЗУ
-    public Range loadROM(URL base, String path, int offset) {
+    public Range loadROM(String base, String path, int offset) {
         return loadROM(base, path, memory.all(), offset);
     }
 
-    public Range loadROM(URL base, String path, Bites all, int offset) {
+    public Range loadROM(String base, String path, Bites all, int offset) {
         try {
-            URL url = new URL(base, path);
-            InputStream is = url.openStream();
+            String absolute = base + path;
+            InputStream is = openStream(absolute);
             cpuPC(offset);
-            return readAll(all, offset, is, url);
+            return readAll(all, offset, is, absolute);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Range readAll(Bites all, int offset, InputStream is, URL url) throws Exception {
+    private static InputStream openStream(String path) throws FileNotFoundException {
+        File file = new File(path).getAbsoluteFile();
+        if (file.exists()) {
+            Logger.debug("Open file: %s", path);
+            return new FileInputStream(file);
+        }
+
+        Logger.debug("Open classpath resource: %s", path);
+        return RomLoader.class.getResourceAsStream(path);
+    }
+
+    private Range readAll(Bites all, int offset, InputStream is, String path) throws Exception {
         int length = is.available();
         Range range = new Range(offset, -length);
-        logLoading(url.toString(), range);
+        logLoading(path, range);
         readBytes(is, all, range);
         return range;
     }
@@ -80,26 +93,26 @@ public class RomLoader {
     // для ПК `Специалист`/`ЛИК` и `BASIC ЛИК V2` (BSS) файл содержит программу в машинных кодах
     // 3 байта - 0xD3 0xD3 0xD3
     // массив байтов программы загружается в память начиная с 0x1E60
-    public Range loadBSS(URL base, String path) {
+    public Range loadBSS(String base, String path) {
         return loadBSx(base, path, memory.all(), BASIC_LIK_V2_PROGRAM_START);
     }
 
     // для ПК `Специалист`/`ЛИК` и `BASIC` (BS1) файл содержит программу в машинных кодах
     // 3 байта - 0xD3 0xD3 0xD3
     // массив байтов программы загружается в память начиная с 0x2000
-    public Range loadBS1(URL base, String path) {
+    public Range loadBS1(String base, String path) {
         return loadBSx(base, path, memory.all(), BASIC_V1_PROGRAM_START);
     }
 
-    public Range loadBSx(URL base, String path, Bites all, int offset) {
+    public Range loadBSx(String base, String path, Bites all, int offset) {
         try {
-            URL url = new URL(base, path);
-            InputStream is = url.openStream();
+            String absolute = base + path;
+            InputStream is = openStream(absolute);
 
             Bites header = read8arr(is, 3);
             header.equals(new Bites(0xD3, 0xD3, 0xD3));
 
-            return readAll(all, offset, is, url);
+            return readAll(all, offset, is, absolute);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -123,10 +136,10 @@ public class RomLoader {
     // 2 байта  - адресс начала памяти (low byte, high byte)
     // 2 байта  - адресс конца памяти (low byte, high byte)
     // массив байтов прпограммы длинной между началом и концом
-    public Range loadRKS(URL base, String path) {
+    public Range loadRKS(String base, String path) {
         try {
-            URL url = new URL(base, path);
-            InputStream is = url.openStream();
+            String absolute = base + path;
+            InputStream is = openStream(absolute);
 
             Bites header = read8arr(is, 4);
             if (header.equals(new Bites(0x70, 0x8F, 0x82, 0x8F))) {
@@ -146,7 +159,7 @@ public class RomLoader {
                         "Range %s is invalid for: %s", range, path));
             }
 
-            logLoading(url.toString(), range);
+            logLoading(absolute, range);
             cpuPC(range.begin());
             readBytes(is, memory.all(), range);
             return range;
@@ -225,10 +238,10 @@ public class RomLoader {
      * * ROM switcher state:
      *   - 1 byte for boolean  - 1 if `lik` true, 0 otherwise
      */
-    public Range loadSnapshot(URL base, String path) {
+    public Range loadSnapshot(String base, String path) {
         try {
-            URL url = new URL(base, path);
-            InputStream is = url.openStream();
+            String absolute = base + path;
+            InputStream is = openStream(absolute);
             List<StateProvider> states = allStates();
             int size = statesSize(states);
             Bites bites = new Bites(size);
@@ -239,16 +252,18 @@ public class RomLoader {
                 offset = readPart(provider, offset, bites);
             }
 
-            Logger.debug("Snapshot loaded from %s", url);
+            Logger.debug("Snapshot loaded from %s", absolute);
             return new Range(0, size);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void saveSnapshot(URL base, String path) {
+    public void saveSnapshot(String base, String path) {
         try {
-            URL url = new URL(base, path);
+            String absolute = base + path;
+            Logger.info("Saving snapshot to %s", absolute);
+
             List<StateProvider> states = allStates();
             int size = statesSize(states);
             Bites bites = new Bites(size);
@@ -258,8 +273,7 @@ public class RomLoader {
                 offset = writePart(bites, provider.state(), offset);
             }
 
-            FileUtils.writeByteArrayToFile(new File(url.getFile()), bites.byteArray());
-            Logger.info("Snapshot saved to %s", url);
+            FileUtils.writeByteArrayToFile(new File(absolute), bites.byteArray());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -273,7 +287,7 @@ public class RomLoader {
     }
 
     private List<StateProvider> allStates() {
-        return List.of(
+        return Arrays.asList(
                 cpu,
                 keyboard,
                 ports,
@@ -295,7 +309,7 @@ public class RomLoader {
         return offset + range.length();
     }
 
-    public Range load(URL base, String path) {
+    public Range load(String base, String path) {
         switch (getFileExt(path)) {
             case TYPE_COM: {
                 return loadROM(base, path, 0x0100);

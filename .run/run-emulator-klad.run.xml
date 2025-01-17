@@ -2,7 +2,7 @@
   <configuration default="false" name="run-emulator-klad" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="spec.Main" />
     <module name="emulator" />
-    <option name="PROGRAM_PARAMETERS" value="./src/main/resources lik lik/apps/klad/klad.rks" />
+    <option name="PROGRAM_PARAMETERS" value="./src/main/resources/ lik lik/apps/klad/klad.rks" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.codenjoy.*" />

@@ -69,10 +69,10 @@ public class KeyRecord {
         return fileRecorder.ready();
     }
 
-    public int load(String path) {
+    public int load(String base, String path) {
         AtomicReference<Action> after = new AtomicReference<>(reset().after(0));
         fileRecorder.stopWriting();
-        fileRecorder.with(new File(path));
+        fileRecorder.with(base + path);
         fileRecorder.read((delta, key) -> {
             Action it = after.get().after(delta);
             if (key.pressed()) {

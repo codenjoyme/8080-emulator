@@ -35,28 +35,16 @@ goto :main
     goto :eof
 
 :main
+    call :eval_echo "set HOST=localhost"
+    call :eval_echo "set PORT=8080"
+
     call :eval_echo "cd .."
     call :eval_echo "set ROOT=%cd%"
-    call :eval_echo "set OUT=%ROOT%\build\out"
-    call :eval_echo "set BUILD=%ROOT%\target\webapp-synth"
-    call :eval_echo "set APP=%ROOT%\src\main\webapp\emulator-1.0.jar"
-    call :eval_echo "set RESOURCES=%ROOT%\src\main\resources"
-    call :eval_echo "set PLATFORM=lik"
 
-    call :color "%YELLOW%" "Please get content from '%OUT%' folder after build"
-
-    call :eval_echo "rd /s /q %OUT%"
+    call :color "%YELLOW%" "Please run 'http://%HOST%:%PORT%/' after build"
 
     call :eval_echo "%ROOT%\mvnw.cmd clean package -DskipTests=true -Pjar-with-dependencies"
-
-    call :eval_echo "mkdir %OUT%"
-    call :eval_echo "xcopy %BUILD% %OUT% /s /e /y"
-    call :eval_echo "copy %APP% %OUT%"
-    call :eval_echo "copy %RESOURCES%\run.bat %OUT%"
-    call :eval_echo "copy %RESOURCES%\run.sh %OUT%"
-
-    call :eval_echo "cd %OUT%"
-    call :eval_echo "run.bat .\ %PLATFORM%"
+    call :eval_echo "%ROOT%\mvnw.cmd clean package jetty:run -DskipTests=true -Dserver.host=%HOST% -Dserver.port=%PORT% -Prun-server"
 
     echo.
     call :color "Press Enter to continue" %GRAY%

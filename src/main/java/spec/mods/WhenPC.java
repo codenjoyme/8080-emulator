@@ -43,6 +43,6 @@ public class WhenPC extends When {
 
     @Override
     public List<Event> supports() {
-        return List.of(CHANGE_PC);
+        return Arrays.asList(CHANGE_PC);
     }
 }

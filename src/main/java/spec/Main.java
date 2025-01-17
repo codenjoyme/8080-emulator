@@ -54,33 +54,10 @@ public class Main extends JFrame implements KeyListener {
         setFocusTraversalKeysEnabled(true);
         addKeyListener(this);
 
-        URL baseUrl = getBaseUrl(base);
-        Logger.debug("Base url: " + baseUrl);
-        app = new Application(this, baseUrl, platform, rom);
+        base = base == null ? "." : base;
+        Logger.debug("Base url: " + base);
+        app = new Application(this, base, platform, rom);
         app.start();
-    }
-
-    private URL getBaseUrl(String base) {
-        try {
-            // run as Main without parameters
-            if (base == null) {
-                base = ".";
-            }
-
-            // run as jnlp web application
-            if (base.contains(":")) {
-                return new URL(base);
-            }
-
-            // run as Main class from command line
-            return new File(base).toURI().toURL();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private File contentRoot() {
-        return new File(".");
     }
 
     @Override

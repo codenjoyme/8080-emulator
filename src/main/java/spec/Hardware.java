@@ -3,11 +3,10 @@ package spec;
 import spec.platforms.Lik;
 import spec.sound.Audio;
 import spec.sound.NewAudio;
+import spec.sound.NoAudio;
 import spec.sound.OldAudio;
 
 import java.awt.*;
-import java.io.File;
-import java.net.URL;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -78,6 +77,11 @@ public class Hardware {
     }
 
     protected Audio createAudio() {
+        // TODO #39 закончить с аудио пока отключил для веб версии - там ошибка
+        if (Files.isRunningFromJar()) {
+            return new NoAudio();
+        }
+        // TODO #39 Добавить поддержку звука. Закончить попытки и сделать звук красивым.
         if (lineOut) {
             return audio = new OldAudio();
         } else {
@@ -92,6 +96,7 @@ public class Hardware {
     protected Video createVideo(int width, int height) {
         Video video = new Video(width, height);
         video.drawer(graphtic.getDrawer());
+
         return video;
     }
 
@@ -256,7 +261,7 @@ public class Hardware {
         cpu.execute();
     }
 
-    public void loadSnapshot(URL base, String path) {
+    public void loadSnapshot(String base, String path) {
         pause(() -> {
             roms.loadSnapshot(base, path);
             keyLogger.reset();
@@ -265,21 +270,21 @@ public class Hardware {
         });
     }
 
-    public void saveSnapshot(URL base, String path) {
-        roms.saveSnapshot(base, path);
+    public void saveSnapshot(String path) {
+        roms.saveSnapshot("", path);
     }
 
-    public int loadRecord(String path) {
+    public int loadRecord(String base, String path) {
         if (!record.ready()) return -1;
 
-        Logger.debug("Loading record from %s", path);
+        Logger.debug("Loading record from %s", base + path);
         pause();
-        int lastTick = record.load(path);
+        int lastTick = record.load(base, path);
         reset();
         return lastTick;
     }
 
-    public Range loadData(URL base, String path, String platform) {
+    public Range loadData(String base, String path, String platform) {
         pause();
 
         Range range = roms.load(base, path);
