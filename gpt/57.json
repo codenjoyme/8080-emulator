@@ -1,0 +1,118 @@
+DATE: 1737079317499
+
+===============================================================================================
+Q: Код 
+    private URL getBaseUrl(String base) {
+        try {
+            return base == null
+                    ? contentRoot().toURI().toURL()
+                    : new URL(base);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private File contentRoot() {
+        return new File(".");
+    }
+вызывает ошибку 
+Exception in thread "main" java.lang.RuntimeException: java.net.MalformedURLException: no protocol: .
+    at spec.Main.getBaseUrl(Main.java:65)
+    at spec.Main.<init>(Main.java:49)
+    at spec.Main.main(Main.java:33)
+Caused by: java.net.MalformedURLException: no protocol: .
+    at java.base/java.net.URL.<init>(URL.java:627)
+    at java.base/java.net.URL.<init>(URL.java:523)
+    at java.base/java.net.URL.<init>(URL.java:470)
+    at spec.Main.getBaseUrl(Main.java:63)
+    ... 2 more
+Когда передаю
+"." 
+Как мне передать валидно текущую папку в формате удобоваримом для URL?
+-----------------------------------------------------------------------------------------------
+A: Для передачи текущей директории в формате URL, вам нужно использовать метод `toURI()` класса `File`, а затем вызвать метод `toURL()` на результате `URI`. В вашем случае, вы уже правильно используете эту последовательность при `base == null`. Однако, когда вы передаёте ".", это представляет текущий каталог как строку, но для создания правильного `URL` нужно также преобразовать его таким же образом.
+
+Вы можете изменить ваш метод `getBaseUrl` следующим образом:
+
+```java
+private URL getBaseUrl(String base) {
+    try {
+        // Проверка и использование URI и URL преобразования для base если это не null
+        return base == null
+                ? contentRoot().toURI().toURL()
+                : new File(base).toURI().toURL();
+    } catch (MalformedURLException | URISyntaxException e) {
+        throw new RuntimeException(e);
+    }
+}
+
+private File contentRoot() {
+    return new File(".");
+}
+```
+
+Теперь функция `getBaseUrl` может принимать путь в виде строки как файловой системы (например, "."), преобразовывая его в соответствующий URL.
+===============================================================================================
+
+===============================================================================================
+Q: Мне надо оставить 
+new URL(base)
+потому что base может быть и другим
+-----------------------------------------------------------------------------------------------
+A: Понятно, если `base` может уже быть валидным URL, тогда вы можете добавить проверку, чтобы определить, является ли `base` путём к файлу или уже готовым URL. Для этого можно использовать простую проверку, например поиск символа `:` в строке `base`, чтобы узнать, содержит ли она схему URL (например, `http://`). Если такой схемы нет, предполагаем, что это путь к файлу, и преобразуем его в URL.
+
+Вот обновленная версия метода:
+
+```java
+private URL getBaseUrl(String base) {
+    try {
+        // Проверка, является ли base уже URL или нет.
+        if (base == null) {
+            return contentRoot().toURI().toURL();
+        } else if (base.contains(":")) { 
+            // если содержит ":" предположим, что это уже URL
+            return new URL(base);
+        } else {
+            // Иначе преобразуем путь к файлу в URL
+            return new File(base).toURI().toURL();
+        }
+    } catch (MalformedURLException e) {
+        throw new RuntimeException(e);
+    }
+}
+
+private File contentRoot() {
+    return new File(".");
+}
+```
+
+Такой подход позволяет сохранить функциональность прямого создания URL из строки, при этом корректно обрабатывая случаи, когда `base` является локальным путем к файлу.
+===============================================================================================
+
+===============================================================================================
+Q: а в тернарном исполнении?
+-----------------------------------------------------------------------------------------------
+A: Да, вы можете сократить вашу логику, используя тернарный оператор. Вот как это можно реализовать:
+
+```java
+private URL getBaseUrl(String base) {
+    try {
+        return base == null ? contentRoot().toURI().toURL() :
+               base.contains(":") ? new URL(base) : 
+               new File(base).toURI().toURL();
+    } catch (MalformedURLException e) {
+        throw new RuntimeException(e);
+    }
+}
+
+private File contentRoot() {
+    return new File(".");
+}
+```
+
+Этот фрагмент переписывает `getBaseUrl`, используя тернарные операторы для сокращения кода:
+
+1. Если `base` равно `null`, метод `contentRoot().toURI().toURL()` используется для получения URL текущего каталога.
+2. Если `base` содержит двоеточие (`:`), предполагается, что это уже полная строка URL, и просто конструируется новый URL.
+3. В ином случае `base` считается путём к файлу, который преобразуется в URL.
+===============================================================================================

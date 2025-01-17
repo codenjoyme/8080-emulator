@@ -1,0 +1,106 @@
+DATE: 1737092052152
+
+===============================================================================================        
+Q: Мне нужен такой же скрипт но для windows batch 
+"""
+#!/usr/bin/env bash
+
+BLUE=94
+GRAY=89
+YELLOW=93
+
+color() {
+    message=$1
+    [[ "$2" == "" ]] && color=$YELLOW || color=$2
+    echo "\u001b[${color}m${message}\u001b[0m"
+}
+
+eval_echo() {
+    command=$1
+    [[ "$2" == "" ]] && color=$BLUE || color=$2
+    color "${command}" $color
+    echo
+    eval $command
+    echo
+}
+
+eval_echo "cd .."
+eval_echo "ROOT=$(pwd)"
+eval_echo "OUT=$ROOT/build/out"
+eval_echo "BUILD=$ROOT/target/webapp-synth"
+eval_echo "PLATFORM=lik"
+
+color "Please get content from '$OUT' folder after build"
+
+eval_echo "$ROOT/mvnw clean package -DskipTests=true -Pjar-with-dependencies"
+
+eval_echo "rm -rf $OUT"
+eval_echo "mkdir -p $OUT"
+eval_echo "mv $BUILD/* $OUT"
+eval_echo "rm $OUT/application.jnlp"
+eval_echo "rm $OUT/deployJava.js"
+eval_echo "rm $OUT/index.html"
+
+eval_echo "cd $OUT"
+eval_echo "bash run.sh . $PLATFORM"
+
+echo
+color "Press Enter to continue"
+read
+"""
+Соблюдай общий формат, внешне результат он должен быть похожим на bash
+-----------------------------------------------------------------------------------------------          
+A: ```batch
+@echo off
+setlocal
+
+set BLUE=94
+set GRAY=89
+set YELLOW=93
+
+call :color "%YELLOW%"
+
+:color
+  set message=%1
+  if "%2"=="" (set color=%YELLOW%) else (set color=%2)
+  echo ^\u001b[%color%m%message%^\u001b[0m
+  exit /b
+
+:eval_echo
+  set command=%1
+  if "%2"=="" (set color=%BLUE%) else (set color=%2)
+  call :color "%command%" %color%
+  echo.
+  call %command%
+  echo.
+  exit /b
+
+call :eval_echo "cd .."
+set ROOT=%cd%
+set OUT=%ROOT%\\build\\out
+set BUILD=%ROOT%\    arget\\webapp-synth
+set PLATFORM=lik
+
+call :color "Please get content from '%OUT%' folder after build" %GRAY%
+
+call :eval_echo "%ROOT%\\mvnw clean package -DskipTests=true -Pjar-with-dependencies"
+
+call :eval_echo "rd /s /q %OUT%"
+call :eval_echo "mkdir %OUT%"
+call :eval_echo "move %BUILD%\\* %OUT%"
+call :eval_echo "del %OUT%\\application.jnlp"
+call :eval_echo "del %OUT%\\deployJava.js"
+call :eval_echo "del %OUT%\\index.html"
+
+call :eval_echo "cd %OUT%"
+call :eval_echo "bash run.sh . %PLATFORM%"
+
+echo.
+call :color "Press Enter to continue" %GRAY%
+pause
+
+endlocal
+```
+
+Этот скрипт Windows Batch выполняет аналогичные функции, как и ваш Bash скрипт. Он использует функции для управления цветом вывода и выполнения команд, сохраняя при этом ст
+===============================================================================================

@@ -1,0 +1,293 @@
+DATE: 1737049468982
+
+===============================================================================================
+Q: У меня есть вот что 
+        <profile>
+            <id>jar-with-dependencies</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>${maven-assembly.version}</version>
+                        <configuration>
+                            <finalName>${project.artifactId}-exec</finalName>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <mainClass>spec.Main</mainClass>
+                                </manifest>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+я хочу собрать jar with dependencies 
+запускаю так 
+clean package -DskipTests=true -Pjar-with-dependencies -f pom.xml
+но он ругается на 
+webxml attribute is required (or pre-existing WEB-INF/web.xml if executing in update mode)
+
+-----------------------------------------------------------------------------------------------
+A: Эта ошибка может возникать при использовании плагина maven-assembly-plugin для создания исполняемого jar файла, если в вашем проекте присутствует веб-компонент. Плагин ожидает найти файл web.xml, который необходим для конфигурации веб-приложения.
+
+Если у вас действительно есть веб-компоненты и web.xml отсутствует, необходимо создать этот файл в папке src/main/webapp/WEB-INF.
+
+Если же ваше приложение не является веб-приложением, но плагин все равно выдает ошибку, вы можете попробовать принудительно указать в конфигурации плагина, что web.xml не требуется. Для этого добавьте в раздел <configuration> плагина следующее:
+
+```xml
+<configuration>
+    ...
+    <archive>
+        <manifest>
+            <addClasspath>true</addClasspath>
+            <mainClass>spec.Main</mainClass>
+        </manifest>
+        <manifestEntries>
+            <Class-Path>.</Class-Path>
+        </manifestEntries>
+    </archive>
+    <descriptorRefs>
+        <descriptorRef>jar-with-dependencies</descriptorRef>
+    </descriptorRefs>
+    <appendAssemblyId>false</appendAssemblyId>
+    <!-- Add this -->
+    <webxml>false</webxml>
+</configuration>
+```
+
+Добавление `<webxml>false</webxml>` указывает плагину, что файл web.xml не требуется, что должно помочь в решении вашей проблемы.
+
+Убедитесь также, что у вас правильно указаны параметры для запуска Maven:
+```bash
+mvn clean package -DskipTests -Pjar-with-dependencies
+```
+Обратите внимание на параметр `-DskipTests` без `=true`, также убедитесь, что ваш профиль и ID точно соответствуют тем, что используются в команде.
+===============================================================================================
+
+===============================================================================================        
+Q: сделал так, ругается 
+<profile>
+            <id>jar-with-dependencies</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>${maven-assembly.version}</version>
+                        <configuration>
+                            <finalName>${project.artifactId}-exec</finalName>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <mainClass>spec.Main</mainClass>
+                                </manifest>
+                                <manifestEntries>
+                                    <Class-Path>.</Class-Path>
+                                </manifestEntries>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+-----------------------------------------------------------------------------------------------
+A: Похоже, что изменения в конфигурации, которые я предложил, не помогли. Попробуем другой способ:
+
+1. Не используйте дескриптор `jar-with-dependencies`. Вместо этого создайте свой собственный дескриптор сборки. Создайте файл внутри вашего проекта, например, в `src/main/assembly/assembly.xml`:
+
+```xml
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 http://maven.apache.org/xsd/assembly-1.1.3.xsd">
+    <id>jar-with-dependencies</id>
+    <formats>
+        <format>jar</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>/</outputDirectory>
+            <useProjectArtifact>true</useProjectArtifact>
+            <unpack>true</unpack>
+            <scope>runtime</scope>
+        </dependencySet>
+    </dependencySets>
+</assembly>
+```
+
+2. Обновите вашу конфигурацию `maven-assembly-plugin` в вашем `pom.xml`, чтобы использовать этот файл:
+
+```xml
+<plugin>
+    <artifactId>maven-assembly-plugin</artifactId>
+    <version>${maven-assembly.version}</version>
+    <configuration>
+        <finalName>${project.artifactId}-exec</finalName>
+        <archive>
+            <manifest>
+                <addClasspath>true</addClasspath>
+                <mainClass>spec.Main</mainClass>
+            </manifest>
+        </archive>
+        <descriptorRefs>
+            <!-- Это должно ссылаться на ваш собственный дескриптор -->
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+    </configuration>
+    <executions>
+        <execution>
+            <id>make-assembly</id> <!-- это можно настроить -->
+            <phase>package</phase> <!-- привязывать к фазе сборки -->
+            <goals>
+                <goal>single</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+```
+
+3. Убедитесь, что вы вызываете правильный профиль при сборке:
+```bash
+mvn clean package -DskipTests -Pjar-with-dependencies
+```
+
+Этот метод дает больше контроля над процессом сборки и позволяет избежать использования стандартного дескриптора, который может вызывать проблемы в случае с вашим проектом.
+===============================================================================================
+
+===============================================================================================
+Q: Хорошо, пойдем простым способом. Все забудь. Мне нужен плагин который соберет jar со всеми депенджеснями
+-----------------------------------------------------------------------------------------------
+A: В таком случае, более простым и популярным решением для создания исполняемого JAR-файла со всеми зависимостями может быть `maven-shade-plugin`. Этот плагин позволяет упаковать все зависимости в один большой исполняемый JAR-файл, что упрощает запуск и распространение приложения.
+
+Вот как вы можете настроить этот плагин в файле `pom.xml` проекта:
+
+1. Добавьте следующую конфигурацию в ваш `pom.xml` в секцию `<build><plugins>`:
+
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-shade-plugin</artifactId>
+    <version>3.2.4</version> <!-- Используйте последнюю доступную версию -->
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>shade</goal>
+            </goals>
+            <configuration>
+                <transformers>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <mainClass>spec.Main</mainClass> <!-- Укажите ваш главный класс здесь -->
+                    </transformer>
+                </transformers>
+                <artifactSet/>
+                <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar</outputFile>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+```
+
+2. Запускайте сборку при помощи команды Maven:
+
+```bash
+mvn clean package
+```
+
+В результате в директории `target/` вашего проекта создастся файл типа `${project.artifactId}-${project.version}-shaded.jar`, который будет содержать ваше приложение и все его зависимости, а также правильно настроенный манифест для запуска главного класса.
+
+`maven-shade-plugin` прост в использовании и очень мощный вариант для сборки "толстых" JAR-файлов в Maven.
+===============================================================================================
+
+===============================================================================================
+Q: Я хочу вот тут 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources.version}</version>
+                <executions>
+                    <execution>
+                        <!-- Плагин отвечает за копирование ресурсов
+                             в для jetty -->
+                        <id>[##1]-copy-resources</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <outputDirectory>${jetty-webapp-folder}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>**/*</include>
+                                        <exclude>application.jnlp</exclude>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>application.jnlp</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+не копировать папку resources/arch
+-----------------------------------------------------------------------------------------------
+A: Для того чтобы не копировать папку `resources/arch`, вам нужно добавить для неё правило исключения в раздел `<excludes>` вашего плагина `maven-resources-plugin`. Вам нужно добавить паттерн исключения, который охватывает эту папку и все файлы внутри неё. Настройку можно проделать следующим образом:
+
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-resources-plugin</artifactId>
+    <version>${maven-resources.version}</version>
+    <executions>
+        <execution>
+            <id>[##1]-copy-resources</id>
+            <goals>
+                <goal>copy-resources</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+                <outputDirectory>${jetty-webapp-folder}</outputDirectory>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>**/*</include>
+                        </includes>
+                        <excludes>
+                            <exclude>arch/**</exclude> <!-- Добавьте эту строку -->
+                        </excludes>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>application.jnlp</include>
+                        </includes>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+```
+
+Здесь, `<exclude>arch/**</exclude>` указывает Maven не копировать папку `arch` и все её содержимое из `src/main/resources`, во время копирования ресурсов.
+
+Путь `arch/**` использует спецификацию Ant-style, где `**` означает "любые файлы и папки внутри данного каталога". Убедитесь, что правильно указываете имя папки, если она на самом деле находится в другом месте или имеет другое имя, нужно скорректировать путь в теге `<exclude>`.
+===============================================================================================
