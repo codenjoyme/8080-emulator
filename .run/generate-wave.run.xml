@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="generate-wave" type="JUnit" factoryName="JUnit">
+    <module name="emulator" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="svofski.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="PACKAGE_NAME" value="svofski" />
+    <option name="MAIN_CLASS_NAME" value="svofski.WaveGeneratorTest" />
+    <option name="METHOD_NAME" value="testLik_generateWave" />
+    <option name="TEST_OBJECT" value="method" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

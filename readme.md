@@ -240,6 +240,8 @@ Intro
 - [ ] TODO #29 `zoo`
 - [ ] TODO #29 `blobcop`
 - [ ] TODO #29 `chess` 
+- [ ] TODO #29 `basic` 
+- [ ] TODO #29 `basic2` 
 - [x] TODO #30 Разобраться как загружать правильно другую версию бейсика 
       `\src\main\resources\arch\emu80.org\extracted\lik_spc1\BASIC\SPEC\BASSPEC.RKS`
       Известно, что оно грузится по адресу `Cnstants.BASIC_V1_PROGRAM_START`
@@ -253,6 +255,13 @@ Intro
       исходный код программы на бейсике для всех `bss` файлов.
 - [ ] TODO #35 Проверить, что `\src\main\resources\arch\Alex_B\ROM_LIK.ZIP\ROMLIK\ROMLIK.BIN`
       соответствует мержу 6 частей пзу ЛИКа.
+- [x] Прогнать все варианты запуска эмулятора: jetty, jnlp, jar. Ни один из них не работает.
+- [ ] TODO #36 rename to testGenerateWave from testLik_generateWave
+- [ ] TODO #37 А точно тут надо для всех типов файлов делать загрузку монитора и команд J/G?
+- [ ] TODO #38 Почему-то не работает `cputest.asm` в js версии тестов.
+- [ ] Завести `jetty`/`jnlp` сервер, поправить `batch`/`bash` скрипты, прописать `run configurations` 
+      в `Intellij Idea` для запуска сервера и клиента и описать их тут в этом файле.
+- [ ] Сделать по хоткею копирования текста экрана в буфер обмена с помощью `PngScreenToText`. 
 - [ ] Сделать что-то еще...
 - [ ] И еще что-то...
 
@@ -307,31 +316,67 @@ Intro
 - Прописать переменную окружения JAVA_HOME ссылающуюся на папку с установленной java.
 - Затем добавить в Path переменную `JAVA_HOME/bin`.
 - Выполнить команду в консоли `java -version` и увидеть версию java.
+- Часть конфигураций IDE (Intellij Idea) настроена на использование `C:\Java\git\git-bash.exe`
+  в качестве интерпретатора командной строки. Рекомендуется установить 
+  [git](https://git-scm.com/downloads) в папку `C:\Java\git` либо поменять конфигурации.
 
 Запуск java приложения из IDE (development environment)
 ----------------- 
 
 - Для открытия проекта в IDE стоит импортировать его как maven проект.
-- Запустить класс `spec.Main`.
-- Так же для Intellij Idea есть конфигурации запуска в папке `.run`.
-- В проекте присутствуют unit/integration тесты с хорошим code-coverage -
-  рекомендуем начать работу с их запуска.
 
-Запуск клиентского приложения 
+- Запустить класс `spec.Main` или выполнить `run-emulator-lik` из run configurations
+  для запуска платформы `ЛИК` или `run-emulator-specialist` для платформы `Специалист`.
+
+- Для Intellij Idea есть конфигурации запуска в папке `.run`.
+
+- В проекте присутствуют unit/integration тесты с хорошим code-coverage -
+  рекомендуем начать работу с их запуска `test-all-java`.
+
+- Так же присутствуют javascript код и тесты к нему - 
+  их можно запустить через конфигурацию `test-all-js`.
+
+- Для генерации для всех приложений ассемблерного кода стоит запустить 
+  конфигурацию `generate-asm`, что вызовет тест `DisAssemblerTest.testDecompileTest` 
+  а он в свою очередь сделает все необходимое.
+
+- Для генерации для всех приложений `wave` стоит запустить 
+  конфигурацию `generate-wave`, что вызовет тест `WaveTest.testWaveTest` 
+  а он в свою очередь сделает все необходимое.
+
+Сборка и запуск клиентского приложения (jar) из консоли
 ----------------- 
 
 - Для этого стоит запустить скрипт `build/build-client.sh`. Если нет linux можно
   использовать тулы типа `cygwin`/`mingw`.
-- В процессе сборки создастся папка `build/out` в которой будет все необходимое 
-  для запуска. Скрипт `build/out/run.sh` запустится автоматически. 
-  В будущем не стоит пересобирать все приложение - для запуска достаточно 
-  запуска скрипта `build/out/run.sh`.
 
-Запуск jnlp сервера 
+- Того же можно добиться выполнив конфигурацию `bash-build-client` из IDE для `linux`,
+  или `batch-build-client` для `windows`.
+
+- В процессе сборки создастся папка `build/out` в которой будет все необходимое 
+  для запуска. 
+
+- Следом скрипт `build/out/run.sh` запустится автоматически. 
+
+- В будущем не стоит пересобирать все приложение - для запуска достаточно 
+  запуска скрипта `build/out/run.sh` или конфигурации `bash-run-client` из IDE для `linux`,
+  или `batch-run-client` для `windows`. Эти скрипты принимают на вход 3 опциональных параметра: 
+  + `base` - базовая папка, где лежат все файлы (не обязательно, по умолчанию `.`)
+  + `platform` - платформа, которую надо запустить: `lik` или `specialist` (не обязательно, по умолчанию `lik`)
+  + `rom` - путь к файлу с программой, которую надо запустить (не обязательно, по умолчанию пусто)
+
+Сборка клиентского приложения (jar) из IDE
+----------------- 
+
+- Для сборки jar из IDE стоит выполнить `maven-jar-with-dependencies` из run configurations.
+- Или выполнить команду `mvn clean package -DskipTests=true -Pjar-with-dependencies`
+
+Запуск jetty/jnlp сервера 
 ----------------- 
 
 - Для этого стоит запустить скрипт `build/build-server.sh`. Если нет linux можно 
   использовать тулы типа `cygwin`/`mingw`.
+- Того же можно добиться выполнив конфигурацию `shell-build-server` из IDE.
 - Скрипт в какой-то момент остановится (сервер запустился) - 
   окно закрывать не стоит, его закрытие приведет к остановке сервера.
 ```
@@ -382,49 +427,33 @@ OK
 - Откроется диалог выбора файла. Выбираем файл `klad.rks` из папки `src/main/resources/roms/lik/apps`.
 - Нажимаем на клавиатуре клавишу `J`, затем `Enter`. 
 - Радуемся игре `Клад`. 
+- Для запуска этой замечательной игры так же создан отдельная конфигурация `run-emulator-klad` 
+  в IDE.
 
 Загрузка других ROM/RKS
 -----------------------
 
-- В методе `spec.Application.loadRoms()` можно поменять настройки загружаемых ROM
+- Для загрузки других ROM/RKS стоит запустить класс `spec.Main` с третьим параметром, путь которого является 
+  любым типом:
+  + `com` загрузится в область `0x0100`.
+  + `rom`, `bin` в область `0xC000`.
+  + `rks` загрузится в область указанную в самом файле.
+  + `snp` загрузит весь сохраненный стейт машины и передаст управление на место где был сохранен стейт.
+  + `bss` загрузится в `BASIC_LIK_V2_PROGRAM_START`/`0x1E60` область.
+  + `bs1` загрузится в `BASIC_V1_PROGRAM_START`/`0x2000` область.
+  + `mem` или любой другой файл загрузится в `0x0000` область.
+- При этом так же стоит понимать, что по-умолчанию загружается платформа `ЛИК`, но и на это можно повлиять
+  указав второй параметр класса `spec.Main` один из двух вариантов `lik` или `specialist`.
+- Первый же параметр - это папка с ресурсами `src/main/resources/`, где расположены все файлы платформ.
+- Так же можно добавить иную платформу реализовав интерфейс `Platform`. 
+- В консоли можно увидеть как и куда происходит загрузка:
 ```
-boolean lik = true;
-if (lik) {
-    Lik.loadRom(base, hard.roms());
-    Lik.loadGame(base, hard.roms(), "klad");
-    // Lik.loadTest(base, hard.roms(), "test");
-} else {
-    Specialist.loadRom(base, hard.roms());
-    Specialist.loadGame(base, hard.roms(), "blobcop");
-}
-
-```
-- Отредактировав его можно выбрать любой ROM/RKS загрузить его в определенное место памяти.
-- После сервер jetty стоит перезапустить, закрыть старый Applet и открыть его повторно.
-- В Java консоли Applet можно увидеть как и куда происходит загрузка
-```
-network: Cache entry not found [url: http://localhost:8080/lik/01_zagr.BIN, version: null]
-network: Connecting http://localhost:8080/lik/01_zagr.BIN with proxy=DIRECT
-Loading 'http://localhost:8080/lik/01_zagr.BIN' into [C000:C800]
-network: Cache entry not found [url: http://localhost:8080/lik/02_mon-1m.BIN, version: null]
-network: Connecting http://localhost:8080/lik/02_mon-1m.BIN with proxy=DIRECT
-Loading 'http://localhost:8080/lik/02_mon-1m.BIN' into [C800:D000]
-network: Cache entry not found [url: http://localhost:8080/lik/03_mon-1m_basicLik.BIN, version: null]
-network: Connecting http://localhost:8080/lik/03_mon-1m_basicLik.BIN with proxy=DIRECT
-Loading 'http://localhost:8080/lik/03_mon-1m_basicLik.BIN' into [D000:D800]
-network: Cache entry not found [url: http://localhost:8080/lik/04_basicLik.BIN, version: null]
-network: Connecting http://localhost:8080/lik/04_basicLik.BIN with proxy=DIRECT
-Loading 'http://localhost:8080/lik/04_basicLik.BIN' into [D800:E000]
-network: Cache entry not found [url: http://localhost:8080/lik/05_basicLik.BIN, version: null]
-network: Connecting http://localhost:8080/lik/05_basicLik.BIN with proxy=DIRECT
-Loading 'http://localhost:8080/lik/05_basicLik.BIN' into [E000:E800]
-network: Cache entry not found [url: http://localhost:8080/lik/06_basicLik.BIN, version: null]
-network: Connecting http://localhost:8080/lik/06_basicLik.BIN with proxy=DIRECT
-Loading 'http://localhost:8080/lik/06_basicLik.BIN' into [E800:F000]
-network: Cache entry not found [url: http://localhost:8080/lik/apps/klad.rks, version: null]
-network: Connecting http://localhost:8080/lik/apps/klad.rks with proxy=DIRECT
-Loading 'http://localhost:8080/lik/apps/klad.rks' into [0000:4430]
-cache: MemoryCache: removed entry http://localhost:8080/spec.jnlp
+Loading 'file:/C:/Java/8080-emulator/src/main/resources/lik/roms/01_zagr.bin' into [C000:C7FF]
+Loading 'file:/C:/Java/8080-emulator/src/main/resources/lik/roms/02_mon-1m.bin' into [C800:CFFF]
+Loading 'file:/C:/Java/8080-emulator/src/main/resources/lik/roms/03_mon-1m_basicLik.bin' into [D000:D7FF]
+Loading 'file:/C:/Java/8080-emulator/src/main/resources/lik/roms/04_basicLik.bin' into [D800:DFFF]
+Loading 'file:/C:/Java/8080-emulator/src/main/resources/lik/roms/05_basicLik.bin' into [E000:E7FF]
+Loading 'file:/C:/Java/8080-emulator/src/main/resources/lik/roms/06_basicLik.bin' into [E800:EFFF]
 ```
 
 Горячие клавиши
@@ -448,7 +477,7 @@ cache: MemoryCache: removed entry http://localhost:8080/spec.jnlp
   + `ioDrawMode = 3` - бордюр подсвечивает запись байта в порт C
   + `ioDrawMode = 4` - бордюр подсвечивает запись байта в порт RgSYS
   
-- `NumPad 3` - Создает скринотшот в папке `screenshots` с именем содержащим текущую дату.
+  - `NumPad 3` - Создает скринотшот в папке `screenshots` с именем содержащим текущую дату.
 
 - `NumPad 4` - Останавливает воспроизведение/запись replay.
 
@@ -619,7 +648,8 @@ asm файлов для всех игр всех платформ.
     Так же логику работы изучить с помощью теста `PngScreenToTextest` там есть примеры использования. 
 ```java
     public static void main(String[] args) {
-        PngScreenToText scanner = new PngScreenToText();
+        URL base = new File("src/main/resources").toURI().toURL();
+        PngScreenToText scanner = new PngScreenToText(base);
     
         // парсим картинку в текст
         String parse = scanner.parse("./src/test/resources/IntegrationTest/testLik/smoke/7_exit.png");

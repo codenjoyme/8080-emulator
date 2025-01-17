@@ -4,13 +4,13 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 
 import static java.util.stream.Collectors.joining;
-import static spec.platforms.Platform.RESOURCES;
 
 public class PngScreenToText {
 
@@ -30,8 +30,8 @@ public class PngScreenToText {
     private int pxWidth;
     private int pxHeight;
 
-    public PngScreenToText() {
-        process(new File(RESOURCES + "/lik/docs/screen/chars-map.png").getAbsolutePath(),
+    public PngScreenToText(URL base) {
+        process(new File(base.getFile() + "/lik/docs/screen/chars-map.png").getAbsolutePath(),
             NUMBERS + "\n" + // цифры
             SYMBOLS + "\n" + // спецсимволы
             LAT + "\n" +     // латиница
@@ -273,11 +273,12 @@ public class PngScreenToText {
         return null;
     }
 
-    public static void main(String[] args) {
-        PngScreenToText scanner = new PngScreenToText();
+    public static void main(String[] args) throws Exception {
+        URL base = new File("src/main/resources").toURI().toURL();
+        PngScreenToText scanner = new PngScreenToText(base);
 
         // парсим картинку в текст
-        String parse = scanner.parse("./src/test/resources/IntegrationTest/testLik/smoke/7_exit.png");
+        String parse = scanner.parse("./src/test/resources/IntegrationTest/testLik/smoke/7_memory-exit.png");
 
         // печатаем на экран
         System.out.println(parse);

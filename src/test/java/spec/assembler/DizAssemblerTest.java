@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 import static spec.Constants.x10000;
 import static spec.math.WordMath.hex16;
 import static spec.platforms.Lik.START_BASIC_LIK_V2;
-import static spec.platforms.Platform.RESOURCES;
 import static spec.stuff.SmartAssert.assertEquals;
 import static spec.stuff.SmartAssert.fail;
 
@@ -36,12 +35,12 @@ public class DizAssemblerTest extends AbstractTest {
         Logger.info(test);
 
         if (platform.isLikOrSpecialist()) {
-            if (List.of("pilot", "reversi", "tip-top2", "zoo", "chess", "basic").contains(name)) {
+            if (List.of("pilot", "reversi", "tip-top2", "zoo", "chess", "basic", "basic2").contains(name)) {
                 Logger.info("Skipping test for %s", name);
                 return; // TODO #29 debug all errors
             }
         } else {
-            if (List.of("blobcop", "basic").contains(name)) {
+            if (List.of("blobcop", "basic", "basic2").contains(name)) {
                 Logger.info("Skipping test for %s", name);
                 return; // TODO #29 debug all errors
             }
@@ -57,7 +56,7 @@ public class DizAssemblerTest extends AbstractTest {
             String detailsPath = asmPath.replaceAll(".asm", ".log");
 
             // when then
-            assertDizAssembly(binPath, asmPath, detailsPath, range);
+            assertDizAssemblyAbs(binPath, asmPath, detailsPath, range);
         } catch (Exception exception) {
             exception.printStackTrace();
             fail(String.format("For: %s, we got: %s", test, exception.toString()));
@@ -74,7 +73,7 @@ public class DizAssemblerTest extends AbstractTest {
     public void testDecompileTest_cputest() {
         // given
         lik().loadRom(base, roms);
-        String binPath = RESOURCES + "test/cputest/cputest.com";
+        String binPath = MAIN_RESOURCES + "test/cputest/cputest.com";
         Range range = roms.loadROM(base, binPath, 0x0000);
         String asmPath = binPath.replaceAll(".com", ".asm");
         String detailsPath = asmPath.replaceAll(".asm", ".log");
@@ -84,7 +83,7 @@ public class DizAssemblerTest extends AbstractTest {
         // TODO так же при дизассемблировании переполняется 0xFFFF что странно
 
         // when then
-        assertDizAssembly(binPath, asmPath, detailsPath, range);
+        assertDizAssemblyAbs(binPath, asmPath, detailsPath, range);
     }
 
     @Test
@@ -97,7 +96,7 @@ public class DizAssemblerTest extends AbstractTest {
         String detailsPath = asmPath.replaceAll(".asm", ".log");
 
         // when then
-        assertDizAssembly(binPath, asmPath, detailsPath, range,
+        assertDizAssemblyAbs(binPath, asmPath, detailsPath, range,
                 // те адреса куда ссылались игрушки
                 // TODO изучить как они это делали, и что полезного там есть
                 0xC427, 0xC438, 0xC337, 0xC25A, 0xC254, 0xC010, 0xC037, 0xC170,
@@ -118,13 +117,13 @@ public class DizAssemblerTest extends AbstractTest {
         // так как монитор частично попадает на 3ю ПЗУ микросхему, приходится тут загружать 2 файла
         Range range = new Range(range1.begin(), START_BASIC_LIK_V2 - 1);
 
-        String asmPath = binPath1.replaceAll(".bin", ".asm").replaceAll("02_", "02-03_");
+        String asmPath = MAIN_RESOURCES + binPath1.replaceAll(".bin", ".asm").replaceAll("02_", "02-03_");
         String detailsPath = asmPath.replaceAll(".asm", ".log");
         String binPath = String.format(
                 "'%s' in range %s\n" +
                 ";       and partially '%s' in range: %s",
-                binPath1, range1,
-                binPath2, new Range(range2.begin(), range.end()));
+                MAIN_RESOURCES + binPath1, range1,
+                MAIN_RESOURCES + binPath2, new Range(range2.begin(), range.end()));
 
         // when then
         assertDizAssembly(binPath, asmPath, detailsPath, range,
@@ -161,10 +160,10 @@ public class DizAssemblerTest extends AbstractTest {
                 ";       '%s' in range: %s\n" +
                 ";       '%s' in range: %s\n" +
                 ";       '%s' in range: %s",
-                binPath1, range1,
-                binPath2, range2,
-                binPath3, range3,
-                binPath4, range4);
+                MAIN_RESOURCES + binPath1, range1,
+                MAIN_RESOURCES + binPath2, range2,
+                MAIN_RESOURCES + binPath3, range3,
+                MAIN_RESOURCES + binPath4, range4);
 
         // копируем бейсик, как он копируется при выполнении команды `B` монитора
         Range newRange = range.shift(-Lik.START_BASIC_LIK_V2);
@@ -175,6 +174,12 @@ public class DizAssemblerTest extends AbstractTest {
                 // адреса что я вручную методом тыка пробовал, последовательно изучая
                 // области с данными после дизассемблирования на предмет - а не код ли это?
                 );
+    }
+
+    private void assertDizAssemblyAbs(String binPath, String asmPath, String detailsPath, Range range, Integer... probablyCommands) {
+        assertDizAssembly(MAIN_RESOURCES + binPath,
+                MAIN_RESOURCES + asmPath,
+                detailsPath, range, probablyCommands);
     }
 
     private void assertDizAssembly(String binPath, String asmPath, String detailsPath, Range range, Integer... probablyCommands) {

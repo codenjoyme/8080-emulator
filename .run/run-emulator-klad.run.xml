@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="run-emulator-klad" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="spec.Main" />
+    <module name="emulator" />
+    <option name="PROGRAM_PARAMETERS" value="./src/main/resources lik lik/apps/klad/klad.rks" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.codenjoy.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

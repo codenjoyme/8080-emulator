@@ -28,7 +28,11 @@ public class RomSwitcher implements StateProvider {
     }
 
     public void nextRom(URL base) {
-        platform = PlatformFactory.next(platform);
+        selectRom(base, PlatformFactory.next(platform));
+    }
+
+    public void selectRom(URL base, String platform) {
+        this.platform = platform;
         Logger.debug("Switch to %s", platform);
         hard.pause();
         loadRoms(base);

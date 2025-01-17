@@ -7,7 +7,7 @@
     <groupId>spec</groupId>
     <artifactId>emulator</artifactId>
     <version>1.0</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <module.name>emulator</module.name>
@@ -31,7 +31,7 @@
         <maven-resources.version>3.2.0</maven-resources.version>
         <maven-jar.version>3.2.0</maven-jar.version>
         <maven-jetty.version>11.0.7</maven-jetty.version>
-        <maven-assembly.version>3.3.0</maven-assembly.version>
+        <maven-assembly.version>3.7.1</maven-assembly.version>
 
         <jetty-webapp-folder>target/webapp-synth</jetty-webapp-folder>
         <commons-io.version>2.18.0</commons-io.version>
@@ -98,6 +98,35 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>jar-with-dependencies</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.2.4</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <mainClass>spec.Main</mainClass>
+                                        </transformer>
+                                    </transformers>
+                                    <artifactSet/>
+                                    <outputFile>${jetty-webapp-folder}/${project.artifactId}-${project.version}.jar</outputFile>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <build>
@@ -131,8 +160,11 @@
                                     <directory>src/main/resources</directory>
                                     <includes>
                                         <include>**/*</include>
-                                        <exclude>application.jnlp</exclude>
                                     </includes>
+                                    <excludes>
+                                        <exclude>application.jnlp</exclude>
+                                        <exclude>arch/**</exclude>
+                                    </excludes>
                                 </resource>
                                 <resource>
                                     <directory>src/main/resources</directory>
@@ -169,35 +201,6 @@
                     <encoding>utf8</encoding>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>${maven-jar.version}</version>
-                <executions>
-                    <execution>
-                        <id>default-jar</id>
-                        <phase>none</phase>
-                    </execution>
-                    <execution>
-                        <!-- Плагин отвечает за сборку jar
-                             файла -->
-                        <id>[##3]-make-jar</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <phase>process-classes</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <outputDirectory>${jetty-webapp-folder}</outputDirectory>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>spec.Main</mainClass>
-                        </manifest>
-                    </archive>
                 </configuration>
             </plugin>
         </plugins>

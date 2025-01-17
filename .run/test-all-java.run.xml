@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="All tests" type="JUnit" factoryName="JUnit">
+  <configuration default="false" name="test-all-java" type="JUnit" factoryName="JUnit">
     <module name="emulator" />
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />

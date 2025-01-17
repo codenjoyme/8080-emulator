@@ -16,6 +16,7 @@ eval_echo() {
     color "${command}" $color
     echo
     eval $command
+    echo
 }
 
 eval_echo "HOST=localhost"

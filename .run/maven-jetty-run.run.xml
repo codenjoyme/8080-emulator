@@ -1,10 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="spec [jetty:run]" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="maven-jetty-run" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
       <option name="myRunnerParameters">
         <MavenRunnerParameters>
+          <option name="cmdOptions" />
           <option name="profiles">
             <set />
           </option>
@@ -12,11 +13,16 @@
             <list>
               <option value="clean" />
               <option value="jetty:run" />
+              <option value="-Prun-server" />
             </list>
           </option>
+          <option name="multimoduleDir" />
           <option name="pomFileName" value="pom.xml" />
           <option name="profilesMap">
             <map />
+          </option>
+          <option name="projectsCmdOptionValues">
+            <list />
           </option>
           <option name="resolveToWorkspace" value="false" />
           <option name="workingDirPath" value="$PROJECT_DIR$" />

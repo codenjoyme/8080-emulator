@@ -35,7 +35,6 @@ import static org.mockito.Mockito.mock;
 import static spec.Constants.*;
 import static spec.assembler.Assembler.asString;
 import static spec.math.WordMath.hex8;
-import static spec.platforms.Platform.RESOURCES;
 import static spec.stuff.SmartAssert.assertEquals;
 import static spec.stuff.TrackUpdatedMemory.TRACK_ALL_CHANGES;
 import static spec.stuff.TrackUpdatedMemory.TRACK_ONLY_UPDATED_VALUES;
@@ -51,7 +50,8 @@ public abstract class AbstractTest {
 
     public static final String TEST_RESOURCES = "src/test/resources/";
     public static final String TARGET_RESOURCES = "target/";
-    public static final String CPU_TESTS_RESOURCES = RESOURCES + "test/";
+    public static final String MAIN_RESOURCES = "src/main/resources/";
+    public static final String CPU_TESTS_RESOURCES = "test/";
 
     protected boolean memoryInit;
 
@@ -89,10 +89,10 @@ public abstract class AbstractTest {
     public void before() {
         Logger.DEBUG = false;
 
-        scanner = new PngScreenToText();
-
         base = base();
         targetBase = targetBase();
+
+        scanner = new PngScreenToText(base);
 
         fileAssert = new FileAssert(testBase());
         fileAssert.removeTestsData();
@@ -186,7 +186,7 @@ public abstract class AbstractTest {
 
     public URL base()  {
         try {
-            return new File(".").toURI().toURL();
+            return new File(MAIN_RESOURCES).toURI().toURL();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -383,6 +383,7 @@ public abstract class AbstractTest {
         }
 
         if (detailsFile != null) {
+            detailsFile = detailsFile.startsWith("src") ? detailsFile : MAIN_RESOURCES + detailsFile;
             fileAssert.write(new File(detailsFile), listing);
         }
         return result;
@@ -428,7 +429,7 @@ public abstract class AbstractTest {
         BasicCompiler basic = new BasicCompiler();
         List<String> lines = basic.getSource(memory.all(), range);
 
-        return fileAssert.check("Memory in range: " + range, name,
+        return fileAssert.check("Memory in range: " + range, MAIN_RESOURCES + name,
                 file -> fileAssert.write(file, StringUtils.join(lines, "\n")));
     }
 
@@ -465,7 +466,7 @@ public abstract class AbstractTest {
 
     public List<Pair<Platform, String>> getAllFiles(String type) {
         return PlatformFactory.all().stream()
-                .flatMap(name -> getAllFiles(RESOURCES + name + "/apps", type).stream())
+                .flatMap(name -> getAllFiles(MAIN_RESOURCES + name + "/apps", type).stream())
                 .collect(toList());
     }
 

@@ -3,7 +3,7 @@
       href="application.jnlp">
     <information>
         <title>i8080 emulator</title>
-        <vendor>Commulity</vendor>
+        <vendor>Community</vendor>
     </information>
     <resources>
         <j2se version="1.7+"

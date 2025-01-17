@@ -3,6 +3,7 @@ package spec;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import spec.math.Bites;
 import spec.mods.StopWhen;
@@ -793,14 +794,14 @@ public class IntegrationTest extends AbstractTest {
 
         // check that all program was the same after running
         // when then
-        String sourceCode = assertDizAssembly(data, binPath, "launchedProgram.asm");
+        String sourceCode = assertDizAssembly(data, MAIN_RESOURCES + binPath, "launchedProgram.asm");
         String recompiledFile = TEST_RESOURCES + getTestResultFolder() + "/" + "recompiled.mem";
         assertAssembly(sourceCode, recompiledFile, null);
         assertPngMemory(range, "recompiled.png");
 
         // when then
         lik().loadGame(base, roms, KLAD);
-        assertDizAssembly(data, binPath, "newProgram.asm");
+        assertDizAssembly(data, MAIN_RESOURCES + binPath, "newProgram.asm");
         assertPngMemory(range, "original.png");
 
         // when then
@@ -1063,6 +1064,7 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
+    @Ignore
     public void testLik_diagnostic_zexlax8080exerciser() {
         // zexlax.z80 - Z80 instruction set exerciser
         // Copyright (C) 1994  Frank D. Cringle

@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 import static spec.IntegrationTest.TEST_RESOURCES;
-import static spec.platforms.Platform.RESOURCES;
+import static spec.stuff.AbstractTest.MAIN_RESOURCES;
 import static spec.stuff.AbstractTest.findAllFiles;
 import static spec.stuff.FileAssert.asString;
 
@@ -34,7 +34,7 @@ public class AssemblerTest {
     private String program;
     private String name;
     private String dir;
-    private static String base = RESOURCES + "test/";
+    private static String base = MAIN_RESOURCES + "test/";
 
     public AssemblerTest(String name) {
         this.name = name;

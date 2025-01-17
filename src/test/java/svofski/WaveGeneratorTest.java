@@ -10,6 +10,7 @@ import spec.stuff.AbstractTest;
 public class WaveGeneratorTest extends AbstractTest {
 
     @Test
+    // TODO #36 rename to testGenerateWave
     public void testLik_generateWave() {
         getAllFiles(".rks")
                 .forEach(pair -> testLik_generateWave(pair.getKey(), pair.getValue()));
@@ -27,7 +28,7 @@ public class WaveGeneratorTest extends AbstractTest {
                 .format(mem, 0, name + ".rks").makewav();
 
         // then
-        String fileName = platform.app(name, ".wav");
+        String fileName = MAIN_RESOURCES + platform.app(name, ".wav");
         fileAssert.check(fileName, fileName,
                 file -> {
                     Logger.info("Wrote '%s'\n", file);

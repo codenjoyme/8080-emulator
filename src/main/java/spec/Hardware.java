@@ -284,6 +284,7 @@ public class Hardware {
 
         Range range = roms.load(base, path);
 
+        // TODO #37 А точно тут надо для всех типов файлов делать загрузку монитора и команд J/G?
         int delta = 25_000;
         if (platform.equals(Lik.NAME)) {
             record.reset().after(delta)

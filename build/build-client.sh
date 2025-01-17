@@ -16,26 +16,28 @@ eval_echo() {
     color "${command}" $color
     echo
     eval $command
+    echo
 }
 
 eval_echo "cd .."
 eval_echo "ROOT=$(pwd)"
 eval_echo "OUT=$ROOT/build/out"
 eval_echo "BUILD=$ROOT/target/webapp-synth"
+eval_echo "PLATFORM=lik"
 
 color "Please get content from '$OUT' folder after build"
 
-eval_echo "$ROOT/mvnw clean process-classes -DskipTests=true"
+eval_echo "$ROOT/mvnw clean package -DskipTests=true -Pjar-with-dependencies"
 
 eval_echo "rm -rf $OUT"
-eval_echo "cp -r $BUILD $ROOT/build"
-eval_echo "mv $ROOT/build/webapp-synth $OUT"
+eval_echo "mkdir -p $OUT"
+eval_echo "mv $BUILD/* $OUT"
 eval_echo "rm $OUT/application.jnlp"
 eval_echo "rm $OUT/deployJava.js"
 eval_echo "rm $OUT/index.html"
 
 eval_echo "cd $OUT"
-eval_echo "bash run.sh"
+eval_echo "bash run.sh . $PLATFORM"
 
 echo
 color "Press Enter to continue"

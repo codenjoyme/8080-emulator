@@ -10,11 +10,21 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.substringAfter;
 import static spec.Constants.BASIC_LIK_V2_PROGRAM_START;
 import static spec.Constants.BASIC_V1_PROGRAM_START;
 import static spec.math.WordMath.BITE;
 
 public class RomLoader {
+
+    public static final String TYPE_COM = "com";
+    public static final String TYPE_ROM = "rom";
+    public static final String TYPE_BIN = "bin";
+    public static final String TYPE_RKS = "rks";
+    public static final String TYPE_SNP = "snp";
+    public static final String TYPE_BSS = "bss";
+    public static final String TYPE_BS1 = "bs1";
+    public static final String TYPE_MEM = "mem";
 
     private Cpu cpu;
     private IOPorts ports;
@@ -286,41 +296,37 @@ public class RomLoader {
     }
 
     public Range load(URL base, String path) {
-        File file = new File(path);
-        switch (substringAfter(file.getName(), ".").toLowerCase()) {
-            case "com": {
+        switch (getFileExt(path)) {
+            case TYPE_COM: {
                 return loadROM(base, path, 0x0100);
             }
-            case "rom":
-            case "bin": {
+            case TYPE_ROM:
+            case TYPE_BIN: {
                 return loadROM(base, path, 0xC000);
             }
-            case "rks": {
+            case TYPE_RKS: {
                 return loadRKS(base, path);
             }
-            case "snp": {
+            case TYPE_SNP: {
                 return loadSnapshot(base, path);
             }
-            case "bss": {
+            case TYPE_BSS: {
                 loadBSS(base, path);
                 return new Range(0, BASIC_LIK_V2_PROGRAM_START);
             }
-            case "bs1": {
+            case TYPE_BS1: {
                 loadBS1(base, path);
                 return new Range(0, BASIC_V1_PROGRAM_START);
             }
-            case "mem":
+            case TYPE_MEM:
             default: {
                 return loadROM(base, path, 0x0000);
             }
         }
     }
 
-    private String substringAfter(String name, String delimiter) {
-        int index = name.indexOf(delimiter);
-        if (index == -1) {
-            return name;
-        }
-        return name.substring(index + 1);
+    public static String getFileExt(String path) {
+        File file = new File(path);
+        return substringAfter(file.getName(), ".").toLowerCase();
     }
 }

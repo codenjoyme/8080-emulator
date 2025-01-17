@@ -27,7 +27,7 @@ public class Application {
      * иерархической системы визуальных объектов. Container отвечает за расположение содержащихся
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
-    public Application(Container parent, URL base) {
+    public Application(Container parent, URL base, String platform, String rom) {
         this.parent = parent;
         this.base = base;
 
@@ -35,7 +35,7 @@ public class Application {
 
         hard.fileRecorder().with(Files.newRecord());
         hard.fileRecorder().startWriting();
-        hard.romSwitcher().loadRoms(base);
+        load(platform, rom);
     }
 
     public void lostFocus() {
@@ -135,7 +135,6 @@ public class Application {
         if (key.numPlus()) {
             hard.timings().decreaseDelay();
         }
-        return;
     }
 
     public static String toRelative(URL base, File file) {
@@ -163,10 +162,21 @@ public class Application {
     }
 
     public void start() {
+        gotFocus();
         hard.start();
     }
 
-    public void load(String rom) {
-        hard.romSwitcher().load(base, rom);
+    private void load(String platform, String rom) {
+        Logger.debug("Load platform: '%s', rom file: '%s'", platform, rom);
+
+        if (platform == null && rom == null) {
+            hard.romSwitcher().loadRoms(base);
+        }
+        if (platform != null) {
+            hard.romSwitcher().selectRom(base, platform);
+        }
+        if (rom != null) {
+            hard.romSwitcher().load(base, rom);
+        }
     }
 }

@@ -19,8 +19,10 @@ eval_echo() {
 }
 
 eval_echo "ROOT=$(pwd)"
-eval_echo "PARAM=$1"
-eval_echo "java -jar $ROOT/emulator-1.0.jar $PARAM"
+eval_echo "BASE=$1"
+eval_echo "PLATFORM=$2"
+eval_echo "ROM_FILE=$3"
+eval_echo "java -jar $ROOT/emulator-1.0.jar $BASE $PLATFORM $ROM_FILE"
 
 echo
 color "Press Enter to continue"

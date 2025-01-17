@@ -7,8 +7,6 @@ import java.net.URL;
 
 public interface Platform {
 
-    String RESOURCES = "src/main/resources/";
-
     String name();
 
     boolean isLikOrSpecialist();
@@ -30,7 +28,7 @@ public interface Platform {
     Range loadTest(URL base, RomLoader roms, String name);
 
     default String platform() {
-        return RESOURCES + name();
+        return name();
     }
 
     default String apps() {
