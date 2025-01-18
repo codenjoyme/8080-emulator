@@ -375,10 +375,14 @@ public abstract class AbstractTest {
         }
 
         if (detailsFile != null) {
-            detailsFile = detailsFile.startsWith("src") ? detailsFile : MAIN_RESOURCES + detailsFile;
+            detailsFile = fixPath(detailsFile);
             fileAssert.write(new File(detailsFile), listing);
         }
         return result;
+    }
+
+    private static String fixPath(String detailsFile) {
+        return detailsFile.startsWith("src") ? detailsFile : MAIN_RESOURCES + detailsFile;
     }
 
     public Memory assertMemory(Range range, String romFileName, String diffFileName) {
@@ -420,7 +424,8 @@ public abstract class AbstractTest {
         BasicCompiler basic = new BasicCompiler();
         List<String> lines = basic.getSource(memory.all(), range);
 
-        return fileAssert.check("Memory in range: " + range, MAIN_RESOURCES + name,
+        String path = fixPath(name);
+        return fileAssert.check("Memory in range: " + range, path,
                 file -> fileAssert.write(file, StringUtils.join(lines, "\n")));
     }
 

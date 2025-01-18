@@ -1,0 +1,179 @@
+DATE: 1737124653022
+
+===============================================================================================
+Q: Вот как собираю war
+
+  <profiles>
+        <profile>
+            <id>run-server</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>3.4.0</version>
+                        <configuration>
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
+                            <warName>${build.file.name}</warName>
+                            <webResources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/webapp</directory>
+                                </resource>
+                            </webResources>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>war</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
+                        <version>${maven-jetty.version}</version>
+                        <configuration>
+                            <httpConnector>
+                                <host>${server.host}</host>
+                                <port>${server.port}</port>
+                            </httpConnector>
+                            <webApp>
+                                <contextPath>/</contextPath>
+                                <war>${project.build.directory}/${build.file.name}.war</war>
+                            </webApp>
+                            <supportedPackagings>jar</supportedPackagings>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+но перед тем собирается jar 
+
+        <profile>
+            <id>jar-with-dependencies</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- Плагин отвечает за сборку jar с зависимостями -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.2.4</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <mainClass>spec.Main</mainClass>
+                                        </transformer>
+                                    </transformers>
+                                    <artifactSet/>
+                                    <outputFile>${jetty-webapp-folder}/${build.file.name}.jar</outputFile>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+я хочу во первых, чтобы War этап зависел от jar и оставался в плагинах
+а во вторых я хочу чтобы в war добавлялись вещи, которые не попали в jar - в src/resources есть 4 папки: lik, specialist, test и я хочу чтобы они стали ресурсами war 
+
+Вот как определены ресурсы сейчас 
+
+<build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources.version}</version>
+                <executions>
+                    <execution>
+                        <!-- Плагин отвечает за копирование ресурсов
+                             в для jetty -->
+                        <id>[##1]-copy-resources</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <outputDirectory>${jetty-webapp-folder}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                    <excludes>
+                                        <exclude>application.jnlp</exclude>
+                                        <exclude>arch/**</exclude>
+                                    </excludes>
+                                </resource>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>application.jnlp</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+",
+-----------------------------------------------------------------------------------------------
+A: Для достижения поставленных задач можно сделать следующие изменения:
+
+1. Сделать так, чтобы сборка `war` зависела от сборки `jar`:
+   - Устанавливаем зависимость фаз в Maven, чтобы сначала был выполнен профиль `jar-with-dependencies` перед `run-server`.
+
+   Для этого можно использовать Maven Profile Activation, чтобы активировать `jar-with-dependencies` перед `run-server`, либо можно явно указать порядок выполнения в команде Maven:
+   ```shell
+   mvn clean package -P jar-with-dependencies,run-server
+   ```
+
+2. Добавляем недостающие ресурсы в WAR:
+   - Для добавления дополнительных ресурсов, которые не включаются в JAR, добавляем соответствующие разделы в конфигурацию `maven-war-plugin`.
+
+   В раздел `webResources` плагина `maven-war-plugin`, в профиле `run-server`, добавьте требуемые директории:
+   ```xml
+   <webResources>
+       <resource>
+           <directory>${project.basedir}/src/main/webapp</directory>
+       </resource>
+       <resource>
+           <directory>${project.basedir}/src/main/resources/lik</directory>
+           <targetPath>WEB-INF/classes/lik</targetPath>
+       </resource>
+       <resource>
+           <directory>${project.basedir}/src/main/resources/specialist</directory>
+           <targetPath>WEB-INF/classes/specialist</targetPath>
+       </resource>
+       <resource>
+           <directory>${project.basedir}/src/main/resources/test</directory>
+           <targetPath>WEB-INF/classes/test</targetPath>
+       </resource>
+   </webResources>
+   ```
+
+   Это добавит указанные папки в WAR в папку `WEB-INF/classes`, что является стандартным местом для ресурсов в WAR файле.
+
+Используя вышеуказанные изменения, вы должны быть в состоянии решить обе задачи: собрать `jar` и `war` файлы в корректной последовательности и включить требуемые ресурсы в `war` файл.",
+===============================================================================================

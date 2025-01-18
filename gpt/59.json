@@ -1,0 +1,767 @@
+DATE: 1737097431319
+
+===============================================================================================
+Q: у меня package jar и поменять его я не могу, но надо так же иметь возможность поднять jetty сервер командой: clean jetty:run -Prun-server 
+Вот кофингурация 
+"""
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>spec</groupId>
+    <artifactId>emulator</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <module.name>emulator</module.name>
+
+        <server.host>localhost</server.host>
+        <server.port>8080</server.port>
+        <server.hostname>http://${server.host}:${server.port}</server.hostname>
+
+        <java.version>9</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Production -->
+
+        <!-- Testing -->
+        <junit.version>4.13.2</junit.version>
+        <mockito.version>4.2.0</mockito.version>
+        <dom.version>2.3.0-jaxb-1.0.6</dom.version>
+
+        <!-- Maven -->
+        <maven-compiler.version>3.8.1</maven-compiler.version>
+        <maven-resources.version>3.2.0</maven-resources.version>
+        <maven-jar.version>3.2.0</maven-jar.version>
+        <maven-jetty.version>11.0.7</maven-jetty.version>
+        <maven-assembly.version>3.7.1</maven-assembly.version>
+
+        <jetty-webapp-folder>target/webapp-synth</jetty-webapp-folder>
+        <commons-io.version>2.18.0</commons-io.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <gson.version>2.8.8</gson.version>
+    </properties>
+
+    <dependencies>
+        <!-- Production -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.w3c</groupId>
+            <artifactId>dom</artifactId>
+            <version>${dom.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>run-server</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- Плагин отвечает за запуск jetty -->
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
+                        <version>${maven-jetty.version}</version>
+                        <configuration>
+                            <httpConnector>
+                                <host>${server.host}</host>
+                                <port>${server.port}</port>
+                            </httpConnector>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources.version}</version>
+                <executions>
+                    <execution>
+                        <!-- Плагин отвечает за копирование ресурсов
+                             в для jetty -->
+                        <id>[##1]-copy-resources</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <outputDirectory>${jetty-webapp-folder}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                    <excludes>
+                                        <exclude>application.jnlp</exclude>
+                                        <exclude>arch/**</exclude>
+                                    </excludes>
+                                </resource>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>application.jnlp</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler.version}</version>
+                <executions>
+                    <execution>
+                        <!-- Плагин отвечает за компиляцию
+                             классов -->
+                        <id>[##2]-compile-java</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <encoding>utf8</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+"""
+Сейчас выдает
+[INFO] --- jetty-maven-plugin:11.0.7:run (default-cli) @ emulator ---
+[INFO] Packaging type [jar] is unsupported",
+-----------------------------------------------------------------------------------------------
+A: Для того, чтобы запустить Jetty сервер через Maven плагин с использованием проекта, настроенного на пакетирование в JAR, вам нужно будет немного адаптировать конфигурацию. Так как `jetty-maven-plugin` по умолчанию ожидает тип пакета `war`, при использовании `jar` необходимо указать, где находится корневая директория веб-приложения, чтобы сервер мог её обслуживать.
+
+Добавьте в профиль `run-server` конфигурационный блок для `jetty-maven-plugin` чтобы указать `webApp`:
+
+1. Найдите секцию `<profiles>` в вашем POM-файле.
+2. В профиле `run-server` внутри плагина `jetty-maven-plugin` добавьте соответствующий `<configuration>` блок (если его еще нет), и установите `<webApp>` как путь до вашего сгенерированного каталога webapp.
+3. Добавьте `<webAppSourceDirectory>`, который нужно указать на папку, где находятся файлы вашего веб-приложения.
+  
+Вот пример того, как может выглядеть ваш `<profile>` после изменений:
+
+```xml
+<profiles>
+    <profile>
+        <id>run-server</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>${maven-jetty.version}</version>
+                    <configuration>
+                        <httpConnector>
+                            <host>${server.host}</host>
+                            <port>${server.port}</port>
+                        </httpConnector>
+                        <webApp>
+                            <contextPath>/</contextPath>
+                            <webAppSourceDirectory>${project.build.directory}/webapp-synth</webAppSourceDirectory>
+                        </webApp>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
+```
+
+Убедитесь, что вы правильно устанавливаете `<webAppSourceDirectory>` в каталог, где будут размещаться все ресурсы вашего веб-приложения.
+
+После внесения данных изменений, вы должны быть в состоянии запустить свой Jetty сервер с помощью команды:
+```bash
+mvn clean jetty:run -Prun-server
+```
+
+Убедитесь, что перед запуском Jetty все необходимые ресурсы были построены и скопированы в соответствующую директорию.",
+===============================================================================================
+
+===============================================================================================
+Q: Cannot find 'webAppSourceDirectory' in class org.eclipse.jetty.maven.plugin.MavenWebAppContext
+",
+-----------------------------------------------------------------------------------------------
+A: Прошу прощения за путаницу. Правильный параметр для указания директории веб-приложения в `jetty-maven-plugin` на самом деле называется `webAppSourceDirectory`, но его нужно прописать иначе. Чтобы исправить эту ошибку, давайте корректно укажем путь к каталогу веб-приложения:
+
+Вы должны изменить структуру `<webApp>` в конфигурации `jetty-maven-plugin` следующим образом:
+
+```xml
+<configuration>
+    <httpConnector>
+        <host>${server.host}</host>
+        <port>${server.port}</port>
+    </httpConnector>
+    <webApp>
+        <contextPath>/</contextPath>
+        <baseResource implementation="org.eclipse.jetty.util.resource.Resource">
+            <resource>${project.build.directory}/${jetty-webapp-folder}</resource>
+        </baseResource>
+    </webApp>
+</configuration>
+```
+Этот блок конфигурации задает для Jetty директорию, в которой расположены файлы веб-приложения. Обратите внимание на правильное использование переменной `${jetty-webapp-folder}`, которую вы определили в `<properties>` вашего POM файла.
+
+Также, если в вашем проекте нет директории, которая явно используется в качестве корневой для веб-ресурсов (как в традиционных WAR проектах), возможно, вам потребуется либо создать такую структуру вручную, либо настроить скрипты/задачи Maven для автоматического создания и наполнения этой директории нужными ресурсами перед запуском сервера Jetty.",
+===============================================================================================
+
+===============================================================================================
+Q: Failed to execute goal org.eclipse.jetty:jetty-maven-plugin:11.0.7:run (default-cli) on project emulator: Unable to parse configuration of mojo org.eclipse.jetty:jetty-maven-plugin:11.0.7:run for parameter baseResource: Cannot create instance of class org.eclipse.jetty.util.resource.Resource",
+-----------------------------------------------------------------------------------------------
+A: Извините за недочеты в предыдущей информации. Верно указать путь к ресурсам для `jetty-maven-plugin` на самом деле требует другого подхода. Вам нужно использовать `WebAppSourceDirectory` для указания директории веб-приложения, и это должно быть внутри тега `<configuration>`, но напрямую, без использования `<baseResource>`.
+
+Вот как должен выглядеть блок конфигурации для вашего случая:
+
+```xml
+<profiles>
+    <profile>
+        <id>run-server</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>${maven-jetty.version}</version>
+                    <configuration>
+                        <httpConnector>
+                            <host>${server.host}</host>
+                            <port>${server.port}</port>
+                        </httpConnector>
+                        <webApp>
+                            <contextPath>/</contextPath>
+                            <resourceBase>${project.build.directory}/${jetty-webapp-folder}</resourceBase>
+                        </webApp>
+                        <stopPort>8081</stopPort>
+                        <stopKey>stopKey</stopKey>
+                        <scanIntervalSeconds>10</scanIntervalSeconds>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
+```
+
+Изменения:
+1. `baseResource` заменен на `resourceBase` прямо внутри `<webApp>`.
+2. Указана правильная путь к папке и переменной `${jetty-webapp-folder}`, которая определена у вас в `<properties>`.
+
+Пожалуйста, убедитесь, что указанный каталог (`${project.build.directory}/${jetty-webapp-folder}`) содержит необходимые ресурсы веб-приложения перед запуском Jetty. Это может потребовать дополнительной конфигурации или шагов по копированию/генерации ресурсов в указанную директорию.",
+===============================================================================================
+
+===============================================================================================
+Q: [INFO] Packaging type [jar] is unsupported",
+-----------------------------------------------------------------------------------------------
+A: Ошибка указывает на то, что `jetty-maven-plugin` не может работать с проектами, настроенными на сборку в формате JAR напрямую, так как он ожидает, что проект будет в формате WAR. Однако есть способ обойти эту проблему, изменив настройки для использования дополнительного профиля и плагина в Maven для создания WAR-пакета в рамках отдельной конфигурации, при этом основной пакет проекта останется как JAR.
+
+Вы можете добавить в свой Maven проект новый профиль, который будет применять плагин `maven-war-plugin` для создания временного WAR пакета, и затем запускать Jetty используя этот WAR-файл. Давайте создадим этот профиль в вашем POM файле:
+
+```xml
+<profiles>
+    <profile>
+        <id>run-server</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.3.1</version>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                        <warName>temp-war</warName>
+                        <webResources>
+                            <resource>
+                                <!-- указываем, где искать файлы для корня веб приложения -->
+                                <directory>${project.basedir}/src/main/webapp</directory>
+                            </resource>
+                        </webResources>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>package</phase> <!-- Привязка к циклу жизни -->
+                            <goals>
+                                <goal>war</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>${maven-jetty.version}</version>
+                    <configuration>
+                        <httpConnector>
+                            <host>${server.host}</host>
+                            <port>${server.port}</port>
+                        </httpConnector>
+                        <webApp>
+                            <contextPath>/</contextPath>
+                            <war>${project.build.directory}/temp-war.war</war>
+                        </webApp>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
+```
+
+Здесь:
+1. Плагин `maven-war-plugin` создает WAR архив в директории `target/`.
+2. `jetty-maven-plugin` настроен на использование этого WAR файла для запуска сервера.
+
+Теперь, используя профиль `run-server`, вы можете запустить ваш Jetty сервер с помощью следующей команды:
+```bash
+mvn clean package jetty:run -Prun-server
+```
+
+Убедитесь, что каталог `src/main/webapp` существует и содержит необходимые ресурсы вашего веб-приложения, или настройте путь в конфигурации `maven-war-plugin` в соответствии со структурой вашего проекта.",
+===============================================================================================
+
+===============================================================================================
+Q: [INFO] Packaging type [jar] is unsupported",
+-----------------------------------------------------------------------------------------------
+A: Извиняюсь за возникающие неудобства. Ошибка "Packaging type [jar] is unsupported" обусловлена тем, что при настройке `jetty-maven-plugin` подразумевается использование пакета типа WAR для веб-приложений. Однако есть способ обойти это ограничение без создания WAR-файла, используя непосредственно указание директории с ресурсами веб-приложения.
+
+Давайте попробуем другой подход, который не требует формирования WAR-файла. Это можно делать, настроив `jetty-maven-plugin` для использования ресурсов из определенной директории. Убедитесь, что у вас есть директория, содержащая веб-ресурсы (например, HTML, CSS, JS файлы), и часто такая директория называется `src/main/webapp`.
+
+1. Добавим конфигурацию к `jetty-maven-plugin` в вашем Maven проекте:
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-maven-plugin</artifactId>
+            <version>${maven-jetty.version}</version>
+            <configuration>
+                <scanIntervalSeconds>10</scanIntervalSeconds>
+                <webApp>
+                    <contextPath>/</contextPath>
+                    <resourceBase>${project.basedir}/src/main/webapp</resourceBase>
+                </webApp>
+                <httpConnector>
+                    <host>${server.host}</host>
+                    <port>${server.port}</port>
+                </httpConnector>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
+
+2. Запустите Jetty сервер, используя эту настройку:
+
+```shell
+mvn jetty:run
+```
+
+Пожалуйста, убедитесь, что у вас есть директория `src/main/webapp` в вашем проекте, и что она содержит все необходимые файлы вашего веб-приложения. Если такой директории нет, создайте её и поместите туда ваши веб-ресурсы. Это позволит `jetty-maven-plugin` правильно сервировать содержимое вашего приложения.
+
+Этот подход позволит нам использовать Jetty без необходимости создания и управления WAR файлами, что подходит для проектов, настроенных на сборку в JAR.",
+===============================================================================================
+
+===============================================================================================
+Q: не помогло
+<supportedPackagings>jar</supportedPackagings>
+куда можно добавить?",
+-----------------------------------------------------------------------------------------------
+A: К сожалению, добавление `<supportedPackagings>` напрямую в конфигурацию Maven не возможно, так как это элемент, который используется в описании работы Maven плагинов и не доступен для модификации в POM файле проекта.
+
+Если прямое решение с помощью jetty-maven-plugin не работает из-за ограничения по типу пакета, мы можем попробовать другой путь для запуска вашего JAR приложения на Jetty сервере:
+
+**Использование Exec Maven Plugin для запуска Java класса**
+
+1. Если ваш JAR - исполняемый и содержит все необходимые зависимости (включая веб-сервер Jetty), можете использовать `exec-maven-plugin` для запуска вашего приложения через main класс напрямую:
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.0.0</version>
+            <configuration>
+                <mainClass>com.yourpackage.YourMainClass</mainClass> <!-- укажите ваш main класс -->
+                <arguments>
+                    <argument>--server.port=8080</argument> <!-- укажите необходимые аргументы -->
+                </arguments>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>java</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+```
+
+И затем запустите ваш приложение следующим образом:
+
+```shell
+mvn exec:java
+```
+
+**Преобразование JAR в WAR**
+
+Если предыдущий вариант не подходит, и ваше приложение должно быть запущено в контейнере сервлетов как WAR, вы все же можете использовать `maven-war-plugin` для создания WAR файла на основании вашего JAR. Но учтите, это потребует от вас структурирования проекта соответствующим образом, с `src/main/webapp` и полноценным `WEB-INF`.
+
+Если ни один из вариантов не подходит, рекомендуется рассмотреть возможность изменения структуры проекта для использования более подходящего типа сборки (WAR) или просто использовать другой инструмент/подход, который лучше соответствует вашим требованиям.
+
+Как вариант, если ваш проект kotlin/java, смотрите в сторону использования Spring Boot или Micronaut, эти фреймворки предлагают лицензию на встроенные серверы, что упрощает разработку и запуск веб-серверов.",
+===============================================================================================
+
+===============================================================================================
+Q: ТАк заработало
+<configuration>
+                            <httpConnector>
+                                <host>${server.host}</host>
+                                <port>${server.port}</port>
+                            </httpConnector>
+                            <webApp>
+                                <contextPath>/</contextPath>
+                                <war>${project.build.directory}/${build.file.name}.war</war>
+                            </webApp>
+                            <supportedPackagings>jar</supportedPackagings>
+                        </configuration>",
+-----------------------------------------------------------------------------------------------
+A: Отлично, что у Вас получилось запустить ваш Jetty сервер с использованием настройки в Maven конфигурации! Видимо, предыдущее непонимание с параметрами вызвано специфическими рабочими условиями или конфигурацией проекта.
+
+Теперь, когда `jetty-maven-plugin` успешно сконфигурирован для работы с JAR пакетированием, ваш сервер должен успешно обрабатывать HTTP запросы к вашему приложению.
+
+Для вашего удобства здесь небольшой checklist, чтобы убедиться, что все установлено правильно:
+1. Проверьте, что путь к WAR файлу в `<war>${project.build.directory}/${build.file.name}.war</war>` верно указывает на сгенерированный WAR файл.
+2. Убедитесь, что все зависимости и ресурсы корректно включены в WAR файл.
+3. Проверьте, что контекстный путь `<contextPath>/</contextPath>` соответствует вашим ожиданиям относительно URL.
+
+Эти настройки позволят легко модифицировать и тестировать ваше приложение в разных условиях разработки и развертывания. Если будете иметь дальнейшие вопросы или столкнетесь с проблемами, не стесняйтесь их здесь задать. Поздравляю с успешной настройкой!",
+===============================================================================================
+
+===============================================================================================
+Q: Теперь я хочу чтобы подтянулся 
+
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" 
+      href="application.jnlp">
+    <information>
+        <title>i8080 emulator</title>
+        <vendor>Community</vendor>
+    </information>
+    <resources>
+        <j2se version="1.7+"
+              href="http://java.sun.com/products/autodl/j2se"/>
+        <jar href="emulator-1.0.jar"
+             main="false"
+             java-vm-args="-Djava.security.policy=${jnlp.ip}${jnlp.port}/ed/security/java.policy"/>
+    </resources>
+    <!--security>
+        <all-permissions/>
+    </security-->
+    <application-desc
+            main-class="spec.Main"
+            name="i8080 Emulator"
+            width="424" height="296"> <!-- 424 = 384 + 2*20, 296 = 256 + 2*20  -->
+        <argument>${server.hostname}</argument>
+    </application-desc>
+</jnlp>",
+-----------------------------------------------------------------------------------------------
+A: Чтобы подтянуть файл JNLP (`Java Network Launch Protocol`) в ваше веб-приложение, вы должны убедиться, что файл размещен в правильной директории и доступен по определенному URL. Для веб-приложений, обычно, статические файлы такие как JNLP должны лежать в директории, откуда они могут быть доступны пользователю через веб-сервер.
+
+### Шаги для интеграции JNLP файла с вашим веб-приложением:
+
+1. **Размещение файла JNLP**:
+   Поместите файл `application.jnlp` в директорию `src/main/webapp` в вашем Maven проекте. Это стандартная директория для веб-ресурсов в Maven проектах.
+
+2. **Обеспечение доступности через URL**:
+   Убедитесь, что файл доступен по URL, который вы укажете в своем веб-приложении. Например, если вы хотите чтобы файл был доступен по URL `http://localhost:8080/application.jnlp`, проверьте что файл лежит в корне директории `src/main/webapp`.
+
+3. **Настройка MIME типа для JNLP**:
+   Некоторые веб-сервера могут потребовать настройки для правильного MIME типа для файлов JNLP. Для Jetty вы можете настроить это в файле `web.xml`:
+   
+   ```xml
+   <mime-mapping>
+       <extension>jnlp</extension>
+       <mime-type>application/x-java-jnlp-file</mime-type>
+   </mime-mapping>
+   ```
+
+4. **Динамическая генерация JNLP файла**:
+   Если вам нужно внести динамические изменения в файл JNLP (например, изменять hostname и port), вы можете использовать сервлет или другой backend механизм для динамической генерации JNLP файла на лету. Пример сервлета:
+
+   ```java
+   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+       String jnlpTemplate = "здесь ваш JNLP шаблон";
+       String customJnlp = jnlpTemplate.replace("${jnlp.ip}", request.getLocalAddr());
+       customJnlp = customJnlp.replace("${jnlp.port}", String.valueOf(request.getLocalPort()));
+
+       response.setContentType("application/x-java-jnlp-file");
+       response.getWriter().write(customJnlp);
+   }
+   ```
+
+5. **Проверка**:
+   После деплоя проекта, проверьте доступность файла `application.jnlp` по нужному URL и убедитесь, что он скачивается и открывается с Java Web Start правильно.
+
+Если вы следуете этим шагам, ваш файл JNLP должен успешно интегрироваться в ваше веб-приложение и правильно функционировать.",
+===============================================================================================
+
+===============================================================================================
+Q: я разместил jnlp файл в src/webapp папку и при его загрузке получил
+
+Request URL:
+jnlp:http://localhost:8080/application.jnlp
+Referrer Policy:
+strict-origin-when-cross-origin",
+-----------------------------------------------------------------------------------------------
+A: Процесс загрузки JNLP файлов может вызвать некоторые проблемы, связанные с безопасностью или настройками сервера. Вот несколько шагов, которые помогут убедиться, что ваш файл JNLP доступен и загружается корректно:
+
+### Проверка настройки сервера
+
+1. **Проверьте конфигурацию сервера**:
+   Убедитесь, что ваш веб-сервер (в данном случае Jetty) правильно настроен для обслуживания статических файлов и JNLP.
+
+2. **Проверьте MIME-тип**:
+   Убедитесь, что для файлов `.jnlp` установлен правильный MIME-тип (`application/x-java-jnlp-file`) в конфигурации сервера. Если это Jetty, то настройте это в `web.xml`, как я описал ранее:
+   
+   ```xml
+   <mime-mapping>
+       <extension>jnlp</extension>
+       <mime-type>application/x-java-jnlp-file</mime-type>
+   </mime-mapping>
+   ```
+
+### Проверка доступности файла
+
+3. **Убедитесь, что файл в правильном месте**:
+   Проверьте, что файл `application.jnlp` находится в папке `src/main/webapp` (а не `src/webapp` как вы написали, обычно стандартный путь это `src/main/webapp`).
+
+4. **Попробуйте прямой доступ через браузер**:
+   Откройте браузер и попробуйте доступиться к файлу напрямую через URL `http://localhost:8080/application.jnlp`. Это покажет, существует ли файл в ожидаемом месте и корректно ли настроен MIME-тип.
+
+### Решение проблем с безопасностью
+
+5. **Проверьте политику безопасности**:
+   Если файл загружается, но не запускается, возможна проблема с безопасностью. Я заметил, что у вас закомментирована секция `<security> <all-permissions/></security>` в вашем JNLP файле. Убедитесь, что приложение не требует дополнительных разрешений, и если требует, разрешите их в файле JNLP.
+
+### Логи и отладка
+
+6. **Проверьте логи**:
+   Посмотрите логи сервера на наличие ошибок, связанных с загрузкой файла JNLP или обращениями к нему. Это может дать больше информации о том, что именно идет не так.
+
+Если проблемы продолжаются, прошу предоставить более подробную информацию о том, что происходит, включая точные сообщения об ошибке и логи сервера. Это поможет более точно диагностировать проблему.",
+===============================================================================================
+
+===============================================================================================
+Q: у меня сейчас нет web.xml файла, надо его создать с нуля",
+-----------------------------------------------------------------------------------------------
+A: Если у вас отсутствует файл `web.xml`, который часто используется в Java веб-приложениях для конфигурации параметров веб-приложения в контейнере сервлетов, вы можете создать его с нуля. Давайте создадим базовую конфигурацию `web.xml`, которая будет включать необходимый MIME-тип для файлов JNLP, чтобы обеспечить их корректную загрузку и выполнение клиентом Java Web Start.
+
+### Шаги для создания файла `web.xml`
+
+1. **Создайте файл в нужной директории**:
+   Файл `web.xml` обычно располагается в директории `WEB-INF` внутри вашей стандартной директории для веб-ресурсов. Для Maven это будет `src/main/webapp/WEB-INF`.
+
+   Создайте папку `WEB-INF` в `src/main/webapp` (если она ещё не существует), и внутри создайте новый файл `web.xml`.
+
+2. **Добавьте базовую конфигурацию**:
+   Вот простой пример содержимого для `web.xml`, который включает настройку MIME-типа для JNLP файлов:
+
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+            http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+            version="4.0">
+
+       <!-- Настройка MIME-типа для файлов .jnlp -->
+       <mime-mapping>
+           <extension>jnlp</extension>
+           <mime-type>application/x-java-jnlp-file</mime-type>
+       </mime-mapping>
+       
+   </web-app>
+   ```
+
+   Этот файл объявляет MIME-тип для файлов с расширением `.jnlp` как `application/x-java-jnlp-file`, что необходимо для корректного обращения и загрузки таких файлов через веб.
+
+3. **Перезагрузите сервер**:
+   После внесения изменений в конфигурацию, убедитесь, что перезагрузите ваш сервер, чтобы изменения вступили в силу.
+
+4. **Проверьте доступность файла JNLP**:
+   Теперь, когда `web.xml` настроен, попробуйте снова загрузить ваш файл JNLP через браузер по соответствующему URL, например `http://localhost:8080/application.jnlp`.
+
+Создание и использование `web.xml` может помочь решить множество настроечных проблем в Java веб-приложениях, особенно касающихся безопасности, управления сессиями, и здесь, MIME-типов файлов.",
+===============================================================================================
+
+===============================================================================================
+Q: Добавил web.xml все равно 
+Request URL:
+jnlp:http://localhost:8080/application.jnlp
+Referrer Policy:
+strict-origin-when-cross-origin
+",
+-----------------------------------------------------------------------------------------------
+A: Похоже, что дело не в MIME-типах или в доступности файла. Сообщение "Referrer Policy: strict-origin-when-cross-origin" касается политики безопасности связанной с "CORS" (Cross-Origin Resource Sharing) и обработкой HTTP-заголовков Referrer.
+
+### Рассмотрим основные шаги для разрешения данной проблемы:
+
+1. **Проверка размещения файла JNLP и его доступности**:
+   - Снова удостоверьтесь, что файл `application.jnlp` размещён в директории `src/main/webapp` вашего проекта.
+   - Попробуйте обратиться к файлу прямо через браузер, введя URL `http://localhost:8080/application.jnlp`. Если файл доступен и скачивается, значит, сервер его корректно отдаёт.
+
+2. **Использование JNLP файла**:
+   - JNLP файлы обычно загружаются Java Web Start, который может запускаться непосредственно из браузера или через командную строку. Клиент Java должен быть настроен на компьютере пользователя.
+   - Попробуйте запустить JNLP файл напрямую через Java Web Start (например, командой `javaws URL` на вашем компьютере).
+
+3. **Настройка безопасности**:
+   - Поскольку на сервере может быть включена политика "strict-origin-when-cross-origin", могут быть проблемы с доступом к ресурсам из другого источника. Если ваш JNLP файл ссылается на ресурсы или сервисы за пределами вашего сервера, убедитесь, что конфигурации CORS на стороне сервера разрешают такой доступ.
+   - Если вы используете специфичные настройки CORS на вашем сервере, убедитесь, что они корректно конфигурированы для разрешения вашего запроса.
+
+4. **Проверка браузера**:
+   - Убедитесь, что ваш браузер поддерживает запуск JNLP файлов и что для Java Web Start установлены все необходимые разрешения.
+
+5. **Логирование и диагностика**:
+   - Проверьте логи сервера на предмет возможных ошибок доступа или внутренних ошибок сервера, которые могут указывать на проблемы с обработкой запроса.
+   - Проанализируйте заголовки HTTP запросов и ответов через средства разработчика в вашем браузере (обычно это F12 → Сеть).
+
+Если проблема продолжает возникать, можно попробовать упростить конфигурацию, временно отключив сложные элементы безопасности, чтобы установить, какая именно настройка препятствует корректной работе.",
+===============================================================================================
+
+===============================================================================================
+Q: файл грузится по http://localhost:8080/application.jnlp
+я раньше делал такое, но сейчас не могу найти в jdk11 єту тулу
+
+- После стоит проследовать в `JAVA_HOME/bin` и запустить там `javacpl`.
+- В tab `Security` 
+  + Поставить галочку `Enable Java content for browser and Web Start applications`.
+  + Выбрать опцию `Very high` для `Security level for applications not on the Exception Site list`.
+  + Добавить в `Exception Site list` новый сайт `http://localhost:8080/`
+- В tab `Advanced`
+  + В разделе `Debugging` выбрать галочки `Enable tracing`, `Enable logging` и `Show applet lifecycle exceptions`.
+  + В разделе `Java console` выбрать опцию `Show console`.
+- Остальное оставляем без изменений. Кликаем `Apply` и закрываем окно. 
+- Так мы настроили вывод логов из Applet в консоль, которая откроется при запуске приложения.
+- Направляемся в браузер и набираем в адресной строке `http://localhost:8080/`. 
+  В этот момент Applet незамедлительно попробует загрузиться.
+- Для другого URL необходимо править файл `build-server.sh` в 
+  области 
+```
+eval_echo "HOST=localhost"
+eval_echo "PORT=8080"
+```
+- Если агент безопасности спросит можно ли это сделать - разрешаем ему открыть приложение.
+- Если сервер более не нужен - стоит нажать Ctrl-C в консоли, иначе если просто закрыть 
+  окно консоли - процесс будет висеть в памяти, не давая запустить сервер второй раз.
+",
+-----------------------------------------------------------------------------------------------
+A: То, что вы описали, касается настройки безопасности для Java Web Start и applet'ов, однако с Java 11 ситуация изменилась.
+
+### Java Web Start и Java 11
+Oracle удалило Java Web Start из JDK начиная с Java 11. Это означает, что для запуска JNLP файлов вам необходимо использовать стороннее решение, например, OpenWebStart. OpenWebStart – это бесплатный и стандартно совместимый способ восстановления функциональности Java Web Start на основе среды исполнения AdoptOpenJDK.
+
+### Шаги для использования OpenWebStart:
+
+1. **Скачайте и установите OpenWebStart**:
+   Перейдите на [официальный сайт OpenWebStart](https://openwebstart.com/) и загрузите инсталлятор. Установите его на вашей системе.
+
+2. **Настройте OpenWebStart**:
+   После установки запустите утилиту конфигурации OpenWebStart, которая позволит вам настроить параметры безопасности и совместимости аналогично javacpl в старых версиях JDK.
+
+3. **Запустите JNLP файл через OpenWebStart**:
+   Теперь вы можете открывать JNLP файлы с помощью OpenWebStart. Если вы скачали `application.jnlp` через браузер, просто дважды нажмите на файл, и он должен открыться в OpenWebStart.
+
+### Примечания:
+- Необходимо убедиться, что в конфигурации безопасности вашего нового инструмента разрешены соединения с `http://localhost:8080/`, если ваше приложение требует таких соединений.
+- Для логирования и отладки возможно придется воспользоваться инструментами, предоставляемыми OpenWebStart.
+- Утилита OpenWebStart предоставляет подробные настройки безопасности, которые позволят вам настраивать уровни, аналогично тому, как это было в `javacpl`.
+
+Переход на такое решение позволит продолжить использование JNLP файлов в среде Java 11 и выше, где стандартный Java Web Start уже не доступен.",
+===============================================================================================
+
+===============================================================================================
+Q: А как в jdk11  я могу запускать java приложение в браузере? ",
+-----------------------------------------------------------------------------------------------
+A: С выходом Java 11 и удалением плагина Java Applet от Oracle, стандартный способ запуска Java приложений непосредственно в браузере больше не поддерживается. Однако существуют альтернативные способы запуска Java приложений, которые можно использовать для достижения схожих результатов. Вот несколько из них:
+
+### 1. WebStart аналоги (как упомянулось, OpenWebStart)
+Для JNLP файлов вы можете использовать сторонние решения вроде OpenWebStart, которое основано на IcedTea-Web и поддерживает запуск JNLP приложений после удаления официальной поддержки Java Web Start.
+
+### 2. Развертывание как серверное приложение
+Большинство Java приложений можно переписать или адаптировать для работы в виде серверного веб-приложения. Это может включать в себя:
+- Использование Spring Boot для создания REST API, которое будет взаимодействовать с вашим фронтендом на JavaScript.
+- Деплой веб-приложений на серверах приложений, как Tomcat или Jetty.
+
+### 3. Использование десктопных оболочек для веб-приложений
+Инструменты вроде Electron или проектов на основе Chromium Embedded Framework (CEF) позволяют запустить веб-приложение в контейнере, который выглядит и работает как десктопное приложение, но фактически выполнен на веб-технологиях.
+
+### 4. Компиляция в JavaScript/WebAssembly
+- **CheerpJ**: Это компилятор, который может преобразовать ваш Java код в JavaScript, позволяя таким образом запускать Java-приложения в браузерах.
+- **TeaVM**: Это другой компилятор Java-to-JavaScript/WebAssembly, который также может использоваться для запуска Java приложений в браузере.
+
+### 5. Облачные решения
+Вы можете развернуть ваше Java приложение на облачной платформе и доступ к приложению осуществлять через браузер, используя HTML/CSS/JavaScript для фронтенд части и Java для бэкенд логики.
+
+### Применение
+Выбор подхода зависит от вашего конкретного случая. Если вам просто нужно обеспечить доступность старого клиентского Java-приложения, возможно стоит воспользоваться CheerpJ или подобными ему. Для полноценного приложения лучше переосмыслить архитектуру и разделить фронтенд и бэкенд, используя современные серверные технологии и фреймворки.",
+===============================================================================================

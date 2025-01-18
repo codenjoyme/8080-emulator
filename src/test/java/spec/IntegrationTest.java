@@ -608,7 +608,7 @@ public class IntegrationTest extends AbstractTest {
                         ));
 
         // then
-        String program = assertBasicProgram(range, "program");
+        String program = assertBasicProgram(range, testBase() + "/program");
 
         // when then
         record.reset()

@@ -1,0 +1,597 @@
+DATE: 1737129638880
+
+===============================================================================================
+Q: У меня есть jar, я хочу чтобы он искал внутри себя ресурсы
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS C:\\Java\\8080-emulator\\src\\main\\webapp> java -jar .\\emulator-1.0.jar
+Base url: file:/C:/Java/8080-emulator/src/main/webapp/./
+FileRecord writing enabled
+Load platform: 'null', rom file: 'null'
+Exception in thread "main" java.lang.RuntimeException: java.io.FileNotFoundException: C:\\Java\\8080-emulator\\src\\main\\webapp\\lik\\roms\\01_zagr.bin (The system cannot find the path specified)
+        at spec.RomLoader.loadROM(RomLoader.java:69)
+        at spec.RomLoader.loadROM(RomLoader.java:59)
+        at spec.platforms.Lik.loadRom(Lik.java:37)
+        at spec.RomSwitcher.loadRoms(RomSwitcher.java:26)
+        at spec.Application.load(Application.java:173)
+        at spec.Application.<init>(Application.java:38)
+        at spec.Main.<init>(Main.java:59)
+        at spec.Main.main(Main.java:41)
+Caused by: java.io.FileNotFoundException: C:\\Java\\8080-emulator\\src\\main\\webapp\\lik\\roms\\01_zagr.bin (The system cannot find the path specified)
+        at java.base/java.io.FileInputStream.open0(Native Method)
+        at java.base/java.io.FileInputStream.open(FileInputStream.java:219)
+        at java.base/java.io.FileInputStream.<init>(FileInputStream.java:157)
+        at java.base/java.io.FileInputStream.<init>(FileInputStream.java:112)
+        at java.base/sun.net.www.protocol.file.FileURLConnection.connect(FileURLConnection.java:86)
+        at java.base/sun.net.www.protocol.file.FileURLConnection.getInputStream(FileURLConnection.java:184)
+        at java.base/java.net.URL.openStream(URL.java:1117)
+        at spec.RomLoader.loadROM(RomLoader.java:65)",
+-----------------------------------------------------------------------------------------------
+A: To make your JAR file search for resources within itself, you should use the ClassLoader's `getResourceAsStream()` method rather than trying to access the file system directly. This method looks for resources within the classpath, which includes the contents of your JAR file when it is executed. Here’s how you can modify your code:
+
+1. **Replace file-based resource loading with `getResourceAsStream()`:**
+   In your current implementation, you are likely trying to load files by directly referencing the file system, which leads to `FileNotFoundException` when the application is packaged as a JAR. This issue occurs because the file path strategy does not work inside a JAR.
+
+   Here’s an example of how you usually change the file loading:
+   ```java
+   URL url = new URL("file:/path/to/your/resource");
+   InputStream is = url.openStream();
+   ```
+
+   Replace the above code with:
+   ```java
+   InputStream is = getClass().getClassLoader().getResourceAsStream("path/to/your/resource");
+   ```
+
+   Make sure the path you provide to `getResourceAsStream()` is the exact path within your project's resources folder. For instance, if your resource (like `01_zagr.bin`) is stored in `src/main/resources/lik/roms`, you would use:
+   ```java
+   InputStream is = getClass().getClassLoader().getResourceAsStream("lik/roms/01_zagr.bin");
+   ```
+
+2. **Revise your project structure if necessary:**
+   Ensure that the resources you intend to access are correctly placed in the resources directory (`src/main/resources`) of your project, as this is a standard directory that Maven and other build tools package into the JAR.
+
+3. **Error Handling:**
+   Always check if your resource stream is `null` before using it. This check helps you handle cases where the resource could not be found:
+   ```java
+   if (is == null) {
+       throw new RuntimeException("Resource not found");
+   }
+   ```
+
+4. **Modifying the RomLoader class:**
+   Based on the stack trace you provided, you need to adjust how the `RomLoader` class handles resource loading. Update any direct file system access to use the `getResourceAsStream()` method.
+
+By making these changes, your JAR file will be able to use internal resources correctly no matter where it is executed, thereby making your application more portable and robust.",
+===============================================================================================
+
+===============================================================================================
+Q: Почему в коде
+            URL url = new URL(base, path);
+            Logger.info("Base2 %s", base);
+            Logger.info("Base3 %s", url);
+вывод делается
+Base2 file:/C:/Java/8080-emulator/target/webapp-synth/files
+Base3 file:/C:/Java/8080-emulator/target/webapp-synth/lik/roms/01_zagr.bin
+куда теряется files?",
+-----------------------------------------------------------------------------------------------
+A: Причина, по которой потерялась часть пути `files` в вашем выводе URL, заключается в том, как класс `URL` интерпретирует относительные пути при их объединении с базовым URL.
+
+Когда вы создаете объект `URL`, передавая в конструктор базовый URL и относительный путь, класс `URL` решает, как именно комбинировать эти пути на основе присутствия или отсутствия слэша в начале относительного пути:
+1. Если относительный путь начинается со слэша (`/`), он рассматривается как путь от корня базового URL, и всё после домена (или папки, установленной как корневая) в базовом URL игнорируется.
+2. Если относительный путь не начинается со слэша, он интерпретируется как дополнение к пути базового URL, добавляясь к его концу после последнего слэша в пути.
+
+В вашем случае:
+- `base` это `file:/C:/Java/8080-emulator/target/webapp-synth/files`
+- `path` это, вероятно, `lik/roms/01_zagr.bin` (или начинается с `/lik/roms/01_zagr.bin`)
+
+Если `path` начинается не со слэша, то базовый URL интерпретируется как папка, и последний фрагмент пути (`files`) заменяется значением `path`. Если `path` начинается со слэша, то интерпретация базового URL изменится на корневой путь, а `files` будет проигнорирован.
+
+**Как решать данный вопрос:**
+- Убедитесь, что ваш `path` не начинается со слэша, если вы хотите, чтобы путь добавлялся к `files`.
+- Добавьте слэш в конец базового пути при его формировании или инициализации, чтобы явно указать, что `files` это директория. Например: `file:/C:/Java/8080-emulator/target/webapp-synth/files/` — это гарантирует, что `files` воспринимается как папка, к которой должен добавляться путь.
+
+Таким образом, правильное управление базовыми URL и относительными путями обеспечивает корректное формирование конечных URL без потери необходимых компонентов пути.",
+===============================================================================================
+
+===============================================================================================
+Q: Я заметил, что если такой папки нет, то он не ставит в конец слеш, а если есть то ставит",
+-----------------------------------------------------------------------------------------------
+A: Действительно, поведение URL-конструктора в Java может зависеть от того, существует ли указываемая в базовом URL папка на момент выполнения кода. Это поведение может привести к неочевидным и трудноуловимым ошибкам, связанным с формированием путей в вашем приложении. 
+
+Java не проверяет существование файлов или папок, когда вы работаете с URL напрямую, так что описанное выше поведение не должно происходить только на основании существования или несуществования файла. Однако, некоторые среды разработки или сценарии могут кешировать информацию о файловой системе, что может вызвать аномалии в поведении программы.
+
+### Как избежать подобных проблем:
+1. **Всегда задавайте URL строго и явно**. Если вы работаете с директориями, старайтесь всегда включать в конец пути слэш (`/`), указывая на то, что это директория, а не файл. Это избавляет от неоднозначности в интерпретации пути.
+
+```java
+URL base = new URL("file:/C:/Java/8080-emulator/target/webapp-synth/files/");
+URL target = new URL(base, "lik/roms/01_zagr.bin");
+```
+
+2. **Проверка существования файлов при работе с файловой системой**: Если ваша логика зависит от факта существования файлов или папок, используйте классы из пакета `java.io` или `java.nio.file` для проверки перед работой с URL.
+
+```java
+Path filePath = Paths.get("C:/Java/8080-emulator/target/webapp-synth/files");
+if (Files.exists(filePath) && Files.isDirectory(filePath)) {
+    URL base = new URL("file:" + filePath.toUri().toString());
+    URL target = new URL(base, "lik/roms/01_zagr.bin");
+    // работайте с target
+} else {
+    System.out.println("Директория не существует");
+}
+```
+
+3. **Использование URI для создания URL**: `URI` более строг в плане синтаксической корректности и часто предпочтительнее для работы с путями и URL.
+
+```java
+URI baseUri = new URI("file:/C:/Java/8080-emulator/target/webapp-synth/files/");
+URL base = baseUri.toURL();
+URL target = new URL(base, "lik/roms/01_zagr.bin");
+```
+
+Итак, каждый метод имеет свои особенности, и задача разработчика — выбрать наиболее подходящий для конкретной ситуации, избегая распространенных ошибок при работе с файлами и URL.",
+===============================================================================================
+
+===============================================================================================
+Q: он удаляет слеш который я поставил в конец",
+-----------------------------------------------------------------------------------------------
+A: Если Java удаляет слэш, который вы ставите в конец URL, причиной этого может быть обработка URL Java, которая стремится нормализовать URL, удаляя излишние слэши. Это иногда может приводить к неожиданным результатам, особенно при работе с файловыми путями.
+
+Чтобы гарантированно задать базовый URL как директорию, вы можете использовать метод `toURI` класса `File`, который корректно обработает пути вне зависимости от платформы:
+
+```java
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            File file = new File("C:/Java/8080-emulator/target/webapp-synth/files/");
+            URI uri = file.toURI();  // Создание URI, который заканчивается слэшем
+            URL baseUrl = uri.toURL();
+
+            URL finalUrl = new URL(baseUrl, "lik/roms/01_zagr.bin");
+            System.out.println("BaseUrl: " + baseUrl);
+            System.out.println("FinalUrl: " + finalUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+Код выше создаёт URI из объекта `File`, автоматически добавляя слэш в конце, если объект представляет собой каталог. Это делает URL-обработку более предсказуемой.
+
+### Альтернативный подход с использованием Paths и URI:
+Если вы используете Java 7 и новее, вы также можете использовать пакет `java.nio.file.Paths` для работы с путями, что может дать вам больше контроля:
+
+```java
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.nio.file.Path;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            Path path = Paths.get("C:/Java/8080-emulator/target/webapp-synth/files/").toAbsolutePath();
+            URI uri = path.toUri();  // Преобразование Path в URI
+            URL baseUrl = uri.toURL();
+
+            URL finalUrl = new URL(baseUrl, "lik/roms/01_zagr.bin");
+            System.out.println("BaseUrl: " + baseUrl);
+            System.out.println("FinalUrl: " + finalUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+Этот подход с `Path` и `URI` предоставляет ещё более удобную работу с файловыми путями, особенно на различных платформах, гарантируя корректную обработку слэшей.
+
+Используя один из этих подходов, вы должны обеспечить более надежное и предсказуемое создание URL в вашем приложении.",
+===============================================================================================
+
+===============================================================================================
+Q: Если я не хочу работать с URL какой мне алтернативой воспользоваться?",
+-----------------------------------------------------------------------------------------------
+A: Если вы не хотите работать с URL и вам нужно управлять файлами или ресурсами в Java, вы можете воспользоваться несколькими альтернативными подходами, которые предоставляют более простые и гибкие средства для работы с файловой системой:
+
+1. **Использование класса `File` из `java.io`**:
+   Класс `File` предоставляет методы для создания, удаления и запроса файлов и директорий. Он также может использоваться для получения и изменения атрибутов файлов.
+
+   ```java
+   File file = new File("path/to/your/file.txt");
+   if (file.exists()) {
+       System.out.println("Файл существует");
+   }
+   // Чтение или запись файла здесь
+   ```
+
+2. **Использование пакета `java.nio.file`**:
+   Этот пакет предоставляет более новый и гибкий API для работы с файловыми системами. `Paths` и `Files` - это два основных класса этого пакета, предлагающие различные методы для работы с файлами и директориями.
+
+   ```java
+   Path path = Paths.get("path/to/your/file.txt");
+   if (Files.exists(path)) {
+       System.out.println("Файл существует");
+   }
+   // Чтение файла в виде списка строк
+   List<String> lines = Files.readAllLines(path);
+   ```
+
+3. **Использование ресурсов в JAR**:
+   Если ваши файлы находятся в JAR и необходим доступ к ним, лучше использовать метод `getResourceAsStream()` из `ClassLoader`. Этот метод позволяет загружать файлы как потоки (Streams), что особенно полезно для работы внутри JAR.
+
+   ```java
+   InputStream is = getClass().getClassLoader().getResourceAsStream("path/to/your/resource.txt");
+   if (is != null) {
+       // Читаем ресурс из потока
+       InputStreamReader isr = new InputStreamReader(is);
+       BufferedReader reader = new BufferedReader(isr);
+       String line;
+       while ((line = reader.readLine()) != null) {
+           System.out.println(line);
+       }
+   }
+   ```
+
+4. **Работа с файлами через абстракции высокого уровня**:
+   Если вы работаете в среде, которая предоставляет абстракции для работы с файловой системой (например, Spring Framework через `ResourceLoader`), этот вариант может обеспечить более удобный и мощный способ работы с ресурсами.
+
+   ```java
+   // Пример в Spring Framework
+   @Autowired
+   private ResourceLoader resourceLoader;
+
+   public void readResource() {
+       Resource resource = resourceLoader.getResource("classpath:path/to/your/resource.txt");
+       // Читаем ресурс
+   }
+   ```
+
+Выберите подход, который лучше всего соответствует вашим требованиям. Для непосредственной работы с файловой системой, `java.nio.file` предоставляет современный и эффективный интерфейс. Для работы с ресурсами внутри JAR или когда требуется abstractions, `getResourceAsStream()` или внешние библиотеки/фреймворки могут быть предпочтительнее.",
+===============================================================================================
+
+===============================================================================================
+Q: а если у меня будет веб приложение, и часть контента будет в https:// ?",
+-----------------------------------------------------------------------------------------------
+A: Если у вас веб-приложение и часть контента должна загружаться с HTTPS URL, то задача усложняется из-за необходимости работы с веб-запросами. В этом случае, вам нужно использовать библиотеки, которые могут отправлять HTTP(S) запросы и получать данные из интернета. В Java есть несколько способов это реализовать:
+
+1. **Использование `java.net.HttpURLConnection`**:
+   Это стандартный способ выполнения HTTP запросов в Java. Он подходит для базовых операций, но может быть неудобен для сложных запросов и обработки ответов.
+
+   ```java
+   URL url = new URL("https://example.com/resource");
+   HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+   try {
+       if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+           BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+           String line;
+           while ((line = reader.readLine()) != null) {
+               System.out.println(line);
+           }
+           reader.close();
+       }
+   } finally {
+       conn.disconnect();
+   }
+   ```
+
+2. **Использование Apache HttpClient**:
+   Это мощная библиотека, которая предлагает гибкий и функциональный способ взаимодействия с HTTP-серверами. Она гораздо удобнее в использовании для сложных запросов по сравнению с `HttpURLConnection`.
+
+   ```java
+   CloseableHttpClient httpClient = HttpClients.createDefault();
+   HttpGet request = new HttpGet("https://example.com/resource");
+   try (CloseableHttpResponse response = httpClient.execute(request)) {
+       HttpEntity entity = response.getEntity();
+       if (entity != null) {
+           String result = EntityUtils.toString(entity);
+           System.out.println(result);
+       }
+   }
+   ```
+
+3. **Использование библиотеки OkHttp**:
+   Это современная библиотека для работы с HTTP, аналогичная Apache HttpClient, но с более удобным API и лучшей производительностью благодаря асинхронным запросам.
+
+   ```java
+   OkHttpClient client = new OkHttpClient();
+   Request request = new Request.Builder()
+           .url("https://example.com/resource")
+           .build();
+   
+   try (Response response = client.newCall(request).execute()) {
+       if (response.isSuccessful()) {
+           String result = response.body().string();
+           System.out.println(result);
+       }
+   }
+   ```
+
+4. **Использование Spring `RestTemplate` или `WebClient` в Spring WebFlux**:
+   Если ваше веб-приложение построено на Spring Framework, то `RestTemplate` или `WebClient` могут быть удобными инструментами для отправки HTTP запросов.
+
+   ```java
+   RestTemplate restTemplate = new RestTemplate();
+   String result = restTemplate.getForObject("https://example.com/resource", String.class);
+   System.out.println(result);
+   ```
+
+Использование этих инструментов позволит вам эффективно управлять загрузкой контента через HTTPS, обрабатывая различные HTTP запросы и ответы, а также обеспечивая безопасность и эффективность вашего веб-приложения.",
+===============================================================================================
+
+===============================================================================================
+Q: А могу я в манифесте указать с какими параметрами запускать Main класс
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven 3.6.3
+Built-By: Oleksandr_Baglai
+Build-Jdk: 11
+Main-Class: spec.Main",
+-----------------------------------------------------------------------------------------------
+A: В манифесте JAR-файла вы можете указать `Main-Class`, который Java будет использовать для запуска программы, однако нет стандартного способа указания аргументов командной строки непосредственно в манифесте JAR. Это связано с тем, что аргументы командной строки обычно меняются при каждом запуске программы, и включение их в файл манифеста сделало бы ваш JAR менее гибким.
+
+### Вот несколько альтернативных подходов для управления параметрами запуска:
+
+1. **Использовать скрипт для запуска**:
+   Вы можете создать скрипт (например, `batch` файл для Windows или `bash` скрипт для UNIX/Linux), который будет запускать ваш JAR-файл с нужными параметрами. Например:
+
+   ```bash
+   #!/bin/bash
+   java -jar your-application.jar arg1 arg2 arg3
+   ```
+
+   Этот метод позволяет легко изменять аргументы без пересборки JAR файла.
+
+2. **Использовать properties файл или конфигурационный файл**:
+   В вашем приложении можно реализовать чтение настроек из внешнего файла properties или другого типа конфигурационного файла. Затем, перед запуском приложения, вы можете изменять значения в этом файле.
+
+   Пример файла `config.properties`:
+   ```properties
+   param1=value1
+   param2=value2
+   ```
+
+   И код для чтения:
+   ```java
+   Properties props = new Properties();
+   try (InputStream input = new FileInputStream("config.properties")) {
+       props.load(input);
+       String param1 = props.getProperty("param1");
+       // использование param1
+   } catch (IOException ex) {
+       ex.printStackTrace();
+   }
+   ```
+
+3. **Использовать переменные окружения**:
+   Вы можете задать параметры через переменные окружения и читать их в вашем Java коде через метод `System.getenv()`.
+
+   ```java
+   String param1 = System.getenv("PARAM1");
+   ```
+
+   Это особенно удобно при развертывании в контейнерах или на платформах как сервис, где управление конфигурацией через переменные окружения является общепринятой практикой.
+
+### Вывод:
+Хотя непосредственно в манифесте JAR вы не можете указывать аргументы запуска, используя перечисленные выше методы, вы можете достичь необходимой гибкости в управлении настройками и параметрами запуска вашего Java приложения.",
+===============================================================================================
+
+===============================================================================================
+Q: у меня прост о jar внутри war и запускается там определенной библиотекой в браузере в chreepJ",
+-----------------------------------------------------------------------------------------------
+A: Когда ваш JAR файл запускается внутри WAR как часть веб-приложения, и особенно когда это происходит в контексте специфичной среды выполнения, как CheerpJ в браузере, управление параметрами запуска может потребовать других подходов.
+
+### Стратегия запуска и передачи параметров:
+1. **Конфигурация внутри кода HTML или JavaScript**:
+   Поскольку CheerpJ позволяет запускать Java приложения в браузере, вам может понадобиться использовать JavaScript для конфигурирования и инициализации вашего Java апплета или приложения. Это может включать передачу параметров запуска.
+
+   Пример конфигурации в HTML/JavaScript:
+   ```html
+   <script src="cheerpj.js"></script>
+   <script>
+       // Запуск CheerpJ после загрузки
+       function runApp() {
+           cheerpjRunMain("mainClassName", "jarFileName.jar", "param1 param2 param3");
+       }
+       function loadCheerpJ() {
+           cheerpjInit();
+           cheerpjAddJar("jarFileName.jar");
+           cheerpjLoadClass("mainClassName", runApp);
+       }
+   </script>
+   <body onload="loadCheerpJ();">
+   ```
+   
+   В этом примере функция `cheerpjRunMain` используется для запуска основного класса с передачей аргументов.
+
+2. **Изменения Java кода**: 
+   Если передача параметров через JavaScript или HTML не является опциональной, вы можете изменить Java код для чтения параметров из других источников (например, из файла конфигурации на сервере или из переменных окружения через настройки сервера).
+
+3. **Web API для конфигурации**:
+   Если ваше приложение требует гибкой настройки или передачи данных в рунтайме, можно рассмотреть разработку Web API, которое приложение сможет вызвать для получения необходимых данных после запуска.
+
+### Обратите внимание:
+При запуске Java приложения в браузере через CheerpJ или аналогичные технологии важно учитывать ограничения безопасности браузера. В частности, доступ к файловой системе клиента может быть ограничен или вовсе не возможен, а также могут быть ограничения на общение с сервером.
+
+### Заключение:
+Вам необходимо адаптировать стратегию запуска и передачи параметров, учитывая архитектуру вашего приложения и среду его выполнения. Конфигурация с использованием JavaScript при инициализации в CheerpJ может быть наиболее подходящей, если другие стратегии не применимы из-за ограничений браузера.",
+===============================================================================================
+
+===============================================================================================
+Q: а в таком формате?
+    (async function () {
+        await cheerpjInit();
+        cheerpjCreateDisplay(800, 600);
+        await cheerpjRunMain(
+            "spec.Main",
+            "/app/emulator-1.0.jar");
+    })();",
+-----------------------------------------------------------------------------------------------
+A: В данном сценарии вы используете асинхронную JavaScript функцию для инициализации CheerpJ, создания дисплея и запуска Java-приложения. Ваш пример кода демонстрирует основной способ запуска Java-приложения через CheerpJ в браузере, но не включает передачу параметров командной строки.
+
+Если вы хотите передать параметры командной строки в ваше Java-приложение через CheerpJ, вам нужно добавить их напрямую в функцию `cheerpjRunMain` после указания имени класса и JAR-файла. Аргументы передаются как отдельные строки, разделённые пробелами. Вот пример того, как это может выглядеть:
+
+```javascript
+(async function () {
+    await cheerpjInit();
+    cheerpjCreateDisplay(800, 600);
+    await cheerpjRunMain(
+        "spec.Main",
+        "/app/emulator-1.0.jar",
+        "arg1 arg2 arg3"
+    );
+})();
+```
+
+В этом примере `"arg1 arg2 arg3"` передаётся как строка аргументов, которая будет доступна в вашем Java-приложении через массив строк `args` в методе `main`. Это позволяет вам динамически изменять параметры, с которыми Java-приложение запускается, не меняя содержимое JAR-файла.
+
+### Важные моменты для учёта:
+
+1. **Безопасность**: Убедитесь, что параметры, которые вы передаёте, не содержат чувствительных данных или не подвергают ваше приложение угрозам безопасности (например, инъекциям).
+
+2. **Валидация Параметров**: В вашем Java-приложении стоит добавить проверки на корректность и безопасность переданных параметров, чтобы избежать потенциальных ошибок выполнения и уязвимостей.
+
+3. **Доступность данных**: При использовании CheerpJ убедитесь, что все необходимые библиотеки и ресурсы доступны, так как файловая система браузера отличается от обычной файловой системы на сервере или локальном компьютер",
+===============================================================================================
+
+===============================================================================================
+Q: Не могу передать несоклько параметров так 
+        await cheerpjRunMain(
+            "spec.Main",
+            "/app/emulator-1.0.jar",
+            "./qwe/",
+            "lik"
+        );",
+-----------------------------------------------------------------------------------------------
+A: Если вам нужно передать несколько параметров в метод `cheerpjRunMain`, они должны быть сгруппированы в одну строку, разделенную пробелами. В вашем случае, вы пытаетесь передать параметры как отдельные аргументы функции, что не является правильным подходом.
+
+Чтобы корректно передать несколько параметров в Java приложении через CheerpJ, вы должны объединить их в одну строку, разделяя аргументы пробелами. Вот как можно это сделать:
+
+```javascript
+(async function () {
+    await cheerpjInit();
+    cheerpjCreateDisplay(800, 600);
+    await cheerpjRunMain(
+        "spec.Main",
+        "/app/emulator-1.0.jar",
+        "./qwe/ lik"
+    );
+})();
+```
+
+Так вы передаете строку `"./qwe/ lik"` в качестве аргументов функции `cheerpjRunMain`. В Java приложении аргументы будут доступны в массиве `args` метода `main(String[] args)` таким образом:
+
+- `args[0]` будет `"./qwe/"`,
+- `args[1]` будет `"lik"`.
+
+Подобный способ передачи аргументов довольно удобен и универсален, однако требует внимательности при разборе аргументов на стороне Java, особенно если какие-то из аргументов могут содержать пробелы или другие специфические символы, которые могут быть интерпретированы неп",
+===============================================================================================
+
+===============================================================================================
+Q: нет оно воспринимает все как одну строку внутри офк",
+-----------------------------------------------------------------------------------------------
+A: Для CheerpJ и многих других сред, где Java-приложения запускаются на веб-платформе, вы действительно можете столкнуться с проблемой, когда все аргументы, передаваемые как одна строка, интерпретируются как один аргумент.
+
+Если это ваш случай и передача строкового значения с пробелами внутри интерпретируется как один параметр, имеется несколько подходов, которые можно испробовать для решения или обхода этой проблемы:
+
+### Оберните Параметры в Кавычки
+
+В некоторых средах, чтобы разделить строку аргументов на несколько, можно попробовать обернуть каждый параметр в двойные кавычки. Например:
+
+```javascript
+(async function () {
+    await cheerpjInit();
+    cheerpjCreateDisplay(800, 600);
+    await cheerpjRunMain(
+        "spec.Main",
+        "/app/emulator-1.0.jar",
+        "\\"./qwe/\\" \\"lik\\""
+    );
+})();
+```
+
+В этом случае, каждый аргумент обособлен кавычками, что может помочь их корректно разделять при анализе строки аргументов в Java. Однако эффективность этого метода может зависеть от того, как CheerpJ обрабатывает аргументы командной строки.
+
+### Использование Разделителя, Отличного от Пробела
+
+Если кавычки не помогают, или вы хотите другой метод, можно использовать специальные символы или комбинации символов в качестве разделителя, которые вы затем можете распарсить в Java:
+
+```javascript
+(async function () {
+    await cheerpjInit();
+    cheerpjCreateDisplay(800, 600);
+    await cheerpjRunMain(
+        "spec.Main",
+        "/app/emulator-1.0.jar",
+        "./qwe/,lik"
+    );
+})();
+```
+
+В вашем Java коде, можно затем разделить эту строку на отдельные элементы:
+
+```java
+public static void main(String[] args) {
+    if (args.length > 0) {
+        String[] parts = args[0].split(",");
+        String arg1 = parts[0]; // "./qwe/"
+        String arg2 = parts[1]; // "lik"
+        // использование arg1, arg2
+    }
+}
+```
+
+### Документация и Поддержка
+
+Если ни один из предложенных методов не работает, рекомендуется также проверить документацию CheerpJ или обратиться за поддержкой к разработчикам CheerpJ, так как могут быть специфические особенности или обновления в обработке аргументов командной строки, которые не описаны в доступных пользовательских руководствах.",
+===============================================================================================
+
+===============================================================================================
+Q: кавычки не помогают",
+-----------------------------------------------------------------------------------------------
+A: Если кавычки не помогают, и вы пытались использовать различные разделители, но CheerpJ все равно интерпретирует все как один аргумент, тогда стоит рассмотреть следующий подход при передаче параметров:
+
+### Использование специального метода для передачи массива аргументов
+
+Если метод `cheerpjRunMain` интерпретирует всё как один аргумент, возможно, более продуктивным будет вызов другого метода или модификация процесса инициализации для того, чтобы явно указать CheerpJ о том, что каждый элемент должен передаваться как отдельный аргумент. Однако, в стандартной документации CheerpJ данный подход может не быть явно указан.
+
+### Реализация передачи аргументов через API или вспомогательный интерфейс
+
+Если передача параметров напрямую через `cheerpjRunMain` не работает должным образом, можно создать вспомогательный Java класс, который будет выполнять роль "посредника" для парсинга аргументов из строки.
+
+1. Можно модифицировать ваш код так, чтобы он принимал одну строку с параметрами, разделенными через специальный символ (например, через ";"):
+
+   ```java
+   public static void main(String[] args) {
+       if (args.length > 0) {
+           String[] parameters = args[0].split(";");
+           // Обрабатываем каждый параметр
+       }
+   }
+   ```
+
+2. Передать параметры одной строкой, и затем в Java разделить их:
+
+   ```javascript
+   (async function () {
+       await cheerpjInit();
+       cheerpjCreateDisplay(800, 600);
+       await cheerpjRunMain(
+           "spec.Main",
+           "/app/emulator-1.0.jar",
+           "./qwe/;lik"
+       );
+   })();
+   ```
+
+### Включение параметров в код Java или динамическое изменение
+
+Если все вышеперечисленные методы не подходят, вы можете рассмотреть возможность включения конфигурации или параметров неп",
+===============================================================================================

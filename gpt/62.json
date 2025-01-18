@@ -1,0 +1,62 @@
+DATE: 1737130298852
+
+===============================================================================================
+Q: А модно как-то стрим открыть без URL дурацкого?
+    public Range loadROM(String base, String path, Bites all, int offset) {
+        try {
+            URL url = toUrl(base, path);
+            InputStream is = url.openStream();
+            cpuPC(offset);
+            return readAll(all, offset, is, url);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static URL toUrl(String base, String path) throws MalformedURLException {
+        URL url = new File(base + path).toURI().toURL();
+        
+        return url;
+    }",
+-----------------------------------------------------------------------------------------------
+A: Конечно, можно открыть поток ввода `InputStream` напрямую из файла без использования URL, используя класс `FileInputStream`. Вот как вы можете изменить ваш метод `loadROM` для чтения ROM из файла напрямую:
+
+```java
+public Range loadROM(String base, String path, Bites all, int offset) {
+    try {
+        FileInputStream fis = new FileInputStream(new File(base, path));
+        cpuPC(offset);
+        return readAll(all, offset, fis, null);  // передаем null в месте URL, если он не нужен в методе readAll
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+В этом случае не требуется преобразование файла в `URL`, что может упростить процесс и избавить от необходимости обрабатывать `MalformedURLException`.
+
+Также убедитесь, что метод `readAll`, если он использует `URL`, может работать с `null` вместо объекта `URL`. Если нет, вам возможно придется изменить логику этого метода.",
+===============================================================================================
+
+===============================================================================================
+Q: если же поиск будет внутри jar то как искать?",
+-----------------------------------------------------------------------------------------------
+A: Для чтения файлов внутри JAR-файла, вы можете использовать ресурсы Java. Для доступа к ресурсам внутри JAR-файла используйте метод `getResourceAsStream` класса `Class`. Этот метод возвращает `InputStream`, который можно использовать для чтения данных. Вот как вы можете изменить метод `loadROM` для чтения файла из JAR:
+
+```java
+public Range loadROM(String path, Bites all, int offset) {
+    try {
+        InputStream is = getClass().getResourceAsStream(path);
+        if (is == null) {
+            throw new FileNotFoundException("Resource not found: " + path);
+        }
+        cpuPC(offset);
+        return readAll(all, offset, is, null);  // Передаем null в месте URL, если он не нужен в методе readAll
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+Здесь мы используем `getResourceAsStream`, передавая относительный путь к файлу внутри JAR. Путь должен быть относительным к пакету, в котором находится ваш класс,",
+===============================================================================================

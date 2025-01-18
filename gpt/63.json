@@ -1,0 +1,382 @@
+DATE: 1737137035063
+
+===============================================================================================
+Q: Я хочу чтобы тут
+
+ <profile>
+            <id>jar-with-dependencies</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- Плагин отвечает за сборку jar с зависимостями -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.2.4</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <mainClass>spec.Main</mainClass>
+                                        </transformer>
+                                    </transformers>
+                                    <artifactSet/>
+                                    <outputFile>${jetty-webapp-folder}/${build.file.name}.jar</outputFile>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+ 
+добавлялись из src/main/resources пару папок с содержимым в корень jar",
+-----------------------------------------------------------------------------------------------
+A: Для добавления папок из `src/main/resources` в корень JAR файла, вам нужно сконфигурировать `maven-shade-plugin` чтобы он включил требуемые ресурсы. Вы можете это сделать, добавив конфигурацию `filters` в ваш текущий плагин `maven-shade-plugin`. 
+
+Исходя из вашего текущего конфига, вы должны модифицировать его следующим образом:
+
+```xml
+<profile>
+    <id>jar-with-dependencies</id>
+    <build>
+        <plugins>
+            <plugin>
+                <!-- Плагин отвечает за сборку jar с зависимостями -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>spec.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                            <artifactSet/>
+                            <outputFile>${jetty-webapp-folder}/${build.file.name}.jar</outputFile>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <includes>
+                                        <include>path/to/your/folder1/**</include>
+                                        <include>path/to/your/folder2/**</include>
+                                    </includes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</profile>
+```
+
+Замените `path/to/your/folder1/` и `path/to/your/folder2/` на пути к папкам, которые вы хотите добавить в корень вашего JAR. Конструкция `**` обозначает включение всех файлов в данной директории и её поддиректориях.
+
+Эта настройка укажет `maven-shade-plugin` включить содержимое указанных папок в итоговый JAR файл.",
+===============================================================================================
+
+===============================================================================================
+Q: файл вообще пустой получился jar",
+-----------------------------------------------------------------------------------------------
+A: Если ваш JAR файл получается пустым, это может быть связано с тем, что фильтры, указанные в конфигурации, не совпадают с реальными путями ресурсов в вашем проекте или существует проблема с другой частью конфигурации. Давайте проверим и убедимся, что пути заданы правильно и что они соответствуют структуре вашего проекта.
+
+1. **Проверьте пути к папкам:** Убедитесь, что пути, указанные в `<includes>` соответствуют директориям и файлам, которые действительно существуют в вашей папке `src/main/resources`. Эти пути должны быть относительными относительно `src/main/resources`.
+
+   Например, если у вас есть папки `src/main/resources/folder1` и `src/main/resources/folder2`, то в конфигурации это должно выглядеть так:
+
+   ```xml
+   <includes>
+       <include>folder1/**</include>
+       <include>folder2/**</include>
+   </includes>
+   ```
+
+2. **Проверьте конфигурацию плагина:** Убедитесь, что все остальные части конфигурации `maven-shade-plugin` указаны правильно. Особенно проверьте, правильно ли указан путь к `<outputFile>`, контрольные точки в `<transformers>` и т.д.
+
+3. **Логи Maven:** При запуске сборки Maven следите за выводом в консоль. В нем могут содержаться предупреждения или ошибки, которые помогут понять, почему файлы не добавляются в JAR.
+
+4. **Примеры включения всех ресурсов:**
+   Если вы хотите включить в JAR все содержимое папки `src/main/resources`, то можно использовать такую конфигурацию:
+
+   ```xml
+   <filters>
+       <filter>
+           <artifact>*:*</artifact>
+           <includes>
+               <include>**/*</include>
+           </includes>
+       </filter>
+   </filters>
+   ```
+
+5. **Слежение за ресурсами:** Удостоверьтесь, что в вашем проекте Maven ресурсы действительно отслеживаются как ресурсы. Иногда может потребоваться явно указать, какие файлы считать ресурсами через конфигурацию плагина `maven-resources-plugin`.
+
+Если после этих шагов проблема всё ещё не решена, поделитесь более подробной информацией о структуре вашего проекта и содержимом `pom.xml`. Это поможет более точно диагностировать проблему.",
+===============================================================================================
+
+===============================================================================================
+Q: А могу я так добавить папку
+            <configuration>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                    <resource>META-INF/README</resource>
+                    <file>README.txt</file>
+                </transformer>
+              </transformers>
+            </configuration>",
+-----------------------------------------------------------------------------------------------
+A: Да, вы можете использовать `IncludeResourceTransformer` для добавления конкретных файлов в ваш JAR файл, но нужно обратить внимание на некоторые нюансы:
+
+1. **Тег `<resource>`:** Это будет путь, по которому файл будет доступен в JAR-файле. 
+2. **Тег `<file>`:** Это относительный путь к файлу в вашем проекте, который должен быть добавлен в JAR.
+
+Конфигурация, которую вы указали, добавит файл `README.txt` из корня вашего проекта и поместит его в JAR в папку `META-INF` с именем `README`. 
+
+Однако, если ваша цель - добавить целую папку, то `IncludeResourceTransformer` не поддерживает добавление целых директорий, только отдельные файлы. Для добавления целых папок, вам нужно использовать другой подход, например, с помощью `<filter>` как было рассмотрено ранее или указав папку целиком в секции `<resources>` в вашем `pom.xml`.
+
+Если ваша цель добавить конкретные файлы, то ваш подход будет правильным. Например, для добавления файла `README.txt` из папки `src/main/resources` в JAR в `META-INF/README`, конфигурация будет выглядеть так:
+
+```xml
+<configuration>
+  <transformers>
+    <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+        <resource>META-INF/README</resource>
+        <file>src/main/resources/README.txt</file>
+    </transformer>
+  </transformers>
+</configuration>
+```
+
+Таким образом, при помощи `IncludeResourceTransformer` вы можете контролировать расположение файлов внутри JAR-архива, чего не получится достичь при использовании фильтра `<includes>` которые просто копируют содержимое папок.",
+===============================================================================================
+
+===============================================================================================
+Q: а я хочу добавить так папку со всеми вложенными файлами ",
+-----------------------------------------------------------------------------------------------
+A: Для добавления целой папки со всеми вложенными файлами в JAR файл в Apache Maven, лучший подход - использовать стандартные средства Maven для работы с ресурсами, а именно настройки в секции `<resources>` вашего `pom.xml`. `IncludeResourceTransformer` из `maven-shade-plugin` предназначен только для добавления отдельных файлов, а не директорий.
+
+Пример конфигурации *resources* для включения папки из `src/main/resources` в ваш JAR файл выглядит следующим образом:
+
+```xml
+<build>
+    ...
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <includes>
+                <include>folder/**</include>
+            </includes>
+        </resource>
+    </resources>
+    ...
+</build>
+```
+Здесь `<include>folder/**</include>` указывает Maven включить все файлы из папки `folder` и её подпапок в `src/main/resources` в итоговый JAR.
+
+Если вы используете `maven-shade-plugin` для создания JAR файла, вы можете сделать так, чтобы все содержимое папки автоматически включалось в JAR без дополнительных настроек, так как `maven-shade-plugin` автоматически включает все ресурсы проекта по умолчанию. 
+
+Если ваша цель - конкретно модифицировать структуру JAR файла с помощью `maven-shade-plugin`, убедитесь, что настройки `<filters>` настроены правильно, как показано в предыдущих примерах, чтобы включать необходимые вам файлы и папки.
+
+Таким образом, убедитесь, что структура папок и настройки соответствуют тому, что вы хотите достичь, и что `maven-shade-plugin` правильно сконфигурирован для обработки добавления ресурсов.",
+===============================================================================================
+
+===============================================================================================
+Q: мне надо именно maven-shade законфигурить на єто",
+-----------------------------------------------------------------------------------------------
+A: Если вы хотите конфигурировать `maven-shade-plugin` для включения целой папки со всеми вложенными файлами, вы должны использовать траснформер `ResourceTransformer`.
+
+В данном случае наилучшим выбором будет использовать `ServicesResourceTransformer`, который подходит для включения ресурсов. Ниже приведен пример того, как вы можете сконфигурировать ваш `maven-shade-plugin` для включения содержимого папки из `src/main/resources` в ваш итоговый JAR:
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.2.4</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                        <transformers>
+                            <!-- Трансформер для включения всех ресурсов -->
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                        </transformers>
+                        <filters>
+                            <filter>
+                                <!-- Инклюдит все файлы папки и ее подпапки -->
+                                <artifact>*:*</artifact>
+                                <includes>
+                                    <include>path/to/your/directory/**</include>
+                                </includes>
+                            </filter>
+                        </filters>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+```
+
+Здесь важно указать в `<includes>` правильный путь относительно корня проекта до папки, которую вы хотите включить. Например, если у вас есть папка `resources` в `src/main/resources`, путь будет `resources/**`. Это включит все файлы подпапки `resources`.
+
+Однако, стоит отметить, что `ServicesResourceTransformer` в данном случае использован как пример и может не подходить для вашего конкретного случая, если цель только включать файлы без спецификации. В таком случае вам может понадобиться написать собственный трансформер или использовать другие пути, так как стандартный набор трансформеров `maven-shade-plugin` ограничен. 
+
+Также убедитесь, что путь указан правильно, и что файлы действительно находятся в указанной папке.",
+===============================================================================================
+
+===============================================================================================
+Q: А вот для єтого
+<plugins>
+                    <plugin>
+                        <!-- Плагин отвечает за сборку jar с зависимостями -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.2.4</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <mainClass>spec.Main</mainClass>
+                                        </transformer>
+                                    </transformers>
+                                    <artifactSet/>
+                                    <outputFile>${jetty-webapp-folder}/${build.file.name}.jar</outputFile>
+                                    <filters>
+                                        <filter>
+                                            <artifact>*:*</artifact>
+                                            <includes>
+                                                <include>**/*</include>
+                                            </includes>
+                                        </filter>
+                                    </filters>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+maven assembly дай плиз аналог",
+-----------------------------------------------------------------------------------------------
+A: Для создания JAR-файла с зависимостями с помощью плагина `maven-assembly-plugin`, вам нужно добавить соответствующую конфигурацию в ваш файл `pom.xml`. Вот пример настройки `maven-assembly-plugin` для создания исполняемого JAR-файла, аналогичного тем, что создает `maven-shade-plugin` из вашего примера:
+
+```xml
+<plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+            <archive>
+                <manifest>
+                    <!-- указание главного класса для исполняемого JAR -->
+                    <mainClass>spec.Main</mainClass>
+                </manifest>
+            </archive>
+            <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+            <!-- Параметр для задания имени итогового файла -->
+            <finalName>${build.file.name}</finalName>
+            <appendAssemblyId>false</appendAssemblyId>
+        </configuration>
+        <executions>
+            <execution>
+                <id>make-assembly</id> <!-- этот id может быть любым -->
+                <phase>package</phase> <!-- привязка ко фазе сборки -->
+                <goals>
+                    <goal>single</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+</plugins>
+```
+
+В этой конфигурации:
+
+- `mainClass` указывает на класс с методом `main`, который будет запускаться при выполнении JAR-файла.
+- `descriptorRef` со значением `jar-with-dependencies` говорит Maven создать JAR с включением всех зависимостей.
+- `finalName` задает имя итогового файла.
+- `appendAssemblyId` установлен в `false` для того, чтобы не добавлять к имени файла `assembly id`.
+
+Обратите внимание, что этот плагин создает архив в ходе фазы `package`, поэтому, так же как и для `maven-shade-plugin`, ваш исполняемый JAR будет готов после выполнения команды `mvn package`.
+
+Также учтите, что `maven-assembly-plugin` и `maven-shade-plugin` предназначены для немного разных сценариев и могут вести себя по-разному в отношении обработки ресурсов, конфликтов и т.д. В зависимости от сложности вашего проекта и специфических требований к сборке, выбор подходящего плагина может оказать заметное влияние на итоговый результат.",
+===============================================================================================
+
+===============================================================================================
+Q: и добавь в него все ресурсы из src/main/resources - там три папки с подпапками и файлами",
+-----------------------------------------------------------------------------------------------
+A: Для включения всех ресурсов из `src/main/resources`, включая содержимое всех папок и подпапок, в JAR файл при помощи `maven-assembly-plugin`, вам необходимо убедиться, что ресурсы корректно указаны в конфигурации. В Maven, ресурсы из `src/main/resources` обычно включаются автоматически, но для полной ясности можно уточнить или переопределить настройки в `<build>` конфигурации в `pom.xml`.
+
+Изменённая конфигурация `maven-assembly-plugin` с явным указанием на включение всех ресурсов из `src/main/resources` выглядит следующим образом:
+
+```xml
+<build>
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </resource>
+    </resources>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>3.3.0</version>
+            <configuration>
+                <archive>
+                    <manifest>
+                        <mainClass>spec.Main</mainClass>
+                    </manifest>
+                </archive>
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+                <finalName>${build.file.name}</finalName>
+                <appendAssemblyId>false</appendAssemblyId>
+            </configuration>
+            <executions>
+                <execution>
+                    <id>make-assembly</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+```
+
+Здесь:
+
+- `<resources>` блок убеждается, что все файлы из `src/main/resources` добавляются. Паттерн `**/*` будет включать все файлы и поддиректории.
+- Остальная конфигурация плагина гарантирует, что эти ресурсы, вместе с зависимостями, будут упакованы в итоговый JAR.
+
+После добавления этой конфигурации, когда вы выполните `mvn package`, Maven скомпилирует ваш проект, включит все зависимости и ресурсы в итоговый исполняемый JAR файл. Наименование конечного файла будет определяться значением переменной `${build.file.name}`. Если необходимо, эту переменную можно заранее определить в `<properties>` вашего `pom.xml`, или просто заменить в `<finalName>` на непосредственное имя файла.",
+===============================================================================================
