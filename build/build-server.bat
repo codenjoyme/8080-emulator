@@ -22,7 +22,6 @@ goto :main
 
 :eval_echo
     set input=%~1%
-    rem replace all " with "
     call :color "%BLUE%" "%input%"
     call %input%
     goto :eof
@@ -47,6 +46,6 @@ goto :main
     call :eval_echo "%ROOT%\mvnw.cmd clean package jetty:run -DskipTests=true -Dserver.host=%HOST% -Dserver.port=%PORT% -Prun-server"
 
     echo.
-    call :color "Press Enter to continue" %GRAY%
+    call :color "%YELLOW%" "Press Enter to continue"
     pause
     goto :eof

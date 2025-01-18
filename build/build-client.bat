@@ -22,7 +22,6 @@ goto :main
 
 :eval_echo
     set input=%~1%
-    rem replace all " with "
     call :color "%BLUE%" "%input%"
     call %input%
     goto :eof
@@ -59,6 +58,6 @@ goto :main
     call :eval_echo "run.bat .\ %PLATFORM%"
 
     echo.
-    call :color "Press Enter to continue" %GRAY%
+    call :color "%YELLOW%" "Press Enter to continue"
     pause
     goto :eof
