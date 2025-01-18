@@ -6,7 +6,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -53,37 +52,45 @@ public class Application {
     }
 
     public void handleKey(Key key) {
+        // обработка не системных клавиш
         if (!key.system()) {
             hard.keyboard().processKey(key);
             return;
         }
 
+        // если кнопка отпущена, то ничего не делать - дальше только хоткеи
         if (!key.pressed()) {
             return;
         }
 
+        // NUM_0 - переключение ромов `Лик` и `Специалист`
         if (key.numZero()) {
             hard.romSwitcher().nextRom(base);
         }
 
+        // NUM_1 - CPU пауза/продолжение
         if (key.numOne()) {
             hard.pauseResume();
         }
 
+        // NUM_2 - переключение режима отображения рамки
         if (key.numTwo()) {
             hard.graphic().nextDrawMode();
         }
 
+        // NUM_3 - сделать скриншот
         if (key.numThree()) {
             String file = Files.newScreenshot(base);
             hard.png().drawToFile(SCREEN.begin(), file);
         }
 
+        // NUM_4 - сбросить запись/воспроизведение
         if (key.numFour()) {
             Logger.debug("Stop record/replay");
             hard.record().reset();
         }
 
+        // NUM_5 - загрузить снапшот
         if (key.numFive()) {
             openFileDialog(file -> hard.loadSnapshot(base, toRelative(base, file)),
                     base + SNAPSHOTS,
@@ -91,11 +98,13 @@ public class Application {
                     "snp");
         }
 
+        // NUM_6 - сохранить снапшот
         if (key.numSix()) {
             String file = Files.newSnapshot(base);
             hard.saveSnapshot(file);
         }
 
+        // NUM_7 - загрузить запись
         if (key.numSlash()) {
             openFileDialog(file -> hard.loadRecord(base, toRelative(base, file)),
                     base + RECORDS,
@@ -103,7 +112,8 @@ public class Application {
                     "rec");
         }
 
-        if (key.numComma()) {
+        // NUM_DOT - загрузить данные из файла
+        if (key.numDot()) {
             RomSwitcher switcher = hard.romSwitcher();
             Platform platform = switcher.current();
             openFileDialog(file -> switcher.load(base, toRelative(base, file)),
@@ -112,18 +122,22 @@ public class Application {
                     "com", "rom", "rks", "bin", "mem", "bss", "bs1");
         }
 
+        // NUM_* - включение максимальной скорости
         if (key.numStar()) {
             hard.timings().changeFullSpeed();
         }
 
+        // NUM_9 - сброс ємулятора
         if (key.pause()) {
             hard.timings().willReset();
         }
 
+        // NUM_PLUS - замедление работы эмулятора
         if (key.numMinus()) {
             hard.timings().increaseDelay();
         }
 
+        // NUM_MINUS - ускорение работы эмулятора
         if (key.numPlus()) {
             hard.timings().decreaseDelay();
         }

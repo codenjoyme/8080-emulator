@@ -44,7 +44,7 @@ public class KeyCode {
     public static final int NUM_STAR = 0x6A;
     public static final int NUM_MINUS = 0x6D;
     public static final int NUM_PLUS = 0x6B;
-    public static final int NUM_COMMA = 0x6E;
+    public static final int NUM_DOT = 0x6E;
     public static final int NUM_1 = 0x61;
     public static final int NUM_2 = 0x62;
     public static final int NUM_3 = 0x63;

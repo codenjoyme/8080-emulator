@@ -91,8 +91,8 @@ public class Key {
         return code == NUM_PLUS;
     }
 
-    public boolean numComma() {
-        return code == NUM_COMMA;
+    public boolean numDot() {
+        return code == NUM_DOT;
     }
 
     public boolean pressed() {
@@ -155,7 +155,7 @@ public class Key {
                 || numStar()
                 || numMinus()
                 || numPlus()
-                || numComma()
+                || numDot()
                 || numZero()
                 || numOne()
                 || numTwo()
