@@ -1,5 +1,6 @@
 package spec;
 
+import spec.image.PngScreenToText;
 import spec.platforms.Lik;
 import spec.sound.Audio;
 import spec.sound.NewAudio;
@@ -32,6 +33,7 @@ public class Hardware {
     private GraphicControl graphtic;
     private Timings timings;
     private RomSwitcher romSwitcher;
+    private PngScreenToText screenToText;
 
     private boolean lineOut;
     private boolean cpuEnabled;
@@ -39,7 +41,7 @@ public class Hardware {
 
     private final List<Runnable> cpuSuspendedListeners = new CopyOnWriteArrayList<>();
 
-    public Hardware(int screenWidth, int screenHeight, Container parent) {
+    public Hardware(int screenWidth, int screenHeight, Container parent, String base) {
         lineOut = true;
         timings = createTimings();
         graphtic = createGraphicControl(parent);
@@ -50,6 +52,7 @@ public class Hardware {
         ports = createIoPorts();
         record = createKeyRecord();
         video = createVideo(screenWidth, screenHeight);
+        screenToText = createScreenToText(base);
         audio = createAudio();
         data = createHardwareData();
         cpu = createCpu(CPU_TICKS_PER_INTERRUPT);
@@ -59,6 +62,10 @@ public class Hardware {
     }
 
     // components
+
+    private PngScreenToText createScreenToText(String base) {
+        return new PngScreenToText(base);
+    }
 
     protected RomSwitcher createRomSwitcher() {
         return new RomSwitcher(this);
@@ -371,5 +378,9 @@ public class Hardware {
 
     public RomSwitcher romSwitcher() {
         return romSwitcher;
+    }
+
+    public String screenToText(String path) {
+        return screenToText.parse(path);
     }
 }

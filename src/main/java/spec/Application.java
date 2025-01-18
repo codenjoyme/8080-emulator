@@ -5,6 +5,8 @@ import spec.platforms.Platform;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -32,7 +34,7 @@ public class Application {
 
         Files.createFolders(base);
 
-        hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, parent);
+        hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, parent, base);
 
         hard.fileRecorder().with(Files.newRecord(base));
         hard.fileRecorder().startWriting();
@@ -141,9 +143,15 @@ public class Application {
         }
 
         // NUM_8 - сделать скриншот
+        // CTRL + NUM_8 - скопировать так же распознанный на экране текст в буфер обмена
         if (key.numEight()) {
             String file = Files.newScreenshot(base);
             hard.png().drawToFile(SCREEN.begin(), file);
+            if (key.ctrl()) {
+                String text = hard.screenToText(file);
+                System.out.println(text);
+                toClipboard(text);
+            }
         }
 
         // NUM_7 - переключение режима отображения рамки (какой порт отображать)
@@ -172,6 +180,13 @@ public class Application {
         if (key.numPlus()) {
             hard.timings().decreaseDelay();
         }
+    }
+
+    private void toClipboard(String text) {
+        Logger.debug("Copy to clipboard");
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection stringSelection = new StringSelection(text);
+        clipboard.setContents(stringSelection, null);
     }
 
     public static String toRelative(String base, File file) {
