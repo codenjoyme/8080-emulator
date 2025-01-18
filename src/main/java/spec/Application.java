@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 import static spec.Constants.*;
 import static spec.Files.RECORDS;
 import static spec.Files.SNAPSHOTS;
+import static spec.RomLoader.TYPE_SNP;
 
 public class Application {
 
@@ -224,16 +225,31 @@ public class Application {
     }
 
     private void load(String platform, String rom) {
-        Logger.debug("Load platform: '%s', rom file: '%s'", platform, rom);
+        Logger.debug("Load platform2: '%s', file: '%s'", platform, rom);
 
+        // ничего нет, грузим по умолчанию
         if (platform == null && rom == null) {
             hard.romSwitcher().loadRoms(base);
+            return;
         }
+        // грузим снепшот и только его
+        if (rom != null && rom.endsWith("." + TYPE_SNP)) {
+            // TODO #41 этот костыыль надо при загрузке снепшота из командной строки по полному
+            //      пути там под windows не работает добавление base
+            String realBase = rom.contains(":") ? "" : base;
+            hard.forceLoadSnapshot(realBase, rom);
+            return;
+        }
+        // грузим платформу если указана
         if (platform != null) {
             hard.romSwitcher().selectRom(base, platform);
         }
+        // грузим файл если указан
         if (rom != null) {
-            hard.romSwitcher().load(base, rom);
+            // TODO #41 этот костыыль надо при загрузке снепшота из командной строки по полному
+            //      пути там под windows не работает добавление base
+            String realBase = rom.contains(":") ? "" : base;
+            hard.romSwitcher().load(realBase, rom);
         }
     }
 }

@@ -38,8 +38,7 @@ goto :main
     call :eval_echo "set ROOT=%cd%"
     call :eval_echo "set OUT=%ROOT%\build\out"
     call :eval_echo "set BUILD=%ROOT%\target\webapp-synth"
-    call :eval_echo "set APP=%ROOT%\src\main\webapp\emulator-1.0.jar"
-    call :eval_echo "set RESOURCES=%ROOT%\src\main\resources"
+    call :eval_echo "set WEBAPP=%ROOT%\src\main\webapp"
     call :eval_echo "set PLATFORM=lik"
 
     call :color "%YELLOW%" "Please get content from '%OUT%' folder after build"
@@ -50,9 +49,7 @@ goto :main
 
     call :eval_echo "mkdir %OUT%"
     call :eval_echo "xcopy %BUILD% %OUT% /s /e /y"
-    call :eval_echo "copy %APP% %OUT%"
-    call :eval_echo "copy %RESOURCES%\run.bat %OUT%"
-    call :eval_echo "copy %RESOURCES%\run.sh %OUT%"
+    call :eval_echo "copy %WEBAPP%\run.* %OUT%"
 
     call :eval_echo "cd %OUT%"
     call :eval_echo "run.bat .\ %PLATFORM%"

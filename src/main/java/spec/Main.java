@@ -54,7 +54,7 @@ public class Main extends JFrame implements KeyListener {
         setFocusTraversalKeysEnabled(true);
         addKeyListener(this);
 
-        base = base == null ? "." : base;
+        base = base == null ? "./" : base;
         Logger.debug("Base url: " + base);
         app = new Application(this, base, platform, rom);
         app.start();

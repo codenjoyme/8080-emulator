@@ -269,12 +269,14 @@ public class Hardware {
     }
 
     public void loadSnapshot(String base, String path) {
-        pause(() -> {
-            roms.loadSnapshot(base, path);
-            keyLogger.reset();
-            video.redraw(SCREEN_MEMORY_START, memory);
-            resume();
-        });
+        pause(() -> forceLoadSnapshot(base, path));
+    }
+
+    public void forceLoadSnapshot(String base, String path) {
+        roms.loadSnapshot(base, path);
+        keyLogger.reset();
+        video.redraw(SCREEN_MEMORY_START, memory);
+        resume();
     }
 
     public void saveSnapshot(String path) {
@@ -294,7 +296,9 @@ public class Hardware {
     public Range loadData(String base, String path, String platform) {
         pause();
 
+        Logger.debug("Loading data from %s", base + path);
         Range range = roms.load(base, path);
+        Logger.debug("Data loaded in range: %s", range);
 
         // TODO #37 А точно тут надо для всех типов файлов делать загрузку монитора и команд J/G?
         int delta = 25_000;

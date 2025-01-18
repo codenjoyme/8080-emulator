@@ -13,8 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.substringAfter;
-import static spec.Constants.BASIC_LIK_V2_PROGRAM_START;
-import static spec.Constants.BASIC_V1_PROGRAM_START;
+import static spec.Constants.*;
 import static spec.math.WordMath.BITE;
 
 public class RomLoader {
@@ -74,11 +73,11 @@ public class RomLoader {
     private static InputStream openStream(String path) throws FileNotFoundException {
         File file = new File(path).getAbsoluteFile();
         if (file.exists()) {
-            Logger.debug("Open file: %s", path);
+            Logger.debug("Opening file: %s", path);
             return new FileInputStream(file);
         }
 
-        Logger.debug("Open classpath resource: %s", path);
+        Logger.debug("Opening classpath resource: %s", path);
         return RomLoader.class.getResourceAsStream(path);
     }
 
@@ -241,6 +240,8 @@ public class RomLoader {
     public Range loadSnapshot(String base, String path) {
         try {
             String absolute = base + path;
+            Logger.debug("Loading snapshot from %s", absolute);
+
             InputStream is = openStream(absolute);
             List<StateProvider> states = allStates();
             int size = statesSize(states);
@@ -252,8 +253,8 @@ public class RomLoader {
                 offset = readPart(provider, offset, bites);
             }
 
-            Logger.debug("Snapshot loaded from %s", absolute);
-            return new Range(0, size);
+            Logger.debug("Snapshot loaded");
+            return new Range(0, -x10000);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

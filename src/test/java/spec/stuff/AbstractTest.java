@@ -97,7 +97,7 @@ public abstract class AbstractTest {
         fileAssert = new FileAssert(testBase());
         fileAssert.removeTestsData();
 
-        hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, null) {
+        hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, null, base) {
 
             @Override
             protected Memory createMemory() {

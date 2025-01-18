@@ -20,8 +20,9 @@ public class RomSwitcher implements StateProvider {
     }
 
     public void loadRoms(String base) {
-        PlatformFactory.platform(platform)
-                .loadRom(base, hard.roms());
+        Platform platform = PlatformFactory.platform(this.platform);
+        Logger.debug("Load ROMs for platform '%s'", platform.name());
+        platform.loadRom(base, hard.roms());
         hard.reset();
     }
 
@@ -31,10 +32,11 @@ public class RomSwitcher implements StateProvider {
 
     public void selectRom(String base, String platform) {
         this.platform = platform;
-        Logger.debug("Switch to %s", platform);
+        Logger.debug("Switch platform to %s", platform);
         hard.pause();
         loadRoms(base);
         hard.reset();
+        Logger.debug("Platform switched");
     }
 
     public Platform current() {
