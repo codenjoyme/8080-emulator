@@ -489,72 +489,32 @@ Loading 'file:/C:/Java/8080-emulator/src/main/resources/lik/roms/06_basicLik.bin
 После того как приложение запущено, есть несколько вариантов как влиять на работу эмулятора. 
 Большинство манипуляций осуществляются через number pad - `NumLock` должен быть включен.
 
+### Клавиши сброса процессора:
+
 - `Pause/Break` - Сброс процессора. После сброса процессора, загружается монитор (ЛИК или Специалист).
 
 - `End` - Эмуляция клавиши `Stop` на клавиатуре. 
 
+### Клавиши загрузки программ/платформ:
+
 - `NumPad 0` - Переключение ПЗУ Лик/Специалист.
 
-- `NumPad 1` - Приостановка/Запуск процессора.
+- `NumPad .` - Загрузка бинарного файла в память. Откроется диалог `Data file` и можно выбрать файл
+  `com`, `rom`, `bin`, `rks` или `mem`.
+    + `com` - загружаеся в область памяти `0x0100`.
+    + `rom` и `bin` - загружается в область памяти `0xC000`.
+    + `rks` - загружается в область памяти указанный в самом файле - первые 4 байта файла
+      отвечают за это: lo(START), hi(START), lo(END), hi(END). Затем идут данные. Последние два байта -
+      контрольная сумма: lo(CRC), hi(CRC).
+    + `mem` - загружается в область памяти `0x0000`.
 
-- `NumPad 2` - Режим вывода бордюра. Работает цилично.  
-  + `ioDrawMode = 0` - бордюр подсвечивает активно ли окно эмулятора
-  + `ioDrawMode = 1` - бордюр подсвечивает запись байта в порт А
-  + `ioDrawMode = 2` - бордюр подсвечивает запись байта в порт B
-  + `ioDrawMode = 3` - бордюр подсвечивает запись байта в порт C
-  + `ioDrawMode = 4` - бордюр подсвечивает запись байта в порт RgSYS
-  
-- `NumPad 3` - Создает скринотшот в папке `screenshots` с именем содержащим текущую дату.
+  После загрузки файла в память, происходит `reset` процессора, загружается монитор (ЛИК или Специалист),
+  а затем выполняется команда `JXXXX` (ЛИК) или `GXXXX` (Специалист) для запуска программы, где `XXXX` -
+  адрес начала программы.
 
-- `NumPad 4` - Останавливает воспроизведение/запись replay.
+### Клавиши управления записью/воспроизведением нажатий клавиш во время работы эмулятора:
 
-- `NumPad 5` - Загрузка состояния машины из папки `snapshots`. При этом заружаются все 
-  регистры CPU, IO порты и состояния клавиатуры, а так же вся память. Выполнение продолдается с 
-  места на котором было сохранено состояние.
-
-- `NumPad 6` - Сохранение состояния машины в папку `snapshots`. При этом сохраняются все
-   регистры CPU, IO порты и состояния клавиатуры, а так же вся память. Сохранение происходит в файл
-   с расширением `snp`. Его структура такая:
-   * CPU state: 
-     - 2 bytes             - `PC` (low byte, high byte) 
-     - 2 bytes             - `SP` (low byte, high byte) 
-     - 2 bytes             - `AF` (low byte, high byte) 
-     - 2 bytes             - `BC` (low byte, high byte) 
-     - 2 bytes             - `DE` (low byte, high byte) 
-     - 2 bytes             - `HL` (low byte, high byte)
-     - 4 bytes for int     - `interrupt`
-     - 4 bytes for int     - `tick`
-     - 4 bytes for int     - `tact` 
-   * Keyboard state:
-     - 12*6 bytes          - keyboard state 12 x 6 for all keys - is key pressed
-     - 1 byte              - flags `0b__shift_alt_ctrl_shiftEmu__cyrLat_0_0_0`
-       + shift             - `0b_x000_0000` is shift key pressed
-       + alt               - `0b_0x00_0000` is alt key pressed
-       + ctrl              - `0b_00x0_0000` is ctrl key pressed
-       + shiftEmu          - `0b_000x_0000` is shiftEmu flag is set
-       + cyrLat            - `0b_0000_x000` is cyrLat is cyrillic or latin
-   * I/O ports state:
-     - 1 byte              - flags `0b__0_0_0_A__C1_0_B_C0`
-       + Ain               - `0b_000x_0000`
-       + Bin               - `0b_0000_00x0`
-       + C0in              - `0b_0000_000x`
-       + C1in              - `0b_0000_x000`
-   * GraphicControl state: 
-     - 1 byte for int      - `ioDrawMode` 
-   * Timings state: 
-     - 4 bytes for int     - `interrupt` 
-     - 4 bytes for int     - `refreshRate` 
-     - 1 byte for boolean  - 1 if `willReset` true, 0 otherwise 
-     - 8 bytes for long    - `last` 
-     - 4 bytes for int     - `delay` 
-     - 1 byte for boolean  - 1 if `fullSpeed` true, 0 otherwise 
-     - 8 bytes for long    - `time` 
-     - 4 bytes for int     - `iterations` 
-   * Memory dump: `0x0000` - `0xFFFF` 
-   * ROM switcher state:
-     - 1 byte for boolean  - 1 if `lik` true, 0 otherwise  
-
-- `NumPad /` - Запуск replay режима. Откроется диалог `Recording file` в котором можно выбрать файл `rec` 
+- `NumPad 3` - Запуск replay режима. Откроется диалог `Recording file` в котором можно выбрать файл `rec`
   с записью. После выбора файла эмулятор выполнит `reset` и начнет воспроизведение записи.
   Формат файла текстовый, показывает все нажатые клавиши в зависимости от тика процессора.
   ```
@@ -567,31 +527,89 @@ Loading 'file:/C:/Java/8080-emulator/src/main/resources/lik/roms/06_basicLik.bin
     after(226480).down(0x0A);
     after(87217).up(0x0A);
   ```
-  В данном примере на 138119й тик после сброса процессора нажата клавиша `0x23`, затем 
+  В данном примере на 138119й тик после сброса процессора нажата клавиша `0x23`, затем
   еще после 57046 тиков она отпущена. Потом через 56044 тика нажата клавиша `0x0A` и так далее.
-  Когда файл закончится, эмулятор перейдет в нормальный режим, но будет продолжать записывать 
+  Когда файл закончится, эмулятор перейдет в нормальный режим, но будет продолжать записывать
   все новые нажатия в исходный файл.
 
-- `NumPad .` - Загрузка бинарного файла в память. Откроется диалог `Data file` и можно выбрать файл
-  `com`, `rom`, `bin`, `rks` или `mem`.
-  + `com` - загружаеся в область памяти `0x0100`.
-  + `rom` и `bin` - загружается в область памяти `0xC000`.
-  + `rks` - загружается в область памяти указанный в самом файле - первые 4 байта файла 
-    отвечают за это: lo(START), hi(START), lo(END), hi(END). Затем идут данные. Последние два байта - 
-    контрольная сумма: lo(CRC), hi(CRC).
-  + `mem` - загружается в область памяти `0x0000`.
-  
-  После загрузки файла в память, происходит `reset` процессора, загружается монитор (ЛИК или Специалист),
-  а затем выполняется команда `JXXXX` (ЛИК) или `GXXXX` (Специалист) для запуска программы, где `XXXX` -
-  адрес начала программы.
+- `NumPad 2` - Останавливает воспроизведение/запись replay.
+
+- `NumPad 1` - Зарезервировано для будущего использования.
+
+### Клавиши управления сохранением/загрузкой состояний машины:
+
+- `NumPad 6` - Загрузка состояния машины из папки `snapshots`. При этом заружаются все
+  регистры CPU, IO порты и состояния клавиатуры, а так же вся память. Выполнение продолдается с
+  места на котором было сохранено состояние.
+
+- `NumPad 5` - Сохранение состояния машины в папку `snapshots`. При этом сохраняются все
+  регистры CPU, IO порты и состояния клавиатуры, а так же вся память. Сохранение происходит в файл
+  с расширением `snp`. Его структура такая:
+    * CPU state:
+        - 2 bytes             - `PC` (low byte, high byte)
+        - 2 bytes             - `SP` (low byte, high byte)
+        - 2 bytes             - `AF` (low byte, high byte)
+        - 2 bytes             - `BC` (low byte, high byte)
+        - 2 bytes             - `DE` (low byte, high byte)
+        - 2 bytes             - `HL` (low byte, high byte)
+        - 4 bytes for int     - `interrupt`
+        - 4 bytes for int     - `tick`
+        - 4 bytes for int     - `tact`
+    * Keyboard state:
+        - 12*6 bytes          - keyboard state 12 x 6 for all keys - is key pressed
+        - 1 byte              - flags `0b__shift_alt_ctrl_shiftEmu__cyrLat_0_0_0`
+            + shift             - `0b_x000_0000` is shift key pressed
+            + alt               - `0b_0x00_0000` is alt key pressed
+            + ctrl              - `0b_00x0_0000` is ctrl key pressed
+            + shiftEmu          - `0b_000x_0000` is shiftEmu flag is set
+            + cyrLat            - `0b_0000_x000` is cyrLat is cyrillic or latin
+    * I/O ports state:
+        - 1 byte              - flags `0b__0_0_0_A__C1_0_B_C0`
+            + Ain               - `0b_000x_0000`
+            + Bin               - `0b_0000_00x0`
+            + C0in              - `0b_0000_000x`
+            + C1in              - `0b_0000_x000`
+    * GraphicControl state:
+        - 1 byte for int      - `ioDrawMode`
+    * Timings state:
+        - 4 bytes for int     - `interrupt`
+        - 4 bytes for int     - `refreshRate`
+        - 1 byte for boolean  - 1 if `willReset` true, 0 otherwise
+        - 8 bytes for long    - `last`
+        - 4 bytes for int     - `delay`
+        - 1 byte for boolean  - 1 if `fullSpeed` true, 0 otherwise
+        - 8 bytes for long    - `time`
+        - 4 bytes for int     - `iterations`
+    * Memory dump: `0x0000` - `0xFFFF`
+    * ROM switcher state:
+        - 1 byte for boolean  - 1 if `lik` true, 0 otherwise
+
+- `NumPad 4` - Зарезервировано для будущего использования.
+
+### Другие клавиши
+
+- `NumPad 9` - Зарезервировано для будущего использования (загрузки).
+
+- `NumPad 8` - Создает скринотшот в папке `screenshots` с именем содержащим текущую дату.
+
+- `NumPad 7` - Режим вывода бордюра (цветной рамки). Работает цилично.
+    + `ioDrawMode = 0` - бордюр подсвечивает активно ли окно эмулятора
+    + `ioDrawMode = 1` - бордюр подсвечивает запись байта в порт А
+    + `ioDrawMode = 2` - бордюр подсвечивает запись байта в порт B
+    + `ioDrawMode = 3` - бордюр подсвечивает запись байта в порт C
+    + `ioDrawMode = 4` - бордюр подсвечивает запись байта в порт RgSYS
+
+### Клавиши управления скоростью эмуляции
+
+- `NumPad /` - Приостановка/Запуск процессора.
 
 - `NumPad *` - Ускорение/Замедление эмуляции. По умолчанию эмуляция происходит в реальном времени.
   При нажатии клавиши происходит максимальное возможное ускорение эмуляции. При повторном нажатии 
   происходит возврат к реальному времени.
 
-- `NumPad +` - Плавное наращивание скорости эмуляции до максимальной. 
-
 - `NumPad -` - Плавное уменьшение скорости эмуляции до минимальной.
+
+- `NumPad +` - Плавное наращивание скорости эмуляции до максимальной. 
 
 Формат файла `RKS`
 --------------

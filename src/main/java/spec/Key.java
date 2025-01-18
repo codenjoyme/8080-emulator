@@ -79,6 +79,18 @@ public class Key {
         return code == NUM_6;
     }
 
+    public boolean numSeven() {
+        return code == NUM_7;
+    }
+
+    public boolean numEight() {
+        return code == NUM_8;
+    }
+
+    public boolean numNine() {
+        return code == NUM_9;
+    }
+
     public boolean numStar() {
         return code == NUM_STAR;
     }
@@ -162,7 +174,10 @@ public class Key {
                 || numThree()
                 || numFour()
                 || numFive()
-                || numSix();
+                || numSix()
+                || numSeven()
+                || numEight()
+                || numNine();
     }
 
     @Override

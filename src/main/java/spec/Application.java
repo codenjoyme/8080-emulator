@@ -63,56 +63,21 @@ public class Application {
             return;
         }
 
+        // ======== сброс =========
+
+        // PAUSE - сброс ємулятора
+        if (key.pause()) {
+            hard.timings().willReset();
+        }
+
+        // ========= загрузка ромов =========
+
         // NUM_0 - переключение ромов `Лик` и `Специалист`
         if (key.numZero()) {
             hard.romSwitcher().nextRom(base);
         }
 
-        // NUM_1 - CPU пауза/продолжение
-        if (key.numOne()) {
-            hard.pauseResume();
-        }
-
-        // NUM_2 - переключение режима отображения рамки
-        if (key.numTwo()) {
-            hard.graphic().nextDrawMode();
-        }
-
-        // NUM_3 - сделать скриншот
-        if (key.numThree()) {
-            String file = Files.newScreenshot(base);
-            hard.png().drawToFile(SCREEN.begin(), file);
-        }
-
-        // NUM_4 - сбросить запись/воспроизведение
-        if (key.numFour()) {
-            Logger.debug("Stop record/replay");
-            hard.record().reset();
-        }
-
-        // NUM_5 - загрузить снапшот
-        if (key.numFive()) {
-            openFileDialog(file -> hard.loadSnapshot(base, toRelative(base, file)),
-                    base + SNAPSHOTS,
-                    "Snapshot file",
-                    "snp");
-        }
-
-        // NUM_6 - сохранить снапшот
-        if (key.numSix()) {
-            String file = Files.newSnapshot(base);
-            hard.saveSnapshot(file);
-        }
-
-        // NUM_7 - загрузить запись
-        if (key.numSlash()) {
-            openFileDialog(file -> hard.loadRecord(base, toRelative(base, file)),
-                    base + RECORDS,
-                    "Recording file",
-                    "rec");
-        }
-
-        // NUM_DOT - загрузить данные из файла
+        // NUM_. - загрузить данные из файла
         if (key.numDot()) {
             RomSwitcher switcher = hard.romSwitcher();
             Platform platform = switcher.current();
@@ -122,22 +87,88 @@ public class Application {
                     "com", "rom", "rks", "bin", "mem", "bss", "bs1");
         }
 
+        // ========= запись / воспроизведение =========
+
+        // NUM_3 - загрузить запись
+        if (key.numThree()) {
+            openFileDialog(file -> hard.loadRecord(base, toRelative(base, file)),
+                    base + RECORDS,
+                    "Recording file",
+                    "rec");
+        }
+
+        // NUM_2 - сбросить запись/воспроизведение
+        if (key.numTwo()) {
+            Logger.debug("Stop record/replay");
+            hard.record().reset();
+        }
+
+        // NUM_1 - что-то еще с записью TODO надо ли это?
+        if (key.numOne()) {
+            Logger.debug("Do not implemented");
+        }
+
+        // ========= работа со снепшотами =========
+
+        // NUM_6 - загрузить снапшот
+        if (key.numSix()) {
+            openFileDialog(file -> hard.loadSnapshot(base, toRelative(base, file)),
+                    base + SNAPSHOTS,
+                    "Snapshot file",
+                    "snp");
+        }
+
+        // NUM_5 - сохранить снапшот
+        if (key.numFive()) {
+            String file = Files.newSnapshot(base);
+            hard.saveSnapshot(file);
+        }
+
+        // NUM_4 - что-то еще со стейтом машины TODO потом решить
+        if (key.numFour()) {
+            Logger.debug("Do not implemented");
+        }
+
+        // ========= другие клавиши =========
+
+        // NUM_9 - загрузить что-то еще TODO потом решить
+        if (key.numNine()) {
+            Logger.debug("Do not implemented");
+            // openFileDialog(file -> hard.loadSomething(base, toRelative(base, file)),
+            //         base + SOMETHING,
+            //         "Something file",
+            //         "smth");
+        }
+
+        // NUM_8 - сделать скриншот
+        if (key.numEight()) {
+            String file = Files.newScreenshot(base);
+            hard.png().drawToFile(SCREEN.begin(), file);
+        }
+
+        // NUM_7 - переключение режима отображения рамки (какой порт отображать)
+        if (key.numSeven()) {
+            hard.graphic().nextDrawMode();
+        }
+
+        // ======== управление эмулятором =========
+
+        // NUM_/ - CPU пауза/продолжение
+        if (key.numSlash()) {
+            hard.pauseResume();
+        }
+
         // NUM_* - включение максимальной скорости
         if (key.numStar()) {
             hard.timings().changeFullSpeed();
         }
 
-        // NUM_9 - сброс ємулятора
-        if (key.pause()) {
-            hard.timings().willReset();
-        }
-
-        // NUM_PLUS - замедление работы эмулятора
+        // NUM_- - замедление работы эмулятора
         if (key.numMinus()) {
             hard.timings().increaseDelay();
         }
 
-        // NUM_MINUS - ускорение работы эмулятора
+        // NUM_+ - ускорение работы эмулятора
         if (key.numPlus()) {
             hard.timings().decreaseDelay();
         }
