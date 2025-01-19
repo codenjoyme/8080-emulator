@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import spec.math.Bites;
 import spec.math.WordMath;
+import spec.platforms.Lik;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -326,10 +327,12 @@ public class RomLoader {
                 return loadSnapshot(base, path);
             }
             case TYPE_BSS: {
+                loadRKS(base, new Lik().app("basic", ".rks"));
                 loadBSS(base, path);
                 return new Range(0, BASIC_LIK_V2_PROGRAM_START);
             }
             case TYPE_BS1: {
+                loadRKS(base, new Lik().app("basic2", ".rks"));
                 loadBS1(base, path);
                 return new Range(0, BASIC_V1_PROGRAM_START);
             }
