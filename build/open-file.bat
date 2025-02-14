@@ -1,19 +1,20 @@
 @echo off
-setlocal enabledelayedexpansion
+setlocal EnableDelayedExpansion
 
-set "template=open-file.re_"
-set "output=open-file.reg"
-set "current_path=%~dp0"
-set "formatted_path=%current_path:\=\\%"
+set "INPUT_FILE=open-file.re_"
+set "OUTPUT_FILE=open-file.reg"
+set "CURRENT_DIR=%~dp0"
+set "CURRENT_DIR=%CURRENT_DIR:~0,-1%"
+set "CURRENT_DIR=%CURRENT_DIR:\=\\%"
 
-if exist "%output%" del "%output%"
+if exist "%OUTPUT_FILE%" del "%OUTPUT_FILE%"
 
-for /f "tokens=*" %%a in (%template%) do (
+for /f "tokens=*" %%a in ('type "%INPUT_FILE%"') do (
     set "line=%%a"
-    set "line=!line:<PATH>\\=%formatted_path%!"
-    echo !line! >> "%output%"
+    if not "!line!"=="!line:<PATH>=!" (
+       set "line=!line:<PATH>=%CURRENT_DIR%!"
+    )
+    echo !line! >> "%OUTPUT_FILE%"
 )
 
-start "" "%output%"
-
-endlocal
+start "" "%OUTPUT_FILE%"

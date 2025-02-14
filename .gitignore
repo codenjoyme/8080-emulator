@@ -3,10 +3,11 @@ target/
 *.iml
 build/out/
 /*.rec
-node_modules
-screenshots/
-snapshots/
-records/
+/node_modules
+/screenshots/
+/snapshots/
+/records/
+/build/open-file.reg
 /src/main/resources/arch/pk-info.ru/Компьютеры/МС-1502/*
 /src/main/resources/arch/pk-info.ru/Программы #2/boot_games2_igroteka_start.rar
 /src/main/resources/arch/pk-info.ru/Программы #2/SP580_Tape_SIDE1.7z
