@@ -2,7 +2,10 @@ package spec;
 
 import spec.image.PngScreenToText;
 import spec.platforms.Lik;
-import spec.sound.*;
+import spec.sound.Audio;
+import spec.sound.NewAudio;
+import spec.sound.NoAudio;
+import spec.sound.OldAudio;
 
 import java.awt.*;
 import java.util.List;
@@ -87,7 +90,7 @@ public class Hardware {
         }
         // TODO #39 Добавить поддержку звука. Закончить попытки и сделать звук красивым.
         if (lineOut) {
-            return audio = new ContinuousAudio();
+            return audio = new OldAudio();
         } else {
             return audio = new NewAudio();
         }
