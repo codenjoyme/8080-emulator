@@ -173,9 +173,10 @@ public class Hardware {
                             audio.write(0x00);
                         } else if (bite == 0x0B) {
                             audio.write(0xFF);
+                        } else {
+                            audio.write(0x00);
                         }
                     }
-                    // System.out.println(WordMath.hex8(bite));
                 }
                 Hardware.this.outPort8(IOPorts.RgRGB, bite);
             }

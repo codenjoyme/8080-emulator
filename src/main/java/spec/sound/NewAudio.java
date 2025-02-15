@@ -4,8 +4,8 @@ import javax.sound.sampled.*;
 
 public class NewAudio implements Audio {
 
-    private static final int CPU_SAMPLE_RATE = 8000;
-    private static final int BUFFER_CAPACITY = 1024;
+    private static final int CPU_SAMPLE_RATE = 2500;
+    private static final int BUFFER_CAPACITY = 128;
 
     private final SourceDataLine line;
     private final byte[] buffer = new byte[BUFFER_CAPACITY];
@@ -27,23 +27,26 @@ public class NewAudio implements Audio {
     public void write(int bite) {
         buffer[bufferIndex++] = (byte) (bite - 128);
         if (bufferIndex >= buffer.length) {
-            bufferIndex = 0;
+            synchronized (this) {
+                line.write(buffer, 0, buffer.length);
+                clearBuffer();
+            }
         }
     }
 
     @Override
     public void tick() {
-        if (bufferIndex > 0) {
-            line.write(buffer, 0, bufferIndex);
-            clearBuffer(); // Очистка буфера после отправки данных
+        synchronized (this) {
+            if (bufferIndex > 0) {
+                line.write(buffer, 0, bufferIndex);
+                clearBuffer();
+            }
         }
     }
 
     private void clearBuffer() {
-        for (int i = 0; i < bufferIndex; i++) {
-            buffer[i] = 0; // Зануляем буфер
-        }
-        bufferIndex = 0; // Сброс индекса после очистки буфера
+        java.util.Arrays.fill(buffer, (byte) 0); // Полная очистка содержимого буфера
+        bufferIndex = 0;
     }
 
     @Override
@@ -51,9 +54,4 @@ public class NewAudio implements Audio {
         // Не используется
     }
 
-    public void stop() {
-        line.drain();
-        line.stop();
-        line.close();
-    }
 }
