@@ -27,14 +27,16 @@ public class NewAudio implements Audio {
     public void write(int bite) {
         buffer[bufferIndex++] = (byte) (bite - 128);
         if (bufferIndex >= buffer.length) {
-            line.write(buffer, 0, buffer.length);
             bufferIndex = 0;
         }
     }
 
     @Override
     public void tick() {
-        // Не используется
+        if (bufferIndex > 0) {
+            line.write(buffer, 0, bufferIndex);
+            bufferIndex = 0; // Сброс индекса после записи
+        }
     }
 
     @Override
