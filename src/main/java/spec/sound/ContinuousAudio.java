@@ -1,19 +1,23 @@
 package spec.sound;
 
 import javax.sound.sampled.*;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class ContinuousAudio implements Audio {
 
-    private static final int BUFFER_SIZE = 512; // Размер буфера для воспроизведения
+    private static final int CPU_SAMPLE_RATE = 2500;
+    private static final int BUFFER_SIZE = 1024;
+
     private final SourceDataLine line;
     private final AudioFormat format;
     private final ExecutorService executor;
+    private final ArrayBlockingQueue<Byte> audioQueue = new ArrayBlockingQueue<>(1024);
 
     public ContinuousAudio() {
         try {
-            format = new AudioFormat(2500, 8, 1, false, false);
+            format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
             DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
             line = (SourceDataLine) AudioSystem.getLine(info);
             line.open(format, BUFFER_SIZE);
@@ -26,18 +30,23 @@ public class ContinuousAudio implements Audio {
 
     @Override
     public void write(int bite) {
-        byte[] data = new byte[]{(byte) bite};
-        executor.execute(() -> line.write(data, 0, 1));
+        audioQueue.offer((byte) (bite - 128)); // Преобразование примера в знаковый тип, если требуется
     }
 
     @Override
     public void tick() {
-        // не требуется для непрерывного вывода
+        if (!audioQueue.isEmpty()) {
+            byte[] buffer = new byte[Math.min(BUFFER_SIZE, audioQueue.size())];
+            for (int i = 0; i < buffer.length; i++) {
+                buffer[i] = audioQueue.poll();
+            }
+            line.write(buffer, 0, buffer.length);
+        }
     }
 
     @Override
     public void play() {
-        // не требуется для непрерывного вывода
+        // Не требуется для непрерывного вывода
     }
 
     public void stop() {
