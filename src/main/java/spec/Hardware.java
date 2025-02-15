@@ -2,10 +2,7 @@ package spec;
 
 import spec.image.PngScreenToText;
 import spec.platforms.Lik;
-import spec.sound.Audio;
-import spec.sound.NewAudio;
-import spec.sound.NoAudio;
-import spec.sound.OldAudio;
+import spec.sound.*;
 
 import java.awt.*;
 import java.util.List;
@@ -90,7 +87,7 @@ public class Hardware {
         }
         // TODO #39 Добавить поддержку звука. Закончить попытки и сделать звук красивым.
         if (lineOut) {
-            return audio = new OldAudio();
+            return audio = new ContinuousAudio();
         } else {
             return audio = new NewAudio();
         }
@@ -168,7 +165,7 @@ public class Hardware {
                         } else if (bite == 0x0F) {
                             audio.write(0xFF);
                         }
-                    } else { // звучит вівод на динамик
+                    } else { // звучит вывод на динамик
                         if (bite == 0x0A) {
                             audio.write(0x00);
                         } else if (bite == 0x0B) {
