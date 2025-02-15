@@ -35,8 +35,15 @@ public class NewAudio implements Audio {
     public void tick() {
         if (bufferIndex > 0) {
             line.write(buffer, 0, bufferIndex);
-            bufferIndex = 0; // Сброс индекса после записи
+            clearBuffer(); // Очистка буфера после отправки данных
         }
+    }
+
+    private void clearBuffer() {
+        for (int i = 0; i < bufferIndex; i++) {
+            buffer[i] = 0; // Зануляем буфер
+        }
+        bufferIndex = 0; // Сброс индекса после очистки буфера
     }
 
     @Override
