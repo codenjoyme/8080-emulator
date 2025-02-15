@@ -42,7 +42,7 @@ public class Hardware {
     private final List<Runnable> cpuSuspendedListeners = new CopyOnWriteArrayList<>();
 
     public Hardware(int screenWidth, int screenHeight, Container parent, String base) {
-        lineOut = true;
+        lineOut = false;
         timings = createTimings();
         graphtic = createGraphicControl(parent);
         memory = createMemory();

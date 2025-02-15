@@ -1,26 +1,23 @@
 package spec.sound;
 
 import javax.sound.sampled.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
-public class NewAudio implements Runnable, Audio {
+public class NewAudio implements Audio {
 
-    public static final int CPU_SAMPLE_RATE = 2500;
+    private static final int CPU_SAMPLE_RATE = 8000;
+    private static final int BUFFER_CAPACITY = 1024;
 
-    private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-    private SourceDataLine line;
-    private AudioFormat format;
-
-    private byte[] buffer = new byte[100];
-    private int index = 0;
-    private int state = 0;
+    private final SourceDataLine line;
+    private final byte[] buffer = new byte[BUFFER_CAPACITY];
+    private int bufferIndex = 0;
 
     public NewAudio() {
         try {
-            format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, false, false);
+            AudioFormat format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
             DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
             line = (SourceDataLine) AudioSystem.getLine(info);
+            line.open(format);
+            line.start();
         } catch (LineUnavailableException e) {
             throw new RuntimeException(e);
         }
@@ -28,33 +25,26 @@ public class NewAudio implements Runnable, Audio {
 
     @Override
     public void write(int bite) {
-        state = bite;
+        buffer[bufferIndex++] = (byte) (bite - 128);
+        if (bufferIndex >= buffer.length) {
+            line.write(buffer, 0, buffer.length);
+            bufferIndex = 0;
+        }
     }
 
     @Override
     public void tick() {
-        buffer[index++] = (byte) state;
-        if (index >= buffer.length) {
-            index = 0;
-            play();
-        }
-    }
-
-    @Override
-    public void run() {
-        try {
-            line.open(format, buffer.length);
-            line.start();
-            line.write(buffer, 0, buffer.length);
-            line.drain();
-            line.stop();
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        }
+        // Не используется
     }
 
     @Override
     public void play() {
-        executor.submit(this);
+        // Не используется
+    }
+
+    public void stop() {
+        line.drain();
+        line.stop();
+        line.close();
     }
 }
