@@ -4,17 +4,24 @@ import javax.sound.sampled.*;
 
 public class NewAudio implements Audio {
 
-    private static final int CPU_SAMPLE_RATE = 2500;
+    private static final int CPU_SAMPLE_RATE = 2500; // here should be 8000 for `BUDDY`
     private static final int BUFFER_CAPACITY = 128;
 
-    private final SourceDataLine line;
+    private final DataLine.Info info;
+    private final AudioFormat format;
+
     private final byte[] buffer = new byte[BUFFER_CAPACITY];
-    private int bufferIndex = 0;
+    private SourceDataLine line;
+    private int index = 0;
 
     public NewAudio() {
+        format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
+        info = new DataLine.Info(SourceDataLine.class, format);
+        createLine();
+    }
+
+    private void createLine() {
         try {
-            AudioFormat format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
-            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
             line = (SourceDataLine) AudioSystem.getLine(info);
             line.open(format);
             line.start();
@@ -25,28 +32,28 @@ public class NewAudio implements Audio {
 
     @Override
     public void write(int bite) {
-        buffer[bufferIndex++] = (byte) (bite - 128);
-        if (bufferIndex >= buffer.length) {
-            synchronized (this) {
-                line.write(buffer, 0, buffer.length);
-                clearBuffer();
-            }
+        buffer[index++] = (byte) (bite - 128);
+        if (index >= buffer.length) {
+            soundBuffer();
+        }
+    }
+
+    private void soundBuffer() {
+        synchronized (this) {
+            line.flush();
+            line.write(buffer, 0, buffer.length);
+            clearBuffer();
         }
     }
 
     @Override
     public void tick() {
-        synchronized (this) {
-            if (bufferIndex > 0) {
-                line.write(buffer, 0, bufferIndex);
-                clearBuffer();
-            }
-        }
+        write(128); // remove this to better `BUDY`
     }
 
     private void clearBuffer() {
         java.util.Arrays.fill(buffer, (byte) 0); // Полная очистка содержимого буфера
-        bufferIndex = 0;
+        index = 0;
     }
 
     @Override
