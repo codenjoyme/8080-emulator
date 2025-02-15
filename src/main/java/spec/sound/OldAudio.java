@@ -12,7 +12,6 @@ public class OldAudio implements Audio {
 
     private final SourceDataLine line;
     private final AudioFormat format;
-    private final ExecutorService executor;
     private final ArrayBlockingQueue<Byte> audioQueue = new ArrayBlockingQueue<>(1024);
 
     public OldAudio() {
@@ -25,12 +24,11 @@ public class OldAudio implements Audio {
             throw new RuntimeException(e);
         }
         line.start();
-        executor = Executors.newSingleThreadExecutor();
     }
 
     @Override
     public void write(int bite) {
-        audioQueue.offer((byte) (bite - 128)); // Преобразование примера в знаковый тип, если требуется
+        audioQueue.offer((byte) (bite - 128));
     }
 
     @Override
@@ -46,13 +44,6 @@ public class OldAudio implements Audio {
 
     @Override
     public void play() {
-        // Не требуется для непрерывного вывода
-    }
-
-    public void stop() {
-        executor.shutdown();
-        line.drain();
-        line.stop();
-        line.close();
+        // do nothing
     }
 }
