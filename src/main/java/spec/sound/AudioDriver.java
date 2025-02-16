@@ -31,7 +31,7 @@ public class AudioDriver {
 
         // TODO #39 Добавить поддержку звука. Закончить попытки и сделать звук красивым.
         if (audioMode) {
-            return new OldAudio();
+            return new LineOutAudio();
         } else {
             return new NewAudio();
         }
