@@ -22,7 +22,6 @@ public class Timings implements StateProvider{
     private boolean fullSpeed = false;
 
     private long time;
-    private int iterations;
 
     public Timings(Hardware hard) {
         this.hard = hard;
@@ -53,9 +52,9 @@ public class Timings implements StateProvider{
     }
 
     protected void profiling() {
-        if (++iterations % 1000 == 0) {
+        if (interrupt % LOG_EACH_INTERRUPT == 0) {
             if (time != 0) {
-                Logger.debug("Time per 10k interrupts: %s ms", 1.0D * (now() - time) / 1000_000);
+                Logger.debug("Time per 1k interrupts: %s ms", 1.0D * (now() - time) / NANOS);
             }
             time = now();
         }
@@ -67,9 +66,9 @@ public class Timings implements StateProvider{
 
     protected void sleep() {
         // Trying to slow to 100%, browsers resolution on the system
-        // time is not accurate enough to check every interrurpt. So
-        // we check every 4 interrupts.
-        if ((interrupt % 4) == 0) {
+        // time is not accurate enough to check every interrupt. So
+        // we check every `n` interrupts.
+        if ((interrupt % SLEEP_EACH_INTERRUPT) == 0) {
             long time = now();
             long duration = time - last;
             last = time;
@@ -82,7 +81,7 @@ public class Timings implements StateProvider{
 
     public void sleep(long nanos) {
         try {
-            Thread.sleep(nanos / 1_000_000, (int) (nanos % 1_000_000));
+            Thread.sleep(nanos / NANOS, (int) (nanos % NANOS));
         } catch (Exception ignored) {
             // do nothing
         }
@@ -107,13 +106,13 @@ public class Timings implements StateProvider{
         if (delay < 10) {
             delay++;
         } else {
-            delay = (int) (delay / 0.8);
+            delay = (int) (delay / INCREASE_DELAY);
         }
         Logger.debug("Delay increased: %s", delay);
     }
 
     public void decreaseDelay() {
-        delay = (int) (delay * 0.8);
+        delay = (int) (delay * INCREASE_DELAY);
         Logger.debug("Delay decreased: %s", delay);
     }
 
@@ -133,7 +132,6 @@ public class Timings implements StateProvider{
         delay = (int) joinBites(bites, new Range(17, 20));
         fullSpeed = bites.get(21) == 1;
         time = joinBites(bites, new Range(22, 29));
-        iterations = (int) joinBites(bites, new Range(30, 33));
     }
 
     @Override
@@ -147,7 +145,6 @@ public class Timings implements StateProvider{
         bites.set(new Range(17, 20), splitBites(delay, 4));
         bites.set(21, fullSpeed ? 1 : 0);
         bites.set(new Range(22, 29), splitBites(time, 8));
-        bites.set(new Range(30, 33), splitBites(iterations, 4));
 
         return bites;
     }
@@ -160,8 +157,7 @@ public class Timings implements StateProvider{
                 "last        : %s\n" +
                 "delay       : %s\n" +
                 "fullSpeed   : %s\n" +
-                "time        : %s\n" +
-                "iterations  : %s\n",
-                interrupt, refreshRate, willReset, last, delay, fullSpeed, time, iterations);
+                "time        : %s\n",
+                interrupt, refreshRate, willReset, last, delay, fullSpeed, time);
     }
 }

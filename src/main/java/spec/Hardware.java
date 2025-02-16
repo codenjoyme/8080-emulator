@@ -169,7 +169,7 @@ public class Hardware {
 
         while (cpuSuspended) {
             cpuSuspended();
-            timings.sleep(100);
+            timings.sleep(100_000);
         }
         return cpuEnabled;
     }

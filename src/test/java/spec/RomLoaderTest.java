@@ -198,11 +198,10 @@ public class RomLoaderTest extends AbstractTest {
                 "interrupt   : 12345\n" +
                 "refreshRate : 100\n" +
                 "willReset   : false\n" +
-                "last        : 1733700463639\n" +
+                "last        : 1733699831831\n" +
                 "delay       : 17273\n" +
                 "fullSpeed   : true\n" +
-                "time        : 1733700427853\n" +
-                "iterations  : 16460\n";
+                "time        : 1733699813321\n";
 
         assertEquals(expectedCpu, cpu.toStringDetails(true));
         assertEquals(expectedPorts, ports.toStringDetails());
