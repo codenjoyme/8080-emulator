@@ -16,7 +16,7 @@ public class AudioDriver {
     }
 
     public synchronized Audio createAudio(boolean mode) {
-        // TODO #39 закончить с аудио пока отключил для веб версии - там ошибка
+        // TODO #40 закончить с аудио пока отключил для веб версии - там ошибка
         if (Files.isRunningFromJar()) {
             Logger.debug("Audio is disabled in jar");
             return new NoAudio();
@@ -29,11 +29,10 @@ public class AudioDriver {
         audioMode = mode;
         Logger.debug("Switch audio to '%s' mode", audioMode ? "line out" : "speaker");
 
-        // TODO #39 Добавить поддержку звука. Закончить попытки и сделать звук красивым.
         if (audioMode) {
             return new LineOutAudio();
         } else {
-            return new NewAudio();
+            return new SpeakerAudio();
         }
     }
 
