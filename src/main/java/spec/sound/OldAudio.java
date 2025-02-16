@@ -36,16 +36,14 @@ public class OldAudio implements Audio {
 
     @Override
     public void tick() {
-        synchronized (this) {
-            if (line == null) return;
+        if (line == null) return;
 
-            if (!audioQueue.isEmpty()) {
-                byte[] buffer = new byte[Math.min(BUFFER_SIZE, audioQueue.size())];
-                for (int i = 0; i < buffer.length; i++) {
-                    buffer[i] = audioQueue.poll();
-                }
-                line.write(buffer, 0, buffer.length);
+        if (!audioQueue.isEmpty()) {
+            byte[] buffer = new byte[Math.min(BUFFER_SIZE, audioQueue.size())];
+            for (int i = 0; i < buffer.length; i++) {
+                buffer[i] = audioQueue.poll();
             }
+            line.write(buffer, 0, buffer.length);
         }
     }
 
@@ -56,12 +54,10 @@ public class OldAudio implements Audio {
 
     @Override
     public void close() {
-        synchronized (this) {
-            if (line == null) return;
+        if (line == null) return;
 
-            line.drain();
-            line.close();
-            line = null;
-        }
+        line.drain();
+        line.close();
+        line = null;
     }
 }

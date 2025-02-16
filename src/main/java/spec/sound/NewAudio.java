@@ -32,13 +32,11 @@ public class NewAudio implements Audio {
 
     @Override
     public void write(int bite) {
-        synchronized (this) {
-            if (line == null) return;
+        if (line == null) return;
 
-            buffer[index++] = (byte) (bite - 128);
-            if (index >= buffer.length) {
-                soundBuffer();
-            }
+        buffer[index++] = (byte) (bite - 128);
+        if (index >= buffer.length) {
+            soundBuffer();
         }
     }
 
@@ -65,13 +63,11 @@ public class NewAudio implements Audio {
 
     @Override
     public void close() {
-        synchronized (this) {
-            if (line == null) return;
+        if (line == null) return;
 
-            line.drain();
-            line.close();
-            line = null;
-        }
+        line.drain();
+        line.close();
+        line = null;
     }
 
 }

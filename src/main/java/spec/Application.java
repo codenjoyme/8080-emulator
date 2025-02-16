@@ -136,7 +136,7 @@ public class Application {
 
         // NUM_9 - переключение режима аудио (звук вывода на магнитофон, звук динамика)
         if (key.numNine()) {
-            hard.switchAudio();
+            hard.audio().switchOut();
         }
 
         // NUM_8 - сделать скриншот
