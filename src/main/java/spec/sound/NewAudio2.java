@@ -5,8 +5,12 @@ import spec.math.WordMath;
 import javax.sound.sampled.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class NewAudio implements Audio {
+public class NewAudio2 implements Audio {
 
     private static final int CPU_SAMPLE_RATE = 8000;
     private static final int BUFFER_CAPACITY = 128;
@@ -14,18 +18,21 @@ public class NewAudio implements Audio {
     private final DataLine.Info info;
     private final AudioFormat format;
 
+    private ScheduledExecutorService scheduler;
+
     private final byte[] buffer = new byte[BUFFER_CAPACITY];
     private SourceDataLine line;
     private int index = 0;
-    private int current;
+    private AtomicInteger curent;
 
-    private List<Integer> output = new ArrayList<>(20);
-
-    public NewAudio() {
+    public NewAudio2() {
         format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
         info = new DataLine.Info(SourceDataLine.class, format);
         createLine();
-        current = 128;
+        curent = new AtomicInteger(128);
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+        int period = 1280 * 35 / 48 / 5;
+        scheduler.scheduleAtFixedRate(this::tact, 0, period, TimeUnit.MICROSECONDS);
     }
 
     private void createLine() {
@@ -40,40 +47,40 @@ public class NewAudio implements Audio {
 
     @Override
     public void write(int bite) {
-        if (line == null) return;
-
-        current = bite;
-        write();
+        curent.set(bite);
     }
 
-    public void write() {
-        output.add(current);
+    private void soundBuffer() {
+        synchronized (this) {
+            if (line == null) return;
+            line.flush();
+            line.write(buffer, 0, buffer.length);
+            clearBuffer();
+        }
+    }
+
+    @Override
+    public void tick() {
+        // do nothing
+    }
+
+    public void tact() {
+        int bite = curent.get();
+
+        output.add(bite);
         if (output.size() > 20) {
             System.out.println(
                     output.stream().map(WordMath::hex8).reduce("", (a, b) -> a + " " + b));
             output.clear();
         }
 
-        buffer[index++] = (byte) (current - 128);
+        buffer[index++] = (byte) (bite - 128);
         if (index >= buffer.length) {
             soundBuffer();
         }
     }
 
-    private void soundBuffer() {
-        line.flush();
-        line.write(buffer, 0, buffer.length);
-        clearBuffer();
-    }
-
-    @Override
-    public void tick() {
-        if (line == null) return;
-
-        write();
-        write();
-        write();
-    }
+    List<Integer> output = new ArrayList<>(20);
 
     private void clearBuffer() {
         java.util.Arrays.fill(buffer, (byte) 0); // Полная очистка содержимого буфера
@@ -82,16 +89,17 @@ public class NewAudio implements Audio {
 
     @Override
     public void play() {
-        // do nothing
+        // Не используется
     }
 
     @Override
     public void close() {
-        if (line == null) return;
-
-        line.drain();
-        line.close();
-        line = null;
+        synchronized (this) {
+            scheduler.shutdown();
+            line.drain();
+            line.close();
+            line = null;
+        }
     }
 
 }
