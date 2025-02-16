@@ -56,7 +56,7 @@ public class NewAudio implements Audio {
     public void tick() {
         if (line == null) return;
 
-        for (int i = 0; i < 18; i++) {
+        for (int i = 0; i < 4; i++) {
             write();
         }
     }

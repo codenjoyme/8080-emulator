@@ -124,7 +124,7 @@ public class RomLoaderTest extends AbstractTest {
 
         timings.changeFullSpeed();
         timings.decreaseDelay();
-        for (int i = 0; i < 1234567; i++) {
+        for (int i = 0; i < 12345; i++) {
             timings.updateState();
             if (i % 3 == 1) {
                 timings.sleep();
@@ -195,14 +195,14 @@ public class RomLoaderTest extends AbstractTest {
                 "    |5| + - - - + - - - - + + -\n";
 
         String expectedTimings =
-                "interrupt   : 1234567\n" +
+                "interrupt   : 12345\n" +
                 "refreshRate : 100\n" +
                 "willReset   : false\n" +
-                "last        : 1733830170613\n" +
-                "delay       : 5\n" +
+                "last        : 1733700463639\n" +
+                "delay       : 17273\n" +
                 "fullSpeed   : true\n" +
-                "time        : 1733830164443\n" +
-                "iterations  : 1646090\n";
+                "time        : 1733700427853\n" +
+                "iterations  : 16460\n";
 
         assertEquals(expectedCpu, cpu.toStringDetails(true));
         assertEquals(expectedPorts, ports.toStringDetails());

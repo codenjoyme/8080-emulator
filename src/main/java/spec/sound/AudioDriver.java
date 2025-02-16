@@ -50,7 +50,7 @@ public class AudioDriver {
                 }
             } else { // звучит вывод на динамик
                 if (bite == 0x0A) {
-                    audio.write(128);
+                    audio.write(0x80);
                 } else if (bite == 0x0B) {
                     audio.write(0xFF);
                 }

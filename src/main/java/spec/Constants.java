@@ -49,9 +49,11 @@ public class Constants {
     public static final int BORDER_WIDTH = 10;
     public static final int BORDER_PORT = 254;
 
-    // подогнано экспериментально, чтобы в игре Клад отрисовка была максимально близкой
-    public static final int CPU_TICKS_PER_INTERRUPT = 1000;
-    public static final long CPU_INTERRUPT_DELAY = (long) (1000_000 * 41.0 * (9.06/8.68) * (1 - (9.23 - 9.033)/9.23/2) * CPU_TICKS_PER_INTERRUPT / 10_000);
-    public static final int REFRESH_RATE = 1;      // refresh screen every 'n' interrupts
+    // подогнано экспериментально:
+    // - чтобы в игре `КЛАД` отрисовка была максимально близкой
+    // - а в игре `BUDY` звук воспроизводился без искажений как в `Emu80`
+    public static final int CPU_TICKS_PER_INTERRUPT = 170;
+    public static final long CPU_INTERRUPT_DELAY = (long) (1000_000 * 0.03 * 41.0 * (9.06/8.68) * (1 - (9.23 - 9.033)/9.23/2) * CPU_TICKS_PER_INTERRUPT / 10_000);
+    public static final int REFRESH_RATE = 10;      // refresh screen every 'n' interrupts
     public static final int MAX_REFRESH_RATE = 100;
 }
