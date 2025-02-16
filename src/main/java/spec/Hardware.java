@@ -15,6 +15,9 @@ import static spec.math.WordMath.hex16;
 
 public class Hardware {
 
+    public static final boolean AUDIO_MODE_LINE_OUT = true;
+    public static final boolean AUDIO_MODE_SPEAKER = false;
+
     private PngVideo png;
     private Memory memory;
     private Cpu cpu;
@@ -32,14 +35,13 @@ public class Hardware {
     private RomSwitcher romSwitcher;
     private PngScreenToText screenToText;
 
-    private boolean lineOut;
+    private boolean audioMode;
     private boolean cpuEnabled;
     private boolean cpuSuspended;
 
     private final List<Runnable> cpuSuspendedListeners = new CopyOnWriteArrayList<>();
 
     public Hardware(int screenWidth, int screenHeight, Container parent, String base) {
-        lineOut = true;
         timings = createTimings();
         graphtic = createGraphicControl(parent);
         memory = createMemory();
@@ -50,7 +52,7 @@ public class Hardware {
         record = createKeyRecord();
         video = createVideo(screenWidth, screenHeight);
         screenToText = createScreenToText(base);
-        audio = createAudio();
+        audio = createAudio(AUDIO_MODE_SPEAKER);
         data = createHardwareData();
         cpu = createCpu(CPU_TICKS_PER_INTERRUPT);
         png = createPngVideo();
@@ -80,17 +82,32 @@ public class Hardware {
         return new PngVideo(video, memory);
     }
 
-    protected Audio createAudio() {
+    protected Audio createAudio(boolean newMode) {
         // TODO #39 закончить с аудио пока отключил для веб версии - там ошибка
         if (Files.isRunningFromJar()) {
+            Logger.debug("Audio is disabled in jar");
             return new NoAudio();
         }
-        // TODO #39 Добавить поддержку звука. Закончить попытки и сделать звук красивым.
-        if (lineOut) {
-            return audio = new OldAudio();
-        } else {
-            return audio = new NewAudio();
+
+        synchronized (this) {
+            if (audio != null) {
+                audio.close();
+            }
+
+            audioMode = newMode;
+            Logger.debug("Switch audio to '%s' mode", audioMode ? "line out" : "speaker");
+
+            // TODO #39 Добавить поддержку звука. Закончить попытки и сделать звук красивым.
+            if (audioMode) {
+                return audio = new OldAudio();
+            } else {
+                return audio = new NewAudio();
+            }
         }
+    }
+
+    public void switchAudio() {
+        audio = createAudio(!audioMode);
     }
 
     protected RomLoader createRomLoader() {
@@ -159,20 +176,21 @@ public class Hardware {
                     bite == 0x0E || bite == 0x0F ||  // запись на магнитофон
                     bite == 0x0A || bite == 0x0B)    // вывод звука на динамик
                 {
-                    if (lineOut) { // звучит запись на магнитофон
-                        if (bite == 0x0E) {
-                            audio.write(0x00);
-                        } else if (bite == 0x0F) {
-                            audio.write(0xFF);
-                        }
-                    } else { // звучит вывод на динамик
-                        if (bite == 0x0A) {
-                            audio.write(128);
-                        } else if (bite == 0x0B) {
-                            audio.write(0xFF);
+                    synchronized (this) {
+                        if (audioMode) { // звучит запись на магнитофон
+                            if (bite == 0x0E) {
+                                audio.write(0x00);
+                            } else if (bite == 0x0F) {
+                                audio.write(0xFF);
+                            }
+                        } else { // звучит вывод на динамик
+                            if (bite == 0x0A) {
+                                audio.write(128);
+                            } else if (bite == 0x0B) {
+                                audio.write(0xFF);
+                            }
                         }
                     }
-
                 }
                 Hardware.this.outPort8(IOPorts.RgRGB, bite);
             }
@@ -215,7 +233,7 @@ public class Hardware {
 
     public void stop() {
         Logger.debug("Stop CPU");
-        cpuEnabled = false;
+        cpuEnabled = AUDIO_MODE_SPEAKER;
     }
 
     public void pause() {
@@ -229,7 +247,7 @@ public class Hardware {
 
     public void resume() {
         Logger.debug("Resume CPU");
-        cpuSuspended = false;
+        cpuSuspended = AUDIO_MODE_SPEAKER;
     }
 
     // OUT команда процессора
@@ -249,7 +267,7 @@ public class Hardware {
     public void reset() {
         justReset();
         cpuEnabled = true;
-        cpuSuspended = false;
+        cpuSuspended = AUDIO_MODE_SPEAKER;
     }
 
     private void justReset() {
@@ -261,7 +279,7 @@ public class Hardware {
 
     public void start() {
         cpuEnabled = true;
-        cpuSuspended = false;
+        cpuSuspended = AUDIO_MODE_SPEAKER;
         cpu.execute();
     }
 

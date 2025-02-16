@@ -16,4 +16,9 @@ public class NoAudio implements Audio {
     public void play() {
         // do nothing
     }
+
+    @Override
+    public void close() {
+        // do nothing
+    }
 }

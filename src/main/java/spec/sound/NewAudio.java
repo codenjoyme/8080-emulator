@@ -32,18 +32,20 @@ public class NewAudio implements Audio {
 
     @Override
     public void write(int bite) {
-        buffer[index++] = (byte) (bite - 128);
-        if (index >= buffer.length) {
-            soundBuffer();
+        synchronized (this) {
+            if (line == null) return;
+
+            buffer[index++] = (byte) (bite - 128);
+            if (index >= buffer.length) {
+                soundBuffer();
+            }
         }
     }
 
     private void soundBuffer() {
-        synchronized (this) {
-            line.flush();
-            line.write(buffer, 0, buffer.length);
-            clearBuffer();
-        }
+        line.flush();
+        line.write(buffer, 0, buffer.length);
+        clearBuffer();
     }
 
     @Override
@@ -58,7 +60,18 @@ public class NewAudio implements Audio {
 
     @Override
     public void play() {
-        // Не используется
+        // do nothing
+    }
+
+    @Override
+    public void close() {
+        synchronized (this) {
+            if (line == null) return;
+
+            line.drain();
+            line.close();
+            line = null;
+        }
     }
 
 }

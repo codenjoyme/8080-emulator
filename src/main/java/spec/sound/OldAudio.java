@@ -10,7 +10,7 @@ public class OldAudio implements Audio {
     private static final int CPU_SAMPLE_RATE = 44100;
     private static final int BUFFER_SIZE = 1024;
 
-    private final SourceDataLine line;
+    private SourceDataLine line;
     private final AudioFormat format;
     private final ArrayBlockingQueue<Byte> audioQueue = new ArrayBlockingQueue<>(1024);
 
@@ -36,17 +36,32 @@ public class OldAudio implements Audio {
 
     @Override
     public void tick() {
-        if (!audioQueue.isEmpty()) {
-            byte[] buffer = new byte[Math.min(BUFFER_SIZE, audioQueue.size())];
-            for (int i = 0; i < buffer.length; i++) {
-                buffer[i] = audioQueue.poll();
+        synchronized (this) {
+            if (line == null) return;
+
+            if (!audioQueue.isEmpty()) {
+                byte[] buffer = new byte[Math.min(BUFFER_SIZE, audioQueue.size())];
+                for (int i = 0; i < buffer.length; i++) {
+                    buffer[i] = audioQueue.poll();
+                }
+                line.write(buffer, 0, buffer.length);
             }
-            line.write(buffer, 0, buffer.length);
         }
     }
 
     @Override
     public void play() {
         // do nothing
+    }
+
+    @Override
+    public void close() {
+        synchronized (this) {
+            if (line == null) return;
+
+            line.drain();
+            line.close();
+            line = null;
+        }
     }
 }

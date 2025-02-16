@@ -7,4 +7,6 @@ public interface Audio {
     void tick();
 
     void play();
+
+    void close();
 }

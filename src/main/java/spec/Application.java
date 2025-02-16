@@ -134,13 +134,9 @@ public class Application {
 
         // ========= другие клавиши =========
 
-        // NUM_9 - загрузить что-то еще TODO потом решить
+        // NUM_9 - переключение режима аудио (звук вывода на магнитофон, звук динамика)
         if (key.numNine()) {
-            Logger.debug("Do not implemented");
-            // openFileDialog(file -> hard.loadSomething(base, toRelative(base, file)),
-            //         base + SOMETHING,
-            //         "Something file",
-            //         "smth");
+            hard.switchAudio();
         }
 
         // NUM_8 - сделать скриншот
