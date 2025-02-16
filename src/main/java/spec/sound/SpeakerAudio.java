@@ -2,6 +2,8 @@ package spec.sound;
 
 import javax.sound.sampled.*;
 
+import static spec.Constants.AUDIO_BYTES_PER_TICK;
+
 public class SpeakerAudio implements Audio {
 
     private static final int CPU_SAMPLE_RATE = 44100;
@@ -56,7 +58,7 @@ public class SpeakerAudio implements Audio {
     public void tick() {
         if (line == null) return;
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < AUDIO_BYTES_PER_TICK; i++) {
             write();
         }
     }
