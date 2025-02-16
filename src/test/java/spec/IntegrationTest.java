@@ -996,7 +996,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_helloWorld() {
         // given
         lik().loadRom(base, roms);
-        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "hello-world/hello-world.mem", Lik.NAME);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "hello-world/hello-world.mem", Lik.NAME, null);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // последняя команда перед выходом в монитор
@@ -1021,7 +1021,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_diagnostic_microcosm() {
         // given
         lik().loadRom(base, roms);
-        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "test/test.mem", Lik.NAME);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "test/test.mem", Lik.NAME, null);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
@@ -1046,7 +1046,7 @@ public class IntegrationTest extends AbstractTest {
 
         // given
         lik().loadRom(base, roms);
-        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080pre/8080pre.mem", Lik.NAME);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080pre/8080pre.mem", Lik.NAME, null);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // не показываем в trace все что относится к выводу на экран
@@ -1073,7 +1073,7 @@ public class IntegrationTest extends AbstractTest {
         // given
         memory.doNotTrackChanges();
         lik().loadRom(base, roms);
-        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080ex1/8080ex1.mem", Lik.NAME);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080ex1/8080ex1.mem", Lik.NAME, null);
         // выводим trace только в этом диапазоне
         // debug.enable(range);
         // debug.console(true);
@@ -1106,7 +1106,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_diagnostic_apofig8080exerciser() {
         // given
         lik().loadRom(base, roms);
-        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080apofig/8080apofig.mem", Lik.NAME);
+        Range range = hard.loadData(base, CPU_TESTS_RESOURCES + "8080apofig/8080apofig.mem", Lik.NAME, null);
         // выводим trace только в этом диапазоне
         debug.enable(range);
         // не показываем в trace все что относится к выводу на экран

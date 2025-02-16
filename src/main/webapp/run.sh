@@ -22,7 +22,8 @@ eval_echo "ROOT=$(pwd)"
 eval_echo "BASE=$1"
 eval_echo "PLATFORM=$2"
 eval_echo "ROM_FILE=$3"
-eval_echo "java -jar $ROOT/emulator-1.0.jar $BASE $PLATFORM $ROM_FILE"
+eval_echo "COMMAND=$4"
+eval_echo "java -jar $ROOT/emulator-1.0.jar $BASE $PLATFORM $ROM_FILE $COMMAND"
 
 echo
 color "Press Enter to continue"

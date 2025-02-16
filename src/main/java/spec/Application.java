@@ -29,7 +29,7 @@ public class Application {
      * иерархической системы визуальных объектов. Container отвечает за расположение содержащихся
      * в нем компонентов с помощью интерфейса LayoutManager.
      */
-    public Application(Container parent, String base, String platform, String rom) {
+    public Application(Container parent, String base, String platform, String rom, String command) {
         this.parent = parent;
         this.base = base;
 
@@ -39,7 +39,7 @@ public class Application {
 
         hard.fileRecorder().with(Files.newRecord(base));
         hard.fileRecorder().startWriting();
-        load(platform, rom);
+        load(platform, rom, command);
     }
 
     public void lostFocus() {
@@ -84,7 +84,7 @@ public class Application {
         if (key.numDot()) {
             RomSwitcher switcher = hard.romSwitcher();
             Platform platform = switcher.current();
-            openFileDialog(file -> switcher.load(base, toRelative(base, file)),
+            openFileDialog(file -> switcher.load(base, toRelative(base, file), null),
                     base + platform.apps(),
                     "Data file",
                     "com", "rom", "rks", "bin", "mem", "bss", "bs1");
@@ -224,7 +224,7 @@ public class Application {
         hard.start();
     }
 
-    private void load(String platform, String rom) {
+    private void load(String platform, String rom, String command) {
         Logger.debug("Load platform2: '%s', file: '%s'", platform, rom);
 
         // ничего нет, грузим по умолчанию
@@ -249,7 +249,7 @@ public class Application {
             // TODO #41 этот костыыль надо при загрузке снепшота из командной строки по полному
             //      пути там под windows не работает добавление base
             String realBase = rom.contains(":") ? "" : base;
-            hard.romSwitcher().load(realBase, rom);
+            hard.romSwitcher().load(realBase, rom, command);
         }
     }
 }

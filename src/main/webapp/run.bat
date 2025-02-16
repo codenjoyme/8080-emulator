@@ -38,9 +38,10 @@ goto :main
     call :eval_echo "set BASE=%1"
     call :eval_echo "set PLATFORM=%2"
     call :eval_echo "set ROM_FILE=%3"
+    call :eval_echo "set COMMAND=%4"
     call :eval_echo "cd %ROOT%"
 
-    call :eval_echo "java -jar emulator-1.0.jar %BASE% %PLATFORM% %ROM_FILE%"
+    call :eval_echo "java -jar emulator-1.0.jar %BASE% %PLATFORM% %ROM_FILE% %COMMAND%"
 
     echo.
     call :color "%YELLOW%" "Press Enter to continue"

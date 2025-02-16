@@ -15,8 +15,8 @@ public class RomSwitcher implements StateProvider {
         this.hard = hard;
     }
 
-    public void load(String base, String rom) {
-        hard.loadData(base, rom, platform);
+    public void load(String base, String rom, String command) {
+        hard.loadData(base, rom, platform, command);
     }
 
     public void loadRoms(String base) {

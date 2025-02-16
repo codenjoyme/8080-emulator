@@ -301,7 +301,7 @@ public class Hardware {
         return lastTick;
     }
 
-    public Range loadData(String base, String path, String platform) {
+    public Range loadData(String base, String path, String platform, String command) {
         pause();
 
         Logger.debug("Loading data from %s", base + path);
@@ -311,14 +311,20 @@ public class Hardware {
         // TODO #37 А точно тут надо для всех типов файлов делать загрузку монитора и команд J/G?
         int delta = 25_000;
         if (platform.equals(Lik.NAME)) {
+            command = command == null ? "J" + hex16(range.begin()) : command;
+            Logger.debug("Command to run: %s", command);
+
             record.reset().after(delta)
                     .press(END).after(delta)
                     .press(ENTER).after(delta)
-                    .enter("J" + hex16(range.begin())).press(ENTER).after(delta)
+                    .enter(command).press(ENTER).after(delta)
                     .reset();
         } else {
+            command = command == null ? "G" + hex16(range.begin()) : command;
+            Logger.debug("Command to run: %s", command);
+
             record.reset().after(2 * delta)
-                    .enter("G" + hex16(range.begin())).press(ENTER).after(delta)
+                    .enter(command).press(ENTER).after(delta)
                     .reset();
         }
 

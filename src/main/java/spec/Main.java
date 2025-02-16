@@ -19,10 +19,12 @@ public class Main extends JFrame implements KeyListener {
         // первый параметр - base папка с ресурсами где расположены roms
         // второй параметр - всегда платформа lik или specialist
         // третий параметр - файл с приложением/rom
+        // четвертый параметр - команда которую набираем в мониторе
         // все параметры опциональны
         String base = null;
         String platform = null;
         String rom = null;
+        String command = null;
         if (args.length >= 1) {
             base = args[0];
         }
@@ -37,11 +39,14 @@ public class Main extends JFrame implements KeyListener {
                 throw new IllegalArgumentException("Invalid file: " + param);
             }
         }
+        if (args.length >= 4) {
+            command = args[3];
+        }
 
-        new Main(base, platform, rom);
+        new Main(base, platform, rom, command);
     }
 
-    public Main(String base, String platform, String rom) {
+    public Main(String base, String platform, String rom, String command) {
         super("i8080 emulator");
         setMinimumSize(new Dimension(
                 SCREEN_WIDTH + BORDER_WIDTH * 2 + 15,
@@ -56,7 +61,7 @@ public class Main extends JFrame implements KeyListener {
 
         base = base == null ? "./" : base;
         Logger.debug("Base url: " + base);
-        app = new Application(this, base, platform, rom);
+        app = new Application(this, base, platform, rom, command);
         app.start();
     }
 
