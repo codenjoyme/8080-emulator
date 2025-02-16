@@ -18,7 +18,7 @@ public class Timings implements StateProvider{
     private boolean willReset = false;
 
     private long last = 0;
-    private int delay = CPU_INTERRUPT_DELAY;
+    private long delay = CPU_INTERRUPT_DELAY;
     private boolean fullSpeed = false;
 
     private long time;
@@ -55,14 +55,14 @@ public class Timings implements StateProvider{
     protected void profiling() {
         if (++iterations % 1000 == 0) {
             if (time != 0) {
-                Logger.debug("Time per 10k interrupts: %ss", 1.0D * (now() - time) / 1000);
+                Logger.debug("Time per 10k interrupts: %s ms", 1.0D * (now() - time) / 1000_000);
             }
             time = now();
         }
     }
 
     protected long now() {
-        return System.currentTimeMillis();
+        return System.nanoTime();
     }
 
     protected void sleep() {
@@ -80,9 +80,9 @@ public class Timings implements StateProvider{
         }
     }
 
-    public void sleep(long millis) {
+    public void sleep(long nanos) {
         try {
-            Thread.sleep(millis);
+            Thread.sleep(nanos / 1_000_000, (int) (nanos % 1_000_000));
         } catch (Exception ignored) {
             // do nothing
         }
