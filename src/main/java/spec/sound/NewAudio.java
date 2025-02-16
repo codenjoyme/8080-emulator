@@ -1,15 +1,11 @@
 package spec.sound;
 
-import spec.math.WordMath;
-
 import javax.sound.sampled.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class NewAudio implements Audio {
 
-    private static final int CPU_SAMPLE_RATE = 8000;
-    private static final int BUFFER_CAPACITY = 128;
+    private static final int CPU_SAMPLE_RATE = 44100;
+    private static final int BUFFER_CAPACITY = 2048;
 
     private final DataLine.Info info;
     private final AudioFormat format;
@@ -18,8 +14,6 @@ public class NewAudio implements Audio {
     private SourceDataLine line;
     private int index = 0;
     private int current;
-
-    private List<Integer> output = new ArrayList<>(20);
 
     public NewAudio() {
         format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
@@ -43,17 +37,9 @@ public class NewAudio implements Audio {
         if (line == null) return;
 
         current = bite;
-        write();
     }
 
     public void write() {
-        output.add(current);
-        if (output.size() > 20) {
-            System.out.println(
-                    output.stream().map(WordMath::hex8).reduce("", (a, b) -> a + " " + b));
-            output.clear();
-        }
-
         buffer[index++] = (byte) (current - 128);
         if (index >= buffer.length) {
             soundBuffer();
@@ -70,9 +56,9 @@ public class NewAudio implements Audio {
     public void tick() {
         if (line == null) return;
 
-        write();
-        write();
-        write();
+        for (int i = 0; i < 18; i++) {
+            write();
+        }
     }
 
     private void clearBuffer() {
