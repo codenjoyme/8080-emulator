@@ -1,0 +1,144 @@
+DATE: 1739628528265
+
+===============================================================================================
+Q: Вот класс для воспроизведения порта который выходит на динамик в реальном компьютере, а у меня это эмулируется
+
+public class NewAudio implements Audio {
+
+    private static final int CPU_SAMPLE_RATE = 8000;
+    private static final int BUFFER_CAPACITY = 128;
+
+    private final DataLine.Info info;
+    private final AudioFormat format;
+
+    private final byte[] buffer = new byte[BUFFER_CAPACITY];
+    private SourceDataLine line;
+    private int index = 0;
+    private int curent;
+
+    public NewAudio() {
+        format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
+        info = new DataLine.Info(SourceDataLine.class, format);
+        createLine();
+        curent = 128;
+    }
+
+    private void createLine() {
+        try {
+            line = (SourceDataLine) AudioSystem.getLine(info);
+            line.open(format);
+            line.start();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void write(int bite) {
+        curent = bite;
+    }
+
+    private void soundBuffer() {
+        synchronized (this) {
+            line.flush();
+            line.write(buffer, 0, buffer.length);
+            clearBuffer();
+        }
+    }
+
+    @Override
+    public void tick() {
+        buffer[index++] = (byte) (curent - 128);
+        if (index >= buffer.length) {
+            soundBuffer();
+        }
+    }
+
+    private void clearBuffer() {
+        java.util.Arrays.fill(buffer, (byte) 0); // Полная очистка содержимого буфера
+        index = 0;
+    }
+
+    @Override
+    public void play() {
+        // Не используется
+    }
+
+}
+
+вывод происходит так 
+
+} else { // звучит вывод на динамик
+                        if (bite == 0x0A) {
+                            audio.write(128);
+                        } else if (bite == 0x0B) {
+                            audio.write(0xFF);
+                        }
+                    }
+
+трудность в том, что если таким образом записывается плотно информация с частотой 8000 тогда она звучит нормально, но бывает режим озвучивания когда меняется 0A на 0B но с разным таймингом. Следовательно будет разная тональность. Но так как у меня в классе NewAudio метод public void tick() { не срабатывает с частотой 8000 то некоторые байты пропускаются и звук становится кривым. Мне надо внутри tick оставить пусто. А вот при старте NewAudio класса постоянно мониторить curent и заполнять с него буффер и при переполнении буффера воспроизводить и все это делать с частотой 8000.
+-----------------------------------------------------------------------------------------------
+A: Чтобы решить вашу проблему со звуком и убедиться, что данные записываются в буфер и воспроизводятся с постоянной частотой в 8000 Гц, вам нужно использовать отдельный поток для управления процессом воспроизведения.
+
+1. Настройте поток для регулярного вызова метода `tick` с нужной частотой. Это можно сделать, например, с помощью планировщика задач (`java.util.concurrent.ScheduledExecutorService`) или простым потоком с задержкой.
+
+2. Удалите вызовы `tick` из всех других методов и поместите его в поток, который будет запущен отдельно. Это гарантирует, что метод `tick` будет вызываться с стабильной частотой, независимо от других процессов.
+
+3. В методе `write(int bite)` запишите значение в переменную `curent`, но не вызывайте `tick`. Пусть `tick` вызывается автоматически потоком каждые 125 микросекунд (8000 Гц).
+
+Пример с использованием `ScheduledExecutorService`:
+
+```java
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+...
+
+public class NewAudio implements Audio {
+    ...
+    private ScheduledExecutorService scheduler;
+
+    public NewAudio() {
+        ...
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(this::tick, 0, 125, TimeUnit.MICROSECONDS); // каждые 125 микросекунд
+    }
+
+    @Override
+    public void write(int bite) {
+        synchronized (this) {
+            curent = bite;
+        }
+    }
+
+    @Override
+    public void tick() {
+        synchronized (this) {
+            buffer[index++] = (byte) (curent - 128);
+            if (index >= buffer.length) {
+                soundBuffer();
+            }
+        }
+    }
+
+    @Override
+    public void play() {
+        // Не используется
+    }
+
+    public void stop() {
+        scheduler.shutdown();
+        try {
+            scheduler.awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        line.stop();
+        line.close();
+    }
+}
+```
+
+Убедитесь, что вызовете метод `stop()` для корректного завершения потока и закрытия звуковой линии, когда аудио компонент будет больше не нужен.
+===============================================================================================

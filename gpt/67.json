@@ -1,6 +1,5 @@
 DATE: 1739621650589
 
-
 ===============================================================================================
 Q: У меня есть класс, который воспроизводит аудио во время записи на магнитофон 
 """
@@ -436,15 +435,15 @@ public class NewAudio implements Audio {
 
 ===============================================================================================
 Q: Exception in thread "main" java.lang.IllegalArgumentException: illegal request to write non-integral number of frames (1 bytes, frameSize = 2 bytes)
-\tat java.desktop/com.sun.media.sound.DirectAudioDevice$DirectDL.write(DirectAudioDevice.java:726)
-\tat spec.sound.NewAudio.tick(NewAudio.java:37)
-\tat spec.Timings.updateState(Timings.java:47)
-\tat spec.Hardware.cpuInterrupt(Hardware.java:200)
-\tat spec.Cpu.execute(Cpu.java:72)
-\tat spec.Hardware.start(Hardware.java:268)
-\tat spec.Application.start(Application.java:224)
-\tat spec.Main.<init>(Main.java:60)
-\tat spec.Main.main(Main.java:41)
+    at java.desktop/com.sun.media.sound.DirectAudioDevice$DirectDL.write(DirectAudioDevice.java:726)
+    at spec.sound.NewAudio.tick(NewAudio.java:37)
+    at spec.Timings.updateState(Timings.java:47)
+    at spec.Hardware.cpuInterrupt(Hardware.java:200)
+    at spec.Cpu.execute(Cpu.java:72)
+    at spec.Hardware.start(Hardware.java:268)
+    at spec.Application.start(Application.java:224)
+    at spec.Main.<init>(Main.java:60)
+    at spec.Main.main(Main.java:41)
 -----------------------------------------------------------------------------------------------
 A: Исключение, с которым вы столкнулись, указывает на то, что вы пытаетесь записать нецелое число фреймов в `SourceDataLine`. Это происходит из-за изменения размера фрейма в `AudioFormat`.
 

@@ -82,7 +82,7 @@ Wav.prototype.getWavUint8Array = function(buffer){
     intBuffer[18] = 0x6164; // "da"
     intBuffer[19] = 0x6174; // "ta"
     intBuffer[20] = (buffer.length) & 0x0000ffff; // data size[byte]
-    intBuffer[21] = ((buffer.length) & 0xffff0000) >> 16; // data size[byte]\t
+    intBuffer[21] = ((buffer.length) & 0xffff0000) >> 16; // data size[byte]
 
     /* Copy header */
     var dptr = 0;

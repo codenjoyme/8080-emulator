@@ -18,9 +18,9 @@ function toEncoding(str, encoding) {
   var strlen = str.length;
   var encoded = new Array(strlen);
   for (var i = 0; i < strlen; i++) {
-  \tvar c = table.indexOf(str.charAt(i));
-\tif (c === null) c = 255;
-\tencoded[i] = String.fromCharCode(c);
+  var c = table.indexOf(str.charAt(i));
+  if (c === null) c = 255;
+    encoded[i] = String.fromCharCode(c);
   }
   return encoded.join('');
 }

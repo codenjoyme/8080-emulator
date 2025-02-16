@@ -7,7 +7,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public class OldAudio implements Audio {
 
-    private static final int CPU_SAMPLE_RATE = 2500;
+    private static final int CPU_SAMPLE_RATE = 44100;
     private static final int BUFFER_SIZE = 1024;
 
     private final SourceDataLine line;
@@ -28,7 +28,10 @@ public class OldAudio implements Audio {
 
     @Override
     public void write(int bite) {
-        audioQueue.offer((byte) (bite - 128));
+        byte signed = (byte) (bite - 128);
+        for (int i = 0; i < 18; i++) {
+            audioQueue.offer(signed);
+        }
     }
 
     @Override

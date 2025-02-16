@@ -5,7 +5,6 @@ import spec.platforms.Lik;
 import spec.sound.*;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -40,7 +39,7 @@ public class Hardware {
     private final List<Runnable> cpuSuspendedListeners = new CopyOnWriteArrayList<>();
 
     public Hardware(int screenWidth, int screenHeight, Container parent, String base) {
-        lineOut = false;
+        lineOut = true;
         timings = createTimings();
         graphtic = createGraphicControl(parent);
         memory = createMemory();
@@ -156,7 +155,7 @@ public class Hardware {
             @Override
             protected void R(int bite) {
                 super.R(bite);
-                if (//bite == 0x82 || bite == 0x91 ||  // непонятное
+                if (bite == 0x82 || bite == 0x91 ||  // непонятное
                     bite == 0x0E || bite == 0x0F ||  // запись на магнитофон
                     bite == 0x0A || bite == 0x0B)    // вывод звука на динамик
                 {
@@ -171,24 +170,14 @@ public class Hardware {
                             audio.write(128);
                         } else if (bite == 0x0B) {
                             audio.write(0xFF);
-                        } else {
-                            //audio.write(128);
                         }
                     }
-//                    output.add(bite);
-//                    if (output.size() > 20) {
-//                        System.out.println(
-//                                output.stream().map(WordMath::hex8).reduce("", (a, b) -> a + " " + b));
-//                        output.clear();
-//                    }
 
                 }
                 Hardware.this.outPort8(IOPorts.RgRGB, bite);
             }
         };
     }
-
-    List<Integer> output = new ArrayList<>(20);
 
     protected KeyLogger createKeyLogger() {
         return new KeyLogger(fileRecorder, () -> cpu.tick());
