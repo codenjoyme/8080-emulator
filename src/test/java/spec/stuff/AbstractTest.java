@@ -161,6 +161,8 @@ public abstract class AbstractTest {
 
         memoryInit = false;
 
+        hard.audio().disable();
+
         cpu.PC(START);
 
         // reset();
@@ -218,7 +220,17 @@ public abstract class AbstractTest {
             }
 
             @Override
+            protected void sleep() {
+                // делаем все по быстрому
+            }
+
+            @Override
             public void sleep(long millis) {
+                // делаем все по быстрому
+            }
+
+            @Override
+            protected void profiling() {
                 // делаем все по быстрому
             }
         };

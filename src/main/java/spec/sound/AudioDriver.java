@@ -26,8 +26,7 @@ public class AudioDriver implements StateProvider {
     public synchronized void createAudio(boolean mode) {
         // TODO #40 закончить с аудио пока отключил для веб версии - там ошибка
         if (Files.isRunningFromJar()) {
-            Logger.debug("Audio is disabled in jar");
-            audio = new NoAudio();
+            disable();
         }
 
         if (audio != null) {
@@ -42,6 +41,11 @@ public class AudioDriver implements StateProvider {
         } else {
             audio = new SpeakerAudio();
         }
+    }
+
+    public void disable() {
+        Logger.debug("Turn off audio");
+        audio = new NoAudio();
     }
 
     public synchronized void write(int bite) {
