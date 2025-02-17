@@ -13,11 +13,6 @@ public class NoAudio implements Audio {
     }
 
     @Override
-    public void play() {
-        // do nothing
-    }
-
-    @Override
     public void close() {
         // do nothing
     }

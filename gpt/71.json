@@ -1,0 +1,688 @@
+DATE: 1739779947252
+        
+===============================================================================================
+Q: Вот класс, который воспроизводит speaker эмулятора 8битного компьютера. 
+"""
+package spec.sound;
+
+import javax.sound.sampled.*;
+
+import static spec.Constants.AUDIO_BYTES_PER_TICK;
+
+public class SpeakerAudio implements Audio {
+
+    private static final int CPU_SAMPLE_RATE = 44100;
+    private static final int BUFFER_CAPACITY = 2048*4;
+
+    private final DataLine.Info info;
+    private final AudioFormat format;
+
+    private final byte[] buffer = new byte[BUFFER_CAPACITY];
+    private SourceDataLine line;
+    private int index = 0;
+    private int current;
+
+    public SpeakerAudio() {
+        format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
+        info = new DataLine.Info(SourceDataLine.class, format);
+        createLine();
+        current = 128;
+    }
+
+    private void createLine() {
+        try {
+            line = (SourceDataLine) AudioSystem.getLine(info);
+            line.open(format);
+            line.start();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void write(int bite) {
+        if (line == null) return;
+
+        current = bite;
+    }
+
+    public void write() {
+        buffer[index++] = (byte) (current - 128);
+        if (index >= buffer.length) {
+            soundBuffer();
+        }
+    }
+
+    private void soundBuffer() {
+        line.flush();
+        line.write(buffer, 0, buffer.length);
+        clearBuffer();
+    }
+
+    @Override
+    public void tick() {
+        if (line == null) return;
+
+        for (int i = 0; i < AUDIO_BYTES_PER_TICK; i++) {
+            write();
+        }
+    }
+
+    private void clearBuffer() {
+        java.util.Arrays.fill(buffer, (byte) 0); // Полная очистка содержимого буфера
+        index = 0;
+    }
+
+    @Override
+    public void play() {
+        // do nothing
+    }
+
+    @Override
+    public void close() {
+        if (line == null) return;
+
+        line.drain();
+        line.close();
+        line = null;
+    }
+}
+"""
+Теперь если я делаю буффер меньше 2048*4 то появляются щелчки на границах. Если я увеличиваю буффер до 2048*40 то появляется задержка звучания, но когда звучание происходит, то подвисает сама эмуляция. 
+Помоги пожалуйста 1) устранить щелчки 2) сделать буффер оптимальной длинны без зависания
+-----------------------------------------------------------------------------------------------
+A: Проблемы, с которыми вы столкнулись, связаны с размером и обработкой буфера в вашем аудио процессе. Для решения этих проблем можно предпринять следующие шаги:
+
+1. **Изменение оптимального размера буфера**: Щелчки, которые возникают при малых размерах буфера, скорее всего связаны с тем, что ваше аудио устройство не успевает обрабатывать звуковые данные перед подачей следующего блока данных. Увеличение размера буфера улучшает ситуацию, но приводит к другим проблемам, как вы заметили. Оптимальный размер буфера обычно находится методом "проб и ошибок". Рекомендуется начать с размера в 8192 байта и, если необходимо, корректировать размер вверх или вниз, чтобы добиться лучшего баланса между задержкой и плавностью воспроизведения.
+
+2. **Double buffering**: Этот подход поможет избежать щелчков при воспроизведении звука. Основная идея заключается в том, чтобы иметь два звуковых буфера, один для воспроизведения, второй для заполнения данными. Как только первый буфер полностью проигран, вы начинаете воспроизводить второй и одновременно заполнять первый новыми данными.
+
+3. **Управление очисткой буфера**: Вам необходимо определиться, требуется ли полная очистка буфера каждый раз, когда он заново используется. Возможно, быстрее и эффективнее будет чистить только ту часть буфера, которая реально изменяется.
+
+4. **Изменение стратегии записи в буфер**: Вместо записи каждого отдельного байта в буфер и немедленной его отправки на аудио устройство, стоит попробовать собирать звуковые данные за несколько тиков и после этого отправлять блоки данных на аудио устройство. Это должно помочь уменьшить нагрузку на обработку звука и уменьшить задержки.
+
+5. **Тестирование на различных настройках аудиосистемы**: Бывает так, что разные звуковые карты или драйверы реагируют на аудиоданные по-разному. Проверьте поведение вашего кода на разных устройствах и с разными настройками формата звука.
+
+Каждое из этих изменений может потребовать тестирования и корректировки в зависимости от специфических условий вашего приложения и окружающей среды.
+===============================================================================================
+
+===============================================================================================
+Q: реализуй тут Double buffering на этом примере и покажи пожалуйста результат
+-----------------------------------------------------------------------------------------------
+A: В вашем коде ниже я внес изменения для реализации двойного буферизирования (Double buffering). Ключевой идеей здесь является использование двух буферов, которые заменяют друг друга при воспроизведении и записи данных.
+
+```java
+package spec.sound;
+
+import javax.sound.sampled.*;
+
+import static spec.Constants.AUDIO_BYTES_PER_TICK;
+
+public class SpeakerAudio implements Audio {
+
+    private static final int CPU_SAMPLE_RATE = 44100;
+    private static final int BUFFER_CAPACITY = 8192;  // Изменил размер буфера для оптимизации
+
+    private final DataLine.Info info;
+    private final AudioFormat format;
+
+    private final byte[][] buffers = new byte[2][BUFFER_CAPACITY]; // Два буфера для double buffering
+    private int currentBuffer = 0;  // Индекс текущего буфера для записи
+    private int playBuffer = 1;  // Индекс буфера для воспроизведения
+    private int index = 0;
+    private int current;
+
+    private SourceDataLine line;
+
+    public SpeakerAudio() {
+        format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
+        info = new DataLine.Info(SourceDataLine.class, format);
+        createLine();
+        current = 128;
+    }
+
+    private void createLine() {
+        try {
+            line = (SourceDataLine) AudioSystem.getLine(info);
+            line.open(format);
+            line.start();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void write(int bite) {
+        if (line == null) return;
+        current = bite;
+    }
+
+    public void write() {
+        buffers[currentBuffer][index++] = (byte) (current - 128);
+        if (index >= buffers[currentBuffer].length) {
+            soundBuffer();
+        }
+    }
+
+    private void soundBuffer() {
+        line.flush();
+        line.write(buffers[playBuffer], 0, buffers[playBuffer].length);
+        playBuffer = currentBuffer;
+        currentBuffer = 1 - currentBuffer;  // Переключение буферов
+        clearBuffer();
+    }
+
+    @Override
+    public void tick() {
+        if (line == null) return;
+        for (int i = 0; i < AUDIO_BYTES_PER_TICK; i++) {
+            write();
+        }
+    }
+
+    private void clearBuffer() {
+        java.util.Arrays.fill(buffers[currentBuffer], (byte) 0);
+        index = 0;
+    }
+
+    @Override
+    public void play() {
+        // do nothing
+    }
+
+    @Override
+    public void close() {
+        if (line == null) return;
+
+        line.drain();
+        line.close();
+        line = null;
+    }
+}
+```
+
+Что было изменено:
+1. Созданы два буфера (`buffers`) для хранения звуковых данных.
+2. Добавлены переменные `currentBuffer` и `playBuffer` для управления текущими буферами на запись и воспроизведение соответственно.
+3. В методе `soundBuffer()` происходит переключение буферов. Текущий буфер подготавливается для записи новых
+===============================================================================================
+
+===============================================================================================
+Q: Двайная буфферизация не помогла. Только увеличение буффера сиграло роль. Но остались те же проблемы с задержкой. Может быть будем запускать проигрывание в отдельном потоке? Двойная буфферизация тут должна помочь
+-----------------------------------------------------------------------------------------------
+A: Вы правы, использование отдельного потока для воспроизведения аудио может значительно снизить влияние аудиопроцессора на производительность основной эмуляции и помочь решить проблемы с задержкой. Вместе с двойной буферизацией это может дать лучшие результаты. Ниже представлен пример кода, который включает запуск воспроизведения в отдельном потоке:
+
+```java
+package spec.sound;
+
+import javax.sound.sampled.*;
+
+import static spec.Constants.AUDIO_BYTES_PER_TICK;
+
+public class SpeakerAudio implements Audio {
+
+    private static final int CPU_SAMPLE_RATE = 44100;
+    private static final int BUFFER_CAPACITY = 8192;
+
+    private final DataLine.Info info;
+    private final AudioFormat format;
+    private final byte[][] buffers = new byte[2][BUFFER_CAPACITY];
+    private int currentBuffer = 0;
+    private int index = 0;
+    private int current;
+
+    private SourceDataLine line;
+    private Thread audioThread;
+    private boolean running = true;
+
+    public SpeakerAudio() {
+        format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
+        info = new DataLine.Info(SourceDataLine.class, format);
+        createLine();
+        current = 128;
+        startAudioThread();
+    }
+
+    private void createLine() {
+        try {
+            line = (SourceDataLine) AudioSystem.getLine(info);
+            line.open(format);
+            line.start();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void startAudioThread() {
+        audioThread = new Thread(this::processAudio);
+        audioThread.start();
+    }
+
+    private void processAudio() {
+        while (running) {
+            if (index > 0) {
+                soundBuffer();
+            }
+            try {
+                Thread.sleep(10); // Небольшая задержка для уменьшения загрузки процессора
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    @Override
+    public void write(int bite) {
+        current = bite;
+    }
+
+    public void write() {
+        buffers[currentBuffer][index++] = (byte) (current - 128);
+        if (index >= BUFFER_CAPACITY) {
+            index = 0;
+            currentBuffer = 1 - currentBuffer;  // Переключение буферов
+        }
+    }
+
+    private void soundBuffer() {
+        int bufferToPlay = 1 - currentBuffer;
+        line.write(buffers[bufferToPlay], 0, BUFFER_CAPACITY);
+    }
+
+    @Override
+    public void tick() {
+        for (int i = 0; i < AUDIO_BYTES_PER_TICK; i++) {
+            write();
+        }
+    }
+
+    @Override
+    public void play() {
+        // Ничего не делаем, так как аудио уже играет в отдельном потоке.
+    }
+
+    @Override
+    public void close() {
+        if (line == null) return;
+        running = false;
+        line.drain();
+        line.close();
+        line = null;
+        try {
+            audioThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+```
+
+Это изменение вводит отдельный поток для управления аудио проигрыванием, который работает независимо от основного потока эмуляции. Это помогает уменьшить задержку и улучшить плавность процессора за счет разгрузки процессов работы с аудио в отдельный поток.
+
+===============================================================================================
+
+===============================================================================================
+Q: Такое впечатление что порой оно воспроизводит дважды оджно и тоже, появляется эхо порой. 
+-----------------------------------------------------------------------------------------------
+A: Проблема с "эхом" или повторным воспроизведением звука может быть связана с тем, что потоковая обработка аудио заново читает данные из буффера, который уже был воспроизведен, но ещё не перезаписан. Для решения этой проблемы следует корректно управлять синхронизацией между потоками и позаботиться о том, чтобы данные не читались из буфера повторно, пока они не будут обновлены. Вам нужно добавить флаги или состояния, которые будут отслеживать, какой из буферов сейчас активен для записи и какой для чтения, а также убедиться, что данные не читаются до их обновления.
+
+Вот обновленный вариант кода, в котором вводятся дополнительные механизмы для контроля буфера:
+
+```java
+package spec.sound;
+
+import javax.sound.sampled.*;
+
+import static spec.Constants.AUDIO_BYTES_PER_TICK;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class SpeakerAudio implements Audio {
+
+    private static final int CPU_SAMPLE_RATE = 44100;
+    private static final int BUFFER_CAPACITY = 8192;
+
+    private final DataLine.Info info;
+    private final AudioFormat format;
+    private final byte[][] buffers = new byte[2][BUFFER_CAPACITY];
+    private volatile AtomicInteger currentBuffer = new AtomicInteger(0);
+    private int index = 0;
+    private int current;
+
+    private SourceDataLine line;
+    private Thread audioThread;
+    private volatile boolean running = true;
+
+    public SpeakerAudio() {
+        format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
+        info = new DataLine.Info(SourceDataLine.class, format);
+        createLine();
+        current = 128;
+        startAudioThread();
+    }
+
+    private void createLine() {
+        try {
+            line = (SourceDataLine) AudioSystem.getLine(info);
+            line.open(format);
+            line.start();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void startAudioThread() {
+        audioThread = new Thread(this::processAudio);
+        audioThread.start();
+    }
+
+    private void processAudio() {
+        while (running) {
+            int bufferToPlay = currentBuffer.get() == 0 ? 1 : 0;
+            if (index == BUFFER_CAPACITY) { // Ensure data is ready to be played
+                line.write(buffers[bufferToPlay], 0, BUFFER_CAPACITY);
+                index = 0;
+                currentBuffer.set(1 - currentBuffer.get());  // Swap buffers
+            }
+            try {
+                Thread.sleep(10); // Reduce CPU usage
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    @Override
+    public void write(int bite) {
+        current = bite;
+    }
+
+    public void write() {
+        buffers[currentBuffer.get()][index++] = (byte) (current - 128);
+    }
+
+    @Override
+    public void tick() {
+        for (int i = 0; i < AUDIO_BYTES_PER_TICK; i++) {
+            write();
+        }
+    }
+
+    @Override
+    public void close() {
+        if (line == null) return;
+        running = false;
+        line.drain();
+        line.close();
+        line = null;
+        try {
+            audioThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+```
+
+В этом коде:
+- `AtomicInteger`
+===============================================================================================
+
+===============================================================================================
+Q: xception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 8192 out of bounds for length 8192
+\tat spec.sound.SpeakerAudio.write(SpeakerAudio.java:69)
+\tat spec.sound.SpeakerAudio.tick(SpeakerAudio.java:75)
+\tat spec.sound.AudioDriver.tick(AudioDriver.java:61)
+\tat spec.Timings.updateState(Timings.java:46)
+\tat spec.Hardware.cpuInterrupt(Hardware.java:168)
+\tat spec.Cpu.execute(Cpu.java:72)
+\tat spec.Hardware.start(Hardware.java:236)
+\tat spec.Application.start(Application.java:220)
+\tat spec.Main.<init>(Main.java:65)
+\tat spec.Main.main(Main.java:46)
+-----------------------------------------------------------------------------------------------
+A: Ошибка `ArrayIndexOutOfBoundsException` указывает на то, что происходит попытка записать значение за пределы массива. В данном случае индекс 8192 выходит за рамки допустимого диапазона для массива длиной 8192, где допустимые индексы варьируются от 0 до 8191.
+
+Чтобы исправить эту проблему и избежать предыдущих сложностей с эхом или при синхронизации, можно использовать атомарную переменную для синхронизации доступа к буферам и также вынести проверку на полноту буфера перед его записью в другой метод. Вот корректировка вашего кода:
+
+```java
+package spec.sound;
+
+import javax.sound.sampled.*;
+
+import static spec.Constants.AUDIO_BYTES_PER_TICK;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class SpeakerAudio implements Audio {
+
+    private static final int CPU_SAMPLE_RATE = 44100;
+    private static final int BUFFER_CAPACITY = 8192;
+
+    private final DataLine.Info info;
+    private final AudioFormat format;
+    private final byte[][] buffers = new byte[2][BUFFER_CAPACITY];
+    private final AtomicInteger currentBuffer = new AtomicInteger(0);
+    private volatile int index = 0;
+    private int current;
+
+    private SourceDataLine line;
+    private final Object lock = new Object();
+    private Thread audioThread;
+    private volatile boolean running = true;
+
+    public SpeakerAudio() {
+        format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
+        info = new DataLine.Info(SourceDataLine.class, format);
+        createLine();
+        current = 128;
+        startAudioThread();
+    }
+
+    private void createLine() {
+        try {
+            line = (SourceDataLine) AudioSystem.getLine(info);
+            line.open(format);
+            line.start();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void startAudioThread() {
+        audioThread = new Thread(this::processAudio);
+        audioThread.start();
+    }
+
+    private void processAudio() {
+        while (running) {
+            synchronized (lock) {
+                if (index >= BUFFER_CAPACITY) {
+                    line.write(buffers[currentBuffer.get()], 0, BUFFER_CAPACITY);
+                    index = 0;
+                    currentBuffer.set(1 - currentBuffer.get());  // Swap buffers
+                }
+            }
+            try {
+                Thread.sleep(10); // Reduce CPU usage
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void write(int bite) {
+        current = bite;
+    }
+
+    public void write() {
+        synchronized (lock) {
+            if (index < BUFFER_CAPACITY) {
+                buffers[currentBuffer.get()][index++] = (byte) (current - 128);
+            }
+        }
+    }
+
+    @Override
+    public void tick() {
+        for (int i = 0; i < AUDIO_BYTES_PER_TICK; i++) {
+            write();
+        }
+    }
+
+    @Override
+    public void close() {
+        running = false;
+        if (line != null) {
+            line.drain();
+            line.close();
+            line = null;
+        }
+        try {
+            if (audioThread != null) {
+                audioThread.join();
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+```
+
+Использование объекта `lock` для синхронизации предотвращает конкурентный доступ к переменным `index` и `buffers`, что избавляет от возникновения рассмотренных р
+===============================================================================================
+
+===============================================================================================
+Q: эха больше нет, но если я увелчиваю 10х буффер обмена, то сам эмулятор все равно зависает когда воспроизводится буффер
+-----------------------------------------------------------------------------------------------
+A: Зависание вашего эмулятора, особенно при увеличении размера буфера звука, обычно связано с задержкой, которую вызывает выполнение аудиопроцессов на основном потоке. Эта проблема может быть еще сильнее выражена в средах с низкой производительностью процессора или когда система занята другими процессами.
+
+### Решения:
+1. **Реализация асинхронности**: Убедитесь, что операции воспроизведения аудио происходят абсолютно асинхронно и не блокируют основной поток эмулятора. В идеале, операции с аудио должны выполняться на отдельном потоке без значительных блокировок или задержек, а все ожидания должны контролироваться так, чтобы они не влияли на производительность основного процесса эмуляции.
+
+2. **Настройка размера и порций аудио-буфера**: Увеличенный размер буфера уменьшает частоту, с которой потребуется взаимодействие между вашим приложением и аудиосистемой, но также увеличивает задержку воспроизведения. Вам нужно найти баланс между размером буфера и приемлемой задержкой. Использование меньшего размера буфера, но достаточного для избегания излишней нагрузки, может быть оптимальным. 
+
+3. **Минимизация работы в потоке аудио**:
+   - Если вы используете `Thread.sleep()` в аудио потоке, убедитесь, что это не добавляет непредсказуемых задержек. Возможно, потребуется настроить время ожидания или пересмотреть необходимость его использования.
+   - Выполнение минимальных или никаких операций в аудио потоке помимо самой записи в аудиолинию может помочь снизить задержки.
+
+4. **Профилирование и настройка производительности**: Используйте профилирование вашего приложения для выявления узких мест. Это может указать на взаимосвязь зависаний с определенными аспектами обработки аудиосигнала.
+
+5. **Использование низкоуровневых библиотек или прямых буфферов**: Если вы сталкиваетесь с ограничениями Java Sound API, вам может помочь использование других аудио API или библиотек, таких как OpenAL, JACK, или даже JNI для работы с низкоуровневыми возможностями собственной системы.
+
+### Пример минимальной реализации потока обработки без лишних ожиданий:
+```java
+private void startAudioThread() {
+    audioThread = new Thread(() -> {
+        while (running) {
+            synchronized (lock) {
+                if (index >= BUFFER_CAPACITY) {
+                    line.write(buffers[currentBuffer.get()], 0, BUFFER_CAPACITY);
+                    index = 0;
+                    currentBuffer.set(1 - currentBuffer.get());  // Swap buffers
+                }
+            }
+        }
+    });
+    audioThread.setPriority(Thread.MAX_PRIORITY);  // Выставление высокого приоритета потока
+    audioThread.start();
+}
+```
+
+Этот фрагмент кода пытается минимизировать воздействие на производительность, выполняя только основные действия с аудио в отдельном потоке без ожиданий. Обратите внимание на установку приоритета потока, что помогает уменьшить вероятность прерываний основным планировщиком ОС.
+===============================================================================================
+
+===============================================================================================
+Q: не помгло
+-----------------------------------------------------------------------------------------------
+A: Если предыдущие методики не помогли, возможно, успех будет зависеть от более радикального изменения подхода к обработке аудио. Один из возможных методов — это использование Ring Buffer (кольцевой буфер), который обеспечивает непрерывное и бесшовное управление потоком аудиоданных, уменьшая задержку и исключая зависания.
+
+### Применение Кольцевого Буфера
+Кольцевой буфер позволяет вам писать данные в буфер, не ожидая, что данные будут проиграны, тем самым избегая блокировок и зависаний.
+
+```java
+package spec.sound;
+
+import javax.sound.sampled.*;
+
+public class SpeakerAudio implements Audio {
+
+    private static final int CPU_SAMPLE_RATE = 44100;
+    private static final int BUFFER_SIZE = 8192 * 10; // Увеличенный буфер
+    private static final int BUFFER_COUNT = 2;
+
+    private byte[] buffer = new byte[BUFFER_SIZE * BUFFER_COUNT];
+    private int writePos = 0;
+    private int readPos = 0;
+    private SourceDataLine line;
+    private Thread audioThread;
+    private boolean running = true;
+
+    public SpeakerAudio() {
+        AudioFormat format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
+        DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+
+        try {
+            line = (SourceDataLine) AudioSystem.getLine(info);
+            line.open(format, BUFFER_SIZE);
+            line.start();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+
+        audioThread = new Thread(this::processAudio);
+        audioThread.start();
+    }
+
+    private void processAudio() {
+        int available;
+        while (running) {
+            synchronized (this) {
+                available = (writePos - readPos + BUFFER_SIZE * BUFFER_COUNT) % (BUFFER_SIZE * BUFFER_COUNT);
+            }
+            if (available > 0) {
+                int toRead = Math.min(available, BUFFER_SIZE - (readPos % BUFFER_SIZE));
+                line.write(buffer, readPos % (BUFFER_SIZE * BUFFER_COUNT), toRead);
+                readPos += toRead;
+            }
+        }
+    }
+
+    @Override
+    public void write(int data) {
+        synchronized (this) {
+            buffer[writePos % (BUFFER_SIZE * BUFFER_COUNT)] = (byte) (data - 128);
+            writePos++;
+        }
+    }
+
+    @Override
+    public void close() {
+        if (line != null) {
+            running = false;
+            line.drain();
+            line.close();
+            line = null;
+        }
+        try {
+            if (audioThread != null) {
+                audioThread.join();
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    @Override
+    public void tick() {
+        // То же что и метод write, но происходит на каждый тик
+    }
+}
+```
+
+В этом примере:
+- Используется кольцевой буфер для поддержки беспрерывного потока данных.
+- Аудиопоток читает доступные данные из буфера, что уменьшает вероятность сбоев и задержек в проигрываемом звуке.
+
+Этот подход может решить проблемы с излишней загрузкой процессора и задержек воспроизведения. Настройте размер `BUFFER_SIZE` в зависимости от требований вашего приложения и потенциального объема данных.		  
+===============================================================================================
