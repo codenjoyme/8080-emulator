@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import spec.math.Bites;
 import spec.math.WordMath;
 import spec.platforms.Lik;
+import spec.sound.AudioDriver;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,12 +36,13 @@ public class RomLoader {
     private Timings timings;
     private Memory memory;
     private RomSwitcher romSwitcher;
+    private AudioDriver audio;
 
     public RomLoader(Memory memory) {
         this.memory = memory;
     }
 
-    public RomLoader(Memory memory, Cpu cpu, IOPorts ports, Keyboard keyboard, GraphicControl graphic, Timings timings, RomSwitcher romSwitcher) {
+    public RomLoader(Memory memory, Cpu cpu, IOPorts ports, Keyboard keyboard, GraphicControl graphic, Timings timings, RomSwitcher romSwitcher, AudioDriver audio) {
         this.memory = memory;
         this.cpu = cpu;
         this.ports = ports;
@@ -48,6 +50,7 @@ public class RomLoader {
         this.graphic = graphic;
         this.timings = timings;
         this.romSwitcher = romSwitcher;
+        this.audio = audio;
     }
 
     private void logLoading(String name, Range range) {
@@ -296,7 +299,8 @@ public class RomLoader {
                 graphic,
                 timings,
                 memory,
-                romSwitcher);
+                romSwitcher,
+                audio);
     }
 
     private int readPart(StateProvider provider, int offset, Bites bites) {

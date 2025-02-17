@@ -599,10 +599,12 @@ Loading 'file:/C:/Java/8080-emulator/src/main/resources/lik/roms/06_basicLik.bin
         - 4 bytes for int     - `delay`
         - 1 byte for boolean  - 1 if `fullSpeed` true, 0 otherwise
         - 8 bytes for long    - `time`
-        - 4 bytes for int     - `iterations`
     * Memory dump: `0x0000` - `0xFFFF`
     * ROM switcher state:
         - 1 byte for boolean  - 1 if `lik` true, 0 otherwise
+    * Audio driver state: 
+        - 1 byte for boolean  - 1 if `audioMode` true for `AUDIO_MODE_LINE_OUT`, 
+                                0 otherwise for `AUDIO_MODE_SPEAKER`.
 
 - `NumPad 4` - Зарезервировано для будущего использования.
 

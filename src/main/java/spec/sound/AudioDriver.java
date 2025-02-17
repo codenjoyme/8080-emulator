@@ -2,8 +2,12 @@ package spec.sound;
 
 import spec.Files;
 import spec.Logger;
+import spec.StateProvider;
+import spec.math.Bites;
 
-public class AudioDriver {
+public class AudioDriver implements StateProvider {
+
+    public static final int SNAPSHOT_AUDIO_STATE_SIZE = 1;
 
     public static final boolean AUDIO_MODE_LINE_OUT = true;
     public static final boolean AUDIO_MODE_SPEAKER = false;
@@ -12,14 +16,14 @@ public class AudioDriver {
     private boolean audioMode;
 
     public AudioDriver() {
-        audio = createAudio(AUDIO_MODE_SPEAKER);
+        createAudio(AUDIO_MODE_SPEAKER);
     }
 
-    public synchronized Audio createAudio(boolean mode) {
+    public synchronized void createAudio(boolean mode) {
         // TODO #40 закончить с аудио пока отключил для веб версии - там ошибка
         if (Files.isRunningFromJar()) {
             Logger.debug("Audio is disabled in jar");
-            return new NoAudio();
+            audio = new NoAudio();
         }
 
         if (audio != null) {
@@ -30,9 +34,9 @@ public class AudioDriver {
         Logger.debug("Switch audio to '%s' mode", audioMode ? "line out" : "speaker");
 
         if (audioMode) {
-            return new LineOutAudio();
+            audio = new LineOutAudio();
         } else {
-            return new SpeakerAudio();
+            audio = new SpeakerAudio();
         }
     }
 
@@ -62,6 +66,28 @@ public class AudioDriver {
     }
 
     public synchronized void switchOut() {
-        audio = createAudio(!audioMode);
+        createAudio(!audioMode);
+    }
+
+    @Override
+    public int stateSize() {
+        return SNAPSHOT_AUDIO_STATE_SIZE;
+    }
+
+    @Override
+    public void state(Bites bites) {
+        validateState("AudioDriver", bites);
+
+        boolean mode = bites.get(0) == 1;
+        createAudio(mode);
+    }
+
+    @Override
+    public Bites state() {
+        Bites bites = new Bites(stateSize());
+
+        bites.set(0, audioMode ? 1 : 0);
+
+        return bites;
     }
 }

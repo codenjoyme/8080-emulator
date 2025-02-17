@@ -83,7 +83,7 @@ public class Hardware {
     }
 
     protected RomLoader createRomLoader() {
-        return new RomLoader(memory, cpu, ports, keyboard, graphtic, timings, romSwitcher);
+        return new RomLoader(memory, cpu, ports, keyboard, graphtic, timings, romSwitcher, audio);
     }
 
     protected Video createVideo(int width, int height) {
