@@ -55,11 +55,11 @@ public class Constants {
     public static final int AUDIO_BYTES_PER_TICK = 4;
     public static final int CPU_TICKS_PER_INTERRUPT = 170;
     public static final long CPU_INTERRUPT_DELAY = (long) (1000_000 * 0.06 * 41.0 * (9.06/8.68) * (1 - (9.23 - 9.033)/9.23/2) * CPU_TICKS_PER_INTERRUPT / 10_000);
-    public static final int REFRESH_RATE = 10;      // refresh screen every 'n' interrupts
-    public static final int MAX_REFRESH_RATE = 100;
+    public static final int NORMAL_REFRESH_RATE = 10;      // refresh screen every 'n' interrupts
+    public static final int MIN_REFRESH_RATE = 100;
 
-    public static final int SLEEP_EACH_INTERRUPT = 8;
-    public static final int LOG_EACH_INTERRUPT = 1000;
+    public static final int SLEEP_EACH_INTERRUPT = 8;  // задержка каждые 8 прерываний
+    public static final int LOG_EACH_INTERRUPT = 10_000; // логгирование времени выполнения 1000 прерываний
 
     public static final long NANOS = 1_000_000;
 

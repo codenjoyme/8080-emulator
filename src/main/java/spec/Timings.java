@@ -12,7 +12,7 @@ public class Timings implements StateProvider{
     private final Hardware hard;
 
     private int interrupt = 0;
-    private int refreshRate = REFRESH_RATE;
+    private int refreshRate = NORMAL_REFRESH_RATE;
 
     // TODO #26 а точно тут надо так заморачиваться с многопоточностью?
     private boolean willReset = false;
@@ -54,7 +54,9 @@ public class Timings implements StateProvider{
     protected void profiling() {
         if (interrupt % LOG_EACH_INTERRUPT == 0) {
             if (time != 0) {
-                Logger.debug("Time per 1k interrupts: %s ms", 1.0D * (now() - time) / NANOS);
+                Logger.debug("Time per %sk interrupts: %s ms",
+                        LOG_EACH_INTERRUPT / 1000,
+                        1.0D * (now() - time) / NANOS);
             }
             time = now();
         }
@@ -91,10 +93,10 @@ public class Timings implements StateProvider{
         fullSpeed = !fullSpeed;
         if (fullSpeed) {
             Logger.debug("Full speed mode");
-            refreshRate = MAX_REFRESH_RATE;
+            refreshRate = MIN_REFRESH_RATE;
         } else {
             Logger.debug("Normal speed mode");
-            refreshRate = REFRESH_RATE;
+            refreshRate = NORMAL_REFRESH_RATE;
         }
     }
 
@@ -112,7 +114,11 @@ public class Timings implements StateProvider{
     }
 
     public void decreaseDelay() {
-        delay = (int) (delay * INCREASE_DELAY);
+        if (delay < 10) {
+            delay--;
+        } else {
+            delay = (int) (delay * INCREASE_DELAY);
+        }
         Logger.debug("Delay decreased: %s", delay);
     }
 
