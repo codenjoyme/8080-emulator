@@ -4,6 +4,7 @@ import spec.math.Bites;
 import spec.platforms.Lik;
 import spec.platforms.Platform;
 import spec.platforms.PlatformFactory;
+import spec.state.StateProvider;
 
 public class RomSwitcher implements StateProvider {
 

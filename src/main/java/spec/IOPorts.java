@@ -1,6 +1,7 @@
 package spec;
 
 import spec.math.Bites;
+import spec.state.StateProvider;
 
 import static spec.Constants.*;
 import static spec.math.WordMath.*;

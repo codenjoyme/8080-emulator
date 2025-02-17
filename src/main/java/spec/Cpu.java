@@ -1,8 +1,11 @@
 package spec;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import spec.assembler.Assembler;
 import spec.assembler.Command;
 import spec.math.Bites;
+import spec.state.StateProvider;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -169,6 +172,48 @@ public class Cpu extends Registry implements StateProvider {
         interrupt = (int) joinBites(bites, new Range(12, 15));
         tick = (int) joinBites(bites, new Range(16, 19));
         tact = (int) joinBites(bites, new Range(20, 23));
+    }
+
+    @Override
+    public JsonElement toJson() {
+        JsonObject result = new JsonObject();
+
+        result.addProperty("pc", hex16(PC()));
+        result.addProperty("sp", hex16(SP()));
+        result.addProperty("f", hex8(F()));
+        result.addProperty("a", hex8(A()));
+        result.addProperty("c", hex8(C()));
+        result.addProperty("b", hex8(B()));
+        result.addProperty("e", hex8(E()));
+        result.addProperty("d", hex8(D()));
+        result.addProperty("l", hex8(L()));
+        result.addProperty("h", hex8(H()));
+
+        result.addProperty("interrupt", interrupt);
+        result.addProperty("tick", tick);
+        result.addProperty("tact", tact);
+
+        return result;
+    }
+
+    @Override
+    public void fromJson(JsonElement element) {
+        JsonObject json = element.getAsJsonObject();
+
+        PC(hex16(json.get("pc").getAsString()));
+        SP(hex16(json.get("sp").getAsString()));
+        F(hex8(json.get("f").getAsString()));
+        A(hex8(json.get("a").getAsString()));
+        C(hex8(json.get("c").getAsString()));
+        B(hex8(json.get("b").getAsString()));
+        E(hex8(json.get("e").getAsString()));
+        D(hex8(json.get("d").getAsString()));
+        L(hex8(json.get("l").getAsString()));
+        H(hex8(json.get("h").getAsString()));
+
+        interrupt = json.get("interrupt").getAsInt();
+        tick = json.get("tick").getAsInt();
+        tact = json.get("tact").getAsInt();
     }
 
     public String toStringDetails(boolean withTicks) {

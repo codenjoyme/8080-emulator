@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static spec.stuff.SmartAssert.fail;
+import static spec.utils.JsonUtils.asString;
 
 public class FileAssert {
 
@@ -141,42 +142,11 @@ public class FileAssert {
         });
     }
 
-    public static String asString(Object data) {
-        boolean isJson = data instanceof Map || data instanceof List;
-        if (isJson) {
-            return new GsonBuilder().setPrettyPrinting()
-                    .serializeNulls()
-                    .disableHtmlEscaping()
-                    .registerTypeAdapter(HashMap.class, new MapSerializer())
-                    .registerTypeAdapter(Double.class, new NumberSerializer())
-                    .create().toJson(data);
-        } else {
-            return data.toString();
-        }
-    }
-
     private static Map getField(List<Object> fields, String name) {
         Map field = (Map) fields.stream()
                 .filter(it2 -> ((Map) it2).get("name").equals(name))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No labels field"));
         return (Map) field.get("value");
-    }
-
-    static class NumberSerializer implements JsonSerializer<Double> {
-        @Override
-        public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(src.intValue());
-        }
-    }
-
-    static class MapSerializer implements JsonSerializer<Map<?, ?>> {
-        @Override
-        public JsonElement serialize(Map<?, ?> src, Type typeOfSrc, JsonSerializationContext context) {
-            JsonObject json = new JsonObject();
-            src = new TreeMap<>(src);
-            src.forEach((key, value) -> json.add(String.valueOf(key), context.serialize(value)));
-            return json;
-        }
     }
 }

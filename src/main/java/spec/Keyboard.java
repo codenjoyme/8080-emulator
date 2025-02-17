@@ -1,7 +1,12 @@
 package spec;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang3.tuple.Pair;
 import spec.math.Bites;
+import spec.state.JsonState;
+import spec.state.StateProvider;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +19,7 @@ import static spec.KeyCode.*;
 import static spec.math.WordMath.bitToString;
 import static spec.math.WordMath.isSet;
 
-public class Keyboard implements StateProvider {
+public class Keyboard implements StateProvider, JsonState {
 
     public static final int SNAPSHOT_KEYBOARD_SIZE = 13;
 
@@ -92,6 +97,47 @@ public class Keyboard implements StateProvider {
         return bites;
     }
 
+    @Override
+    public JsonElement toJson() {
+        JsonObject result = new JsonObject();
+
+        JsonArray status = new JsonArray();
+        for (int i = 0; i < keyStatus[0].length; i++) {
+            String row = new String();
+            for (int j = 0; j < keyStatus.length; j++) {
+                row += (keyStatus[j][i] ? 1 : 0);
+            }
+            status.add(row);
+        }
+        result.add("status", status);
+
+        result.addProperty("shift", shift ? 1 : 0);
+        result.addProperty("alt", alt ? 1 : 0);
+        result.addProperty("ctrl", ctrl ? 1 : 0);
+        result.addProperty("shiftEmu", shiftEmu ? 1 : 0);
+        result.addProperty("cyrLat", cyrLat ? 1 : 0);
+        return result;
+    }
+
+    @Override
+    public void fromJson(JsonElement element) {
+        JsonObject json = element.getAsJsonObject();
+
+        JsonArray status = json.getAsJsonArray("status");
+        for (int i = 0; i < keyStatus[0].length; i++) {
+            String row = status.get(i).getAsString();
+            for (int j = 0; j < keyStatus.length; j++) {
+                keyStatus[j][i] = row.charAt(j) == '1';
+            }
+        }
+
+        shift = json.get("shift").getAsInt() == 1;
+        alt = json.get("alt").getAsInt() == 1;
+        ctrl = json.get("ctrl").getAsInt() == 1;
+        shiftEmu = json.get("shiftEmu").getAsInt() == 1;
+        cyrLat = json.get("cyrLat").getAsInt() == 1;
+    }
+
     // переменные-заготовки для полу-рядов матрицы клавиатуры .
     // значение в них устанавливается при нажатии-отпускании клавиши.
     // в порт клавиатуры - xxfeh они записываются во время его опроса
@@ -105,8 +151,8 @@ public class Keyboard implements StateProvider {
             cyrLat = false;
         }
 
-        for (int i = 0; i < 12; i++) {  // все кнопки не нажаты
-            for (int j = 0; j < 6; j++) {
+        for (int i = 0; i < keyStatus.length; i++) {  // все кнопки не нажаты
+            for (int j = 0; j < keyStatus[0].length; j++) {
                 keyStatus[i][j] = false;
             }
         }
@@ -136,7 +182,7 @@ public class Keyboard implements StateProvider {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("       | | | | | | | | | | |1|1|\n")
-                .append("       |0|1|2|3|4|5|6|7|8|9|0|1|\n");
+          .append("       |0|1|2|3|4|5|6|7|8|9|0|1|\n");
 
         for (int i = 0; i < keyStatus[0].length; i++) {
             sb.append("    |").append(i).append("|");

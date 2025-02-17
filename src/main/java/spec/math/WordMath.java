@@ -70,6 +70,16 @@ public class WordMath {
         return padLeft(Integer.toString(bite, 16).toUpperCase(), length, '0');
     }
 
+    public static int hex16(String word) {
+        int hi = hex8(word.substring(0, 2));
+        int lo = hex8(word.substring(2, 4));
+        return merge(hi, lo);
+    }
+
+    public static int hex8(String hex) {
+        return Integer.parseInt(hex, 16);
+    }
+
     // TODO #7 для чисел больше 0xFFFF он не работает верно, а возвращает большее число. Надо ли обрезать?
     public static String hex16(int bite) {
         return hex(bite, 4);

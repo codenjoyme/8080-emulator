@@ -1,8 +1,10 @@
-package spec;
+package spec.state;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import spec.math.Bites;
 
-public interface StateProvider {
+public interface StateProvider extends JsonState {
 
     int stateSize();
 
@@ -16,5 +18,16 @@ public interface StateProvider {
                     "Invalid " + name + " state size: %s, expected: %s",
                     actual.size(), stateSize()));
         }
+    }
+
+    // TODO remove me from here
+    @Override
+    default JsonElement toJson() {
+        return new JsonObject();
+    }
+
+    @Override
+    default void fromJson(JsonElement element) {
+        // do nothing
     }
 }

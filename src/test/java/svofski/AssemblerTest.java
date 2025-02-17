@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static spec.IntegrationTest.TEST_RESOURCES;
 import static spec.stuff.AbstractTest.MAIN_RESOURCES;
 import static spec.stuff.AbstractTest.findAllFiles;
-import static spec.stuff.FileAssert.asString;
+import static spec.utils.JsonUtils.asString;
 
 @RunWith(Parameterized.class)
 public class AssemblerTest {

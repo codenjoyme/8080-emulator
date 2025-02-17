@@ -1,11 +1,12 @@
 package spec;
 
 import spec.math.Bites;
+import spec.state.StateProvider;
 
 import static spec.Constants.*;
 import static spec.math.WordMath.*;
 
-public class Timings implements StateProvider{
+public class Timings implements StateProvider {
 
     public static final int SNAPSHOT_TIMINGS_SIZE = 34;
 

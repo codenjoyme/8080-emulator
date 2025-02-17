@@ -1,16 +1,21 @@
 package spec;
 
+import com.google.gson.JsonObject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import spec.math.Bites;
 import spec.math.WordMath;
 import spec.platforms.Lik;
 import spec.sound.AudioDriver;
+import spec.state.JsonState;
+import spec.state.StateProvider;
+import spec.utils.JsonUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -188,6 +193,10 @@ public class RomLoader {
         return readBytes(is, bites, range.begin(), range.length());
     }
 
+    private String readString(InputStream is) throws Exception {
+        return IOUtils.toString(is, StandardCharsets.UTF_8);
+    }
+
     private int readBytes(InputStream is, Bites bites, int offset, int length) throws Exception {
         byte[] buff = new byte[length];
 
@@ -241,10 +250,11 @@ public class RomLoader {
      * * ROM switcher state:
      *   - 1 byte for boolean  - 1 if `lik` true, 0 otherwise
      */
+    // TODO remove after migration
     public Range loadSnapshot(String base, String path) {
         try {
             String absolute = base + path;
-            Logger.debug("Loading snapshot from %s", absolute);
+            Logger.debug("Loading snapshot from: %s", absolute);
 
             InputStream is = openStream(absolute);
             List<StateProvider> states = allStates();
@@ -264,10 +274,33 @@ public class RomLoader {
         }
     }
 
+    public Range loadJsonSnapshot(String base, String path) {
+        try {
+            String absolute = base + path;
+            Logger.debug("Loading json snapshot from: %s", absolute);
+
+            InputStream is = openStream(absolute);
+            List<JsonState> states = allJsonStates();
+
+            String json = readString(is);
+            JsonObject object = JsonUtils.gson().fromJson(json, JsonObject.class);
+
+            for (JsonState state : states) {
+                state.fromJson(object.get(state.getClass().getSimpleName().toLowerCase()));
+            }
+
+            Logger.debug("Snapshot loaded");
+            return new Range(0, -x10000);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // TODO remove after migration
     public void saveSnapshot(String base, String path) {
         try {
             String absolute = base + path;
-            Logger.info("Saving snapshot to %s", absolute);
+            Logger.info("Saving snapshot to: %s", absolute);
 
             List<StateProvider> states = allStates();
             int size = statesSize(states);
@@ -284,6 +317,25 @@ public class RomLoader {
         }
     }
 
+    public void saveJsonSnapshot(String base, String path) {
+        try {
+            String absolute = base + path;
+            Logger.info("Saving json snapshot to: %s", absolute);
+
+            List<JsonState> states = allJsonStates();
+
+            JsonObject result = new JsonObject();
+            for (JsonState state : states) {
+                result.add(state.getClass().getSimpleName().toLowerCase(), state.toJson());
+            }
+
+            FileUtils.writeByteArrayToFile(new File(absolute),
+                    JsonUtils.asString(result).getBytes());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private int statesSize(List<StateProvider> states) {
         return states.stream()
                 .map(StateProvider::stateSize)
@@ -291,7 +343,20 @@ public class RomLoader {
                 .orElse(0);
     }
 
+    // TODO remove after migration
     private List<StateProvider> allStates() {
+        return Arrays.asList(
+                cpu,
+                keyboard,
+                ports,
+                graphic,
+                timings,
+                memory,
+                romSwitcher,
+                audio);
+    }
+
+    private List<JsonState> allJsonStates() {
         return Arrays.asList(
                 cpu,
                 keyboard,

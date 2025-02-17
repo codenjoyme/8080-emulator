@@ -2,7 +2,7 @@ package spec.sound;
 
 import spec.Files;
 import spec.Logger;
-import spec.StateProvider;
+import spec.state.StateProvider;
 import spec.math.Bites;
 
 public class AudioDriver implements StateProvider {
