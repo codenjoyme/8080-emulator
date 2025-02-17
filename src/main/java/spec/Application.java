@@ -44,13 +44,13 @@ public class Application {
 
     public void lostFocus() {
         Logger.debug("Lost focus");
-        hard.graphic().printIO(BORDER_PORT, 0x50);
+        hard.lostFocus();
         hard.keyboard().reset(false);
     }
 
     public void gotFocus() {
         Logger.debug("Got focus");
-        hard.graphic().printIO(BORDER_PORT, 0x30);
+        hard.gotFocus();
         hard.keyboard().reset(false);
     }
 
@@ -137,6 +137,7 @@ public class Application {
         // NUM_9 - переключение режима аудио (звук вывода на магнитофон, звук динамика)
         if (key.numNine()) {
             hard.audio().switchOut();
+            hard.refreshBorder();
         }
 
         // NUM_8 - сделать скриншот

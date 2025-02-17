@@ -31,7 +31,7 @@ public class PngScreenToText {
     private int pxHeight;
 
     public PngScreenToText(String base) {
-        // TODO #41 Во все места конкатенации `base` и `file` добавить проверку на то что там между ними будет слеш
+        // TODO #42 Во все места конкатенации `base` и `file` добавить проверку на то что там между ними будет слеш
         process(new File(base + "lik/docs/screen/chars-map.png").getAbsolutePath(),
             NUMBERS + "\n" + // цифры
             SYMBOLS + "\n" + // спецсимволы

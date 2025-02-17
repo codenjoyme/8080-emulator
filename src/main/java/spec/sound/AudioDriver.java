@@ -19,6 +19,10 @@ public class AudioDriver implements StateProvider {
         createAudio(AUDIO_MODE_SPEAKER);
     }
 
+    public synchronized boolean audioMode() {
+        return audioMode;
+    }
+
     public synchronized void createAudio(boolean mode) {
         // TODO #40 закончить с аудио пока отключил для веб версии - там ошибка
         if (Files.isRunningFromJar()) {

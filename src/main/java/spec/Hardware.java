@@ -27,19 +27,21 @@ public class Hardware {
     private Keyboard keyboard;
     private KeyRecord record;
     private FileRecorder fileRecorder;
-    private GraphicControl graphtic;
+    private GraphicControl graphic;
     private Timings timings;
     private RomSwitcher romSwitcher;
     private PngScreenToText screenToText;
 
+    // TODO #43 Надо сохранить так же и этот стейт в снепшот
     private boolean cpuEnabled;
     private boolean cpuSuspended;
+    private boolean hasFocus;
 
     private final List<Runnable> cpuSuspendedListeners = new CopyOnWriteArrayList<>();
 
     public Hardware(int screenWidth, int screenHeight, Container parent, String base) {
         timings = createTimings();
-        graphtic = createGraphicControl(parent);
+        graphic = createGraphicControl(parent);
         memory = createMemory();
         fileRecorder = createFileRecorder();
         keyLogger = createKeyLogger();
@@ -83,12 +85,12 @@ public class Hardware {
     }
 
     protected RomLoader createRomLoader() {
-        return new RomLoader(memory, cpu, ports, keyboard, graphtic, timings, romSwitcher, audio);
+        return new RomLoader(memory, cpu, ports, keyboard, graphic, timings, romSwitcher, audio);
     }
 
     protected Video createVideo(int width, int height) {
         Video video = new Video(width, height);
-        video.drawer(graphtic.getDrawer());
+        video.drawer(graphic.getDrawer());
 
         return video;
     }
@@ -205,12 +207,12 @@ public class Hardware {
 
     // OUT команда процессора
     protected void out8(int port, int bite) {
-        graphtic.printIO(port, bite);
+        graphic.printIO(port, bite);
     }
 
     // запись в порты КР580ВВ55
     protected void outPort8(int port, int bite) {
-        graphtic.printIO(port, bite);
+        graphic.printIO(port, bite);
     }
 
     protected int in8(int port) {
@@ -245,6 +247,7 @@ public class Hardware {
         keyLogger.reset();
         video.redraw(SCREEN_MEMORY_START, memory);
         resume();
+        refreshBorder();
     }
 
     public void saveSnapshot(String path) {
@@ -300,6 +303,28 @@ public class Hardware {
         }
     }
 
+    public void refreshBorder() {
+        if (hasFocus) {
+            if (audio.audioMode()) {
+                graphic.printIO(BORDER_PORT, 0xC0);
+            } else {
+                graphic.printIO(BORDER_PORT, 0x30);
+            }
+        } else {
+            graphic.printIO(BORDER_PORT, 0x50);
+        }
+    }
+
+    public void gotFocus() {
+        hasFocus = true;
+        refreshBorder();
+    }
+
+    public void lostFocus() {
+        hasFocus = false;
+        refreshBorder();
+    }
+
     // components getters
 
     public PngVideo png() {
@@ -347,7 +372,7 @@ public class Hardware {
     }
 
     public GraphicControl graphic() {
-        return graphtic;
+        return graphic;
     }
 
     public Timings timings() {

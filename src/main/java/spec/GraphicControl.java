@@ -14,7 +14,7 @@ public class GraphicControl implements StateProvider {
     private final Graphic graphic;
 
     public static String[] IO_DRAW_MODE_INFO = new String[] {
-            "0: Border highlights active window",
+            "0: Border highlights active window (and audio mode)",
             "1: Border highlights writing byte to Port A",
             "2: Border highlights writing byte to Port B",
             "3: Border highlights writing byte to Port C",
