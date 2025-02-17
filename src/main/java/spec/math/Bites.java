@@ -33,7 +33,7 @@ public class Bites implements Iterable<Integer> {
         Bites result = new Bites(bites.length() / 2);
         for (int i = 0; i < result.size(); i++) {
             String hex = bites.substring(i * 2, (i + 1) * 2);
-            int bite = hex16(hex);
+            int bite = hex8(hex);
             result.set(i, bite);
         }
         return result;
