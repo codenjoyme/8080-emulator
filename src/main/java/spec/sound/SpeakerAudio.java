@@ -7,7 +7,7 @@ import static spec.Constants.AUDIO_BYTES_PER_TICK;
 public class SpeakerAudio implements Audio {
 
     private static final int CPU_SAMPLE_RATE = 44100;
-    private static final int BUFFER_CAPACITY = 2048;
+    private static final int BUFFER_CAPACITY = 2048*4;
 
     private final DataLine.Info info;
     private final AudioFormat format;
