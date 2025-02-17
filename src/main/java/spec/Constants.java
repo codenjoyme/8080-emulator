@@ -54,7 +54,7 @@ public class Constants {
     // - а в игре `BUDY` звук воспроизводился без искажений как в `Emu80`
     public static final int AUDIO_BYTES_PER_TICK = 4;
     public static final int CPU_TICKS_PER_INTERRUPT = 170;
-    public static final long CPU_INTERRUPT_DELAY = 200_000;
+    public static final long CPU_INTERRUPT_DELAY = (long) (169_574 * 1.0);
     public static final int NORMAL_REFRESH_RATE = 10;      // refresh screen every 'n' interrupts
     public static final int MIN_REFRESH_RATE = 100;
 
