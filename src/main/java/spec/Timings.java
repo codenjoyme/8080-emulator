@@ -67,9 +67,6 @@ public class Timings implements StateProvider{
     }
 
     protected void sleep() {
-        // Trying to slow to 100%, browsers resolution on the system
-        // time is not accurate enough to check every interrupt. So
-        // we check every `n` interrupts.
         if ((interrupt % SLEEP_EACH_INTERRUPT) == 0) {
             long time = now();
             long duration = time - last;
@@ -82,11 +79,12 @@ public class Timings implements StateProvider{
     }
 
     public void sleep(long nanos) {
-        try {
-            Thread.sleep(nanos / NANOS, (int) (nanos % NANOS));
-        } catch (Exception ignored) {
-            // do nothing
-        }
+        // this sleep method works better than Thread.sleep(0)
+        long start = System.nanoTime();
+        long end;
+        do {
+            end = System.nanoTime();
+        } while (end - start < nanos);
     }
 
     public void changeFullSpeed() {
