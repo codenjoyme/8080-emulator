@@ -122,9 +122,11 @@ public class RomLoaderTest extends AbstractTest {
         graphic.nextDrawMode();
         graphic.nextDrawMode();
 
+        hard.audio().switchOut();
+
         timings.changeFullSpeed();
         timings.decreaseDelay();
-        for (int i = 0; i < 12345; i++) {
+        for (int i = 0; i < 1234; i++) {
             timings.updateState();
             if (i % 3 == 1) {
                 timings.sleep();
@@ -195,19 +197,20 @@ public class RomLoaderTest extends AbstractTest {
                 "    |5| + - - - + - - - - + + -\n";
 
         String expectedTimings =
-                "interrupt   : 12345\n" +
+                "interrupt   : 1234\n" +
                 "refreshRate : 100\n" +
                 "willReset   : false\n" +
-                "last        : 1733699831831\n" +
-                "delay       : 17273\n" +
+                "last        : 1733699664007\n" +
+                "delay       : 135659\n" +
                 "fullSpeed   : true\n" +
-                "time        : 1733699813321\n";
+                "time        : 1733699156833\n";
 
         assertEquals(expectedCpu, cpu.toStringDetails(true));
         assertEquals(expectedPorts, ports.toStringDetails());
         assertEquals(3, graphic.ioDrawMode());
         assertEquals(expectedTimings, timings.toStringDetails());
         assertEquals("specialist", romSwitcher.current().name());
+        assertEquals(true, hard.audio().audioMode());
 
         // when
         roms.saveSnapshot(targetBase, "snapshot.bin");
@@ -222,6 +225,7 @@ public class RomLoaderTest extends AbstractTest {
         assertNotSame(3, graphic.ioDrawMode());
         assertNotSame(expectedTimings, timings.toStringDetails());
         assertEquals("lik", romSwitcher.current().name());
+        assertEquals(false, hard.audio().audioMode());
 
         // when
         roms.loadSnapshot(targetBase, "snapshot.bin");
@@ -232,6 +236,7 @@ public class RomLoaderTest extends AbstractTest {
         assertEquals(3, graphic.ioDrawMode());
         assertEquals(expectedTimings, timings.toStringDetails());
         assertEquals("specialist", romSwitcher.current().name());
+        assertEquals(true, hard.audio().audioMode());
     }
 
     private void assertMemoryChanges() {
