@@ -1,12 +1,15 @@
 package spec;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import spec.math.Bites;
+import spec.state.JsonState;
 import spec.state.StateProvider;
 
 import static spec.Constants.*;
 import static spec.math.WordMath.*;
 
-public class IOPorts implements StateProvider {
+public class IOPorts implements StateProvider, JsonState {
 
     public static final int SNAPSHOT_IO_PORTS_SIZE = 1;
 
@@ -64,6 +67,28 @@ public class IOPorts implements StateProvider {
                 | (Bin ? b0000_0010 : 0)
                 | (C0in ? b0000_0001 : 0)
                 | (C1in ? b0000_1000 : 0));
+    }
+
+    @Override
+    public JsonElement toJson() {
+        JsonObject result = new JsonObject();
+
+        result.addProperty("Ain", Ain ? 1 : 0);
+        result.addProperty("Bin", Bin ? 1 : 0);
+        result.addProperty("C0in", C0in ? 1 : 0);
+        result.addProperty("C1in", C1in ? 1 : 0);
+
+        return result;
+    }
+
+    @Override
+    public void fromJson(JsonElement element) {
+        JsonObject json = element.getAsJsonObject();
+
+        Ain = json.get("Ain").getAsInt() == 1;
+        Bin = json.get("Bin").getAsInt() == 1;
+        C0in = json.get("C0in").getAsInt() == 1;
+        C1in = json.get("C1in").getAsInt() == 1;
     }
 
     // ввод из порта памяти КР580ВВ55

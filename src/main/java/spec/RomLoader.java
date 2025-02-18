@@ -286,7 +286,7 @@ public class RomLoader {
             JsonObject object = JsonUtils.gson().fromJson(json, JsonObject.class);
 
             for (JsonState state : states) {
-                state.fromJson(object.get(state.getClass().getSimpleName().toLowerCase()));
+                state.fromJson(object.get(getName(state)));
             }
 
             Logger.debug("Snapshot loaded");
@@ -294,6 +294,14 @@ public class RomLoader {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static String getName(JsonState state) {
+        Class<?> clazz = state.getClass();
+        if (clazz.isAnonymousClass()) {
+            return clazz.getSuperclass().getSimpleName();
+        }
+        return clazz.getSimpleName();
     }
 
     // TODO remove after migration
@@ -326,7 +334,7 @@ public class RomLoader {
 
             JsonObject result = new JsonObject();
             for (JsonState state : states) {
-                result.add(state.getClass().getSimpleName().toLowerCase(), state.toJson());
+                result.add(getName(state), state.toJson());
             }
 
             FileUtils.writeByteArrayToFile(new File(absolute),

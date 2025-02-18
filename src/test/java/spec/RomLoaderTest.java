@@ -415,6 +415,12 @@ public class RomLoaderTest extends AbstractTest {
                 "  'mode': 1\n" +
                 "}", pretty(hard.audio()));
 
+        assertEquals("{\n" +
+                "  'Ain': 0,\n" +
+                "  'Bin': 0,\n" +
+                "  'C0in': 1,\n" +
+                "  'C1in': 0\n" +
+                "}", pretty(ports));
 
         // when
         roms.saveSnapshot(targetBase, "snapshot.bin");
@@ -472,6 +478,13 @@ public class RomLoaderTest extends AbstractTest {
                 "  'mode': 0\n" +
                 "}", pretty(hard.audio()));
 
+        assertEquals("{\n" +
+                "  'Ain': 1,\n" +
+                "  'Bin': 1,\n" +
+                "  'C0in': 1,\n" +
+                "  'C1in': 1\n" +
+                "}", pretty(ports));
+
         // when
         roms.loadSnapshot(targetBase, "snapshot.bin");
         roms.loadJsonSnapshot(targetBase, "snapshot.json");
@@ -523,6 +536,13 @@ public class RomLoaderTest extends AbstractTest {
         assertEquals("{\n" +
                 "  'mode': 1\n" +
                 "}", pretty(hard.audio()));
+
+        assertEquals("{\n" +
+                "  'Ain': 0,\n" +
+                "  'Bin': 0,\n" +
+                "  'C0in': 1,\n" +
+                "  'C1in': 0\n" +
+                "}", pretty(ports));
     }
 
     private String pretty(JsonState state) {
