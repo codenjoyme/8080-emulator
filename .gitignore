@@ -4,6 +4,7 @@ target/
 build/out/
 /*.rec
 /node_modules
+/backup
 /screenshots/
 /snapshots/
 /records/

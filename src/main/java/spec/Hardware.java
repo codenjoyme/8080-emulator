@@ -4,20 +4,26 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import spec.image.PngScreenToText;
 import spec.platforms.Lik;
+import spec.platforms.Platform;
 import spec.sound.*;
 import spec.state.JsonState;
 
 import java.awt.*;
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static spec.Application.toRelative;
 import static spec.Constants.*;
 import static spec.KeyCode.END;
 import static spec.KeyCode.ENTER;
+import static spec.RomLoader.TYPE_SNP;
 import static spec.math.WordMath.hex16;
 
 public class Hardware implements JsonState {
+
+    private String base;
 
     private PngVideo png;
     private Memory memory;
@@ -36,14 +42,18 @@ public class Hardware implements JsonState {
     private RomSwitcher romSwitcher;
     private PngScreenToText screenToText;
 
-    // TODO #43 Надо сохранить так же и этот стейт в снепшот
     private boolean cpuEnabled;
     private boolean cpuSuspended;
     private boolean hasFocus;
 
+    private String lastRom;
+    private String lastRecord;
+    private String lastSnapshot;
+
     private final List<Runnable> cpuSuspendedListeners = new CopyOnWriteArrayList<>();
 
     public Hardware(int screenWidth, int screenHeight, Container parent, String base) {
+        this.base = base;
         timings = createTimings();
         graphic = createGraphicControl(parent);
         memory = createMemory();
@@ -247,6 +257,7 @@ public class Hardware implements JsonState {
     }
 
     public void forceLoadSnapshot(String base, String path) {
+        lastSnapshot = path;
         roms.loadSnapshot(base, path);
         keyLogger.reset();
         video.redraw(SCREEN_MEMORY_START, memory);
@@ -254,17 +265,20 @@ public class Hardware implements JsonState {
         refreshBorder();
     }
 
-    public void saveSnapshot(String path) {
-        roms.saveSnapshot("", path);
+    public void saveSnapshot() {
+        String file = Files.newSnapshot(base);
+        lastSnapshot = toRelative(base, new File(file));
+        roms.saveSnapshot("", file);
     }
 
     public int loadRecord(String base, String path) {
-        if (!record.ready()) return -1;
-
         Logger.debug("Loading record from %s", base + path);
+        lastRecord = path;
+
         pause();
         int lastTick = record.load(base, path);
         reset();
+
         return lastTick;
     }
 
@@ -416,6 +430,14 @@ public class Hardware implements JsonState {
     public JsonElement toJson() {
         JsonObject result = new JsonObject();
 
+        result.addProperty("cpuEnabled", cpuEnabled ? 1 : 0);
+        result.addProperty("cpuSuspended", cpuSuspended ? 1 : 0);
+        result.addProperty("hasFocus", hasFocus ? 1 : 0);
+
+        result.addProperty("lastRom", lastRom);
+        result.addProperty("lastRecord", lastRecord);
+        result.addProperty("lastSnapshot", lastSnapshot);
+
         for (JsonState state : states()) {
             result.add(getName(state), state.toJson());
         }
@@ -427,8 +449,81 @@ public class Hardware implements JsonState {
     public void fromJson(JsonElement element) {
         JsonObject json = element.getAsJsonObject();
 
+        cpuEnabled = json.get("cpuEnabled").getAsInt() == 1;
+        cpuSuspended = json.get("cpuSuspended").getAsInt() == 1;
+        hasFocus = json.get("hasFocus").getAsInt() == 1;
+
+        lastRom = nullable(json.get("lastRom"));
+        lastRecord = nullable(json.get("lastRecord"));
+        lastSnapshot = nullable(json.get("lastSnapshot"));
+
         for (JsonState state : states()) {
             state.fromJson(json.get(getName(state)));
         }
+    }
+
+    private String nullable(JsonElement element) {
+        return element == null ? null : element.getAsString();
+    }
+
+    public void startRecord() {
+        String path = Files.newRecord(base);
+        lastRecord = toRelative(base, new File(path));
+        fileRecorder.with(path);
+        fileRecorder.startWriting();
+    }
+
+    public void loadRom(String base, String rom, String command) {
+        lastRom = rom;
+        romSwitcher.load(base, rom, command);
+    }
+
+    public void load(String platform, String rom, String command) {
+        Logger.debug("Load platform2: '%s', file: '%s'", platform, rom);
+
+        // ничего нет, грузим по умолчанию
+        if (platform == null && rom == null) {
+            romSwitcher.loadRoms(base);
+            return;
+        }
+        // грузим снепшот и только его
+        if (rom != null && rom.endsWith("." + TYPE_SNP)) {
+            // TODO #41 этот костыыль надо при загрузке снепшота из командной строки по полному
+            //      пути там под windows не работает добавление base
+            String realBase = rom.contains(":") ? "" : base;
+            forceLoadSnapshot(realBase, rom);
+            return;
+        }
+        // грузим платформу если указана
+        if (platform != null) {
+            romSwitcher.selectRom(base, platform);
+        }
+        // грузим файл если указан
+        if (rom != null) {
+            // TODO #41 этот костыыль надо при загрузке снепшота из командной строки по полному
+            //      пути там под windows не работает добавление base
+            String realBase = rom.contains(":") ? "" : base;
+            loadRom(realBase, rom, command);
+        }
+    }
+
+    private String checkNull(String base, String file) {
+        return file != null ? base + file : null;
+    }
+
+    public String lastRecord() {
+        return checkNull(base, lastRecord);
+    }
+
+    public String lastRom() {
+        return checkNull(base, lastRom);
+    }
+
+    public String lastSnapshot() {
+        return checkNull(base, lastSnapshot);
+    }
+
+    public Platform platform() {
+        return romSwitcher.current();
     }
 }

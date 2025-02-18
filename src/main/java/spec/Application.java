@@ -39,10 +39,8 @@ public class Application {
         Files.createFolders(base);
 
         hard = new Hardware(SCREEN_WIDTH, SCREEN_HEIGHT, parent, base);
-
-        hard.fileRecorder().with(Files.newRecord(base));
-        hard.fileRecorder().startWriting();
-        load(platform, rom, command);
+        hard.startRecord();
+        hard.load(platform, rom, command);
     }
 
     public void lostFocus() {
@@ -85,10 +83,10 @@ public class Application {
 
         // NUM_. - загрузить данные из файла
         if (key.numDot()) {
-            RomSwitcher switcher = hard.romSwitcher();
-            Platform platform = switcher.current();
-            openFileDialog(file -> switcher.load(base, toRelative(base, file), null),
+            Platform platform = hard.platform();
+            openFileDialog(file -> hard.loadRom(base, toRelative(base, file), null),
                     base + platform.apps(),
+                    hard.lastRom(),
                     "Data file",
                     "com", "rom", "rks", "bin", "mem", "bss", "bs1");
         }
@@ -99,6 +97,7 @@ public class Application {
         if (key.numThree()) {
             openFileDialog(file -> hard.loadRecord(base, toRelative(base, file)),
                     base + RECORDS,
+                    hard.lastRecord(),
                     "Recording file",
                     "rec");
         }
@@ -120,14 +119,14 @@ public class Application {
         if (key.numSix()) {
             openFileDialog(file -> hard.loadSnapshot(base, toRelative(base, file)),
                     base + SNAPSHOTS,
+                    hard.lastSnapshot(),
                     "Snapshot file",
                     "snp");
         }
 
         // NUM_5 - сохранить снапшот
         if (key.numFive()) {
-            String file = Files.newSnapshot(base);
-            hard.saveSnapshot(file);
+            hard.saveSnapshot();
         }
 
         // NUM_4 - что-то еще со стейтом машины TODO потом решить
@@ -211,51 +210,31 @@ public class Application {
 
     private void openFileDialog(Consumer<File> onSelect,
                                 String directory,
+                                String selectedFile,
                                 String fileType,
                                 String... ext) {
         JFileChooser files = new JFileChooser();
-        files.setCurrentDirectory(new File(directory));
+        if (selectedFile != null) {
+            File file = new File(selectedFile);
+            files.setSelectedFile(file);
+            files.setCurrentDirectory(file.getParentFile());
+        } else {
+            files.setCurrentDirectory(new File(directory));
+        }
         files.setDialogTitle("Select " + fileType);
         files.setFileFilter(new FileNameExtensionFilter(String.format(
                 "%s %s", fileType, Arrays.asList(ext)), ext));
         int option = files.showOpenDialog(parent);
         if (option == JFileChooser.APPROVE_OPTION) {
             File file = files.getSelectedFile();
-            onSelect.accept(file);
+            if (file.exists()) {
+                onSelect.accept(file);
+            }
         }
     }
 
     public void start() {
         gotFocus();
         hard.start();
-    }
-
-    private void load(String platform, String rom, String command) {
-        Logger.debug("Load platform2: '%s', file: '%s'", platform, rom);
-
-        // ничего нет, грузим по умолчанию
-        if (platform == null && rom == null) {
-            hard.romSwitcher().loadRoms(base);
-            return;
-        }
-        // грузим снепшот и только его
-        if (rom != null && rom.endsWith("." + TYPE_SNP)) {
-            // TODO #41 этот костыыль надо при загрузке снепшота из командной строки по полному
-            //      пути там под windows не работает добавление base
-            String realBase = rom.contains(":") ? "" : base;
-            hard.forceLoadSnapshot(realBase, rom);
-            return;
-        }
-        // грузим платформу если указана
-        if (platform != null) {
-            hard.romSwitcher().selectRom(base, platform);
-        }
-        // грузим файл если указан
-        if (rom != null) {
-            // TODO #41 этот костыыль надо при загрузке снепшота из командной строки по полному
-            //      пути там под windows не работает добавление base
-            String realBase = rom.contains(":") ? "" : base;
-            hard.romSwitcher().load(realBase, rom, command);
-        }
     }
 }
