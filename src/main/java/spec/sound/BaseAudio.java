@@ -4,12 +4,13 @@ import javax.sound.sampled.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import static spec.Constants.AUDIO_SAMPLE_RATE;
+
 public abstract class BaseAudio implements Audio {
 
     public static final boolean CAN_SKIP_DATA = true;
     public static final boolean DO_NOT_SKIP_DATA = !CAN_SKIP_DATA;
 
-    private static final int CPU_SAMPLE_RATE = 44100;
     private static final int BUFFER_COUNT = 2;
 
     private final boolean allowDataSkip;
@@ -24,7 +25,7 @@ public abstract class BaseAudio implements Audio {
         this.allowDataSkip = allowDataSkip;
         audioQueue = new ArrayBlockingQueue<>(bufferSize * BUFFER_COUNT);
 
-        AudioFormat format = new AudioFormat(CPU_SAMPLE_RATE, 8, 1, true, false);
+        AudioFormat format = new AudioFormat(AUDIO_SAMPLE_RATE, 8, 1, true, false);
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
 
         try {

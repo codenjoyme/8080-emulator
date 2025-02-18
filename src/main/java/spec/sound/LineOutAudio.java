@@ -1,5 +1,7 @@
 package spec.sound;
 
+import static spec.Constants.LINE_OUT_AUDIO_BYTES_PER_WRITE;
+
 public class LineOutAudio extends BaseAudio implements Audio {
 
     public LineOutAudio() {
@@ -8,7 +10,7 @@ public class LineOutAudio extends BaseAudio implements Audio {
 
     @Override
     public void write(int bite) {
-        writeTimes(bite, 18);
+        writeTimes(bite, LINE_OUT_AUDIO_BYTES_PER_WRITE);
     }
 
     @Override
