@@ -11,8 +11,7 @@ import java.util.TreeMap;
 public class JsonUtils {
 
     public static String asString(JsonElement element) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return gson.toJson(element);
+        return gson().toJson(element);
     }
 
     public static String asString(Object data) {

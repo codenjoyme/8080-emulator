@@ -2,7 +2,6 @@ package spec;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import spec.math.Bites;
 import spec.state.JsonState;
 
 import java.awt.*;

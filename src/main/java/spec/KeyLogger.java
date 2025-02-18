@@ -1,15 +1,20 @@
 package spec;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import spec.state.JsonState;
+
 import java.util.function.Supplier;
 
 import static spec.math.WordMath.hex16;
 import static spec.math.WordMath.hex8;
 
-public class KeyLogger {
+public class KeyLogger implements JsonState {
 
     private Supplier<Integer> getTick;
-    private int tick;
     private FileRecorder recorder;
+
+    private int tick;
     private boolean console;
 
     public KeyLogger(FileRecorder recorder, Supplier<Integer> getTick) {
@@ -59,5 +64,23 @@ public class KeyLogger {
 
     public void reset() {
         tick = 0;
+    }
+
+    @Override
+    public JsonElement toJson() {
+        JsonObject result = new JsonObject();
+
+        result.addProperty("tick", tick);
+        result.addProperty("console", console);
+
+        return result;
+    }
+
+    @Override
+    public void fromJson(JsonElement element) {
+        JsonObject json = element.getAsJsonObject();
+
+        tick = json.get("tick").getAsInt();
+        console = json.get("console").getAsBoolean();
     }
 }

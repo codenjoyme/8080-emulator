@@ -1,8 +1,10 @@
 package spec;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import spec.math.WordMath;
+import spec.state.JsonState;
 
-import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -11,15 +13,17 @@ import java.util.function.Function;
 
 import static spec.Key.MOD_NONE;
 
-public class KeyRecord {
+public class KeyRecord implements JsonState {
 
     public static final int KEY_PRESS_DELTA = 20_000;
-    private Map<Integer, Action> scenario;
+
     private FileRecorder fileRecorder;
     private Keyboard keyboard;
     private Consumer<String> screenshot;
     private Runnable stopCpu;
     private Runnable pauseCpu;
+
+    private Map<Integer, Action> scenario;
     private int shootIndex; // индекс сделанного скриншота
     private Integer lastRecordedTick;
 
@@ -65,14 +69,10 @@ public class KeyRecord {
         return this;
     }
 
-    public boolean ready() {
-        return fileRecorder.ready();
-    }
-
     public int load(String base, String path) {
-        AtomicReference<Action> after = new AtomicReference<>(reset().after(0));
+        AtomicReference<Action> after = new AtomicReference<>(begin().after(0));
         fileRecorder.stopWriting();
-        fileRecorder.with(base + path);
+        fileRecorder.with(base, path);
         fileRecorder.read((delta, key) -> {
             Action it = after.get().after(delta);
             if (key.pressed()) {
@@ -85,6 +85,7 @@ public class KeyRecord {
                 after.set(it.up(key.code(), key.mods()));
             }
         });
+        after.get().end();
         lastRecordedTick = scenario.keySet().stream()
                 .max(Integer::compareTo)
                 .orElse(0);
@@ -101,7 +102,59 @@ public class KeyRecord {
         throw new IllegalArgumentException("Action with index not found: " + index);
     }
 
-    public class Action {
+    @Override
+    public JsonElement toJson() {
+        JsonObject result = new JsonObject();
+
+        result.addProperty("shootIndex", shootIndex);
+        result.addProperty("lastRecordedTick", lastRecordedTick);
+
+        JsonObject scenarioJson = new JsonObject();
+        if (scenario != null) {
+            scenario.forEach((tick, action) ->
+                    scenarioJson.add(String.valueOf(tick), action.toJson()));
+
+            result.add("scenario", scenarioJson);
+        } else {
+            result.add("scenario", null);
+        }
+
+        return result;
+    }
+
+    @Override
+    public void fromJson(JsonElement element) {
+        JsonObject json = element.getAsJsonObject();
+
+        shootIndex = json.get("shootIndex").getAsInt();
+        lastRecordedTick = JsonState.nullableInteger(json.get("lastRecordedTick"));
+
+        scenario = new LinkedHashMap<>();
+        JsonObject scenarioJson = JsonState.nullableObject(json.get("scenario"));
+        if (scenarioJson != null) {
+            scenarioJson.entrySet().forEach(entry -> {
+                Action action = new Action(0);
+                action.fromJson(entry.getValue());
+                scenario.put(Integer.parseInt(entry.getKey()), action);
+            });
+        }
+    }
+
+    public KeyRecord begin() {
+        reset();
+        return this;
+    }
+
+    public boolean ready() {
+        return scenario == null || scenario.isEmpty();
+    }
+
+    public void stop() {
+        reset();
+        fileRecorder.startWriting();
+    }
+
+    public class Action implements JsonState {
 
         int index;
         int tick;
@@ -203,13 +256,47 @@ public class KeyRecord {
             return KeyRecord.this.shoot(this, name, actions);
         }
 
-        public void reset() {
+        public void end() {
             resetRecord = true;
+        }
+
+        @Override
+        public JsonElement toJson() {
+            JsonObject result = new JsonObject();
+
+            result.addProperty("index", index);
+            result.addProperty("tick", tick);
+            result.addProperty("shoot", shoot);
+            result.addProperty("stopCpu", stopCpu);
+            result.addProperty("pauseCpu", pauseCpu);
+            result.addProperty("resetRecord", resetRecord);
+            result.addProperty("keyCode", keyCode);
+            result.addProperty("press", press);
+            result.addProperty("mode", mode);
+
+            return result;
+        }
+
+        @Override
+        public void fromJson(JsonElement element) {
+            JsonObject json = element.getAsJsonObject();
+
+            index = json.get("index").getAsInt();
+            tick = json.get("tick").getAsInt();
+            shoot = JsonState.nullableString(json.get("shoot"));
+            stopCpu = json.get("stopCpu").getAsBoolean();
+            pauseCpu = json.get("pauseCpu").getAsBoolean();
+            resetRecord = json.get("resetRecord").getAsBoolean();
+            keyCode = JsonState.nullableInteger(json.get("keyCode"));
+            press = json.get("press").getAsBoolean();
+            mode = json.get("mode").getAsInt();
         }
     }
 
     public void accept(Cpu cpu) {
-        if (scenario == null) return;
+        if (scenario == null) {
+            return;
+        }
         int tick = cpu.tick();
 
         Action action = scenario.get(tick);
@@ -233,9 +320,11 @@ public class KeyRecord {
             }
         }
 
-        if (lastRecordedTick != null && lastRecordedTick == tick) {
+        if ((lastRecordedTick != null && lastRecordedTick == tick)
+                || (lastRecordedTick == null && scenario == null))
+        {
             lastRecordedTick = null;
-            fileRecorder.startWriting();
+            stop();
         }
     }
 }

@@ -9,14 +9,13 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
 import static spec.Constants.*;
 import static spec.Files.RECORDS;
 import static spec.Files.SNAPSHOTS;
-import static spec.RomLoader.TYPE_SNP;
+import static spec.utils.FileUtils.toRelative;
 import static spec.utils.ScreenUtils.addSpaces;
 import static spec.utils.ScreenUtils.putInBorder;
 
@@ -105,7 +104,7 @@ public class Application {
         // NUM_2 - сбросить запись/воспроизведение
         if (key.numTwo()) {
             Logger.debug("Stop record/replay");
-            hard.record().reset();
+            hard.record().stop();
         }
 
         // NUM_1 - что-то еще с записью TODO надо ли это?
@@ -193,19 +192,6 @@ public class Application {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection stringSelection = new StringSelection(text);
         clipboard.setContents(stringSelection, null);
-    }
-
-    public static String toRelative(String base, File file) {
-        try {
-            String result = Paths.get(base).toAbsolutePath().relativize(Paths.get(file.getPath())).toString();
-            // TODO это надо только для того, чтобы иметь возможность запускать приложение в веб версии, там с путями не все просто
-            if (result.startsWith("../")) {
-                return result.substring(3);
-            }
-            return result;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private void openFileDialog(Consumer<File> onSelect,

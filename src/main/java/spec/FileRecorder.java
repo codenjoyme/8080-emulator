@@ -1,5 +1,9 @@
 package spec;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import spec.state.JsonState;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,14 +16,20 @@ import static spec.KeyCode.PAUSE;
 import static spec.math.WordMath.hex16;
 import static spec.math.WordMath.hex8;
 
-public class FileRecorder {
+public class FileRecorder implements JsonState {
 
     public static final Pattern RECORD_LINE = Pattern.compile("after\\((.+?)\\).(up|down)\\(0x(.+?)(, 0x(.+?))?\\);|stop\\(\\);");
+
+    private String base;
+    private final Runnable onStatusChanged;
+
     private String path;
     private boolean writing;
 
-    public FileRecorder() {
+    public FileRecorder(String base, Runnable onStatusChanged) {
+        this.base = base;
         writing = false;
+        this.onStatusChanged = onStatusChanged;
     }
 
     public void write(int delta, Key key) {
@@ -34,7 +44,7 @@ public class FileRecorder {
     }
 
     private void writeLine(String string) {
-        try (FileWriter writer = new FileWriter(path, true)) {
+        try (FileWriter writer = new FileWriter(base + path, true)) {
             writer.write(string + "\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -44,21 +54,19 @@ public class FileRecorder {
     public void stopWriting() {
         Logger.debug("FileRecord writing disabled");
         writing = false;
-    }
-
-    public boolean ready() {
-        return writing;
+        onStatusChanged.run();
     }
 
     public void startWriting() {
         Logger.debug("FileRecord writing enabled");
         writing = true;
+        onStatusChanged.run();
     }
 
     public void read(BiConsumer<Integer, Key> onLine) {
         try {
             int index = 0;
-            for (String line : Files.readAllLines(new File(path).toPath())) {
+            for (String line : Files.readAllLines(new File(base + path).toPath())) {
                 index++;
                 if (line.startsWith("//")) continue;
                 if (line.equals("stop();")) {
@@ -90,9 +98,32 @@ public class FileRecorder {
         // do nothing
     }
 
-    public void with(String path) {
-        Logger.info("Saving records to %s", path);
+    public void with(String base, String path) {
+        Logger.info("Saving records to: %s", base + path);
 
+        this.base = base;
         this.path = path;
+    }
+
+    @Override
+    public JsonElement toJson() {
+        JsonObject result = new JsonObject();
+
+        result.addProperty("path", path);
+        result.addProperty("writing", writing);
+
+        return result;
+    }
+
+    @Override
+    public void fromJson(JsonElement element) {
+        JsonObject json = element.getAsJsonObject();
+
+        path = JsonState.nullableString(json.get("path"));
+        writing = json.get("writing").getAsBoolean();
+    }
+
+    public void base(String base) {
+        this.base = base;
     }
 }

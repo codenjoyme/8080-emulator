@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import spec.image.PngScreenToText;
 import spec.platforms.Lik;
 import spec.platforms.Platform;
-import spec.sound.*;
+import spec.sound.AudioDriver;
 import spec.state.JsonState;
 
 import java.awt.*;
@@ -14,12 +14,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static spec.Application.toRelative;
 import static spec.Constants.*;
 import static spec.KeyCode.END;
 import static spec.KeyCode.ENTER;
 import static spec.RomLoader.TYPE_SNP;
 import static spec.math.WordMath.hex16;
+import static spec.utils.FileUtils.toRelative;
 
 public class Hardware implements JsonState {
 
@@ -129,7 +129,7 @@ public class Hardware implements JsonState {
     }
 
     protected FileRecorder createFileRecorder() {
-        return new FileRecorder();
+        return new FileRecorder(base, this::refreshBorder);
     }
 
     protected KeyRecord createKeyRecord() {
@@ -259,7 +259,6 @@ public class Hardware implements JsonState {
     public void forceLoadSnapshot(String base, String path) {
         lastSnapshot = path;
         roms.loadSnapshot(base, path);
-        keyLogger.reset();
         video.redraw(SCREEN_MEMORY_START, memory);
         resume();
         refreshBorder();
@@ -268,7 +267,7 @@ public class Hardware implements JsonState {
     public void saveSnapshot() {
         String file = Files.newSnapshot(base);
         lastSnapshot = toRelative(base, new File(file));
-        roms.saveSnapshot("", file);
+        roms.saveSnapshot(base, lastSnapshot);
     }
 
     public int loadRecord(String base, String path) {
@@ -277,6 +276,7 @@ public class Hardware implements JsonState {
 
         pause();
         int lastTick = record.load(base, path);
+        refreshBorder();
         reset();
 
         return lastTick;
@@ -295,18 +295,18 @@ public class Hardware implements JsonState {
             command = command == null ? "J" + hex16(range.begin()) : command;
             Logger.debug("Command to run: %s", command);
 
-            record.reset().after(delta)
+            record.begin().after(delta)
                     .press(END).after(delta)
                     .press(ENTER).after(delta)
                     .enter(command).press(ENTER).after(delta)
-                    .reset();
+                    .end();
         } else {
             command = command == null ? "G" + hex16(range.begin()) : command;
             Logger.debug("Command to run: %s", command);
 
-            record.reset().after(2 * delta)
+            record.begin().after(2 * delta)
                     .enter(command).press(ENTER).after(delta)
-                    .reset();
+                    .end();
         }
 
         reset();
@@ -322,14 +322,18 @@ public class Hardware implements JsonState {
     }
 
     public void refreshBorder() {
-        if (hasFocus) {
-            if (audio.audioMode()) {
-                graphic.printIO(BORDER_PORT, 0xC0);
-            } else {
-                graphic.printIO(BORDER_PORT, 0x30);
-            }
-        } else {
+        if (!hasFocus) {
             graphic.printIO(BORDER_PORT, 0x50);
+            return;
+        }
+        if (!record.ready()) {
+            graphic.printIO(BORDER_PORT, 0xE0);
+            return;
+        }
+        if (audio.audioMode()) {
+            graphic.printIO(BORDER_PORT, 0xC0);
+        } else {
+            graphic.printIO(BORDER_PORT, 0x30);
         }
     }
 
@@ -411,6 +415,9 @@ public class Hardware implements JsonState {
                 timings,
                 ports,
                 romSwitcher,
+                fileRecorder,
+                record,
+                keyLogger,
                 keyboard,
                 graphic,
                 audio,
@@ -453,23 +460,19 @@ public class Hardware implements JsonState {
         cpuSuspended = json.get("cpuSuspended").getAsInt() == 1;
         hasFocus = json.get("hasFocus").getAsInt() == 1;
 
-        lastRom = nullable(json.get("lastRom"));
-        lastRecord = nullable(json.get("lastRecord"));
-        lastSnapshot = nullable(json.get("lastSnapshot"));
+        lastRom = JsonState.nullableString(json.get("lastRom"));
+        lastRecord = JsonState.nullableString(json.get("lastRecord"));
+        lastSnapshot = JsonState.nullableString(json.get("lastSnapshot"));
 
         for (JsonState state : states()) {
             state.fromJson(json.get(getName(state)));
         }
     }
 
-    private String nullable(JsonElement element) {
-        return element == null ? null : element.getAsString();
-    }
-
     public void startRecord() {
         String path = Files.newRecord(base);
         lastRecord = toRelative(base, new File(path));
-        fileRecorder.with(path);
+        fileRecorder.with(base, lastRecord);
         fileRecorder.startWriting();
     }
 
