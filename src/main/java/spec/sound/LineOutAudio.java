@@ -6,7 +6,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class LineOutAudio implements Audio {
 
     private static final int CPU_SAMPLE_RATE = 44100;
-    private static final int BUFFER_SIZE = 1024;
+    private static final int BUFFER_SIZE = 1024*4;
 
     private SourceDataLine line;
     private final AudioFormat format;
