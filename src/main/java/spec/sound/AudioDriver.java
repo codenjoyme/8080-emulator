@@ -5,12 +5,8 @@ import com.google.gson.JsonObject;
 import spec.Files;
 import spec.Logger;
 import spec.state.JsonState;
-import spec.state.StateProvider;
-import spec.math.Bites;
 
-public class AudioDriver implements StateProvider, JsonState {
-
-    public static final int SNAPSHOT_AUDIO_STATE_SIZE = 1;
+public class AudioDriver implements JsonState {
 
     public static final boolean AUDIO_MODE_LINE_OUT = true;
     public static final boolean AUDIO_MODE_SPEAKER = false;
@@ -81,32 +77,10 @@ public class AudioDriver implements StateProvider, JsonState {
     }
 
     @Override
-    public int stateSize() {
-        return SNAPSHOT_AUDIO_STATE_SIZE;
-    }
-
-    @Override
-    public void state(Bites bites) {
-        validateState("AudioDriver", bites);
-
-        boolean mode = bites.get(0) == 1;
-        createAudio(mode);
-    }
-
-    @Override
-    public Bites state() {
-        Bites bites = new Bites(stateSize());
-
-        bites.set(0, audioMode ? 1 : 0);
-
-        return bites;
-    }
-
-    @Override
     public JsonElement toJson() {
         JsonObject result = new JsonObject();
 
-        result.addProperty("mode", audioMode ? 1 : 0);
+        result.addProperty("audioMode", audioMode ? 1 : 0);
 
         return result;
     }
@@ -115,7 +89,7 @@ public class AudioDriver implements StateProvider, JsonState {
     public void fromJson(JsonElement element) {
         JsonObject object = element.getAsJsonObject();
 
-        boolean mode = object.get("mode").getAsInt() == 1;
+        boolean mode = object.get("audioMode").getAsInt() == 1;
 
         createAudio(mode);
     }

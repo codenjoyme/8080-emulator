@@ -4,16 +4,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import spec.math.Bites;
 import spec.state.JsonState;
-import spec.state.StateProvider;
 
 import java.awt.*;
 
 import static spec.Constants.*;
 import static spec.Video.COLORS;
 
-public class GraphicControl implements StateProvider, JsonState {
-
-    public static final int SNAPSHOT_GRAPHIC_STATE_SIZE = 1;
+public class GraphicControl implements JsonState {
 
     private final Graphic graphic;
 
@@ -93,27 +90,6 @@ public class GraphicControl implements StateProvider, JsonState {
         }
         graphic.refreshBorder();
         Logger.debug("IO Draw Mode: %s", IO_DRAW_MODE_INFO[ioDrawMode]);
-    }
-
-    @Override
-    public int stateSize() {
-        return SNAPSHOT_GRAPHIC_STATE_SIZE;
-    }
-
-    @Override
-    public Bites state() {
-        Bites bites = new Bites(stateSize());
-
-        bites.set(0, ioDrawMode());
-
-        return bites;
-    }
-
-    @Override
-    public void state(Bites bites) {
-        validateState("graphic", bites);
-
-        ioDrawMode(bites.get(0));
     }
 
     @Override

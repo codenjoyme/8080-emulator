@@ -33,6 +33,10 @@ public class JsonUtils {
                 .create();
     }
 
+    public static JsonElement parse(String json) {
+        return JsonParser.parseString(json);
+    }
+
     static class NumberSerializer implements JsonSerializer<Double> {
         @Override
         public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {

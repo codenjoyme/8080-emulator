@@ -2,16 +2,11 @@ package spec;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import spec.math.Bites;
 import spec.state.JsonState;
-import spec.state.StateProvider;
 
 import static spec.Constants.*;
-import static spec.math.WordMath.*;
 
-public class Timings implements StateProvider, JsonState {
-
-    public static final int SNAPSHOT_TIMINGS_SIZE = 34;
+public class Timings implements JsonState {
 
     private final Hardware hard;
 
@@ -122,39 +117,6 @@ public class Timings implements StateProvider, JsonState {
             delay = (int) (delay * INCREASE_DELAY);
         }
         Logger.debug("Delay decreased: %s", delay);
-    }
-
-    @Override
-    public int stateSize() {
-        return SNAPSHOT_TIMINGS_SIZE;
-    }
-
-    @Override
-    public void state(Bites bites) {
-        validateState("Timings", bites);
-
-        interrupt = (int) joinBites(bites, new Range(0, 3));
-        refreshRate = (int) joinBites(bites, new Range(4, 7));
-        willReset = bites.get(8) == 1;
-        last = joinBites(bites, new Range(9, 16));
-        delay = (int) joinBites(bites, new Range(17, 20));
-        fullSpeed = bites.get(21) == 1;
-        time = joinBites(bites, new Range(22, 29));
-    }
-
-    @Override
-    public Bites state() {
-        Bites bites = new Bites(stateSize());
-
-        bites.set(new Range(0, 3), splitBites(interrupt, 4));
-        bites.set(new Range(4, 7), splitBites(refreshRate, 4));
-        bites.set(8, willReset ? 1 : 0);
-        bites.set(new Range(9, 16), splitBites(last, 8));
-        bites.set(new Range(17, 20), splitBites(delay, 4));
-        bites.set(21, fullSpeed ? 1 : 0);
-        bites.set(new Range(22, 29), splitBites(time, 8));
-
-        return bites;
     }
 
     @Override

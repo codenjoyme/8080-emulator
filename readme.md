@@ -565,47 +565,75 @@ Loading 'file:/C:/Java/8080-emulator/src/main/resources/lik/roms/06_basicLik.bin
 
 - `NumPad 5` - Сохранение состояния машины в папку `snapshots`. При этом сохраняются все
   регистры CPU, IO порты и состояния клавиатуры, а так же вся память. Сохранение происходит в файл
-  с расширением `snp`. Его структура такая:
-    * CPU state:
-        - 2 bytes             - `PC` (low byte, high byte)
-        - 2 bytes             - `SP` (low byte, high byte)
-        - 2 bytes             - `AF` (low byte, high byte)
-        - 2 bytes             - `BC` (low byte, high byte)
-        - 2 bytes             - `DE` (low byte, high byte)
-        - 2 bytes             - `HL` (low byte, high byte)
-        - 4 bytes for int     - `interrupt`
-        - 4 bytes for int     - `tick`
-        - 4 bytes for int     - `tact`
-    * Keyboard state:
-        - 12*6 bytes          - keyboard state 12 x 6 for all keys - is key pressed
-        - 1 byte              - flags `0b__shift_alt_ctrl_shiftEmu__cyrLat_0_0_0`
-            + shift             - `0b_x000_0000` is shift key pressed
-            + alt               - `0b_0x00_0000` is alt key pressed
-            + ctrl              - `0b_00x0_0000` is ctrl key pressed
-            + shiftEmu          - `0b_000x_0000` is shiftEmu flag is set
-            + cyrLat            - `0b_0000_x000` is cyrLat is cyrillic or latin
-    * I/O ports state:
-        - 1 byte              - flags `0b__0_0_0_A__C1_0_B_C0`
-            + Ain               - `0b_000x_0000`
-            + Bin               - `0b_0000_00x0`
-            + C0in              - `0b_0000_000x`
-            + C1in              - `0b_0000_x000`
-    * GraphicControl state:
-        - 1 byte for int      - `ioDrawMode`
-    * Timings state:
-        - 4 bytes for int     - `interrupt`
-        - 4 bytes for int     - `refreshRate`
-        - 1 byte for boolean  - 1 if `willReset` true, 0 otherwise
-        - 8 bytes for long    - `last`
-        - 4 bytes for int     - `delay`
-        - 1 byte for boolean  - 1 if `fullSpeed` true, 0 otherwise
-        - 8 bytes for long    - `time`
-    * Memory dump: `0x0000` - `0xFFFF`
-    * ROM switcher state:
-        - 1 byte for boolean  - 1 if `lik` true, 0 otherwise
-    * Audio driver state: 
-        - 1 byte for boolean  - 1 if `audioMode` true for `AUDIO_MODE_LINE_OUT`, 
-                                0 otherwise for `AUDIO_MODE_SPEAKER`.
+  с расширением `snp`. Его `json` структура такая:
+  ```javascript
+    let json = {
+      "Cpu": {
+        "PC": "2345",            // `PC` (hex low byte, hex high byte)
+        "SP": "6789",            // `SP` (hex low byte, hex high byte)
+        "AF": "1216",            // `AF` (hex low byte, hex high byte)
+        "BC": "5678",            // `BC` (hex low byte, hex high byte)
+        "DE": "9ABC",            // `DE` (hex low byte, hex high byte)
+        "HL": "DEF0",            // `HL` (hex low byte, hex high byte)
+        "interrupt": 4630,       // `interrupt`
+        "tick": 448585456,       // `tick`
+        "tact": 305419896        // `tact`
+      },
+      "Timings": {
+        "interrupt": 1234,       // `interrupt`
+        "refreshRate": 100,      // `refreshRate`
+        "willReset": 0,          // `willReset` 1 if true, 0 otherwise
+        "last": 1733699664007,   // `last`
+        "delay": 135659,         // `delay`
+        "fullSpeed": 1,          // `fullSpeed` 1 if true, 0 otherwise
+        "time": 1733699156833    // `time`
+      },
+      "IOPorts": {
+        "Ain": 0,                // `Ain`  1 if true, 0 otherwise
+        "Bin": 0,                // `Bin`  1 if true, 0 otherwise
+        "C0in": 1,               // `C0in` 1 if true, 0 otherwise
+        "C1in": 0                // `C1in` 1 if true, 0 otherwise
+      },
+      "RomSwitcher": {
+        "platform": "specialist" // `platform` `specialist` or `lik`
+      },
+      "Keyboard": {
+        "keyStatus": [           // array key matrix (1 - pressed, 0 - released)
+          "110101001110",        // size 12 x 6 + shift + reset
+          "011100101001",
+          "101000001100",
+          "000100011111",
+          "001110010101",
+          "100010000110"
+        ],
+        "shift": 1,              // `shift`    1 if true, 0 otherwise
+        "alt": 0,                // `alt`      1 if true, 0 otherwise
+        "ctrl": 1,               // `ctrl`     1 if true, 0 otherwise
+        "shiftEmu": 0,           // `shiftEmu` 1 if true, 0 otherwise
+        "cyrLat": 1              // `cyrLat`   1 if true, 0 otherwise
+      },
+      "GraphicControl": {
+      "ioDrawMode": 3            // `ioDrawMode`
+                                 // `0` Border highlights active window (and audio mode)
+                                 // `1` Border highlights writing byte to Port A
+                                 // `2` Border highlights writing byte to Port B
+                                 // `3` Border highlights writing byte to Port C
+                                 // `4` Border highlights writing byte to Port RgSYS
+        },
+        "AudioDriver": {
+        "audioMode": 1           // `audioMode` 1 if true (AUDIO_MODE_LINE_OUT)
+                                 //             0 otherwise (AUDIO_MODE_SPEAKER)
+      },
+      "Memory": {
+       "data": [                 // memory in hex
+        "      00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ",  // fist line - address
+        "0000: C3 00 40 21 00 00 22 E1 8F 21 00 13 22 3A 0F 21 ",  // second line - data
+        "0010: 00 07 22 3E 0F 0E 1F CD 37 C0 3E 05 32 53 0F AF ",  // ...
+        // ...
+       ]
+      }
+    }
+  ```
 
 - `NumPad 4` - Зарезервировано для будущего использования.
 

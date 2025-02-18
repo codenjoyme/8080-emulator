@@ -5,12 +5,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import spec.math.Bites;
 import spec.state.JsonState;
-import spec.state.StateProvider;
 
 import static spec.math.Bites.of;
 import static spec.math.WordMath.*;
 
-public class Memory implements StateProvider, JsonState {
+public class Memory implements JsonState {
 
     protected Bites mem;
 
@@ -57,23 +56,6 @@ public class Memory implements StateProvider, JsonState {
     }
 
     @Override
-    public int stateSize() {
-        return mem.size();
-    }
-
-    @Override
-    public void state(Bites bites) {
-        validateState("memory", bites);
-
-        mem.set(bites);
-    }
-
-    @Override
-    public Bites state() {
-        return mem.array();
-    }
-
-    @Override
     public JsonElement toJson() {
         JsonObject result = new JsonObject();
 
@@ -82,7 +64,7 @@ public class Memory implements StateProvider, JsonState {
         for (String line : lines.split("\n")) {
             array.add(line);
         }
-        result.add("memory", array);
+        result.add("data", array);
 
         return result;
     }
@@ -91,7 +73,7 @@ public class Memory implements StateProvider, JsonState {
     public void fromJson(JsonElement element) {
         JsonObject obj = element.getAsJsonObject();
 
-        JsonArray array = obj.getAsJsonArray("memory");
+        JsonArray array = obj.getAsJsonArray("data");
         StringBuilder sb = new StringBuilder();
         for (JsonElement line : array) {
             String string = line.getAsString();

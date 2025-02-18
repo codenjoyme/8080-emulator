@@ -2,14 +2,12 @@ package spec;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import spec.math.Bites;
 import spec.platforms.Lik;
 import spec.platforms.Platform;
 import spec.platforms.PlatformFactory;
 import spec.state.JsonState;
-import spec.state.StateProvider;
 
-public class RomSwitcher implements StateProvider, JsonState {
+public class RomSwitcher implements JsonState {
 
     protected String platform = Lik.NAME;
 
@@ -45,27 +43,6 @@ public class RomSwitcher implements StateProvider, JsonState {
 
     public Platform current() {
         return PlatformFactory.platform(platform);
-    }
-
-    @Override
-    public int stateSize() {
-        return 1;
-    }
-
-    @Override
-    public void state(Bites bites) {
-        validateState("ROM switcher", bites);
-
-        platform = PlatformFactory.valueOf(bites.get(0));
-    }
-
-    @Override
-    public Bites state() {
-        Bites bites = new Bites(stateSize());
-
-        bites.set(0, PlatformFactory.indexOf(platform));
-
-        return bites;
     }
 
     @Override

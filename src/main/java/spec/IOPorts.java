@@ -4,14 +4,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import spec.math.Bites;
 import spec.state.JsonState;
-import spec.state.StateProvider;
 
 import static spec.Constants.*;
 import static spec.math.WordMath.*;
 
-public class IOPorts implements StateProvider, JsonState {
-
-    public static final int SNAPSHOT_IO_PORTS_SIZE = 1;
+public class IOPorts implements JsonState {
 
     private boolean Ain;   // порт A на ввод
     private boolean Bin;   // порт B на ввод
@@ -39,34 +36,6 @@ public class IOPorts implements StateProvider, JsonState {
         this.memory = memory;
         this.keyboard = keyboard;
         reset();
-    }
-
-    @Override
-    public int stateSize() {
-        return SNAPSHOT_IO_PORTS_SIZE;
-    }
-
-    @Override
-    public void state(Bites bites) {
-        validateState("I/O ports", bites);
-
-        int bite = bites.get(0);
-
-        // 0b__0_0_0_A__C1_0_B_C0
-        Ain(bite);
-        Bin(bite);
-        C0in(bite);
-        C1in(bite);
-    }
-
-    @Override
-    public Bites state() {
-        // 0b__0_0_0_A__C1_0_B_C0
-        return Bites.of(
-                (Ain ? b0001_0000 : 0)
-                | (Bin ? b0000_0010 : 0)
-                | (C0in ? b0000_0001 : 0)
-                | (C1in ? b0000_1000 : 0));
     }
 
     @Override
@@ -296,23 +265,6 @@ public class IOPorts implements StateProvider, JsonState {
         }
         // в ПОРТ RYC запишем YC ПОРТЫ 0xFFE3
         R(bite);
-    }
-
-
-    private void Ain(int bite) {
-        Ain = isSet(bite, b0001_0000);
-    }
-
-    private void C1in(int bite) {
-        C1in = isSet(bite, b0000_1000);
-    }
-
-    private void Bin(int bite) {
-        Bin = isSet(bite, b0000_0010);
-    }
-
-    private void C0in(int bite) {
-        C0in = isSet(bite, b0000_0001);
     }
 
     public int A() {

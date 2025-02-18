@@ -4,9 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.tuple.Pair;
-import spec.math.Bites;
 import spec.state.JsonState;
-import spec.state.StateProvider;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,26 +12,15 @@ import java.util.function.BiConsumer;
 
 import static spec.AbstractLayout.nonH;
 import static spec.AbstractLayout.shfH;
-import static spec.Constants.*;
 import static spec.KeyCode.*;
 import static spec.math.WordMath.bitToString;
-import static spec.math.WordMath.isSet;
 
-public class Keyboard implements StateProvider, JsonState {
-
-    public static final int SNAPSHOT_KEYBOARD_SIZE = 13;
-
-    // 0b__shift_alt_ctrl_shiftEmu__cyrLat_0_0_0
-    public static final int SHIFT_BIT = b1000_0000;
-    public static final int ALT_BIT = b0100_0000;
-    public static final int CTRL_BIT = b0010_0000;
-    public static final int SHIFT_EMU_BIT = b0001_0000;
-    public static final int CYL_LAT_BIT = b0000_1000;
+public class Keyboard implements JsonState {
 
     private BiConsumer<Key, Integer> keyLogger;
     private Layout layout;
 
-    // массив матрицы клавиш "Специалиста" (true - нажата, false - отпущена)
+    // массив матрицы клавиш (true - нажата, false - отпущена)
     // 12 x 6 + Shift + Reset
     private boolean[][] keyStatus = new boolean[12][6];
 
@@ -65,51 +52,18 @@ public class Keyboard implements StateProvider, JsonState {
     }
 
     @Override
-    public int stateSize() {
-        return SNAPSHOT_KEYBOARD_SIZE;
-    }
-
-    @Override
-    public void state(Bites bites) {
-        validateState("Keyboard", bites);
-
-        int lastIndex = bites.size() - 1;
-        for (int i = 0; i < lastIndex; i++) {
-            for (int j = 0; j < 6; j++) {
-                keyStatus[i][j] = isSet(bites.get(i), b0000_0001 << j);
-            }
-        }
-        bitesState(bites.get(lastIndex));
-    }
-
-    @Override
-    public Bites state() {
-        Bites bites = new Bites(stateSize());
-        int lastIndex = bites.size() - 1;
-        for (int i = 0; i < lastIndex; i++) {
-            int bite = 0;
-            for (int j = 0; j < 6; j++) {
-                bite |= keyStatus[i][j] ? (b0000_0001 << j) : 0;
-            }
-            bites.set(i, bite);
-        }
-        bites.set(lastIndex, bitesState());
-        return bites;
-    }
-
-    @Override
     public JsonElement toJson() {
         JsonObject result = new JsonObject();
 
-        JsonArray status = new JsonArray();
+        JsonArray array = new JsonArray();
         for (int i = 0; i < keyStatus[0].length; i++) {
-            String row = new String();
-            for (int j = 0; j < keyStatus.length; j++) {
-                row += (keyStatus[j][i] ? 1 : 0);
+            StringBuilder row = new StringBuilder();
+            for (boolean[] status : keyStatus) {
+                row.append(status[i] ? 1 : 0);
             }
-            status.add(row);
+            array.add(row.toString());
         }
-        result.add("status", status);
+        result.add("keyStatus", array);
 
         result.addProperty("shift", shift ? 1 : 0);
         result.addProperty("alt", alt ? 1 : 0);
@@ -123,7 +77,7 @@ public class Keyboard implements StateProvider, JsonState {
     public void fromJson(JsonElement element) {
         JsonObject json = element.getAsJsonObject();
 
-        JsonArray status = json.getAsJsonArray("status");
+        JsonArray status = json.getAsJsonArray("keyStatus");
         for (int i = 0; i < keyStatus[0].length; i++) {
             String row = status.get(i).getAsString();
             for (int j = 0; j < keyStatus.length; j++) {
@@ -186,8 +140,8 @@ public class Keyboard implements StateProvider, JsonState {
 
         for (int i = 0; i < keyStatus[0].length; i++) {
             sb.append("    |").append(i).append("|");
-            for (int j = 0; j < keyStatus.length; j++) {
-                if (keyStatus[j][i]) {
+            for (boolean[] status : keyStatus) {
+                if (status[i]) {
                     sb.append(" +");
                 } else {
                     sb.append(" -");
@@ -276,24 +230,6 @@ public class Keyboard implements StateProvider, JsonState {
         keyLogger.accept(key, point);
     }
 
-    public void bitesState(int bite) {
-        // 0b__shift_alt_ctrl_shiftEmu__cyrLat_0_0_0
-        setShift(bite);
-        setAlt(bite);
-        setCtrl(bite);
-        setShiftEmu(bite);
-        setRusLat(bite);
-    }
-
-    public int bitesState() {
-        // 0b__shift_alt_ctrl_shiftEmu__cyrLat_0_0_0
-        return (shift ? SHIFT_BIT : 0)
-                | (alt ? ALT_BIT : 0)
-                | (ctrl ? CTRL_BIT : 0)
-                | (shiftEmu ? SHIFT_EMU_BIT : 0)
-                | (cyrLat ? CYL_LAT_BIT : 0);
-    }
-
     public boolean keyStatus(int j, int i) {
         return keyStatus[j][i];
     }
@@ -304,35 +240,14 @@ public class Keyboard implements StateProvider, JsonState {
      * от нажатия шифта на хостовой машине, то мы должны его сохранить и передать
      * в нужный момент. Вся магия в том, что вначале должен отработать этот метод,
      * а уже потом с течением времени (когда процессор интераптентся) должен
-     *  отработать метод tick() и обработать нажатые клавиши.
-     */
-    /**
+     * отработать метод tick() и обработать нажатые клавиши.
+     *
      * @see #shift() - так IOPorts узнает о том, что нажат шифт на эмулируемой машине
      * @see #tick() - тут обрабатываются нажатые клавиши с задержкой после нажатия и обработки shift с помощью IOPorts
      * @see #pressKey(Key, Pair)  - тут обрабатываются нажатые клавиши сразу Как приходят из хостовой машины
      */
     public boolean shift() {
         return shiftEmu;
-    }
-
-    private void setShift(int bite) {
-        shift = isSet(bite, SHIFT_BIT);
-    }
-
-    private void setAlt(int bite) {
-        alt = isSet(bite, ALT_BIT);
-    }
-
-    private void setCtrl(int bite) {
-        ctrl = isSet(bite, CTRL_BIT);
-    }
-
-    private void setShiftEmu(int bite) {
-        shiftEmu = isSet(bite, SHIFT_EMU_BIT);
-    }
-
-    private void setRusLat(int bite) {
-        cyrLat = isSet(bite, CYL_LAT_BIT);
     }
 
     /**
