@@ -7,7 +7,7 @@ public class SpeakerAudio extends BaseAudio implements Audio {
     private int current;
 
     public SpeakerAudio() {
-        super(1024*4);
+        super(1024);
     }
 
     @Override
