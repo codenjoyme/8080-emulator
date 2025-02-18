@@ -5,7 +5,7 @@ import static spec.Constants.LINE_OUT_AUDIO_BYTES_PER_WRITE;
 public class LineOutAudio extends BaseAudio implements Audio {
 
     public LineOutAudio() {
-        super(1024, DO_NOT_SKIP_DATA);
+        super(1024);
     }
 
     @Override

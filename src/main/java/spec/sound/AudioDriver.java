@@ -13,16 +13,17 @@ public class AudioDriver implements JsonState {
 
     protected Audio audio;
     private boolean audioMode;
+    private boolean allowDataSkip;
 
     public AudioDriver() {
-        createAudio(AUDIO_MODE_SPEAKER);
+        createAudio(AUDIO_MODE_SPEAKER, true);
     }
 
     public synchronized boolean audioMode() {
         return audioMode;
     }
 
-    public synchronized void createAudio(boolean mode) {
+    public synchronized void createAudio(boolean mode, boolean skip) {
         // TODO #40 закончить с аудио пока отключил для веб версии - там ошибка
         if (Files.isRunningFromJar()) {
             disable();
@@ -34,11 +35,17 @@ public class AudioDriver implements JsonState {
 
         audioMode = mode;
         Logger.debug("Switch audio to '%s' mode", audioMode ? "line out" : "speaker");
-
         if (audioMode) {
             audio = new LineOutAudio();
         } else {
             audio = new SpeakerAudio();
+        }
+
+        if (allowDataSkip != skip) {
+            allowDataSkip = skip;
+            Logger.debug("Allow data skip: %s", allowDataSkip);
+
+            audio.allowDataSkip(allowDataSkip);
         }
     }
 
@@ -73,7 +80,11 @@ public class AudioDriver implements JsonState {
     }
 
     public synchronized void switchOut() {
-        createAudio(!audioMode);
+        createAudio(!audioMode, allowDataSkip);
+    }
+
+    public synchronized void switchAllowDataSkip() {
+        createAudio(audioMode, !allowDataSkip);
     }
 
     @Override
@@ -81,6 +92,7 @@ public class AudioDriver implements JsonState {
         JsonObject result = new JsonObject();
 
         result.addProperty("audioMode", audioMode ? 1 : 0);
+        result.addProperty("allowDataSkip", allowDataSkip ? 1 : 0);
 
         return result;
     }
@@ -90,7 +102,8 @@ public class AudioDriver implements JsonState {
         JsonObject json = element.getAsJsonObject();
 
         boolean mode = json.get("audioMode").getAsInt() == 1;
+        boolean skip = json.get("allowDataSkip").getAsInt() == 1;
 
-        createAudio(mode);
+        createAudio(mode, skip);
     }
 }

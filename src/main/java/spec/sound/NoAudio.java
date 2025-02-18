@@ -16,4 +16,9 @@ public class NoAudio implements Audio {
     public void close() {
         // do nothing
     }
+
+    @Override
+    public void allowDataSkip(boolean allow) {
+        // do nothing
+    }
 }

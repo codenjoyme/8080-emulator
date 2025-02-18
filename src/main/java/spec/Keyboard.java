@@ -261,7 +261,7 @@ public class Keyboard implements JsonState {
         }
 
         while (!points.isEmpty()) {
-            Pair<Integer, Key> data = points.remove(0);
+            Pair<Integer, Key> data = points.remove(0); // TODO #45 Почему-то тут NPE проскакивает порой
             Key key = data.getRight();
             int point = data.getLeft();
 

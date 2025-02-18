@@ -217,7 +217,7 @@ public abstract class AbstractTest {
     protected AudioDriver createAudioDriver() {
         return new AudioDriver() {
             @Override
-            public void createAudio(boolean mode) {
+            public void createAudio(boolean mode, boolean skip) {
                 // делаем все по быстрому
                 audio = new NoAudio();
             }

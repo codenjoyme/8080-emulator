@@ -13,16 +13,16 @@ public abstract class BaseAudio implements Audio {
 
     private static final int BUFFER_COUNT = 2;
 
-    private final boolean allowDataSkip;
+    private boolean allowDataSkip;
     private ArrayBlockingQueue<Byte> audioQueue;
     private SourceDataLine line;
     private Thread audio;
     private volatile boolean running = true;
     private final int bufferSize;
 
-    public BaseAudio(int bufferSize, boolean allowDataSkip) {
+    public BaseAudio(int bufferSize) {
         this.bufferSize = bufferSize;
-        this.allowDataSkip = allowDataSkip;
+        this.allowDataSkip = false;
         audioQueue = new ArrayBlockingQueue<>(bufferSize * BUFFER_COUNT);
 
         AudioFormat format = new AudioFormat(AUDIO_SAMPLE_RATE, 8, 1, true, false);
@@ -38,6 +38,10 @@ public abstract class BaseAudio implements Audio {
 
         audio = new Thread(this::processAudio);
         audio.start();
+    }
+
+    public void allowDataSkip(boolean value) {
+        allowDataSkip = value;
     }
 
     private void processAudio() {

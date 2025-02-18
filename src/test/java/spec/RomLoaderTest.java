@@ -144,7 +144,8 @@ public class RomLoaderTest extends AbstractTest {
                 "}";
 
         String audioJson = "{\n" +
-                "  'audioMode': 1\n" +
+                "  'audioMode': 1,\n" +
+                "  'allowDataSkip': 0\n" +
                 "}";
 
         String romJson = "{\n" +
@@ -170,6 +171,7 @@ public class RomLoaderTest extends AbstractTest {
         graphic.nextDrawMode();
 
         hard.audio().switchOut();
+        hard.audio().switchAllowDataSkip();
 
         timings.changeFullSpeed();
         timings.decreaseDelay();
@@ -314,7 +316,8 @@ public class RomLoaderTest extends AbstractTest {
                 "}", pretty(graphic));
 
         assertEquals("{\n" +
-                "  'audioMode': 0\n" +
+                "  'audioMode': 0,\n" +
+                "  'allowDataSkip': 1\n" +
                 "}", pretty(hard.audio()));
 
         assertEquals("{\n" +

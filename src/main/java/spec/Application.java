@@ -134,9 +134,15 @@ public class Application {
 
         // ========= другие клавиши =========
 
-        // NUM_9 - переключение режима аудио (звук вывода на магнитофон, звук динамика)
+        // NUM_9 - переключение режима аудио (звук вывода на магнитофон / звук динамика)
+        // CTRL + NUM_9 - переключение режима аудио (ок ли мы с тем, что данные будут
+        //                теряться при ускорении эмуляции или нет)
         if (key.numNine()) {
-            hard.audio().switchOut();
+            if (key.ctrl()) {
+                hard.audio().switchAllowDataSkip();
+            } else {
+                hard.audio().switchOut();
+            }
             hard.refreshBorder();
         }
 
