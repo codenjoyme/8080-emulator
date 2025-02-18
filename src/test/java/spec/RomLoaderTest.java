@@ -215,7 +215,7 @@ public class RomLoaderTest extends AbstractTest {
         assertEquals(true, hard.audio().audioMode());
 
         // when
-        roms.saveSnapshot(targetBase, "snapshot.bin");
+        roms.saveJsonSnapshot(targetBase, "snapshot.json");
 
         // given
         // reset all states
@@ -230,7 +230,7 @@ public class RomLoaderTest extends AbstractTest {
         assertEquals(false, hard.audio().audioMode());
 
         // when
-        roms.loadSnapshot(targetBase, "snapshot.bin");
+        roms.loadJsonSnapshot(targetBase, "snapshot.json");
 
         // then
         assertEquals(expectedCpu, cpu.toStringDetails(true));
@@ -433,7 +433,6 @@ public class RomLoaderTest extends AbstractTest {
                 "}", pretty(timings));
 
         // when
-        roms.saveSnapshot(targetBase, "snapshot.bin");
         roms.saveJsonSnapshot(targetBase, "snapshot.json");
 
         // given
@@ -506,7 +505,6 @@ public class RomLoaderTest extends AbstractTest {
                 "}", pretty(timings));
 
         // when
-        roms.loadSnapshot(targetBase, "snapshot.bin");
         roms.loadJsonSnapshot(targetBase, "snapshot.json");
 
         // then
