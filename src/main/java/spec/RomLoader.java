@@ -269,6 +269,9 @@ public class RomLoader {
      *   "AudioDriver": {
      *     "audioMode": 1           // `audioMode` 1 if true (AUDIO_MODE_LINE_OUT)
      *                              //             0 otherwise (AUDIO_MODE_SPEAKER)
+     *     "allowDataSkip" : 0      // `allowDataSkip` 1 if true (CAN_SKIP_DATA)
+     *                              //                 0 otherwise (DO_NOT_SKIP_DATA)
+     *                              // this allow to increase emulation speed
      *   },
      *   "Memory": {
      *       "data": [              // memory in hex
