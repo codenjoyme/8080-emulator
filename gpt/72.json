@@ -1,0 +1,348 @@
+DATE: 1739801383481
+
+===============================================================================================
+Q: Есть код
+
+public class JsonUtils {
+
+    public static String asString(Object data) {
+        boolean isJson = data instanceof Map || data instanceof List;
+        if (isJson) {
+            return gson().toJson(data);
+        } else {
+            return data.toString();
+        }
+    }
+
+    public static Gson gson() {
+        return new GsonBuilder().setPrettyPrinting()
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .registerTypeAdapter(HashMap.class, new MapSerializer())
+                .registerTypeAdapter(Double.class, new NumberSerializer())
+                .create();
+    }
+
+    static class NumberSerializer implements JsonSerializer<Double> {
+        @Override
+        public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.intValue());
+        }
+    }
+
+    static class MapSerializer implements JsonSerializer<Map<?, ?>> {
+        @Override
+        public JsonElement serialize(Map<?, ?> src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject json = new JsonObject();
+            src = new TreeMap<>(src);
+            src.forEach((key, value) -> json.add(String.valueOf(key), context.serialize(value)));
+            return json;
+        }
+    }
+
+}
+
+я хотел бы иметь возможность серилизовать в json целые объекты, как это сделать?
+-----------------------------------------------------------------------------------------------
+A: Чтобы сериализовать целые объекты в JSON используя код выше, вы должны убедиться, что объекты, которые вы хотите сериализовать, являются экземплярами `Map` или `List`, или что у этих объектов корректно реализован метод `toString()`, если они не относятся к этим типам.
+
+Если ваш объект не является ни `Map`, ни `List`, и вы хотите использовать `Gson` для сериализации этих объектов, вы можете добавить условие в метод `asString` для обработки этих случаев. Например, вы можете добавить проверку, передавая объекты непосредственно в `gson().toJson(data)`. Вот как это можно сделать:
+
+```java
+public static String asString(Object data) {
+    if (data instanceof Map || data instanceof List || isCustomObject(data)) {
+        return gson().toJson(data);
+    } else {
+        return data.toString();
+    }
+}
+
+private static boolean isCustomObject(Object data) {
+    // Здесь вы можете добавить условия для ваших собственных классов
+    // Например, `return data instanceof MyCustomClass;`
+    return !(data instanceof String) && !(data instanceof Number) && !(data instanceof Boolean);
+}
+```
+
+Не забудьте также настроить Gson для корректной работы со своими объектами, добавив соответствующие адаптеры, если это необходимо. 
+
+Если у ваших объектов сложная структура и требуется специальная сериализация, то можно писать собственные адаптеры для них, подобно тому как это сделано для `Double` и `Map`. Например:
+
+```java
+class MyCustomClassSerializer implements JsonSerializer<MyCustomClass> {
+    @Override
+    public JsonElement serialize(MyCustomClass src, Type typeOfSrc, JsonSerializationContext context) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("propertyName", src.getPropertyValue());
+        // добавляйте другие свойства здесь
+        return jsonObject;
+    }
+}
+
+// и не забудьте зарегистрировать адаптер:
+.registerTypeAdapter(MyCustomClass.class, new MyCustomClassSerializer())
+```
+
+Это позволит вам контролировать, какие данные о вашем классе будут сериализованы и как они будут представлены в JSON.
+===============================================================================================
+
+===============================================================================================
+Q: а если я хочу чтобы сам объект взял на себя ответственность по сохранению стейта в json и установки стейта из json?
+-----------------------------------------------------------------------------------------------
+A: Если вы хотите, чтобы объекты сами отвечали за свою сериализацию в JSON и десериализацию из JSON, вы можете реализовать в них интерфейсы с методами для сериализации и десериализации. В таком случае каждый класс будет знать, как правильно записывать свои данные в JSON и как восстанавливать свое состояние из JSON.
+
+Для этого вы можете определить интерфейс, например `JsonSerializable`, с методами `toJson()` и `fromJson(JsonElement json)`:
+
+```java
+public interface JsonSerializable {
+    JsonElement toJson();
+    void fromJson(JsonElement jsonElement);
+}
+```
+
+Затем каждый класс, который должен уметь сериализовываться, должен реализовать этот интерфейс. Пример класса:
+
+```java
+public class MyCustomClass implements JsonSerializable {
+    private int id;
+    private String name;
+
+    public MyCustomClass(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public JsonElement toJson() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("id", id);
+        jsonObject.addProperty("name", name);
+        return jsonObject;
+    }
+
+    @Override
+    public void fromJson(JsonElement jsonElement) {
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        this.id = jsonObject.get("id").getAsInt();
+        this.name = jsonObject.get("name").getAsString();
+    }
+}
+```
+
+Теперь, когда вам нужно сериализовать объекты, вы можете просто вызвать `toJson()`, и каждый объект сам создаст свое JSON-представление. Соответственно, когда вам нужно восстановить объект из JSON, вызывается `fromJson`.
+
+В вашем случае, вспомогательные методы могут выглядеть так:
+
+```java
+public static String asString(JsonSerializable data) {
+    return data.toJson().toString();
+}
+
+public static JsonSerializable fromString(String json, Class<? extends JsonSerializable> clazz) {
+    try {
+        JsonSerializable instance = clazz.newInstance();
+        JsonElement jsonElement = JsonParser.parseString(json);
+        instance.fromJson(jsonElement);
+        return instance;
+    } catch (InstantiationException | IllegalAccessException e) {
+        throw new RuntimeException("Error creating instance of " + clazz.getName(), e);
+    }
+}
+```
+
+В этом подходе объекты полностью контролируют, какие данные экспонировать в JSON-формате и как извлекать эти данные обратно. Это может особенно пригодиться в случаях, когда структура класса часто изменяется или когда у вас есть специфические требования к формату JSON.
+===============================================================================================
+
+===============================================================================================
+Q: JsonSerializable мне надо объявить?
+-----------------------------------------------------------------------------------------------
+A: Да, вы должны объявить интерфейс `JsonSerializable`, если вы решите использовать описанный подход. Это не стандартный интерфейс из Java или библиотеки Gson, поэтому вам нужно будет создать его самостоятельно. Вот пример того, как может выглядеть такое объявление:
+
+```java
+import com.google.gson.JsonElement;
+
+public interface JsonSerializable {
+    /**
+     * Сериализует объект в JSON.
+     * 
+     * @return JsonElement представляющий объект.
+     */
+    JsonElement toJson();
+
+    /**
+     * Восстанавливает объект из JSON.
+     *
+     * @param jsonElement JsonElement элемент, из которого нужно восстановить объект.
+     */
+    void fromJson(JsonElement jsonElement);
+}
+```
+
+Этот интерфейс требует, чтобы классы, которые его реализуют, предоставили реализацию двух методов: `toJson()`, который должен возвращать сериализованное в JSON представление объекта, и `fromJson(JsonElement jsonElement)`, который должен восстанавливать состояние объекта из предоставленного `JsonElement`.
+
+Затем в любом классе, который вы хотите сделать сериализуемым в JSON этим способом, вы должны реализовать этот интерфейс. Это означает, что класс необходимо будет дополнить двумя методами, как показано в примере с `MyCustomClass`. Это дает вам полный контроль над процессом сериализации и десериализации объектов, позволяя учитывать все необходимые детали конкретного класса.
+===============================================================================================
+
+===============================================================================================
+Q: а JsonElement откуда взять?
+-----------------------------------------------------------------------------------------------
+A: `JsonElement` это класс из библиотеки Google Gson, которая используется для работы с JSON в Java. Для использования `JsonElement` и других связанных с ним классов (например, `JsonObject`, `JsonArray` и т.д.), вам необходимо добавить зависимость Gson в ваш проект.
+
+Если вы используете Maven, добавьте следующую зависимость в ваш `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>com.google.code.gson</groupId>
+    <artifactId>gson</artifactId>
+    <version>2.8.6</version> <!-- Или другая актуальная версия -->
+</dependency>
+```
+
+Если вы используете Gradle, добавьте это в ваш `build.gradle`:
+
+```gradle
+implementation 'com.google.code.gson:gson:2.8.6' // Или другая актуальная версия
+```
+
+С помощью этой библиотеки вы сможете использовать `JsonElement` и другие утилиты JSON для сериализации и десериализации объектов в вашем Java приложении.
+
+Простой пример использования `JsonElement` может выглядеть так:
+
+```java
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
+public class Demo {
+
+    public static void main(String[] args) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("name", "John Doe");
+        jsonObject.addProperty("age", 30);
+        JsonElement jsonElement = new JsonPrimitive("example");
+
+        System.out.println(jsonObject.toString()); // {"name":"John Doe","age":30}
+        System.out.println(jsonElement.getAsJsonPrimitive().getAsString()); // example
+    }
+}
+```
+
+Этот пример демонстрирует создание `JsonObject`, добавление к нему свойств и использование `JsonPrimitive`, который является наследником `JsonElement`.
+===============================================================================================
+
+===============================================================================================
+Q:         <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+        <gson.version>2.8.9</gson.version>
+но класс не импортится
+-----------------------------------------------------------------------------------------------
+A: Возможно, проблема связана с неправильной конфигурацией переменной `gson.version` в вашем `pom.xml`. Вы указали переменную версии внутри тега `<dependency>`, но это должно быть сделано отдельно. В Maven для использования переменных обычно определяют их в теге `<properties>` внутри тега `<project>`.
+
+Исправьте ваш `pom.xml` следующим образом:
+
+1. Добавьте блок `<properties>` и определите там переменную `gson.version`.
+2. Используйте эту переменную в теге `<dependency>`.
+
+Вот пример правильной конфигурации:
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Остальные части вашего POM файла -->
+
+    <properties>
+        <gson.version>2.8.9</gson.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+    </dependencies>
+
+    <!-- Остальные части вашего POM файла -->
+</project>
+```
+
+Убедитесь также, что после внесения изменений в `pom.xml`, вы обновили проект для того чтобы Maven перезагрузил конфигурацию и загрузил необходимые зависимости. В IDE, таких как IntelliJ IDEA или Eclipse, можно обычно сделать это через опции "Reload Project" или "Update Project".
+
+Если после этого класс `JsonElement` все еще не импортируется, проверьте следующее:
+
+- Убедитесь, что путь к JDK правильно настроен в вашем IDE.
+- Проверьте, что Maven корректно загрузил все нужные библиотеки в локальный репозиторий. Иногда помогает удаление папки `.m2/repository/com/google/code/gson` и повторная загрузка зависимостей.
+- Если используете командную строку, попробуйте выполнить команду `mvn clean install` в директории вашего проекта, чтобы убедиться, что все зависимости были успешно загружены.
+===============================================================================================
+
+===============================================================================================
+Q: А вот как тут сделать pretty print? 
+    @Override
+    public JsonElement toJson() {
+        JsonObject result = new JsonObject();
+
+        JsonArray status = new JsonArray();
+        for (int i = 0; i < keyStatus[0].length; i++) {
+            JsonArray row = new JsonArray();
+            for (int j = 0; j < keyStatus.length; j++) {
+                row.add(keyStatus[j][i] ? 1 : 0);
+            }
+            status.add(row);
+        }
+        result.add("status", status);
+
+        result.addProperty("shift", shift ? 1 : 0);
+        result.addProperty("alt", alt ? 1 : 0);
+        result.addProperty("ctrl", ctrl ? 1 : 0);
+        result.addProperty("shiftEmu", shiftEmu ? 1 : 0);
+        result.addProperty("cyrLat", cyrLat ? 1 : 0);
+        return result;
+    }
+-----------------------------------------------------------------------------------------------
+A: Чтобы сделать `pretty print` (человеко-читаемый формат) для JSON, который вы генерируете с помощью `JsonObject` в библиотеке Gson, вам нужно использовать объект `Gson` с включенной опцией `setPrettyPrinting()` при его создании. 
+
+Например, вы можете модифицировать метод `toJson()`, чтобы он возвращал строку в формате JSON со структурированным выводом:
+
+```java
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+@Override
+public String toJson() {
+    JsonObject result = new JsonObject();
+
+    JsonArray status = new JsonArray();
+    for (int i = 0; i < keyStatus[0].length; i++) {
+        JsonArray row = new JsonArray();
+        for (int j = 0; j < keyStatus.length; j++) {
+            row.add(keyStatus[j][i] ? 1 : 0);
+        }
+        status.add(row);
+    }
+    result.add("status", status);
+
+    result.addProperty("shift", shift ? 1 : 0);
+    result.addProperty("alt", alt ? 1 : 0);
+    result.addProperty("ctrl", ctrl ? 1 : 0);
+    result.addProperty("shiftEmu", shiftEmu ? 1 : 0);
+    result.addProperty("cyrLat", cyrLat ? 1 : 0);
+
+    // Создаем Gson объект с включенной опцией Pretty Printing
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    
+    // Возвращаем JSON строку в читаемом формате
+    return gson.toJson(result);
+}
+```
+
+Таким образом, когда вы вызываете метод `toJson()`, он будет возвращать JSON строку в отформатированном виде, где каждый уровень вложенности будет отображен с отступами, что упрощает чтение и отладку JSON-структуры.
+
+Обратите внимание, что `toJson()` в этом случае изменен так, чтобы возвращать строку напрямую, а не `JsonElement`. Это более удобный способ прямого использования возможностей Gson для форматированного вывода JSON. Если вам по прежнему нужен `JsonElement`, вы можете просто возвратить объект `result`, и использовать экземпляр `Gson` для форматирования в другом месте вашего кода.
+===============================================================================================
