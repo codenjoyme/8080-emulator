@@ -1,6 +1,9 @@
 package spec;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import spec.math.Bites;
+import spec.state.JsonState;
 import spec.state.StateProvider;
 
 import java.awt.*;
@@ -8,7 +11,7 @@ import java.awt.*;
 import static spec.Constants.*;
 import static spec.Video.COLORS;
 
-public class GraphicControl implements StateProvider {
+public class GraphicControl implements StateProvider, JsonState {
 
     public static final int SNAPSHOT_GRAPHIC_STATE_SIZE = 1;
 
@@ -111,5 +114,21 @@ public class GraphicControl implements StateProvider {
         validateState("graphic", bites);
 
         ioDrawMode(bites.get(0));
+    }
+
+    @Override
+    public JsonElement toJson() {
+        JsonObject result = new JsonObject();
+
+        result.addProperty("ioDrawMode", ioDrawMode());
+
+        return result;
+    }
+
+    @Override
+    public void fromJson(JsonElement element) {
+        JsonObject json = element.getAsJsonObject();
+
+        ioDrawMode(json.get("ioDrawMode").getAsInt());
     }
 }

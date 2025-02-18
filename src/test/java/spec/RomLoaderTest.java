@@ -407,6 +407,10 @@ public class RomLoaderTest extends AbstractTest {
                 "  'tact': 305419896\n" +
                 "}", pretty(cpu));
 
+        assertEquals("{\n" +
+                "  'ioDrawMode': 3\n" +
+                "}", pretty(graphic));
+
 
         // when
         roms.saveSnapshot(targetBase, "snapshot.bin");
@@ -456,6 +460,10 @@ public class RomLoaderTest extends AbstractTest {
                 "  'tact': 0\n" +
                 "}", pretty(cpu));
 
+        assertEquals("{\n" +
+                "  'ioDrawMode': 0\n" +
+                "}", pretty(graphic));
+
         // when
         roms.loadSnapshot(targetBase, "snapshot.bin");
         roms.loadJsonSnapshot(targetBase, "snapshot.json");
@@ -499,6 +507,10 @@ public class RomLoaderTest extends AbstractTest {
                 "  'tick': 448585456,\n" +
                 "  'tact': 305419896\n" +
                 "}", pretty(cpu));
+
+        assertEquals("{\n" +
+                "  'ioDrawMode': 3\n" +
+                "}", pretty(graphic));
     }
 
     private String pretty(JsonState state) {
