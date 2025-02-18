@@ -418,6 +418,10 @@ public class RomLoaderTest extends AbstractTest {
                 "  'C1in': 0\n" +
                 "}", pretty(ports));
 
+        assertEquals("{\n" +
+                "  'platform': 'specialist'\n" +
+                "}", pretty(romSwitcher));
+
         // when
         roms.saveSnapshot(targetBase, "snapshot.bin");
         roms.saveJsonSnapshot(targetBase, "snapshot.json");
@@ -477,6 +481,10 @@ public class RomLoaderTest extends AbstractTest {
                 "  'C1in': 1\n" +
                 "}", pretty(ports));
 
+        assertEquals("{\n" +
+                "  'platform': 'lik'\n" +
+                "}", pretty(romSwitcher));
+
         // when
         roms.loadSnapshot(targetBase, "snapshot.bin");
         roms.loadJsonSnapshot(targetBase, "snapshot.json");
@@ -531,6 +539,10 @@ public class RomLoaderTest extends AbstractTest {
                 "  'C0in': 1,\n" +
                 "  'C1in': 0\n" +
                 "}", pretty(ports));
+
+        assertEquals("{\n" +
+                "  'platform': 'specialist'\n" +
+                "}", pretty(romSwitcher));
     }
 
     private String pretty(JsonState state) {
