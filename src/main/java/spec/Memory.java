@@ -1,12 +1,16 @@
 package spec;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import spec.math.Bites;
+import spec.state.JsonState;
 import spec.state.StateProvider;
 
 import static spec.math.Bites.of;
 import static spec.math.WordMath.*;
 
-public class Memory implements StateProvider {
+public class Memory implements StateProvider, JsonState {
 
     protected Bites mem;
 
@@ -67,5 +71,34 @@ public class Memory implements StateProvider {
     @Override
     public Bites state() {
         return mem.array();
+    }
+
+    @Override
+    public JsonElement toJson() {
+        JsonObject result = new JsonObject();
+
+        String lines = mem.toString(true, true);
+        JsonArray array = new JsonArray();
+        for (String line : lines.split("\n")) {
+            array.add(line);
+        }
+        result.add("memory", array);
+
+        return result;
+    }
+
+    @Override
+    public void fromJson(JsonElement element) {
+        JsonObject obj = element.getAsJsonObject();
+
+        JsonArray array = obj.getAsJsonArray("memory");
+        StringBuilder sb = new StringBuilder();
+        for (JsonElement line : array) {
+            String string = line.getAsString();
+            if (!string.contains(": ")) continue;
+            string = string.split(": ")[1];
+            sb.append(string).append("\n");
+        }
+        write8str(0, sb.toString());
     }
 }
