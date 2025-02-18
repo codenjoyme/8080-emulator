@@ -411,6 +411,10 @@ public class RomLoaderTest extends AbstractTest {
                 "  'ioDrawMode': 3\n" +
                 "}", pretty(graphic));
 
+        assertEquals("{\n" +
+                "  'mode': 1\n" +
+                "}", pretty(hard.audio()));
+
 
         // when
         roms.saveSnapshot(targetBase, "snapshot.bin");
@@ -464,6 +468,10 @@ public class RomLoaderTest extends AbstractTest {
                 "  'ioDrawMode': 0\n" +
                 "}", pretty(graphic));
 
+        assertEquals("{\n" +
+                "  'mode': 0\n" +
+                "}", pretty(hard.audio()));
+
         // when
         roms.loadSnapshot(targetBase, "snapshot.bin");
         roms.loadJsonSnapshot(targetBase, "snapshot.json");
@@ -511,6 +519,10 @@ public class RomLoaderTest extends AbstractTest {
         assertEquals("{\n" +
                 "  'ioDrawMode': 3\n" +
                 "}", pretty(graphic));
+
+        assertEquals("{\n" +
+                "  'mode': 1\n" +
+                "}", pretty(hard.audio()));
     }
 
     private String pretty(JsonState state) {
