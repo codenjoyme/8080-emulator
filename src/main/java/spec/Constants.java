@@ -35,6 +35,12 @@ public class Constants {
     public static final int SCREEN_WIDTH = SCREEN_WIDTH_IN_PATTERNS * Video.PATTERN; // 384
     public static final int SCREEN_HEIGHT = 256;
 
+    public static final int SCREEN_CHAR_WIDTH = 6;
+    public static final int SCREEN_CHAR_HEIGHT = 10;
+
+    public static final int SCREEN_WIDTH_IN_SYMBOLS = SCREEN_WIDTH / SCREEN_CHAR_WIDTH;
+    public static final int SCREEN_HEIGHT_IN_SYMBOLS = SCREEN_HEIGHT / SCREEN_CHAR_HEIGHT;
+
     public static final int BASIC_LIK_V2_PROGRAM_START = 0x1E60;
     public static final int BASIC_V1_PROGRAM_START = 0x2000;
 

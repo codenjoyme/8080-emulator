@@ -11,6 +11,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 
 import static java.util.stream.Collectors.joining;
+import static spec.Constants.SCREEN_CHAR_HEIGHT;
+import static spec.Constants.SCREEN_CHAR_WIDTH;
 
 public class PngScreenToText {
 
@@ -54,9 +56,6 @@ public class PngScreenToText {
                 UNKNOWN);
     }
 
-    private static final int CHAR_WIDTH = 6;
-    private static final int CHAR_HEIGHT = 10;
-
     private void process(String path, String text) {
         List<String> masks = masks(path);
         int x = 0;
@@ -83,8 +82,8 @@ public class PngScreenToText {
 
         pxWidth = image.getWidth();
         pxHeight = image.getHeight();
-        width = pxWidth / CHAR_WIDTH;
-        height = width * (pxHeight / CHAR_HEIGHT);
+        width = pxWidth / SCREEN_CHAR_WIDTH;
+        height = width * (pxHeight / SCREEN_CHAR_HEIGHT);
 
         process(image, (mask, newLine) -> {
             result.add(mask);
@@ -101,12 +100,12 @@ public class PngScreenToText {
 
     private void process(BufferedImage image, BiConsumer<String, Boolean> set) {
         for (int i = 0; i < height; i++) {
-            int x = (i % width) * CHAR_WIDTH;
-            int y = (i / width) * CHAR_HEIGHT;
+            int x = (i % width) * SCREEN_CHAR_WIDTH;
+            int y = (i / width) * SCREEN_CHAR_HEIGHT;
             String mask = "";
 
-            for (int row = 0; row < CHAR_HEIGHT; row++) {
-                for (int col = 0; col < CHAR_WIDTH; col++) {
+            for (int row = 0; row < SCREEN_CHAR_HEIGHT; row++) {
+                for (int col = 0; col < SCREEN_CHAR_WIDTH; col++) {
                     int pixel = image.getRGB(x + col, y + row);
                     switch (pixel) {
                         case 0xFFFFFFFF:
@@ -233,7 +232,7 @@ public class PngScreenToText {
                 if (mask == null) {
                     mask = getMaskByChar(' ');
                 }
-                drawChar(mask, g, charNum * CHAR_WIDTH, lineNum * CHAR_HEIGHT);
+                drawChar(mask, g, charNum * SCREEN_CHAR_WIDTH, lineNum * SCREEN_CHAR_HEIGHT);
             }
         }
 

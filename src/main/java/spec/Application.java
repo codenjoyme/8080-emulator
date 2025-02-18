@@ -4,7 +4,8 @@ import spec.platforms.Platform;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
+import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
@@ -16,6 +17,8 @@ import static spec.Constants.*;
 import static spec.Files.RECORDS;
 import static spec.Files.SNAPSHOTS;
 import static spec.RomLoader.TYPE_SNP;
+import static spec.utils.ScreenUtils.addSpaces;
+import static spec.utils.ScreenUtils.putInBorder;
 
 public class Application {
 
@@ -152,8 +155,8 @@ public class Application {
             String file = Files.newScreenshot(base);
             hard.png().drawToFile(SCREEN.begin(), file);
             if (key.ctrl()) {
-                String text = hard.screenToText(file);
-                System.out.println(text);
+                String text = addSpaces(hard.screenToText(file));
+                Logger.info("Text from screen:\n%s", putInBorder(text));
                 toClipboard(text);
             }
         }
