@@ -11,7 +11,7 @@ public class AudioDriver implements JsonState {
     public static final boolean AUDIO_MODE_LINE_OUT = true;
     public static final boolean AUDIO_MODE_SPEAKER = false;
 
-    private Audio audio;
+    protected Audio audio;
     private boolean audioMode;
 
     public AudioDriver() {

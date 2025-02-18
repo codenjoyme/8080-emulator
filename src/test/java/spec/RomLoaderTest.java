@@ -1,8 +1,8 @@
 package spec;
 
 import org.junit.Test;
-import spec.math.Bites;
 import spec.platforms.Specialist;
+import spec.sound.AudioDriver;
 import spec.state.JsonState;
 import spec.stuff.AbstractTest;
 import spec.utils.JsonUtils;
@@ -65,6 +65,11 @@ public class RomLoaderTest extends AbstractTest {
                 return time.addAndGet(1234);
             }
         };
+    }
+
+    @Override
+    protected AudioDriver createAudioDriver() {
+        return new AudioDriver();
     }
 
     @Override

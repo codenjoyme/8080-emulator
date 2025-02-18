@@ -828,8 +828,6 @@ public class IntegrationTest extends AbstractTest {
         assertRecord("reversi2.rec");
     }
 
-    // TODO #44 Почему-то `Integration tests` стали запускаться дольше после последних изменений в
-    //      звуке и таймингах - исследовать после какого коммита поломалось: `2025-02-15` - `2025-02-17`
     @Test
     public void testLik_game_chess_play() {
         // given

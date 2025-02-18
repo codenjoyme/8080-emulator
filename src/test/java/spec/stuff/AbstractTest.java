@@ -17,12 +17,12 @@ import spec.platforms.Lik;
 import spec.platforms.Platform;
 import spec.platforms.PlatformFactory;
 import spec.platforms.Specialist;
+import spec.sound.AudioDriver;
+import spec.sound.NoAudio;
 
 import java.awt.Container;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -129,6 +129,11 @@ public abstract class AbstractTest {
             protected void outPort8(int port, int bite) {
                 // делаем все по быстрому
             }
+
+            @Override
+            public AudioDriver createAudioDriver() {
+                return AbstractTest.this.createAudioDriver();
+            }
         };
 
         keyboard = hard.keyboard();
@@ -160,8 +165,6 @@ public abstract class AbstractTest {
         debug.console(false);
 
         memoryInit = false;
-
-        hard.audio().disable();
 
         cpu.PC(START);
 
@@ -209,6 +212,16 @@ public abstract class AbstractTest {
 
     protected GraphicControl createGraphicControl(Container parent) {
         return mock(GraphicControl.class);
+    }
+
+    protected AudioDriver createAudioDriver() {
+        return new AudioDriver() {
+            @Override
+            public void createAudio(boolean mode) {
+                // делаем все по быстрому
+                audio = new NoAudio();
+            }
+        };
     }
 
     protected Timings createTimings(Hardware hard) {
