@@ -392,16 +392,12 @@ public class RomLoaderTest extends AbstractTest {
                 "}", pretty(keyboard));
 
         assertEquals("{\n" +
-                "  'pc': '2345',\n" +
-                "  'sp': '6789',\n" +
-                "  'f': '16',\n" +
-                "  'a': '12',\n" +
-                "  'c': '78',\n" +
-                "  'b': '56',\n" +
-                "  'e': 'BC',\n" +
-                "  'd': '9A',\n" +
-                "  'l': 'F0',\n" +
-                "  'h': 'DE',\n" +
+                "  'PC': '2345',\n" +
+                "  'SP': '6789',\n" +
+                "  'AF': '1216',\n" +
+                "  'BC': '5678',\n" +
+                "  'DE': '9ABC',\n" +
+                "  'HL': 'DEF0',\n" +
                 "  'interrupt': 4630,\n" +
                 "  'tick': 448585456,\n" +
                 "  'tact': 305419896\n" +
@@ -455,16 +451,12 @@ public class RomLoaderTest extends AbstractTest {
                 "}", pretty(keyboard));
 
         assertEquals("{\n" +
-                "  'pc': '0000',\n" +
-                "  'sp': '0000',\n" +
-                "  'f': '02',\n" +
-                "  'a': '00',\n" +
-                "  'c': '00',\n" +
-                "  'b': '00',\n" +
-                "  'e': '00',\n" +
-                "  'd': '00',\n" +
-                "  'l': '00',\n" +
-                "  'h': '00',\n" +
+                "  'PC': '0000',\n" +
+                "  'SP': '0000',\n" +
+                "  'AF': '0002',\n" +
+                "  'BC': '0000',\n" +
+                "  'DE': '0000',\n" +
+                "  'HL': '0000',\n" +
                 "  'interrupt': 1,\n" +
                 "  'tick': 0,\n" +
                 "  'tact': 0\n" +
@@ -514,16 +506,12 @@ public class RomLoaderTest extends AbstractTest {
                 "}", pretty(keyboard));
 
         assertEquals("{\n" +
-                "  'pc': '2345',\n" +
-                "  'sp': '6789',\n" +
-                "  'f': '16',\n" +
-                "  'a': '12',\n" +
-                "  'c': '78',\n" +
-                "  'b': '56',\n" +
-                "  'e': 'BC',\n" +
-                "  'd': '9A',\n" +
-                "  'l': 'F0',\n" +
-                "  'h': 'DE',\n" +
+                "  'PC': '2345',\n" +
+                "  'SP': '6789',\n" +
+                "  'AF': '1216',\n" +
+                "  'BC': '5678',\n" +
+                "  'DE': '9ABC',\n" +
+                "  'HL': 'DEF0',\n" +
                 "  'interrupt': 4630,\n" +
                 "  'tick': 448585456,\n" +
                 "  'tact': 305419896\n" +

@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import spec.assembler.Assembler;
 import spec.assembler.Command;
 import spec.math.Bites;
+import spec.state.JsonState;
 import spec.state.StateProvider;
 
 import java.util.function.Consumer;
@@ -13,7 +14,7 @@ import java.util.function.Supplier;
 import static spec.math.WordMath.*;
 import static spec.mods.Event.CHANGE_PC;
 
-public class Cpu extends Registry implements StateProvider {
+public class Cpu extends Registry implements StateProvider, JsonState {
 
     public static final int SNAPSHOT_CPU_STATE_SIZE = 30;
 
@@ -178,16 +179,12 @@ public class Cpu extends Registry implements StateProvider {
     public JsonElement toJson() {
         JsonObject result = new JsonObject();
 
-        result.addProperty("pc", hex16(PC()));
-        result.addProperty("sp", hex16(SP()));
-        result.addProperty("f", hex8(F()));
-        result.addProperty("a", hex8(A()));
-        result.addProperty("c", hex8(C()));
-        result.addProperty("b", hex8(B()));
-        result.addProperty("e", hex8(E()));
-        result.addProperty("d", hex8(D()));
-        result.addProperty("l", hex8(L()));
-        result.addProperty("h", hex8(H()));
+        result.addProperty("PC", hex16(PC()));
+        result.addProperty("SP", hex16(SP()));
+        result.addProperty("AF", hex16(AF()));
+        result.addProperty("BC", hex16(BC()));
+        result.addProperty("DE", hex16(DE()));
+        result.addProperty("HL", hex16(HL()));
 
         result.addProperty("interrupt", interrupt);
         result.addProperty("tick", tick);
@@ -200,16 +197,12 @@ public class Cpu extends Registry implements StateProvider {
     public void fromJson(JsonElement element) {
         JsonObject json = element.getAsJsonObject();
 
-        PC(hex16(json.get("pc").getAsString()));
-        SP(hex16(json.get("sp").getAsString()));
-        F(hex8(json.get("f").getAsString()));
-        A(hex8(json.get("a").getAsString()));
-        C(hex8(json.get("c").getAsString()));
-        B(hex8(json.get("b").getAsString()));
-        E(hex8(json.get("e").getAsString()));
-        D(hex8(json.get("d").getAsString()));
-        L(hex8(json.get("l").getAsString()));
-        H(hex8(json.get("h").getAsString()));
+        PC(hex16(json.get("PC").getAsString()));
+        SP(hex16(json.get("SP").getAsString()));
+        AF(hex16(json.get("AF").getAsString()));
+        BC(hex16(json.get("BC").getAsString()));
+        DE(hex16(json.get("DE").getAsString()));
+        HL(hex16(json.get("HL").getAsString()));
 
         interrupt = json.get("interrupt").getAsInt();
         tick = json.get("tick").getAsInt();
