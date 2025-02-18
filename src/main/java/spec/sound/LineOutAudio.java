@@ -3,7 +3,7 @@ package spec.sound;
 public class LineOutAudio extends BaseAudio implements Audio {
 
     public LineOutAudio() {
-        super(1024);
+        super(1024, DO_NOT_SKIP_DATA);
     }
 
     @Override

@@ -42,10 +42,10 @@ public class Timings implements JsonState {
             hard.video().screenPaint();
         }
 
-        hard.audio().tick();
         hard.keyboard().tick();
 
         if (!fullSpeed) {
+            hard.audio().tick();
             sleep();
         }
     }
