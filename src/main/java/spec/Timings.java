@@ -11,7 +11,7 @@ public class Timings implements JsonState {
     private final Hardware hard;
 
     private int interrupt = 0;
-    private int refreshRate = NORMAL_REFRESH_RATE;
+    private int refreshRate = NORMAL_SCREEN_EACH_INTERRUPT;
 
     // TODO #26 а точно тут надо так заморачиваться с многопоточностью?
     private boolean willReset = false;
@@ -90,10 +90,10 @@ public class Timings implements JsonState {
         fullSpeed = !fullSpeed;
         if (fullSpeed) {
             Logger.debug("Full speed mode");
-            refreshRate = MIN_REFRESH_RATE;
+            refreshRate = MINIMAL_SCREEN_EACH_INTERRUPT;
         } else {
             Logger.debug("Normal speed mode");
-            refreshRate = NORMAL_REFRESH_RATE;
+            refreshRate = NORMAL_SCREEN_EACH_INTERRUPT;
         }
     }
 

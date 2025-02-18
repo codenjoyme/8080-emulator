@@ -49,22 +49,47 @@ public class Constants {
     public static final int BORDER_WIDTH = 10;
     public static final int BORDER_PORT = 254;
 
-    // подогнано экспериментально:
-    // - чтобы в игре `КЛАД` отрисовка была максимально близкой
-    // - а в игре `BUDY` звук воспроизводился без искажений как в `Emu80`
+    /**
+     * подогнано экспериментально:
+     * - чтобы в игре `КЛАД` отрисовка была максимально близкой
+     * - а в игре `BUDY` звук воспроизводился без искажений как в `Emu80`
+     */
+
+    // частота с которой происходит звучание
     public static final int AUDIO_SAMPLE_RATE = 44100;
-    public static final int FREQUENCY = 2450;
-    public static final int AUDIO_BYTES_PER_TICK = 4;
-    public static final int LINE_OUT_AUDIO_BYTES_PER_WRITE = AUDIO_SAMPLE_RATE / FREQUENCY;
-    public static final int CPU_TICKS_PER_INTERRUPT = 170;
-    public static final long CPU_INTERRUPT_DELAY = (long) (169_574 * 1.0);
-    public static final int NORMAL_REFRESH_RATE = 10;      // refresh screen every 'n' interrupts
-    public static final int MIN_REFRESH_RATE = 100;
 
-    public static final int SLEEP_EACH_INTERRUPT = 1;  // задержка каждые 8 прерываний
-    public static final int LOG_EACH_INTERRUPT = 10_000; // логгирование времени выполнения 1000 прерываний
-
+    // 1 миллион наносекунд в секунде
     public static final long NANOS = 1_000_000;
 
+    // магическая константа - во время `LineOutAudio.write()` каждый байт мы мы пишем
+    // `LINE_OUT_AUDIO_BYTES_PER_WRITE` раз, чтобы получить `AUDIO_SAMPLE_RATE` частоту на выходе
+    public static final int FREQUENCY = 2450;
+    public static final int LINE_OUT_AUDIO_BYTES_PER_WRITE = AUDIO_SAMPLE_RATE / FREQUENCY;
+
+    // а это на каждый interrupt мы пишем `AUDIO_BYTES_PER_TICK` байт
+    // взятое из запписанного ранее значения байта в `SpeakerAudio.write()`
+    public static final int AUDIO_BYTES_PER_TICK = 4;
+
+    // `CPU_TICKS_PER_INTERRUPT` число тиков процессора на один interrupt
+    // подогнано экспериментально вместе с `CPU_INTERRUPT_DELAY`
+    // чтобы звучание было без искажений
+    // TODO #46 кажется эти все константы между собой связаны, `покурить` как именно
+    public static final int CPU_TICKS_PER_INTERRUPT = 170;
+    public static final long CPU_INTERRUPT_DELAY = (long) (169_574 * 1.0);
+
+    // normal refresh screen every `n` interrupts
+    public static final int NORMAL_SCREEN_EACH_INTERRUPT = 10;
+
+    // minimal (for fastest speed) refresh screen every `n` interrupts
+    public static final int MINIMAL_SCREEN_EACH_INTERRUPT = 100;
+
+    // sleep every `n` interrupts
+    public static final int SLEEP_EACH_INTERRUPT = 1;
+
+    // logging every `n` interrupts
+    public static final int LOG_EACH_INTERRUPT = 10_000;
+
+    // насколько будет увеличиваться/уменьшаться `CPU_INTERRUPT_DELAY`
+    // при увеличении/уменьшении скорости эмуляции
     public static final double INCREASE_DELAY = 0.8;
 }
