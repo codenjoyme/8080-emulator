@@ -422,6 +422,16 @@ public class RomLoaderTest extends AbstractTest {
                 "  'platform': 'specialist'\n" +
                 "}", pretty(romSwitcher));
 
+        assertEquals("{\n" +
+                "  'interrupt': 1234,\n" +
+                "  'refreshRate': 100,\n" +
+                "  'willReset': 0,\n" +
+                "  'last': 1733699664007,\n" +
+                "  'delay': 135659,\n" +
+                "  'fullSpeed': 1,\n" +
+                "  'time': 1733699156833\n" +
+                "}", pretty(timings));
+
         // when
         roms.saveSnapshot(targetBase, "snapshot.bin");
         roms.saveJsonSnapshot(targetBase, "snapshot.json");
@@ -485,6 +495,16 @@ public class RomLoaderTest extends AbstractTest {
                 "  'platform': 'lik'\n" +
                 "}", pretty(romSwitcher));
 
+        assertEquals("{\n" +
+                "  'interrupt': 0,\n" +
+                "  'refreshRate': 10,\n" +
+                "  'willReset': 0,\n" +
+                "  'last': 0,\n" +
+                "  'delay': 169574,\n" +
+                "  'fullSpeed': 0,\n" +
+                "  'time': 0\n" +
+                "}", pretty(timings));
+
         // when
         roms.loadSnapshot(targetBase, "snapshot.bin");
         roms.loadJsonSnapshot(targetBase, "snapshot.json");
@@ -543,6 +563,16 @@ public class RomLoaderTest extends AbstractTest {
         assertEquals("{\n" +
                 "  'platform': 'specialist'\n" +
                 "}", pretty(romSwitcher));
+
+        assertEquals("{\n" +
+                "  'interrupt': 1234,\n" +
+                "  'refreshRate': 100,\n" +
+                "  'willReset': 0,\n" +
+                "  'last': 1733699664007,\n" +
+                "  'delay': 135659,\n" +
+                "  'fullSpeed': 1,\n" +
+                "  'time': 1733699156833\n" +
+                "}", pretty(timings));
     }
 
     private String pretty(JsonState state) {

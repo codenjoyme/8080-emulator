@@ -1,12 +1,15 @@
 package spec;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import spec.math.Bites;
+import spec.state.JsonState;
 import spec.state.StateProvider;
 
 import static spec.Constants.*;
 import static spec.math.WordMath.*;
 
-public class Timings implements StateProvider {
+public class Timings implements StateProvider, JsonState {
 
     public static final int SNAPSHOT_TIMINGS_SIZE = 34;
 
@@ -152,6 +155,34 @@ public class Timings implements StateProvider {
         bites.set(new Range(22, 29), splitBites(time, 8));
 
         return bites;
+    }
+
+    @Override
+    public JsonElement toJson() {
+        JsonObject result = new JsonObject();
+
+        result.addProperty("interrupt", interrupt);
+        result.addProperty("refreshRate", refreshRate);
+        result.addProperty("willReset", willReset ? 1 : 0);
+        result.addProperty("last", last);
+        result.addProperty("delay", delay);
+        result.addProperty("fullSpeed", fullSpeed ? 1 : 0);
+        result.addProperty("time", time);
+
+        return result;
+    }
+
+    @Override
+    public void fromJson(JsonElement element) {
+        JsonObject json = element.getAsJsonObject();
+
+        interrupt = json.get("interrupt").getAsInt();
+        refreshRate = json.get("refreshRate").getAsInt();
+        willReset = json.get("willReset").getAsInt() == 1;
+        last = json.get("last").getAsLong();
+        delay = json.get("delay").getAsInt();
+        fullSpeed = json.get("fullSpeed").getAsInt() == 1;
+        time = json.get("time").getAsLong();
     }
 
     public String toStringDetails() {
