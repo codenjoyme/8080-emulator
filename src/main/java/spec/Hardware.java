@@ -1,10 +1,14 @@
 package spec;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import spec.image.PngScreenToText;
 import spec.platforms.Lik;
 import spec.sound.*;
+import spec.state.JsonState;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -13,7 +17,7 @@ import static spec.KeyCode.END;
 import static spec.KeyCode.ENTER;
 import static spec.math.WordMath.hex16;
 
-public class Hardware {
+public class Hardware implements JsonState {
 
     private PngVideo png;
     private Memory memory;
@@ -85,7 +89,7 @@ public class Hardware {
     }
 
     protected RomLoader createRomLoader() {
-        return new RomLoader(memory, cpu, ports, keyboard, graphic, timings, romSwitcher, audio);
+        return new RomLoader(this);
     }
 
     protected Video createVideo(int width, int height) {
@@ -385,5 +389,46 @@ public class Hardware {
 
     public String screenToText(String path) {
         return screenToText.parse(path);
+    }
+
+    private List<JsonState> states() {
+        return Arrays.asList(
+                cpu,
+                timings,
+                ports,
+                romSwitcher,
+                keyboard,
+                graphic,
+                audio,
+                memory);
+    }
+
+    private static String getName(JsonState state) {
+        Class<?> clazz = state.getClass();
+        while (!Arrays.asList(clazz.getInterfaces()).contains(JsonState.class)) {
+            clazz = clazz.getSuperclass();
+        }
+
+        return clazz.getSimpleName();
+    }
+
+    @Override
+    public JsonElement toJson() {
+        JsonObject result = new JsonObject();
+
+        for (JsonState state : states()) {
+            result.add(getName(state), state.toJson());
+        }
+
+        return result;
+    }
+
+    @Override
+    public void fromJson(JsonElement element) {
+        JsonObject json = element.getAsJsonObject();
+
+        for (JsonState state : states()) {
+            state.fromJson(json.get(getName(state)));
+        }
     }
 }

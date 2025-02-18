@@ -87,9 +87,9 @@ public class AudioDriver implements JsonState {
 
     @Override
     public void fromJson(JsonElement element) {
-        JsonObject object = element.getAsJsonObject();
+        JsonObject json = element.getAsJsonObject();
 
-        boolean mode = object.get("audioMode").getAsInt() == 1;
+        boolean mode = json.get("audioMode").getAsInt() == 1;
 
         createAudio(mode);
     }

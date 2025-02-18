@@ -6,5 +6,5 @@ public interface JsonState {
 
     JsonElement toJson();
 
-    void fromJson(JsonElement jsonElement);
+    void fromJson(JsonElement element);
 }

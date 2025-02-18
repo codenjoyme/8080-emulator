@@ -56,8 +56,8 @@ public class RomSwitcher implements JsonState {
 
     @Override
     public void fromJson(JsonElement element) {
-        JsonObject obj = element.getAsJsonObject();
+        JsonObject json = element.getAsJsonObject();
 
-        platform = obj.get("platform").getAsString();
+        platform = json.get("platform").getAsString();
     }
 }

@@ -71,16 +71,17 @@ public class Memory implements JsonState {
 
     @Override
     public void fromJson(JsonElement element) {
-        JsonObject obj = element.getAsJsonObject();
+        JsonObject json = element.getAsJsonObject();
 
-        JsonArray array = obj.getAsJsonArray("data");
-        StringBuilder sb = new StringBuilder();
+        JsonArray array = json.getAsJsonArray("data");
+
+        StringBuilder builder = new StringBuilder();
         for (JsonElement line : array) {
             String string = line.getAsString();
             if (!string.contains(": ")) continue;
             string = string.split(": ")[1];
-            sb.append(string).append("\n");
+            builder.append(string).append("\n");
         }
-        write8str(0, sb.toString());
+        write8str(0, builder.toString());
     }
 }

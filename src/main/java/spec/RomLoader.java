@@ -1,13 +1,12 @@
 package spec;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import spec.math.Bites;
 import spec.math.WordMath;
 import spec.platforms.Lik;
-import spec.sound.AudioDriver;
-import spec.state.JsonState;
 import spec.utils.JsonUtils;
 
 import java.io.File;
@@ -15,8 +14,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.substringAfter;
 import static spec.Constants.*;
@@ -33,28 +30,16 @@ public class RomLoader {
     public static final String TYPE_BS1 = "bs1";
     public static final String TYPE_MEM = "mem";
 
-    private Cpu cpu;
-    private IOPorts ports;
-    private Keyboard keyboard;
-    private GraphicControl graphic;
-    private Timings timings;
     private Memory memory;
-    private RomSwitcher romSwitcher;
-    private AudioDriver audio;
+    private Hardware hardware;
 
     public RomLoader(Memory memory) {
         this.memory = memory;
     }
 
-    public RomLoader(Memory memory, Cpu cpu, IOPorts ports, Keyboard keyboard, GraphicControl graphic, Timings timings, RomSwitcher romSwitcher, AudioDriver audio) {
-        this.memory = memory;
-        this.cpu = cpu;
-        this.ports = ports;
-        this.keyboard = keyboard;
-        this.graphic = graphic;
-        this.timings = timings;
-        this.romSwitcher = romSwitcher;
-        this.audio = audio;
+    public RomLoader(Hardware hardware) {
+        this.hardware = hardware;
+        this.memory = hardware.memory();
     }
 
     private void logLoading(String name, Range range) {
@@ -177,8 +162,8 @@ public class RomLoader {
     }
 
     private void cpuPC(int begin) {
-        if (cpu != null) {
-            cpu.PC(begin);
+        if (hardware.cpu() != null) {
+            hardware.cpu().PC(begin);
         }
     }
 
@@ -213,29 +198,17 @@ public class RomLoader {
             Logger.debug("Loading json snapshot from: %s", absolute);
 
             InputStream is = openStream(absolute);
-            List<JsonState> states = allJsonStates();
 
             String json = readString(is);
             JsonObject object = JsonUtils.gson().fromJson(json, JsonObject.class);
 
-            for (JsonState state : states) {
-                state.fromJson(object.get(getName(state)));
-            }
+            hardware.fromJson(object);
 
             Logger.debug("Snapshot loaded");
             return new Range(0, -x10000);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static String getName(JsonState state) {
-        Class<?> clazz = state.getClass();
-        while (!Arrays.asList(clazz.getInterfaces()).contains(JsonState.class)) {
-            clazz = clazz.getSuperclass();
-        }
-
-        return clazz.getSimpleName();
     }
 
     /**
@@ -312,30 +285,13 @@ public class RomLoader {
             String absolute = base + path;
             Logger.info("Saving json snapshot to: %s", absolute);
 
-            List<JsonState> states = allJsonStates();
-
-            JsonObject result = new JsonObject();
-            for (JsonState state : states) {
-                result.add(getName(state), state.toJson());
-            }
+            JsonElement json = hardware.toJson();
 
             FileUtils.writeByteArrayToFile(new File(absolute),
-                    JsonUtils.asString(result).getBytes());
+                    JsonUtils.asString(json).getBytes());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private List<JsonState> allJsonStates() {
-        return Arrays.asList(
-                cpu,
-                timings,
-                ports,
-                romSwitcher,
-                keyboard,
-                graphic,
-                audio,
-                memory);
     }
 
     public Range load(String base, String path) {
