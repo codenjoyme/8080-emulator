@@ -2,14 +2,13 @@ package spec.sound;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import spec.Files;
 import spec.Logger;
 import spec.state.JsonState;
 
 public class AudioDriver implements JsonState {
 
     public static final boolean AUDIO_MODE_LINE_OUT = true;
-    public static final boolean AUDIO_MODE_SPEAKER = false;
+    public static final boolean AUDIO_MODE_SPEAKER = !AUDIO_MODE_LINE_OUT;
 
     protected Audio audio;
     private boolean audioMode;
@@ -25,8 +24,9 @@ public class AudioDriver implements JsonState {
 
     public synchronized void createAudio(boolean mode, boolean skip) {
         // TODO #40 закончить с аудио пока отключил для веб версии - там ошибка
-        if (Files.isRunningFromJar()) {
+        if (isRunningInBrowser()) {
             disable();
+            return;
         }
 
         if (audio != null) {
@@ -46,6 +46,15 @@ public class AudioDriver implements JsonState {
             Logger.debug("Allow data skip: %s", allowDataSkip);
 
             audio.allowDataSkip(allowDataSkip);
+        }
+    }
+
+    private boolean isRunningInBrowser() {
+        try {
+            new SpeakerAudio();
+            return false;
+        } catch (Exception e) {
+            return true;
         }
     }
 
