@@ -81,7 +81,7 @@ public class Constants {
     // чтобы звучание было без искажений
     // TODO #46 кажется эти все константы между собой связаны, `покурить` как именно
     public static final int CPU_TICKS_PER_INTERRUPT = 170;
-    public static final long CPU_INTERRUPT_DELAY = (long) (169_574 * 1.0);
+    public static final long CPU_INTERRUPT_DELAY = (long) (157_000 * 1.0);
 
     // normal refresh screen every `n` interrupts
     public static final int NORMAL_SCREEN_EACH_INTERRUPT = 10;

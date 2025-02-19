@@ -10,12 +10,15 @@ public class AudioDriver implements JsonState {
     public static final boolean AUDIO_MODE_LINE_OUT = true;
     public static final boolean AUDIO_MODE_SPEAKER = !AUDIO_MODE_LINE_OUT;
 
+    public static final boolean AUDIO_MODE_SKIP_DATA = true;
+    public static final boolean AUDIO_MODE_DONT_SKIP_DATA = !AUDIO_MODE_SKIP_DATA;
+
     protected Audio audio;
     private boolean audioMode;
     private boolean allowDataSkip;
 
     public AudioDriver() {
-        createAudio(AUDIO_MODE_SPEAKER, true);
+        createAudio(AUDIO_MODE_SPEAKER, AUDIO_MODE_DONT_SKIP_DATA);
     }
 
     public synchronized boolean audioMode() {
