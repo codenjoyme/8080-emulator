@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="IntegrationTest" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+    <module name="emulator" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="spec.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="PACKAGE_NAME" value="spec" />
+    <option name="MAIN_CLASS_NAME" value="spec.IntegrationTest" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

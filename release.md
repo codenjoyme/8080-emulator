@@ -531,7 +531,8 @@
 2025-07-11
 -----------
 
-- [x] (--------) Fixed test.
+- [x] (509e868a) Fixed test.
+- [x] (--------) Added startup configuration files so you can run them from markdown.
 - [x] (--------) 
       
 Продолжение следует!
