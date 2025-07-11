@@ -145,7 +145,7 @@ public class RomLoaderTest extends AbstractTest {
 
         String audioJson = "{\n" +
                 "  'audioMode': 1,\n" +
-                "  'allowDataSkip': 0\n" +
+                "  'allowDataSkip': 1\n" +
                 "}";
 
         String romJson = "{\n" +
@@ -157,7 +157,7 @@ public class RomLoaderTest extends AbstractTest {
                 "  'refreshRate': 100,\n" +
                 "  'willReset': 0,\n" +
                 "  'last': 1733699664007,\n" +
-                "  'delay': 135659,\n" +
+                "  'delay': 125600,\n" +
                 "  'fullSpeed': 1,\n" +
                 "  'time': 1733699156833\n" +
                 "}";
@@ -250,7 +250,7 @@ public class RomLoaderTest extends AbstractTest {
                 "refreshRate : 100\n" +
                 "willReset   : false\n" +
                 "last        : 1733699664007\n" +
-                "delay       : 135659\n" +
+                "delay       : 125600\n" +
                 "fullSpeed   : true\n" +
                 "time        : 1733699156833\n";
 
@@ -317,7 +317,7 @@ public class RomLoaderTest extends AbstractTest {
 
         assertEquals("{\n" +
                 "  'audioMode': 0,\n" +
-                "  'allowDataSkip': 1\n" +
+                "  'allowDataSkip': 0\n" +
                 "}", pretty(hard.audio()));
 
         assertEquals("{\n" +
@@ -336,7 +336,7 @@ public class RomLoaderTest extends AbstractTest {
                 "  'refreshRate': 10,\n" +
                 "  'willReset': 0,\n" +
                 "  'last': 0,\n" +
-                "  'delay': 169574,\n" +
+                "  'delay': 157000,\n" +
                 "  'fullSpeed': 0,\n" +
                 "  'time': 0\n" +
                 "}", pretty(timings));
