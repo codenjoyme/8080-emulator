@@ -15,6 +15,10 @@ public interface Platform {
         return roms.loadRKS(base, app(name, ".rks"));
     }
 
+    default Range loadAsm(String base, RomLoader roms, String name) {
+        return roms.loadAssembler(base, app(name, ".asm"));
+    }
+
     default Range loadBasic2(String base, RomLoader roms, String name) {
         return roms.loadBSS(base, basic("basic", name, ".bss"));
     }

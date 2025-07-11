@@ -1,6 +1,5 @@
 package spec.stuff;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.After;
@@ -21,13 +20,13 @@ import spec.platforms.Specialist;
 import spec.sound.AudioDriver;
 import spec.sound.NoAudio;
 
-import java.awt.Container;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -61,7 +60,6 @@ public abstract class AbstractTest {
     protected TrackUpdatedMemory memory;
     protected Cpu cpu;
     protected Assembler asm;
-    protected svofski.Assembler asm2;
     protected KeyRecord record;
     protected RomLoader roms;
     protected FileRecorder fileRecorder;
@@ -153,7 +151,6 @@ public abstract class AbstractTest {
         record.screenshot(this::assertScreen);
 
         asm = hard.cpu().asm();
-        asm2 = new svofski.Assembler();
         ports = hard.ports();
         graphic = hard.graphic();
         timings = hard.timings();
@@ -347,11 +344,6 @@ public abstract class AbstractTest {
         return fileAssert.check("DizAssembled program", asmPath,
                 file -> fileAssert.write(file,
                         getHeader(binPath) + dizAssembler.program(data.range(), data.info())));
-    }
-
-    public Bites assembly(String game) throws IOException {
-        String asmData = FileUtils.readFileToString(new File(MAIN_RESOURCES + "/" + lik().app(game, ".asm")), StandardCharsets.UTF_8);
-        return asm2.compile(asmData);
     }
 
     private String getHeader(String binPath) {

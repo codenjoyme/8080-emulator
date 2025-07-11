@@ -8,12 +8,14 @@ import spec.math.Bites;
 import spec.math.WordMath;
 import spec.platforms.Lik;
 import spec.utils.JsonUtils;
+import svofski.Assembler;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.substringAfter;
 import static spec.Constants.*;
@@ -29,6 +31,7 @@ public class RomLoader {
     public static final String TYPE_BSS = "bss";
     public static final String TYPE_BS1 = "bs1";
     public static final String TYPE_MEM = "mem";
+    public static final String TYPE_ASM = "asm";
 
     private Memory memory;
     private Hardware hardware;
@@ -59,7 +62,7 @@ public class RomLoader {
             cpuPC(offset);
             return readAll(all, offset, is, absolute);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error loading ROM file: " + path, e);
         }
     }
 
@@ -106,7 +109,7 @@ public class RomLoader {
 
             return readAll(all, offset, is, absolute);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error loading BSS/BS1 file: " + path, e);
         }
     }
 
@@ -157,7 +160,7 @@ public class RomLoader {
             return range;
             // Bites data = read8arr(is, 4); // TODO #24 в конце еще два байта, контрольная сумма - реализовать проверку
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error loading RKS file: " + path, e);
         }
     }
 
@@ -207,7 +210,27 @@ public class RomLoader {
             Logger.debug("Snapshot loaded");
             return new Range(0, -x10000);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error loading snapshot file: " + path, e);
+        }
+    }
+
+    public Range loadAssembler(String base, String path) {
+        try {
+            // TODO #101 encapsulate map to object
+            String absolute = base + path;
+
+            InputStream is = openStream(absolute);
+            String asm = readString(is);
+
+            Map<String, Object> map = new Assembler().process(asm);
+
+            Bites bites = (Bites) map.get("bin");
+            Integer offset = (Integer)((Map) map.get("info")).get("org");
+            memory.all().set(0, bites);
+
+            return new Range(offset, bites.size());
+        } catch (Exception e) {
+            throw new RuntimeException("Error loading assembler file: " + path, e);
         }
     }
 
@@ -293,7 +316,7 @@ public class RomLoader {
             FileUtils.writeByteArrayToFile(new File(absolute),
                     JsonUtils.asString(json).getBytes());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error saving snapshot file: " + path, e);
         }
     }
 
@@ -321,6 +344,9 @@ public class RomLoader {
                 loadRKS(base, new Lik().app("basic2", ".rks"));
                 loadBS1(base, path);
                 return new Range(0, BASIC_V1_PROGRAM_START);
+            }
+            case TYPE_ASM: {
+                return loadAssembler(base, path);
             }
             case TYPE_MEM:
             default: {

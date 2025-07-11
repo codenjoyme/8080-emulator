@@ -24,5 +24,8 @@ Windows Registry Editor Version 5.00
 [HKEY_CLASSES_ROOT\.mem]
 @="8080EmulatorFile"
 
+[HKEY_CLASSES_ROOT\.asm]
+@="8080EmulatorFile"
+
 [HKEY_CLASSES_ROOT\8080EmulatorFile\shell\open\command]
 @="\"<PATH>\\out\\run.bat\" .\\ lik %1"

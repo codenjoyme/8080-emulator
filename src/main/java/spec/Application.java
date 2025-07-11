@@ -87,7 +87,7 @@ public class Application {
                     base + platform.apps(),
                     hard.lastRom(),
                     "Data file",
-                    "com", "rom", "rks", "bin", "mem", "bss", "bs1");
+                    "com", "rom", "rks", "bin", "mem", "bss", "bs1", "asm");
         }
 
         // ========= запись / воспроизведение =========

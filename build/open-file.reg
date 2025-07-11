@@ -14,6 +14,8 @@ Windows Registry Editor Version 5.00
 [HKEY_CLASSES_ROOT\.bs1] 
 @="8080EmulatorFile" 
 [HKEY_CLASSES_ROOT\.mem] 
-@="8080EmulatorFile" 
+@="8080EmulatorFile"
+[HKEY_CLASSES_ROOT\.asm]
+@="8080EmulatorFile"
 [HKEY_CLASSES_ROOT\8080EmulatorFile\shell\open\command] 
 @="\"C:\\Java\\8080-emulator\\build\\out\\run.bat\" .\\ lik %1" 

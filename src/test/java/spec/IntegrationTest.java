@@ -818,8 +818,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_game_klad_assembler() throws IOException {
         // given
         lik().loadRom(base, roms);
-        Bites bites = assembly(KLAD);
-        memory.write8arr(0x0000, bites);
+        lik().loadAsm(base, roms, KLAD);
 
         // when then
         assertKladLevels(2);

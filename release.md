@@ -533,7 +533,10 @@
 
 - [x] (509e868a) Fixed test.
 - [x] (25e92a5c) Added startup configuration files so you can run them from markdown.
-- [x] (--------) Added a test for building a game from an assembler file. This allows you to reverse engineer levels.
+- [x] (e88f7799) Added a test for building a game from an assembler file. This allows you to reverse engineer levels.
+- [x] (--------) Added the ability to load an ‘asm’ file. This will assemble it and then load it into memory. 
+      The option is added to the file upload dialog and through launching the application in jar format. 
+      Updated the readme file with this description.
 - [x] (--------) 
       
 Продолжение следует!

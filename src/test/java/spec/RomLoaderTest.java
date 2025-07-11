@@ -370,4 +370,13 @@ public class RomLoaderTest extends AbstractTest {
                 file -> fileAssert.write(file, memory.detailsTable()));
         memory.resetChanges();
     }
+
+    @Test
+    public void testLoadKladAssembler() {
+        // when
+        Range range = lik().loadAsm(base, roms, "klad");
+
+        // then
+        assertMemoryChanges();
+    }
 }
