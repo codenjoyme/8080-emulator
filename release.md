@@ -532,7 +532,8 @@
 -----------
 
 - [x] (509e868a) Fixed test.
-- [x] (--------) Added startup configuration files so you can run them from markdown.
+- [x] (25e92a5c) Added startup configuration files so you can run them from markdown.
+- [x] (--------) Added a test for building a game from an assembler file. This allows you to reverse engineer levels.
 - [x] (--------) 
       
 Продолжение следует!

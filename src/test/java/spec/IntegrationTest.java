@@ -12,6 +12,7 @@ import spec.mods.WhereIsData;
 import spec.platforms.Lik;
 import spec.stuff.AbstractTest;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -711,6 +712,11 @@ public class IntegrationTest extends AbstractTest {
         lik().loadGame(base, roms, KLAD);
 
         // when then
+        assertKladLevels(32);
+    }
+
+    private void assertKladLevels(int maxLevel) {
+        // when then
         record.shoot("logo", it -> it.after(200 * K10))
                 .shoot("logo", it -> it.after(170 * K10))
                 .shoot("speed", it -> it.after(50 * K10))
@@ -719,8 +725,8 @@ public class IntegrationTest extends AbstractTest {
         cpu.PC(0x0000);
         start();
 
-        int LEVELS = 33;
-        for (int level = 1; level < LEVELS; level++) {
+        int LEVELS = maxLevel;
+        for (int level = 1; level <= LEVELS; level++) {
             // when then
             reset();
 
@@ -806,6 +812,17 @@ public class IntegrationTest extends AbstractTest {
 
         // when then
         assertMemory(range, "recompiled.mem", "recompiled.log");
+    }
+
+    @Test
+    public void testLik_game_klad_assembler() throws IOException {
+        // given
+        lik().loadRom(base, roms);
+        Bites bites = assembly(KLAD);
+        memory.write8arr(0x0000, bites);
+
+        // when then
+        assertKladLevels(2);
     }
 
     @Test
