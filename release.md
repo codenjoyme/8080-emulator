@@ -544,7 +544,8 @@
 
 - [x] (e3461f79) First attempt to retrieve a level from memory.
 - [x] (8ff0551a) Extracted all levels like the previous commit from memory.
-- [x] (--------) Extracted all Klad constants to separate class.
+- [x] (9304c45b) Extracted all Klad constants to separate class.
+- [x] (--------) Implemented the logic of drawing maps from memory.
 - [x] (--------) 
       
 Продолжение следует!

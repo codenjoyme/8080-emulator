@@ -713,7 +713,8 @@ public class IntegrationTest extends AbstractTest {
         lik().loadGame(base, roms, KLAD);
 
         // when then
-        assertKladLevels(32);
+        assertKladLevels(30);
+        newKladLevel(31);
     }
 
     private void assertKladLevels(int maxLevel) {
@@ -722,11 +723,11 @@ public class IntegrationTest extends AbstractTest {
         // when then
         for (int level = 0; level <= maxLevel; level++) {
             Bites bites = memory.read8arr(new Range(Klad.levelBegin(level), - Klad.LEVEL_LENGTH));
-            String string = bites.toString();
+            String levelMap = Klad.buildLevel(bites);
 
             int index = level + 3;
             fileAssert.check("Level [" + level + "]  memory", index + "_level[" + level + "]" + ".log",
-                    file -> fileAssert.write(file, string));
+                    file -> fileAssert.write(file, levelMap));
         }
 
         // start emulating
@@ -740,23 +741,27 @@ public class IntegrationTest extends AbstractTest {
         start();
 
         for (int level = 1; level <= maxLevel; level++) {
-            // when then
-            reset();
-
-            // скорость выбранная в первый раз поменяла тайминги
-            int speed = (level == 1) ? 60 * K10 : 60 * K10 + 13 * K10;
-            record.shoot(null,
-                            it -> it.after(50 * K10))
-                    .shoot(null,
-                            it -> it.down(RIGHT).after(speed).up(RIGHT).after(1 * K10))
-                    .shoot("level[" + level + "]",
-                            it -> it.down(UP).after(30 * K10).up(UP).after(100 * K10))
-                    .stopCpu();
-
-            // этот хак позволяет запускать игру со следующим уровнем
-            cpu.PC(0x4567);
-            start();
+            newKladLevel(level);
         }
+    }
+
+    private void newKladLevel(int level) {
+        // when then
+        reset();
+
+        // скорость выбранная в первый раз поменяла тайминги
+        int speed = (level == 1) ? 60 * K10 : 60 * K10 + 13 * K10;
+        record.shoot(null,
+                        it -> it.after(50 * K10))
+                .shoot(null,
+                        it -> it.down(RIGHT).after(speed).up(RIGHT).after(1 * K10))
+                .shoot("level[" + level + "]",
+                        it -> it.down(UP).after(30 * K10).up(UP).after(100 * K10))
+                .stopCpu();
+
+        // этот хак позволяет запускать игру со следующим уровнем
+        cpu.PC(0x4567);
+        start();
     }
 
     @Test
