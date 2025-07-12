@@ -543,7 +543,8 @@
 -----------
 
 - [x] (e3461f79) First attempt to retrieve a level from memory.
-- [x] (--------) Extracted all levels like the previous commit from memory.
+- [x] (8ff0551a) Extracted all levels like the previous commit from memory.
+- [x] (--------) Extracted all Klad constants to separate class.
 - [x] (--------) 
       
 Продолжение следует!

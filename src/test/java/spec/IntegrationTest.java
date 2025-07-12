@@ -10,6 +10,7 @@ import spec.mods.StopWhen;
 import spec.mods.WhenPC;
 import spec.mods.WhereIsData;
 import spec.platforms.Lik;
+import spec.resources.lik.apps.klad.Klad;
 import spec.stuff.AbstractTest;
 
 import java.io.IOException;
@@ -719,16 +720,8 @@ public class IntegrationTest extends AbstractTest {
         // checking memory
 
         // when then
-        int levelsOffset = 0x1300;
-        int levelWidth = 32;
-        int levelHeight = 22;
-        int oneBytePerTwoCell = 2;
-        int dataBetweenLevels = 16;
-        int levelLength = levelWidth * levelHeight / oneBytePerTwoCell;
-
         for (int level = 0; level <= maxLevel; level++) {
-            int levelBegin = levelsOffset + dataBetweenLevels + level * (levelLength + dataBetweenLevels);
-            Bites bites = memory.read8arr(new Range(levelBegin, -levelLength));
+            Bites bites = memory.read8arr(new Range(Klad.levelBegin(level), - Klad.LEVEL_LENGTH));
             String string = bites.toString();
 
             int index = level + 3;
