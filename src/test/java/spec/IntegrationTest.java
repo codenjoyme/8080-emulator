@@ -722,16 +722,24 @@ public class IntegrationTest extends AbstractTest {
 
         // when then
         for (int level = 0; level <= maxLevel; level++) {
+            int index = level + 3;
+
             Bites bites = memory.read8arr(new Range(Klad.levelBegin(level), - Klad.LEVEL_LENGTH));
+
             String levelMap = Klad.buildLevel(bites);
 
-            int index = level + 3;
-            fileAssert.check("Level [" + level + "]  memory", index + "_level[" + level + "]" + ".log",
+            fileAssert.check("Level [" + level + "]  map", index + "_level[" + level + "]" + ".log",
                     file -> fileAssert.write(file, levelMap));
+
+            String mem = bites.toString();
+
+            fileAssert.check("Level [" + level + "]  memory", index + "_level[" + level + "]" + ".memory.log",
+                    file -> fileAssert.write(file, mem));
         }
 
         // start emulating
-        //        // when then
+
+        // when then
         record.shoot("logo", it -> it.after(200 * K10))
                 .shoot("logo", it -> it.after(170 * K10))
                 .shoot("level[0]", it -> it.after(50 * K10))

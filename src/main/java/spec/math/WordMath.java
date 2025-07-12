@@ -8,6 +8,7 @@ public class WordMath {
 
     public static final int WORD = 0xFFFF;
     public static final int BITE = 0xFF;
+    public static final int HALF_BITE = 0x0F;
 
     public static int lo(int word) {
         return word & BITE;
@@ -15,6 +16,14 @@ public class WordMath {
 
     public static int hi(int word) {
         return (word >> 8) & BITE;
+    }
+
+    public static int hih(int bite) {
+        return (bite >> 4) & HALF_BITE;
+    }
+
+    public static int loh(int bite) {
+        return bite & HALF_BITE;
     }
 
     public static Bites splitBites(long value, int count) {

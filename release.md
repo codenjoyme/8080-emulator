@@ -545,7 +545,9 @@
 - [x] (e3461f79) First attempt to retrieve a level from memory.
 - [x] (8ff0551a) Extracted all levels like the previous commit from memory.
 - [x] (9304c45b) Extracted all Klad constants to separate class.
-- [x] (--------) Implemented the logic of drawing maps from memory.
+- [x] (84c28749) Implemented the logic of drawing maps from memory.
+- [x] (--------) I drew heroes and hunters on the maps by parsing the system 16 bytes in front of the map. 
+      Changed the legend to make it display better. Printed out the memory area of the map as well.
 - [x] (--------) 
       
 Продолжение следует!
