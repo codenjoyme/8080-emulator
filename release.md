@@ -538,7 +538,12 @@
       The option is added to the file upload dialog and through launching the application in jar format. 
       Updated the readme file with this description.
 - [x] (d6433584) Added information about building the levels of the klad game.
-- [x] (--------) First attempt to retrieve a level from memory.
+
+2025-07-12
+-----------
+
+- [x] (e3461f79) First attempt to retrieve a level from memory.
+- [x] (--------) Extracted all levels like the previous commit from memory.
 - [x] (--------) 
       
 Продолжение следует!

@@ -716,17 +716,37 @@ public class IntegrationTest extends AbstractTest {
     }
 
     private void assertKladLevels(int maxLevel) {
+        // checking memory
+
         // when then
+        int levelsOffset = 0x1300;
+        int levelWidth = 32;
+        int levelHeight = 22;
+        int oneBytePerTwoCell = 2;
+        int dataBetweenLevels = 16;
+        int levelLength = levelWidth * levelHeight / oneBytePerTwoCell;
+
+        for (int level = 0; level <= maxLevel; level++) {
+            int levelBegin = levelsOffset + dataBetweenLevels + level * (levelLength + dataBetweenLevels);
+            Bites bites = memory.read8arr(new Range(levelBegin, -levelLength));
+            String string = bites.toString();
+
+            int index = level + 3;
+            fileAssert.check("Level [" + level + "]  memory", index + "_level[" + level + "]" + ".log",
+                    file -> fileAssert.write(file, string));
+        }
+
+        // start emulating
+        //        // when then
         record.shoot("logo", it -> it.after(200 * K10))
                 .shoot("logo", it -> it.after(170 * K10))
-                .shoot("speed", it -> it.after(50 * K10))
+                .shoot("level[0]", it -> it.after(50 * K10))
                 .stopCpu();
 
         cpu.PC(0x0000);
         start();
 
-        int LEVELS = maxLevel;
-        for (int level = 1; level <= LEVELS; level++) {
+        for (int level = 1; level <= maxLevel; level++) {
             // when then
             reset();
 
@@ -822,22 +842,6 @@ public class IntegrationTest extends AbstractTest {
 
         // when then
         assertKladLevels(2);
-    }
-
-    @Test
-    public void testLik_game_klad_level0() {
-        // given
-        lik().loadRom(base, roms);
-        lik().loadGame(base, roms, KLAD);
-
-        // then
-        Bites bites = memory.read8arr(new Range(0x1310, - (32 * 22 / 2)));
-        String string = bites.toString();
-
-        fileAssert.check("Level speed memory", "level-speed.log",
-                file -> fileAssert.write(file, string));
-
-        // assertKladLevels(2);
     }
 
     @Test
