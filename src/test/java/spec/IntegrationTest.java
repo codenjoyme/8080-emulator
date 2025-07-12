@@ -825,6 +825,22 @@ public class IntegrationTest extends AbstractTest {
     }
 
     @Test
+    public void testLik_game_klad_level0() {
+        // given
+        lik().loadRom(base, roms);
+        lik().loadGame(base, roms, KLAD);
+
+        // then
+        Bites bites = memory.read8arr(new Range(0x1310, - (32 * 22 / 2)));
+        String string = bites.toString();
+
+        fileAssert.check("Level speed memory", "level-speed.log",
+                file -> fileAssert.write(file, string));
+
+        // assertKladLevels(2);
+    }
+
+    @Test
     public void testLik_game_reversi_recording() {
         // given
         lik().loadRom(base, roms);

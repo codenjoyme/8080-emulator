@@ -537,7 +537,8 @@
 - [x] (f1314312) Added the ability to load an ‘asm’ file. This will assemble it and then load it into memory. 
       The option is added to the file upload dialog and through launching the application in jar format. 
       Updated the readme file with this description.
-- [x] (--------) Added information about building the levels of the klad game.
+- [x] (d6433584) Added information about building the levels of the klad game.
+- [x] (--------) First attempt to retrieve a level from memory.
 - [x] (--------) 
       
 Продолжение следует!
