@@ -19,6 +19,30 @@ public final class Klad {
     public static final char HERO = '☺';
     public static final char HUNTER = '☻';
 
+    public static final String LEVEL_0 =
+            "▓▓☺▒ ☻▒▓H▒▒H▒▒H▒▒H▒▒H▒▒H▓▒ ☻▒ ▓▓\n" +
+            "▓▓ ▒▒▒▒▓H▓▒H▓▒H▓▒H▓▒H▓▒H▓▒▒▒▒ ▓▓\n" +
+            "▓▓ ▒▒▒▒▒H▒▒H▒▒H▒▒H▒▒H▒▒H▒▒▒▒▒ ▓▓\n" +
+            "▓▓      H  H  H  H  H  H      ▓▓\n" +
+            "▓▓H‾H▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓H‾H▓▓\n" +
+            "▓▓H H▓▒                  ▒▓H H▓▓\n" +
+            "▓▓H H▓▒                  ▒▓H H▓▓\n" +
+            "▓▓H H▓▒HHHHHHHHHHHHHHHHHH▒▓H H▓▓\n" +
+            "▓▓H H▒▒                  ▒▒H H▓▓\n" +
+            "▓▓▒H▓‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾▓H▒▓▓\n" +
+            "▓▓▒H▓oooooooooooooooooooooo▓H▒▓▓\n" +
+            "▓▓▒H▓w▓▓▓w▓▓▓ww▓▓www▓▓▓▓www▓H▒▓▓\n" +
+            "▓▓▒H▓░▓▓░▓▓▓░░░▓░░░░░▓▓░░░░▓H▒▓▓\n" +
+            "▓▓▒H▓░▓░▓▓▓▓░▓░▓░▓▓▓░▓▓░▓▓░▓H▒▓▓\n" +
+            "▓▓▒H▓░░▓▓▓▓▓░▓░▓░░░░░▓▓░▓▓░▓H▒▓▓\n" +
+            "▓▓▒H▓░▓░▓▓▓▓░▓░▓░▓▓▓░▓▓░▓▓░▓H▒▓▓\n" +
+            "▓▓▒H▓░▓▓░▓▓▓░▓░▓░▓▓▓░▓▓░▓▓░▓H▒▓▓\n" +
+            "▓▓▒H▓░▓▓▓░▓░░▓░▓░▓▓▓░▓░░░░░▓H▒▓▓\n" +
+            "▓▓▒H▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓H▒▓▓\n" +
+            "▓▓▒H                        H▒▓▓\n" +
+            "▓▓▒H H▓‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾▓H H▒▓▓\n" +
+            "▓▓▓▓▓▓▓wwwwwwwwwwwwwwwwww▓▓▓▓▓▓▓\n";
+
     public static int levelBegin(int level) {
         return LEVELS_OFFSET + level * LEVEL_LENGTH;
     }
@@ -94,21 +118,22 @@ public final class Klad {
             }
         }
 
+        // TODO #48 Я пока не понимаю что это за данные, как пойму - смогу их установить разумно
         bites.set(0x00, player == null ? 0 : player.getX());
         bites.set(0x01, 0x00);
         bites.set(0x02, player == null ? 0 : player.getY());
         bites.set(0x03, 0x00);
-        bites.set(0x04, 0x02); // Чаще всего
+        bites.set(0x04, 0x02); // TODO #48
         bites.set(0x05, hunter1 == null ? 0 : hunter1.getX());
         bites.set(0x06, 0x00);
         bites.set(0x07, hunter1 == null ? 0 : hunter1.getY());
         bites.set(0x08, 0x00);
-        bites.set(0x09, 0x04); // Чаще всего
+        bites.set(0x09, 0x04); // TODO #48
         bites.set(0x0A, hunter2 == null ? 0 : hunter2.getX());
         bites.set(0x0B, 0x00);
         bites.set(0x0C, hunter2 == null ? 0 : hunter2.getY());
         bites.set(0x0D, 0x00);
-        bites.set(0x0E, 0x04); // Чаще всего
+        bites.set(0x0E, 0x04); // TODO #48
         bites.set(0x0F, (hunter2 == null) ? 0xFF : 0x18); // 0xFF если один охотник, 0x18 если два
         return bites;
     }

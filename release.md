@@ -552,7 +552,9 @@
 2025-07-13
 -----------
 
-- [x] (--------) Added a method to reverse level conversion. 
+- [x] (66b2ba4b) Added a method to reverse level conversion. 
+- [x] (--------) Fixed the past test so it reads the value from the game. Fixed TODO indexes
+- [x] (--------) 
 - [x] (--------) 
       
 Продолжение следует!

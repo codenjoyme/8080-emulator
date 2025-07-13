@@ -165,7 +165,7 @@ public class RomLoader {
     }
 
     private void cpuPC(int begin) {
-        if (hardware.cpu() != null) {
+        if (hardware != null && hardware.cpu() != null) {
             hardware.cpu().PC(begin);
         }
     }
@@ -216,7 +216,7 @@ public class RomLoader {
 
     public Range loadAssembler(String base, String path) {
         try {
-            // TODO #101 encapsulate map to object
+            // TODO #47 Надо инкапсулировать результат ассемблирования в объект а не Map
             String absolute = base + path;
 
             InputStream is = openStream(absolute);
