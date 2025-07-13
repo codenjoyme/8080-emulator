@@ -553,8 +553,9 @@
 -----------
 
 - [x] (66b2ba4b) Added a method to reverse level conversion. 
-- [x] (--------) Fixed the past test so it reads the value from the game. Fixed TODO indexes
-- [x] (--------) 
+- [x] (85b36645) Fixed the past test so it reads the value from the game. Fixed TODO indexes
+- [x] (--------) Preparatory refactoring in the test to isolate the method for level 
+      checking on the index from the test. 
 - [x] (--------) 
       
 Продолжение следует!

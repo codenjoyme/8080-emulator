@@ -19,7 +19,11 @@ public final class Klad {
     public static final char HERO = '☺';
     public static final char HUNTER = '☻';
 
-    public static final String LEVEL_0 =
+    public static int levelBegin(int level) {
+        return LEVELS_OFFSET + level * LEVEL_LENGTH;
+    }
+
+    public static final String[] LEVELS = new String[] {
             "▓▓☺▒ ☻▒▓H▒▒H▒▒H▒▒H▒▒H▒▒H▓▒ ☻▒ ▓▓\n" +
             "▓▓ ▒▒▒▒▓H▓▒H▓▒H▓▒H▓▒H▓▒H▓▒▒▒▒ ▓▓\n" +
             "▓▓ ▒▒▒▒▒H▒▒H▒▒H▒▒H▒▒H▒▒H▒▒▒▒▒ ▓▓\n" +
@@ -41,11 +45,8 @@ public final class Klad {
             "▓▓▒H▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓H▒▓▓\n" +
             "▓▓▒H                        H▒▓▓\n" +
             "▓▓▒H H▓‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾▓H H▒▓▓\n" +
-            "▓▓▓▓▓▓▓wwwwwwwwwwwwwwwwww▓▓▓▓▓▓▓\n";
-
-    public static int levelBegin(int level) {
-        return LEVELS_OFFSET + level * LEVEL_LENGTH;
-    }
+            "▓▓▓▓▓▓▓wwwwwwwwwwwwwwwwww▓▓▓▓▓▓▓\n"
+    };
 
     public static String buildLevel(Bites bites) {
         StringBuilder sb = new StringBuilder();

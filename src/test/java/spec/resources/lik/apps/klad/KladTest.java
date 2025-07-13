@@ -15,20 +15,22 @@ import static spec.stuff.AbstractTest.MAIN_RESOURCES;
 public class KladTest {
 
     @Test
-    public void testMap() {
+    public void testLevels() {
         // given
         Memory memory = new Memory(x10000);
         RomLoader roms = new RomLoader(memory);
         PlatformFactory.platform("lik").loadGame(MAIN_RESOURCES, roms, KLAD);
 
         // when
-        Bites bites = memory.read8arr(new Range(Klad.LEVELS_OFFSET, -Klad.LEVEL_LENGTH));
+        int index = 0;
+
+        Bites bites = memory.read8arr(new Range(Klad.levelBegin(index), -Klad.LEVEL_LENGTH));
         String mem = bites.toString();
         assertEquals(mem, Bites.ofClean(mem).toString());
 
         // then
         String level = Klad.buildLevel(bites);
-        assertEquals(Klad.LEVEL_0, level);
+        assertEquals(Klad.LEVELS[index], level);
         Bites actualBites = Klad.parseLevel(level);
         // TODO #48 Я пока не понимаю что это за данные, как пойму - смогу их установить разумно
         actualBites.set(0x04, bites.get(0x04));
