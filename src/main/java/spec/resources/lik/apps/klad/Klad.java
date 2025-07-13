@@ -1,5 +1,6 @@
 package spec.resources.lik.apps.klad;
 
+import spec.Point;
 import spec.math.Bites;
 
 import static spec.math.WordMath.hih;
@@ -14,35 +15,14 @@ public final class Klad {
     public static final int LEVEL_SETTINGS_PREFIX = 16;
     public static final int LEVEL_LENGTH = LEVEL_SETTINGS_PREFIX + LEVEL_WIDTH * LEVEL_HEIGHT / ONE_BYTE_PER_TWO_CELL;
 
-    public static final String LEGEND = " okew░‾Hlj▒▓ki ";
-    public static final String CHARACTERS = "☺☻♣";
+    public static final String LEGEND = " okew░‾Hlj▒▓ki  ";
+    public static final char HERO = '☺';
+    public static final char HUNTER = '☻';
 
     public static int levelBegin(int level) {
         return LEVELS_OFFSET + level * LEVEL_LENGTH;
     }
 
-    // этот метод работает так что на вход ожидается только прямоульник 32x22
-    // но я сделал небольшой апдейт, теперь перед тим прямоульником передается область длинной LEVEL_SETTINGS_PREFIX
-    // и она содержит настройки уровня, а именно координаты героя и охотников
-    // ее надо попрсить соответственно и нарисовать в нужном месте CHARACTERS, где ☺ - герой (x1/y1), а ☻ - охотники (x2/y2, x3/y3),
-    // вот формат:
-    // 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
-    // x1 -- y1 -- -- x2 -- y2 -- -- x3 -- y3 -- -- --
-    // вот старый метод:
-//    public static String buildLevel(Bites bites) {
-//        StringBuilder sb = new StringBuilder();
-//        for (int y = 0; y < LEVEL_HEIGHT; y++) {
-//            for (int x = 0; x < LEVEL_WIDTH; x += ONE_BYTE_PER_TWO_CELL) {
-//                int byteValue = bites.get(y * LEVEL_WIDTH / ONE_BYTE_PER_TWO_CELL + x / ONE_BYTE_PER_TWO_CELL);
-//                int firstCell = (byteValue >> 4) & 0x0F;
-//                int secondCell = byteValue & 0x0F;
-//                sb.append(LEGEND.charAt(firstCell));
-//                sb.append(LEGEND.charAt(secondCell));
-//            }
-//            sb.append('\n');
-//        }
-//        return sb.toString();
-//    }
     public static String buildLevel(Bites bites) {
         StringBuilder sb = new StringBuilder();
         int x1 = bites.get(0x00);
@@ -64,17 +44,73 @@ public final class Klad {
             sb.append('\n');
         }
         int lineWidth = LEVEL_WIDTH + 1;
-        sb.setCharAt(y1 * lineWidth + x1, CHARACTERS.charAt(0));
-        if (y2 == y3 && x2 == x3 && two) {
-            sb.setCharAt(y2 * lineWidth + x2, CHARACTERS.charAt(2));
-        } else {
-            sb.setCharAt(y2 * lineWidth + x2, CHARACTERS.charAt(1));
-            if (two) {
-                sb.setCharAt(y3 * lineWidth + x3, CHARACTERS.charAt(1));
-            }
+        sb.setCharAt(y1 * lineWidth + x1, HERO);
+        sb.setCharAt(y2 * lineWidth + x2, HUNTER);
+        if (two) {
+            sb.setCharAt(y3 * lineWidth + x3, HUNTER);
         }
 
         return sb.toString();
+    }
+
+    public static Bites parseLevel(String level) {
+        Point player = null;
+        Point hunter1 = null;
+        Point hunter2 = null;
+
+        Bites bites = new Bites(LEVEL_LENGTH);
+
+        String[] lines = level.split("\n");
+        for (int y = 0; y < LEVEL_HEIGHT; y++) {
+            String line = lines[y];
+            for (int x = 0; x < LEVEL_WIDTH; x++) {
+                Point point = new Point(x, y);
+                char cell = line.charAt(x);
+                if (cell == HERO) {
+                    player = point;
+                } else if (cell == HUNTER) {
+                    if (hunter1 == null) {
+                        hunter1 = point;
+                    } else {
+                        hunter2 = point;
+                    }
+                }
+            }
+            lines[y] = line.replace(HERO, ' ')
+                    .replace(HUNTER, ' ');
+        }
+
+        for (int y = 0; y < LEVEL_HEIGHT; y++) {
+            String line = lines[y];
+            for (int x = 0; x < LEVEL_WIDTH; x += ONE_BYTE_PER_TWO_CELL) {
+                char firstCell = line.charAt(x);
+                char secondCell = line.charAt(x + 1);
+
+                int firstCharacter = LEGEND.indexOf(firstCell);
+                int secondCharacter = LEGEND.indexOf(secondCell);
+
+                int byteValue = (firstCharacter << 4) | secondCharacter;
+                bites.set(y * LEVEL_WIDTH / ONE_BYTE_PER_TWO_CELL + x / ONE_BYTE_PER_TWO_CELL + LEVEL_SETTINGS_PREFIX, byteValue);
+            }
+        }
+
+        bites.set(0x00, player == null ? 0 : player.getX());
+        bites.set(0x01, 0x00);
+        bites.set(0x02, player == null ? 0 : player.getY());
+        bites.set(0x03, 0x00);
+        bites.set(0x04, 0x02); // Чаще всего
+        bites.set(0x05, hunter1 == null ? 0 : hunter1.getX());
+        bites.set(0x06, 0x00);
+        bites.set(0x07, hunter1 == null ? 0 : hunter1.getY());
+        bites.set(0x08, 0x00);
+        bites.set(0x09, 0x04); // Чаще всего
+        bites.set(0x0A, hunter2 == null ? 0 : hunter2.getX());
+        bites.set(0x0B, 0x00);
+        bites.set(0x0C, hunter2 == null ? 0 : hunter2.getY());
+        bites.set(0x0D, 0x00);
+        bites.set(0x0E, 0x04); // Чаще всего
+        bites.set(0x0F, (hunter2 == null) ? 0xFF : 0x18); // 0xFF если один охотник, 0x18 если два
+        return bites;
     }
 
 }

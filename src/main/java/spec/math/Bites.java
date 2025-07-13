@@ -28,6 +28,14 @@ public class Bites implements Iterable<Integer> {
         return new Bites(data);
     }
 
+    public static Bites ofClean(String bites) {
+        // remove first line
+        bites = bites.replaceFirst("(?m)^.*\n", "");
+        // in every line remove first 6 symbols (address and space)
+        bites = bites.replaceAll("(?m)^.{6}", "");
+        return of(bites);
+    }
+
     public static Bites of(String bites) {
         bites = bites.replaceAll("[ \n]", "");
         Bites result = new Bites(bites.length() / 2);
