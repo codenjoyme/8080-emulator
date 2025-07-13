@@ -554,8 +554,10 @@
 
 - [x] (66b2ba4b) Added a method to reverse level conversion. 
 - [x] (85b36645) Fixed the past test so it reads the value from the game. Fixed TODO indexes
-- [x] (--------) Preparatory refactoring in the test to isolate the method for level 
+- [x] (3a78e374) Preparatory refactoring in the test to isolate the method for level 
       checking on the index from the test. 
+- [x] (--------) Implemented a check for all levels. One corner case appeared when the 
+      hunter appears under the bridge.
 - [x] (--------) 
       
 Продолжение следует!

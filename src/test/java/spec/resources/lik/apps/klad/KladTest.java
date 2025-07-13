@@ -22,20 +22,31 @@ public class KladTest {
         PlatformFactory.platform("lik").loadGame(MAIN_RESOURCES, roms, KLAD);
 
         // when
-        int index = 0;
+        for (int index = 0; index < Klad.LEVELS.length; index++) {
+            assertLevel(memory, index);
+        }
+    }
 
+    private static void assertLevel(Memory memory, int index) {
+        // when
+        String info = String.format("For level: %s", index);
         Bites bites = memory.read8arr(new Range(Klad.levelBegin(index), -Klad.LEVEL_LENGTH));
         String mem = bites.toString();
-        assertEquals(mem, Bites.ofClean(mem).toString());
+        assertEquals(info,
+                mem, Bites.ofClean(mem).toString());
 
         // then
         String level = Klad.buildLevel(bites);
-        assertEquals(Klad.LEVELS[index], level);
+        assertEquals(info,
+                Klad.LEVELS[index], level);
         Bites actualBites = Klad.parseLevel(level);
+
         // TODO #48 Я пока не понимаю что это за данные, как пойму - смогу их установить разумно
         actualBites.set(0x04, bites.get(0x04));
         actualBites.set(0x09, bites.get(0x09));
         actualBites.set(0x0E, bites.get(0x0E));
-        assertEquals(mem, actualBites.toString());
+
+        assertEquals(info,
+                mem, actualBites.toString());
     }
 }
