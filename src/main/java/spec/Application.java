@@ -223,4 +223,8 @@ public class Application {
         gotFocus();
         hard.start();
     }
+
+    public Hardware hardware() {
+        return hard;
+    }
 }

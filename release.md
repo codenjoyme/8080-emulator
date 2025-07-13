@@ -556,8 +556,9 @@
 - [x] (85b36645) Fixed the past test so it reads the value from the game. Fixed TODO indexes
 - [x] (3a78e374) Preparatory refactoring in the test to isolate the method for level 
       checking on the index from the test. 
-- [x] (--------) Implemented a check for all levels. One corner case appeared when the 
+- [x] (cf222293) Implemented a check for all levels. One corner case appeared when the 
       hunter appears under the bridge.
+- [x] (--------) Implemented the ability to change levels and run the emulator with the updated game.
 - [x] (--------) 
       
 Продолжение следует!

@@ -2,6 +2,7 @@ package spec;
 
 import org.junit.Test;
 import spec.platforms.Specialist;
+import spec.resources.lik.apps.klad.Klad;
 import spec.sound.AudioDriver;
 import spec.state.JsonState;
 import spec.stuff.AbstractTest;
@@ -88,7 +89,7 @@ public class RomLoaderTest extends AbstractTest {
     public void testSaveLoadSnapshots() {
         // given
         lik().loadRom(base, roms);
-        lik().loadGame(base, roms, "klad");
+        lik().loadGame(base, roms, Klad.NAME);
 
         // random values
         cpu.AF(0x1234);
@@ -374,7 +375,7 @@ public class RomLoaderTest extends AbstractTest {
     @Test
     public void testLoadKladAssembler() {
         // when
-        Range range = lik().loadAsm(base, roms, "klad");
+        Range range = lik().loadAsm(base, roms, Klad.NAME);
 
         // then
         assertMemoryChanges();

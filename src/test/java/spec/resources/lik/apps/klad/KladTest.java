@@ -9,7 +9,6 @@ import spec.platforms.PlatformFactory;
 
 import static org.junit.Assert.assertEquals;
 import static spec.Constants.x10000;
-import static spec.IntegrationTest.KLAD;
 import static spec.stuff.AbstractTest.MAIN_RESOURCES;
 
 public class KladTest {
@@ -19,7 +18,7 @@ public class KladTest {
         // given
         Memory memory = new Memory(x10000);
         RomLoader roms = new RomLoader(memory);
-        PlatformFactory.platform("lik").loadGame(MAIN_RESOURCES, roms, KLAD);
+        PlatformFactory.platform("lik").loadGame(MAIN_RESOURCES, roms, Klad.NAME);
 
         // when
         for (int index = 0; index < Klad.LEVELS.length; index++) {

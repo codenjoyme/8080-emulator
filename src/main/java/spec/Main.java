@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.function.Consumer;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static spec.Constants.*;
@@ -14,6 +15,8 @@ import static spec.RomLoader.getFileExt;
 public class Main extends JFrame implements KeyListener {
 
     private Application app;
+
+    public static Consumer<Application> onLoad;
 
     public static void main(String[] args) {
         // первый параметр - base папка с ресурсами где расположены roms
@@ -62,6 +65,9 @@ public class Main extends JFrame implements KeyListener {
         base = base == null ? "./" : base;
         Logger.debug("Base url: " + base);
         app = new Application(this, base, platform, rom, command);
+        if (onLoad != null) {
+            onLoad.accept(app);
+        }
         app.start();
     }
 

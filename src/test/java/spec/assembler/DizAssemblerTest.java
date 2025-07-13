@@ -25,7 +25,7 @@ public class DizAssemblerTest extends AbstractTest {
     @Test
     public void testDizAssembly() {
         getAllFiles(".rks")
-//                .stream().filter(pair -> pair.getValue().equals("klad"))
+//                .stream().filter(pair -> pair.getValue().equals(Klad.NAME))
                 .forEach(pair -> testDizAssembly(pair.getKey(), pair.getValue()));
     }
 

@@ -8,6 +8,8 @@ import static spec.math.WordMath.loh;
 
 public final class Klad {
 
+    public static final String NAME = "klad";
+
     public static final int LEVELS_OFFSET = 0x1300;
     public static final int LEVEL_WIDTH = 32;
     public static final int LEVEL_HEIGHT = 22;
@@ -24,6 +26,30 @@ public final class Klad {
     public static int levelBegin(int level) {
         return LEVELS_OFFSET + level * LEVEL_LENGTH;
     }
+
+    public static final String UPDATED_LEVEL =
+            "▓▓☺▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒H▒▓▓\n" +
+            "▓▓ ▓ o ☻              o  ☻  H ▓▓\n" +
+            "▓▓ ▓H▒▒  H▒▒    o  H▒▒▒▒▒   H ▓▓\n" +
+            "▓▓ ▓H▒▒  H▒▒‾▒▒▒▒▒▒▒▒▒▒▒▒‾▒▒H▒▓▓\n" +
+            "▓▓ ▓H▒▒‾▒H    H         j  oH ▓▓\n" +
+            "▓▓ ▓H    H    H k     H▒▒▒▒▒▒ ▓▓\n" +
+            "▓▓ ▓H    H ‾‾▒▒▒▒▒ ▒▒▒H     H ▓▓\n" +
+            "▓▓ ▓H  o H           ▒▒▒H   H ▓▓\n" +
+            "▓▓ ▓H ▒▒▒H▒▒‾▒▒         H‾‾‾H ▓▓\n" +
+            "▓▓ ▓H    H    ▒▒▒▒‾▒▒▒‾‾H   H ▓▓\n" +
+            "▓▓ ▓H    H   o   o o    H   H ▓▓\n" +
+            "▓▓ ▓H  ▒▒▒▒H‾▒▒▒▒▒ ▒▒▒▒ H   H ▓▓\n" +
+            "▓▓ ▓H   o  H   H        H   H ▓▓\n" +
+            "▓▓ ▓▒‾‾▒▒H ‾‾‾‾H   ▒▒▒  H  H▒ ▓▓\n" +
+            "▓▓ ▓     H     H▒▒‾▒▒▒‾▒▒  H  ▓▓\n" +
+            "▓▓ ▓e   ▒▒▒▒▒▒‾H           H o▓▓\n" +
+            "▓▓ ▓▒▒         H       ▒H▒ H▒▒▓▓\n" +
+            "▓▓ ▓o   ▒H▒▒▒▒▒▒▒▒‾▒▒   Ho H ▒▓▓\n" +
+            "▓▓ ▓▒▒▒  H    o       ▒▒H▒▒▒ ▒▓▓\n" +
+            "▓▓ ▓     H▒▒▒▒▒▒▒▒‾▒    H   o▒▓▓\n" +
+            "▓▓       H              H  ▒▒▒▓▓\n" +
+            "▓▓▓▓▓▓▓▓▓▓wwwwwwwwwwwwww▓▓▓▓▓▓▓▓\n";
 
     public static final String[] LEVELS = new String[] {
             // Level 0

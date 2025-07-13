@@ -30,8 +30,6 @@ import static spec.stuff.SmartAssert.assertEquals;
 
 public class IntegrationTest extends AbstractTest {
 
-    public static final String KLAD = "klad";
-
     @Override
     @Before
     public void before() {
@@ -673,7 +671,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_scenario() {
         // given
         lik().loadRom(base, roms);
-        lik().loadGame(base, roms, KLAD);
+        lik().loadGame(base, roms, Klad.NAME);
 
         // when
         record.after(12 * K10).down(END)
@@ -710,7 +708,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_game_klad_levels() {
         // given
         lik().loadRom(base, roms);
-        lik().loadGame(base, roms, KLAD);
+        lik().loadGame(base, roms, Klad.NAME);
 
         // when then
         assertKladLevels(30);
@@ -781,8 +779,8 @@ public class IntegrationTest extends AbstractTest {
         WhereIsData.PRINT_RW = true;
 
         lik().loadRom(base, roms);
-        Range range = lik().loadGame(base, roms, KLAD);
-        String binPath = lik().app(KLAD, ".rks");
+        Range range = lik().loadGame(base, roms, Klad.NAME);
+        String binPath = lik().app(Klad.NAME, ".rks");
         WhereIsData data = new WhereIsData(range);
         cpu.modAdd(data);
 
@@ -832,7 +830,7 @@ public class IntegrationTest extends AbstractTest {
         assertPngMemory(range, "recompiled.png");
 
         // when then
-        lik().loadGame(base, roms, KLAD);
+        lik().loadGame(base, roms, Klad.NAME);
         assertDizAssembly(data, MAIN_RESOURCES + binPath, "newProgram.asm");
         assertPngMemory(range, "original.png");
 
@@ -844,7 +842,7 @@ public class IntegrationTest extends AbstractTest {
     public void testLik_game_klad_assembler() throws IOException {
         // given
         lik().loadRom(base, roms);
-        lik().loadAsm(base, roms, KLAD);
+        lik().loadAsm(base, roms, Klad.NAME);
 
         // when then
         assertKladLevels(2);
