@@ -27,30 +27,6 @@ public final class Klad {
         return LEVELS_OFFSET + level * LEVEL_LENGTH;
     }
 
-    public static final String UPDATED_LEVEL =
-            "▓▓☺▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒H▒▓▓\n" +
-            "▓▓ ▓ o ☻              o  ☻  H ▓▓\n" +
-            "▓▓ ▓H▒▒  H▒▒    o  H▒▒▒▒▒   H ▓▓\n" +
-            "▓▓ ▓H▒▒  H▒▒‾▒▒▒▒▒▒▒▒▒▒▒▒‾▒▒H▒▓▓\n" +
-            "▓▓ ▓H▒▒‾▒H    H         j  oH ▓▓\n" +
-            "▓▓ ▓H    H    H k     H▒▒▒▒▒▒ ▓▓\n" +
-            "▓▓ ▓H    H ‾‾▒▒▒▒▒ ▒▒▒H     H ▓▓\n" +
-            "▓▓ ▓H  o H           ▒▒▒H   H ▓▓\n" +
-            "▓▓ ▓H ▒▒▒H▒▒‾▒▒         H‾‾‾H ▓▓\n" +
-            "▓▓ ▓H    H    ▒▒▒▒‾▒▒▒‾‾H   H ▓▓\n" +
-            "▓▓ ▓H    H   o   o o    H   H ▓▓\n" +
-            "▓▓ ▓H  ▒▒▒▒H‾▒▒▒▒▒ ▒▒▒▒ H   H ▓▓\n" +
-            "▓▓ ▓H   o  H   H        H   H ▓▓\n" +
-            "▓▓ ▓▒‾‾▒▒H ‾‾‾‾H   ▒▒▒  H  H▒ ▓▓\n" +
-            "▓▓ ▓     H     H▒▒‾▒▒▒‾▒▒  H  ▓▓\n" +
-            "▓▓ ▓e   ▒▒▒▒▒▒‾H           H o▓▓\n" +
-            "▓▓ ▓▒▒         H       ▒H▒ H▒▒▓▓\n" +
-            "▓▓ ▓o   ▒H▒▒▒▒▒▒▒▒‾▒▒   Ho H ▒▓▓\n" +
-            "▓▓ ▓▒▒▒  H    o       ▒▒H▒▒▒ ▒▓▓\n" +
-            "▓▓ ▓     H▒▒▒▒▒▒▒▒‾▒    H   o▒▓▓\n" +
-            "▓▓       H              H  ▒▒▒▓▓\n" +
-            "▓▓▓▓▓▓▓▓▓▓wwwwwwwwwwwwww▓▓▓▓▓▓▓▓\n";
-
     public static final String[] LEVELS = new String[] {
             // Level 0
             "▓▓☺▒ ☻▒▓H▒▒H▒▒H▒▒H▒▒H▒▒H▓▒ ☻▒ ▓▓\n" +
