@@ -101,7 +101,7 @@ Intro
 - [x] `CNZ_XXYY`
 - [x] `CP_XXYY`
 - [x] `CPE_XXYY`
-- [ ] `CPI_XX`
+- [x] `CPI_XX`
 - [ ] `CPO_XXYY`
 - [ ] `CZ_XXYY`
 - [ ] `DAA`

@@ -277,4 +277,15 @@ iterative-prompt.agent.md
 
 Беру `CPI_XX` (opcode `0xFE`): compare immediate with A. go
 
+### RESULT
+
+3 теста, все прошли (212 total):
+- `codeFE__CPI_XX_greater` — A=0x10, n=0x05 → A>n, F=0x02
+- `codeFE__CPI_XX_equal` — A=0x05, n=0x05 → Z=1, H=1, P=1
+- `codeFE__CPI_XX_less` — A=0x05, n=0x10 → S=1, H=1, P=1, C=1
+
+## UPD23
+
+Беру `CPO_XXYY` (opcode `0xE4`): CALL if parity odd. go
+
 
