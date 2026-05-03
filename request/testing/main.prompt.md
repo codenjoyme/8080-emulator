@@ -466,3 +466,14 @@ iterative-prompt.agent.md
 ## UPD40
 
 Беру `ORI_XX` (opcode `0xF6`): OR immediate with accumulator. go
+
+### RESULT
+
+- Добавлены тесты: `codeF6__ORI_XX`, `codeF6__ORI_XX_zero`.
+- H и C всегда сбрасываются в 0; S, Z, P по результату.
+- Commit: `8b3eedd`
+- Тесты: 253 passed, 0 failures.
+
+## UPD41
+
+Беру `OUT_XX` (opcode `0xD3`): output to port. go

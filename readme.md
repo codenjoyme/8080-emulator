@@ -120,7 +120,7 @@ Intro
 - [x] `JZ_XXYY`
 - [x] `ORA_R`
 - [x] `ORI_XX`
-- [ ] `OUT_XX`
+- [x] `OUT_XX`
 - [ ] `PCHL`
 - [ ] `POP_RS`
 - [ ] `PUSH_RS`
