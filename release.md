@@ -594,5 +594,6 @@
 - [x] (dfd1cbb) Add test for CZ_XXYY (conditional call if zero, 2 variants: taken/not-taken).
 - [x] (c157767) Add tests for DAA (decimal adjust accumulator, 3 variants: no-change/lower-fix/upper-fix).
 - [x] (2f7be88) Add tests for DCX_RR (decrement register pair, 4 variants: BC/DE/HL/SP).
+- [x] (4188fb8) Add test for DI (disable interrupts, no-op in current implementation).
       
 Продолжение следует!

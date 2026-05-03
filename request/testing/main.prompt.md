@@ -338,6 +338,24 @@ iterative-prompt.agent.md
 
 ## UPD28
 
+Из того что узнал пока тесты пишешь добавляй в инструкции по тестированию. И делай это в каждом цикле. 
+
 Беру `EI` (opcode `0xFB`): enable interrupts. go
+
+### RESULT
+
+Обновлены [instructions/cpu-unit-testing.agent.md](../../instructions/cpu-unit-testing.agent.md):
+- Исправлен workflow (one-commit вместо two-commit)
+- Добавлены практические способы установки флагов для CALL-тестов
+- Добавлено предупреждение ADD A = `0x87`, не `0x80`
+- Добавлено описание DI/EI как no-op команд
+- Уточнён пример расчёта PC (всегда запускай тест и смотри факт)
+
+1 тест EI, прошёл (225 total):
+- `codeFB__EI` — нет изменений (нет реализации прерываний)
+
+## UPD29
+
+Беру `IN_XX` (opcode `0xDB`): input from port. go
 
 

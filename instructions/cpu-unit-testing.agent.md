@@ -82,10 +82,13 @@ tc:  false/true  ← Carry flag
 3. Use `LXI`/`MVI` to set up register state before the tested instruction.
 4. Run the full `CpuTest` class; use actual failure output to correct expected values.
 5. Mark the command done in `readme.md` (`- [ ]` → `- [x]`).
-6. **Two-commit workflow:**
-   - **Commit A (work + result):** `git add src/test/java/spec/CpuTest.java readme.md request/testing/main.prompt.md` (with `### RESULT` in main.prompt.md). Commit message: `Add test for <MNEMONIC> (<brief description>)`.
-   - **Commit B (trigger):** write next `## UPD[N+1]` in main.prompt.md ending with `go`, then `git add request/testing/main.prompt.md && git commit`.
-7. Restart the watcher.
+6. **One-commit workflow per UPD cycle:**
+   - Append `### RESULT` to the current `## UPD[N]` block in `main.prompt.md`.
+   - Update `readme.md` (mark done) and `release.md` (add commit entry).
+   - `git add src/test/java/spec/CpuTest.java readme.md request/testing/main.prompt.md release.md`
+   - Commit message: `Add test for <MNEMONIC> (<brief description>)`.
+   - After committing: write next `## UPD[N+1]` with `go` in `main.prompt.md` — **do NOT commit this yet**.
+7. Also update `instructions/cpu-unit-testing.agent.md` each cycle with any new learnings.
 
 ## asrtMem — memory write tracking
 
@@ -118,9 +121,15 @@ For linear programs (no jumps), line count = instruction count. But for branchin
 - Design tests so the program flows naturally from target into NOPs (memory initialized to 0x00 = NOP), and the final PC value can be predicted from the tick count.
 
 **Example for CALL:** `CALL 0005` + 4 NOPs in givenMm (5 lines → 5 ticks):
-- tick 1: CALL jumps to 0x0005
-- ticks 2–5: 4 NOPs starting from 0x0005 (including zero memory beyond givenMm)
-- Final PC = 0x0009 (after 4 NOPs from 0x0005)
+- tick 1: CALL (opcode at 0x0000) pushes return addr 0x0003 (addr after 3-byte CALL), jumps to 0x0005
+- ticks 2–5: 4 NOPs starting from 0x0005, PC advances: 0x0006, 0x0007, 0x0008, 0x0009
+- After tick 5 CPU stops **after** executing NOP at 0x0008 → Final PC = **0x0009**
+
+Wait — PC is updated **before** the instruction stops (rPC.inc16() fires on opcode fetch). So after executing the NOP at addr 0x0008, PC becomes 0x0009 before stop fires. But actually the CPU stop fires between iterations, so the **last executed** NOP increments PC in its opcode read: addr 0x0008 → PC = 0x0009.
+
+**Correction from actual tests:** After CALL 0005 (3 bytes, at addr 0x0002 → return addr 0x0005) + 3 NOPs → Final PC = **0x0008** (NOP at 0x0007 was the last executed). Always verify with actual test run output.
+
+**Rule:** Always run tests and use the actual failure output to correct expected PC values. Don't try to predict PC without running.
 
 ## Special flag behaviors
 
@@ -128,6 +137,25 @@ For linear programs (no jumps), line count = instruction count. But for branchin
 - **ANA_R / ANI_XX C flag:** Always cleared to 0 regardless of previous carry.
 - Standard H (arithmetic): borrow from bit4 or carry from bit3.
 - P flag: set if number of 1-bits in result is even (including 0).
+
+## Setting flags for conditional CALL tests
+
+For CALL-if-condition tests, you need to SET the tested flag first. Practical ways:
+- **Z=1 (zero):** `ADD A` with A=0 → `87` (0+0=0, Z=1, P=1).
+- **S=1 (sign):** `MVI A,40` + `ADD A` → A=0x80 (S=1). opcode `87` = `ADD A`. **Do NOT use `MVI A,80`** — MVI doesn't set flags.
+- **C=1 (carry):** `MVI A,FF` + `ADI 01` → overflow, C=1. Or `MVI B,FF` + `ADC B` with A=0x01.
+- **P=1 (even parity):** `ADI 03` → A=0x03 (bits: 00000011, two 1s = even, P=1).
+- **P=0 (odd parity):** `ADI 01` → A=0x01 (one 1-bit = odd, P=0).
+- **Default (no prior ops):** Z=0, S=0, C=0, H=0, P=0, F=0x02 (only bit1 always set).
+
+## Finding ADD_A opcode: `0x87` (ADD A), `0x80`=ADD B … `0x87`=ADD A
+
+- `ADD A` → `0x87`, not `0x80` (`0x80` = `ADD B`).
+- `ADD A` with `givenMm` expects `87`, not `80`.
+
+## No-op system instructions (DI, EI)
+
+`DI` (0xF3) and `EI` (0xFB) are currently no-ops in this emulator (the interrupt system is unimplemented). Tests for these just verify no registers change and PC advances by 1.
 
 ## How to find the opcode hex for a mnemonic
 
