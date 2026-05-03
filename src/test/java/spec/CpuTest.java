@@ -15105,4 +15105,450 @@ public class CpuTest extends AbstractTest {
         asrtMem("FFFE: 00 -> 01 -> 01\nFFFF: 00 -> 00");
         // C=0x00: INR C at 0x0001 was never executed → RST 7 jumped to 0x0038
     }
+
+    // SBB_R: subtract register with borrow (carry)  (opcodes 0x98-0x9F)
+    // A = A - R - carry; sets S, Z, H, P, C flags
+
+    @Test
+    public void code98__SBB_B() {
+        // given: A=0x30, B=0x10, carry=0 => A=0x30-0x10-0=0x20, P=1
+        givenPr("MVI A,30\n" +
+                "MVI B,10\n" +
+                "SBB B\n" +
+                "NOP\n");
+
+        givenMm("3E 30\n" +
+                "06 10\n" +
+                "98\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  2012\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 10 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 20 12\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00010000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00100000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code99__SBB_C() {
+        // given: A=0x33, C=0x11, carry=0 => A=0x33-0x11-0=0x22, P=1
+        givenPr("MVI A,33\n" +
+                "MVI C,11\n" +
+                "SBB C\n" +
+                "NOP\n");
+
+        givenMm("3E 33\n" +
+                "0E 11\n" +
+                "99\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0011\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  2216\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 11\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 22 16\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00010001\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00100010\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code9A__SBB_D() {
+        // given: A=0x40, D=0x20, carry=0 => A=0x40-0x20-0=0x20, P=1
+        givenPr("MVI A,40\n" +
+                "MVI D,20\n" +
+                "SBB D\n" +
+                "NOP\n");
+
+        givenMm("3E 40\n" +
+                "16 20\n" +
+                "9A\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  2000\n" +
+                "HL:  0000\n" +
+                "AF:  2012\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 20 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 20 12\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00100000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00100000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code9B__SBB_E() {
+        // given: A=0x55, E=0x22, carry=0 => A=0x55-0x22-0=0x33, P=1
+        givenPr("MVI A,55\n" +
+                "MVI E,22\n" +
+                "SBB E\n" +
+                "NOP\n");
+
+        givenMm("3E 55\n" +
+                "1E 22\n" +
+                "9B\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0022\n" +
+                "HL:  0000\n" +
+                "AF:  3316\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 22\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 33 16\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00100010\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00110011\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code9C__SBB_H() {
+        // given: A=0x50, H=0x10, carry=0 => A=0x50-0x10-0=0x40, P=1
+        givenPr("MVI A,50\n" +
+                "MVI H,10\n" +
+                "SBB H\n" +
+                "NOP\n");
+
+        givenMm("3E 50\n" +
+                "26 10\n" +
+                "9C\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  1000\n" +
+                "AF:  4012\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 10 00\n" +
+                "M:   00\n" +
+                "A,F: 40 12\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00010000\n" +
+                "L:   00000000\n" +
+                "M:   00000000\n" +
+                "A:   01000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code9D__SBB_L() {
+        // given: A=0x45, L=0x12, carry=0 => A=0x45-0x12-0=0x33, P=1
+        givenPr("MVI A,45\n" +
+                "MVI L,12\n" +
+                "SBB L\n" +
+                "NOP\n");
+
+        givenMm("3E 45\n" +
+                "2E 12\n" +
+                "9D\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0012\n" +
+                "AF:  3316\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 12\n" +
+                "M:   00\n" +
+                "A,F: 33 16\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00010010\n" +
+                "M:   00000000\n" +
+                "A:   00110011\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code9E__SBB_M() {
+        // given: HL=0x0001, M=0x01 (2nd byte of LXI), A=0x11 => A=0x11-0x01-0=0x10, P=1
+        givenPr("LXI H,0001\n" +
+                "MVI A,11\n" +
+                "SBB M\n" +
+                "NOP\n");
+
+        givenMm("21 01 00\n" +
+                "3E 11\n" +
+                "9E\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0001\n" +
+                "AF:  1012\n" +
+                "SP:  0000\n" +
+                "PC:  0007\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 01\n" +
+                "M:   01\n" +
+                "A,F: 10 12\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000111\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000001\n" +
+                "M:   00000001\n" +
+                "A:   00010000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code9F__SBB_A() {
+        // given: A=0x42, carry=0 => A=0x42-0x42-0=0x00, Z=1, P=1
+        givenPr("MVI A,42\n" +
+                "SBB A\n" +
+                "NOP\n");
+
+        givenMm("3E 42\n" +
+                "9F\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0056\n" +
+                "SP:  0000\n" +
+                "PC:  0004\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 00 56\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000100\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   01010110\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code98__SBB_B_with_carry_in() {
+        // given: A=0x30, B=0x10, carry=1 => A=0x30-0x10-1=0x1F, P=0
+        givenPr("MVI A,FF\n" +  // A = 0xFF
+                "ADI 01\n" +    // A = 0xFF + 0x01 = 0x00, carry=1
+                "MVI A,30\n" +  // A = 0x30 (MVI doesn't touch carry)
+                "MVI B,10\n" +  // B = 0x10
+                "SBB B\n" +     // A = 0x30 - 0x10 - 1 = 0x1F
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "C6 01\n" +
+                "3E 30\n" +
+                "06 10\n" +
+                "98\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  1F02\n" +
+                "SP:  0000\n" +
+                "PC:  000A\n" +
+                "B,C: 10 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 1F 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001010\n" +
+                "     76543210\n" +
+                "B:   00010000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00011111\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
 }

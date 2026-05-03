@@ -617,3 +617,14 @@ iterative-prompt.agent.md
 ## UPD53
 
 Беру `RST_N` (opcodes `0xC7/0xCF/0xD7/0xDF/0xE7/0xEF/0xF7/0xFF`): restart (software interrupt). go
+
+### RESULT
+
+- Добавлены тесты: `codeC7__RST_0` через `codeFF__RST_7` (8 тестов).
+- Ключ: RST N прыгает на N*8; sentinel INR C после RST никогда не выполняется (C=0). Главное: в givenPr все строки должны заканчиваться \n (включая последнюю)!
+- Commit: `d3924e4`
+- Тесты: 288 passed, 0 failures.
+
+## UPD54
+
+Беру `SBB_R` (opcodes `0x98`-`0x9F`): subtract register with borrow. go

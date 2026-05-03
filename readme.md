@@ -134,7 +134,7 @@ Intro
 - [x] `RPO`
 - [x] `RST_N`
 - [x] `RZ`
-- [ ] `SBB_R`
+- [x] `SBB_R`
 - [ ] `SBI_XX`
 - [ ] `SPHL`
 - [ ] `STC`
