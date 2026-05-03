@@ -405,3 +405,16 @@ iterative-prompt.agent.md
 
 - Написаны тесты `codeD2__JNC_XXYY_carry_clear` и `codeD2__JNC_XXYY_carry_set`.
 - Тесты: 233 passed, 0 failures.
+
+## UPD34
+
+Беру `JNZ_XXYY` (opcode `0xC2`): JUMP if not zero. go
+
+### RESULT
+
+- Написаны тесты `codeC2__JNZ_XXYY_not_zero` и `codeC2__JNZ_XXYY_zero`.
+- Тесты: 235 passed, 0 failures.
+
+## UPD35
+
+Беру `JP_XXYY` (opcode `0xF2`): JUMP if positive (sign=0). go

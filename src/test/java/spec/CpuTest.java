@@ -12157,4 +12157,114 @@ public class CpuTest extends AbstractTest {
                 "tc:  true\n");
         // C=0x01: INR C was executed → proves JNC was NOT taken
     }
+
+    // JNZ_XXYY: JUMP if not zero (Z=0)  (opcode 0xC2)
+
+    @Test
+    public void codeC2__JNZ_XXYY_not_zero() {
+        // given: Z=0 (default), JNZ 0004 → jump taken, INR C at 0x0003 skipped (C=0)
+        givenPr("JNZ 0004\n" +
+                "INR C\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("C2 04 00\n" +
+                "0C\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  0008\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   C2\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001000\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11000010\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        // C=0x00: INR C was skipped → proves JNZ was taken
+    }
+
+    @Test
+    public void codeC2__JNZ_XXYY_zero() {
+        // given: Z=1 via ADD A(0), JNZ not taken → INR C at 0x0005 executes (C=1)
+        givenPr("MVI A,00\n" +
+                "ADD A\n" +
+                "JNZ 0008\n" +
+                "INR C\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("3E 00\n" +
+                "87\n" +
+                "C2 08 00\n" +
+                "0C\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0001\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  000A\n" +
+                "B,C: 00 01\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001010\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000001\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        // C=0x01: INR C was executed → proves JNZ was NOT taken
+    }
 }
