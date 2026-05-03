@@ -604,6 +604,7 @@
 - [x] (e73eb5f) Add test for JNZ_XXYY (jump if not zero, 2 variants: taken/not-taken).
 - [x] (16eaa89) Add test for JP_XXYY (jump if positive, 2 variants: taken/not-taken).
 - [x] (d6ee674) Add test for JPE_XXYY (jump if parity even, 2 variants: taken/not-taken).
-- [x] (???????) Add test for JPO_XXYY (jump if parity odd, 2 variants: taken/not-taken).
+- [x] (c44395c) Add test for JPO_XXYY (jump if parity odd, 2 variants: taken/not-taken).
+- [x] (???????) Add test for JZ_XXYY (jump if zero, 2 variants: taken/not-taken).
       
 Продолжение следует!

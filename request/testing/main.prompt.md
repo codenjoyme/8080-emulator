@@ -445,3 +445,8 @@ iterative-prompt.agent.md
 ## UPD38
 
 Беру `JZ_XXYY` (opcode `0xCA`): JUMP if zero (Z=1). go
+
+### RESULT
+
+- Написаны тесты `codeCA__JZ_XXYY_zero` и `codeCA__JZ_XXYY_not_zero`.
+- Тесты: 243 passed, 0 failures.

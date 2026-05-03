@@ -117,7 +117,7 @@ Intro
 - [x] `JP_XXYY`
 - [x] `JPE_XXYY`
 - [x] `JPO_XXYY`
-- [ ] `JZ_XXYY`
+- [x] `JZ_XXYY`
 - [ ] `ORA_R`
 - [ ] `ORI_XX`
 - [ ] `OUT_XX`
