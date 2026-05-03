@@ -267,4 +267,14 @@ iterative-prompt.agent.md
 
 Беру `CPE_XXYY` (opcode `0xEC`): CALL if parity even. go
 
+### RESULT
+
+2 теста, все прошли (209 total):
+- `codeEC__CPE_XXYY_even` — ADI 03 → P=1 (even), CALL происходит
+- `codeEC__CPE_XXYY_odd` — ADI 01 → P=0 (odd), CALL не происходит
+
+## UPD22
+
+Беру `CPI_XX` (opcode `0xFE`): compare immediate with A. go
+
 

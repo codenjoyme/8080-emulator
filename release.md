@@ -587,5 +587,6 @@
 - [x] (2321d7f) Add tests for CMP_R (compare register with A, opcodes 0xB8-0xBF): 10 тестов, все 8 регистров + less/equal corner cases.
 - [x] (9a78caf) Add test for CNC_XXYY (conditional call if no carry, 2 variants: taken/not-taken).
 - [x] (6327b10) Add test for CNZ_XXYY (conditional call if not zero, 2 variants: taken/not-taken).
+- [x] (aa35a78) Add test for CP_XXYY (conditional call if positive/sign clear, 2 variants: taken/not-taken).
       
 Продолжение следует!

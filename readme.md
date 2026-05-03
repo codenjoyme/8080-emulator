@@ -100,7 +100,7 @@ Intro
 - [x] `CNC_XXYY`
 - [x] `CNZ_XXYY`
 - [x] `CP_XXYY`
-- [ ] `CPE_XXYY`
+- [x] `CPE_XXYY`
 - [ ] `CPI_XX`
 - [ ] `CPO_XXYY`
 - [ ] `CZ_XXYY`
