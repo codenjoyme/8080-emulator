@@ -182,4 +182,10 @@ iterative-prompt.agent.md
 
 Беру `CC_XXYY` (opcode `0xDC`): CALL if carry. go
 
+### RESULT
+
+2 теста, все прошли (185 total):
+- `codeDC__CC_XXYY_carry_set` — carry=1 (через ADC overflow), CALL происходит: PC=0x0010, SP=0xFFFE, return addr 0x0008
+- `codeDC__CC_XXYY_carry_clear` — carry=0, CALL не происходит: PC=0x0007, SP=0x0000
+
 

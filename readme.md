@@ -92,7 +92,7 @@ Intro
 - [x] `ANA_R`
 - [x] `ANI_XX`
 - [x] `CALL_XXYY`
-- [ ] `CC_XXYY`
+- [x] `CC_XXYY`
 - [ ] `CM_XXYY`
 - [ ] `CMA`
 - [ ] `CMC`

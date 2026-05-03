@@ -579,5 +579,6 @@
 - [x] (5ba1caa) Add test for ANA_R (bitwise AND register, opcodes 0xA0-0xA7): 11 тестов включая особый H-флаг `(A|reg)&0x08`.
 - [x] (058f847) Add test for ANI_XX (AND immediate, opcode 0xE6): 4 теста.
 - [x] (3215be8) Обновлены `instructions/iterative-prompt.agent.md` (2-commit workflow) и `instructions/cpu-unit-testing.agent.md` (PORTS double-write, tick count, ANA H-флаг).
+- [x] (43ae786) Add test for CALL_XXYY (unconditional call, push return addr to stack, 2 variants).
       
 Продолжение следует!
