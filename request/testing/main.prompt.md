@@ -141,4 +141,16 @@ iterative-prompt.agent.md
 
 Беру `ANI_XX` (opcode `0xE6`): `A = A & imm8`. go
 
+### RESULT
+
+4 теста, все прошли (181 total):
+- `codeE6__ANI_XX_no_flags` — A=0xFF & 0xF0 = 0xF0, S=1, H=1, P=1
+- `codeE6__ANI_XX_zero` — A=0xF0 & 0x0F = 0x00, Z=1, H=1
+- `codeE6__ANI_XX_h_zero` — A=0xF0 & 0xF0 = 0xF0, H=0 (нет bit3)
+- `codeE6__ANI_XX_carry_cleared` — carry=1 → ANA обнуляет C
+
+## UPD11
+
+Беру `CALL_XXYY` (opcode `0xCD`): вызов подпрограммы, PC → stack, jump to addr. go
+
 

@@ -90,7 +90,7 @@ Intro
 - [x] `ADD_R`
 - [x] `ADI_XX`
 - [x] `ANA_R`
-- [ ] `ANI_XX`
+- [x] `ANI_XX`
 - [ ] `CALL_XXYY`
 - [ ] `CC_XXYY`
 - [ ] `CM_XXYY`
