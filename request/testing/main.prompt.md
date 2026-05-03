@@ -436,3 +436,12 @@ iterative-prompt.agent.md
 ## UPD37
 
 Беру `JPO_XXYY` (opcode `0xE2`): JUMP if parity odd (P=0). go
+
+### RESULT
+
+- Написаны тесты `codeE2__JPO_XXYY_odd` и `codeE2__JPO_XXYY_even`.
+- Тесты: 241 passed, 0 failures.
+
+## UPD38
+
+Беру `JZ_XXYY` (opcode `0xCA`): JUMP if zero (Z=1). go

@@ -12487,4 +12487,114 @@ public class CpuTest extends AbstractTest {
                 "tc:  false\n");
         // C=0x01: INR C was executed → proves JPE was NOT taken
     }
+
+    // JPO_XXYY: JUMP if parity odd (P=0)  (opcode 0xE2)
+
+    @Test
+    public void codeE2__JPO_XXYY_odd() {
+        // given: ADI 01 → A=0x01 (P=0 odd parity), JPO 0006 → jump past INR C, INR C skipped (C=0)
+        givenPr("ADI 01\n" +
+                "JPO 0006\n" +
+                "INR C\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("C6 01\n" +
+                "E2 06 00\n" +
+                "0C\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0102\n" +
+                "SP:  0000\n" +
+                "PC:  000A\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   C6\n" +
+                "A,F: 01 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001010\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11000110\n" +
+                "A:   00000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        // C=0x00: INR C was skipped → proves JPO was taken
+    }
+
+    @Test
+    public void codeE2__JPO_XXYY_even() {
+        // given: ADI 03 → A=0x03 (P=1 even parity), JPO not taken → INR C executes (C=1)
+        givenPr("ADI 03\n" +
+                "JPO 0008\n" +
+                "INR C\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("C6 03\n" +
+                "E2 08 00\n" +
+                "0C\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0001\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0302\n" +
+                "SP:  0000\n" +
+                "PC:  0009\n" +
+                "B,C: 00 01\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   C6\n" +
+                "A,F: 03 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000001\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11000110\n" +
+                "A:   00000011\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        // C=0x01: INR C was executed → proves JPO was NOT taken
+    }
 }
