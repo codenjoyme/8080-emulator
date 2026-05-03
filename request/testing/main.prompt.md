@@ -595,3 +595,14 @@ iterative-prompt.agent.md
 ## UPD51
 
 Беру `RPE` (opcode `0xE8`): return if parity even (P=1). go
+
+### RESULT
+
+- Добавлены тесты: `codeE8__RPE_even`, `codeE8__RPE_odd`, `codeE0__RPO_odd`, `codeE0__RPO_even`.
+- Ключ: INR C устанавливает P по C=0x01 (odd = P=0); F=0x02 после INR C в not-taken тестах.
+- Commit: `4b53134`
+- Тесты: 278 passed, 0 failures.
+
+## UPD52
+
+Беру `RZ` (opcode `0xC8`): return if zero. go
