@@ -15698,4 +15698,53 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
     }
+
+    // SPHL: SP = HL  (opcode 0xF9)
+
+    @Test
+    public void codeF9__SPHL() {
+        // given: HL=0x1234 => SP=0x1234
+        givenPr("LXI H,1234\n" +  // HL = 0x1234
+                "SPHL\n" +         // SP = HL
+                "NOP\n");
+
+        givenMm("21 34 12\n" +
+                "F9\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  1234\n" +
+                "AF:  0002\n" +
+                "SP:  1234\n" +
+                "PC:  0005\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 12 34\n" +
+                "M:   00\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00010010 00110100\n" +
+                "PC:  00000000 00000101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00010010\n" +
+                "L:   00110100\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
 }
