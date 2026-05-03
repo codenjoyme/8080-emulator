@@ -128,7 +128,7 @@ Intro
 - [x] `RET`
 - [x] `RM`
 - [x] `RNC`
-- [ ] `RNZ`
+- [x] `RNZ`
 - [ ] `RP`
 - [ ] `RPE`
 - [ ] `RPO`

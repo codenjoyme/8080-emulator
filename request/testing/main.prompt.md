@@ -561,3 +561,15 @@ iterative-prompt.agent.md
 ## UPD48
 
 Беру `RNC` (opcode `0xD0`): return if no carry. go
+
+### RESULT
+
+- Добавлены тесты: `codeD0__RNC_carry_clear`, `codeD0__RNC_carry_set`.
+- RNC not-taken: без JMP/CALL, INR C меняет флаги; carry сохраняется → F=0x03.
+- Обновлены инструкции: добавлен JMP-over-subroutine паттерн.
+- Commit: `ce589da`
+- Тесты: 270 passed, 0 failures.
+
+## UPD49
+
+Беру `RNZ` (opcode `0xC0`): return if not zero. go

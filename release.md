@@ -615,6 +615,7 @@
 - [x] (8ceab60) Add test for RC (return if carry, 2 variants: taken/not-taken).
 - [x] (ce518e8) Add test for RET (unconditional return).
 - [x] (6b9f12a) Add test for RM (return if minus, 2 variants: taken/not-taken).
-- [x] (???????) Add test for RNC (return if no carry, 2 variants: taken/not-taken); update instructions.
+- [x] (ce589da) Add test for RNC (return if no carry, 2 variants: taken/not-taken); update instructions.
+- [x] (???????) Add test for RNZ (return if not zero, 2 variants: taken/not-taken).
       
 Продолжение следует!
