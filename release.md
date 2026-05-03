@@ -611,6 +611,7 @@
 - [x] (a200e40) Add test for OUT_XX (output accumulator to port).
 - [x] (539405a) Add test for PCHL (jump to HL, INR C sentinel).
 - [x] (06189e2) Add test for POP_RS (pop register pair, 4 variants: BC, DE, HL, PSW).
-- [x] (???????) Add test for PUSH_RS (push register pair, 4 variants: BC, DE, HL, PSW).
+- [x] (74a6f9c) Add test for PUSH_RS (push register pair, 4 variants: BC, DE, HL, PSW).
+- [x] (???????) Add test for RC (return if carry, 2 variants: taken/not-taken).
       
 Продолжение следует!

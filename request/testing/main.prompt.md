@@ -513,3 +513,16 @@ iterative-prompt.agent.md
 ## UPD44
 
 Беру `PUSH_RS` (opcode `0xC5`/`0xD5`/`0xE5`/`0xF5`): push register pair. go
+
+### RESULT
+
+- Добавлены тесты: `codeC5__PUSH_B`, `codeD5__PUSH_D`, `codeE5__PUSH_H`, `codeF5__PUSH_PSW`.
+- Схема: LXI SP,FFFE + LXI rr,val + PUSH + NOP.
+- Память пишется на FFFC-FFFD (double-write для обоих адресов).
+- SP становится 0xFFFC после PUSH.
+- Commit: `74a6f9c`
+- Тесты: 263 passed, 0 failures.
+
+## UPD45
+
+Беру `RC` (opcode `0xD8`): return if carry. go

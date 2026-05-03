@@ -124,7 +124,7 @@ Intro
 - [x] `PCHL`
 - [x] `POP_RS`
 - [x] `PUSH_RS`
-- [ ] `RC`
+- [x] `RC`
 - [ ] `RET`
 - [ ] `RM`
 - [ ] `RNC`
