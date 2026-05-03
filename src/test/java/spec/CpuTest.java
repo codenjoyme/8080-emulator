@@ -11112,4 +11112,107 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  false\n");
     }
+
+    // CZ_XXYY: CALL if zero (Z=1)  (opcode 0xCC)
+
+    @Test
+    public void codeCC__CZ_XXYY_zero() {
+        // given: ADD A with A=0 → Z=1, CZ 0003 — condition met, call happens
+        givenPr("ADD A\n" +
+                "CZ 0003\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("87\n" +
+                "CC 03 00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0046\n" +
+                "SP:  FFFE\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   87\n" +
+                "A,F: 00 46\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   10000111\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   01000110\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 04 -> 04\nFFFF: 00 -> 00");
+    }
+
+    @Test
+    public void codeCC__CZ_XXYY_nz() {
+        // given: Z=0 (default), CZ — condition NOT met, no call
+        givenPr("CZ 0004\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("CC 04 00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   CC\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11001100\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
 }

@@ -298,4 +298,14 @@ iterative-prompt.agent.md
 
 Беру `CZ_XXYY` (opcode `0xCC`): CALL if zero. go
 
+### RESULT
+
+2 теста, все прошли (216 total):
+- `codeCC__CZ_XXYY_zero` — ADD A (0+0=0, Z=1), CALL происходит
+- `codeCC__CZ_XXYY_nz` — Z=0 (начальное состояние), CALL не происходит
+
+## UPD25
+
+Беру `DAA` (opcode `0x27`): decimal adjust accumulator. go
+
 

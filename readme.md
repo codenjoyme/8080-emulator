@@ -103,7 +103,7 @@ Intro
 - [x] `CPE_XXYY`
 - [x] `CPI_XX`
 - [x] `CPO_XXYY`
-- [ ] `CZ_XXYY`
+- [x] `CZ_XXYY`
 - [ ] `DAA`
 - [ ] `DCX_RR`
 - [ ] `DI`
