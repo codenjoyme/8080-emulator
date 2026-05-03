@@ -10645,4 +10645,111 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  false\n");
     }
+
+    // CP_XXYY: CALL if positive (sign=0)  (opcode 0xF4)
+
+    @Test
+    public void codeF4__CP_XXYY_positive() {
+        // given: A=0x01 (positive, S=0), CP 0005 — condition met, call happens
+        givenPr("MVI A,01\n" +
+                "CP 0005\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("3E 01\n" +
+                "F4 05 00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0102\n" +
+                "SP:  FFFE\n" +
+                "PC:  0008\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 01 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00001000\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 05 -> 05\nFFFF: 00 -> 00");
+    }
+
+    @Test
+    public void codeF4__CP_XXYY_negative() {
+        // given: A=0x40, ADD A → A=0x80 (S=1), CP — condition NOT met, no call
+        givenPr("MVI A,40\n" +
+                "ADD A\n" +
+                "CP 0007\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("3E 40\n" +
+                "87\n" +
+                "F4 07 00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  8082\n" +
+                "SP:  0000\n" +
+                "PC:  0009\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 80 82\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   10000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000010\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
 }

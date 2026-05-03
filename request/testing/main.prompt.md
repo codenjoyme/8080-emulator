@@ -253,4 +253,18 @@ iterative-prompt.agent.md
 - `codeC4__CNZ_XXYY_nz` — A=0x01 (Z=0), CALL происходит: SP=0xFFFE, return addr 0x0005
 - `codeC4__CNZ_XXYY_zero` — ADD A (0+0=0, Z=1), CALL не происходит
 
+## UPD20
+
+Беру `CP_XXYY` (opcode `0xF4`): CALL if positive (sign flag clear). go
+
+### RESULT
+
+2 теста, все прошли (207 total):
+- `codeF4__CP_XXYY_positive` — A=0x01 (S=0), CALL происходит: SP=0xFFFE, return addr 0x0005
+- `codeF4__CP_XXYY_negative` — MVI A,40 + ADD A → A=0x80 (S=1), CALL не происходит
+
+## UPD21
+
+Беру `CPE_XXYY` (opcode `0xEC`): CALL if parity even. go
+
 
