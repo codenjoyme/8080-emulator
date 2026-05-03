@@ -135,7 +135,7 @@ Intro
 - [x] `RST_N`
 - [x] `RZ`
 - [x] `SBB_R`
-- [ ] `SBI_XX`
+- [x] `SBI_XX`
 - [ ] `SPHL`
 - [ ] `STC`
 - [ ] `SUB_R`

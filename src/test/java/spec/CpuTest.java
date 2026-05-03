@@ -15551,4 +15551,151 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
     }
+
+    // SBI_XX: A = A - immediate - carry  (opcode 0xDE)
+
+    @Test
+    public void codeDE__SBI_XX_no_carry() {
+        // given: A=0x30, imm=0x10, carry=0 => A=0x30-0x10-0=0x20
+        givenPr("MVI A,30\n" +  // A = 0x30
+                "SBI 10\n" +    // A = A - 0x10 - carry(0) = 0x20
+                "NOP\n");
+
+        givenMm("3E 30\n" +
+                "DE 10\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  2012\n" +
+                "SP:  0000\n" +
+                "PC:  0005\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 20 12\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00100000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeDE__SBI_XX_borrow() {
+        // given: A=0x10, imm=0x20, carry=0 => A=0x10-0x20-0=0xF0, C=1, S=1, P=1
+        givenPr("MVI A,10\n" +  // A = 0x10
+                "SBI 20\n" +    // A = 0x10 - 0x20 - 0 = 0xF0, borrow -> C=1
+                "NOP\n");
+
+        givenMm("3E 10\n" +
+                "DE 20\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  F097\n" +
+                "SP:  0000\n" +
+                "PC:  0005\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: F0 97\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   11110000\n" +
+                "     sz0h0p1c\n" +
+                "F:   10010111\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  true\n");
+    }
+
+    @Test
+    public void codeDE__SBI_XX_with_carry_in() {
+        // given: carry=1, A=0x30, imm=0x10 => A=0x30-0x10-1=0x1F
+        givenPr("MVI A,FF\n" +  // A = 0xFF
+                "ADI 01\n" +    // A = 0x00, carry=1
+                "MVI A,30\n" +  // A = 0x30 (carry still = 1)
+                "SBI 10\n" +    // A = 0x30 - 0x10 - 1 = 0x1F
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "C6 01\n" +
+                "3E 30\n" +
+                "DE 10\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  1F02\n" +
+                "SP:  0000\n" +
+                "PC:  0009\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 1F 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00011111\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
 }
