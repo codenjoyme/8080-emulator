@@ -580,5 +580,6 @@
 - [x] (058f847) Add test for ANI_XX (AND immediate, opcode 0xE6): 4 теста.
 - [x] (3215be8) Обновлены `instructions/iterative-prompt.agent.md` (2-commit workflow) и `instructions/cpu-unit-testing.agent.md` (PORTS double-write, tick count, ANA H-флаг).
 - [x] (43ae786) Add test for CALL_XXYY (unconditional call, push return addr to stack, 2 variants).
+- [x] (a03fc35) Add test for CC_XXYY (conditional call if carry, 2 variants: taken/not-taken).
       
 Продолжение следует!

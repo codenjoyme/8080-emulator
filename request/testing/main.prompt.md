@@ -192,4 +192,14 @@ iterative-prompt.agent.md
 
 Беру `CM_XXYY` (opcode `0xFC`): CALL if minus (sign flag set). go
 
+### RESULT
+
+2 теста, все прошли (187 total):
+- `codeFC__CM_XXYY_sign_set` — ADD B: 0x7F+0x01=0x80, S=1, CALL происходит
+- `codeFC__CM_XXYY_sign_clear` — ADD A: 0x01+0x01=0x02, S=0, CALL не происходит
+
+## UPD15
+ 
+Исправь инструкцию. План итеративного промпта такой, что в одном коммите и
+
 

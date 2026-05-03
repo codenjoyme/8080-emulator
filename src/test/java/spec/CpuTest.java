@@ -9650,4 +9650,117 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
     }
+
+    // CM_XXYY: CALL if minus (sign flag)  (opcode 0xFC)
+
+    @Test
+    public void codeFC__CM_XXYY_sign_set() {
+        // given: ADD B sets S=1 (0x7F+0x01=0x80), then CM — call happens
+        givenPr("MVI A,7F\n" +
+                "MVI B,01\n" +
+                "ADD B\n" +     // A=0x80, S=1
+                "CM 000A\n" +   // S=1 → CALL to 0x000A
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("3E 7F\n" +
+                "06 01\n" +
+                "80\n" +
+                "FC 0A 00\n" +
+                "00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0100\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  8092\n" +
+                "SP:  FFFE\n" +
+                "PC:  000E\n" +
+                "B,C: 01 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 80 92\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00001110\n" +
+                "     76543210\n" +
+                "B:   00000001\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   10000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   10010010\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 08 -> 08\nFFFF: 00 -> 00");
+    }
+
+    @Test
+    public void codeFC__CM_XXYY_sign_clear() {
+        // given: ADD A with A=0x01 → A=0x02, S=0, then CM — no call
+        givenPr("MVI A,01\n" +
+                "ADD A\n" +     // A=0x02, S=0
+                "CM 0008\n" +   // S=0 → NO call
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("3E 01\n" +
+                "87\n" +
+                "FC 08 00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0202\n" +
+                "SP:  0000\n" +
+                "PC:  0009\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 02 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000010\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
 }
