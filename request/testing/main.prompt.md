@@ -637,3 +637,11 @@ Key learnings: M register value depends on HL pointer (not always 0x3E); SBB car
 ## UPD55
 
 Беру `SBI_XX` (opcode `0xDE`): subtract immediate with borrow. go
+
+### RESULT
+
+3 tests (no-carry, borrow, carry-in). All passed first run. commit: 646d50e.
+
+## UPD56
+
+Беру `SPHL` (opcode `0xF9`): SP = HL. go
