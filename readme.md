@@ -126,7 +126,7 @@ Intro
 - [x] `PUSH_RS`
 - [x] `RC`
 - [x] `RET`
-- [ ] `RM`
+- [x] `RM`
 - [ ] `RNC`
 - [ ] `RNZ`
 - [ ] `RP`

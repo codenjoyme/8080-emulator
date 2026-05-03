@@ -613,6 +613,7 @@
 - [x] (06189e2) Add test for POP_RS (pop register pair, 4 variants: BC, DE, HL, PSW).
 - [x] (74a6f9c) Add test for PUSH_RS (push register pair, 4 variants: BC, DE, HL, PSW).
 - [x] (8ceab60) Add test for RC (return if carry, 2 variants: taken/not-taken).
-- [x] (???????) Add test for RET (unconditional return).
+- [x] (ce518e8) Add test for RET (unconditional return).
+- [x] (???????) Add test for RM (return if minus, 2 variants: taken/not-taken).
       
 Продолжение следует!

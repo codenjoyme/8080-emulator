@@ -538,3 +538,15 @@ iterative-prompt.agent.md
 ## UPD46
 
 Беру `RET` (opcode `0xC9`): unconditional return. go
+
+### RESULT
+
+- Добавлен тест: `codeC9__RET`.
+- Схема: JMP 0005 + subroutine(RET,INR_C) at 0x0003 + CALL 0003 + NOPs.
+- CALL пушает 0x0008 (адрес после CALL), RET возвращает туда же.
+- Commit: `ce518e8`
+- Тесты: 266 passed, 0 failures.
+
+## UPD47
+
+Беру `RM` (opcode `0xF8`): return if minus (S=1). go
