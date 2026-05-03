@@ -106,4 +106,15 @@ iterative-prompt.agent.md
 
 Беру `ADD_R` (opcodes `0x80`-`0x87`): `A = A + reg`, без carry. Те же 8 регистров. go
 
+### RESULT
+
+10 тестов, все прошли (162 total):
+- `code80__ADD_B` .. `code87__ADD_A` — все 8 регистров, базовые случаи
+- `code80__ADD_B_zero_and_carry` — 0xFF+0x01=0x00, Z=1,C=1,H=1
+- `code80__ADD_B_carry_not_consumed` — carry=1 установлен заранее через ADC, но ADD B игнорирует его: 0x0F+0x00=0x0F (не 0x10)
+
+## UPD8
+
+Беру `ADI_XX` (opcode `0xC6`): `A = A + imm8`, без carry. go
+
 
