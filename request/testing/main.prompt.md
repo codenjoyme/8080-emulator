@@ -63,4 +63,19 @@ iterative-prompt.agent.md
 - [.github/prompts/to-build-locally.prompt.md](../../.github/prompts/to-build-locally.prompt.md) — VSCode wrapper.
 - [.github/prompts/to-cpu-unit-testing.prompt.md](../../.github/prompts/to-cpu-unit-testing.prompt.md) — VSCode wrapper.
 
-Первая команда из TODO — `ACI_XX`. Беру её в UPD4.
+## UPD4
+
+Первая команда из TODO — `ACI_XX`. Беру её в UPD4. go
+
+### RESULT
+
+`ACI_XX` (opcode `0xCE`): `A = A + imm8 + carry`. Написаны и прошли 4 теста:
+
+- `codeCE__ACI_XX_no_flags` — базовый случай (0x10+0x20=0x30, P=1)
+- `codeCE__ACI_XX_zero_and_carry` — overflow через 0xFF+1, Z=1 C=1 H=1 P=1
+- `codeCE__ACI_XX_sign_and_half_carry` — 0x7F+1=0x80, S=1 H=1
+- `codeCE__ACI_XX_with_carry_in` — carry пробрасывается: 0x0F+0+carry(1)=0x10, H=1
+
+Все 142 теста CpuTest прошли. `readme.md` — `ACI_XX` отмечен ✓.
+
+Коммит: `2aab430 Add tests for ACI_XX (add immediate with carry)`
