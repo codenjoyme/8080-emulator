@@ -97,7 +97,7 @@ Intro
 - [x] `CMA`
 - [x] `CMC`
 - [x] `CMP_R`
-- [ ] `CNC_XXYY`
+- [x] `CNC_XXYY`
 - [ ] `CNZ_XXYY`
 - [ ] `CP_XXYY`
 - [ ] `CPE_XXYY`

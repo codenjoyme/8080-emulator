@@ -10427,4 +10427,115 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  false\n");
     }
+
+    // CNC_XXYY: CALL if no carry  (opcode 0xD4)
+
+    @Test
+    public void codeD4__CNC_XXYY_carry_clear() {
+        // given: carry=0 (default), CNC 0005 — condition met, call happens
+        givenPr("CNC 0005\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("D4 05 00\n" +
+                "00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFFE\n" +
+                "PC:  0009\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   D4\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00001001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11010100\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 03 -> 03\nFFFF: 00 -> 00");
+    }
+
+    @Test
+    public void codeD4__CNC_XXYY_carry_set() {
+        // given: carry=1 via ADC overflow, then CNC — condition NOT met, no call
+        givenPr("MVI A,FF\n" +
+                "MVI B,01\n" +
+                "ADC B\n" +     // A=0x00, carry=1
+                "CNC 000A\n" +  // carry=1 → NO call
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "06 01\n" +
+                "88\n" +
+                "D4 0A 00\n" +
+                "00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0100\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0057\n" +
+                "SP:  0000\n" +
+                "PC:  000C\n" +
+                "B,C: 01 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 00 57\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001100\n" +
+                "     76543210\n" +
+                "B:   00000001\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   01010111\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  true\n");
+    }
 }

@@ -233,4 +233,14 @@ iterative-prompt.agent.md
 - `codeB8__CMP_B_less` — A<B: S=1, C=1 (борроу), H=1, P=1, F=0x97
 - `codeB8__CMP_B_equal` — A=B: Z=1, H=1, F=0x56
 
+## UPD18
+
+Беру `CNC_XXYY` (opcode `0xD4`): CALL if no carry. go
+
+### RESULT
+
+2 теста, все прошли (203 total):
+- `codeD4__CNC_XXYY_carry_clear` — carry=0, CALL происходит: SP=0xFFFE, return addr 0x0003
+- `codeD4__CNC_XXYY_carry_set` — carry=1 (через ADC overflow), CALL не происходит
+
 
