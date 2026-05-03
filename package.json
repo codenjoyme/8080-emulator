@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Testing project",
   "private": true,
-  "author": "Apofig",
+  "author": "Oleksandr Baglai <apofig@gmail.com>",
   "license": "GPT-3",
   "devDependencies": {
     "@swc/jest": "^0.2.37",
