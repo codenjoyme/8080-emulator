@@ -188,4 +188,8 @@ iterative-prompt.agent.md
 - `codeDC__CC_XXYY_carry_set` — carry=1 (через ADC overflow), CALL происходит: PC=0x0010, SP=0xFFFE, return addr 0x0008
 - `codeDC__CC_XXYY_carry_clear` — carry=0, CALL не происходит: PC=0x0007, SP=0x0000
 
+## UPD14
+
+Беру `CM_XXYY` (opcode `0xFC`): CALL if minus (sign flag set). go
+
 
