@@ -589,5 +589,6 @@
 - [x] (6327b10) Add test for CNZ_XXYY (conditional call if not zero, 2 variants: taken/not-taken).
 - [x] (aa35a78) Add test for CP_XXYY (conditional call if positive/sign clear, 2 variants: taken/not-taken).
 - [x] (df8ad94) Add test for CPE_XXYY (conditional call if parity even, 2 variants: taken/not-taken).
+- [x] (51f1c44) Add tests for CPI_XX (compare immediate with A, 3 variants: greater/equal/less).
       
 Продолжение следует!

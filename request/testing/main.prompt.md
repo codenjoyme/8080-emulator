@@ -288,4 +288,14 @@ iterative-prompt.agent.md
 
 Беру `CPO_XXYY` (opcode `0xE4`): CALL if parity odd. go
 
+### RESULT
+
+2 теста, все прошли (214 total):
+- `codeE4__CPO_XXYY_odd` — ADI 01 → P=0 (odd), CALL происходит
+- `codeE4__CPO_XXYY_even` — ADI 03 → P=1 (even), CALL не происходит
+
+## UPD24
+
+Беру `CZ_XXYY` (opcode `0xCC`): CALL if zero. go
+
 
