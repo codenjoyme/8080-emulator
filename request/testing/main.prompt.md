@@ -308,4 +308,15 @@ iterative-prompt.agent.md
 
 Беру `DAA` (opcode `0x27`): decimal adjust accumulator. go
 
+### RESULT
+
+3 теста, все прошли (219 total):
+- `code27__DAA_no_change` — A=0x08 (валидный BCD), DAA не меняет
+- `code27__DAA_lower_nibble_fix` — 0x09+0x01=0x0A, DAA → 0x10
+- `code27__DAA_upper_nibble_fix` — 0x90+0x10=0xA0, DAA → 0x00 (C=1)
+
+## UPD26
+
+Беру `DCX_RR` (opcode `0x0B/0x1B/0x2B/0x3B`): decrement register pair. go
+
 

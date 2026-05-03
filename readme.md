@@ -104,7 +104,7 @@ Intro
 - [x] `CPI_XX`
 - [x] `CPO_XXYY`
 - [x] `CZ_XXYY`
-- [ ] `DAA`
+- [x] `DAA`
 - [ ] `DCX_RR`
 - [ ] `DI`
 - [ ] `EI`
