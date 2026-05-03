@@ -138,6 +138,40 @@ Wait — PC is updated **before** the instruction stops (rPC.inc16() fires on op
 - Standard H (arithmetic): borrow from bit4 or carry from bit3.
 - P flag: set if number of 1-bits in result is even (including 0).
 
+## Indirect register sentinel for jump/call tests
+
+For conditional JMP and CALL instructions, verifying that the jump target was actually reached (not just checking PC) adds confidence. Use `INR C` (`0x0C`) as a sentinel:
+
+**Pattern:**
+- Place `INR C` immediately after the jump/call instruction in the instruction stream.
+- For **taken** tests: jump target is set to skip over `INR C` → C stays **0x00**, proving the jump was taken.
+- For **not-taken** tests: `INR C` executes normally → C becomes **0x01**, proving fall-through happened.
+
+**Example — taken (JC jumps to 0x0008):**
+```
+Memory:
+0x0000: 3E FF   (MVI A,FF)
+0x0002: C6 01   (ADI 01 → carry=1)
+0x0004: DA 08 00 (JC 0x0008 — taken, target past INR C)
+0x0007: 0C      (INR C — SKIPPED, C stays 0x00 → jump was taken)
+0x0008: 00      (NOP — jump target)
+```
+
+**Example — not taken (JC falls through):**
+```
+Memory:
+0x0000: DA 06 00 (JC 0x0006 — not taken, C=0 carry)
+0x0003: 0C       (INR C — EXECUTED, C becomes 0x01 → jump was NOT taken)
+```
+
+**Always assert C register in jump tests** (C=0x00 → taken, C=0x01 → not taken).
+
+**IMPORTANT — `INR C` modifies flags in not-taken tests:** When the jump is NOT taken, `INR C` executes and sets Z, S, H, P flags based on the result (0x01). This means the `AF` register value at the end of a not-taken test will reflect the flags AFTER `INR C`, not the flags set by the pre-jump setup code. Carry (C flag) is NOT changed by `INR`. Always calculate the correct post-INR-C flags when writing not-taken test assertions.
+
+Example: if a setup produces `F=0x46` (Z=1, P=1), then `INR C` (C becomes 0x01) changes to `F=0x02` (Z=0, P=0). If carry was set (F=0x57), after `INR C` carry is preserved: `F=0x03` (only carry+bit1).
+
+**Note:** Use `INR C` (`0x0C`), not `INR B`, in tests that set up B register in the precondition (e.g., CC_XXYY uses `MVI B,01`). C register is unused in all existing setups.
+
 ## Setting flags for conditional CALL tests
 
 For CALL-if-condition tests, you need to SET the tested flag first. Practical ways:

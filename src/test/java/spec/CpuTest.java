@@ -9434,14 +9434,16 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void codeCD__CALL_XXYY() {
-        // given: CALL 0005 — jumps past 2 dead NOPs, pushes return addr 0x0003 to stack
-        givenPr("CALL 0005\n" +
+        // given: CALL 0006 — jumps past INR C at 0x0003 (C=0 proves CALL was taken)
+        givenPr("CALL 0006\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
-        givenMm("CD 05 00\n" +
+        givenMm("CD 06 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00\n" +
@@ -9456,7 +9458,7 @@ public class CpuTest extends AbstractTest {
                 "HL:  0000\n" +
                 "AF:  0002\n" +
                 "SP:  FFFE\n" +
-                "PC:  0009\n" +
+                "PC:  000B\n" +
                 "B,C: 00 00\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
@@ -9464,7 +9466,7 @@ public class CpuTest extends AbstractTest {
                 "A,F: 00 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  11111111 11111110\n" +
-                "PC:  00000000 00001001\n" +
+                "PC:  00000000 00001011\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
                 "C:   00000000\n" +
@@ -9482,20 +9484,23 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
         asrtMem("FFFE: 00 -> 03 -> 03\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves CALL was taken
     }
 
     @Test
     public void codeCD__CALL_XXYY_with_sp() {
-        // given: LXI SP,FFFC first, then CALL 0009 — SP decrements to 0xFFFA
+        // given: LXI SP,FFFC first, then CALL 000A — SP=FFFA, INR C at 0x0006 skipped (C=0)
         givenPr("LXI SP,FFFC\n" +
-                "CALL 0009\n" +
+                "CALL 000A\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
         givenMm("31 FC FF\n" +
-                "CD 09 00\n" +
+                "CD 0A 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00\n" +
@@ -9510,7 +9515,7 @@ public class CpuTest extends AbstractTest {
                 "HL:  0000\n" +
                 "AF:  0002\n" +
                 "SP:  FFFA\n" +
-                "PC:  000D\n" +
+                "PC:  000F\n" +
                 "B,C: 00 00\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
@@ -9518,7 +9523,7 @@ public class CpuTest extends AbstractTest {
                 "A,F: 00 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  11111111 11111010\n" +
-                "PC:  00000000 00001101\n" +
+                "PC:  00000000 00001111\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
                 "C:   00000000\n" +
@@ -9536,17 +9541,19 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
         asrtMem("FFFA: 00 -> 06 -> 06\nFFFB: 00 -> 00 -> 00");
+        // C=0x00: INR C was skipped → proves CALL was taken
     }
 
     // CC_XXYY: CALL if carry  (opcode 0xDC)
 
     @Test
     public void codeDC__CC_XXYY_carry_set() {
-        // given: carry=1 via ADC overflow, then CC 000B — call happens
+        // given: carry=1 via ADC overflow, then CC 000C — call happens, INR C at 0x0008 skipped (C=0)
         givenPr("MVI A,FF\n" +
                 "MVI B,01\n" +
                 "ADC B\n" +     // A=0x00, carry=1
-                "CC 000B\n" +   // carry=1 → CALL to 0x000B
+                "CC 000C\n" +   // carry=1 → CALL to 0x000C
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n" +
@@ -9556,7 +9563,8 @@ public class CpuTest extends AbstractTest {
         givenMm("3E FF\n" +
                 "06 01\n" +
                 "88\n" +
-                "DC 0B 00\n" +
+                "DC 0C 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00\n" +
@@ -9572,7 +9580,7 @@ public class CpuTest extends AbstractTest {
                 "HL:  0000\n" +
                 "AF:  0057\n" +
                 "SP:  FFFE\n" +
-                "PC:  0010\n" +
+                "PC:  0012\n" +
                 "B,C: 01 00\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
@@ -9580,7 +9588,7 @@ public class CpuTest extends AbstractTest {
                 "A,F: 00 57\n" +
                 "     76543210 76543210\n" +
                 "SP:  11111111 11111110\n" +
-                "PC:  00000000 00010000\n" +
+                "PC:  00000000 00010010\n" +
                 "     76543210\n" +
                 "B:   00000001\n" +
                 "C:   00000000\n" +
@@ -9598,18 +9606,21 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  true\n");
         asrtMem("FFFE: 00 -> 08 -> 08\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves CC was taken
     }
 
     @Test
     public void codeDC__CC_XXYY_carry_clear() {
-        // given: carry=0 (default), CC 0005 — condition not met, no call
+        // given: carry=0 (default), CC not taken → INR C at 0x0003 executes (C=1)
         givenPr("CC 0005\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
         givenMm("DC 05 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00\n" +
@@ -9619,23 +9630,23 @@ public class CpuTest extends AbstractTest {
         start();
 
         // then
-        asrtCpu("BC:  0000\n" +
+        asrtCpu("BC:  0001\n" +
                 "DE:  0000\n" +
                 "HL:  0000\n" +
                 "AF:  0002\n" +
                 "SP:  0000\n" +
-                "PC:  0007\n" +
-                "B,C: 00 00\n" +
+                "PC:  0008\n" +
+                "B,C: 00 01\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
                 "M:   DC\n" +
                 "A,F: 00 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000000 00000000\n" +
-                "PC:  00000000 00000111\n" +
+                "PC:  00000000 00001000\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
-                "C:   00000000\n" +
+                "C:   00000001\n" +
                 "D:   00000000\n" +
                 "E:   00000000\n" +
                 "H:   00000000\n" +
@@ -9649,17 +9660,19 @@ public class CpuTest extends AbstractTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+        // C=0x01: INR C was executed → proves CC was NOT taken
     }
 
     // CM_XXYY: CALL if minus (sign flag)  (opcode 0xFC)
 
     @Test
     public void codeFC__CM_XXYY_sign_set() {
-        // given: ADD B sets S=1 (0x7F+0x01=0x80), then CM — call happens
+        // given: ADD B sets S=1 (0x7F+0x01=0x80), CM — call happens, INR C at 0x0008 skipped (C=0)
         givenPr("MVI A,7F\n" +
                 "MVI B,01\n" +
                 "ADD B\n" +     // A=0x80, S=1
-                "CM 000A\n" +   // S=1 → CALL to 0x000A
+                "CM 000B\n" +   // S=1 → CALL to 0x000B
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n" +
@@ -9668,7 +9681,8 @@ public class CpuTest extends AbstractTest {
         givenMm("3E 7F\n" +
                 "06 01\n" +
                 "80\n" +
-                "FC 0A 00\n" +
+                "FC 0B 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00\n" +
@@ -9683,7 +9697,7 @@ public class CpuTest extends AbstractTest {
                 "HL:  0000\n" +
                 "AF:  8092\n" +
                 "SP:  FFFE\n" +
-                "PC:  000E\n" +
+                "PC:  0010\n" +
                 "B,C: 01 00\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
@@ -9691,7 +9705,7 @@ public class CpuTest extends AbstractTest {
                 "A,F: 80 92\n" +
                 "     76543210 76543210\n" +
                 "SP:  11111111 11111110\n" +
-                "PC:  00000000 00001110\n" +
+                "PC:  00000000 00010000\n" +
                 "     76543210\n" +
                 "B:   00000001\n" +
                 "C:   00000000\n" +
@@ -9709,14 +9723,16 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
         asrtMem("FFFE: 00 -> 08 -> 08\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves CM was taken
     }
 
     @Test
     public void codeFC__CM_XXYY_sign_clear() {
-        // given: ADD A with A=0x01 → A=0x02, S=0, then CM — no call
+        // given: ADD A with A=0x01 → A=0x02, S=0, CM not taken → INR C executes (C=1)
         givenPr("MVI A,01\n" +
                 "ADD A\n" +     // A=0x02, S=0
                 "CM 0008\n" +   // S=0 → NO call
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
@@ -9724,6 +9740,7 @@ public class CpuTest extends AbstractTest {
         givenMm("3E 01\n" +
                 "87\n" +
                 "FC 08 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -9732,23 +9749,23 @@ public class CpuTest extends AbstractTest {
         start();
 
         // then
-        asrtCpu("BC:  0000\n" +
+        asrtCpu("BC:  0001\n" +
                 "DE:  0000\n" +
                 "HL:  0000\n" +
                 "AF:  0202\n" +
                 "SP:  0000\n" +
-                "PC:  0009\n" +
-                "B,C: 00 00\n" +
+                "PC:  000A\n" +
+                "B,C: 00 01\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
                 "M:   3E\n" +
                 "A,F: 02 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000000 00000000\n" +
-                "PC:  00000000 00001001\n" +
+                "PC:  00000000 00001010\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
-                "C:   00000000\n" +
+                "C:   00000001\n" +
                 "D:   00000000\n" +
                 "E:   00000000\n" +
                 "H:   00000000\n" +
@@ -9762,6 +9779,7 @@ public class CpuTest extends AbstractTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+        // C=0x01: INR C was executed → proves CM was NOT taken
     }
 
     // CMA: complement accumulator A = A ^ 0xFF  (opcode 0x2F, no flags changed)
@@ -10432,14 +10450,18 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void codeD4__CNC_XXYY_carry_clear() {
-        // given: carry=0 (default), CNC 0005 — condition met, call happens
-        givenPr("CNC 0005\n" +
+        // given: carry=0 (default), CNC 0006 — call happens, INR C at 0x0003 skipped (C=0)
+        givenPr("CNC 0006\n" +
+                "INR C\n" +
+                "NOP\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
-        givenMm("D4 05 00\n" +
+        givenMm("D4 06 00\n" +
+                "0C\n" +
+                "00\n" +
                 "00\n" +
                 "00\n" +
                 "00\n" +
@@ -10454,7 +10476,7 @@ public class CpuTest extends AbstractTest {
                 "HL:  0000\n" +
                 "AF:  0002\n" +
                 "SP:  FFFE\n" +
-                "PC:  0009\n" +
+                "PC:  000C\n" +
                 "B,C: 00 00\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
@@ -10462,7 +10484,7 @@ public class CpuTest extends AbstractTest {
                 "A,F: 00 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  11111111 11111110\n" +
-                "PC:  00000000 00001001\n" +
+                "PC:  00000000 00001100\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
                 "C:   00000000\n" +
@@ -10480,16 +10502,17 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
         asrtMem("FFFE: 00 -> 03 -> 03\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves CNC was taken
     }
 
     @Test
     public void codeD4__CNC_XXYY_carry_set() {
-        // given: carry=1 via ADC overflow, then CNC — condition NOT met, no call
+        // given: carry=1 via ADC overflow, CNC not taken → INR C at 0x0008 executes (C=1)
         givenPr("MVI A,FF\n" +
                 "MVI B,01\n" +
                 "ADC B\n" +     // A=0x00, carry=1
                 "CNC 000A\n" +  // carry=1 → NO call
-                "NOP\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
@@ -10498,7 +10521,7 @@ public class CpuTest extends AbstractTest {
                 "06 01\n" +
                 "88\n" +
                 "D4 0A 00\n" +
-                "00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -10507,23 +10530,23 @@ public class CpuTest extends AbstractTest {
         start();
 
         // then
-        asrtCpu("BC:  0100\n" +
+        asrtCpu("BC:  0101\n" +
                 "DE:  0000\n" +
                 "HL:  0000\n" +
-                "AF:  0057\n" +
+                "AF:  0003\n" +
                 "SP:  0000\n" +
                 "PC:  000C\n" +
-                "B,C: 01 00\n" +
+                "B,C: 01 01\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
                 "M:   3E\n" +
-                "A,F: 00 57\n" +
+                "A,F: 00 03\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000000 00000000\n" +
                 "PC:  00000000 00001100\n" +
                 "     76543210\n" +
                 "B:   00000001\n" +
-                "C:   00000000\n" +
+                "C:   00000001\n" +
                 "D:   00000000\n" +
                 "E:   00000000\n" +
                 "H:   00000000\n" +
@@ -10531,27 +10554,30 @@ public class CpuTest extends AbstractTest {
                 "M:   00111110\n" +
                 "A:   00000000\n" +
                 "     sz0h0p1c\n" +
-                "F:   01010111\n" +
+                "F:   00000011\n" +
                 "ts:  false\n" +
-                "tz:  true\n" +
-                "th:  true\n" +
-                "tp:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
                 "tc:  true\n");
+        // C=0x01: INR C was executed → proves CNC was NOT taken
     }
 
     // CNZ_XXYY: CALL if not zero  (opcode 0xC4)
 
     @Test
     public void codeC4__CNZ_XXYY_nz() {
-        // given: A=0x01 (not zero), CNZ 0005 — condition met, call happens
+        // given: MVI A,01 → Z=0, CNZ 0006 — call happens, INR C at 0x0005 skipped (C=0)
         givenPr("MVI A,01\n" +
-                "CNZ 0005\n" +
+                "CNZ 0006\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
         givenMm("3E 01\n" +
-                "C4 05 00\n" +
+                "C4 06 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -10565,7 +10591,7 @@ public class CpuTest extends AbstractTest {
                 "HL:  0000\n" +
                 "AF:  0102\n" +
                 "SP:  FFFE\n" +
-                "PC:  0008\n" +
+                "PC:  000A\n" +
                 "B,C: 00 00\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
@@ -10573,7 +10599,7 @@ public class CpuTest extends AbstractTest {
                 "A,F: 01 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  11111111 11111110\n" +
-                "PC:  00000000 00001000\n" +
+                "PC:  00000000 00001010\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
                 "C:   00000000\n" +
@@ -10591,14 +10617,16 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
         asrtMem("FFFE: 00 -> 05 -> 05\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves CNZ was taken
     }
 
     @Test
     public void codeC4__CNZ_XXYY_zero() {
-        // given: A=0 (zero flag set via MVI), CNZ — condition NOT met, no call
+        // given: Z=1 via ADD A(0x00), CNZ not taken → INR C at 0x0006 executes (C=1)
         givenPr("MVI A,00\n" +
                 "ADD A\n" +     // A=0, sets Z=1
                 "CNZ 0008\n" +  // Z=1 → NO call
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
@@ -10606,6 +10634,7 @@ public class CpuTest extends AbstractTest {
         givenMm("3E 00\n" +
                 "87\n" +
                 "C4 08 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -10614,23 +10643,23 @@ public class CpuTest extends AbstractTest {
         start();
 
         // then
-        asrtCpu("BC:  0000\n" +
+        asrtCpu("BC:  0001\n" +
                 "DE:  0000\n" +
                 "HL:  0000\n" +
-                "AF:  0046\n" +
+                "AF:  0002\n" +
                 "SP:  0000\n" +
-                "PC:  0009\n" +
-                "B,C: 00 00\n" +
+                "PC:  000A\n" +
+                "B,C: 00 01\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
                 "M:   3E\n" +
-                "A,F: 00 46\n" +
+                "A,F: 00 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000000 00000000\n" +
-                "PC:  00000000 00001001\n" +
+                "PC:  00000000 00001010\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
-                "C:   00000000\n" +
+                "C:   00000001\n" +
                 "D:   00000000\n" +
                 "E:   00000000\n" +
                 "H:   00000000\n" +
@@ -10638,27 +10667,30 @@ public class CpuTest extends AbstractTest {
                 "M:   00111110\n" +
                 "A:   00000000\n" +
                 "     sz0h0p1c\n" +
-                "F:   01000110\n" +
+                "F:   00000010\n" +
                 "ts:  false\n" +
-                "tz:  true\n" +
+                "tz:  false\n" +
                 "th:  false\n" +
-                "tp:  true\n" +
+                "tp:  false\n" +
                 "tc:  false\n");
+        // C=0x01: INR C was executed → proves CNZ was NOT taken
     }
 
     // CP_XXYY: CALL if positive (sign=0)  (opcode 0xF4)
 
     @Test
     public void codeF4__CP_XXYY_positive() {
-        // given: A=0x01 (positive, S=0), CP 0005 — condition met, call happens
+        // given: MVI A,01 → S=0, CP 0006 — call happens, INR C at 0x0005 skipped (C=0)
         givenPr("MVI A,01\n" +
-                "CP 0005\n" +
+                "CP 0006\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
         givenMm("3E 01\n" +
-                "F4 05 00\n" +
+                "F4 06 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -10672,7 +10704,7 @@ public class CpuTest extends AbstractTest {
                 "HL:  0000\n" +
                 "AF:  0102\n" +
                 "SP:  FFFE\n" +
-                "PC:  0008\n" +
+                "PC:  000A\n" +
                 "B,C: 00 00\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
@@ -10680,7 +10712,7 @@ public class CpuTest extends AbstractTest {
                 "A,F: 01 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  11111111 11111110\n" +
-                "PC:  00000000 00001000\n" +
+                "PC:  00000000 00001010\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
                 "C:   00000000\n" +
@@ -10698,14 +10730,16 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
         asrtMem("FFFE: 00 -> 05 -> 05\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves CP was taken
     }
 
     @Test
     public void codeF4__CP_XXYY_negative() {
-        // given: A=0x40, ADD A → A=0x80 (S=1), CP — condition NOT met, no call
+        // given: ADD A with A=0x40 → A=0x80, S=1, CP not taken → INR C executes (C=1)
         givenPr("MVI A,40\n" +
-                "ADD A\n" +
-                "CP 0007\n" +
+                "ADD A\n" +     // A=0x80, S=1
+                "CP 0007\n" +   // S=1 → NO call
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
@@ -10713,6 +10747,7 @@ public class CpuTest extends AbstractTest {
         givenMm("3E 40\n" +
                 "87\n" +
                 "F4 07 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -10721,23 +10756,23 @@ public class CpuTest extends AbstractTest {
         start();
 
         // then
-        asrtCpu("BC:  0000\n" +
+        asrtCpu("BC:  0001\n" +
                 "DE:  0000\n" +
                 "HL:  0000\n" +
-                "AF:  8082\n" +
+                "AF:  8002\n" +
                 "SP:  0000\n" +
-                "PC:  0009\n" +
-                "B,C: 00 00\n" +
+                "PC:  000A\n" +
+                "B,C: 00 01\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
                 "M:   3E\n" +
-                "A,F: 80 82\n" +
+                "A,F: 80 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000000 00000000\n" +
-                "PC:  00000000 00001001\n" +
+                "PC:  00000000 00001010\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
-                "C:   00000000\n" +
+                "C:   00000001\n" +
                 "D:   00000000\n" +
                 "E:   00000000\n" +
                 "H:   00000000\n" +
@@ -10745,27 +10780,30 @@ public class CpuTest extends AbstractTest {
                 "M:   00111110\n" +
                 "A:   10000000\n" +
                 "     sz0h0p1c\n" +
-                "F:   10000010\n" +
-                "ts:  true\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
                 "tz:  false\n" +
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+        // C=0x01: INR C was executed → proves CP was NOT taken
     }
 
     // CPE_XXYY: CALL if parity even (P=1)  (opcode 0xEC)
 
     @Test
     public void codeEC__CPE_XXYY_even() {
-        // given: ADI 03 → A=0x03 (P=1, even parity), CPE 0005 — condition met, call happens
+        // given: ADI 03 → A=0x03 (P=1), CPE 0006 — call happens, INR C at 0x0005 skipped (C=0)
         givenPr("ADI 03\n" +
-                "CPE 0005\n" +
+                "CPE 0006\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
         givenMm("C6 03\n" +
-                "EC 05 00\n" +
+                "EC 06 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -10779,7 +10817,7 @@ public class CpuTest extends AbstractTest {
                 "HL:  0000\n" +
                 "AF:  0306\n" +
                 "SP:  FFFE\n" +
-                "PC:  0008\n" +
+                "PC:  000A\n" +
                 "B,C: 00 00\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
@@ -10787,7 +10825,7 @@ public class CpuTest extends AbstractTest {
                 "A,F: 03 06\n" +
                 "     76543210 76543210\n" +
                 "SP:  11111111 11111110\n" +
-                "PC:  00000000 00001000\n" +
+                "PC:  00000000 00001010\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
                 "C:   00000000\n" +
@@ -10805,19 +10843,22 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  false\n");
         asrtMem("FFFE: 00 -> 05 -> 05\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves CPE was taken
     }
 
     @Test
     public void codeEC__CPE_XXYY_odd() {
-        // given: ADI 01 → A=0x01 (P=0, odd parity), CPE — condition NOT met, no call
+        // given: ADI 01 → A=0x01 (P=0), CPE not taken → INR C at 0x0005 executes (C=1)
         givenPr("ADI 01\n" +
                 "CPE 0007\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
         givenMm("C6 01\n" +
                 "EC 07 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -10826,23 +10867,23 @@ public class CpuTest extends AbstractTest {
         start();
 
         // then
-        asrtCpu("BC:  0000\n" +
+        asrtCpu("BC:  0001\n" +
                 "DE:  0000\n" +
                 "HL:  0000\n" +
                 "AF:  0102\n" +
                 "SP:  0000\n" +
-                "PC:  0008\n" +
-                "B,C: 00 00\n" +
+                "PC:  0009\n" +
+                "B,C: 00 01\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
                 "M:   C6\n" +
                 "A,F: 01 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000000 00000000\n" +
-                "PC:  00000000 00001000\n" +
+                "PC:  00000000 00001001\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
-                "C:   00000000\n" +
+                "C:   00000001\n" +
                 "D:   00000000\n" +
                 "E:   00000000\n" +
                 "H:   00000000\n" +
@@ -10856,6 +10897,7 @@ public class CpuTest extends AbstractTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+        // C=0x01: INR C was executed → proves CPE was NOT taken
     }
 
     // CPI_XX: compare immediate with A (opcode 0xFE)
@@ -11012,15 +11054,17 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void codeE4__CPO_XXYY_odd() {
-        // given: ADI 01 → A=0x01 (P=0, odd parity), CPO 0005 — condition met, call happens
+        // given: ADI 01 → A=0x01 (P=0), CPO 0006 — call happens, INR C at 0x0005 skipped (C=0)
         givenPr("ADI 01\n" +
-                "CPO 0005\n" +
+                "CPO 0006\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
         givenMm("C6 01\n" +
-                "E4 05 00\n" +
+                "E4 06 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -11034,7 +11078,7 @@ public class CpuTest extends AbstractTest {
                 "HL:  0000\n" +
                 "AF:  0102\n" +
                 "SP:  FFFE\n" +
-                "PC:  0008\n" +
+                "PC:  000A\n" +
                 "B,C: 00 00\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
@@ -11042,7 +11086,7 @@ public class CpuTest extends AbstractTest {
                 "A,F: 01 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  11111111 11111110\n" +
-                "PC:  00000000 00001000\n" +
+                "PC:  00000000 00001010\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
                 "C:   00000000\n" +
@@ -11060,19 +11104,22 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
         asrtMem("FFFE: 00 -> 05 -> 05\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves CPO was taken
     }
 
     @Test
     public void codeE4__CPO_XXYY_even() {
-        // given: ADI 03 → A=0x03 (P=1, even parity), CPO — condition NOT met, no call
+        // given: ADI 03 → A=0x03 (P=1), CPO not taken → INR C at 0x0005 executes (C=1)
         givenPr("ADI 03\n" +
                 "CPO 0007\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
         givenMm("C6 03\n" +
                 "E4 07 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -11081,23 +11128,23 @@ public class CpuTest extends AbstractTest {
         start();
 
         // then
-        asrtCpu("BC:  0000\n" +
+        asrtCpu("BC:  0001\n" +
                 "DE:  0000\n" +
                 "HL:  0000\n" +
-                "AF:  0306\n" +
+                "AF:  0302\n" +
                 "SP:  0000\n" +
-                "PC:  0008\n" +
-                "B,C: 00 00\n" +
+                "PC:  0009\n" +
+                "B,C: 00 01\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
                 "M:   C6\n" +
-                "A,F: 03 06\n" +
+                "A,F: 03 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000000 00000000\n" +
-                "PC:  00000000 00001000\n" +
+                "PC:  00000000 00001001\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
-                "C:   00000000\n" +
+                "C:   00000001\n" +
                 "D:   00000000\n" +
                 "E:   00000000\n" +
                 "H:   00000000\n" +
@@ -11105,27 +11152,30 @@ public class CpuTest extends AbstractTest {
                 "M:   11000110\n" +
                 "A:   00000011\n" +
                 "     sz0h0p1c\n" +
-                "F:   00000110\n" +
+                "F:   00000010\n" +
                 "ts:  false\n" +
                 "tz:  false\n" +
                 "th:  false\n" +
-                "tp:  true\n" +
+                "tp:  false\n" +
                 "tc:  false\n");
+        // C=0x01: INR C was executed → proves CPO was NOT taken
     }
 
     // CZ_XXYY: CALL if zero (Z=1)  (opcode 0xCC)
 
     @Test
     public void codeCC__CZ_XXYY_zero() {
-        // given: ADD A with A=0 → Z=1, CZ 0003 — condition met, call happens
+        // given: ADD A with A=0 → Z=1, CZ 0005 — call happens, INR C at 0x0004 skipped (C=0)
         givenPr("ADD A\n" +
-                "CZ 0003\n" +
+                "CZ 0005\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
         givenMm("87\n" +
-                "CC 03 00\n" +
+                "CC 05 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -11139,7 +11189,7 @@ public class CpuTest extends AbstractTest {
                 "HL:  0000\n" +
                 "AF:  0046\n" +
                 "SP:  FFFE\n" +
-                "PC:  0006\n" +
+                "PC:  0009\n" +
                 "B,C: 00 00\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
@@ -11147,7 +11197,7 @@ public class CpuTest extends AbstractTest {
                 "A,F: 00 46\n" +
                 "     76543210 76543210\n" +
                 "SP:  11111111 11111110\n" +
-                "PC:  00000000 00000110\n" +
+                "PC:  00000000 00001001\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
                 "C:   00000000\n" +
@@ -11165,17 +11215,20 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  false\n");
         asrtMem("FFFE: 00 -> 04 -> 04\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves CZ was taken
     }
 
     @Test
     public void codeCC__CZ_XXYY_nz() {
-        // given: Z=0 (default), CZ — condition NOT met, no call
+        // given: Z=0 (default), CZ not taken → INR C at 0x0003 executes (C=1)
         givenPr("CZ 0004\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
         givenMm("CC 04 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -11184,23 +11237,23 @@ public class CpuTest extends AbstractTest {
         start();
 
         // then
-        asrtCpu("BC:  0000\n" +
+        asrtCpu("BC:  0001\n" +
                 "DE:  0000\n" +
                 "HL:  0000\n" +
                 "AF:  0002\n" +
                 "SP:  0000\n" +
-                "PC:  0006\n" +
-                "B,C: 00 00\n" +
+                "PC:  0007\n" +
+                "B,C: 00 01\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
                 "M:   CC\n" +
                 "A,F: 00 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000000 00000000\n" +
-                "PC:  00000000 00000110\n" +
+                "PC:  00000000 00000111\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
-                "C:   00000000\n" +
+                "C:   00000001\n" +
                 "D:   00000000\n" +
                 "E:   00000000\n" +
                 "H:   00000000\n" +
@@ -11214,6 +11267,7 @@ public class CpuTest extends AbstractTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+        // C=0x01: INR C was executed → proves CZ was NOT taken
     }
 
     // DAA: decimal adjust accumulator  (opcode 0x27)
@@ -11724,17 +11778,19 @@ public class CpuTest extends AbstractTest {
 
     @Test
     public void codeDA__JC_XXYY_carry_set() {
-        // given: MVI A,FF + ADI 01 → carry=1, JC 0008 → jump to 0x0008, 3 NOPs
+        // given: MVI A,FF + ADI 01 → carry=1, JC 0009 → jump taken, INR C at 0x0007 skipped (C=0)
         givenPr("MVI A,FF\n" +
                 "ADI 01\n" +
-                "JC 0008\n" +
+                "JC 0009\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
         givenMm("3E FF\n" +
                 "C6 01\n" +
-                "DA 08 00\n" +
+                "DA 09 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -11748,7 +11804,7 @@ public class CpuTest extends AbstractTest {
                 "HL:  0000\n" +
                 "AF:  0057\n" +
                 "SP:  0000\n" +
-                "PC:  000B\n" +
+                "PC:  000D\n" +
                 "B,C: 00 00\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
@@ -11756,7 +11812,7 @@ public class CpuTest extends AbstractTest {
                 "A,F: 00 57\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000000 00000000\n" +
-                "PC:  00000000 00001011\n" +
+                "PC:  00000000 00001101\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
                 "C:   00000000\n" +
@@ -11773,17 +11829,20 @@ public class CpuTest extends AbstractTest {
                 "th:  true\n" +
                 "tp:  true\n" +
                 "tc:  true\n");
+        // C=0x00: INR C was skipped → proves JC was taken
     }
 
     @Test
     public void codeDA__JC_XXYY_carry_clear() {
-        // given: carry=0 (default), JC — condition NOT met, execution continues sequentially
+        // given: carry=0 (default), JC not taken → INR C at 0x0003 executes (C=1)
         givenPr("JC 0006\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
         givenMm("DA 06 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -11792,23 +11851,23 @@ public class CpuTest extends AbstractTest {
         start();
 
         // then
-        asrtCpu("BC:  0000\n" +
+        asrtCpu("BC:  0001\n" +
                 "DE:  0000\n" +
                 "HL:  0000\n" +
                 "AF:  0002\n" +
                 "SP:  0000\n" +
-                "PC:  0006\n" +
-                "B,C: 00 00\n" +
+                "PC:  0007\n" +
+                "B,C: 00 01\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
                 "M:   DA\n" +
                 "A,F: 00 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000000 00000000\n" +
-                "PC:  00000000 00000110\n" +
+                "PC:  00000000 00000111\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
-                "C:   00000000\n" +
+                "C:   00000001\n" +
                 "D:   00000000\n" +
                 "E:   00000000\n" +
                 "H:   00000000\n" +
@@ -11822,16 +11881,18 @@ public class CpuTest extends AbstractTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+        // C=0x01: INR C was executed → proves JC was NOT taken
     }
 
     // JM_XXYY: JUMP if minus (S=1)  (opcode 0xFA)
 
     @Test
     public void codeFA__JM_XXYY_sign_set() {
-        // given: MVI A,40 + ADD A → A=0x80, S=1; JM 0008 → jump
+        // given: MVI A,40 + ADD A → S=1; JM 0008 → jump taken, INR C at 0x0006 skipped (C=0)
         givenPr("MVI A,40\n" +
                 "ADD A\n" +
                 "JM 0008\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
@@ -11839,6 +11900,7 @@ public class CpuTest extends AbstractTest {
         givenMm("3E 40\n" +
                 "87\n" +
                 "FA 08 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -11852,7 +11914,7 @@ public class CpuTest extends AbstractTest {
                 "HL:  0000\n" +
                 "AF:  8082\n" +
                 "SP:  0000\n" +
-                "PC:  000B\n" +
+                "PC:  000C\n" +
                 "B,C: 00 00\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
@@ -11860,7 +11922,7 @@ public class CpuTest extends AbstractTest {
                 "A,F: 80 82\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000000 00000000\n" +
-                "PC:  00000000 00001011\n" +
+                "PC:  00000000 00001100\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
                 "C:   00000000\n" +
@@ -11877,17 +11939,20 @@ public class CpuTest extends AbstractTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+        // C=0x00: INR C was skipped → proves JM was taken
     }
 
     @Test
     public void codeFA__JM_XXYY_sign_clear() {
-        // given: sign=0 (default), JM — not taken
+        // given: sign=0 (default), JM not taken → INR C at 0x0003 executes (C=1)
         givenPr("JM 0006\n" +
+                "INR C\n" +
                 "NOP\n" +
                 "NOP\n" +
                 "NOP\n");
 
         givenMm("FA 06 00\n" +
+                "0C\n" +
                 "00\n" +
                 "00\n" +
                 "00");
@@ -11896,23 +11961,23 @@ public class CpuTest extends AbstractTest {
         start();
 
         // then
-        asrtCpu("BC:  0000\n" +
+        asrtCpu("BC:  0001\n" +
                 "DE:  0000\n" +
                 "HL:  0000\n" +
                 "AF:  0002\n" +
                 "SP:  0000\n" +
-                "PC:  0006\n" +
-                "B,C: 00 00\n" +
+                "PC:  0007\n" +
+                "B,C: 00 01\n" +
                 "D,E: 00 00\n" +
                 "H,L: 00 00\n" +
                 "M:   FA\n" +
                 "A,F: 00 02\n" +
                 "     76543210 76543210\n" +
                 "SP:  00000000 00000000\n" +
-                "PC:  00000000 00000110\n" +
+                "PC:  00000000 00000111\n" +
                 "     76543210\n" +
                 "B:   00000000\n" +
-                "C:   00000000\n" +
+                "C:   00000001\n" +
                 "D:   00000000\n" +
                 "E:   00000000\n" +
                 "H:   00000000\n" +
@@ -11926,5 +11991,60 @@ public class CpuTest extends AbstractTest {
                 "th:  false\n" +
                 "tp:  false\n" +
                 "tc:  false\n");
+        // C=0x01: INR C was executed → proves JM was NOT taken
+    }
+
+    // JMP_XXYY: unconditional JUMP  (opcode 0xC3)
+
+    @Test
+    public void codeC3__JMP_XXYY() {
+        // given: JMP 0005 → jump taken, INR C at 0x0003 skipped (C=0 proves jump was taken)
+        givenPr("JMP 0005\n" +
+                "INR C\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("C3 05 00\n" +
+                "0C\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  0009\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   C3\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11000011\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        // C=0x00: INR C was skipped → proves JMP was taken
     }
 }

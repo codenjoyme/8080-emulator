@@ -111,7 +111,7 @@ Intro
 - [x] `IN_XX`
 - [x] `JC_XXYY`
 - [x] `JM_XXYY`
-- [ ] `JMP_XXYY`
+- [x] `JMP_XXYY`
 - [ ] `JNC_XXYY`
 - [ ] `JNZ_XXYY`
 - [ ] `JP_XXYY`
