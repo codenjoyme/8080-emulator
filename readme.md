@@ -138,7 +138,7 @@ Intro
 - [x] `SBI_XX`
 - [x] `SPHL`
 - [x] `STC`
-- [ ] `SUB_R`
+- [x] `SUB_R`
 - [ ] `SUI_XX`
 - [ ] `XCHG`
 - [ ] `XRA_R`
