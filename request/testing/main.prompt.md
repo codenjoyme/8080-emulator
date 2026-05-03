@@ -454,3 +454,15 @@ iterative-prompt.agent.md
 ## UPD39
 
 Беру `ORA_R` (opcode `0xB0`-`0xB7`): OR with register. go
+
+### RESULT
+
+- Добавлены тесты: `codeB0__ORA_B`, `codeB1__ORA_C`, `codeB2__ORA_D`, `codeB3__ORA_E`, `codeB4__ORA_H`, `codeB5__ORA_L`, `codeB6__ORA_M`, `codeB7__ORA_A`.
+- H и C всегда сбрасываются в 0; S, Z, P устанавливаются по результату.
+- Для ORA_M: HL=0x0000 (по умолчанию), M=mem[0x0000]=0x3E (первый байт givenMm).
+- Commit: `2f89712`
+- Тесты: 251 passed, 0 failures.
+
+## UPD40
+
+Беру `ORI_XX` (opcode `0xF6`): OR immediate with accumulator. go

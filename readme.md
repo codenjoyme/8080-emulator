@@ -119,7 +119,7 @@ Intro
 - [x] `JPO_XXYY`
 - [x] `JZ_XXYY`
 - [x] `ORA_R`
-- [ ] `ORI_XX`
+- [x] `ORI_XX`
 - [ ] `OUT_XX`
 - [ ] `PCHL`
 - [ ] `POP_RS`

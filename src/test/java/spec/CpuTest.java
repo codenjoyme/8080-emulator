@@ -13096,4 +13096,99 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  false\n");
     }
+
+    // ORI_XX: A = A | immediate  (opcode 0xF6)
+    // C always cleared; H always cleared
+
+    @Test
+    public void codeF6__ORI_XX() {
+        // given: A=0xF0, imm=0x0F => 0xF0|0x0F=0xFF, S=1, P=1
+        givenPr("MVI A,F0\n" +
+                "ORI 0F\n" +
+                "NOP\n");
+
+        givenMm("3E F0\n" +
+                "F6 0F\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  FF86\n" +
+                "SP:  0000\n" +
+                "PC:  0005\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: FF 86\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   11111111\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeF6__ORI_XX_zero() {
+        // given: A=0x00, imm=0x00 => 0x00|0x00=0x00, Z=1, P=1
+        givenPr("ORI 00\n" +
+                "NOP\n");
+
+        givenMm("F6 00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0046\n" +
+                "SP:  0000\n" +
+                "PC:  0003\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   F6\n" +
+                "A,F: 00 46\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000011\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11110110\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   01000110\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
 }
