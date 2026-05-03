@@ -584,3 +584,14 @@ iterative-prompt.agent.md
 ## UPD50
 
 Беру `RP` (opcode `0xF0`): return if positive (S=0). go
+
+### RESULT
+
+- Добавлены тесты: `codeF0__RP_positive`, `codeF0__RP_negative`.
+- Ключ: INR C устанавливает флаги по регистру C (0x01), а НЕ по A. Поэтому F=0x02 (не 0x82).
+- Commit: `341ecad`
+- Тесты: 274 passed, 0 failures.
+
+## UPD51
+
+Беру `RPE` (opcode `0xE8`): return if parity even (P=1). go

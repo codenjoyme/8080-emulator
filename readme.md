@@ -130,8 +130,8 @@ Intro
 - [x] `RNC`
 - [x] `RNZ`
 - [x] `RP`
-- [ ] `RPE`
-- [ ] `RPO`
+- [x] `RPE`
+- [x] `RPO`
 - [ ] `RST_N`
 - [ ] `RZ`
 - [ ] `SBB_R`

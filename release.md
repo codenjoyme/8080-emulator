@@ -617,6 +617,7 @@
 - [x] (6b9f12a) Add test for RM (return if minus, 2 variants: taken/not-taken).
 - [x] (ce589da) Add test for RNC (return if no carry, 2 variants: taken/not-taken); update instructions.
 - [x] (61d1d07) Add test for RNZ (return if not zero, 2 variants: taken/not-taken).
-- [x] (???????) Add test for RP (return if positive, 2 variants: taken/not-taken).
+- [x] (341ecad) Add test for RP (return if positive, 2 variants: taken/not-taken).
+- [x] (???????) Add test for RPE and RPO (return if parity even/odd, 2 variants each).
       
 Продолжение следует!

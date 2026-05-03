@@ -14366,4 +14366,234 @@ public class CpuTest extends AbstractTest {
                 "tc:  false\n");
         // C=0x01: INR C was executed → proves RP was NOT taken
     }
+
+    // RPE: return if parity even (P=1)  (opcode 0xE8)
+    // INR C sentinel: C=0x00 means RPE was taken (INR C skipped)
+
+    @Test
+    public void codeE8__RPE_even() {
+        // given: JMP 0005, ADI 03 sets P=1 (0x03=2bits=even), CALL 0003, RPE taken (C=0)
+        // subroutine at 0x0003: RPE, INR C
+        givenPr("JMP 0005\n" +
+                "RPE\n" +
+                "INR C\n" +
+                "ADI 03\n" +
+                "CALL 0003\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("C3 05 00\n" +
+                "E8\n" +
+                "0C\n" +
+                "C6 03\n" +
+                "CD 03 00\n" +
+                "00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0306\n" +
+                "SP:  0000\n" +
+                "PC:  000F\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   C3\n" +
+                "A,F: 03 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001111\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11000011\n" +
+                "A:   00000011\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 0A -> 0A\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves RPE was taken
+    }
+
+    @Test
+    public void codeE8__RPE_odd() {
+        // given: P=0 (default), RPE not taken → INR C executes (C=0x01)
+        givenPr("RPE\n" +
+                "INR C\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("E8\n" +
+                "0C\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0001\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  0004\n" +
+                "B,C: 00 01\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   E8\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000100\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000001\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11101000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        // C=0x01: INR C was executed → proves RPE was NOT taken
+    }
+
+    // RPO: return if parity odd (P=0)  (opcode 0xE0)
+    // INR C sentinel: C=0x00 means RPO was taken (INR C skipped)
+
+    @Test
+    public void codeE0__RPO_odd() {
+        // given: JMP 0005, P=0 (default), CALL 0003, RPO taken (C=0)
+        // subroutine at 0x0003: RPO, INR C
+        givenPr("JMP 0005\n" +
+                "RPO\n" +
+                "INR C\n" +
+                "CALL 0003\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("C3 05 00\n" +
+                "E0\n" +
+                "0C\n" +
+                "CD 03 00\n" +
+                "00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  000D\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   C3\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11000011\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 08 -> 08\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves RPO was taken
+    }
+
+    @Test
+    public void codeE0__RPO_even() {
+        // given: ADI 03 sets P=1 (0x03=2bits=even); RPO not taken → INR C executes (C=0x01)
+        givenPr("ADI 03\n" +
+                "RPO\n" +
+                "INR C\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("C6 03\n" +
+                "E0\n" +
+                "0C\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0001\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0302\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 01\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   C6\n" +
+                "A,F: 03 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000001\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11000110\n" +
+                "A:   00000011\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        // C=0x01: INR C was executed → proves RPO was NOT taken
+    }
 }
