@@ -623,6 +623,7 @@
 - [x] (d3924e4) Add test for RST_N (restart 0-7, all 8 opcodes).
 - [x] (fa24567) Add test for SBB_R (subtract register with borrow, all variants).
 - [x] (646d50e) Add test for SBI_XX (subtract immediate with borrow).
-- [x] (???????) Add test for SPHL (SP = HL).
+- [x] (ca0c1b4) Add test for SPHL (SP = HL).
+- [x] (???????) Add test for STC (set carry flag).
       
 Продолжение следует!

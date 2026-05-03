@@ -15747,4 +15747,51 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
     }
+
+    // STC: set carry flag  (opcode 0x37)
+
+    @Test
+    public void code37__STC() {
+        // given: carry=0 => after STC carry=1
+        givenPr("STC\n" +
+                "NOP\n");
+
+        givenMm("37\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0003\n" +
+                "SP:  0000\n" +
+                "PC:  0002\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   37\n" +
+                "A,F: 00 03\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000010\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00110111\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000011\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  true\n");
+    }
 }

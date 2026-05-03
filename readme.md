@@ -137,7 +137,7 @@ Intro
 - [x] `SBB_R`
 - [x] `SBI_XX`
 - [x] `SPHL`
-- [ ] `STC`
+- [x] `STC`
 - [ ] `SUB_R`
 - [ ] `SUI_XX`
 - [ ] `XCHG`

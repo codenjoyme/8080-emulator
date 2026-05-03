@@ -645,3 +645,15 @@ Key learnings: M register value depends on HL pointer (not always 0x3E); SBB car
 ## UPD56
 
 Беру `SPHL` (opcode `0xF9`): SP = HL. go
+
+### RESULT
+
+1 test. commit: ca0c1b4.
+
+## UPD57
+
+Беру `STC` (opcode `0x37`): set carry flag. go
+
+### RESULT
+
+1 тест. commit: ???????.
