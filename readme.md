@@ -105,7 +105,7 @@ Intro
 - [x] `CPO_XXYY`
 - [x] `CZ_XXYY`
 - [x] `DAA`
-- [ ] `DCX_RR`
+- [x] `DCX_RR`
 - [ ] `DI`
 - [ ] `EI`
 - [ ] `IN_XX`

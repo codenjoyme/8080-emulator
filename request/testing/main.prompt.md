@@ -319,4 +319,16 @@ iterative-prompt.agent.md
 
 Беру `DCX_RR` (opcode `0x0B/0x1B/0x2B/0x3B`): decrement register pair. go
 
+### RESULT
+
+4 теста, все прошли (223 total):
+- `code0B__DCX_B` — BC: 0x0010 → 0x000F
+- `code1B__DCX_D` — DE: 0x0020 → 0x001F
+- `code2B__DCX_H` — HL: 0x0030 → 0x002F
+- `code3B__DCX_SP` — SP: 0x0040 → 0x003F
+
+## UPD27
+
+Беру `DI` (opcode `0xF3`): disable interrupts. go
+
 

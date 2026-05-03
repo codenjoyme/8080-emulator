@@ -11370,4 +11370,203 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  true\n");
     }
+
+    // DCX_RR: decrement register pair  (opcodes 0x0B=BC, 0x1B=DE, 0x2B=HL, 0x3B=SP)
+    // no flags affected
+
+    @Test
+    public void code0B__DCX_B() {
+        // LXI B,0010 → BC=0x0010, DCX B → BC=0x000F
+        givenPr("LXI B,0010\n" +
+                "DCX B\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("01 10 00\n" +
+                "0B\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  000F\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  0007\n" +
+                "B,C: 00 0F\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   01\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000111\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00001111\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00000001\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code1B__DCX_D() {
+        // LXI D,0020 → DE=0x0020, DCX D → DE=0x001F
+        givenPr("LXI D,0020\n" +
+                "DCX D\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("11 20 00\n" +
+                "1B\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  001F\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  0007\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 1F\n" +
+                "H,L: 00 00\n" +
+                "M:   11\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000111\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00011111\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00010001\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code2B__DCX_H() {
+        // LXI H,0030 → HL=0x0030, DCX H → HL=0x002F
+        givenPr("LXI H,0030\n" +
+                "DCX H\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("21 30 00\n" +
+                "2B\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  002F\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  0007\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 2F\n" +
+                "M:   00\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000111\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00101111\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code3B__DCX_SP() {
+        // LXI SP,0040 → SP=0x0040, DCX SP → SP=0x003F
+        givenPr("LXI SP,0040\n" +
+                "DCX SP\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("31 40 00\n" +
+                "3B\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  003F\n" +
+                "PC:  0007\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   31\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00111111\n" +
+                "PC:  00000000 00000111\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00110001\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
 }
