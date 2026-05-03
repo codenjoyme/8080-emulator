@@ -9959,4 +9959,472 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  true\n");
     }
+
+    // CMP_R: compare register with A  (opcodes 0xB8-0xBF: B,C,D,E,H,L,M,A)
+    // does A - reg, sets flags, A UNCHANGED
+
+    @Test
+    public void codeB8__CMP_B() {
+        // A=0x10, B=0x05 → result=0x0B (A>B), A stays 0x10, F unchanged from subtraction
+        givenPr("MVI A,10\n" +
+                "MVI B,05\n" +
+                "CMP B\n" +
+                "NOP\n");
+
+        givenMm("3E 10\n" +
+                "06 05\n" +
+                "B8\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0500\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  1002\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 05 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 10 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000101\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00010000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeB9__CMP_C() {
+        givenPr("MVI A,10\n" +
+                "MVI C,05\n" +
+                "CMP C\n" +
+                "NOP\n");
+
+        givenMm("3E 10\n" +
+                "0E 05\n" +
+                "B9\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0005\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  1002\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 05\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 10 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000101\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00010000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeBA__CMP_D() {
+        givenPr("MVI A,10\n" +
+                "MVI D,05\n" +
+                "CMP D\n" +
+                "NOP\n");
+
+        givenMm("3E 10\n" +
+                "16 05\n" +
+                "BA\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0500\n" +
+                "HL:  0000\n" +
+                "AF:  1002\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 05 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 10 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000101\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00010000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeBB__CMP_E() {
+        givenPr("MVI A,10\n" +
+                "MVI E,05\n" +
+                "CMP E\n" +
+                "NOP\n");
+
+        givenMm("3E 10\n" +
+                "1E 05\n" +
+                "BB\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0005\n" +
+                "HL:  0000\n" +
+                "AF:  1002\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 05\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 10 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000101\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00010000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeBC__CMP_H() {
+        // H=0x05, A=0x10, HL=0x0500, M=memory[0x0500]=0x00
+        givenPr("MVI H,05\n" +
+                "MVI A,10\n" +
+                "CMP H\n" +
+                "NOP\n");
+
+        givenMm("26 05\n" +
+                "3E 10\n" +
+                "BC\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0500\n" +
+                "AF:  1002\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 05 00\n" +
+                "M:   00\n" +
+                "A,F: 10 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000101\n" +
+                "L:   00000000\n" +
+                "M:   00000000\n" +
+                "A:   00010000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeBD__CMP_L() {
+        // L=0x05, A=0x10, HL=0x0005, M=memory[0x0005]=NOP(0x00)
+        givenPr("MVI L,05\n" +
+                "MVI A,10\n" +
+                "CMP L\n" +
+                "NOP\n");
+
+        givenMm("2E 05\n" +
+                "3E 10\n" +
+                "BD\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0005\n" +
+                "AF:  1002\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 05\n" +
+                "M:   00\n" +
+                "A,F: 10 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000101\n" +
+                "M:   00000000\n" +
+                "A:   00010000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeBE__CMP_M() {
+        // HL=0x000A, M=0x00, A=0x10 → result=0x10, H=1 (no borrow from low nibble), P=0
+        givenPr("LXI H,000A\n" +
+                "MVI A,10\n" +
+                "CMP M\n" +
+                "NOP\n");
+
+        givenMm("21 0A 00\n" +
+                "3E 10\n" +
+                "BE\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  000A\n" +
+                "AF:  1012\n" +
+                "SP:  0000\n" +
+                "PC:  0007\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 0A\n" +
+                "M:   00\n" +
+                "A,F: 10 12\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000111\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00001010\n" +
+                "M:   00000000\n" +
+                "A:   00010000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeBF__CMP_A() {
+        // A=0x05, CMP A → result=0, Z=1, A unchanged
+        givenPr("MVI A,05\n" +
+                "CMP A\n" +
+                "NOP\n");
+
+        givenMm("3E 05\n" +
+                "BF\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0556\n" +
+                "SP:  0000\n" +
+                "PC:  0004\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 05 56\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000100\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000101\n" +
+                "     sz0h0p1c\n" +
+                "F:   01010110\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeB8__CMP_B_less() {
+        // A=0x05, B=0x10 → A<B, borrow: S=1, C=1, H=1, P=1, A unchanged
+        givenPr("MVI A,05\n" +
+                "MVI B,10\n" +
+                "CMP B\n" +
+                "NOP\n");
+
+        givenMm("3E 05\n" +
+                "06 10\n" +
+                "B8\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  1000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0597\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 10 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 05 97\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00010000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000101\n" +
+                "     sz0h0p1c\n" +
+                "F:   10010111\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  true\n");
+    }
+
+    @Test
+    public void codeB8__CMP_B_equal() {
+        // A=0x05, B=0x05 → A==B, Z=1, C=0, H=1 (no nibble borrow), A unchanged
+        givenPr("MVI A,05\n" +
+                "MVI B,05\n" +
+                "CMP B\n" +
+                "NOP\n");
+
+        givenMm("3E 05\n" +
+                "06 05\n" +
+                "B8\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0500\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0556\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 05 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 05 56\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000101\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000101\n" +
+                "     sz0h0p1c\n" +
+                "F:   01010110\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
 }

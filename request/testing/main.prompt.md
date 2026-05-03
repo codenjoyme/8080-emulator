@@ -222,4 +222,15 @@ iterative-prompt.agent.md
   - `code3F__CMC_set_to_clear` — carry=1 (через ADC overflow) → CMC → carry=0
   - `code3F__CMC_clear_to_set` — carry=0 → CMC → carry=1, F=0x03
 
+## UPD17
+
+Беру `CMP_R` (opcodes `0xB8`-`0xBF`): compare register with A (A - reg, flags set, A unchanged). go
+
+### RESULT
+
+10 тестов, все прошли (201 total):
+- `codeB8__CMP_B` .. `codeBF__CMP_A` — все 8 регистров (A=0x10, reg=0x05 → F=0x02, A не меняется)
+- `codeB8__CMP_B_less` — A<B: S=1, C=1 (борроу), H=1, P=1, F=0x97
+- `codeB8__CMP_B_equal` — A=B: Z=1, H=1, F=0x56
+
 
