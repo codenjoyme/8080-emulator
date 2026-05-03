@@ -13840,4 +13840,68 @@ public class CpuTest extends AbstractTest {
                 "tc:  false\n");
         // C=0x01: INR C was executed → proves RC was NOT taken
     }
+
+    // RET: unconditional return  (opcode 0xC9)
+    // pops return address from stack, jumps there; no flags changed
+    // INR C sentinel: C=0x00 means RET was taken (INR C skipped)
+
+    @Test
+    public void codeC9__RET() {
+        // given: JMP 0005 (past subroutine), CALL 0003 pushes 0x0008, RET jumps to 0x0008 (C=0)
+        // subroutine at 0x0003: RET, INR C (sentinel, skipped by RET)
+        givenPr("JMP 0005\n" +
+                "RET\n" +
+                "INR C\n" +
+                "CALL 0003\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("C3 05 00\n" +
+                "C9\n" +
+                "0C\n" +
+                "CD 03 00\n" +
+                "00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  000D\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   C3\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11000011\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 08 -> 08\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves RET was taken
+    }
 }

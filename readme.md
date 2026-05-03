@@ -125,7 +125,7 @@ Intro
 - [x] `POP_RS`
 - [x] `PUSH_RS`
 - [x] `RC`
-- [ ] `RET`
+- [x] `RET`
 - [ ] `RM`
 - [ ] `RNC`
 - [ ] `RNZ`

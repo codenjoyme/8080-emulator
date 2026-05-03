@@ -526,3 +526,15 @@ iterative-prompt.agent.md
 ## UPD45
 
 Беру `RC` (opcode `0xD8`): return if carry. go
+
+### RESULT
+
+- Добавлены тесты: `codeD8__RC_carry_set`, `codeD8__RC_carry_clear`.
+- Схема для RETURN taken: JMP 0005 (past subroutine) + RC/INR_C subroutine at 0x0003 + setup + CALL 0003 + NOPs.
+- Паттерн: JMP over subroutine = subroutine at low addr < return area, PC never re-executes RC.
+- Commit: `8ceab60`
+- Тесты: 265 passed, 0 failures.
+
+## UPD46
+
+Беру `RET` (opcode `0xC9`): unconditional return. go
