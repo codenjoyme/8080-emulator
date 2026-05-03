@@ -609,6 +609,7 @@
 - [x] (2f89712) Add test for ORA_R (OR accumulator with register, 8 variants: B,C,D,E,H,L,M,A).
 - [x] (8b3eedd) Add test for ORI_XX (OR accumulator with immediate, 2 variants).
 - [x] (a200e40) Add test for OUT_XX (output accumulator to port).
-- [x] (???????) Add test for PCHL (jump to HL, INR C sentinel).
+- [x] (539405a) Add test for PCHL (jump to HL, INR C sentinel).
+- [x] (???????) Add test for POP_RS (pop register pair, 4 variants: BC, DE, HL, PSW).
       
 Продолжение следует!

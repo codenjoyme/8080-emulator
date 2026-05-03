@@ -13297,4 +13297,225 @@ public class CpuTest extends AbstractTest {
                 "tc:  false\n");
         // C=0x00: INR C was skipped → proves PCHL was taken
     }
+
+    // POP_RS: pop register pair from stack  (opcodes 0xC1=BC, 0xD1=DE, 0xE1=HL, 0xF1=PSW)
+    // rl = mem[SP], rh = mem[SP+1], SP += 2; no flags changed (except POP PSW restores F)
+
+    @Test
+    public void codeC1__POP_B() {
+        // given: push BC=0x1234 to stack, clear BC, then pop → BC restored to 0x1234
+        givenPr("LXI B,1234\n" +
+                "LXI SP,FFFE\n" +
+                "PUSH B\n" +
+                "LXI B,0000\n" +
+                "POP B\n" +
+                "NOP\n");
+
+        givenMm("01 34 12\n" +
+                "31 FE FF\n" +
+                "C5\n" +
+                "01 00 00\n" +
+                "C1\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1234\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFFE\n" +
+                "PC:  000C\n" +
+                "B,C: 12 34\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   01\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00001100\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00110100\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00000001\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFC: 00 -> 34 -> 34\nFFFD: 00 -> 12 -> 12");
+    }
+
+    @Test
+    public void codeD1__POP_D() {
+        // given: push DE=0x5678 to stack, clear DE, then pop → DE restored to 0x5678
+        givenPr("LXI D,5678\n" +
+                "LXI SP,FFFE\n" +
+                "PUSH D\n" +
+                "LXI D,0000\n" +
+                "POP D\n" +
+                "NOP\n");
+
+        givenMm("11 78 56\n" +
+                "31 FE FF\n" +
+                "D5\n" +
+                "11 00 00\n" +
+                "D1\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  5678\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFFE\n" +
+                "PC:  000C\n" +
+                "B,C: 00 00\n" +
+                "D,E: 56 78\n" +
+                "H,L: 00 00\n" +
+                "M:   11\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00001100\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   01010110\n" +
+                "E:   01111000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00010001\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFC: 00 -> 78 -> 78\nFFFD: 00 -> 56 -> 56");
+    }
+
+    @Test
+    public void codeE1__POP_H() {
+        // given: push HL=0xABCD to stack, clear HL, then pop → HL restored to 0xABCD
+        givenPr("LXI H,ABCD\n" +
+                "LXI SP,FFFE\n" +
+                "PUSH H\n" +
+                "LXI H,0000\n" +
+                "POP H\n" +
+                "NOP\n");
+
+        givenMm("21 CD AB\n" +
+                "31 FE FF\n" +
+                "E5\n" +
+                "21 00 00\n" +
+                "E1\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  ABCD\n" +
+                "AF:  0002\n" +
+                "SP:  FFFE\n" +
+                "PC:  000C\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: AB CD\n" +
+                "M:   00\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00001100\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   10101011\n" +
+                "L:   11001101\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFC: 00 -> CD -> CD\nFFFD: 00 -> AB -> AB");
+    }
+
+    @Test
+    public void codeF1__POP_PSW() {
+        // given: MVI A,5A + ORI 00 → A=0x5A F=0x06; push PSW; MVI A,00; pop PSW → A/F restored
+        givenPr("MVI A,5A\n" +
+                "ORI 00\n" +
+                "LXI SP,FFFE\n" +
+                "PUSH PSW\n" +
+                "MVI A,00\n" +
+                "POP PSW\n" +
+                "NOP\n");
+
+        givenMm("3E 5A\n" +
+                "F6 00\n" +
+                "31 FE FF\n" +
+                "F5\n" +
+                "3E 00\n" +
+                "F1\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  5A06\n" +
+                "SP:  FFFE\n" +
+                "PC:  000C\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 5A 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00001100\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   01011010\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+        asrtMem("FFFC: 00 -> 06 -> 06\nFFFD: 00 -> 5A -> 5A");
+    }
 }

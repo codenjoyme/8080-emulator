@@ -122,7 +122,7 @@ Intro
 - [x] `ORI_XX`
 - [x] `OUT_XX`
 - [x] `PCHL`
-- [ ] `POP_RS`
+- [x] `POP_RS`
 - [ ] `PUSH_RS`
 - [ ] `RC`
 - [ ] `RET`

@@ -488,3 +488,16 @@ iterative-prompt.agent.md
 ## UPD42
 
 Беру `PCHL` (opcode `0xE9`): jump to HL. go
+
+### RESULT
+
+- Добавлен тест: `codeE9__PCHL`.
+- Использован INR C сентинел: C=0x00 подтверждает прыжок.
+- PCHL не изменяет флаги.
+- Целевой адрес HL=0x0005 (AFTER INR C по 0x0004).
+- Commit: `539405a`
+- Тесты: 255 passed, 0 failures.
+
+## UPD43
+
+Беру `POP_RS` (opcode `0xC1`/`0xD1`/`0xE1`/`0xF1`): pop register pair. go
