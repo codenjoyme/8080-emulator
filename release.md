@@ -614,6 +614,7 @@
 - [x] (74a6f9c) Add test for PUSH_RS (push register pair, 4 variants: BC, DE, HL, PSW).
 - [x] (8ceab60) Add test for RC (return if carry, 2 variants: taken/not-taken).
 - [x] (ce518e8) Add test for RET (unconditional return).
-- [x] (???????) Add test for RM (return if minus, 2 variants: taken/not-taken).
+- [x] (6b9f12a) Add test for RM (return if minus, 2 variants: taken/not-taken).
+- [x] (???????) Add test for RNC (return if no carry, 2 variants: taken/not-taken); update instructions.
       
 Продолжение следует!

@@ -172,6 +172,25 @@ Example: if a setup produces `F=0x46` (Z=1, P=1), then `INR C` (C becomes 0x01) 
 
 **Note:** Use `INR C` (`0x0C`), not `INR B`, in tests that set up B register in the precondition (e.g., CC_XXYY uses `MVI B,01`). C register is unused in all existing setups.
 
+## Pattern for conditional RETURN tests (RC, RM, RNC, RNZ, RP, RPE, RPO, RZ)
+
+Return instructions need to pop from the stack — so CALL must run first to push a return address. To prevent the subroutine from being re-executed after returning, use the **JMP-over-subroutine** pattern:
+
+```
+0x0000-0x0002: JMP 0005       (skip over subroutine)
+0x0003:        RETURN_INSTR   (subroutine: RX/RC/RM/etc.)
+0x0004:        INR C          (sentinel — skipped if return taken)
+0x0005-0x0007: CALL 0003      (setup then call the subroutine)
+0x0008+:       NOP × N        (return lands here, NOPs fill remaining ticks)
+```
+
+- Subroutine is at **low address** (0x0003); return point is at **high address** (0x0008+).
+- After returning, NOP sequence advances PC away from subroutine, preventing re-execution.
+- CALL at 0x0005-0x0007 pushes return address **0x0008** (byte after 3-byte CALL) to stack.
+- `asrtMem("FFFE: 00 -> 08 -> 08\nFFFF: 00 -> 00")` for CALL that pushes 0x0008.
+
+**IMPORTANT:** For the *not-taken* variant of return instructions, NO CALL is needed — just the return instruction followed by INR C directly (return not taken → falls through to INR C). No asrtMem needed for the not-taken variant since no stack writes occur.
+
 ## Setting flags for conditional CALL tests
 
 For CALL-if-condition tests, you need to SET the tested flag first. Practical ways:

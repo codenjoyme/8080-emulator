@@ -550,3 +550,14 @@ iterative-prompt.agent.md
 ## UPD47
 
 Беру `RM` (opcode `0xF8`): return if minus (S=1). go
+
+### RESULT
+
+- Добавлены тесты: `codeF8__RM_minus`, `codeF8__RM_positive`.
+- Для установки S=1: использовать ADI 80 (быстрее, чем MVI A,80 + ORA A).
+- Commit: `6b9f12a`
+- Тесты: 268 passed, 0 failures.
+
+## UPD48
+
+Беру `RNC` (opcode `0xD0`): return if no carry. go

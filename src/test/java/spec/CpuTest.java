@@ -14019,4 +14019,121 @@ public class CpuTest extends AbstractTest {
                 "tc:  false\n");
         // C=0x01: INR C was executed → proves RM was NOT taken
     }
+
+    // RNC: return if no carry (C=0)  (opcode 0xD0)
+    // INR C sentinel: C=0x00 means RNC was taken (INR C skipped)
+
+    @Test
+    public void codeD0__RNC_carry_clear() {
+        // given: JMP 0005, carry=0 (default), CALL 0003, RNC taken (C=0)
+        // subroutine at 0x0003: RNC, INR C
+        givenPr("JMP 0005\n" +
+                "RNC\n" +
+                "INR C\n" +
+                "CALL 0003\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("C3 05 00\n" +
+                "D0\n" +
+                "0C\n" +
+                "CD 03 00\n" +
+                "00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  000D\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   C3\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11000011\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 08 -> 08\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves RNC was taken
+    }
+
+    @Test
+    public void codeD0__RNC_carry_set() {
+        // given: carry=1 via ADI FF+ADI 01, RNC not taken → INR C executes (C=0x01)
+        givenPr("MVI A,FF\n" +
+                "ADI 01\n" +
+                "RNC\n" +
+                "INR C\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "C6 01\n" +
+                "D0\n" +
+                "0C\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0001\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0003\n" +
+                "SP:  0000\n" +
+                "PC:  0008\n" +
+                "B,C: 00 01\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 00 03\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001000\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000001\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000011\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  true\n");
+        // C=0x01: INR C was executed → proves RNC was NOT taken
+    }
 }
