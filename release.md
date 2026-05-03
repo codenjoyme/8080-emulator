@@ -602,6 +602,7 @@
 - [x] (6dc88d1) Add test for JMP_XXYY (unconditional JUMP); add INR C sentinel to all 22 jump/call tests; update instructions.
 - [x] (a5a016a) Add test for JNC_XXYY (jump if no carry, 2 variants: taken/not-taken).
 - [x] (e73eb5f) Add test for JNZ_XXYY (jump if not zero, 2 variants: taken/not-taken).
-- [x] (???????) Add test for JP_XXYY (jump if positive, 2 variants: taken/not-taken).
+- [x] (16eaa89) Add test for JP_XXYY (jump if positive, 2 variants: taken/not-taken).
+- [x] (???????) Add test for JPE_XXYY (jump if parity even, 2 variants: taken/not-taken).
       
 Продолжение следует!
