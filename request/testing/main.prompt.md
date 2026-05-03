@@ -418,3 +418,12 @@ iterative-prompt.agent.md
 ## UPD35
 
 Беру `JP_XXYY` (opcode `0xF2`): JUMP if positive (sign=0). go
+
+### RESULT
+
+- Написаны тесты `codeF2__JP_XXYY_positive` и `codeF2__JP_XXYY_negative`.
+- Тесты: 237 passed, 0 failures.
+
+## UPD36
+
+Беру `JPE_XXYY` (opcode `0xEA`): JUMP if parity even (P=1). go
