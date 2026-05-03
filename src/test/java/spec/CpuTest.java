@@ -12705,4 +12705,395 @@ public class CpuTest extends AbstractTest {
                 "tc:  false\n");
         // C=0x01: INR C was executed → proves JZ was NOT taken
     }
+
+    // ORA_R: A = A | register  (opcodes 0xB0-0xB7: B,C,D,E,H,L,M,A)
+    // C always cleared; H always cleared
+
+    @Test
+    public void codeB0__ORA_B() {
+        // given: A=0xF0, B=0x0F => 0xF0|0x0F=0xFF, S=1, P=1
+        givenPr("MVI A,F0\n" +
+                "MVI B,0F\n" +
+                "ORA B\n" +
+                "NOP\n");
+
+        givenMm("3E F0\n" +
+                "06 0F\n" +
+                "B0\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0F00\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  FF86\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 0F 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: FF 86\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00001111\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   11111111\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeB1__ORA_C() {
+        // given: A=0x0F, C=0xF0 => 0x0F|0xF0=0xFF, S=1, P=1
+        givenPr("MVI A,0F\n" +
+                "MVI C,F0\n" +
+                "ORA C\n" +
+                "NOP\n");
+
+        givenMm("3E 0F\n" +
+                "0E F0\n" +
+                "B1\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  00F0\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  FF86\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 F0\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: FF 86\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   11110000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   11111111\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeB2__ORA_D() {
+        // given: A=0xAA, D=0x55 => 0xAA|0x55=0xFF, S=1, P=1
+        givenPr("MVI A,AA\n" +
+                "MVI D,55\n" +
+                "ORA D\n" +
+                "NOP\n");
+
+        givenMm("3E AA\n" +
+                "16 55\n" +
+                "B2\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  5500\n" +
+                "HL:  0000\n" +
+                "AF:  FF86\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 55 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: FF 86\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   01010101\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   11111111\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeB3__ORA_E() {
+        // given: A=0x01, E=0x02 => 0x01|0x02=0x03, S=0, P=1
+        givenPr("MVI A,01\n" +
+                "MVI E,02\n" +
+                "ORA E\n" +
+                "NOP\n");
+
+        givenMm("3E 01\n" +
+                "1E 02\n" +
+                "B3\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0002\n" +
+                "HL:  0000\n" +
+                "AF:  0306\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 02\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 03 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000010\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000011\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeB4__ORA_H() {
+        // given: A=0x12, H=0x21 => 0x12|0x21=0x33, S=0, P=1
+        givenPr("MVI A,12\n" +
+                "MVI H,21\n" +
+                "ORA H\n" +
+                "NOP\n");
+
+        givenMm("3E 12\n" +
+                "26 21\n" +
+                "B4\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  2100\n" +
+                "AF:  3306\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 21 00\n" +
+                "M:   00\n" +
+                "A,F: 33 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00100001\n" +
+                "L:   00000000\n" +
+                "M:   00000000\n" +
+                "A:   00110011\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeB5__ORA_L() {
+        // given: A=0xC0, L=0x3C => 0xC0|0x3C=0xFC, S=1, P=1
+        givenPr("MVI A,C0\n" +
+                "MVI L,3C\n" +
+                "ORA L\n" +
+                "NOP\n");
+
+        givenMm("3E C0\n" +
+                "2E 3C\n" +
+                "B5\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  003C\n" +
+                "AF:  FC86\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 3C\n" +
+                "M:   00\n" +
+                "A,F: FC 86\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00111100\n" +
+                "M:   00000000\n" +
+                "A:   11111100\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeB6__ORA_M() {
+        // given: A=0xF0, HL=0x0000, M=mem[0x0000]=0x3E => 0xF0|0x3E=0xFE, S=1, P=0
+        givenPr("MVI A,F0\n" +
+                "ORA M\n" +
+                "NOP\n");
+
+        givenMm("3E F0\n" +
+                "B6\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  FE82\n" +
+                "SP:  0000\n" +
+                "PC:  0004\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: FE 82\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000100\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   11111110\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000010\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeB7__ORA_A() {
+        // given: A=0x5A => 0x5A|0x5A=0x5A, S=0, P=1
+        givenPr("MVI A,5A\n" +
+                "ORA A\n" +
+                "NOP\n");
+
+        givenMm("3E 5A\n" +
+                "B7\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  5A06\n" +
+                "SP:  0000\n" +
+                "PC:  0004\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 5A 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000100\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   01011010\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
 }

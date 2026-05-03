@@ -450,3 +450,7 @@ iterative-prompt.agent.md
 
 - Написаны тесты `codeCA__JZ_XXYY_zero` и `codeCA__JZ_XXYY_not_zero`.
 - Тесты: 243 passed, 0 failures.
+
+## UPD39
+
+Беру `ORA_R` (opcode `0xB0`-`0xB7`): OR with register. go

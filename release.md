@@ -605,6 +605,8 @@
 - [x] (16eaa89) Add test for JP_XXYY (jump if positive, 2 variants: taken/not-taken).
 - [x] (d6ee674) Add test for JPE_XXYY (jump if parity even, 2 variants: taken/not-taken).
 - [x] (c44395c) Add test for JPO_XXYY (jump if parity odd, 2 variants: taken/not-taken).
-- [x] (???????) Add test for JZ_XXYY (jump if zero, 2 variants: taken/not-taken).
+- [x] (9568fc7) Add test for JZ_XXYY (jump if zero, 2 variants: taken/not-taken).
+- [x] (???????) Add test for ORA_R (OR accumulator with register, 8 variants: B,C,D,E,H,L,M,A).
+- [x] (???????) Add test for ORA_R (OR accumulator with register, 8 variants: B,C,D,E,H,L,M,A).
       
 Продолжение следует!
