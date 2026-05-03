@@ -8490,4 +8490,200 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  false\n");
     }
+
+    // ADI_XX: A = A + immediate  (opcode 0xC6), no carry input
+
+    @Test
+    public void codeC6__ADI_XX_no_flags() {
+        // given: A=0x10, imm=0x20 => A=0x30, P=1
+        givenPr("MVI A,10\n" +
+                "ADI 20\n" +    // A = A + 0x20 = 0x30
+                "NOP\n");
+
+        givenMm("3E 10\n" +
+                "C6 20\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  3006\n" +
+                "SP:  0000\n" +
+                "PC:  0005\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 30 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00110000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeC6__ADI_XX_zero_and_carry() {
+        // given: A=0xFF, imm=0x01 => A=0x00, Z=1, C=1, H=1
+        givenPr("MVI A,FF\n" +
+                "ADI 01\n" +    // A = 0xFF + 0x01 = 0x00, C=1, Z=1
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "C6 01\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0057\n" +
+                "SP:  0000\n" +
+                "PC:  0005\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 00 57\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   01010111\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  true\n");
+    }
+
+    @Test
+    public void codeC6__ADI_XX_sign_and_half_carry() {
+        // given: A=0x7F, imm=0x01 => A=0x80, S=1, H=1
+        givenPr("MVI A,7F\n" +
+                "ADI 01\n" +    // A = 0x7F + 0x01 = 0x80, S=1, H=1
+                "NOP\n");
+
+        givenMm("3E 7F\n" +
+                "C6 01\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  8092\n" +
+                "SP:  0000\n" +
+                "PC:  0005\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 80 92\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   10000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   10010010\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeC6__ADI_XX_carry_not_consumed() {
+        // given: carry=1 set first, then ADI 00 — carry must NOT be added (unlike ACI)
+        givenPr("MVI A,FF\n" +  // A = 0xFF
+                "MVI B,01\n" +  // B = 0x01
+                "ADC B\n" +     // A = 0x00, C=1 set
+                "MVI A,0F\n" +  // A = 0x0F
+                "ADI 00\n" +    // A = 0x0F + 0x00 = 0x0F (carry NOT consumed!)
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "06 01\n" +
+                "88\n" +
+                "3E 0F\n" +
+                "C6 00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0100\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0F06\n" +
+                "SP:  0000\n" +
+                "PC:  000A\n" +
+                "B,C: 01 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 0F 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001010\n" +
+                "     76543210\n" +
+                "B:   00000001\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00001111\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
 }

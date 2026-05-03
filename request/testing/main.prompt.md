@@ -117,4 +117,16 @@ iterative-prompt.agent.md
 
 Беру `ADI_XX` (opcode `0xC6`): `A = A + imm8`, без carry. go
 
+### RESULT
+
+4 теста, все прошли (166 total):
+- `codeC6__ADI_XX_no_flags` — 0x10+0x20=0x30
+- `codeC6__ADI_XX_zero_and_carry` — 0xFF+0x01=0x00, Z,C,H=1
+- `codeC6__ADI_XX_sign_and_half_carry` — 0x7F+0x01=0x80, S,H=1
+- `codeC6__ADI_XX_carry_not_consumed` — carry=1 установлен, ADI 00 → 0x0F (не 0x10)
+
+## UPD9
+
+Беру `ANA_R` (opcodes `0xA0`-`0xA7`): `A = A & reg`, AND по регистру. go
+
 

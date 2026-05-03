@@ -88,7 +88,7 @@ Intro
 - [x] `ACI_XX`
 - [x] `ADC_R`
 - [x] `ADD_R`
-- [ ] `ADI_XX`
+- [x] `ADI_XX`
 - [ ] `ANA_R`
 - [ ] `ANI_XX`
 - [ ] `CALL_XXYY`
