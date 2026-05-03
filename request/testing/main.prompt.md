@@ -378,4 +378,14 @@ iterative-prompt.agent.md
 
 Беру `JM_XXYY` (opcode `0xFA`): JUMP if minus (sign=1). go
 
+### RESULT
+
+2 теста, все прошли (230 total):
+- `codeFA__JM_XXYY_sign_set` — MVI A,40 + ADD A → S=1, JMP происходит
+- `codeFA__JM_XXYY_sign_clear` — S=0, JMP не происходит
+
+## UPD32
+
+Беру `JMP_XXYY` (opcode `0xC3`): unconditional JUMP. go
+
 

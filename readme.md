@@ -110,7 +110,7 @@ Intro
 - [x] `EI`
 - [x] `IN_XX`
 - [x] `JC_XXYY`
-- [ ] `JM_XXYY`
+- [x] `JM_XXYY`
 - [ ] `JMP_XXYY`
 - [ ] `JNC_XXYY`
 - [ ] `JNZ_XXYY`
