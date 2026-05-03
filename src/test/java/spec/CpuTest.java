@@ -7492,4 +7492,504 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
     }
+
+    // ADC_R: A = A + register + carry  (opcodes 0x88-0x8F: B,C,D,E,H,L,M,A)
+
+    @Test
+    public void code88__ADC_B() {
+        // given: A=0x10, B=0x20, carry=0 => A=0x30, P=1
+        givenPr("MVI A,10\n" +  // A = 0x10
+                "MVI B,20\n" +  // B = 0x20
+                "ADC B\n" +     // A = A + B + carry(0) = 0x30
+                "NOP\n");
+
+        givenMm("3E 10\n" +
+                "06 20\n" +
+                "88\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  2000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  3006\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 20 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 30 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00100000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00110000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code89__ADC_C() {
+        // given: A=0x11, C=0x22, carry=0 => A=0x33, P=1
+        givenPr("MVI A,11\n" +  // A = 0x11
+                "MVI C,22\n" +  // C = 0x22
+                "ADC C\n" +     // A = 0x11 + 0x22 + 0 = 0x33
+                "NOP\n");
+
+        givenMm("3E 11\n" +
+                "0E 22\n" +
+                "89\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0022\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  3306\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 22\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 33 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00100010\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00110011\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code8A__ADC_D() {
+        // given: A=0x11, D=0x44, carry=0 => A=0x55, P=1
+        givenPr("MVI A,11\n" +  // A = 0x11
+                "MVI D,44\n" +  // D = 0x44
+                "ADC D\n" +     // A = 0x11 + 0x44 + 0 = 0x55
+                "NOP\n");
+
+        givenMm("3E 11\n" +
+                "16 44\n" +
+                "8A\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  4400\n" +
+                "HL:  0000\n" +
+                "AF:  5506\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 44 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 55 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   01000100\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   01010101\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code8B__ADC_E() {
+        // given: A=0x22, E=0x33, carry=0 => A=0x55, P=1
+        givenPr("MVI A,22\n" +  // A = 0x22
+                "MVI E,33\n" +  // E = 0x33
+                "ADC E\n" +     // A = 0x22 + 0x33 + 0 = 0x55
+                "NOP\n");
+
+        givenMm("3E 22\n" +
+                "1E 33\n" +
+                "8B\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0033\n" +
+                "HL:  0000\n" +
+                "AF:  5506\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 33\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 55 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00110011\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   01010101\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code8C__ADC_H() {
+        // given: A=0x10, H=0x20, carry=0 => A=0x30, P=1
+        givenPr("MVI H,20\n" +  // H = 0x20
+                "MVI A,10\n" +  // A = 0x10
+                "ADC H\n" +     // A = 0x10 + 0x20 + 0 = 0x30
+                "NOP\n");
+
+        givenMm("26 20\n" +
+                "3E 10\n" +
+                "8C\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  2000\n" +
+                "AF:  3006\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 20 00\n" +
+                "M:   00\n" +
+                "A,F: 30 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00100000\n" +
+                "L:   00000000\n" +
+                "M:   00000000\n" +
+                "A:   00110000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code8D__ADC_L() {
+        // given: A=0x10, L=0x20, carry=0 => A=0x30, P=1
+        givenPr("MVI L,20\n" +  // L = 0x20
+                "MVI A,10\n" +  // A = 0x10
+                "ADC L\n" +     // A = 0x10 + 0x20 + 0 = 0x30
+                "NOP\n");
+
+        givenMm("2E 20\n" +
+                "3E 10\n" +
+                "8D\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0020\n" +
+                "AF:  3006\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 20\n" +
+                "M:   00\n" +
+                "A,F: 30 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00100000\n" +
+                "M:   00000000\n" +
+                "A:   00110000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code8E__ADC_M() {
+        // given: HL=0x0001, M=memory[0x0001]=0x01 (2nd byte of LXI), A=0x10 => A=0x11, P=1
+        givenPr("LXI H,0001\n" + // HL = 0x0001, so M points to 2nd byte (0x01)
+                "MVI A,10\n" +   // A = 0x10
+                "ADC M\n" +      // A = 0x10 + 0x01 + carry(0) = 0x11
+                "NOP\n");
+
+        givenMm("21 01 00\n" +
+                "3E 10\n" +
+                "8E\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0001\n" +
+                "AF:  1106\n" +
+                "SP:  0000\n" +
+                "PC:  0007\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 01\n" +
+                "M:   01\n" +
+                "A,F: 11 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000111\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000001\n" +
+                "M:   00000001\n" +
+                "A:   00010001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code8F__ADC_A() {
+        // given: A=0x40, carry=0 => A = A+A+0 = 0x80, S=1
+        givenPr("MVI A,40\n" +  // A = 0x40
+                "ADC A\n" +     // A = 0x40 + 0x40 + 0 = 0x80, S=1
+                "NOP\n");
+
+        givenMm("3E 40\n" +
+                "8F\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  8082\n" +
+                "SP:  0000\n" +
+                "PC:  0004\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 80 82\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000100\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   10000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000010\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code88__ADC_B_with_carry_in() {
+        // given: set carry via 0xFF+0x01, then A=0x0F+B(0x00)+carry(1) => 0x10, H=1
+        givenPr("MVI A,FF\n" +  // A = 0xFF
+                "MVI B,01\n" +  // B = 0x01
+                "ADC B\n" +     // A = 0xFF+0x01+0 = 0x00, C=1 set
+                "MVI A,0F\n" +  // A = 0x0F
+                "MVI B,00\n" +  // B = 0x00
+                "ADC B\n" +     // A = 0x0F+0x00+carry(1) = 0x10, H=1
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "06 01\n" +
+                "88\n" +
+                "3E 0F\n" +
+                "06 00\n" +
+                "88\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  1012\n" +
+                "SP:  0000\n" +
+                "PC:  000B\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 10 12\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001011\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00010000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void code8F__ADC_A_with_carry_in() {
+        // given: set carry via 0xFF+B(0x01), then ADC A: 0x40+0x40+carry(1) = 0x81, S=1, P=1
+        givenPr("MVI A,FF\n" +  // A = 0xFF
+                "MVI B,01\n" +  // B = 0x01
+                "ADC B\n" +     // A = 0x00, C=1 set
+                "MVI A,40\n" +  // A = 0x40
+                "ADC A\n" +     // A = 0x40+0x40+carry(1) = 0x81, S=1, P=1
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "06 01\n" +
+                "88\n" +
+                "3E 40\n" +
+                "8F\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0100\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  8186\n" +
+                "SP:  0000\n" +
+                "PC:  0009\n" +
+                "B,C: 01 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 81 86\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001001\n" +
+                "     76543210\n" +
+                "B:   00000001\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   10000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
 }

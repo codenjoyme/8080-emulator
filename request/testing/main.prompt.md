@@ -92,4 +92,18 @@ iterative-prompt.agent.md
 
 Беру `ADC_R` (opcodes `0x88`-`0x8F`): `A = A + reg + carry`. 8 регистров: B,C,D,E,H,L,M,A. Тесты для каждого регистра + флаговые corner cases. go
 
+### RESULT
+
+10 тестов, все прошли (152 total):
+- `code88__ADC_B` / `code89__ADC_C` / `code8A__ADC_D` / `code8B__ADC_E` — базовые (каждый регистр)
+- `code8C__ADC_H` / `code8D__ADC_L` — H и L из HL-пары
+- `code8E__ADC_M` — M = memory[HL], HL указывает на байт программы
+- `code8F__ADC_A` — self-add, S=1 (0x80)
+- `code88__ADC_B_with_carry_in` — carry пробрасывается через nibble, H=1
+- `code8F__ADC_A_with_carry_in` — 2*A+carry=0x81, S=1, P=1
+
+## UPD7
+
+Беру `ADD_R` (opcodes `0x80`-`0x87`): `A = A + reg`, без carry. Те же 8 регистров. go
+
 
