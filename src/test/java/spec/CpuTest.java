@@ -7297,4 +7297,199 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
     }
+
+    // ACI_XX: A = A + immediate + carry
+
+    @Test
+    public void codeCE__ACI_XX_no_flags() {
+        // given: A=0x10, imm=0x20, carry=0 => A=0x30, no flags
+        givenPr("MVI A,10\n" +  // A = 0x10
+                "ACI 20\n" +    // A = A + 0x20 + carry(0) = 0x30
+                "NOP\n");
+
+        givenMm("3E 10\n" +
+                "CE 20\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  3006\n" +
+                "SP:  0000\n" +
+                "PC:  0005\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 30 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00110000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeCE__ACI_XX_zero_and_carry() {
+        // given: A=0xFF, imm=0x01, carry=0 => A=0x00, Z=1, C=1, H=1
+        givenPr("MVI A,FF\n" +  // A = 0xFF
+                "ACI 01\n" +    // A = 0xFF + 0x01 + 0 = 0x00, C=1, Z=1, H=1
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "CE 01\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0057\n" +
+                "SP:  0000\n" +
+                "PC:  0005\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 00 57\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   01010111\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  true\n");
+    }
+
+    @Test
+    public void codeCE__ACI_XX_sign_and_half_carry() {
+        // given: A=0x7F, imm=0x01, carry=0 => A=0x80, S=1, H=1
+        givenPr("MVI A,7F\n" +  // A = 0x7F
+                "ACI 01\n" +    // A = 0x7F + 0x01 + 0 = 0x80, S=1, H=1
+                "NOP\n");
+
+        givenMm("3E 7F\n" +
+                "CE 01\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  8092\n" +
+                "SP:  0000\n" +
+                "PC:  0005\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 80 92\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   10000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   10010010\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeCE__ACI_XX_with_carry_in() {
+        // given: carry=1, A=0x0F, imm=0x00 => A=0x10, H=1 (carry propagates through nibble)
+        // set carry by adding 0xFF + 0x01 first
+        givenPr("MVI A,FF\n" +  // A = 0xFF
+                "ACI 01\n" +    // A = 0x00, C=1 (sets carry flag)
+                "MVI A,0F\n" +  // A = 0x0F (carry still = 1)
+                "ACI 00\n" +    // A = 0x0F + 0x00 + 1 = 0x10, H=1
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "CE 01\n" +
+                "3E 0F\n" +
+                "CE 00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  1012\n" +
+                "SP:  0000\n" +
+                "PC:  0009\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 10 12\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00010000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
 }
