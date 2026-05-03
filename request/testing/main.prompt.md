@@ -628,3 +628,12 @@ iterative-prompt.agent.md
 ## UPD54
 
 Беру `SBB_R` (opcodes `0x98`-`0x9F`): subtract register with borrow. go
+
+### RESULT
+
+9 tests (SBB B/C/D/E/H/L/M/A + carry-in variant). commit: fa24567.
+Key learnings: M register value depends on HL pointer (not always 0x3E); SBB carry-in with aligned nibbles (0x30-0x10-1) gives H=0 not H=1 per `!sub_half_carry_table`.
+
+## UPD55
+
+Беру `SBI_XX` (opcode `0xDE`): subtract immediate with borrow. go
