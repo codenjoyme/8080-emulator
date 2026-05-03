@@ -123,7 +123,7 @@ Intro
 - [x] `OUT_XX`
 - [x] `PCHL`
 - [x] `POP_RS`
-- [ ] `PUSH_RS`
+- [x] `PUSH_RS`
 - [ ] `RC`
 - [ ] `RET`
 - [ ] `RM`

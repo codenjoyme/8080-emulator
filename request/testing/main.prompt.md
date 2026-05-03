@@ -501,3 +501,15 @@ iterative-prompt.agent.md
 ## UPD43
 
 Беру `POP_RS` (opcode `0xC1`/`0xD1`/`0xE1`/`0xF1`): pop register pair. go
+
+### RESULT
+
+- Добавлены тесты: `codeC1__POP_B`, `codeD1__POP_D`, `codeE1__POP_H`, `codeF1__POP_PSW`.
+- Схема: LXI rr + LXI SP,FFFE + PUSH + LXI rr,0000 + POP + NOP.
+- Нужно вызывать `asrtMem(...)` для PUSH/POP (пишет в PORTS-диапазон 0xF800–0xFFFE — double-write).
+- Commit: `06189e2`
+- Тесты: 259 passed, 0 failures.
+
+## UPD44
+
+Беру `PUSH_RS` (opcode `0xC5`/`0xD5`/`0xE5`/`0xF5`): push register pair. go

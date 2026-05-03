@@ -13518,4 +13518,209 @@ public class CpuTest extends AbstractTest {
                 "tc:  false\n");
         asrtMem("FFFC: 00 -> 06 -> 06\nFFFD: 00 -> 5A -> 5A");
     }
+
+    // PUSH_RS: push register pair onto stack  (opcodes 0xC5=BC, 0xD5=DE, 0xE5=HL, 0xF5=PSW)
+    // (SP-1) = rh, (SP-2) = rl, SP -= 2; no flags changed
+
+    @Test
+    public void codeC5__PUSH_B() {
+        // given: LXI SP,FFFE, LXI B,1234, PUSH B => mem[FFFD]=0x12, mem[FFFC]=0x34, SP=FFFC
+        givenPr("LXI SP,FFFE\n" +
+                "LXI B,1234\n" +
+                "PUSH B\n" +
+                "NOP\n");
+
+        givenMm("31 FE FF\n" +
+                "01 34 12\n" +
+                "C5\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  1234\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFFC\n" +
+                "PC:  0008\n" +
+                "B,C: 12 34\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   31\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111100\n" +
+                "PC:  00000000 00001000\n" +
+                "     76543210\n" +
+                "B:   00010010\n" +
+                "C:   00110100\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00110001\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFC: 00 -> 34 -> 34\nFFFD: 00 -> 12 -> 12");
+    }
+
+    @Test
+    public void codeD5__PUSH_D() {
+        // given: LXI SP,FFFE, LXI D,5678, PUSH D => mem[FFFD]=0x56, mem[FFFC]=0x78, SP=FFFC
+        givenPr("LXI SP,FFFE\n" +
+                "LXI D,5678\n" +
+                "PUSH D\n" +
+                "NOP\n");
+
+        givenMm("31 FE FF\n" +
+                "11 78 56\n" +
+                "D5\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  5678\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFFC\n" +
+                "PC:  0008\n" +
+                "B,C: 00 00\n" +
+                "D,E: 56 78\n" +
+                "H,L: 00 00\n" +
+                "M:   31\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111100\n" +
+                "PC:  00000000 00001000\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   01010110\n" +
+                "E:   01111000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00110001\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFC: 00 -> 78 -> 78\nFFFD: 00 -> 56 -> 56");
+    }
+
+    @Test
+    public void codeE5__PUSH_H() {
+        // given: LXI SP,FFFE, LXI H,ABCD, PUSH H => mem[FFFD]=0xAB, mem[FFFC]=0xCD, SP=FFFC
+        givenPr("LXI SP,FFFE\n" +
+                "LXI H,ABCD\n" +
+                "PUSH H\n" +
+                "NOP\n");
+
+        givenMm("31 FE FF\n" +
+                "21 CD AB\n" +
+                "E5\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  ABCD\n" +
+                "AF:  0002\n" +
+                "SP:  FFFC\n" +
+                "PC:  0008\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: AB CD\n" +
+                "M:   00\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111100\n" +
+                "PC:  00000000 00001000\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   10101011\n" +
+                "L:   11001101\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFC: 00 -> CD -> CD\nFFFD: 00 -> AB -> AB");
+    }
+
+    @Test
+    public void codeF5__PUSH_PSW() {
+        // given: MVI A,5A + ORI 00 → A=0x5A F=0x06; LXI SP,FFFE; PUSH PSW
+        givenPr("MVI A,5A\n" +
+                "ORI 00\n" +
+                "LXI SP,FFFE\n" +
+                "PUSH PSW\n" +
+                "NOP\n");
+
+        givenMm("3E 5A\n" +
+                "F6 00\n" +
+                "31 FE FF\n" +
+                "F5\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  5A06\n" +
+                "SP:  FFFC\n" +
+                "PC:  0009\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 5A 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111100\n" +
+                "PC:  00000000 00001001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   01011010\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+        asrtMem("FFFC: 00 -> 06 -> 06\nFFFD: 00 -> 5A -> 5A");
+    }
 }
