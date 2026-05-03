@@ -199,7 +199,11 @@ iterative-prompt.agent.md
 - `codeFC__CM_XXYY_sign_clear` — ADD A: 0x01+0x01=0x02, S=0, CALL не происходит
 
 ## UPD15
+
+Беру `CMA` (opcode `0x2F`): complement A (bitwise NOT). go
+
+## UPD15
  
-Исправь инструкцию. План итеративного промпта такой, что в одном коммите и
+Исправь инструкцию. План итеративного промпта такой, что в одном коммите идет ## UPDN результа
 
 
