@@ -57,8 +57,11 @@ The net effect: you can open multiple IDE windows with different projects, each 
      + Add 1–2 sentence description of what was done
      + Keep it concise — this is a changelog, not documentation
   2. **Fix file references in the UPD block itself** — before writing `### RESULT`, scan the `## UPD[N]` text for any file paths written as plain text or backtick code (e.g. `` `instructions/foo.agent.md` `` or `instructions/foo.agent.md`). Convert them to clickable markdown links in-place. Change only the link formatting — do not alter any other text in the UPD.
-  2. **Commit everything in one atomic commit** — include both the changed files AND the updated `main.prompt.md` (with `### RESULT` already written). The commit message should summarize what was done. **Each `## UPD` block = one separate commit.** Never batch multiple UPDs into one commit. Never make a separate commit just for `### RESULT` — it must be part of the same commit as the work.
-- **Non-stop loop** — after committing `## UPD[N]` (with `### RESULT` included):
+  2. **Two-commit workflow per UPD:**
+     - **Commit A (work + result):** `git add <work files> <prompt file>` with `### RESULT` written. Never batch multiple UPDs into Commit A. Commit message should follow the project convention (see `cpu-unit-testing.agent.md` for "Add test for …" format or adapt for the project).
+     - **Commit B (trigger):** immediately after Commit A, write the NEXT `## UPD[N+1]` block (ending with `go`) into the prompt file and commit **only** `main.prompt.md`. This is the "trigger commit" that the watcher will detect. It keeps the history clean: work and result are in one commit; the next prompt is in a separate commit.
+     - **Exception:** if the user's `## UPD[N]` already contains a pre-written `## UPD[N+1]` block (the user typed it in advance), do NOT re-write it — just commit it as Commit B after you add `### RESULT` and Commit A.
+- **Non-stop loop** — after Commit B (trigger):
   2. Immediately re-read the prompt file and check whether `## UPD[N+1]` (or any later `## UPD`) already exists without a `### RESULT`.
   3. If it does AND it ends with `go` — start implementing it right away, without pausing or asking the user.
   4. Repeat until there are no more unprocessed `## UPD` sections that have a `go` marker.

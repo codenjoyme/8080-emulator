@@ -80,10 +80,54 @@ tc:  false/true  ← Carry flag
 1. Look up the command implementation in `src/main/java/spec/` to understand opcode and behavior.
 2. Write the minimum number of test cases to cover all corner cases.
 3. Use `LXI`/`MVI` to set up register state before the tested instruction.
-4. After `start()`, write `asrtCpu(...)` — run the test once to get the actual output, then paste it as expected.
+4. Run the full `CpuTest` class; use actual failure output to correct expected values.
 5. Mark the command done in `readme.md` (`- [ ]` → `- [x]`).
-6. Run the full `CpuTest` class to ensure no regressions.
-7. Commit with message: `Add tests for <MNEMONIC>`.
+6. **Two-commit workflow:**
+   - **Commit A (work + result):** `git add src/test/java/spec/CpuTest.java readme.md request/testing/main.prompt.md` (with `### RESULT` in main.prompt.md). Commit message: `Add test for <MNEMONIC> (<brief description>)`.
+   - **Commit B (trigger):** write next `## UPD[N+1]` in main.prompt.md ending with `go`, then `git add request/testing/main.prompt.md && git commit`.
+7. Restart the watcher.
+
+## asrtMem — memory write tracking
+
+`asrtMem(String)` checks all cells written since last `start()`. Format per changed cell: `ADDR: oldVal -> val1 -> val2 -> ...`
+
+**CRITICAL — PORTS double-write:** The hardware has a PORTS I/O range `0xF800–0xFFFE`. Any `write8(addr, v)` where addr is in that range triggers **two** writes to the `TrackUpdatedMemory`:
+1. via `IOPorts.write8()` → `memory.write8()` (port handler)
+2. via `HardwareData.write8()` → `memory.write8()` (direct write, always happens)
+
+Address `0xFFFF` is **NOT** in PORTS range, so it gets only ONE write.
+
+So for stack operations that push to high memory (default SP=0x0000 → push → SP=0xFFFE):
+- `asrtMem("FFFE: 00 -> 03 -> 03\nFFFF: 00 -> 00")` — FFFE gets double-write because it's in PORTS; FFFF gets single write.
+- With `LXI SP,FFFC`: push → FFFA, FFFB — both in PORTS, both get double-writes: `asrtMem("FFFA: 00 -> 06 -> 06\nFFFB: 00 -> 00 -> 00")`
+
+**trackOnlyUpdates = false** (default in tests): ALL writes are tracked, including same-value writes (e.g. `00 -> 00`). Do NOT assume 0x00 writes are invisible.
+
+After calling `asrtMem(...)` the tracker is reset. The `after()` hook calls `asrtMem("")` — since you already called `asrtMem` in the test body, the tracker is empty and `""` passes.
+
+For instructions that write to arbitrary addresses (STA, SHLD, PUSH, CALL), always call `asrtMem("...")` yourself in the test body before the test exits.
+
+## Tick count and branching instructions
+
+`givenMm` counts **lines** and calls `record.after(N).stopCpu()` — the CPU stops after exactly N instructions execute.
+
+For linear programs (no jumps), line count = instruction count. But for branching instructions (CALL, JMP, etc.):
+- Some lines in `givenMm` may represent memory bytes that are **never executed** (e.g. dead NOPs between CALL and its target).
+- The CPU continues executing from the target address until the tick limit is hit.
+- After the tick limit fires, the CPU always runs **one more instruction** (the stop fires before the next loop iteration, and the interrupt check fires — since `ticksPerInterrupt=1` in tests — and breaks the loop).
+- Design tests so the program flows naturally from target into NOPs (memory initialized to 0x00 = NOP), and the final PC value can be predicted from the tick count.
+
+**Example for CALL:** `CALL 0005` + 4 NOPs in givenMm (5 lines → 5 ticks):
+- tick 1: CALL jumps to 0x0005
+- ticks 2–5: 4 NOPs starting from 0x0005 (including zero memory beyond givenMm)
+- Final PC = 0x0009 (after 4 NOPs from 0x0005)
+
+## Special flag behaviors
+
+- **ANA_R / ANI_XX H flag:** NOT standard half-carry. H = `(A | operand) & 0x08 != 0`. C always cleared.
+- **ANA_R / ANI_XX C flag:** Always cleared to 0 regardless of previous carry.
+- Standard H (arithmetic): borrow from bit4 or carry from bit3.
+- P flag: set if number of 1-bits in result is even (including 0).
 
 ## How to find the opcode hex for a mnemonic
 
@@ -93,6 +137,7 @@ tc:  false/true  ← Carry flag
 ## Running tests
 
 ```
-.\mvnw.cmd test "-Dtest=CpuTest"
-.\mvnw.cmd test "-Dtest=CpuTest#codeXX__MNEMONIC"
+& ".\mvnw.cmd" test "-Dtest=CpuTest"
 ```
+
+**Always use `& ".\mvnw.cmd"`** (with `&` prefix on Windows), never bare `.\mvnw.cmd`. Run the full `CpuTest` class — old Surefire 2.12.4 cannot handle long `-Dtest=ClassName#method+method...` strings.

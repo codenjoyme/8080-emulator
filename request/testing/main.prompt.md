@@ -153,10 +153,29 @@ iterative-prompt.agent.md
 
 Беру `CALL_XXYY` (opcode `0xCD`): вызов подпрограммы, PC → stack, jump to addr. go
 
+### RESULT
+
+2 теста, все прошли (183 total):
+- `codeCD__CALL_XXYY` — базовый CALL 0x0005, SP=0xFFFE, return addr 0x0003 на стеке
+- `codeCD__CALL_XXYY_with_sp` — CALL с LXI SP,FFFC перед ним, SP=0xFFFA, return addr 0x0006
+- Ключевой инсайт: PORTS range 0xF800-0xFFFE вызывает двойную запись, `asrtMem` должен ожидать `-> 03 -> 03` паттерн
+- Обновлены [instructions/iterative-prompt.agent.md](../../instructions/iterative-prompt.agent.md) и [instructions/cpu-unit-testing.agent.md](../../instructions/cpu-unit-testing.agent.md)
+
 ## UPD12
 
 Да и сделай так, чтобы следующий UPD добавлялся не в коммит, который ты делаешь сейчас, а в новый коммит после того, как ты откомментируешь результат. И так для всех следующих UPD. Обнови инструкцию по итеративному промпту єтии знаниями и тем как мы договорились с тобой себя вести раньше тут в этой файле.
 
-Так же обнови инструкции, если узнал что-то новое в этой сессии по части тестироания. Уверен ты много нового узнал. go
+Так же обнови инструкции, если узнал что-то новое в этой сессии по части тестироания. Уверен ты много нового узнал. 
+
+Да и давай выровняемся по описанию коммитов которые ты делаешь. Мне важно чтобы было `Add test for ______ и дальше чуть текста что именно`, но ты уже начал это делать сам. 
+
+И еще у меня есть файл `release.md` посмотри его сктруктуру и давай править его тоже, добавляя все для каждого коммита что ты уже сделал. А когда выровняешься, то просто в цикл возьми. go
+
+### RESULT
+
+Выполнено:
+- Обновлён [instructions/iterative-prompt.agent.md](../../instructions/iterative-prompt.agent.md): добавлен 2-commit workflow (Commit A = работа+RESULT, Commit B = следующий UPD+go)
+- Обновлён [instructions/cpu-unit-testing.agent.md](../../instructions/cpu-unit-testing.agent.md): PORTS double-write, tick count, ANA H-флаг, asrtMem формат, commit message `Add test for ...`
+- Заполнен [release.md](../../release.md): добавлена секция `2026-05-03` со всеми коммитами этой сессии
 
 

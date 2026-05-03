@@ -565,5 +565,19 @@
  
 - [x] (--------) Updated klad level.
 - [x] (--------) 
+
+2026-05-03
+-----------
+
+- [x] (fe38868) Добавлена инфраструктура инструкций для Copilot агента: `instructions/` с 4 файлами, `.github/copilot-instructions.md`, `.vscode/settings.json`, `request/testing/main.prompt.md`.
+- [x] (bc618c6) Исправлен автор git коммитов: `Oleksandr Baglai <apofig@gmail.com>`. Очищена история от лишних коммитов через cherry-pick.
+- [x] (c712375) Добавлены инструкции `build-locally.agent.md` (как собирать и тестировать) и `cpu-unit-testing.agent.md` (как писать тесты для CPU). Проверен сборочный пайплайн.
+- [x] (2aab430) Add test for ACI_XX (add immediate with carry, opcodes 0xCE): 4 теста покрывают все флаги и особые случаи.
+- [x] (f99033f) Add test for ADC_R (add register with carry, opcodes 0x88-0x8F): 10 тестов, все 8 регистров + corner cases.
+- [x] (b655d74) Add test for ADD_R (add register without carry, opcodes 0x80-0x87): 10 тестов, все 8 регистров + corner cases.
+- [x] (87ca49a) Add test for ADI_XX (add immediate, no carry, opcode 0xC6): 4 теста.
+- [x] (5ba1caa) Add test for ANA_R (bitwise AND register, opcodes 0xA0-0xA7): 11 тестов включая особый H-флаг `(A|reg)&0x08`.
+- [x] (058f847) Add test for ANI_XX (AND immediate, opcode 0xE6): 4 теста.
+- [x] (3215be8) Обновлены `instructions/iterative-prompt.agent.md` (2-commit workflow) и `instructions/cpu-unit-testing.agent.md` (PORTS double-write, tick count, ANA H-флаг).
       
 Продолжение следует!

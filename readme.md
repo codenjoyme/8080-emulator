@@ -91,7 +91,7 @@ Intro
 - [x] `ADI_XX`
 - [x] `ANA_R`
 - [x] `ANI_XX`
-- [ ] `CALL_XXYY`
+- [x] `CALL_XXYY`
 - [ ] `CC_XXYY`
 - [ ] `CM_XXYY`
 - [ ] `CMA`
