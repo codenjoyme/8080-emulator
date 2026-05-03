@@ -619,6 +619,7 @@
 - [x] (61d1d07) Add test for RNZ (return if not zero, 2 variants: taken/not-taken).
 - [x] (341ecad) Add test for RP (return if positive, 2 variants: taken/not-taken).
 - [x] (4b53134) Add test for RPE and RPO (return if parity even/odd, 2 variants each).
-- [x] (???????) Add test for RZ (return if zero, 2 variants: taken/not-taken).
+- [x] (dc91a62) Add test for RZ (return if zero, 2 variants: taken/not-taken).
+- [x] (???????) Add test for RST_N (restart 0-7, all 8 opcodes).
       
 Продолжение следует!

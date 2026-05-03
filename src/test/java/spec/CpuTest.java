@@ -14711,4 +14711,398 @@ public class CpuTest extends AbstractTest {
                 "tc:  false\n");
         // C=0x01: INR C was executed → proves RZ was NOT taken
     }
+
+    // RST N: restart — push return address, jump to N*8
+    // RST 0 (0xC7 → 0x0000), RST 1 (0xCF → 0x0008), ..., RST 7 (0xFF → 0x0038)
+    // Strategy: INR C sentinel at 0x0001 (or after RST) — C=0 proves RST was taken (jumped away)
+
+    @Test
+    public void codeC7__RST_0() {
+        // given: NOPs at 0x0000-0x0002, RST 0 at 0x0003, INR C at 0x0004
+        // RST 0 jumps to 0x0000; INR C never executed → C=0
+        givenPr("NOP\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "RST 0\n" +
+                "INR C\n");
+
+        givenMm("00\n" +
+                "00\n" +
+                "00\n" +
+                "C7\n" +
+                "0C");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFFE\n" +
+                "PC:  0001\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   00\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00000001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 04 -> 04\nFFFF: 00 -> 00");
+        // C=0x00: INR C at 0x0004 was never executed → RST 0 jumped to 0x0000
+    }
+
+    @Test
+    public void codeCF__RST_1() {
+        // given: RST 1 at 0x0000, INR C at 0x0001 (sentinel)
+        // RST 1 jumps to 0x0008; INR C never executed → C=0
+        givenPr("RST 1\n" +
+                "INR C\n");
+
+        givenMm("CF\n" +
+                "0C");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFFE\n" +
+                "PC:  0009\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   CF\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00001001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11001111\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 01 -> 01\nFFFF: 00 -> 00");
+        // C=0x00: INR C at 0x0001 was never executed → RST 1 jumped to 0x0008
+    }
+
+    @Test
+    public void codeD7__RST_2() {
+        // given: RST 2 at 0x0000, INR C at 0x0001 (sentinel)
+        // RST 2 jumps to 0x0010; INR C never executed → C=0
+        givenPr("RST 2\n" +
+                "INR C\n");
+
+        givenMm("D7\n" +
+                "0C");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFFE\n" +
+                "PC:  0011\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   D7\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00010001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11010111\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 01 -> 01\nFFFF: 00 -> 00");
+        // C=0x00: INR C at 0x0001 was never executed → RST 2 jumped to 0x0010
+    }
+
+    @Test
+    public void codeDF__RST_3() {
+        // given: RST 3 at 0x0000, INR C at 0x0001 (sentinel)
+        // RST 3 jumps to 0x0018; INR C never executed → C=0
+        givenPr("RST 3\n" +
+                "INR C\n");
+
+        givenMm("DF\n" +
+                "0C");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFFE\n" +
+                "PC:  0019\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   DF\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00011001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11011111\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 01 -> 01\nFFFF: 00 -> 00");
+        // C=0x00: INR C at 0x0001 was never executed → RST 3 jumped to 0x0018
+    }
+
+    @Test
+    public void codeE7__RST_4() {
+        // given: RST 4 at 0x0000, INR C at 0x0001 (sentinel)
+        // RST 4 jumps to 0x0020; INR C never executed → C=0
+        givenPr("RST 4\n" +
+                "INR C\n");
+
+        givenMm("E7\n" +
+                "0C");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFFE\n" +
+                "PC:  0021\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   E7\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00100001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11100111\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 01 -> 01\nFFFF: 00 -> 00");
+        // C=0x00: INR C at 0x0001 was never executed → RST 4 jumped to 0x0020
+    }
+
+    @Test
+    public void codeEF__RST_5() {
+        // given: RST 5 at 0x0000, INR C at 0x0001 (sentinel)
+        // RST 5 jumps to 0x0028; INR C never executed → C=0
+        givenPr("RST 5\n" +
+                "INR C\n");
+
+        givenMm("EF\n" +
+                "0C");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFFE\n" +
+                "PC:  0029\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   EF\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00101001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11101111\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 01 -> 01\nFFFF: 00 -> 00");
+        // C=0x00: INR C at 0x0001 was never executed → RST 5 jumped to 0x0028
+    }
+
+    @Test
+    public void codeF7__RST_6() {
+        // given: RST 6 at 0x0000, INR C at 0x0001 (sentinel)
+        // RST 6 jumps to 0x0030; INR C never executed → C=0
+        givenPr("RST 6\n" +
+                "INR C\n");
+
+        givenMm("F7\n" +
+                "0C");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFFE\n" +
+                "PC:  0031\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   F7\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00110001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11110111\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 01 -> 01\nFFFF: 00 -> 00");
+        // C=0x00: INR C at 0x0001 was never executed → RST 6 jumped to 0x0030
+    }
+
+    @Test
+    public void codeFF__RST_7() {
+        // given: RST 7 at 0x0000, INR C at 0x0001 (sentinel)
+        // RST 7 jumps to 0x0038; INR C never executed → C=0
+        givenPr("RST 7\n" +
+                "INR C\n");
+
+        givenMm("FF\n" +
+                "0C");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  FFFE\n" +
+                "PC:  0039\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   FF\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00111001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11111111\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 01 -> 01\nFFFF: 00 -> 00");
+        // C=0x00: INR C at 0x0001 was never executed → RST 7 jumped to 0x0038
+    }
 }

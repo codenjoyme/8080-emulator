@@ -606,3 +606,14 @@ iterative-prompt.agent.md
 ## UPD52
 
 Беру `RZ` (opcode `0xC8`): return if zero. go
+
+### RESULT
+
+- Добавлены тесты: `codeC8__RZ_zero`, `codeC8__RZ_not_zero`.
+- Ключ: ADD A сет Z=1; asrtMem FFFE:09 (адрес возврата 0x0009, CALL по ADD A на 0x0006-0x0008).
+- Commit: `dc91a62`
+- Тесты: 280 passed, 0 failures.
+
+## UPD53
+
+Беру `RST_N` (opcodes `0xC7/0xCF/0xD7/0xDF/0xE7/0xEF/0xF7/0xFF`): restart (software interrupt). go

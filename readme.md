@@ -132,7 +132,7 @@ Intro
 - [x] `RP`
 - [x] `RPE`
 - [x] `RPO`
-- [ ] `RST_N`
+- [x] `RST_N`
 - [x] `RZ`
 - [ ] `SBB_R`
 - [ ] `SBI_XX`
