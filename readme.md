@@ -129,7 +129,7 @@ Intro
 - [x] `RM`
 - [x] `RNC`
 - [x] `RNZ`
-- [ ] `RP`
+- [x] `RP`
 - [ ] `RPE`
 - [ ] `RPO`
 - [ ] `RST_N`

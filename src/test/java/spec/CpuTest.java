@@ -14251,4 +14251,119 @@ public class CpuTest extends AbstractTest {
                 "tc:  false\n");
         // C=0x01: INR C was executed → proves RNZ was NOT taken
     }
+
+    // RP: return if positive (S=0)  (opcode 0xF0)
+    // INR C sentinel: C=0x00 means RP was taken (INR C skipped)
+
+    @Test
+    public void codeF0__RP_positive() {
+        // given: JMP 0005, S=0 (default), CALL 0003, RP taken (C=0)
+        // subroutine at 0x0003: RP, INR C
+        givenPr("JMP 0005\n" +
+                "RP\n" +
+                "INR C\n" +
+                "CALL 0003\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("C3 05 00\n" +
+                "F0\n" +
+                "0C\n" +
+                "CD 03 00\n" +
+                "00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  000D\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   C3\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11000011\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 08 -> 08\nFFFF: 00 -> 00");
+        // C=0x00: INR C was skipped → proves RP was taken
+    }
+
+    @Test
+    public void codeF0__RP_negative() {
+        // given: ADI 80 sets S=1; RP not taken → INR C executes (C=0x01)
+        givenPr("ADI 80\n" +
+                "RP\n" +
+                "INR C\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("C6 80\n" +
+                "F0\n" +
+                "0C\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0001\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  8002\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 01\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   C6\n" +
+                "A,F: 80 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000001\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   11000110\n" +
+                "A:   10000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        // C=0x01: INR C was executed → proves RP was NOT taken
+    }
 }

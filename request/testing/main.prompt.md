@@ -573,3 +573,14 @@ iterative-prompt.agent.md
 ## UPD49
 
 Беру `RNZ` (opcode `0xC0`): return if not zero. go
+
+### RESULT
+
+- Добавлены тесты: `codeC0__RNZ_not_zero`, `codeC0__RNZ_zero`.
+- RNZ not-taken: ADD A устанавливает Z=1, INR C изменяет флаги → F=0x02.
+- Commit: `61d1d07`
+- Тесты: 272 passed, 0 failures.
+
+## UPD50
+
+Беру `RP` (opcode `0xF0`): return if positive (S=0). go
