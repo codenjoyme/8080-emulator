@@ -178,4 +178,8 @@ iterative-prompt.agent.md
 - Обновлён [instructions/cpu-unit-testing.agent.md](../../instructions/cpu-unit-testing.agent.md): PORTS double-write, tick count, ANA H-флаг, asrtMem формат, commit message `Add test for ...`
 - Заполнен [release.md](../../release.md): добавлена секция `2026-05-03` со всеми коммитами этой сессии
 
+## UPD13
+
+Беру `CC_XXYY` (opcode `0xDC`): CALL if carry. go
+
 
