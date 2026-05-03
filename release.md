@@ -581,5 +581,6 @@
 - [x] (3215be8) Обновлены `instructions/iterative-prompt.agent.md` (2-commit workflow) и `instructions/cpu-unit-testing.agent.md` (PORTS double-write, tick count, ANA H-флаг).
 - [x] (43ae786) Add test for CALL_XXYY (unconditional call, push return addr to stack, 2 variants).
 - [x] (a03fc35) Add test for CC_XXYY (conditional call if carry, 2 variants: taken/not-taken).
+- [x] (bb1ae2e) Add test for CM_XXYY (conditional call if minus/sign, 2 variants).
       
 Продолжение следует!

@@ -94,7 +94,7 @@ Intro
 - [x] `CALL_XXYY`
 - [x] `CC_XXYY`
 - [x] `CM_XXYY`
-- [ ] `CMA`
+- [x] `CMA`
 - [ ] `CMC`
 - [ ] `CMP_R`
 - [ ] `CNC_XXYY`
