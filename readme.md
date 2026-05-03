@@ -106,7 +106,7 @@ Intro
 - [x] `CZ_XXYY`
 - [x] `DAA`
 - [x] `DCX_RR`
-- [ ] `DI`
+- [x] `DI`
 - [ ] `EI`
 - [ ] `IN_XX`
 - [ ] `JC_XXYY`

@@ -593,5 +593,6 @@
 - [x] (e29c6af) Add test for CPO_XXYY (conditional call if parity odd, 2 variants: taken/not-taken).
 - [x] (dfd1cbb) Add test for CZ_XXYY (conditional call if zero, 2 variants: taken/not-taken).
 - [x] (c157767) Add tests for DAA (decimal adjust accumulator, 3 variants: no-change/lower-fix/upper-fix).
+- [x] (2f7be88) Add tests for DCX_RR (decrement register pair, 4 variants: BC/DE/HL/SP).
       
 Продолжение следует!

@@ -331,4 +331,13 @@ iterative-prompt.agent.md
 
 Беру `DI` (opcode `0xF3`): disable interrupts. go
 
+### RESULT
+
+1 тест, прошёл (224 total):
+- `codeF3__DI` — нет изменений (нет реализации прерываний)
+
+## UPD28
+
+Беру `EI` (opcode `0xFB`): enable interrupts. go
+
 
