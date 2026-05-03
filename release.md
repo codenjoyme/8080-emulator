@@ -595,5 +595,6 @@
 - [x] (c157767) Add tests for DAA (decimal adjust accumulator, 3 variants: no-change/lower-fix/upper-fix).
 - [x] (2f7be88) Add tests for DCX_RR (decrement register pair, 4 variants: BC/DE/HL/SP).
 - [x] (4188fb8) Add test for DI (disable interrupts, no-op in current implementation).
+- [x] (7b330ca) Add test for EI (enable interrupts, no-op); update cpu-unit-testing instructions.
       
 Продолжение следует!

@@ -358,4 +358,14 @@ iterative-prompt.agent.md
 
 Беру `IN_XX` (opcode `0xDB`): input from port. go
 
+### RESULT
+
+1 тест, прошёл (226 total):
+- `codeDB__IN_XX` — A=0x01, IN 02, читает 0xFF (тестовая среда возвращает 0xFF), A=0xFF
+- Флаги не меняются, IN не влияет на F
+
+## UPD30
+
+Беру `JC_XXYY` (opcode `0xDA`): JUMP if carry. go
+
 
