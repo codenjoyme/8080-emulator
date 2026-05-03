@@ -129,4 +129,16 @@ iterative-prompt.agent.md
 
 Беру `ANA_R` (opcodes `0xA0`-`0xA7`): `A = A & reg`, AND по регистру. go
 
+### RESULT
+
+11 тестов, все прошли (177 total):
+- `codeA0__ANA_B` .. `codeA7__ANA_A` — все 8 регистров
+- `codeA0__ANA_B_zero` — 0xF0 & 0x0F = 0x00, Z=1, H=1 (bit3 в 0x0F)
+- `codeA0__ANA_B_h_zero` — H=0 когда ни A ни B не имеют bit3 (0xF0&0xF0=0xF0)
+- `codeA0__ANA_B_carry_cleared` — carry=1 установлен заранее, ANA обнуляет C
+
+## UPD10
+
+Беру `ANI_XX` (opcode `0xE6`): `A = A & imm8`. go
+
 

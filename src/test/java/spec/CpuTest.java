@@ -8686,4 +8686,550 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  false\n");
     }
+
+    // ANA_R: A = A & register  (opcodes 0xA0-0xA7: B,C,D,E,H,L,M,A)
+    // Special: H = set if (A | reg) has bit 3; C always cleared
+
+    @Test
+    public void codeA0__ANA_B() {
+        // given: A=0xFF, B=0xF0 => A=0xF0, S=1, H=1, P=1
+        givenPr("MVI A,FF\n" +
+                "MVI B,F0\n" +
+                "ANA B\n" +
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "06 F0\n" +
+                "A0\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  F000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  F096\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: F0 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: F0 96\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   11110000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   11110000\n" +
+                "     sz0h0p1c\n" +
+                "F:   10010110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeA1__ANA_C() {
+        // given: A=0xFF, C=0x33 => A=0x33, S=0, H=1, P=1
+        givenPr("MVI A,FF\n" +
+                "MVI C,33\n" +
+                "ANA C\n" +
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "0E 33\n" +
+                "A1\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0033\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  3316\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 33\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 33 16\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00110011\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00110011\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeA2__ANA_D() {
+        // given: A=0xFF, D=0x55 => A=0x55, S=0, H=1, P=1
+        givenPr("MVI A,FF\n" +
+                "MVI D,55\n" +
+                "ANA D\n" +
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "16 55\n" +
+                "A2\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  5500\n" +
+                "HL:  0000\n" +
+                "AF:  5516\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 55 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 55 16\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   01010101\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   01010101\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeA3__ANA_E() {
+        // given: A=0xFF, E=0xAA => A=0xAA, S=1, H=1, P=1
+        givenPr("MVI A,FF\n" +
+                "MVI E,AA\n" +
+                "ANA E\n" +
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "1E AA\n" +
+                "A3\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  00AA\n" +
+                "HL:  0000\n" +
+                "AF:  AA96\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 AA\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: AA 96\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   10101010\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   10101010\n" +
+                "     sz0h0p1c\n" +
+                "F:   10010110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeA4__ANA_H() {
+        // given: H=0x0F, A=0xFF => A=0x0F, S=0, H=1, P=1
+        givenPr("MVI H,0F\n" +
+                "MVI A,FF\n" +
+                "ANA H\n" +
+                "NOP\n");
+
+        givenMm("26 0F\n" +
+                "3E FF\n" +
+                "A4\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0F00\n" +
+                "AF:  0F16\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 0F 00\n" +
+                "M:   00\n" +
+                "A,F: 0F 16\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00001111\n" +
+                "L:   00000000\n" +
+                "M:   00000000\n" +
+                "A:   00001111\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeA5__ANA_L() {
+        // given: L=0xF0, A=0xFF => A=0xF0, S=1, H=1, P=1
+        givenPr("MVI L,F0\n" +
+                "MVI A,FF\n" +
+                "ANA L\n" +
+                "NOP\n");
+
+        givenMm("2E F0\n" +
+                "3E FF\n" +
+                "A5\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  00F0\n" +
+                "AF:  F096\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 F0\n" +
+                "M:   00\n" +
+                "A,F: F0 96\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   11110000\n" +
+                "M:   00000000\n" +
+                "A:   11110000\n" +
+                "     sz0h0p1c\n" +
+                "F:   10010110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeA6__ANA_M() {
+        // given: HL=0x0001, M=memory[0x0001]=0x01, A=0xFF => A=0x01, S=0, H=1, P=0
+        givenPr("LXI H,0001\n" +
+                "MVI A,FF\n" +
+                "ANA M\n" +
+                "NOP\n");
+
+        givenMm("21 01 00\n" +
+                "3E FF\n" +
+                "A6\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0001\n" +
+                "AF:  0112\n" +
+                "SP:  0000\n" +
+                "PC:  0007\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 01\n" +
+                "M:   01\n" +
+                "A,F: 01 12\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000111\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000001\n" +
+                "M:   00000001\n" +
+                "A:   00000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00010010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeA7__ANA_A() {
+        // given: A=0xAA, ANA A => A=0xAA (identity), S=1, H=1, P=1
+        givenPr("MVI A,AA\n" +
+                "ANA A\n" +
+                "NOP\n");
+
+        givenMm("3E AA\n" +
+                "A7\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  AA96\n" +
+                "SP:  0000\n" +
+                "PC:  0004\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: AA 96\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000100\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   10101010\n" +
+                "     sz0h0p1c\n" +
+                "F:   10010110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeA0__ANA_B_zero() {
+        // given: A=0xF0, B=0x0F => A=0x00, Z=1, H=1 (bit3 in 0x0F), P=1
+        givenPr("MVI A,F0\n" +
+                "MVI B,0F\n" +
+                "ANA B\n" +
+                "NOP\n");
+
+        givenMm("3E F0\n" +
+                "06 0F\n" +
+                "A0\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0F00\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0056\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 0F 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 00 56\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00001111\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   01010110\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeA0__ANA_B_h_zero() {
+        // given: A=0xF0, B=0xF0 => A=0xF0, H=0 (neither operand has bit 3 set)
+        givenPr("MVI A,F0\n" +
+                "MVI B,F0\n" +
+                "ANA B\n" +
+                "NOP\n");
+
+        givenMm("3E F0\n" +
+                "06 F0\n" +
+                "A0\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  F000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  F086\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: F0 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: F0 86\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   11110000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   11110000\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeA0__ANA_B_carry_cleared() {
+        // given: carry=1 set first, then ANA always clears carry
+        givenPr("MVI A,FF\n" +  // A = 0xFF
+                "MVI B,01\n" +  // B = 0x01
+                "ADC B\n" +     // A = 0x00, C=1 set
+                "MVI A,AA\n" +  // A = 0xAA
+                "MVI B,FF\n" +  // B = 0xFF
+                "ANA B\n" +     // A = 0xAA & 0xFF = 0xAA, C=0 (cleared!)
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "06 01\n" +
+                "88\n" +
+                "3E AA\n" +
+                "06 FF\n" +
+                "A0\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  FF00\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  AA96\n" +
+                "SP:  0000\n" +
+                "PC:  000B\n" +
+                "B,C: FF 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: AA 96\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001011\n" +
+                "     76543210\n" +
+                "B:   11111111\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   10101010\n" +
+                "     sz0h0p1c\n" +
+                "F:   10010110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  true\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
 }
