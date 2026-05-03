@@ -109,7 +109,7 @@ Intro
 - [x] `DI`
 - [x] `EI`
 - [x] `IN_XX`
-- [ ] `JC_XXYY`
+- [x] `JC_XXYY`
 - [ ] `JM_XXYY`
 - [ ] `JMP_XXYY`
 - [ ] `JNC_XXYY`

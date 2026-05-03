@@ -596,5 +596,6 @@
 - [x] (2f7be88) Add tests for DCX_RR (decrement register pair, 4 variants: BC/DE/HL/SP).
 - [x] (4188fb8) Add test for DI (disable interrupts, no-op in current implementation).
 - [x] (7b330ca) Add test for EI (enable interrupts, no-op); update cpu-unit-testing instructions.
+- [x] (0d1dfa3) Add test for IN_XX (input from port to A, in8 returns 0xFF in test env).
       
 Продолжение следует!

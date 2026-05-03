@@ -368,4 +368,14 @@ iterative-prompt.agent.md
 
 Беру `JC_XXYY` (opcode `0xDA`): JUMP if carry. go
 
+### RESULT
+
+2 теста, все прошли (228 total):
+- `codeDA__JC_XXYY_carry_set` — C=1 (через ADI overflow), JMP происходит
+- `codeDA__JC_XXYY_carry_clear` — C=0, JMP не происходит
+
+## UPD31
+
+Беру `JM_XXYY` (opcode `0xFA`): JUMP if minus (sign=1). go
+
 
