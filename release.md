@@ -608,6 +608,7 @@
 - [x] (9568fc7) Add test for JZ_XXYY (jump if zero, 2 variants: taken/not-taken).
 - [x] (2f89712) Add test for ORA_R (OR accumulator with register, 8 variants: B,C,D,E,H,L,M,A).
 - [x] (8b3eedd) Add test for ORI_XX (OR accumulator with immediate, 2 variants).
-- [x] (???????) Add test for OUT_XX (output accumulator to port).
+- [x] (a200e40) Add test for OUT_XX (output accumulator to port).
+- [x] (???????) Add test for PCHL (jump to HL, INR C sentinel).
       
 Продолжение следует!

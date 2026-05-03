@@ -121,7 +121,7 @@ Intro
 - [x] `ORA_R`
 - [x] `ORI_XX`
 - [x] `OUT_XX`
-- [ ] `PCHL`
+- [x] `PCHL`
 - [ ] `POP_RS`
 - [ ] `PUSH_RS`
 - [ ] `RC`

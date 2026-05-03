@@ -13241,4 +13241,60 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
     }
+
+    // PCHL: PC = HL  (opcode 0xE9)
+    // Unconditional jump to address in HL register pair; no flags changed
+    // INR C sentinel: C=0x00 means PCHL was taken (INR C skipped)
+
+    @Test
+    public void codeE9__PCHL() {
+        // given: HL=0x0005, PCHL => PC jumps to 0x0005; INR C at 0x0004 skipped (C=0x00)
+        givenPr("LXI H,0005\n" +
+                "PCHL\n" +
+                "INR C\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("21 05 00\n" +
+                "E9\n" +
+                "0C\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0005\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  0008\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 05\n" +
+                "M:   00\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001000\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000101\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        // C=0x00: INR C was skipped → proves PCHL was taken
+    }
 }

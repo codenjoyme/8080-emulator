@@ -477,3 +477,14 @@ iterative-prompt.agent.md
 ## UPD41
 
 Беру `OUT_XX` (opcode `0xD3`): output to port. go
+
+### RESULT
+
+- Добавлен тест: `codeD3__OUT_XX`.
+- OUT не меняет регистры/флаги; A отправляется на порт, выход игнорируется в тестовой среде.
+- Commit: `a200e40`
+- Тесты: 254 passed, 0 failures.
+
+## UPD42
+
+Беру `PCHL` (opcode `0xE9`): jump to HL. go
