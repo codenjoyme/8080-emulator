@@ -582,5 +582,6 @@
 - [x] (43ae786) Add test for CALL_XXYY (unconditional call, push return addr to stack, 2 variants).
 - [x] (a03fc35) Add test for CC_XXYY (conditional call if carry, 2 variants: taken/not-taken).
 - [x] (bb1ae2e) Add test for CM_XXYY (conditional call if minus/sign, 2 variants).
+- [x] (7d14dea) Add test for CMA (bitwise NOT of A, no flags changed, 2 variants).
       
 Продолжение следует!

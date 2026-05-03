@@ -211,10 +211,15 @@ iterative-prompt.agent.md
 
 ## UPD16
 
+Исправь инструкцию. План итеративного промпта такой, что в одном коммите идет ## UPDN результат работы RESULT и потом коммит. А новый UPD[N+1] идет в будущем коммите, который не надо закрывать тут же. 
+
 Беру `CMC` (opcode `0x3F`): complement carry (toggle C flag). go
 
-## UPD16
+### RESULT
 
-Исправь инструкцию. План итеративного промпта такой, что в одном коммите идет ## UPDN результат работы RESULT и потом коммит. А новый UPD[N+1] идет в будущем коммите, который не надо закрывать тут же. go
+- Исправлена [instructions/iterative-prompt.agent.md](../../instructions/iterative-prompt.agent.md): теперь 1 commit = UPD + work + RESULT; следующий UPD пишется uncommitted после коммита и закрывается только своим циклом
+- 2 теста CMC, все прошли (191 total):
+  - `code3F__CMC_set_to_clear` — carry=1 (через ADC overflow) → CMC → carry=0
+  - `code3F__CMC_clear_to_set` — carry=0 → CMC → carry=1, F=0x03
 
 
