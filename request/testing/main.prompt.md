@@ -243,4 +243,14 @@ iterative-prompt.agent.md
 - `codeD4__CNC_XXYY_carry_clear` — carry=0, CALL происходит: SP=0xFFFE, return addr 0x0003
 - `codeD4__CNC_XXYY_carry_set` — carry=1 (через ADC overflow), CALL не происходит
 
+## UPD19
+
+Беру `CNZ_XXYY` (opcode `0xC4`): CALL if not zero. go
+
+### RESULT
+
+2 теста, все прошли (205 total):
+- `codeC4__CNZ_XXYY_nz` — A=0x01 (Z=0), CALL происходит: SP=0xFFFE, return addr 0x0005
+- `codeC4__CNZ_XXYY_zero` — ADD A (0+0=0, Z=1), CALL не происходит
+
 

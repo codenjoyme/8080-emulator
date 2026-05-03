@@ -585,5 +585,6 @@
 - [x] (7d14dea) Add test for CMA (bitwise NOT of A, no flags changed, 2 variants).
 - [x] (754886a) Add test for CMC (complement carry, toggle C flag, 2 variants) + fix iterative prompt workflow.
 - [x] (2321d7f) Add tests for CMP_R (compare register with A, opcodes 0xB8-0xBF): 10 тестов, все 8 регистров + less/equal corner cases.
+- [x] (9a78caf) Add test for CNC_XXYY (conditional call if no carry, 2 variants: taken/not-taken).
       
 Продолжение следует!

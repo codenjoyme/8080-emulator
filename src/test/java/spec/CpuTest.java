@@ -10538,4 +10538,111 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  true\n");
     }
+
+    // CNZ_XXYY: CALL if not zero  (opcode 0xC4)
+
+    @Test
+    public void codeC4__CNZ_XXYY_nz() {
+        // given: A=0x01 (not zero), CNZ 0005 — condition met, call happens
+        givenPr("MVI A,01\n" +
+                "CNZ 0005\n" +
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("3E 01\n" +
+                "C4 05 00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0102\n" +
+                "SP:  FFFE\n" +
+                "PC:  0008\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 01 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  11111111 11111110\n" +
+                "PC:  00000000 00001000\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000001\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+        asrtMem("FFFE: 00 -> 05 -> 05\nFFFF: 00 -> 00");
+    }
+
+    @Test
+    public void codeC4__CNZ_XXYY_zero() {
+        // given: A=0 (zero flag set via MVI), CNZ — condition NOT met, no call
+        givenPr("MVI A,00\n" +
+                "ADD A\n" +     // A=0, sets Z=1
+                "CNZ 0008\n" +  // Z=1 → NO call
+                "NOP\n" +
+                "NOP\n" +
+                "NOP\n");
+
+        givenMm("3E 00\n" +
+                "87\n" +
+                "C4 08 00\n" +
+                "00\n" +
+                "00\n" +
+                "00");
+
+        // when
+        start();
+
+        // then
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0046\n" +
+                "SP:  0000\n" +
+                "PC:  0009\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 00 46\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001001\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   01000110\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
 }
