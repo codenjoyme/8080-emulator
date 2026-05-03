@@ -26,3 +26,10 @@ iterative-prompt.agent.md
 ## UPD2
 
 Давай поменяем автора проекта на `Oleksandr Baglai` и `apofig@gmail.com`. Давай поменяем это в настройках гита, я говорю про коммиты. И коммиты что ты сделал только что удали. А предыдуший коммит - в нем поменяй юзера. go
+
+### RESULT
+
+- Настроен `git config user.name "Oleksandr Baglai"` и `git config user.email "apofig@gmail.com"` (локально).
+- Мои 3 предыдущих коммита удалены (`git reset HEAD~3`).
+- Предыдущий коммит `Updated klad level.` переписан с новым автором (`--amend --author`): `265f219`.
+- Все файлы инфраструктуры перекоммичены под новым автором: `4a1cd8a`.
