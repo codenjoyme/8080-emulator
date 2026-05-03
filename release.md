@@ -599,6 +599,7 @@
 - [x] (0d1dfa3) Add test for IN_XX (input from port to A, in8 returns 0xFF in test env).
 - [x] (899999c) Add test for JC_XXYY (jump if carry, 2 variants: taken/not-taken).
 - [x] (2acbb20) Add test for JM_XXYY (jump if minus/sign, 2 variants: taken/not-taken).
-- [x] (???????) Add test for JMP_XXYY (unconditional JUMP); add INR C sentinel pattern to all 22 existing jump/call tests; update cpu-unit-testing instructions (INR C pattern, flags note).
+- [x] (6dc88d1) Add test for JMP_XXYY (unconditional JUMP); add INR C sentinel to all 22 jump/call tests; update instructions.
+- [x] (???????) Add test for JNC_XXYY (jump if no carry, 2 variants: taken/not-taken).
       
 Продолжение следует!

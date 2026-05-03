@@ -396,3 +396,12 @@ iterative-prompt.agent.md
 - Написан тест `codeC3__JMP_XXYY` (unconditional JUMP, C=0x00 доказывает что jump сработал).
 - Обновлены инструкции: добавлены разделы "INR C sentinel pattern" и предупреждение об изменении флагов при not-taken.
 - Тесты: 231 passed, 0 failures.
+
+## UPD33
+
+Беру `JNC_XXYY` (opcode `0xD2`): JUMP if no carry. go
+
+### RESULT
+
+- Написаны тесты `codeD2__JNC_XXYY_carry_clear` и `codeD2__JNC_XXYY_carry_set`.
+- Тесты: 233 passed, 0 failures.
