@@ -16869,4 +16869,57 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  false\n");
     }
+
+    // XTHL: H <-> (SP+1), L <-> (SP)  (opcode 0xE3)
+
+    @Test
+    public void codeE3__XTHL() {
+        // given: HL=0x1234, SP=0x0100, memory[0x0100]=0x00, memory[0x0101]=0x00
+        // => after XTHL: HL=0x0000, memory[0x0100]=0x34, memory[0x0101]=0x12
+        givenPr("LXI SP,0100\n" +
+                "LXI H,1234\n" +
+                "XTHL\n" +
+                "NOP\n");
+
+        givenMm("31 00 01\n" +
+                "21 34 12\n" +
+                "E3\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0002\n" +
+                "SP:  0100\n" +
+                "PC:  0008\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   31\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000001 00000000\n" +
+                "PC:  00000000 00001000\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00110001\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+
+        asrtMem("0100: 00 -> 34\n" +
+                "0101: 00 -> 12");
+    }
 }

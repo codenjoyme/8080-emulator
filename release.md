@@ -629,6 +629,7 @@
 - [x] (362b247) Add test for SUI_XX (subtract immediate).
 - [x] (e424518) Add test for XCHG (exchange DE and HL).
 - [x] (04f0557) Add test for XRA_R (XOR register, all 8 variants).
-- [x] (???????) Add test for XRI_XX (XOR immediate).
+- [x] (3c33b8b) Add test for XRI_XX (XOR immediate).
+- [x] (???????) Add test for XTHL (exchange HL with stack top).
       
 Продолжение следует!

@@ -696,4 +696,12 @@ Key learnings: M register value depends on HL pointer (not always 0x3E); SBB car
 
 ### RESULT
 
-3 теста (parity, sign, zero). commit: ???????.
+3 теста (parity, sign, zero). commit: 3c33b8b.
+
+## UPD63
+
+Беру `XTHL` (opcode `0xE3`): exchange HL with stack top. go
+
+### RESULT
+
+1 тест. commit: ???????.
