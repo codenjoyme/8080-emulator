@@ -16356,4 +16356,380 @@ public class CpuTest extends AbstractTest {
                 "tp:  false\n" +
                 "tc:  false\n");
     }
+
+    // XRA_R: A = A ^ register  (opcodes 0xA8-0xAF: B,C,D,E,H,L,M,A)
+
+    @Test
+    public void codeA8__XRA_B() {
+        // given: A=0x5A, B=0x0F => A=0x5A^0x0F=0x55, P=1
+        givenPr("MVI A,5A\n" +
+                "MVI B,0F\n" +
+                "XRA B\n" +
+                "NOP\n");
+
+        givenMm("3E 5A\n" +
+                "06 0F\n" +
+                "A8\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0F00\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  5506\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 0F 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 55 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00001111\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   01010101\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeA9__XRA_C() {
+        // given: A=0xFF, C=0x0F => A=0xFF^0x0F=0xF0, S=1, P=1
+        givenPr("MVI A,FF\n" +
+                "MVI C,0F\n" +
+                "XRA C\n" +
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "0E 0F\n" +
+                "A9\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  000F\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  F086\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 0F\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: F0 86\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00001111\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   11110000\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeAA__XRA_D() {
+        // given: A=0x33, D=0x55 => A=0x33^0x55=0x66, P=1
+        givenPr("MVI A,33\n" +
+                "MVI D,55\n" +
+                "XRA D\n" +
+                "NOP\n");
+
+        givenMm("3E 33\n" +
+                "16 55\n" +
+                "AA\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  5500\n" +
+                "HL:  0000\n" +
+                "AF:  6606\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 55 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 66 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   01010101\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   01100110\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeAB__XRA_E() {
+        // given: A=0x0F, E=0x0F => A=0x0F^0x0F=0x00, Z=1, P=1
+        givenPr("MVI A,0F\n" +
+                "MVI E,0F\n" +
+                "XRA E\n" +
+                "NOP\n");
+
+        givenMm("3E 0F\n" +
+                "1E 0F\n" +
+                "AB\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  000F\n" +
+                "HL:  0000\n" +
+                "AF:  0046\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 0F\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 00 46\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00001111\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   01000110\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeAC__XRA_H() {
+        // given: A=0x5A, H=0x0F => A=0x5A^0x0F=0x55, HL=0x0F00 => M=memory[0x0F00]=0x00
+        givenPr("MVI A,5A\n" +
+                "MVI H,0F\n" +
+                "XRA H\n" +
+                "NOP\n");
+
+        givenMm("3E 5A\n" +
+                "26 0F\n" +
+                "AC\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0F00\n" +
+                "AF:  5506\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 0F 00\n" +
+                "M:   00\n" +
+                "A,F: 55 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00001111\n" +
+                "L:   00000000\n" +
+                "M:   00000000\n" +
+                "A:   01010101\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeAD__XRA_L() {
+        // given: A=0xFF, L=0x0F => A=0xFF^0x0F=0xF0, S=1, HL=0x000F => M=memory[0x000F]=0x00
+        givenPr("MVI A,FF\n" +
+                "MVI L,0F\n" +
+                "XRA L\n" +
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "2E 0F\n" +
+                "AD\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  000F\n" +
+                "AF:  F086\n" +
+                "SP:  0000\n" +
+                "PC:  0006\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 0F\n" +
+                "M:   00\n" +
+                "A,F: F0 86\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000110\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00001111\n" +
+                "M:   00000000\n" +
+                "A:   11110000\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeAE__XRA_M() {
+        // given: A=0x5A, HL=0x0001, M=memory[0x0001]=0x5A (MVI immediate) => A=0x5A^0x5A=0x00, Z=1, P=1
+        givenPr("MVI A,5A\n" +
+                "LXI H,0001\n" +
+                "XRA M\n" +
+                "NOP\n");
+
+        givenMm("3E 5A\n" +
+                "21 01 00\n" +
+                "AE\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0001\n" +
+                "AF:  0046\n" +
+                "SP:  0000\n" +
+                "PC:  0007\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 01\n" +
+                "M:   5A\n" +
+                "A,F: 00 46\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000111\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000001\n" +
+                "M:   01011010\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   01000110\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeAF__XRA_A() {
+        // given: A=0x42 => A=0x42^0x42=0x00, Z=1, P=1
+        givenPr("MVI A,42\n" +
+                "XRA A\n" +
+                "NOP\n");
+
+        givenMm("3E 42\n" +
+                "AF\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0046\n" +
+                "SP:  0000\n" +
+                "PC:  0004\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 00 46\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000100\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   01000110\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
 }

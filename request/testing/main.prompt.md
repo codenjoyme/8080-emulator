@@ -680,4 +680,12 @@ Key learnings: M register value depends on HL pointer (not always 0x3E); SBB car
 
 ### RESULT
 
-1 тест. commit: ???????.
+1 тест. commit: e424518.
+
+## UPD61
+
+Беру `XRA_R` (opcodes `0xA8`-`0xAF`): XOR register. go
+
+### RESULT
+
+8 тестов (XRA B/C/D/E/H/L/M/A). commit: ???????.
