@@ -16732,4 +16732,141 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  false\n");
     }
+
+    // XRI_XX: A = A ^ immediate  (opcode 0xEE)
+
+    @Test
+    public void codeEE__XRI_XX_parity() {
+        // given: A=0x5A, imm=0x0F => A=0x5A^0x0F=0x55, P=1, H=0, C=0
+        givenPr("MVI A,5A\n" +
+                "XRI 0F\n" +
+                "NOP\n");
+
+        givenMm("3E 5A\n" +
+                "EE 0F\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  5506\n" +
+                "SP:  0000\n" +
+                "PC:  0005\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 55 06\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   01010101\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000110\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeEE__XRI_XX_sign() {
+        // given: A=0xFF, imm=0x0F => A=0xFF^0x0F=0xF0, S=1, P=1
+        givenPr("MVI A,FF\n" +
+                "XRI 0F\n" +
+                "NOP\n");
+
+        givenMm("3E FF\n" +
+                "EE 0F\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  F086\n" +
+                "SP:  0000\n" +
+                "PC:  0005\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: F0 86\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   11110000\n" +
+                "     sz0h0p1c\n" +
+                "F:   10000110\n" +
+                "ts:  true\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
+
+    @Test
+    public void codeEE__XRI_XX_zero() {
+        // given: A=0x42, imm=0x42 => A=0x42^0x42=0x00, Z=1, P=1
+        givenPr("MVI A,42\n" +
+                "XRI 42\n" +
+                "NOP\n");
+
+        givenMm("3E 42\n" +
+                "EE 42\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  0000\n" +
+                "HL:  0000\n" +
+                "AF:  0046\n" +
+                "SP:  0000\n" +
+                "PC:  0005\n" +
+                "B,C: 00 00\n" +
+                "D,E: 00 00\n" +
+                "H,L: 00 00\n" +
+                "M:   3E\n" +
+                "A,F: 00 46\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00000101\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   00000000\n" +
+                "E:   00000000\n" +
+                "H:   00000000\n" +
+                "L:   00000000\n" +
+                "M:   00111110\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   01000110\n" +
+                "ts:  false\n" +
+                "tz:  true\n" +
+                "th:  false\n" +
+                "tp:  true\n" +
+                "tc:  false\n");
+    }
 }

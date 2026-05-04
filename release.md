@@ -628,6 +628,7 @@
 - [x] (7038229) Add test for SUB_R (subtract register, all 8 variants).
 - [x] (362b247) Add test for SUI_XX (subtract immediate).
 - [x] (e424518) Add test for XCHG (exchange DE and HL).
-- [x] (???????) Add test for XRA_R (XOR register, all 8 variants).
+- [x] (04f0557) Add test for XRA_R (XOR register, all 8 variants).
+- [x] (???????) Add test for XRI_XX (XOR immediate).
       
 Продолжение следует!

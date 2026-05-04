@@ -688,4 +688,12 @@ Key learnings: M register value depends on HL pointer (not always 0x3E); SBB car
 
 ### RESULT
 
-8 тестов (XRA B/C/D/E/H/L/M/A). commit: ???????.
+8 тестов (XRA B/C/D/E/H/L/M/A). commit: 04f0557.
+
+## UPD62
+
+Беру `XRI_XX` (opcode `0xEE`): XOR immediate. go
+
+### RESULT
+
+3 теста (parity, sign, zero). commit: ???????.

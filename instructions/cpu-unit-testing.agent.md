@@ -135,6 +135,7 @@ Wait — PC is updated **before** the instruction stops (rPC.inc16() fires on op
 
 - **ANA_R / ANI_XX H flag:** NOT standard half-carry. H = `(A | operand) & 0x08 != 0`. C always cleared.
 - **ANA_R / ANI_XX C flag:** Always cleared to 0 regardless of previous carry.
+- **XRA_R / XRI_XX H flag:** Always 0 (H cleared). C always cleared.
 - Standard H (arithmetic): borrow from bit4 or carry from bit3.
 - P flag: set if number of 1-bits in result is even (including 0).
 
