@@ -742,3 +742,13 @@ Key learnings: M register value depends on HL pointer (not always 0x3E); SBB car
 | `CpuPerformanceTest.java` | 2 | команды закомментированы |
 | `math/` | **0** | папка пустая — приоритет! |
 | `utils/`, `image/`, `resources/` | 5 | ✅ небольшие утилиты |
+
+## UPD65
+
+Давай покроем тестами хорошо `math`. 
+И вотчер чето отвалился. Я обновил инструкцию, прочитай ее полностью и следуй
+go
+
+### RESULT
+
+Созданы [src/test/java/spec/math/WordMathTest.java](../../src/test/java/spec/math/WordMathTest.java) (28 тестов) и [src/test/java/spec/math/BitesTest.java](../../src/test/java/spec/math/BitesTest.java) (33 теста). Итого: 387 тестов, 0 ошибок. Включён тест-документация на TODO #7 баг (`hex8`/`hex16` для значений > 0xFF/0xFFFF). commit: ???????
