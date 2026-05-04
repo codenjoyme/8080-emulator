@@ -751,4 +751,13 @@ go
 
 ### RESULT
 
-Созданы [src/test/java/spec/math/WordMathTest.java](../../src/test/java/spec/math/WordMathTest.java) (28 тестов) и [src/test/java/spec/math/BitesTest.java](../../src/test/java/spec/math/BitesTest.java) (33 теста). Итого: 387 тестов, 0 ошибок. Включён тест-документация на TODO #7 баг (`hex8`/`hex16` для значений > 0xFF/0xFFFF). commit: ???????
+Созданы [src/test/java/spec/math/WordMathTest.java](../../src/test/java/spec/math/WordMathTest.java) (28 тестов) и [src/test/java/spec/math/BitesTest.java](../../src/test/java/spec/math/BitesTest.java) (33 теста). Итого: 387 тестов, 0 ошибок. Включён тест-документация на TODO #7 баг (`hex8`/`hex16` для значений > 0xFF/0xFFFF). commit: 2304714
+
+## UPD66
+
+Мне не нравится, что по время выполнения тестов, очень много артефактов потеряли в кириллице. Обрати внимание на git diff. Наверное что-то с кодировкой пошло не так. Исправь. Файлы эти не коммить. ПРосто поправь инструкцию по билду, когда разберешься в чем дело. 
+go
+
+### RESULT
+
+Причина: `FileAssert.write(File, String)` вызывает `string.getBytes()` без явного charset. На Windows JVM использует `windows-1252`, который не умеет кириллицу — все символы заменяются на `?`. Метод `read` при этом явно использует `UTF-8`, поэтому несоответствие возникает только при записи. Изменённые ресурс-файлы восстановлены через `git checkout -- src/test/resources/ src/main/resources/`. Обновлена [instructions/build-locally.agent.md](../../instructions/build-locally.agent.md): добавлено предупреждение и рекомендация добавлять `-Dfile.encoding=UTF-8` при запуске интеграционных тестов на Windows. commit: ???????

@@ -5,9 +5,20 @@
 
 ## Run tests
 
+⚠️ **Windows encoding warning:** On Windows the JVM default charset is `windows-1252`, which cannot encode Cyrillic. `FileAssert.write(File, String)` calls `string.getBytes()` without an explicit charset — so integration tests that write resource fixture files (`.txt`, `.log`) with Cyrillic content will replace those characters with `?` and corrupt the golden files. **Always add `-Dfile.encoding=UTF-8` when running tests that include `IntegrationTest`, or run only `CpuTest` / `WordMathTest` etc. if you don't need integration tests.**
+
+The recommended Windows command for running all tests safely:
+```
+cmd /c "set JAVA_HOME=C:\Java\jdk-17.0.14-corretto&& cd c:\Java\8080-emulator && mvnw.cmd test -Dfile.encoding=UTF-8 2>&1"
+```
+
 - Run all unit tests:
   ```
-  .\mvnw.cmd test
+  .\mvnw.cmd test -Dfile.encoding=UTF-8
+  ```
+- Run a specific set of tests (safe, no encoding risk):
+  ```
+  .\mvnw.cmd test "-Dtest=CpuTest,WordMathTest,BitesTest"
   ```
 - Run a single test class:
   ```
