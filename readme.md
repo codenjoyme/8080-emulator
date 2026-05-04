@@ -140,7 +140,7 @@ Intro
 - [x] `STC`
 - [x] `SUB_R`
 - [x] `SUI_XX`
-- [ ] `XCHG`
+- [x] `XCHG`
 - [ ] `XRA_R`
 - [ ] `XRI_XX`
 - [ ] `XTHL`

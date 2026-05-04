@@ -16307,4 +16307,53 @@ public class CpuTest extends AbstractTest {
                 "tp:  true\n" +
                 "tc:  false\n");
     }
+
+    // XCHG: HL <-> DE  (opcode 0xEB)
+
+    @Test
+    public void codeEB__XCHG() {
+        // given: DE=0x1234, HL=0x5678 => after XCHG: DE=0x5678, HL=0x1234
+        givenPr("LXI D,1234\n" +
+                "LXI H,5678\n" +
+                "XCHG\n" +
+                "NOP\n");
+
+        givenMm("11 34 12\n" +
+                "21 78 56\n" +
+                "EB\n" +
+                "00");
+
+        start();
+
+        asrtCpu("BC:  0000\n" +
+                "DE:  5678\n" +
+                "HL:  1234\n" +
+                "AF:  0002\n" +
+                "SP:  0000\n" +
+                "PC:  0008\n" +
+                "B,C: 00 00\n" +
+                "D,E: 56 78\n" +
+                "H,L: 12 34\n" +
+                "M:   00\n" +
+                "A,F: 00 02\n" +
+                "     76543210 76543210\n" +
+                "SP:  00000000 00000000\n" +
+                "PC:  00000000 00001000\n" +
+                "     76543210\n" +
+                "B:   00000000\n" +
+                "C:   00000000\n" +
+                "D:   01010110\n" +
+                "E:   01111000\n" +
+                "H:   00010010\n" +
+                "L:   00110100\n" +
+                "M:   00000000\n" +
+                "A:   00000000\n" +
+                "     sz0h0p1c\n" +
+                "F:   00000010\n" +
+                "ts:  false\n" +
+                "tz:  false\n" +
+                "th:  false\n" +
+                "tp:  false\n" +
+                "tc:  false\n");
+    }
 }

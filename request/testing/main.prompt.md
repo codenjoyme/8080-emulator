@@ -672,4 +672,12 @@ Key learnings: M register value depends on HL pointer (not always 0x3E); SBB car
 
 ### RESULT
 
-3 теста (no-flags, borrow, zero). commit: ???????.
+3 теста (no-flags, borrow, zero). commit: 362b247.
+
+## UPD60
+
+Беру `XCHG` (opcode `0xEB`): exchange DE and HL. go
+
+### RESULT
+
+1 тест. commit: ???????.
