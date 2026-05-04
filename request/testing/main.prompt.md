@@ -664,4 +664,12 @@ Key learnings: M register value depends on HL pointer (not always 0x3E); SBB car
 
 ### RESULT
 
-8 тестов (SUB B/C/D/E/H/L/M/A). commit: ???????.
+8 тестов (SUB B/C/D/E/H/L/M/A). commit: 7038229.
+
+## UPD59
+
+Беру `SUI_XX` (opcode `0xD6`): subtract immediate. go
+
+### RESULT
+
+3 теста (no-flags, borrow, zero). commit: ???????.

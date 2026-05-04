@@ -625,6 +625,7 @@
 - [x] (646d50e) Add test for SBI_XX (subtract immediate with borrow).
 - [x] (ca0c1b4) Add test for SPHL (SP = HL).
 - [x] (b95bfa5) Add test for STC (set carry flag).
-- [x] (???????) Add test for SUB_R (subtract register, all 8 variants).
+- [x] (7038229) Add test for SUB_R (subtract register, all 8 variants).
+- [x] (???????) Add test for SUI_XX (subtract immediate).
       
 Продолжение следует!

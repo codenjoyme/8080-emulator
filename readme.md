@@ -139,7 +139,7 @@ Intro
 - [x] `SPHL`
 - [x] `STC`
 - [x] `SUB_R`
-- [ ] `SUI_XX`
+- [x] `SUI_XX`
 - [ ] `XCHG`
 - [ ] `XRA_R`
 - [ ] `XRI_XX`
