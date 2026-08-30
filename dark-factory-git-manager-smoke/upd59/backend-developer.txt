@@ -1,0 +1,1 @@
+managed local-and-remote publish run: backend-developer on 8080-emulator
